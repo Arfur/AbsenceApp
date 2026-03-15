@@ -1,0 +1,113 @@
+/* =============================================================================
+   File        : MainLayout.razor.css
+   Project     : AbsenceApp.Client
+   Author      : 
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   Purpose     : Component-scoped styles for the MainLayout shell
+   Description : Defines the page skeleton flex layout, sidebar gradient,
+                 top-row bar, and responsive breakpoints for mobile/desktop.
+   Changes     : 1.0.0 — Initial
+   Notes       : Scoped to MainLayout.razor via CSS isolation.
+                 Add the ::deep combinator when targeting child-component
+                 elements from within these rules.
+============================================================================= */
+
+/* =============================================================================
+   Base page layout — flex column container for sidebar and main content
+============================================================================= */
+
+.page[b-p0founds2n] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-p0founds2n] {
+    flex: 1;
+}
+
+/* =============================================================================
+   Sidebar styling — gradient background applied to the nav panel
+============================================================================= */
+
+.sidebar[b-p0founds2n] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+/* =============================================================================
+   Top row styling — light bar with right-aligned utility links
+============================================================================= */
+
+.top-row[b-p0founds2n] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-p0founds2n]  a, .top-row[b-p0founds2n]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+        .top-row[b-p0founds2n]  a:hover, .top-row[b-p0founds2n]  .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .top-row[b-p0founds2n]  a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+/* =============================================================================
+   Responsive — mobile breakpoint (max-width 640px)
+============================================================================= */
+
+@media (max-width: 640.98px) {
+    .top-row[b-p0founds2n] {
+        justify-content: space-between;
+    }
+
+        .top-row[b-p0founds2n]  a, .top-row[b-p0founds2n]  .btn-link {
+            margin-left: 0;
+        }
+}
+
+/* =============================================================================
+   Responsive — desktop breakpoint (min-width 641px)
+============================================================================= */
+
+@media (min-width: 641px) {
+    .page[b-p0founds2n] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-p0founds2n] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-p0founds2n] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+        .top-row.auth[b-p0founds2n]  a:first-child {
+            flex: 1;
+            text-align: right;
+            width: 0;
+        }
+
+    .top-row[b-p0founds2n], article[b-p0founds2n] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}

@@ -1,0 +1,3 @@
+id,user_id,first_name,last_name,preferred_name,title,date_of_birth,profile_picture_url,bio,gender,timezone,language,department_id,job_title_id,school_id,created_at,updated_at
+1,1,Michael,Battle,Mick,Mr,13/04/1963,'/storage/profiles/mbattle_profile_photo.jpg',NULL,M,Europe/London,en,10,22,10,28/07/2025 19:31,28/07/2025 19:31
+1,2,Scarlett,Johansson,Scarlett,Mrs,22/11/1984,NULL,NULL,F,Europe/London,en,4,5,10,28/07/2025 19:31,28/07/2025 19:31

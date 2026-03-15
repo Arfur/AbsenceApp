@@ -1,0 +1,43 @@
+PHASE 11 — CREATE VIEWS (OPTIONAL)
+
+Purpose:
+In this phase you will create read-only SQL Server views to expose data in a
+controlled and consistent way. Views must not modify data and must not contain
+any inferred logic.
+
+This phase is optional and may be skipped if no views are defined.
+
+How you must behave:
+- You must not invent views.
+- You must not infer joins or relationships.
+- You must not add calculated fields unless explicitly defined.
+- You must not modify underlying tables.
+- You must not create indexed views.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+For each view definition provided, follow this instruction exactly:
+
+“Generate a SQL Server Express CREATE VIEW statement named <view_name>
+using exactly the fields and joins described.
+Do not add fields.
+Do not infer relationships.
+Only implement what is explicitly defined.”
+
+Verification:
+After creating each view, also generate the following verification SQL:
+
+SELECT name FROM sys.views WHERE name = '<view_name>';
+
+Expected result:
+- The view exists.
+- The view definition matches the provided specification exactly.
+
+If verification fails:
+- Identify the mismatch.
+- Regenerate only the affected view.
+- Re-run verification.
+- Do NOT proceed until the expected result is achieved.
+
+When all defined views pass verification:
+Proceed to Phase 12.

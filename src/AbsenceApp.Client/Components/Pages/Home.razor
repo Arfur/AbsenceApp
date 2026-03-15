@@ -1,0 +1,31 @@
+﻿@* ===========================================================================
+   File        : Home.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Default welcome page from the Blazor MAUI project template.
+                 Present until the Dashboard page fully supersedes it.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Previously shared "/" with DashboardPage. Moved to "/home" so that
+       DashboardPage is the canonical landing route.
+     - No @inject or @code block required; the page is purely static markup.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Template default retained as-is.
+     - 1.1.0  2026-03-14  Route changed from "/" to "/home" to resolve
+                          duplicate-route conflict with DashboardPage.
+   ===========================================================================
+*@
+@page "/home"
+
+@* =========================================================================
+   Page content — static template welcome message
+   ========================================================================= *@
+<h1>Hello, world!</h1>
+
+Welcome to your new app.

@@ -1,0 +1,50 @@
+@* ===========================================================================
+   File        : ParentListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /parents
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a summary table of all parents with name, email,
+                 and phone number.  Each name links to the parent details page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Data is fully static HTML; replace tbody rows with a foreach loop
+       once a parent service or ViewModel property is available.
+     - Parent ids in hrefs are hard-coded integers; keep in sync with any
+       future parent repository seed data.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/parents"
+
+@* =========================================================================
+   Page content — parent summary table with contact details
+   ========================================================================= *@
+<h3>Parent List</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/parents/1">Naomi Rose</a></td>
+            <td>naomi.rose@example.com</td>
+            <td>+44 7000 111111</td>
+        </tr>
+        <tr>
+            <td><a href="/parents/2">Steve Jones</a></td>
+            <td>steve.jones@example.com</td>
+            <td>+44 7000 222222</td>
+        </tr>
+    </tbody>
+</table>

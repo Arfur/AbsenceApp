@@ -1,0 +1,50 @@
+@* ===========================================================================
+   File        : SubjectListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /subjects
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a summary table of all subjects with teacher and
+                 class assignments.  Each subject links to its details page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Data is fully static HTML; replace tbody rows with a foreach loop
+       once a subject service or ViewModel property is available.
+     - Subject ids in hrefs are hard-coded integers; keep in sync with any
+       future subject repository seed data.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/subjects"
+
+@* =========================================================================
+   Page content — subject summary table with teacher and class columns
+   ========================================================================= *@
+<h3>Subject List</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th>Class</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/subjects/1">English</a></td>
+            <td>Steven Johnson</td>
+            <td>Class One</td>
+        </tr>
+        <tr>
+            <td><a href="/subjects/2">Mathematics</a></td>
+            <td>Kathryn Murphy</td>
+            <td>Class Two</td>
+        </tr>
+    </tbody>
+</table>

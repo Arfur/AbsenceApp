@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\AbsenceApp.Client.Tests.props" />
+</Project>

@@ -1,0 +1,70 @@
+﻿@* ===========================================================================
+   File        : NavMenu.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Application navigation bar with links to all feature areas.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+     - 1.1.0  2026-03-14  Replaced broken template links (Counter, Weather)
+                          with real app navigation links. Added Students,
+                          Classes, Attendance, Staff, and Audit Log entries.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - The hamburger toggler is a CSS-only checkbox trick; no JavaScript
+       is required to show/hide the nav-scrollable div.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Top row — dark navbar bar containing the brand name and toggler checkbox
+   ========================================================================= *@
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">AbsenceApp</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+@* =========================================================================
+   Collapsible nav links — vertical NavLink list; click closes menu on mobile
+   ========================================================================= *@
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Dashboard
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="students">
+                <span class="bi bi-people-fill-nav-menu" aria-hidden="true"></span> Students
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="classes">
+                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Classes
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="attendance">
+                <span class="bi bi-check-square-fill-nav-menu" aria-hidden="true"></span> Attendance
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="staff">
+                <span class="bi bi-person-badge-fill-nav-menu" aria-hidden="true"></span> Staff
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="auditlog">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Audit Log
+            </NavLink>
+        </div>
+    </nav>
+</div>

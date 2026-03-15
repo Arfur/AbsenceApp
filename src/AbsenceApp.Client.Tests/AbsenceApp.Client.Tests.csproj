@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!--
+  =============================================================================
+  File        : AbsenceApp.Client.Tests.csproj
+  Project     : AbsenceApp.Client.Tests
+  Author      : Michael
+  Version     : 1.0.0
+  Created     : 2026-03-14
+  Updated     : 2026-03-14
+  Purpose     : bUnit + xUnit test project for Blazor component integration
+                testing. Tests mirror Razor components and verify service
+                injection, ViewModel binding, navigation hrefs, async loading,
+                and DTO-based rendering.
+  Changes     : 1.0.0 — Initial
+  =============================================================================
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>AbsenceApp.Client.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- bUnit for Blazor component testing -->
+    <PackageReference Include="bunit" Version="1.28.9" />
+
+    <!-- xUnit test runner -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <!-- Moq for service mocking -->
+    <PackageReference Include="Moq" Version="4.20.70" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Core: ViewModels, service interfaces, models, DTOs -->
+    <ProjectReference Include="..\AbsenceApp.Core\AbsenceApp.Core.csproj" />
+  </ItemGroup>
+
+</Project>

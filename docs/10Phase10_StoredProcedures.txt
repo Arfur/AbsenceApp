@@ -1,0 +1,44 @@
+PHASE 10 — STORED PROCEDURES (OPTIONAL)
+
+Purpose:
+In this phase you will create stored procedures to encapsulate write operations
+against the schema. Stored procedures must be deterministic and must not contain
+any inferred or speculative logic.
+
+This phase is optional and may be skipped if no stored procedures are defined.
+
+How you must behave:
+- You must not invent stored procedures.
+- You must not infer business logic.
+- You must not add validation rules unless explicitly defined.
+- You must not modify table structures.
+- You must not create triggers.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+For each stored procedure definition provided, follow this instruction exactly:
+
+“Generate a SQL Server Express stored procedure named <procedure_name>
+that performs exactly the actions described.
+Do not add extra logic.
+Do not infer behaviour.
+Only implement what is explicitly defined.”
+
+Verification:
+After creating each stored procedure, also generate the following verification SQL:
+
+EXEC sp_helptext '<procedure_name>';
+
+Expected result:
+- The stored procedure exists.
+- The procedure body matches the provided definition exactly.
+- No additional logic is present.
+
+If verification fails:
+- Identify the mismatch.
+- Regenerate only the affected stored procedure.
+- Re-run verification.
+- Do NOT proceed until the expected result is achieved.
+
+When all defined stored procedures pass verification:
+Proceed to Phase 11.

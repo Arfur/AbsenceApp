@@ -1,0 +1,31 @@
+PHASE 1 — CREATE SCHEMAS
+
+Your task:
+Generate SQL Server Express code to create the following schemas:
+
+core
+org
+ops
+auth
+assets
+audit
+
+Rules:
+- Do NOT create any tables.
+- Do NOT add anything else.
+- Do NOT infer anything.
+- Only create the schemas exactly as named.
+
+Verification SQL:
+SELECT name FROM sys.schemas 
+WHERE name IN ('core','org','ops','auth','assets','audit');
+
+Expected result:
+Exactly 6 rows returned, one for each schema.
+
+If verification passes:
+Proceed to Phase 2.
+
+If verification fails:
+Regenerate Phase 1 SQL and re-run the verification test.
+Do NOT proceed until the expected result is achieved.

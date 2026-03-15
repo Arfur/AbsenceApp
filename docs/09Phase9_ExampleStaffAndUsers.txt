@@ -1,0 +1,52 @@
+PHASE 9 — CREATE EXAMPLE USERS & STAFF (OPTIONAL)
+
+Purpose:
+In this phase you will create a minimal set of example data to validate that the schema works end-to-end.
+This data is for testing and demonstration only.
+You must not invent additional examples beyond what is explicitly requested.
+
+How you must behave:
+- You must not invent additional users or staff.
+- You must not infer relationships.
+- You must not modify reference data.
+- You must not add optional fields unless explicitly defined.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+“Generate SQL Server Express INSERT statements to create the following example records exactly as described.
+Do not invent values.
+Do not infer values.
+Only generate INSERT statements.”
+
+Example records to create:
+1. One super admin user in auth.users
+2. One staff record in core.staff linked to that user
+3. One staff assignment in ops.staff_assignments linked to that staff member
+
+Rules:
+- The user must reference an existing role_type from auth.role_types.
+- The staff record must reference an existing school.
+- The staff assignment must reference existing job title, job group, department, and class records.
+- All foreign keys must be valid.
+
+Verification:
+After inserting the example data, also generate the following verification SQL:
+
+SELECT * FROM auth.users;
+SELECT * FROM core.staff;
+SELECT * FROM ops.staff_assignments;
+
+Expected result:
+- Exactly one example user exists.
+- Exactly one example staff record exists.
+- Exactly one example staff assignment exists.
+- All foreign key relationships are valid.
+
+If verification fails:
+- Identify which insert failed.
+- Regenerate only the failing INSERT statements.
+- Re-run verification.
+- Do NOT proceed until the expected results are achieved.
+
+When verification passes:
+Proceed to Phase 10.

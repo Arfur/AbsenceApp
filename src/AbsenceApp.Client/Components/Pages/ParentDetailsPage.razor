@@ -1,0 +1,62 @@
+@* ===========================================================================
+   File        : ParentDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /parents/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the full profile of a single parent, including
+                 contact details and links to their children’s profiles.
+   ---------------------------------------------------------------------------   Notes       :
+     - Parent data is resolved by if/else on the {id} string; replace with a
+       parent service lookup once a data layer is available.
+     - Children hrefs link directly to StudentsPage student detail routes;
+       ensure student ids remain consistent across seed data files.
+   ---------------------------------------------------------------------------   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/parents/{id}"
+
+@* =========================================================================
+   Page content — id-resolved parent profile and linked children
+   ========================================================================= *@
+<h3>Parent Details</h3>
+
+@if (id == "1")
+{
+    <p><strong>Name:</strong> Naomi Rose</p>
+    <p><strong>Email:</strong> naomi.rose@example.com</p>
+    <p><strong>Phone:</strong> +44 7000 111111</p>
+    <p><strong>Address:</strong> 10 Green Street, Derby</p>
+
+    <h4>Children</h4>
+    <ul>
+        <li><a href="/students/1">Alice Smith</a></li>
+    </ul>
+}
+else if (id == "2")
+{
+    <p><strong>Name:</strong> Steve Jones</p>
+    <p><strong>Email:</strong> steve.jones@example.com</p>
+    <p><strong>Phone:</strong> +44 7000 222222</p>
+    <p><strong>Address:</strong> 22 Oak Road, Nottingham</p>
+
+    <h4>Children</h4>
+    <ul>
+        <li><a href="/students/2">Bob Jones</a></li>
+    </ul>
+}
+else
+{
+    <p>Parent not found.</p>
+}
+
+@* =========================================================================
+   Code block — route parameter for parent id lookup
+   ========================================================================= *@
+@code {
+    [Parameter] public string id { get; set; } = default!;
+}

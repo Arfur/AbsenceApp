@@ -1,0 +1,52 @@
+@* ===========================================================================
+   File        : StudentDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /students/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the full profile of a single student.
+                 Provides links to the student’s absences and their parent.
+   ---------------------------------------------------------------------------   Notes       :
+     - The {id} route parameter is passed to ViewModel.LoadStudentAsync on
+       every parameter change, not just initial load.
+     - Parent link is hard-coded to /parents/1; a future revision should
+       resolve the parent from the student record.
+   ---------------------------------------------------------------------------   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ===========================================================================
+*@
+@page "/students/{id}"
+@inject StudentDetailsViewModel ViewModel
+
+@* =========================================================================
+   Page content — student name, year group, and navigation links
+   ========================================================================= *@
+<h3>Student Details</h3>
+
+@if (ViewModel.Student != null)
+{
+    <p><strong>Name:</strong> @ViewModel.Student.FirstName @ViewModel.Student.LastName</p>
+    <p><strong>Year Group:</strong> @ViewModel.Student.YearGroup</p>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@* =========================================================================
+   Navigation links — absences sub-page and parent profile
+   ========================================================================= *@
+<p><a href="/students/@id/absences">View Absences</a></p>
+<p><a href="/parents/1">View Parent</a></p>
+
+@* =========================================================================
+   Code block — route parameter binding and data fetch on navigation
+   ========================================================================= *@
+@code {
+    [Parameter] public string id { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync() => await ViewModel.LoadAsync(id);
+}

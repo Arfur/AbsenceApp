@@ -1,0 +1,44 @@
+﻿@* ===========================================================================
+   File        : Counter.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /counter
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Simple counter page included from the default Blazor MAUI
+                 project template to demonstrate interactive component state.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Retained from the project template as a UI interaction smoke-test;
+       can be removed once application-specific pages are complete.
+     - currentCount is private component state; it resets to 0 on every
+       navigation away from and back to this route.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Template default retained as-is.
+   ===========================================================================
+*@
+@page "/counter"
+
+@* =========================================================================
+   Page content — current count display and increment button
+   ========================================================================= *@
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@* =========================================================================
+   Code block — private counter state and increment handler
+   ========================================================================= *@
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

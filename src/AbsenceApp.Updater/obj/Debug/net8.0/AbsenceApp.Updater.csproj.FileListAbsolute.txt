@@ -1,0 +1,11 @@
+C:\DevAbsence1\src\AbsenceApp.Updater\bin\Debug\net8.0\AbsenceApp.Updater.deps.json
+C:\DevAbsence1\src\AbsenceApp.Updater\bin\Debug\net8.0\AbsenceApp.Updater.dll
+C:\DevAbsence1\src\AbsenceApp.Updater\bin\Debug\net8.0\AbsenceApp.Updater.pdb
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.GeneratedMSBuildEditorConfig.editorconfig
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.AssemblyInfoInputs.cache
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.AssemblyInfo.cs
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.csproj.CoreCompileInputs.cache
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.dll
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\refint\AbsenceApp.Updater.dll
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\AbsenceApp.Updater.pdb
+C:\DevAbsence1\src\AbsenceApp.Updater\obj\Debug\net8.0\ref\AbsenceApp.Updater.dll

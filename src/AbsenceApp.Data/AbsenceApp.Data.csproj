@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+  =============================================================================
+  File        : AbsenceApp.Data.csproj
+  Project     : AbsenceApp.Data
+  Author      :
+  Version     : 1.0.0
+  Created     : 2026-03-13
+  Updated     : 2026-03-13
+  Purpose     : Data access library — repositories and mappers
+  Description : Class library targeting net8.0 that provides in-memory
+                repositories and object mappers. References AbsenceApp.Core
+                for shared models and interfaces.
+  Changes     : 1.0.0 — Initial
+  Notes       : No external NuGet dependencies.
+                Add an EF Core package reference here when the in-memory
+                repositories are replaced with a real database context.
+  =============================================================================
+  -->
+
+  <!-- ===========================================================================
+       NuGet package references — EF Core and SQL Server provider
+  =========================================================================== -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+  </ItemGroup>
+
+  <!-- ===========================================================================
+       Project references — depends on AbsenceApp.Core for models and interfaces
+  =========================================================================== -->
+  <ItemGroup>
+    <ProjectReference Include="..\AbsenceApp.Core\AbsenceApp.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

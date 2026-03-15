@@ -1,0 +1,48 @@
+PHASE 6 — CREATE AUTH & AUDIT TABLES
+
+Purpose:
+In this phase you will create all authentication event tables and all audit logging tables.
+These tables depend on the users, staff, assignments, absences, devices, and external account tables created in earlier phases.
+You must follow the instructions in this file exactly.
+
+How you must behave:
+- You must not infer anything.
+- You must not rename anything.
+- You must not add or remove fields.
+- You must not optimise or restructure anything.
+- You must not create tables out of order.
+- You must not proceed to the next table until verification passes.
+- You must wait for confirmation before moving to the next phase.
+
+Tables to create in this exact order:
+1. auth.account_verification_events
+2. auth.login_audit
+3. auth.role_change_audit
+4. audit.staff_profile_audit
+5. audit.staff_assignment_audit
+6. audit.staff_absence_audit
+7. audit.staff_device_audit
+8. audit.staff_external_account_audit
+
+Instruction for each CREATE TABLE:
+“Generate SQL Server Express CREATE TABLE code for the following table definition.
+Do not change field names.
+Do not add or remove fields.
+Do not infer anything.
+Only generate the CREATE TABLE statement exactly as defined.”
+
+Verification for each table:
+After generating the CREATE TABLE SQL, also generate the following verification SQL:
+
+SELECT * FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA IN ('auth','audit') AND TABLE_NAME = '<table>';
+
+Expected result:
+Exactly 1 row must be returned for each table.
+
+If verification fails:
+Regenerate the CREATE TABLE SQL for that table and re-run the verification.
+Do NOT proceed until the expected result is achieved.
+
+When all 8 tables pass verification:
+Proceed to Phase 7.

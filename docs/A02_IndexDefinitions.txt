@@ -1,0 +1,19 @@
+INDEX DEFINITIONS — CANONICAL SOURCE
+
+This file contains the authoritative index definitions.
+
+Rules:
+- Only indexes defined in this file may be created.
+- Index names must be used exactly as specified.
+- Column order must be preserved.
+- No additional indexes may be inferred.
+- No clustered indexes may be created unless explicitly defined.
+
+Each index definition will be provided in the following format:
+
+INDEX: <index_name>
+TABLE: <schema>.<table_name>
+COLUMNS:
+- <column_name> [ASC | DESC]
+
+No commentary or optimisation is permitted.

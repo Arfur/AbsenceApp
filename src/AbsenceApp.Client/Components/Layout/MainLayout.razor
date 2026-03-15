@@ -1,0 +1,56 @@
+﻿@* ===========================================================================
+   File        : MainLayout.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Root layout for all Blazor pages.
+                 Renders a left-sidebar navigation panel alongside the
+                 main content area that hosts @Body.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Inherits LayoutComponentBase; @Body renders the matched page component.
+     - Sidebar links are currently hard-coded; extract to a NavMenu component
+       if the navigation set grows beyond a handful of items.
+   ===========================================================================
+*@
+@inherits LayoutComponentBase
+
+@* =========================================================================
+   Outer shell — flex container that wraps sidebar and content side-by-side
+   ========================================================================= *@
+<div style="display:flex; height:100vh;">
+
+    @* =========================================================================
+       Sidebar navigation — fixed-width panel with page links
+       ========================================================================= *@
+    <div style="width:200px; background:#f0f0f0; padding:10px;">
+        <h4>Menu</h4>
+        <ul style="list-style:none; padding-left:0;">
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/students">Students</a></li>
+            <li><a href="/attendance">Attendance</a></li>
+            <li><a href="/staff">Staff</a></li>
+            <li><a href="/classes">Classes</a></li>
+            <li><a href="/subjects">Subjects</a></li>
+            <li><a href="/parents">Parents</a></li>
+        </ul>
+    </div>
+
+    @* =========================================================================
+       Main content area — flex-fill panel that renders the active page via @Body
+       ========================================================================= *@
+    <div style="flex:1; padding:20px;">
+        <header style="margin-bottom:20px;">
+            <h2>Absence App</h2>
+        </header>
+
+        @Body
+    </div>
+
+</div>

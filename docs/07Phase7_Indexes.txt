@@ -1,0 +1,42 @@
+PHASE 7 — CREATE INDEXES
+
+Purpose:
+In this phase you will create all non-clustered indexes required by the schema.
+Indexes must only be created after all tables exist.
+You must follow the instructions in this file exactly.
+
+How you must behave:
+- You must not infer any indexes.
+- You must not rename any indexes.
+- You must not add additional indexes.
+- You must not remove any indexes.
+- You must not optimise or consolidate indexes.
+- You must only create the indexes explicitly defined in the index definitions file.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+“Generate SQL Server Express CREATE INDEX statements for the index definitions provided.
+Do not rename anything.
+Do not add extra indexes.
+Only generate exactly what is defined.”
+
+Verification:
+After generating and executing the CREATE INDEX statements, also generate the following verification SQL:
+
+SELECT name 
+FROM sys.indexes 
+WHERE name LIKE 'IX_%'
+ORDER BY name;
+
+Expected result:
+All defined index names must appear exactly as specified.
+No additional index names may appear.
+
+If verification fails:
+- Identify which index is missing or incorrect.
+- Regenerate only the incorrect index.
+- Re-run the verification.
+- Do NOT proceed until the expected result is achieved.
+
+When verification passes:
+Proceed to Phase 8.

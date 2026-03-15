@@ -1,0 +1,59 @@
+PHASE 2 — CREATE REFERENCE TABLES
+
+Purpose:
+In this phase you will create all reference tables required by the Absence Management System.
+You must follow the instructions in this file exactly and in the order provided.
+
+How you must behave:
+- You must not infer anything.
+- You must not rename anything.
+- You must not add or remove fields.
+- You must not optimise or restructure anything.
+- You must not create tables out of order.
+- You must not proceed to the next table until verification passes.
+- You must wait for confirmation before moving to the next phase.
+
+Instruction for every table:
+“Generate SQL Server Express CREATE TABLE code for the following table definition.
+Do not change field names.
+Do not add or remove fields.
+Do not infer anything.
+Only generate the CREATE TABLE statement exactly as defined.”
+
+Verification for every table:
+After generating the CREATE TABLE SQL, also generate the following verification SQL:
+
+SELECT * FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_SCHEMA = '<schema>' AND TABLE_NAME = '<table>';
+
+Expected result:
+Exactly 1 row must be returned.
+
+If verification fails:
+Regenerate the CREATE TABLE SQL for that table and re-run the verification.
+Do NOT proceed until the expected result is achieved.
+
+Table creation order:
+You must create the tables in this exact order:
+
+1. core.schools
+2. core.phases
+3. core.year_groups
+4. core.classes
+5. core.class_year_group_assignments
+6. org.job_titles
+7. org.job_groups
+8. org.departments
+9. org.responsibilities
+10. ops.absence_types
+11. assets.device_types
+12. assets.external_systems
+13. auth.role_types
+
+Important:
+- You must not skip any table.
+- You must not reorder any table.
+- You must not create any table not listed here.
+- You must not proceed to Phase 3 until all 13 tables pass verification.
+
+End of Phase 2 instructions.

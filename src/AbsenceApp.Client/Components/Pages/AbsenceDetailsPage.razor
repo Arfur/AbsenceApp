@@ -1,0 +1,102 @@
+@* ===========================================================================
+   File        : AbsenceDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /absences/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-14
+   Updated     : 2026-03-14
+   ---------------------------------------------------------------------------
+   Purpose     : Form page for recording or reviewing a single absence event.
+                 Binds to AbsenceDetailsViewModel.CurrentRecord, calls
+                 ViewModel.SaveAsync() on form submit, and displays IsSaved
+                 or ErrorMessage feedback.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route parameter {id} is reserved for future lookup of an existing
+       record; new records are created by setting fields then saving.
+     - @bind on input elements uses the two-way binding shorthand; Blazor
+       handles the change event internally.
+     - Navigation links use plain <a> tags; NavLink is unnecessary here
+       because no active-class highlighting is required.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-14  Initial implementation.
+   ===========================================================================
+*@
+@page "/absences/{id}"
+
+@* =========================================================================
+   Section: ViewModel injection
+   ========================================================================= *@
+@inject AbsenceDetailsViewModel ViewModel
+
+@* =========================================================================
+   Section: Page heading
+   ========================================================================= *@
+<h3>Absence Details</h3>
+
+@* =========================================================================
+   Section: Feedback messages — saved confirmation or error
+   ========================================================================= *@
+@if (ViewModel.IsSaved)
+{
+    <p><strong>Absence saved successfully.</strong></p>
+}
+
+@if (ViewModel.ErrorMessage is not null)
+{
+    <p style="color:red;">@ViewModel.ErrorMessage</p>
+}
+
+@* =========================================================================
+   Section: Form fields — bind to CurrentRecord properties
+   ========================================================================= *@
+<div>
+    <label>Student ID</label>
+    <input @bind="ViewModel.CurrentRecord.StudentId" placeholder="Student ID" />
+</div>
+
+<div>
+    <label>Date</label>
+    <input type="date" @bind="ViewModel.CurrentRecord.Date" />
+</div>
+
+<div>
+    <label>Reason</label>
+    <input @bind="ViewModel.CurrentRecord.Reason" placeholder="Reason for absence" />
+</div>
+
+@* =========================================================================
+   Section: Save action button
+   ========================================================================= *@
+<button @onclick="Save" disabled="@ViewModel.IsSaving">
+    @(ViewModel.IsSaving ? "Saving..." : "Save")
+</button>
+
+@* =========================================================================
+   Section: Navigation links
+   ========================================================================= *@
+<p>
+    <a href="/students/@ViewModel.CurrentRecord.StudentId/absences">
+        &larr; Back to Absences
+    </a>
+</p>
+
+@* =========================================================================
+   Section: Code-behind — route parameter binding and command wiring
+   ========================================================================= *@
+@code {
+    // =========================================================================
+    // Route parameter
+    // =========================================================================
+
+    /// <summary>Absence record identifier from the URL (reserved for future lookup).</summary>
+    [Parameter] public string id { get; set; } = default!;
+
+    // =========================================================================
+    // Event handlers
+    // =========================================================================
+
+    private async Task Save() => await ViewModel.SaveAsync();
+}

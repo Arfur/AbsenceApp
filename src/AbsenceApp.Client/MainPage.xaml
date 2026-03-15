@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AbsenceApp.Client"
+             x:Class="AbsenceApp.Client.MainPage">
+
+    <!--
+    ===========================================================================
+     File        : MainPage.xaml
+     Namespace   : AbsenceApp.Client
+     Author      : Michael
+     Version     : 1.0.0
+     Created     : 2026-03-13
+     Updated     : 2026-03-13
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Purpose     : Single MAUI ContentPage that hosts the BlazorWebView.
+                   Contains a quick-launch Students button above the web view.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Notes       :
+       - BlazorWebView HostPage points to wwwroot/index.html; the Blazor router
+         takes over from that entry point and renders all subsequent pages.
+       - The Students button is wired to OnStudentsClicked in MainPage.xaml.cs;
+         this shortcut may be removed once NavMenu handles all navigation.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Changes     :
+       - 1.0.0  2026-03-13  Initial implementation.
+    ===========================================================================
+    -->
+
+    <!-- =========================================================
+         Page layout â€” students button and BlazorWebView host
+         ========================================================= -->
+    <VerticalStackLayout>
+        <Button Text="Students" Clicked="OnStudentsClicked" />
+        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+            <BlazorWebView.RootComponents>
+                <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
+            </BlazorWebView.RootComponents>
+        </BlazorWebView>
+    </VerticalStackLayout>
+
+</ContentPage>

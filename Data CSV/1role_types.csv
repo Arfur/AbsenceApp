@@ -1,0 +1,4 @@
+"id","name","display_name","description","is_system_role","is_default","priority","created_at","updated_at"
+"1","user","User","Standard account with limited dashboard access and basic support ticket creation","0","1","1","2025-07-28 17:47:13","2025-07-28 17:47:13"
+"2","admin","Admin","Staff-level access with management tools but restricted system settings","1","0","50","2025-07-28 17:47:13","2025-07-28 17:47:13"
+"3","super_admin","Super Admin","Full platform control, including settings, users, and system administration","1","0","100","2025-07-28 17:47:13","2025-07-28 17:47:13"

@@ -1,0 +1,42 @@
+@* ===========================================================================
+   File        : StaffDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /staff/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the full profile of a single staff member.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - All profile fields are hard-coded static values; replace with a staff
+       service lookup keyed on {id} once a data layer exists.
+     - No @code block or @inject directive; the page is purely presentational
+       until dynamic data is wired in.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/staff/{id}"
+
+@* =========================================================================
+   Route parameter — required to accept /staff/{id} navigation
+   ========================================================================= *@
+@code {
+    [Parameter]
+    public string id { get; set; } = default!;
+}
+
+@* =========================================================================
+   Page content — static staff profile fields
+   ========================================================================= *@
+<h3>Staff Details</h3>
+
+<p><strong>Name:</strong> Steven Johnson</p>
+<p><strong>Email:</strong> stevenjohnson@gmail.com</p>
+<p><strong>Department:</strong> English</p>
+<p><strong>Status:</strong> Active</p>
+<p><strong>Phone:</strong> +88 9856888418</p>
+<p><strong>Address:</strong> House #10, Road #6, Australia</p>

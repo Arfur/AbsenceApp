@@ -1,0 +1,38 @@
+@*
+  Mirror component for AbsencesPage.razor (/students/{id}/absences).
+  Injects AbsencesViewModel, exposes Load and Add actions.
+*@
+@inject AbsencesViewModel ViewModel
+
+<h3>Absences</h3>
+<button @onclick="Load">Load Absences</button>
+<ul>
+    @foreach (var a in ViewModel.Absences)
+    {
+        <li>@a.Date.ToShortDateString() — @a.Reason</li>
+    }
+</ul>
+
+<h4>Add Absence</h4>
+<input @bind="reason" placeholder="Reason" />
+<button id="add-btn" @onclick="Add">Add</button>
+
+@code {
+    [Parameter] public string id { get; set; } = default!;
+    private string reason = string.Empty;
+
+    private async Task Load() => await ViewModel.LoadAsync(id);
+
+    private async Task Add()
+    {
+        var record = new AbsenceRecord
+        {
+            Id        = Guid.NewGuid().ToString(),
+            StudentId = id,
+            Date      = DateTime.Today,
+            Reason    = reason
+        };
+        await ViewModel.AddAbsenceAsync(record);
+        reason = string.Empty;
+    }
+}

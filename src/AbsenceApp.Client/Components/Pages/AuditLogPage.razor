@@ -1,0 +1,120 @@
+@* ===========================================================================
+   File        : AuditLogPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /auditlog
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-14
+   Updated     : 2026-03-14
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a paginated table of all system audit log entries.
+                 Supports filtering by user ID.  Binds to AuditLogViewModel
+                 which delegates to IAuditLogService.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - LoadAllAsync() is called on page initialisation so the table is
+       pre-populated without requiring a manual button click.
+     - FilterByUser() allows narrowing to a single user's activity trail.
+     - All data fields are sourced from AuditLogDto (not the EF entity)
+       ensuring the UI has no transitive dependency on the Data layer.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-14  Initial implementation.
+   ===========================================================================
+*@
+@page "/auditlog"
+
+@* =========================================================================
+   Section: ViewModel injection
+   ========================================================================= *@
+@inject AuditLogViewModel ViewModel
+
+@* =========================================================================
+   Section: Page heading
+   ========================================================================= *@
+<h3>Audit Log</h3>
+
+@* =========================================================================
+   Section: Loading indicator
+   ========================================================================= *@
+@if (ViewModel.IsLoading)
+{
+    <p>Loading…</p>
+}
+
+@* =========================================================================
+   Section: Error feedback
+   ========================================================================= *@
+@if (ViewModel.ErrorMessage is not null)
+{
+    <p style="color:red;">@ViewModel.ErrorMessage</p>
+}
+
+@* =========================================================================
+   Section: User-filter controls
+   ========================================================================= *@
+<div>
+    <input type="number" @bind="filterUserId" placeholder="Filter by User ID" />
+    <button @onclick="FilterByUser">Filter</button>
+    <button @onclick="LoadAll">Show All</button>
+</div>
+
+@* =========================================================================
+   Section: Audit entries table
+   ========================================================================= *@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in ViewModel.Entries)
+        {
+            <tr>
+                <td>@entry.AuditId</td>
+                <td>@entry.UserId</td>
+                <td>@entry.Action</td>
+                <td>@entry.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* =========================================================================
+   Section: Navigation links
+   ========================================================================= *@
+<p><a href="/">&larr; Back to Dashboard</a></p>
+
+@* =========================================================================
+   Section: Code-behind — initialisation and filter commands
+   ========================================================================= *@
+@code {
+    // =========================================================================
+    // Filter state
+    // =========================================================================
+
+    private int filterUserId;
+
+    // =========================================================================
+    // Lifecycle — load all entries when the page first renders
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+        => await ViewModel.LoadAllAsync();
+
+    // =========================================================================
+    // Event handlers
+    // =========================================================================
+
+    private async Task LoadAll() => await ViewModel.LoadAllAsync();
+
+    private async Task FilterByUser()
+    {
+        if (filterUserId > 0)
+            await ViewModel.LoadByUserAsync(filterUserId);
+    }
+}

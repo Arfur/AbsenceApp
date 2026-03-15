@@ -1,0 +1,97 @@
+@* ===========================================================================
+   File        : AttendancePage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /attendance
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a static attendance sheet for all students,
+                 showing per-period attendance marks.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - AttendanceViewModel.LoadAsync() is called on page initialisation so the
+       table is pre-populated without a manual trigger.
+     - AttendanceDto fields: AttendanceId, UserId, ClassId (nullable), Status,
+       Timestamp, RecordedBy.
+     - ClassId is nullable; rendered as an empty cell when absent.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+     - 1.1.0  2026-03-14  Replaced static rows with AttendanceViewModel binding.
+   ===========================================================================
+*@
+@page "/attendance"
+
+@* =========================================================================
+   Section: ViewModel injection
+   ========================================================================= *@
+@inject AttendanceViewModel ViewModel
+
+@* =========================================================================
+   Section: Page heading
+   ========================================================================= *@
+<h3>Attendance Sheet</h3>
+
+@* =========================================================================
+   Section: Loading indicator
+   ========================================================================= *@
+@if (ViewModel.IsLoading)
+{
+    <p>Loading…</p>
+}
+
+@* =========================================================================
+   Section: Error feedback
+   ========================================================================= *@
+@if (ViewModel.ErrorMessage is not null)
+{
+    <p style="color:red;">@ViewModel.ErrorMessage</p>
+}
+
+@* =========================================================================
+   Section: Attendance table — bound to ViewModel.Records (IEnumerable<AttendanceDto>)
+   ========================================================================= *@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Class ID</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+            <th>Recorded By</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in ViewModel.Records)
+        {
+            <tr>
+                <td>@record.AttendanceId</td>
+                <td>@record.UserId</td>
+                <td>@(record.ClassId?.ToString() ?? string.Empty)</td>
+                <td>@record.Status</td>
+                <td>@record.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@record.RecordedBy</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* =========================================================================
+   Section: Navigation links
+   ========================================================================= *@
+<p><a href="/">&larr; Back to Dashboard</a></p>
+
+@* =========================================================================
+   Section: Code-behind — initialise data load
+   ========================================================================= *@
+@code {
+    // =========================================================================
+    // Lifecycle — populate attendance records on first render
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+        => await ViewModel.LoadAsync();
+}

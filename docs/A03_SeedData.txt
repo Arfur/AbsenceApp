@@ -1,0 +1,20 @@
+SEED DATA — CANONICAL VALUES
+
+This file contains the authoritative seed data for all reference tables.
+
+Rules:
+- Only values in this file may be inserted.
+- No values may be invented or inferred.
+- Insert order must respect foreign key dependencies.
+- IDs must be preserved exactly if specified.
+
+Each table’s seed data will be provided in the following format:
+
+TABLE: <schema>.<table_name>
+
+Rows:
+- <column_name>: <value>
+  <column_name>: <value>
+- ...
+
+No commentary or transformation is permitted.

@@ -1,0 +1,34 @@
+@* ===========================================================================
+   File        : DashboardPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Landing page of the application.
+                 Provides quick-navigation links to the main feature areas.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Registered at route "/"; will conflict with Home.razor until one is
+       removed or Home.razor route is changed.
+     - No @inject or @code block required; all links are plain anchor
+       hrefs rendered as nav links by the router.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ===========================================================================
+*@
+@page "/"
+
+@* =========================================================================
+   Page content — quick-navigation links to main feature areas
+   ========================================================================= *@
+<h3>Dashboard</h3>
+
+<ul>
+    <li><a href="/students">Students</a></li>
+    <li><a href="/attendance">Attendance</a></li>
+    <li><a href="/staff">Staff</a></li>
+</ul>

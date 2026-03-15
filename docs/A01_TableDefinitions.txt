@@ -1,0 +1,27 @@
+TABLE DEFINITIONS — CANONICAL SOURCE
+
+This file contains the authoritative table definitions for all CREATE TABLE operations.
+
+Rules:
+- These definitions are canonical.
+- No fields may be added, removed, renamed, or reordered.
+- Data types must be used exactly as specified.
+- Nullability must be respected exactly.
+- Identity columns must be preserved.
+- Foreign keys must be created only when explicitly instructed by a phase file.
+
+Each table definition will be provided in the following format:
+
+TABLE: <schema>.<table_name>
+
+Columns:
+- <column_name> <data_type> [IDENTITY] [NULL | NOT NULL]
+- ...
+
+Primary Key:
+- <column_name>
+
+Foreign Keys:
+- <column_name> → <schema>.<table>.<column_name>
+
+No logic, commentary, or inference is permitted.

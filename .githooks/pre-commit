@@ -1,0 +1,76 @@
+#!/usr/bin/env pwsh
+# ==============================================================================
+#  File        : pre-commit
+#  Location    : .githooks/pre-commit
+#  Purpose     : Blocks commits when staged .cs files are missing the required
+#                block-header comment containing all mandatory fields.
+#  Usage       : git config core.hooksPath .githooks
+# ==============================================================================
+
+# Required labels — each must appear as "Label   :" inside the header block
+$RequiredLabels = @('File', 'Namespace', 'Author', 'Version', 'Created', 'Updated', 'Purpose', 'Changes')
+
+# Collect staged .cs files (added or modified, not deleted)
+$stagedFiles = git diff --cached --name-only --diff-filter=ACM | Where-Object { $_ -like '*.cs' }
+
+$failures = @()
+
+foreach ($file in $stagedFiles) {
+    if (-not (Test-Path $file)) { continue }
+
+    # Read the first 40 lines — the header block should always be there
+    $head = Get-Content $file -TotalCount 40 -ErrorAction SilentlyContinue
+    if ($null -eq $head) { continue }
+
+    $headText = $head -join "`n"
+
+    # Verify that the file starts with a block comment
+    if ($headText -notmatch '(?s)/\*.*?\*/') {
+        $failures += "${file}: no block comment found at the top of the file"
+        continue
+    }
+
+    # Check each required label
+    foreach ($label in $RequiredLabels) {
+        if ($headText -notmatch "(?i)\b${label}\s*:") {
+            $failures += "${file}: missing label '${label}' in header"
+            # Report once per file, then move on
+            break
+        }
+    }
+}
+
+if ($failures.Count -gt 0) {
+    Write-Host ""
+    Write-Host "==================== COMMIT BLOCKED ====================" -ForegroundColor Red
+    Write-Host "The following staged files are missing the required"      -ForegroundColor Red
+    Write-Host "block-header comment (AA0001):"                           -ForegroundColor Red
+    Write-Host ""
+    $failures | ForEach-Object { Write-Host "  - $_" -ForegroundColor Yellow }
+    Write-Host ""
+    Write-Host "Add the header to each file and stage the change, then"
+    Write-Host "commit again.  Template:"
+    Write-Host ""
+    Write-Host @'
+/*
+===============================================================================
+ File        : <FileName>.cs
+ Namespace   : <Namespace>
+ Author      : <Author>
+ Version     : 1.0.0
+ Created     : YYYY-MM-DD
+ Updated     : YYYY-MM-DD
+-------------------------------------------------------------------------------
+ Purpose     : <describe the purpose of this file>
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  YYYY-MM-DD  Initial creation.
+===============================================================================
+*/
+'@
+    Write-Host "========================================================" -ForegroundColor Red
+    Write-Host ""
+    exit 1
+}
+
+exit 0

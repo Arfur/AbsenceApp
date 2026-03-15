@@ -1,0 +1,35 @@
+﻿@* ===========================================================================
+   File        : Routes.razor
+   Namespace   : AbsenceApp.Client.Components
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Root Blazor router component.
+                 Matches the current URL to a @page-decorated component and
+                 renders it within MainLayout.  Shows a plain not-found
+                 message when no route matches.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - AppAssembly is set to the assembly containing MauiProgram so Blazor
+       scans the entire client assembly for @page components.
+     - DefaultLayout applies MainLayout to all pages that do not declare
+       their own @layout directive.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Router — maps URLs to @page-decorated components using MainLayout
+   ========================================================================= *@
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+    </Found>
+    <NotFound>
+        <p>Page not found.</p>
+    </NotFound>
+</Router>

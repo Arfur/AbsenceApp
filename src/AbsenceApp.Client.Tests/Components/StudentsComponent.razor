@@ -1,0 +1,23 @@
+@*
+  Mirror component for StudentsPage.razor (/students).
+  Injects StudentsViewModel, renders student list with nav-links.
+  Matches production page logic exactly.
+*@
+@inject StudentsViewModel ViewModel
+
+<h3>Students</h3>
+
+<button @onclick="Load">Load Students</button>
+
+<ul>
+    @foreach (var s in ViewModel.Students)
+    {
+        <li>
+            <a href="/students/@s.Id">@s.FirstName @s.LastName (@s.YearGroup)</a>
+        </li>
+    }
+</ul>
+
+@code {
+    private async Task Load() => await ViewModel.LoadAsync();
+}

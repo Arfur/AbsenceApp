@@ -1,0 +1,39 @@
+﻿ID,Employment_Status,Availability_Status,Title,Forname,Preferred Forename,Surname,Gender,Staff Role,Staff Group,Area,Area Group,Class Teacher,Email Address
+100010,Active,Available,Mrs,Mrs K Kucharska,Katarzyna,Kucharska,F,Class Teacher,Leadership Team,Class 01,Key Stage 1,Shared,kkucharska@orchard.leic.sch.uk
+100011,Active,Available,Mrs,Mrs I Parker,Isabel,Parker,F,Class Teacher,Teaching Staff,Class 02,Key Stage 1,Main,iparker@orchard.leic.sch.uk
+100012,Active,Available,Mrs,Mrs L Chapman,Laura,Chapman,F,Class Teacher,Teaching Staff,Class 02,Key Stage 1,Shared,lchapman@orchard.leic.sch.uk
+100013,Active,Available,Mrs,Mrs E Wood,Emma,Wood,F,Class Teacher,Teaching Staff,Class 03,Key Stage 1,Main,ewood@orchard.leic.sch.uk
+100014,Active,Available,Miss,Miss N Brown,Natalia,Brown,F,Class Teacher,Teaching Staff,Class 04,Lower Key Stage 2,Main,nbrown@orchard.leic.sch.uk
+100015,Active,Available,Miss,Miss E Walters,Eve,Walters,F,Class Teacher,Teaching Staff,Class 05,Lower Key Stage 2,Main,ewalters@orchard.leic.sch.uk
+100016,Active,Available,Miss,Miss H Tisdell,Hannah,Tisdell,F,Class Teacher,Teaching Staff,Class 06,Lower Key Stage 2,Main,htisdell@orchard.leic.sch.uk
+100017,Active,Available,Mrs,Mrs M Cotterill,Mandy,Cotterill,F,Class Teacher,Teaching Staff,Class 07,Upper Key Stage 2,Main,mcotterill@orchard.leic.sch.uk
+100018,Active,Available,Mr,Mr T Caldwell,Tim,Caldwell,M,Class Teacher,Teaching Staff,Class 07,Upper Key Stage 2,Shared,tcaldwell@orchard.leic.sch.uk
+100019,Active,Available,Miss,Miss J Hudspith,Jessica,Hudspith,F,Class Teacher,Teaching Staff,Class 08,Upper Key Stage 2,Shared,jhudspith@orchard.leic.sch.uk
+100020,Active,Available,Mrs,Mrs G Sheldon,Gail,Sheldon,F,Class Teacher,Teaching Staff,Class 08,Upper Key Stage 2,Shared,gsheldon@orchard.leic.sch.uk
+100021,Active,unavailable_sick,Miss,Miss C Brown,Charlotte,Kirkwood,F,Class Teacher,Leadership Team,Class 09,Upper Key Stage 2,Main,ckirkwood@orchard.leic.sch.uk
+100022,Active,Available,Mrs,Mrs T McGravie,Thomasin,McGravie,F,Class Teacher,Leadership Team,Foundation Green,Foundation,Main,tmcgravie@orchard.leic.sch.uk
+100023,Active,Available,Mrs,Miss K Shearsby,Katie,Shearsby,F,Class Teacher,Teaching Staff,Foundation Red,Foundation,Main,kshearsby@orchard.leic.sch.uk
+100024,Active,unavailable_maternity,Miss,Miss L Farrar,Lauren,Farrar,F,Class Teacher,Leadership Team,Class 09,Upper Key Stage 2,Main,lfarrar@orchard.leic.sch.uk
+100025,Active,Available,Miss,Miss H Webster,Hayley,Webster,F,Acting Deputy Head,Leadership Team,Management,Management,N/A,hcaldwell@orchard.leic.sch.uk
+100026,Active,Available,Mrs,Mrs M Farrar,Michelle,Farrar,F,Office Administrator,Admin Office,Office Staff,Office Staff,N/A,mfarrar@orchard.leic.sch.uk
+100027,Active,Available,Mrs,Mrs R Daft,Rachel,Daft,F,Business Manager,Admin Office,Office Staff,Office Staff,N/A,rdaft@orchard.leic.sch.uk
+100028,Active,Available,Mrs,Mrs S Gayson,Shirley,Gayson,F,Cleaner,Support Staff,???,???,N/A,sgayson@orchard.leic.sch.uk
+100029,Active,unavailable_sick,Mrs,Mrs F Shields,Fiona,Shields,F,Headteacher,Leadership Team,Management,Management,N/A,fshields@orchard.leic.sch.uk
+100030,Active,Available,Mrs,Mrs C Fordham,Claire,Fordham,F,HTLA,Classroom Support Staff,Mixed Class,Foundation,N/A,cfordham@orchard.leic.sch.uk
+100031,Active,Available,Mrs,Mrs L Astle,Lisa,Astle,F,HTLA,Classroom Support Staff,Mixed Class,Upper Key Stage 2,N/A,lastle@orchard.leic.sch.uk
+100035,Active,Available,Mr,Mr M Battle,Mick,Battle,M,IT Manager,Support Staff,No Class,???,N/A,mbattle@orchard.leic.sch.uk
+100036,Active,Available,Ms,Ms S Jackson,Sandy,Jackson,F,LSA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,sjackson@orchard.leic.sch.uk
+100037,Active,Available,Mrs,Mrs S Marcer,Siobhan,Marcer,F,LSA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,smarcer@orchard.leic.sch.uk
+100038,Active,Available,Miss,Miss D Charity,Donna,Charity,F,LSA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,dcharity@orchard.leic.sch.uk
+100039,Active,Available,Mr,Mr W Morant,Wayne,Morant,M,LSA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,wmorant@orchard.leic.sch.uk
+100044,Active,Available,Mrs,Mrs J Bucknall,Julie,Bucknall,F,LSA,Classroom Support Staff,Mixed Class,Foundation,N/A,jbucknall@orchard.leic.sch.uk
+100045,Active,Available,Mrs,Mrs J Wintle,Joanne,Wintle,F,LSA,Classroom Support Staff,Mixed Class,Lower Key Stage 2,N/A,jwintle@orchard.leic.sch.uk
+100046,Active,Available,Mrs,Mrs M Brain,Maren,Brain,F,LSA,Classroom Support Staff,Mixed Class,Upper Key Stage 2,N/A,mbrain@orchard.leic.sch.uk
+100049,Active,Available,Ms,Ms S Valentine,Sarah,Valentine,F,LSA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,svalentine@orchard.leic.sch.uk
+100050,Active,Available,Mrs,Mrs B Ryan,Beryl,Ryan,F,Midday Supervisor,Support Staff,Mixed Class,???,N/A,bryan@orchard.leic.sch.uk
+100051,Active,Available,Mrs,Mrs D Smith,Debra,Smith,F,Midday Supervisor,Support Staff,Mixed Class,???,N/A,dsmith@orchard.leic.sch.uk
+100052,Active,Available,Mrs,Mrs L Clarke,Liz,Clarke,F,Midday Supervisor,Support Staff,Mixed Class,???,N/A,lclarke@orchard.leic.sch.uk
+100053,Active,Available,Mrs,Mrs Z Stockdale,Zoe,Stockdale,F,Midday Supervisor,Classroom Support Staff,Mixed Class,???,N/A,zstockdale@orchard.leic.sch.uk
+100054,Active,Available,Mr,Mr K Maguire,Kai-uwe,Maguire,M,Premises Officer,Support Staff,Mixed Class,???,N/A,kmaguire@orchard.leic.sch.uk
+100056,Active,Available,Mrs,Mrs D Rees,Danielle,Rees,F,TA,Classroom Support Staff,Mixed Class,Lower Key Stage 2,N/A,drees@orchard.leic.sch.uk
+100057,Active,Available,Mrs,Mrs E Bowden,Elaine,Bowden,F,TA,Classroom Support Staff,Mixed Class,Key Stage 1,N/A,ebowden@orchard.leic.sch.uk

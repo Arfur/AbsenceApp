@@ -1,0 +1,50 @@
+@* ===========================================================================
+   File        : StudentsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /students
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the full list of students.
+                 Each entry links to the individual student details page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Data is not loaded automatically; the user must click Load Students to
+       trigger ViewModel.LoadAsync().
+     - Each list item href is built from the student Id at render time;
+       navigation will fail if Id is null or empty.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ===========================================================================
+*@
+@page "/students"
+@inject StudentsViewModel ViewModel
+
+@* =========================================================================
+   Page content — load button and per-student navigation links
+   ========================================================================= *@
+<h3>Students</h3>
+
+<button @onclick="Load">Load Students</button>
+
+<ul>
+    @if (ViewModel.Students != null)
+    {
+        foreach (var s in ViewModel.Students)
+        {
+            <li>
+                <a href="/students/@s.Id">@s.FirstName @s.LastName (@s.YearGroup)</a>
+            </li>
+        }
+    }
+</ul>
+
+@* =========================================================================
+   Code block — async load handler delegating to MainViewModel
+   ========================================================================= *@
+@code {
+    private async Task Load() => await ViewModel.LoadAsync();
+}

@@ -1,0 +1,51 @@
+PHASE 12 — CREATE STAGING TABLES FOR CSV IMPORT
+
+Purpose:
+In this phase you will create staging tables used exclusively for importing raw CSV data.
+Staging tables are temporary, non-normalized, and must not enforce business rules.
+They exist only to receive imported data prior to transformation.
+
+How you must behave:
+- You must not add primary keys.
+- You must not add foreign keys.
+- You must not add constraints.
+- You must not add indexes.
+- You must not infer data types beyond what is explicitly defined.
+- You must not add triggers.
+- You must not modify existing tables.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+“Generate SQL Server Express CREATE TABLE statements for the staging tables exactly as defined.
+Do not add constraints.
+Do not add keys.
+Do not infer relationships.
+Only generate CREATE TABLE statements.”
+
+Rules for staging tables:
+- All tables must be created in the 'staging' schema.
+- Tables must accept raw imported values.
+- Nullable fields must remain nullable.
+- No validation logic is permitted.
+
+Verification:
+After creating the staging tables, also generate the following verification SQL:
+
+SELECT TABLE_SCHEMA, TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'staging'
+ORDER BY TABLE_NAME;
+
+Expected result:
+- All defined staging tables appear.
+- No additional tables appear.
+- No constraints exist on staging tables.
+
+If verification fails:
+- Identify which table is missing or incorrect.
+- Regenerate only the affected CREATE TABLE statement.
+- Re-run verification.
+- Do NOT proceed until the expected result is achieved.
+
+When all staging tables pass verification:
+Proceed to Phase 13.

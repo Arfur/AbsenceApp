@@ -1,0 +1,56 @@
+PHASE 8 — SEED REFERENCE DATA
+
+Purpose:
+In this phase you will populate all reference tables with predefined seed data.
+This data establishes the canonical values used throughout the system.
+You must not invent, infer, or modify any values.
+
+How you must behave:
+- You must not invent any data.
+- You must not infer any values.
+- You must not rename any values.
+- You must not add additional rows.
+- You must not remove any rows.
+- You must not reorder inserts unless required by foreign key dependencies.
+- You must only use the seed data exactly as provided.
+- You must not proceed to the next phase until verification passes.
+
+Instruction:
+“Generate SQL Server Express INSERT statements for the reference tables using ONLY the seed data provided.
+Do not invent values.
+Do not infer values.
+Do not modify values.
+Only generate INSERT statements.”
+
+Tables to seed (in dependency order):
+1. core.schools
+2. core.phases
+3. core.year_groups
+4. core.classes
+5. core.class_year_group_assignments
+6. org.job_titles
+7. org.job_groups
+8. org.departments
+9. org.responsibilities
+10. ops.absence_types
+11. assets.device_types
+12. assets.external_systems
+13. auth.role_types
+
+Verification:
+After seeding each table, also generate the following verification SQL:
+
+SELECT COUNT(*) AS RowCount FROM <schema>.<table>;
+
+Expected result:
+- Each table must return a non-zero row count.
+- Row counts must match the number of seed rows provided.
+
+If verification fails:
+- Identify which table failed.
+- Regenerate INSERT statements only for that table.
+- Re-run verification.
+- Do NOT proceed until all tables pass verification.
+
+When all tables pass verification:
+Proceed to Phase 9.

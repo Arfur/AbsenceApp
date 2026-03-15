@@ -1,0 +1,62 @@
+@* ===========================================================================
+   File        : ClassDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /classes/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the details of a single class including year group
+                 and the list of enrolled students.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Class data is resolved by if/else on the {id} string; replace with a
+       class service lookup once a data layer is available.
+     - Student hrefs are hard-coded integer ids; ensure they remain in sync
+       with seed data in StudentRepository when modifying either file.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/classes/{id}"
+@inject MainViewModel ViewModel
+
+@* =========================================================================
+   Page content — id-resolved class details and enrolled student list
+   ========================================================================= *@
+<h3>Class Details</h3>
+
+@if (id == "1")
+{
+    <p><strong>Class:</strong> Class One</p>
+    <p><strong>Year Group:</strong> Year 7</p>
+
+    <h4>Students</h4>
+    <ul>
+        <li><a href="/students/1">Alice Smith</a></li>
+        <li><a href="/students/2">Bob Jones</a></li>
+    </ul>
+}
+else if (id == "2")
+{
+    <p><strong>Class:</strong> Class Two</p>
+    <p><strong>Year Group:</strong> Year 8</p>
+
+    <h4>Students</h4>
+    <ul>
+        <li><a href="/students/3">Charlie Brown</a></li>
+    </ul>
+}
+else
+{
+    <p>Class not found.</p>
+}
+
+@* =========================================================================
+   Code block — route parameter for class id lookup
+   ========================================================================= *@
+@code {
+    [Parameter] public string id { get; set; } = default!;
+}

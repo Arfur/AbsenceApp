@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\obj\\Debug\\net8.0-windows10.0.19041.0\\win10-x64\\scopedcss\\bundle\\AbsenceApp.Client.styles.css",
+      "PackagePath": "staticwebassets\\AbsenceApp.Client.styles.css"
+    },
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\DevAbsence1\\src\\AbsenceApp.Client\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-windows10.0.19041.0\\win10-x64\\staticwebassets\\msbuild.AbsenceApp.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-windows10.0.19041.0\\win10-x64\\staticwebassets\\msbuild.build.AbsenceApp.Client.props",
+      "PackagePath": "build\\AbsenceApp.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-windows10.0.19041.0\\win10-x64\\staticwebassets\\msbuild.buildMultiTargeting.AbsenceApp.Client.props",
+      "PackagePath": "buildMultiTargeting\\AbsenceApp.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0-windows10.0.19041.0\\win10-x64\\staticwebassets\\msbuild.buildTransitive.AbsenceApp.Client.props",
+      "PackagePath": "buildTransitive\\AbsenceApp.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

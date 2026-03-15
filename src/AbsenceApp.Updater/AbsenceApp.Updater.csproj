@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+  =============================================================================
+  File        : AbsenceApp.Updater.csproj
+  Project     : AbsenceApp.Updater
+  Author      :
+  Version     : 1.0.0
+  Created     : 2026-03-13
+  Updated     : 2026-03-13
+  Purpose     : Application auto-update library
+  Description : Class library targeting net8.0 that contains logic for
+                checking for and downloading application updates.
+  Changes     : 1.0.0 — Initial
+  Notes       : No external NuGet dependencies.
+                Add a HttpClient or update-framework package reference here
+                when real update checking and download logic is implemented.
+  =============================================================================
+  -->
+
+  <!-- ===========================================================================
+       Project settings — target framework, implicit usings, nullable
+  =========================================================================== -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

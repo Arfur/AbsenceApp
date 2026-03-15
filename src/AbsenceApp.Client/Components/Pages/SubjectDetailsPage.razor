@@ -1,0 +1,52 @@
+@* ===========================================================================
+   File        : SubjectDetailsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /subjects/{id}
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays the full details of a single subject, including
+                 teacher and class assignment.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Subject data is resolved by if/else on the {id} string; replace with a
+       subject service lookup once a data layer is available.
+     - No @inject or @code block required; all rendering is conditional markup
+       based on the route parameter only.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+   ===========================================================================
+*@
+@page "/subjects/{id}"
+
+@* =========================================================================
+   Page content — id-resolved subject details with teacher and class
+   ========================================================================= *@
+<h3>Subject Details</h3>
+
+@if (id == "1")
+{
+    <p><strong>Subject:</strong> English</p>
+    <p><strong>Teacher:</strong> Steven Johnson</p>
+    <p><strong>Class:</strong> Class One</p>
+}
+else if (id == "2")
+{
+    <p><strong>Subject:</strong> Mathematics</p>
+    <p><strong>Teacher:</strong> Kathryn Murphy</p>
+    <p><strong>Class:</strong> Class Two</p>
+}
+else
+{
+    <p>Subject not found.</p>
+}
+
+@* =========================================================================
+   Code block — route parameter for subject id lookup
+   ========================================================================= *@
+@code {
+    [Parameter] public string id { get; set; } = default!;
+}

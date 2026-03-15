@@ -1,0 +1,32 @@
+@*
+  Mirror component for StudentDetailsPage.razor (/students/{id}).
+  Injects StudentDetailsViewModel, calls LoadAsync(id) on parameter set.
+  Matches production page logic exactly.
+*@
+@inject StudentDetailsViewModel ViewModel
+
+<h3>Student Details</h3>
+
+@if (ViewModel.Student != null)
+{
+    <p>
+        <strong>Name:</strong> @ViewModel.Student.FirstName @ViewModel.Student.LastName
+    </p>
+    <p>
+        <strong>Year Group:</strong> @ViewModel.Student.YearGroup
+    </p>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+<p><a href="/students/@id/absences">View Absences</a></p>
+<p><a href="/parents/1">View Parent</a></p>
+
+@code {
+    [Parameter] public string id { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+        => await ViewModel.LoadAsync(id);
+}

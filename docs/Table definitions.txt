@@ -1,0 +1,549 @@
+## TABLE1: users
+
+| No. | Field Name            | Description                                      | Data Type        | Status   | Linked To        | Example Value              |
+|-----|------------------------|--------------------------------------------------|------------------|----------|------------------|----------------------------|
+| 1   | id                     | Unique identifier for the user                   | bigint (auto)    | exists   | —                | 1                          |
+| 2   | name                   | Full name of the user                            | string           | exists   | —                | Alice Johnson              |
+| 3   | username               | Internal or public-facing username               | string           | exists   | —                | alice.j                    |
+| 4   | email                  | Primary email address                            | string           | exists   | —                | alice@school.org           |
+| 5   | email_verified_at      | Timestamp of email verification                  | datetime         | exists   | —                | 2025-07-01 10:15:22        |
+| 6   | password               | Encrypted password                               | string (hashed)  | exists   | —                | $2y$10$...                 |
+| 7   | role_type_id           | High-level role assigned to the user             | bigint (FK)      | exists   | role_types       | 1                          |
+| 8   | status                 | Account status (active, suspended, archived)     | string           | exists   | —                | active                     |
+| 9   | is_admin               | Boolean flag for elevated privileges             | boolean          | exists   | —                | 0                          |
+| 10  | profile_photo_path     | Path to user’s profile image                     | string           | exists   | storage/photos   | photos/alice.jpg           |
+| 11  | phone_number           | Contact number                                   | string           | exists   | —                | +44 7722 123456            |
+| 12  | last_login_at          | Timestamp of last successful login               | datetime         | exists   | —                | 2025-07-07 08:21:33        |
+| 13  | last_login_ip          | IP address used during last login                | string           | exists   | —                | 192.168.1.11               |
+| 14  | remember_token         | Token for “remember me” login sessions           | string           | exists   | —                | afw82akla9l...             |
+| 15  | created_at             | Timestamp when account was created               | datetime         | exists   | —                | 2025-06-29 09:00           |
+| 16  | updated_at             | Timestamp when account was last updated          | datetime         | exists   | —                | 2025-07-05 11:31           |
+| 17  | department_id          | Educational department or key stage              | bigint (FK)      | exists   | departments      | 3                          |
+| 18  | designation            | Job title or position                            | string           | exists   | —                | Teaching Assistant         |
+| 19  | login_count            | Total number of successful logins                | integer          | exists   | —                | 43                         |
+| 20  | is_two_factor_enabled  | Boolean flag for 2FA setup                       | boolean          | exists   | —                | 1                          |
+| 21  | two_factor_secret      | Secret used for generating verification codes    | string           | exists   | 2FA service      | JBSWY3DPEHPK3PXP           |
+| 22  | backup_codes           | JSON array of backup 2FA codes                   | text / json      | exists   | —                | ["9251","6273","8184"]     |
+| 23  | timezone               | Preferred user time zone                         | string           | exists   | —                | Europe/London              |
+| 24  | language_code          | Preferred language for UI                        | string           | exists   | languages table  | en                         |
+| 25  | bio                    | Short biography or description                   | text             | exists   | —                | Year 3 Lead Teacher        |
+| 26  | date_of_birth          | Personal data, possibly used for HR              | date             | exists   | —                | 1985-05-16                 |
+| 27  | gender                 | Optional field for personalization               | string           | exists   | —                | Female                     |
+| 28  | address                | Street address                                   | string           | exists   | —                | 123 Elm Grove              |
+| 29  | city                   | City of residence or school location             | string           | exists   | —                | Nottingham                 |
+| 30  | country                | Country of residence                             | string           | exists   | —                | UK                         |
+| 31  | postal_code            | Postal or ZIP code                               | string           | exists   | —                | NG10 1AB                   |
+
+## TABLE2: staff
+
+| No. | Field Name        | Description                                           | Data Type        | Status   | Linked To        | Example Value            |
+|-----|-------------------|-------------------------------------------------------|------------------|----------|------------------|--------------------------|
+| 1   | id                | Unique identifier for the staff member                | bigint (auto)    | exists   | —                | 101                      |
+| 2   | staff_number      | Internal employee / staff ID                          | string           | exists   | HR system        | OCPS-447                 |
+| 3   | first_name        | Staff member’s first name                             | string           | exists   | —                | Sarah                    |
+| 4   | last_name         | Staff member’s last name                              | string           | exists   | —                | Thompson                 |
+| 5   | preferred_name    | Optional preferred name                               | string           | optional | —                | Mrs Thompson             |
+| 6   | title             | Honorific or title                                    | string           | exists   | —                | Mrs                      |
+| 7   | date_of_birth     | Date of birth                                         | date             | exists   | —                | 1982-03-14               |
+| 8   | gender            | Gender                                                | string           | optional | —                | Female                   |
+| 9   | work_email        | Official school email                                 | string           | exists   | —                | sarah.thompson@school.org |
+| 10  | alt_email         | Secondary email (e.g., Google Workspace)              | string           | optional | —                | sarah.t@school.org       |
+| 11  | phone_home        | Home phone number                                     | string           | optional | —                | 01332 555123             |
+| 12  | phone_mobile      | Mobile phone number                                   | string           | optional | —                | +44 7700 900123          |
+| 13  | phone_emergency   | Emergency contact number                              | string           | optional | —                | +44 7711 223344          |
+| 14  | employment_type   | Full-time, part-time, term-time                       | string           | exists   | —                | Full-time                |
+| 15  | contract_type     | Permanent, temporary, supply, etc.                    | string           | exists   | —                | Permanent                |
+| 16  | hire_date         | Employment start date                                 | date             | exists   | —                | 2019-09-01               |
+| 17  | end_date          | Employment end date (if applicable)                   | date             | optional | —                | NULL                     |
+| 18  | work_location     | School or site where staff is based                   | string           | exists   | schools          | Orchard CPS              |
+| 19  | reporting_manager_id | Line manager (FK to staff.id)                      | bigint (FK)      | exists   | staff            | 12                       |
+| 20  | job_title_id      | Primary job title                                     | bigint (FK)      | exists   | job_titles       | 4                        |
+| 21  | job_group_id      | High-level staff category                             | bigint (FK)      | exists   | job_groups       | 2                        |
+| 22  | department_id     | Department or key stage                               | bigint (FK)      | exists   | departments      | 3                        |
+| 23  | profile_photo_url | URL/path to staff profile image                       | string           | optional | storage/photos   | photos/staff101.jpg      |
+| 24  | account_status    | Active, suspended, archived                           | string           | exists   | —                | active                   |
+| 25  | created_at        | Timestamp when record was created                     | datetime         | exists   | —                | 2025-06-29 09:00         |
+| 26  | updated_at        | Timestamp when record was last updated                | datetime         | exists   | —                | 2025-07-05 11:31         |
+
+## TABLE3: departments
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To | Example Value        |
+|-----|----------------|--------------------------------------------------|------------------|----------|-----------|----------------------|
+| 1   | id             | Unique identifier for the department             | bigint (auto)    | exists   | —         | 3                    |
+| 2   | name           | Name of the department or key stage              | string           | exists   | —         | Key Stage 2          |
+| 3   | code           | Short internal code for the department           | string           | exists   | —         | KS2                  |
+| 4   | description    | Optional description of the department           | string           | optional | —         | Lower Junior Phase   |
+| 5   | head_user_id   | User ID of department lead/manager               | bigint (FK)      | exists   | users     | 12                   |
+| 6   | status         | Active, archived, merged                         | string           | exists   | —         | active               |
+| 7   | created_at     | Timestamp when record was created                | datetime         | exists   | —         | 2025-06-29 09:00     |
+| 8   | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —         | 2025-07-05 11:31     |
+
+## TABLE4: job_titles
+
+| No. | Field Name   | Description                                   | Data Type        | Status   | Linked To | Example Value        |
+|-----|--------------|-----------------------------------------------|------------------|----------|-----------|----------------------|
+| 1   | id           | Unique identifier for the job title           | bigint (auto)    | exists   | —         | 4                    |
+| 2   | title        | Full job title                                | string           | exists   | —         | Teaching Assistant   |
+| 3   | code         | Short internal code for the job title         | string           | exists   | —         | TA                   |
+| 4   | description  | Optional description of the job title         | string           | optional | —         | Classroom support    |
+| 5   | created_at   | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29 09:00     |
+| 6   | updated_at   | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05 11:31     |
+
+## TABLE5: job_groups
+
+| No. | Field Name        | Description                                   | Data Type        | Status   | Linked To | Example Value        |
+|-----|-------------------|-----------------------------------------------|------------------|----------|-----------|----------------------|
+| 1   | id                | Unique identifier for the job group           | bigint (auto)    | exists   | —         | 2                    |
+| 2   | name              | Name of the job group                         | string           | exists   | —         | Teaching Staff       |
+| 3   | description       | Optional description of the group             | string           | optional | —         | Classroom educators  |
+| 4   | typical_members   | Typical roles included in this group          | string           | optional | —         | Teachers, TAs        |
+| 5   | created_at        | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29 09:00     |
+| 6   | updated_at        | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05 11:31     |
+
+## TABLE6: schools
+
+| No. | Field Name   | Description                                   | Data Type        | Status   | Linked To | Example Value         |
+|-----|--------------|-----------------------------------------------|------------------|----------|-----------|------------------------|
+| 1   | id           | Unique school identifier                      | bigint (auto)    | exists   | —         | 10                     |
+| 2   | school_ref   | External school reference code                | string           | exists   | —         | OCPS                   |
+| 3   | name         | Full school name                              | string           | exists   | —         | Orchard Community PS   |
+| 4   | code         | Short internal code                           | string           | exists   | —         | ORC                    |
+| 5   | description  | Optional description                          | string           | optional | —         | Main school site       |
+| 6   | status       | Active, merged, closed                        | string           | exists   | —         | active                 |
+| 7   | created_at   | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29 09:00       |
+| 8   | updated_at   | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05 11:31       |
+
+## TABLE7: role_types
+
+| No. | Field Name     | Description                                   | Data Type        | Status   | Linked To | Example Value     |
+|-----|----------------|-----------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id             | Unique identifier for the role type           | bigint (auto)    | exists   | —         | 1                 |
+| 2   | name           | Internal role name                            | string           | exists   | —         | teacher           |
+| 3   | display_name   | Human-readable role name                      | string           | exists   | —         | Teacher           |
+| 4   | description    | Optional description                          | string           | optional | —         | Classroom staff   |
+| 5   | is_system_role | Whether role is system-protected              | boolean          | exists   | —         | 0                 |
+| 6   | is_default     | Whether new users default to this role        | boolean          | exists   | —         | 0                 |
+| 7   | priority       | Role priority for access control              | integer          | exists   | —         | 10                |
+| 8   | created_at     | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29 09:00  |
+| 9   | updated_at     | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05 11:31  |
+
+## TABLE8: user_profiles
+
+| No. | Field Name          | Description                                   | Data Type        | Status   | Linked To     | Example Value              |
+|-----|---------------------|-----------------------------------------------|------------------|----------|---------------|----------------------------|
+| 1   | id                  | Unique identifier for the profile             | bigint (auto)    | exists   | —             | 44                         |
+| 2   | user_id             | Link to user account                          | bigint (FK)      | exists   | users         | 12                         |
+| 3   | first_name          | First name                                    | string           | exists   | —             | Alice                      |
+| 4   | last_name           | Last name                                     | string           | exists   | —             | Johnson                    |
+| 5   | preferred_name      | Optional preferred name                       | string           | optional | —             | Miss J                     |
+| 6   | title               | Honorific or title                            | string           | exists   | —             | Miss                       |
+| 7   | date_of_birth       | Date of birth                                 | date             | exists   | —             | 1985-05-16                 |
+| 8   | profile_picture_url | URL/path to profile image                     | string           | optional | storage/photos| photos/user12.jpg          |
+| 9   | bio                 | Short biography                               | text             | optional | —             | Year 3 Lead Teacher        |
+| 10  | gender              | Gender                                        | string           | optional | —             | Female                     |
+| 11  | timezone            | Preferred time zone                           | string           | exists   | —             | Europe/London              |
+| 12  | language_code       | Preferred language                            | string           | exists   | languages     | en                         |
+| 13  | department_id       | Department or key stage                       | bigint (FK)      | exists   | departments   | 3                          |
+| 14  | job_title_id        | Job title                                     | bigint (FK)      | exists   | job_titles    | 4                          |
+| 15  | school_id           | School reference                              | bigint (FK)      | exists   | schools       | 10                         |
+| 16  | created_at          | Timestamp when record was created             | datetime         | exists   | —             | 2025-06-29 09:00           |
+| 17  | updated_at          | Timestamp when record was last updated        | datetime         | exists   | —             | 2025-07-05 11:31           |
+
+## TABLE9: classes
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To | Example Value     |
+|-----|----------------|--------------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id             | Unique identifier for the class                  | bigint (auto)    | exists   | —         | 22                |
+| 2   | name           | Full class name                                  | string           | exists   | —         | 3 Willow          |
+| 3   | code           | Short internal class code                        | string           | exists   | —         | 3W                |
+| 4   | description    | Optional description of the class                | string           | optional | —         | Year 3 Willow     |
+| 5   | created_at     | Timestamp when record was created                | datetime         | exists   | —         | 2025-06-29 09:00  |
+| 6   | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —         | 2025-07-05 11:31  |
+
+## TABLE11: phases
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To | Example Value     |
+|-----|----------------|--------------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id             | Unique identifier for the phase                  | bigint (auto)    | exists   | —         | 2                 |
+| 2   | name           | Full phase name                                  | string           | exists   | —         | Key Stage 2       |
+| 3   | code           | Short internal code                              | string           | exists   | —         | KS2               |
+| 4   | description    | Optional description                             | string           | optional | —         | Lower Juniors     |
+| 5   | created_at     | Timestamp when record was created                | datetime         | exists   | —         | 2025-06-29 09:00  |
+| 6   | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —         | 2025-07-05 11:31  |
+
+## TABLE12: class_year_group_assignments
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To     | Example Value |
+|-----|----------------|--------------------------------------------------|------------------|----------|---------------|---------------|
+| 1   | id             | Unique identifier for the assignment             | bigint (auto)    | exists   | —             | 55            |
+| 2   | class_id       | Class assigned to the year group                 | bigint (FK)      | exists   | classes       | 22            |
+| 3   | year_group_id  | Year group the class belongs to                  | bigint (FK)      | exists   | year_groups   | 7             |
+| 4   | school_id      | School the class/year group belongs to           | bigint (FK)      | exists   | schools       | 10            |
+| 5   | created_at     | Timestamp when record was created                | datetime         | exists   | —             | 2025-06-29    |
+| 6   | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —             | 2025-07-05    |
+
+## TABLE13: responsibilities
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To | Example Value        |
+|-----|----------------|--------------------------------------------------|------------------|----------|-----------|----------------------|
+| 1   | id             | Unique identifier for the responsibility         | bigint (auto)    | exists   | —         | 5                    |
+| 2   | name           | Name of the responsibility                       | string           | exists   | —         | Safeguarding Lead    |
+| 3   | code           | Short internal code                              | string           | exists   | —         | SG-LEAD              |
+| 4   | description    | Optional description                             | string           | optional | —         | Child protection     |
+
+## TABLE14: staff_assignments
+
+| No. | Field Name        | Description                                      | Data Type        | Status   | Linked To        | Example Value |
+|-----|-------------------|--------------------------------------------------|------------------|----------|------------------|---------------|
+| 1   | id                | Unique identifier for the assignment             | bigint (auto)    | exists   | —                | 77            |
+| 2   | staff_id          | Staff member assigned                            | bigint (FK)      | exists   | staff            | 101           |
+| 3   | job_title_id      | Job title assigned                               | bigint (FK)      | exists   | job_titles       | 4             |
+| 4   | job_group_id      | Job group assigned                               | bigint (FK)      | exists   | job_groups       | 2             |
+| 5   | department_id     | Department assigned                              | bigint (FK)      | exists   | departments      | 3             |
+| 6   | class_id          | Class assigned                                   | bigint (FK)      | exists   | classes          | 22            |
+| 7   | responsibility_id | Responsibility assigned                          | bigint (FK)      | exists   | responsibilities | 5             |
+| 8   | start_date        | Assignment start date                            | date             | exists   | —                | 2025-09-01    |
+| 9   | end_date          | Assignment end date                              | date             | optional | —                | NULL          |
+| 10  | days_of_week      | JSON or string list of working days              | json/string      | optional | —                | ["Mon","Tue"] |
+| 11  | created_at        | Timestamp when record was created                | datetime         | exists   | —                | 2025-06-29    |
+| 12  | updated_at        | Timestamp when record was last updated           | datetime         | exists   | —                | 2025-07-05    |
+
+## TABLE15: absence_types
+
+| No. | Field Name   | Description                                      | Data Type        | Status   | Linked To | Example Value     |
+|-----|--------------|--------------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id           | Unique identifier for the absence type           | bigint (auto)    | exists   | —         | 3                 |
+| 2   | name         | Name of the absence type                         | string           | exists   | —         | Sick Leave        |
+| 3   | code         | Short internal code                              | string           | exists   | —         | SL                |
+| 4   | description  | Optional description                             | string           | optional | —         | Illness absence   |
+| 5   | is_paid      | Whether the absence is paid                      | boolean          | exists   | —         | 1                 |
+
+## TABLE16: staff_absences
+
+| No. | Field Name      | Description                                      | Data Type        | Status   | Linked To     | Example Value |
+|-----|-----------------|--------------------------------------------------|------------------|----------|---------------|---------------|
+| 1   | id              | Unique identifier for the absence record         | bigint (auto)    | exists   | —             | 88            |
+| 2   | staff_id        | Staff member absent                              | bigint (FK)      | exists   | staff         | 101           |
+| 3   | absence_type_id | Type of absence                                  | bigint (FK)      | exists   | absence_types | 3             |
+| 4   | start_date      | Start date of absence                            | date             | exists   | —             | 2025-10-12    |
+| 5   | end_date        | End date of absence                              | date             | optional | —             | 2025-10-14    |
+| 6   | notes           | Optional notes                                   | text             | optional | —             | Flu symptoms  |
+| 7   | created_at      | Timestamp when record was created                | datetime         | exists   | —             | 2025-10-12    |
+| 8   | updated_at      | Timestamp when record was last updated           | datetime         | exists   | —             | 2025-10-12    |
+
+## TABLE17: staff_devices
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To | Example Value     |
+|-----|----------------|--------------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id             | Unique identifier for the device record          | bigint (auto)    | exists   | —         | 301               |
+| 2   | staff_id       | Staff member assigned the device                 | bigint (FK)      | exists   | staff     | 101               |
+| 3   | device_type    | Type of device                                   | string           | exists   | —         | Laptop            |
+| 4   | serial_number  | Device serial number                             | string           | exists   | —         | SN-ABC-12345      |
+| 5   | assigned_date  | Date device was assigned                         | date             | exists   | —         | 2025-09-01        |
+| 6   | returned_date  | Date device was returned                         | date             | optional | —         | NULL              |
+| 7   | created_at     | Timestamp when record was created                | datetime         | exists   | —         | 2025-09-01        |
+| 8   | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —         | 2025-09-01        |
+
+## TABLE18: device_types
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To | Example Value     |
+|-----|--------------|-----------------------------------------------|---------------|----------|-----------|-------------------|
+| 1   | id           | Unique identifier for the device type         | bigint (auto) | exists   | —         | 2                 |
+| 2   | name         | Device type name                              | string        | exists   | —         | Laptop            |
+| 3   | code         | Internal code                                 | string        | exists   | —         | LAP               |
+| 4   | description  | Optional description                          | string        | optional | —         | Staff laptops     |
+| 5   | created_at   | Timestamp when record was created             | datetime      | exists   | —         | 2025-06-29        |
+| 6   | updated_at   | Timestamp when record was last updated        | datetime      | exists   | —         | 2025-07-05        |
+
+## TABLE19: staff_external_accounts
+
+| No. | Field Name         | Description                                   | Data Type     | Status   | Linked To        | Example Value      |
+|-----|--------------------|-----------------------------------------------|---------------|----------|-------------------|--------------------|
+| 1   | id                 | Unique identifier for the external account    | bigint (auto) | exists   | —                 | 9001               |
+| 2   | staff_id           | Staff member owning the external account      | bigint (FK)   | exists   | staff             | 101                |
+| 3   | external_system_id | External system/service                       | bigint (FK)   | exists   | external_systems  | 3                  |
+| 4   | account_username   | Username used in the external system          | string        | exists   | —                 | s.thompson         |
+| 5   | account_email      | Email used for the external system            | string        | exists   | —                 | sarah.t@school.org |
+| 6   | status             | Active, disabled, pending                     | string        | exists   | —                 | active             |
+| 7   | created_at         | Timestamp when record was created             | datetime      | exists   | —                 | 2025-06-29 09:00   |
+| 8   | updated_at         | Timestamp when record was last updated        | datetime      | exists   | —                 | 2025-07-05 11:31   |
+
+## TABLE20: external_systems
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To | Example Value        |
+|-----|--------------|-----------------------------------------------|---------------|----------|-----------|----------------------|
+| 1   | id           | Unique identifier for the external system     | bigint (auto) | exists   | —         | 3                    |
+| 2   | name         | Name of the external system                   | string        | exists   | —         | Google Workspace     |
+| 3   | code         | Internal code                                 | string        | exists   | —         | GWS                  |
+| 4   | description  | Optional description                          | string        | optional | —         | Staff email platform |
+| 5   | created_at   | Timestamp when record was created             | datetime      | exists   | —         | 2025-06-29           |
+| 6   | updated_at   | Timestamp when record was last updated        | datetime      | exists   | —         | 2025-07-05           |
+
+## TABLE21: login_audit
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To | Example Value       |
+|-----|--------------|-----------------------------------------------|---------------|----------|-----------|---------------------|
+| 1   | id           | Unique identifier for the login event         | bigint (auto) | exists   | —         | 7001                |
+| 2   | user_id      | User who logged in                            | bigint (FK)   | exists   | users     | 12                  |
+| 3   | login_time   | Timestamp of login                            | datetime      | exists   | —         | 2025-07-07 08:21:33 |
+| 4   | ip_address   | IP address used                               | string        | exists   | —         | 192.168.1.11        |
+| 5   | user_agent   | Browser/device information                    | string        | exists   | —         | Chrome on Windows   |
+| 6   | success      | Whether login was successful                  | boolean       | exists   | —         | 1                   |
+| 7   | created_at   | Timestamp when record was created             | datetime      | exists   | —         | 2025-07-07 08:21:33 |
+
+## TABLE22: account_verification_events
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To | Example Value              |
+|-----|--------------|-----------------------------------------------|---------------|----------|-----------|----------------------------|
+| 1   | id           | Unique identifier for the verification event  | bigint (auto) | exists   | —         | 8101                       |
+| 2   | user_id      | User being verified                           | bigint (FK)   | exists   | users     | 12                         |
+| 3   | event_type   | Type of verification event                    | string        | exists   | —         | email_verification         |
+| 4   | event_time   | Timestamp of the event                        | datetime      | exists   | —         | 2025-07-01 10:15:22        |
+| 5   | ip_address   | IP address used                               | string        | exists   | —         | 192.168.1.11               |
+| 6   | metadata     | Additional event metadata (JSON)              | json          | optional | —         | {"method":"OTP"}           |
+| 7   | created_at   | Timestamp when record was created             | datetime      | exists   | —         | 2025-07-01 10:15:22        |
+
+## TABLE23: role_change_audit
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To   | Example Value               |
+|-----|--------------|-----------------------------------------------|---------------|----------|-------------|-----------------------------|
+| 1   | id           | Unique identifier for the audit event         | bigint (auto) | exists   | —           | 9201                        |
+| 2   | user_id      | User whose role was changed                   | bigint (FK)   | exists   | users       | 12                          |
+| 3   | old_role_id  | Previous role type                            | bigint (FK)   | exists   | role_types  | 1                           |
+| 4   | new_role_id  | New role type                                 | bigint (FK)   | exists   | role_types  | 3                           |
+| 5   | changed_by   | Admin who performed the change                | bigint (FK)   | exists   | users       | 1                           |
+| 6   | change_time  | Timestamp of the change                       | datetime      | exists   | —           | 2025-07-10 14:22:11         |
+| 7   | reason       | Optional reason for the change                | text          | optional | —           | Promotion to Phase Lead     |
+| 8   | metadata     | Additional metadata (JSON)                    | json          | optional | —           | {"source":"admin_panel"}    |
+
+## TABLE24: staff_assignment_audit
+
+| No. | Field Name          | Description                                   | Data Type     | Status   | Linked To         | Example Value          |
+|-----|----------------------|-----------------------------------------------|---------------|----------|--------------------|------------------------|
+| 1   | id                   | Unique identifier for the audit event        | bigint (auto) | exists   | —                  | 9301                   |
+| 2   | staff_assignment_id  | Assignment being audited                     | bigint (FK)   | exists   | staff_assignments  | 88                     |
+| 3   | staff_id             | Staff member involved                        | bigint (FK)   | exists   | staff              | 101                    |
+| 4   | action               | Created, updated, deleted                    | string        | exists   | —                  | updated                |
+| 5   | changed_by           | User who performed the action                | bigint (FK)   | exists   | users              | 1                      |
+| 6   | change_time          | Timestamp of the change                      | datetime      | exists   | —                  | 2025-07-10 14:22:11    |
+| 7   | old_values           | JSON snapshot of previous values             | json          | optional | —                  | {"class_id":7}         |
+| 8   | new_values           | JSON snapshot of new values                  | json          | optional | —                  | {"class_id":9}         |
+
+## TABLE25: staff_absence_audit
+
+| No. | Field Name        | Description                                   | Data Type     | Status   | Linked To       | Example Value                |
+|-----|-------------------|-----------------------------------------------|---------------|----------|------------------|------------------------------|
+| 1   | id                | Unique identifier for the audit event        | bigint (auto) | exists   | —                | 9401                         |
+| 2   | staff_absence_id  | Absence record being audited                 | bigint (FK)   | exists   | staff_absences   | 301                          |
+| 3   | staff_id          | Staff member involved                        | bigint (FK)   | exists   | staff            | 101                          |
+| 4   | action            | Created, updated, deleted                    | string        | exists   | —                | created                      |
+| 5   | changed_by        | User who performed the action                | bigint (FK)   | exists   | users            | 12                           |
+| 6   | change_time       | Timestamp of the change                      | datetime      | exists   | —                | 2025-11-03 08:00             |
+| 7   | old_values        | JSON snapshot of previous values             | json          | optional | —                | NULL                         |
+| 8   | new_values        | JSON snapshot of new values                  | json          | optional | —                | {"start_date":"2025-11-03"} |
+
+## TABLE26: staff_device_audit
+
+| No. | Field Name       | Description                                   | Data Type     | Status   | Linked To      | Example Value                |
+|-----|------------------|-----------------------------------------------|---------------|----------|-----------------|------------------------------|
+| 1   | id               | Unique identifier for the audit event        | bigint (auto) | exists   | —               | 9501                         |
+| 2   | staff_device_id  | Device record being audited                  | bigint (FK)   | exists   | staff_devices   | 501                          |
+| 3   | staff_id         | Staff member involved                        | bigint (FK)   | exists   | staff           | 101                          |
+| 4   | action           | Created, updated, deleted                    | string        | exists   | —               | updated                      |
+| 5   | changed_by       | User who performed the action                | bigint (FK)   | exists   | users           | 1                            |
+| 6   | change_time      | Timestamp of the change                      | datetime      | exists   | —               | 2025-07-05 11:31             |
+| 7   | old_values       | JSON snapshot of previous values             | json          | optional | —               | {"condition":"Good"}         |
+| 8   | new_values       | JSON snapshot of new values                  | json          | optional | —               | {"condition":"Excellent"}    |
+
+## TABLE27: staff_external_account_audit
+
+| No. | Field Name               | Description                                   | Data Type     | Status   | Linked To                | Example Value          |
+|-----|---------------------------|-----------------------------------------------|---------------|----------|---------------------------|------------------------|
+| 1   | id                        | Unique identifier for the audit event        | bigint (auto) | exists   | —                         | 9601                   |
+| 2   | staff_external_account_id | External account being audited               | bigint (FK)   | exists   | staff_external_accounts   | 9001                   |
+| 3   | staff_id                  | Staff member involved                        | bigint (FK)   | exists   | staff                     | 101                    |
+| 4   | action                    | Created, updated, deleted                    | string        | exists   | —                         | created                |
+| 5   | changed_by                | User who performed the action                | bigint (FK)   | exists   | users                     | 1                      |
+| 6   | change_time               | Timestamp of the change                      | datetime      | exists   | —                         | 2025-06-29 09:00       |
+| 7   | old_values                | JSON snapshot of previous values             | json          | optional | —                         | NULL                   |
+| 8   | new_values                | JSON snapshot of new values                  | json          | optional | —                         | {"status":"active"}    |
+
+## TABLE28: system_events
+
+| No. | Field Name   | Description                                   | Data Type     | Status   | Linked To | Example Value                 |
+|-----|--------------|-----------------------------------------------|---------------|----------|-----------|-------------------------------|
+| 1   | id           | Unique identifier for the system event        | bigint (auto) | exists   | —         | 10001                         |
+| 2   | event_type   | Type of system event                          | string        | exists   | —         | scheduled_task_run            |
+| 3   | event_time   | Timestamp of the event                        | datetime      | exists   | —         | 2025-07-10 02:00              |
+| 4   | triggered_by | System, user, or automation                   | string        | exists   | —         | system                        |
+| 5   | description  | Description of the event                      | text          | optional | —         | Daily absence sync completed  |
+| 6   | metadata     | Additional metadata (JSON)                    | json          | optional | —         | {"records_processed":128}     |
+
+## TABLE29: students
+
+| No. | Field Name        | Description                                                   | Data Type        | Status     | Linked To      | Example Value     |
+|-----|-------------------|---------------------------------------------------------------|------------------|------------|----------------|-------------------|
+| 1   | id                | Unique identifier for the student                             | bigint (auto)    | exists     | —              | 5021              |
+| 2   | admission_number  | Official MIS admission number                                 | string           | exists     | —              | 2010              |
+| 3   | first_name        | Student’s preferred first name                                | string           | exists     | —              | Florence          |
+| 4   | middle_names      | Optional middle names                                         | string           | optional   | —              | Rose              |
+| 5   | last_name         | Student’s preferred surname                                   | string           | exists     | —              | Wilson            |
+| 6   | legal_first_name  | Legal forename (for safeguarding/statutory returns)           | string           | exists     | —              | Florence          |
+| 7   | legal_last_name   | Legal surname (for safeguarding/statutory returns)            | string           | exists     | —              | Wilson            |
+| 8   | gender            | Gender                                                        | string           | exists     | —              | F                 |
+| 9   | date_of_birth     | Date of birth                                                 | date             | exists     | —              | 2019-09-29        |
+| 10  | year_group_id     | Year group the student belongs to                             | bigint (FK)      | exists     | year_groups    | 2                 |
+| 11  | class_id          | Class the student is assigned to                              | bigint (FK)      | exists     | classes        | 1                 |
+| 12  | house_id          | Pastoral house / colour group                                 | bigint (FK)      | optional   | houses         | 3                 |
+| 13  | username          | System username (for portals, logins, integrations)           | string           | optional   | —              | flowil24          |
+| 14  | upn               | Unique Pupil Number (national identifier)                     | string           | optional   | —              | G123456789012     |
+| 15  | school_id         | School the student belongs to                                 | bigint (FK)      | exists     | schools        | 10                |
+| 16  | admission_date    | Date the student joined the school                            | date             | exists     | —              | 2024-08-27        |
+| 17  | status            | Active, left, suspended, archived                             | string           | exists     | —              | active            |
+| 18  | created_at        | Timestamp when record was created                             | datetime         | exists     | —              | 2025-06-29 09:00  |
+| 19  | updated_at        | Timestamp when record was last updated                        | datetime         | exists     | —              | 2025-07-05 11:31  |
+
+## TABLE30: year_groups
+
+| No. | Field Name     | Description                                         | Data Type        | Status   | Linked To | Example Value     |
+|-----|----------------|-----------------------------------------------------|------------------|----------|-----------|-------------------|
+| 1   | id             | Unique identifier for the year group                | bigint (auto)    | exists   | —         | 2                 |
+| 2   | name           | Human‑readable year group name                      | string           | exists   | —         | Year 1            |
+| 3   | code           | Short code used internally                          | string           | exists   | —         | Y1                |
+| 4   | numeric_value  | Numeric year group (1–6)                            | int              | exists   | —         | 1                 |
+| 5   | phase_id       | Phase the year group belongs to                     | bigint (FK)      | exists   | phases    | 1                 |
+| 6   | school_id      | School the year group belongs to                    | bigint (FK)      | exists   | schools   | 10                |
+| 7   | created_at     | Timestamp when record was created                   | datetime         | exists   | —         | 2025‑06‑29 09:00  |
+| 8   | updated_at     | Timestamp when record was last updated              | datetime         | exists   | —         | 2025‑07‑05 11:31  |
+
+
+## TABLE32: student_absences
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To        | Example Value        |
+|-----|----------------|--------------------------------------------------|------------------|----------|------------------|----------------------|
+| 1   | id             | Unique identifier for the absence record         | bigint (auto)    | exists   | —                | 90012                |
+| 2   | student_id     | Student who is absent                            | bigint (FK)      | exists   | students         | 5021                 |
+| 3   | absence_type_id| Reason/category of absence                       | bigint (FK)      | exists   | absence_types    | 3                    |
+| 4   | date           | Date of the absence                              | date             | exists   | —                | 2025-03-14           |
+| 5   | start_time     | Start time (for partial-day absences)            | time             | optional | —                | 09:30                |
+| 6   | end_time       | End time (for partial-day absences)              | time             | optional | —                | 12:00                |
+| 7   | is_authorised  | Whether the absence is authorised                | boolean          | exists   | —                | true                 |
+| 8   | notes          | Additional notes                                 | string           | optional | —                | Parent called in     |
+| 9   | recorded_by    | User who recorded the absence                    | bigint (FK)      | exists   | users            | 14                   |
+| 10  | created_at     | Timestamp when record was created                | datetime         | exists   | —                | 2025-03-14 09:15     |
+| 11  | updated_at     | Timestamp when record was last updated           | datetime         | exists   | —                | 2025-03-14 09:20     |
+
+## TABLE33: student_contacts
+
+| No. | Field Name        | Description                                      | Data Type        | Status     | Linked To  | Example Value            |
+|-----|--------------------|--------------------------------------------------|------------------|------------|------------|--------------------------|
+| 1   | id                 | Unique identifier for the contact record        | bigint (auto)    | exists     | —          | 30012                    |
+| 2   | student_id         | Student this contact belongs to                 | bigint (FK)      | exists     | students   | 5021                     |
+| 3   | contact_name       | Full name of the parent/guardian                | string           | exists     | —          | Sarah Wilson             |
+| 4   | relationship       | Relationship to the student                     | string           | exists     | —          | Mother                   |
+| 5   | phone_mobile       | Mobile phone number                              | string           | optional   | —          | +44 7700 123456          |
+| 6   | phone_home         | Home phone number                                | string           | optional   | —          | 01332 555123             |
+| 7   | email              | Email address                                    | string           | optional   | —          | sarah.wilson@example.com |
+| 8   | priority           | 1 = primary contact, 2 = secondary, etc.        | int              | exists     | —          | 1                        |
+| 9   | lives_with_student | Whether the contact lives with the student      | boolean          | optional   | —          | true                     |
+| 10  | has_parental_responsibility | Legal parental responsibility          | boolean          | exists     | —          | true                     |
+| 11  | safeguarding_flag  | Indicates safeguarding restrictions              | boolean          | optional   | —          | false                    |
+| 12  | notes              | Additional notes                                 | string           | optional   | —          | Court order in place     |
+| 13  | created_at         | Timestamp when record was created               | datetime         | exists     | —          | 2025-06-29 09:00         |
+| 14  | updated_at         | Timestamp when record was last updated          | datetime         | exists     | —          | 2025-07-05 11:31         |
+
+## TABLE34: student_absence_audit
+
+| No. | Field Name        | Description                                      | Data Type        | Status   | Linked To        | Example Value           |
+|-----|--------------------|--------------------------------------------------|------------------|----------|------------------|-------------------------|
+| 1   | id                 | Unique identifier for the audit entry           | bigint (auto)    | exists   | —                | 70001                   |
+| 2   | student_absence_id | Absence record being audited                    | bigint (FK)      | exists   | student_absences | 90012                   |
+| 3   | student_id         | Student linked to the absence                   | bigint (FK)      | exists   | students         | 5021                    |
+| 4   | action             | Action performed (created, updated, deleted)    | string           | exists   | —                | updated                 |
+| 5   | changed_by         | User who performed the action                   | bigint (FK)      | exists   | users            | 14                      |
+| 6   | changed_at         | When the action occurred                        | datetime         | exists   | —                | 2025-03-14 09:20        |
+| 7   | field_name         | Name of the field that was changed              | string           | optional | —                | is_authorised           |
+| 8   | old_value          | Previous value                                  | string           | optional | —                | false                   |
+| 9   | new_value          | New value                                       | string           | optional | —                | true                    |
+| 10  | notes              | Additional context                              | string           | optional | —                | Marked authorised by SLT|
+
+## TABLE35: houses
+
+| No. | Field Name   | Description                                   | Data Type        | Status   | Linked To | Example Value |
+|-----|--------------|-----------------------------------------------|------------------|----------|-----------|----------------|
+| 1   | id           | Unique identifier for the house               | bigint (auto)    | exists   | —         | 3              |
+| 2   | name         | House name                                    | string           | exists   | —         | Oak            |
+| 3   | colour       | House colour                                  | string           | exists   | —         | Green          |
+| 4   | code         | Short internal code                           | string           | exists   | —         | OAK            |
+| 5   | school_id    | School the house belongs to                   | bigint (FK)      | exists   | schools   | 10             |
+| 6   | created_at   | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29     |
+| 7   | updated_at   | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05     |
+
+## TABLE36: phases
+
+| No. | Field Name    | Description                                   | Data Type        | Status   | Linked To | Example Value |
+|-----|----------------|-----------------------------------------------|------------------|----------|-----------|----------------|
+| 1   | id             | Unique identifier for the phase               | bigint (auto)    | exists   | —         | 2              |
+| 2   | name           | Phase name (EYFS, KS1, KS2)                   | string           | exists   | —         | KS1            |
+| 3   | code           | Short internal code                           | string           | exists   | —         | K1             |
+| 4   | numeric_order  | Ordering value (0 = EYFS, 1 = KS1, 2 = KS2)   | int              | exists   | —         | 1              |
+| 5   | school_id      | School the phase belongs to                   | bigint (FK)      | exists   | schools   | 10             |
+| 6   | created_at     | Timestamp when record was created             | datetime         | exists   | —         | 2025-06-29     |
+| 7   | updated_at     | Timestamp when record was last updated        | datetime         | exists   | —         | 2025-07-05     |
+
+## TABLE37: student_medical
+
+| No. | Field Name     | Description                                      | Data Type        | Status     | Linked To  | Example Value          |
+|-----|-----------------|--------------------------------------------------|------------------|------------|------------|-------------------------|
+| 1   | id              | Unique identifier for the medical record         | bigint (auto)    | exists     | —          | 501                     |
+| 2   | student_id      | Student this medical record belongs to           | bigint (FK)      | exists     | students   | 5021                    |
+| 3   | condition_name  | Medical condition or allergy                     | string           | exists     | —          | Asthma                  |
+| 4   | severity        | Severity level (low/medium/high)                 | string           | optional   | —          | medium                  |
+| 5   | medication      | Medication required                              | string           | optional   | —          | Inhaler                 |
+| 6   | care_plan_file  | Link to care plan document                       | string           | optional   | storage    | careplans/5021.pdf      |
+| 7   | notes           | Additional notes                                 | string           | optional   | —          | Needs inhaler in PE     |
+| 8   | created_at      | Timestamp when record was created                | datetime         | exists     | —          | 2025-06-29 09:00        |
+| 9   | updated_at      | Timestamp when record was last updated           | datetime         | exists     | —          | 2025-07-05 11:31        |
+
+## TABLE38: student_flags
+
+| No. | Field Name     | Description                                      | Data Type        | Status   | Linked To  | Example Value     |
+|-----|-----------------|--------------------------------------------------|------------------|----------|------------|--------------------|
+| 1   | id              | Unique identifier for the flag                   | bigint (auto)    | exists   | —          | 801                |
+| 2   | student_id      | Student this flag applies to                     | bigint (FK)      | exists   | students   | 5021               |
+| 3   | flag_type       | Type of flag (SEND, EAL, PP, Safeguarding, etc.) | string           | exists   | —          | SEND               |
+| 4   | flag_value      | Specific value (EHCP, SEN Support, etc.)         | string           | optional | —          | SEN Support        |
+| 5   | start_date      | When the flag became active                      | date             | exists   | —          | 2024-09-01         |
+| 6   | end_date        | When the flag ended (NULL if active)             | date             | optional | —          | NULL               |
+| 7   | notes           | Additional context                               | string           | optional | —          | Needs TA support   |
+| 8   | created_at      | Timestamp when record was created                | datetime         | exists   | —          | 2025-06-29 09:00   |
+| 9   | updated_at      | Timestamp when record was last updated           | datetime         | exists   | —          | 2025-07-05 11:31   |
+
+## TABLE39: attendance_registers
+
+| No. | Field Name   | Description                                      | Data Type        | Status   | Linked To | Example Value     |
+|-----|---------------|--------------------------------------------------|------------------|----------|-----------|--------------------|
+| 1   | id            | Unique identifier for the register session       | bigint (auto)    | exists   | —         | 12001              |
+| 2   | class_id      | Class the register belongs to                    | bigint (FK)      | exists   | classes   | 1                  |
+| 3   | date          | Date of the register                             | date             | exists   | —         | 2025-03-14         |
+| 4   | session       | AM or PM                                         | string           | exists   | —         | AM                 |
+| 5   | opened_by     | User who opened the register                     | bigint (FK)      | exists   | users     | 14                 |
+| 6   | closed_by     | User who closed the register                     | bigint (FK)      | optional | users     | 14                 |
+| 7   | status        | open / closed / submitted                        | string           | exists   | —         | closed             |
+| 8   | created_at    | Timestamp when record was created                | datetime         | exists   | —         | 2025-03-14 08:55   |
+| 9   | updated_at    | Timestamp when record was last updated           | datetime         | exists   | —         | 2025-03-14 09:10   |
+
+## TABLE40: attendance_marks
+
+| No. | Field Name            | Description                                      | Data Type        | Status   | Linked To            | Example Value     |
+|-----|------------------------|--------------------------------------------------|------------------|----------|-----------------------|--------------------|
+| 1   | id                     | Unique identifier for the attendance mark        | bigint (auto)    | exists   | —                     | 55001              |
+| 2   | attendance_register_id | Register session this mark belongs to            | bigint (FK)      | exists   | attendance_registers | 12001              |
+| 3   | student_id             | Student receiving the mark                       | bigint (FK)      | exists   | students             | 5021               |
+| 4   | mark_code              | Attendance code (/, \\, I, M, C, O, etc.)        | string           | exists   | absence_types        | /                  |
+| 5   | is_late                | Whether the student was late                     | boolean          | optional | —                     | false              |
+| 6   | minutes_late           | Number of minutes late                           | int              | optional | —                     | 0                  |
+| 7   | notes                  | Additional notes                                 | string           | optional | —                     | —                  |
+| 8   | recorded_by            | User who recorded the mark                       | bigint (FK)      | exists   | users                | 14                 |
+| 9   | created_at             | Timestamp when record was created                | datetime         | exists   | —                     | 2025-03-14 09:05   |
+| 10  | updated_at             | Timestamp when record was last updated           | datetime         | exists   | —                     | 2025-03-14 09:10   |

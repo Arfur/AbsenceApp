@@ -1,0 +1,94 @@
+@* ===========================================================================
+   File        : StaffListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /staff
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a summary table of all staff members with name,
+                 email, department, and active status.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - StaffViewModel.LoadAsync() is called on page initialisation so the
+       table is pre-populated without a manual trigger.
+     - UserDto fields: UserId, FullName (computed), Email, IsActive.
+     - FullName is a computed property on UserDto: "FirstName LastName".
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+     - 1.1.0  2026-03-14  Replaced static rows with StaffViewModel binding.
+   ===========================================================================
+*@
+@page "/staff"
+
+@* =========================================================================
+   Section: ViewModel injection
+   ========================================================================= *@
+@inject StaffViewModel ViewModel
+
+@* =========================================================================
+   Section: Page heading
+   ========================================================================= *@
+<h3>Staff List</h3>
+
+@* =========================================================================
+   Section: Loading indicator
+   ========================================================================= *@
+@if (ViewModel.IsLoading)
+{
+    <p>Loading…</p>
+}
+
+@* =========================================================================
+   Section: Error feedback
+   ========================================================================= *@
+@if (ViewModel.ErrorMessage is not null)
+{
+    <p style="color:red;">@ViewModel.ErrorMessage</p>
+}
+
+@* =========================================================================
+   Section: Staff table — bound to ViewModel.Staff (IEnumerable<UserDto>)
+   ========================================================================= *@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in ViewModel.Staff)
+        {
+            <tr>
+                <td>@member.UserId</td>
+                <td><a href="/staff/@member.UserId">@member.FullName</a></td>
+                <td>@member.Username</td>
+                <td>@(member.Email ?? string.Empty)</td>
+                <td>@(member.IsActive ? "Active" : "Inactive")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* =========================================================================
+   Section: Navigation links
+   ========================================================================= *@
+<p><a href="/">&larr; Back to Dashboard</a></p>
+
+@* =========================================================================
+   Section: Code-behind — initialise data load
+   ========================================================================= *@
+@code {
+    // =========================================================================
+    // Lifecycle — populate staff list on first render
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+        => await ViewModel.LoadAsync();
+}

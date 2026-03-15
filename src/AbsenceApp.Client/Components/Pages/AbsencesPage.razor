@@ -1,0 +1,72 @@
+@* ===========================================================================
+   File        : AbsencesPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /students/{id}/absences
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Lists all absence records for a specific student and
+                 provides a form to record a new absence.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Data is not loaded automatically; the user must click Load Absences to
+       trigger ViewModel.LoadAbsencesAsync(id).
+     - After a successful Add the list is reloaded via a second Load() call
+       so the new record appears immediately without manual refresh.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+   ===========================================================================
+*@
+@page "/students/{id}/absences"
+@inject AbsencesViewModel ViewModel
+
+@* =========================================================================
+   Page content — absence list with load button and date-reason rows
+   ========================================================================= *@
+<h3>Absences</h3>
+
+<button @onclick="Load">Load Absences</button>
+
+<ul>
+    @if (ViewModel.Absences != null)
+    {
+        foreach (var a in ViewModel.Absences)
+        {
+            <li>@a.Date.ToShortDateString() — @a.Reason</li>
+        }
+    }
+</ul>
+
+@* =========================================================================
+   Add absence form — reason input and submit button
+   ========================================================================= *@
+<h4>Add Absence</h4>
+<input @bind="reason" placeholder="Reason" />
+<button @onclick="Add">Add</button>
+
+@* =========================================================================
+   Code block — load and add handlers delegating to MainViewModel
+   ========================================================================= *@
+@code {
+    [Parameter] public string id { get; set; } = default!;
+
+    private string reason = string.Empty;
+
+    private async Task Load() => await ViewModel.LoadAsync(id);
+
+    private async Task Add()
+    {
+        var record = new AbsenceRecord
+        {
+            Id        = Guid.NewGuid().ToString(),
+            StudentId = id,
+            Date      = DateTime.Today,
+            Reason    = reason,
+        };
+        await ViewModel.AddAbsenceAsync(record);
+        reason = string.Empty;
+    }
+}

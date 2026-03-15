@@ -1,0 +1,23 @@
+STAGING & TRANSFORM MAPPINGS — CANONICAL SOURCE
+
+This file defines:
+- Staging table structures
+- Explicit mappings from staging tables to normalized tables
+
+Rules:
+- No mappings may be inferred.
+- No data cleansing may occur unless explicitly defined.
+- All mappings must be one-to-one unless explicitly stated.
+- Failed rows must be identifiable.
+
+Each mapping will be provided in the following format:
+
+STAGING TABLE: staging.<table_name>
+
+Columns:
+- <column_name> <data_type> NULL
+
+TRANSFORM TARGET:
+- staging.<column> → <schema>.<table>.<column>
+
+No logic beyond explicit mappings is permitted.

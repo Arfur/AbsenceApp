@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+  =============================================================================
+  File        : AbsenceApp.Tests.csproj
+  Project     : AbsenceApp.Tests
+  Author      : Michael
+  Version     : 1.0.0
+  Created     : 2026-03-13
+  Updated     : 2026-03-13
+  Purpose     : xUnit test project covering repositories, services, and mappers.
+  Description : Uses EF Core InMemory for repository tests and Moq for
+                service tests with mocked repository dependencies.
+  Changes     : 1.0.0 — Initial
+  Notes       : Run with: dotnet test src/AbsenceApp.Tests
+  =============================================================================
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AbsenceApp.Core\AbsenceApp.Core.csproj" />
+    <ProjectReference Include="..\AbsenceApp.Data\AbsenceApp.Data.csproj" />
+  </ItemGroup>
+
+</Project>

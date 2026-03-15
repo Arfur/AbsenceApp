@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AbsenceApp.Client"
+             x:Class="AbsenceApp.Client.App">
+
+    <!--
+    ===========================================================================
+     File        : App.xaml
+     Namespace   : AbsenceApp.Client
+     Author      : Michael
+     Version     : 1.0.0
+     Created     : 2026-03-13
+     Updated     : 2026-03-13
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Purpose     : Root MAUI application definition.
+                   Declares the global resource dictionary for application-wide
+                   styles and resources.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Notes       :
+       - The ResourceDictionary is intentionally empty at this stage; add
+         merged dictionaries (e.g. Colors.xaml, Styles.xaml) here as the
+         design system develops.
+       - x:Class maps this file to App.xaml.cs; avoid code in this file and
+         keep all logic in the code-behind.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Changes     :
+       - 1.0.0  2026-03-13  Initial implementation.
+    ===========================================================================
+    -->
+
+    <!-- =========================================================
+         Application resources â€” global MAUI styles and merged dictionaries
+         ========================================================= -->
+    <Application.Resources>
+        <ResourceDictionary>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,42 @@
+PHASE 5 — CREATE DEVICE & EXTERNAL ACCOUNT TABLES
+
+Purpose:
+In this phase you will create the tables that store staff device assignments and staff external system accounts.
+These tables depend on the reference tables and the staff table created in earlier phases.
+You must follow the instructions in this file exactly.
+
+How you must behave:
+- You must not infer anything.
+- You must not rename anything.
+- You must not add or remove fields.
+- You must not optimise or restructure anything.
+- You must not create tables out of order.
+- You must not proceed to the next table until verification passes.
+- You must wait for confirmation before moving to the next phase.
+
+Tables to create in this exact order:
+1. assets.staff_devices
+2. assets.staff_external_accounts
+
+Instruction for each CREATE TABLE:
+“Generate SQL Server Express CREATE TABLE code for the following table definition.
+Do not change field names.
+Do not add or remove fields.
+Do not infer anything.
+Only generate the CREATE TABLE statement exactly as defined.”
+
+Verification for each table:
+After generating the CREATE TABLE SQL, also generate the following verification SQL:
+
+SELECT * FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'assets' AND TABLE_NAME = '<table>';
+
+Expected result:
+Exactly 1 row must be returned for each table.
+
+If verification fails:
+Regenerate the CREATE TABLE SQL for that table and re-run the verification.
+Do NOT proceed until the expected result is achieved.
+
+When both tables pass verification:
+Proceed to Phase 6.

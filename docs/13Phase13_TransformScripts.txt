@@ -1,0 +1,50 @@
+PHASE 13 — TRANSFORM STAGING DATA INTO NORMALIZED SCHEMA
+
+Purpose:
+In this phase you will generate deterministic SQL scripts that transform data
+from staging tables into the normalized production schema.
+This phase must be explicit, repeatable, and free of inferred logic.
+
+How you must behave:
+- You must not infer mappings.
+- You must not invent transformation rules.
+- You must not modify reference data.
+- You must not delete data unless explicitly instructed.
+- You must not merge records unless explicitly defined.
+- You must not add validation logic unless explicitly defined.
+- You must not modify table structures.
+- You must only use the mappings exactly as provided.
+
+Instruction:
+“Generate SQL Server Express INSERT and UPDATE statements to transform data
+from staging tables into the normalized schema using ONLY the mappings provided.
+Do not infer mappings.
+Do not invent logic.
+Only implement what is explicitly defined.”
+
+Rules:
+- All transformations must be idempotent where possible.
+- Foreign keys must reference existing records.
+- Failed rows must not be silently discarded.
+- No data cleansing is permitted unless explicitly defined.
+
+Verification:
+After executing the transformation scripts, also generate the following verification SQL:
+
+SELECT COUNT(*) FROM core.staff;
+SELECT COUNT(*) FROM ops.staff_assignments;
+SELECT COUNT(*) FROM ops.staff_absences;
+
+Expected result:
+- Row counts match the number of valid transformed staging records.
+- No foreign key violations exist.
+- No duplicate records are created.
+
+If verification fails:
+- Identify the failing transformation.
+- Regenerate only the affected transformation script.
+- Re-run verification.
+- Do NOT consider the build complete until verification passes.
+
+When verification passes:
+The database build is complete.

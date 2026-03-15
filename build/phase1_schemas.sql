@@ -1,0 +1,14 @@
+USE [AbsenceAppDev];
+GO
+CREATE SCHEMA [core];
+GO
+CREATE SCHEMA [org];
+GO
+CREATE SCHEMA [ops];
+GO
+CREATE SCHEMA [auth];
+GO
+CREATE SCHEMA [assets];
+GO
+CREATE SCHEMA [audit];
+GO

@@ -1,0 +1,56 @@
+PHASE 3 — CREATE STAFF & USER TABLES
+
+Purpose:
+In this phase you will create the core staff table and the authentication users table,
+followed by the foreign key relationship linking staff.user_id to auth.users.user_id.
+
+How you must behave:
+- You must not infer anything.
+- You must not rename anything.
+- You must not add or remove fields.
+- You must not optimise or restructure anything.
+- You must not create tables out of order.
+- You must not proceed to the next table until verification passes.
+- You must wait for confirmation before moving to the next phase.
+
+Tables to create in this exact order:
+1. core.staff
+2. auth.users
+3. Add the foreign key: core.staff.user_id → auth.users.user_id
+
+Instruction for each CREATE TABLE:
+“Generate SQL Server Express CREATE TABLE code for the following table definition.
+Do not change field names.
+Do not add or remove fields.
+Do not infer anything.
+Only generate the CREATE TABLE statement exactly as defined.”
+
+Instruction for the foreign key:
+“Generate SQL Server Express code to add the foreign key:
+core.staff.user_id → auth.users.user_id.
+Do not rename anything.
+Do not infer anything.
+Only generate the ALTER TABLE statement exactly as defined.”
+
+Verification tests:
+
+1. Verify both tables exist:
+SELECT * FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_NAME IN ('staff','users');
+
+Expected result:
+Exactly 2 rows returned.
+
+2. Verify the foreign key exists:
+SELECT * FROM sys.foreign_keys
+WHERE name = 'FK_staff_user';
+
+Expected result:
+Exactly 1 row returned.
+
+If verification passes:
+Proceed to Phase 4.
+
+If verification fails:
+Regenerate the SQL for this phase and re-run the verification tests.
+Do NOT proceed until the expected results are achieved.

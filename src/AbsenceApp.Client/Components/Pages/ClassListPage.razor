@@ -1,0 +1,88 @@
+@* ===========================================================================
+   File        : ClassListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /classes
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-13
+   ---------------------------------------------------------------------------
+   Purpose     : Displays a summary table of all classes with year group
+                 and student count.  Each class links to its details page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - ClassesViewModel.LoadAsync() is called on page initialisation so the
+       table is pre-populated without a manual trigger.
+     - ClassDto.ClassId is used as the detail-page route parameter.
+     - Description is nullable; only rendered when non-empty.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial static implementation.
+     - 1.1.0  2026-03-14  Replaced static rows with ClassesViewModel binding.
+   ===========================================================================
+*@
+@page "/classes"
+
+@* =========================================================================
+   Section: ViewModel injection
+   ========================================================================= *@
+@inject ClassesViewModel ViewModel
+
+@* =========================================================================
+   Section: Page heading
+   ========================================================================= *@
+<h3>Class List</h3>
+
+@* =========================================================================
+   Section: Loading indicator
+   ========================================================================= *@
+@if (ViewModel.IsLoading)
+{
+    <p>Loading…</p>
+}
+
+@* =========================================================================
+   Section: Error feedback
+   ========================================================================= *@
+@if (ViewModel.ErrorMessage is not null)
+{
+    <p style="color:red;">@ViewModel.ErrorMessage</p>
+}
+
+@* =========================================================================
+   Section: Classes table — bound to ViewModel.Classes (IEnumerable<ClassDto>)
+   ========================================================================= *@
+<table>
+    <thead>
+        <tr>
+            <th>Class</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cls in ViewModel.Classes)
+        {
+            <tr>
+                <td><a href="/classes/@cls.ClassId">@cls.ClassName</a></td>
+                <td>@(cls.Description ?? string.Empty)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* =========================================================================
+   Section: Navigation links
+   ========================================================================= *@
+<p><a href="/">&larr; Back to Dashboard</a></p>
+
+@* =========================================================================
+   Section: Code-behind — initialise data load
+   ========================================================================= *@
+@code {
+    // =========================================================================
+    // Lifecycle — populate classes on first render
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+        => await ViewModel.LoadAsync();
+}

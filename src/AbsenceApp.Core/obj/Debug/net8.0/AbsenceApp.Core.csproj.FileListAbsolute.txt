@@ -1,0 +1,11 @@
+C:\DevAbsence1\src\AbsenceApp.Core\bin\Debug\net8.0\AbsenceApp.Core.deps.json
+C:\DevAbsence1\src\AbsenceApp.Core\bin\Debug\net8.0\AbsenceApp.Core.dll
+C:\DevAbsence1\src\AbsenceApp.Core\bin\Debug\net8.0\AbsenceApp.Core.pdb
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.AssemblyInfoInputs.cache
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.AssemblyInfo.cs
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.csproj.CoreCompileInputs.cache
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.dll
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\refint\AbsenceApp.Core.dll
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\AbsenceApp.Core.pdb
+C:\DevAbsence1\src\AbsenceApp.Core\obj\Debug\net8.0\ref\AbsenceApp.Core.dll
