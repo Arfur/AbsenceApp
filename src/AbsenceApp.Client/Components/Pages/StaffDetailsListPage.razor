@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : StaffDetailsListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /staff/details
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Placeholder page for viewing detailed staff information.
+                 Will display an expanded staff profile with role, department,
+                 and contact detail fields.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Content is a placeholder; replace with a staff detail ViewModel
+       binding once the user service layer is available.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial placeholder implementation.
+   ===========================================================================
+*@
+@page "/staff/details"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Page content — placeholder awaiting implementation
+   ========================================================================= *@
+<p>Staff Details content goes here.</p>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Staff", "Staff Details");
+}

@@ -1,0 +1,228 @@
+@* ===========================================================================
+   File        : TableSettingsPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /settings/table-settings
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Allows administrators to configure the display settings for
+                 all table pages in the application.  Settings include column
+                 visibility, display label, sort/filter/search ability, and
+                 display order.  Changes are staged in memory and only saved
+                 when the Save Changes button is clicked.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - This page does NOT use TablePageTemplate — it is a settings form, not
+       a data table, and has its own scoped layout.
+     - Settings are loaded from the database on page init and on table change.
+     - After saving, the success banner auto-dismisses after 4 seconds.
+     - Columns for pages that have no saved settings fall back to hard-coded
+       defaults defined in TableSettingsService.GetDefaults().
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/settings/table-settings"
+@inject AppStateService       AppState
+@inject TableSettingsViewModel ViewModel
+
+@* =========================================================================
+   Section E: Success banner — shown after a successful save, auto-dismisses
+   ========================================================================= *@
+@if (ViewModel.IsSaved)
+{
+    <div class="tset-banner tset-banner-success">
+        <i class="bi bi-check-circle-fill"></i>
+        &nbsp;&#x2714;&nbsp;<strong>@PageDisplayName(ViewModel.SelectedPage)</strong>&nbsp;table settings updated successfully.
+    </div>
+}
+
+@* =========================================================================
+   Section: Error banner
+   ========================================================================= *@
+@if (ViewModel.ErrorMessage is not null)
+{
+    <div class="tset-banner tset-banner-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        &nbsp;@ViewModel.ErrorMessage
+    </div>
+}
+
+@* =========================================================================
+   Section B: Table selector dropdown
+   ========================================================================= *@
+<div class="tset-selector-row">
+    <label class="tset-select-label" for="tset-table-select">Select Table:</label>
+    <select id="tset-table-select" class="tset-table-select" @onchange="OnTableChanged">
+        @foreach (var opt in TableOptions)
+        {
+            <option value="@opt.Value" selected="@(ViewModel.SelectedPage == opt.Value)">@opt.Label</option>
+        }
+    </select>
+</div>
+
+@* =========================================================================
+   Section: Loading indicator
+   ========================================================================= *@
+@if (ViewModel.IsLoading)
+{
+    <div class="tset-loading"><i class="bi bi-hourglass-split"></i> Loading settings…</div>
+}
+
+@* =========================================================================
+   Section C: Field configuration grid
+   ========================================================================= *@
+@if (!ViewModel.IsLoading && ViewModel.Settings.Count > 0)
+{
+    <div class="tset-grid-wrapper">
+        <table class="tset-grid">
+            <thead>
+                <tr class="tset-thead-row">
+                    <th>Field Name</th>
+                    <th>Display Label</th>
+                    <th>Visible</th>
+                    <th>Sortable</th>
+                    <th>Filterable</th>
+                    <th>Searchable</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var col in ViewModel.Settings.OrderBy(c => c.DisplayOrder))
+                {
+                    var c = col;
+                    <tr>
+                        <td class="tset-field-name">@c.FieldName</td>
+                        <td><input class="tset-label-input" type="text" @bind="c.DisplayLabel" /></td>
+                        <td class="tset-toggle-cell">
+                            <label class="tset-toggle" title="@(c.IsVisible ? "Visible" : "Hidden")">
+                                <input type="checkbox" @bind="c.IsVisible" />
+                                <span class="tset-slider"></span>
+                            </label>
+                        </td>
+                        <td class="tset-toggle-cell">
+                            <label class="tset-toggle" title="@(c.IsSortable ? "Sortable" : "Not sortable")">
+                                <input type="checkbox" @bind="c.IsSortable" />
+                                <span class="tset-slider"></span>
+                            </label>
+                        </td>
+                        <td class="tset-toggle-cell">
+                            <label class="tset-toggle" title="@(c.IsFilterable ? "Filterable" : "Not filterable")">
+                                <input type="checkbox" @bind="c.IsFilterable" />
+                                <span class="tset-slider"></span>
+                            </label>
+                        </td>
+                        <td class="tset-toggle-cell">
+                            <label class="tset-toggle" title="@(c.IsSearchable ? "Searchable" : "Not searchable")">
+                                <input type="checkbox" @bind="c.IsSearchable" />
+                                <span class="tset-slider"></span>
+                            </label>
+                        </td>
+                        <td><input class="tset-order-input" type="number" min="1" @bind="c.DisplayOrder" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (!ViewModel.IsLoading && ViewModel.Settings.Count == 0)
+{
+    <div class="tset-empty">
+        <i class="bi bi-info-circle"></i>
+        No configuration found for this table.
+        <!-- TODO: add default column definitions for this page in TableSettingsService.GetDefaults() -->
+    </div>
+}
+
+@* =========================================================================
+   Section D: Save button
+   ========================================================================= *@
+@if (!ViewModel.IsLoading && ViewModel.Settings.Count > 0)
+{
+    <div class="tset-footer">
+        <button class="tset-save-btn" @onclick="OnSave" disabled="@ViewModel.IsSaving">
+            @if (ViewModel.IsSaving)
+            {
+                <i class="bi bi-hourglass-split"></i>
+                @:&nbsp;Saving…
+            }
+            else
+            {
+                <i class="bi bi-floppy-fill"></i>
+                @:&nbsp;Save Changes
+            }
+        </button>
+    </div>
+}
+
+@* =========================================================================
+   Section: Code-behind — table options, lifecycle, and event handlers
+   ========================================================================= *@
+@code {
+
+    // =========================================================================
+    // Table options — must match pageName keys used in TableSettingsService
+    // =========================================================================
+
+    private static readonly (string Value, string Label)[] TableOptions =
+    [
+        ("students",             "Students"),
+        ("staff",                "Staff"),
+        ("classes",              "Classes"),
+        ("year_groups",          "Year Groups"),
+        ("departments",          "Departments"),
+        ("houses",               "Houses"),
+        ("devices",              "Devices"),
+        ("external_accounts",    "External Accounts"),
+        ("absence_types",        "Absence Types"),
+        ("attendance_registers", "Attendance Registers"),
+        ("attendance_marks",     "Attendance Marks"),
+        ("safeguarding_flags",   "Safeguarding Flags"),
+        ("medical_records",      "Medical Records"),
+    ];
+
+    // =========================================================================
+    // Lifecycle
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Home", "Settings", "Table Settings");
+        await ViewModel.LoadAsync("students");
+    }
+
+    // =========================================================================
+    // Event handlers
+    // =========================================================================
+
+    private async Task OnTableChanged(ChangeEventArgs e)
+    {
+        var page = e.Value?.ToString() ?? "students";
+        await ViewModel.LoadAsync(page);
+    }
+
+    private async Task OnSave()
+    {
+        await ViewModel.SaveAsync();
+
+        if (ViewModel.IsSaved)
+        {
+            // Auto-dismiss success banner after 4 seconds
+            _ = Task.Delay(4000).ContinueWith(_ =>
+            {
+                ViewModel.ClearSaved();
+                InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+
+    // =========================================================================
+    // Display name helper — maps pageName key to human-readable label
+    // =========================================================================
+
+    private static string PageDisplayName(string pageName) =>
+        TableOptions.FirstOrDefault(o => o.Value == pageName).Label ?? pageName;
+}

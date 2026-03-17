@@ -3,92 +3,357 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /staff
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 3.0.0
    Created     : 2026-03-13
-   Updated     : 2026-03-13
+   Updated     : 2026-03-17
    ---------------------------------------------------------------------------
-   Purpose     : Displays a summary table of all staff members with name,
-                 email, department, and active status.
+   Purpose     : Displays the full staff list inside TablePageTemplate.
+                 Column visibility, labels, sort/search/filter flags, and
+                 display order are read dynamically from ITableSettingsService
+                 on page load and respected at runtime.
    ---------------------------------------------------------------------------
    Notes       :
-     - StaffViewModel.LoadAsync() is called on page initialisation so the
-       table is pre-populated without a manual trigger.
-     - UserDto fields: UserId, FullName (computed), Email, IsActive.
-     - FullName is a computed property on UserDto: "FirstName LastName".
+     - UserDto fields: UserId, FullName (computed), Username, Email?, IsActive.
+     - Field "is_active" renders as a badge (Active/Inactive).
+     - Field "full_name" renders as a navigation link.
+     - Filter for "is_active" shows "Active" / "Inactive" options.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-13  Initial static implementation.
      - 1.1.0  2026-03-14  Replaced static rows with StaffViewModel binding.
+     - 2.0.0  2026-03-17  Replaced with TablePageTemplate-based layout.
+     - 3.0.0  2026-03-17  Dynamic columns driven by ITableSettingsService.
    ===========================================================================
 *@
 @page "/staff"
+@inject AppStateService       AppState
+@inject StaffViewModel        ViewModel
+@inject ITableSettingsService TableSettingsService
 
 @* =========================================================================
-   Section: ViewModel injection
+   Section: TablePageTemplate — five-section reusable layout
    ========================================================================= *@
-@inject StaffViewModel ViewModel
+<TablePageTemplate PageTitle="Staff Management"
+                   ActiveFilters="activeFilters"
+                   OnRemoveFilter="RemoveFilter"
+                   OnClearAllFilters="ClearAllFilters"
+                   ShowEntries="showEntries"
+                   OnShowEntriesChanged="OnShowEntriesChanged"
+                   SearchValue="searchValue"
+                   OnSearchChanged="OnSearchChanged"
+                   TotalRows="FilteredStaff.Count()"
+                   CurrentPage="currentPage">
 
-@* =========================================================================
-   Section: Page heading
-   ========================================================================= *@
-<h3>Staff List</h3>
-
-@* =========================================================================
-   Section: Loading indicator
-   ========================================================================= *@
-@if (ViewModel.IsLoading)
-{
-    <p>Loading…</p>
-}
-
-@* =========================================================================
-   Section: Error feedback
-   ========================================================================= *@
-@if (ViewModel.ErrorMessage is not null)
-{
-    <p style="color:red;">@ViewModel.ErrorMessage</p>
-}
-
-@* =========================================================================
-   Section: Staff table — bound to ViewModel.Staff (IEnumerable<UserDto>)
-   ========================================================================= *@
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Active</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var member in ViewModel.Staff)
+    @* =========================================================================
+       Section 1: Filters — one dropdown per filterable column from settings
+       ========================================================================= *@
+    <Filters>
+        @foreach (var col in columnSettings.Where(c => c.IsFilterable))
         {
-            <tr>
-                <td>@member.UserId</td>
-                <td><a href="/staff/@member.UserId">@member.FullName</a></td>
-                <td>@member.Username</td>
-                <td>@(member.Email ?? string.Empty)</td>
-                <td>@(member.IsActive ? "Active" : "Inactive")</td>
-            </tr>
+            var fc = col;
+            <select class="tpt-filter-select"
+                    @onchange='e => ApplyFilter(fc.FieldName, e.Value?.ToString() ?? "")'>
+                <option value="">@fc.DisplayLabel</option>
+                @foreach (var val in FilterOptions(fc.FieldName))
+                {
+                    <option value="@val">@val</option>
+                }
+            </select>
         }
-    </tbody>
-</table>
+    </Filters>
+
+    @* =========================================================================
+       Section 2: Action buttons
+       ========================================================================= *@
+    <ActionButtons>
+        <a href="/staff/add" class="tpt-btn tpt-btn-primary">
+            <i class="bi bi-person-plus"></i> Add Staff
+        </a>
+    </ActionButtons>
+
+    @* =========================================================================
+       Section 3: Column headers — generated from visible settings columns
+       ========================================================================= *@
+    <TableHeader>
+        <th>SNo.</th>
+        @foreach (var col in VisibleColumns)
+        {
+            var hc = col;
+            <th>
+                @hc.DisplayLabel
+                @if (hc.IsSortable)
+                {
+                    <button class="tpt-sort-btn @SortClass(hc.FieldName)"
+                            @onclick="() => SetSort(hc.FieldName)">
+                        <span class="tpt-sort-up">▲</span>
+                        <span class="tpt-sort-dn">▼</span>
+                    </button>
+                }
+            </th>
+        }
+        <th>Action</th>
+    </TableHeader>
+
+    @* =========================================================================
+       Section 4: Data rows — paged staff records, cells driven by settings
+       ========================================================================= *@
+    <TableBody>
+        @if (ViewModel.IsLoading)
+        {
+            <tr><td colspan="@ColSpan" style="text-align:center;padding:1.5rem;color:#64748b;">Loading…</td></tr>
+        }
+        else if (ViewModel.ErrorMessage is not null)
+        {
+            <tr><td colspan="@ColSpan" style="color:#dc2626;padding:1rem;">@ViewModel.ErrorMessage</td></tr>
+        }
+        else if (!PagedStaff.Any())
+        {
+            <tr><td colspan="@ColSpan" style="text-align:center;padding:1.5rem;color:#64748b;">No staff members found.</td></tr>
+        }
+        else
+        {
+            var rowBase = (currentPage - 1) * showEntries;
+            var rowIdx  = 0;
+            @foreach (var m in PagedStaff)
+            {
+                rowIdx++;
+                <tr>
+                    <td class="tpt-sno">@(rowBase + rowIdx)</td>
+                    @foreach (var col in VisibleColumns)
+                    {
+                        var bc = col;
+                        <td>
+                            @if (bc.FieldName == "full_name")
+                            {
+                                <a href="/staff/@m.UserId">@m.FullName</a>
+                            }
+                            else if (bc.FieldName == "is_active")
+                            {
+                                @if (m.IsActive)
+                                {
+                                    <span class="tpt-badge tpt-badge-active">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="tpt-badge tpt-badge-inactive">Inactive</span>
+                                }
+                            }
+                            else
+                            {
+                                @(GetStaffValue(m, bc.FieldName) ?? string.Empty)
+                            }
+                        </td>
+                    }
+                    <td>
+                        <div class="tpt-actions">
+                            <a href="/staff/@m.UserId"
+                               class="tpt-action-icon tpt-action-view"
+                               title="View"><i class="bi bi-eye"></i></a>
+                            <button class="tpt-action-icon tpt-action-edit"
+                                    title="Edit"><i class="bi bi-pencil"></i></button>
+                            <button class="tpt-action-icon tpt-action-delete"
+                                    title="Delete"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </TableBody>
+
+    @* =========================================================================
+       Section 5: Pagination controls
+       ========================================================================= *@
+    <Pagination>
+        <button class="tpt-page-btn"
+                disabled="@(currentPage <= 1)"
+                @onclick="PrevPage">&#8592; Previous</button>
+
+        @for (int p = 1; p <= TotalPages; p++)
+        {
+            var pg = p;
+            <button class="tpt-page-btn @(currentPage == pg ? "tpt-active" : "")"
+                    @onclick="() => GoToPage(pg)">@pg</button>
+        }
+
+        <button class="tpt-page-btn"
+                disabled="@(currentPage >= TotalPages)"
+                @onclick="NextPage">Next &#8594;</button>
+    </Pagination>
+
+</TablePageTemplate>
 
 @* =========================================================================
-   Section: Navigation links
-   ========================================================================= *@
-<p><a href="/">&larr; Back to Dashboard</a></p>
-
-@* =========================================================================
-   Section: Code-behind — initialise data load
+   Section: Code-behind — state, computed properties, and event handlers
    ========================================================================= *@
 @code {
+
     // =========================================================================
-    // Lifecycle — populate staff list on first render
+    // State
+    // =========================================================================
+
+    private IReadOnlyList<TablePageSettingDto> columnSettings = [];
+    private List<FilterChip>                   activeFilters  = new();
+    private string                             searchValue    = "";
+    private int                                showEntries    = 10;
+    private int                                currentPage    = 1;
+    private string                             sortCol        = "full_name";
+    private bool                               sortAsc        = true;
+
+    // =========================================================================
+    // Computed: visible columns ordered by DisplayOrder
+    // =========================================================================
+
+    private IEnumerable<TablePageSettingDto> VisibleColumns =>
+        columnSettings.Where(c => c.IsVisible).OrderBy(c => c.DisplayOrder);
+
+    private int ColSpan => VisibleColumns.Count() + 2;
+
+    // =========================================================================
+    // Computed: filtered, sorted, and paged staff rows
+    // =========================================================================
+
+    private IEnumerable<UserDto> FilteredStaff
+    {
+        get
+        {
+            var items = ViewModel.Staff ?? Enumerable.Empty<UserDto>();
+
+            // Apply chip filters
+            foreach (var chip in activeFilters)
+            {
+                if (chip.Name == "is_active")
+                {
+                    bool active = chip.Value == "Active";
+                    items = items.Where(m => m.IsActive == active);
+                }
+                else
+                {
+                    items = items.Where(m => GetStaffValue(m, chip.Name) == chip.Value);
+                }
+            }
+
+            // Apply free-text search (searchable columns only)
+            if (!string.IsNullOrWhiteSpace(searchValue))
+            {
+                var term   = searchValue.Trim().ToLowerInvariant();
+                var fields = columnSettings.Where(c => c.IsSearchable).Select(c => c.FieldName).ToList();
+                items = items.Where(m =>
+                    fields.Any(f => (GetStaffValue(m, f) ?? "").ToLowerInvariant().Contains(term)));
+            }
+
+            // Apply column sort
+            if (string.IsNullOrWhiteSpace(sortCol)) return items;
+            return (sortCol, sortAsc) switch
+            {
+                ("full_name",  true)  => items.OrderBy(m => m.FullName),
+                ("full_name",  false) => items.OrderByDescending(m => m.FullName),
+                ("username",   true)  => items.OrderBy(m => m.Username),
+                ("username",   false) => items.OrderByDescending(m => m.Username),
+                ("email",      true)  => items.OrderBy(m => m.Email),
+                ("email",      false) => items.OrderByDescending(m => m.Email),
+                ("is_active",  true)  => items.OrderByDescending(m => m.IsActive),
+                ("is_active",  false) => items.OrderBy(m => m.IsActive),
+                (_, true)             => items.OrderBy(m => GetStaffValue(m, sortCol)),
+                (_, false)            => items.OrderByDescending(m => GetStaffValue(m, sortCol))
+            };
+        }
+    }
+
+    private IEnumerable<UserDto> PagedStaff =>
+        FilteredStaff.Skip((currentPage - 1) * showEntries).Take(showEntries);
+
+    private int TotalPages =>
+        (int)Math.Ceiling((double)FilteredStaff.Count() / Math.Max(showEntries, 1));
+
+    // =========================================================================
+    // Filter options — per field name
+    // =========================================================================
+
+    private static IEnumerable<string> FilterOptions(string fieldName) => fieldName switch
+    {
+        "is_active" => ["Active", "Inactive"],
+        _           => Enumerable.Empty<string>()
+    };
+
+    // =========================================================================
+    // Sort helper
+    // =========================================================================
+
+    private string SortClass(string fieldName) =>
+        sortCol == fieldName ? (sortAsc ? "asc" : "desc") : "";
+
+    private void SetSort(string fieldName)
+    {
+        if (sortCol == fieldName) sortAsc = !sortAsc;
+        else                      { sortCol = fieldName; sortAsc = true; }
+    }
+
+    // =========================================================================
+    // Lifecycle — load settings + data, set breadcrumb
     // =========================================================================
 
     protected override async Task OnInitializedAsync()
-        => await ViewModel.LoadAsync();
+    {
+        AppState.SetBreadcrumb("Staff", "All Staff");
+        columnSettings = await TableSettingsService.GetSettingsAsync("staff");
+        sortCol = VisibleColumns.FirstOrDefault(c => c.IsSortable)?.FieldName ?? "full_name";
+        await ViewModel.LoadAsync();
+    }
+
+    // =========================================================================
+    // Filter handlers
+    // =========================================================================
+
+    private void ApplyFilter(string fieldName, string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+        activeFilters.RemoveAll(c => c.Name == fieldName);
+        activeFilters.Add(new FilterChip(fieldName, value));
+        currentPage = 1;
+    }
+
+    private void RemoveFilter(FilterChip chip)
+    {
+        activeFilters.Remove(chip);
+        currentPage = 1;
+    }
+
+    private void ClearAllFilters()
+    {
+        activeFilters.Clear();
+        currentPage = 1;
+    }
+
+    // =========================================================================
+    // Search and show-entries handlers
+    // =========================================================================
+
+    private void OnSearchChanged(string value)   { searchValue = value; currentPage = 1; }
+    private void OnShowEntriesChanged(int value) { showEntries = value; currentPage = 1; }
+
+    // =========================================================================
+    // Pagination handlers
+    // =========================================================================
+
+    private void GoToPage(int page)   => currentPage = page;
+    private void PrevPage()           { if (currentPage > 1)          currentPage--; }
+    private void NextPage()           { if (currentPage < TotalPages) currentPage++; }
+
+    // =========================================================================
+    // Value resolver — named fields + reflection fallback
+    // =========================================================================
+
+    private static string? GetStaffValue(UserDto m, string fieldName) => fieldName switch
+    {
+        "full_name" => m.FullName,
+        "username"  => m.Username,
+        "email"     => m.Email,
+        "is_active" => m.IsActive ? "Active" : "Inactive",
+        _           => typeof(UserDto).GetProperty(ToPascalCase(fieldName))?.GetValue(m)?.ToString()
+    };
+
+    private static string ToPascalCase(string snake) =>
+        string.Concat(snake.Split('_').Select(w => w.Length > 0
+            ? char.ToUpperInvariant(w[0]) + w[1..]
+            : w));
 }

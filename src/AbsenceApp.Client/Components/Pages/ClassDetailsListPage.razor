@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : ClassDetailsListPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /classes/details
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Placeholder page for viewing detailed class information.
+                 Will display class profile including year group, teacher,
+                 and enrolled student list.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Content is a placeholder; replace with a class detail ViewModel
+       binding once the class service layer is available.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial placeholder implementation.
+   ===========================================================================
+*@
+@page "/classes/details"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Page content — placeholder awaiting implementation
+   ========================================================================= *@
+<p>Class Details content goes here.</p>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Classes", "Class Details");
+}

@@ -3,54 +3,83 @@
    Namespace   : AbsenceApp.Client.Components.Layout
    Author      : Michael
    Version     : 1.0.0
-   Created     : 2026-03-13
-   Updated     : 2026-03-13
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
    ---------------------------------------------------------------------------
-   Purpose     : Root layout for all Blazor pages.
-                 Renders a left-sidebar navigation panel alongside the
-                 main content area that hosts @Body.
-   ---------------------------------------------------------------------------
-   Changes     :
-     - 1.0.0  2026-03-13  Initial implementation.
+   Purpose     : Root layout component for all authenticated pages.
+                 Composes the NavBar, SideBar, page-header bar, main content
+                 area (@Body), and AppFooter into the full app shell.
+                 Subscribes to AppStateService.OnChange to re-render on
+                 dark-mode and sidebar-collapse state changes.
    ---------------------------------------------------------------------------
    Notes       :
-     - Inherits LayoutComponentBase; @Body renders the matched page component.
-     - Sidebar links are currently hard-coded; extract to a NavMenu component
-       if the navigation set grows beyond a handful of items.
+     - DarkMode toggling applies the "dark" CSS class to app-root, switching
+       the colour scheme via CSS custom properties in app.css.
+     - Breadcrumb segments are set by each page via AppState.SetBreadcrumb();
+       the last segment is shown as the page title on the left.
+     - IDisposable is implemented to unsubscribe OnChange and avoid memory
+       leaks when the layout is torn down.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
    ===========================================================================
 *@
 @inherits LayoutComponentBase
+@inject AppStateService AppState
+@implements IDisposable
 
 @* =========================================================================
-   Outer shell — flex container that wraps sidebar and content side-by-side
+   Section: App shell — dark/light root, navbar, sidebar, and content column
    ========================================================================= *@
-<div style="display:flex; height:100vh;">
+<div class="app-root @(AppState.DarkMode ? "dark" : "light")">
 
-    @* =========================================================================
-       Sidebar navigation — fixed-width panel with page links
-       ========================================================================= *@
-    <div style="width:200px; background:#f0f0f0; padding:10px;">
-        <h4>Menu</h4>
-        <ul style="list-style:none; padding-left:0;">
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/students">Students</a></li>
-            <li><a href="/attendance">Attendance</a></li>
-            <li><a href="/staff">Staff</a></li>
-            <li><a href="/classes">Classes</a></li>
-            <li><a href="/subjects">Subjects</a></li>
-            <li><a href="/parents">Parents</a></li>
-        </ul>
-    </div>
+    <NavBar />
 
-    @* =========================================================================
-       Main content area — flex-fill panel that renders the active page via @Body
-       ========================================================================= *@
-    <div style="flex:1; padding:20px;">
-        <header style="margin-bottom:20px;">
-            <h2>Absence App</h2>
-        </header>
+    <div class="app-shell">
+        <SideBar />
 
-        @Body
+        <div class="app-content-column">
+
+            @* =========================================================================
+               Section: Page header bar — title left, breadcrumb trail right
+               ========================================================================= *@
+            <div class="page-header-bar">
+                <span class="page-header-title">@AppState.Breadcrumb.LastOrDefault()</span>
+                <span class="page-header-crumb">
+                    @for (int i = 0; i < AppState.Breadcrumb.Count; i++)
+                    {
+                        var seg    = AppState.Breadcrumb[i];
+                        var isLast = i == AppState.Breadcrumb.Count - 1;
+                        if (i > 0) { <span class="phc-sep"> &ndash; </span> }
+                        if (isLast)
+                        {
+                            <span class="phc-active">@seg</span>
+                        }
+                        else
+                        {
+                            <span class="phc-link">@seg</span>
+                        }
+                    }
+                </span>
+            </div>
+
+            <main class="app-main">
+                <div class="page-content-box">
+                    @Body
+                </div>
+            </main>
+
+            <AppFooter />
+
+        </div>
     </div>
 
 </div>
+
+@* =========================================================================
+   Section: Code-behind — AppStateService change subscription
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized() => AppState.OnChange += StateHasChanged;
+    public void Dispose()                   => AppState.OnChange -= StateHasChanged;
+}

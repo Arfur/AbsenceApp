@@ -1,0 +1,256 @@
+/* ===========================================================================
+   File        : TableSettingsPage.razor.css
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Scoped styles for the Table Settings configuration page.
+                 Follows the same visual language as TablePageTemplate.razor.css
+                 — dark (#1e3a5f) header bar, alternating row colours, amber
+                 primary button — with additions for the toggle switch and
+                 the success/error banners.
+   ===========================================================================
+*/
+
+/* =========================================================================
+   Banners — success and error feedback
+   ========================================================================= */
+
+.tset-banner {
+    display         : flex;
+    align-items     : center;
+    gap             : 0.5rem;
+    padding         : 0.75rem 1.25rem;
+    border-radius   : 6px;
+    font-size       : 0.875rem;
+    font-weight     : 500;
+    margin-bottom   : 1rem;
+}
+
+.tset-banner-success {
+    background : #d1fae5;
+    color      : #065f46;
+    border     : 1px solid #6ee7b7;
+}
+
+.tset-banner-error {
+    background : #fee2e2;
+    color      : #991b1b;
+    border     : 1px solid #fca5a5;
+}
+
+/* =========================================================================
+   Table selector row
+   ========================================================================= */
+
+.tset-selector-row {
+    display     : flex;
+    align-items : center;
+    gap         : 0.75rem;
+    margin-bottom : 1.25rem;
+    flex-wrap   : wrap;
+}
+
+.tset-select-label {
+    font-size   : 0.875rem;
+    font-weight : 600;
+    color       : #374151;
+    white-space : nowrap;
+}
+
+.tset-table-select {
+    padding          : 0.45rem 2.5rem 0.45rem 0.75rem;
+    border           : 1px solid #d1d5db;
+    border-radius    : 6px;
+    font-size        : 0.9rem;
+    color            : #1e293b;
+    background-color : #fff;
+    background-image : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat   : no-repeat;
+    background-position : right 0.75rem center;
+    appearance       : none;
+    cursor           : pointer;
+    min-width        : 200px;
+    transition       : border-color 0.15s;
+}
+
+.tset-table-select:focus {
+    outline      : none;
+    border-color : #3b82f6;
+    box-shadow   : 0 0 0 2px rgba(59,130,246,.15);
+}
+
+/* =========================================================================
+   Configuration grid
+   ========================================================================= */
+
+.tset-grid-wrapper { overflow-x: auto; margin-bottom: 1.25rem; }
+
+.tset-grid {
+    width            : 100%;
+    border-collapse  : collapse;
+    font-size        : 0.875rem;
+}
+
+.tset-thead-row th {
+    background    : #1e3a5f;
+    color         : #fff;
+    padding       : 0.75rem 1rem;
+    text-align    : left;
+    font-weight   : 600;
+    font-size     : 0.8rem;
+    letter-spacing: 0.03em;
+    white-space   : nowrap;
+}
+
+.tset-grid tbody tr:nth-child(odd)  { background: #fff; }
+.tset-grid tbody tr:nth-child(even) { background: #f8fafc; }
+.tset-grid tbody tr:hover           { background: #eff6ff; }
+
+.tset-grid td {
+    padding        : 0.55rem 1rem;
+    vertical-align : middle;
+    border-bottom  : 1px solid #f1f5f9;
+}
+
+.tset-field-name {
+    font-family : monospace;
+    font-size   : 0.8rem;
+    color       : #475569;
+    white-space : nowrap;
+}
+
+/* =========================================================================
+   Editable inputs inside grid cells
+   ========================================================================= */
+
+.tset-label-input {
+    width         : 100%;
+    min-width     : 120px;
+    padding       : 0.35rem 0.6rem;
+    border        : 1px solid #d1d5db;
+    border-radius : 4px;
+    font-size     : 0.875rem;
+    color         : #1e293b;
+    transition    : border-color 0.15s;
+}
+
+.tset-label-input:focus {
+    outline      : none;
+    border-color : #3b82f6;
+    box-shadow   : 0 0 0 2px rgba(59,130,246,.15);
+}
+
+.tset-order-input {
+    width         : 68px;
+    padding       : 0.35rem 0.5rem;
+    border        : 1px solid #d1d5db;
+    border-radius : 4px;
+    font-size     : 0.875rem;
+    text-align    : center;
+    color         : #1e293b;
+    transition    : border-color 0.15s;
+}
+
+.tset-order-input:focus {
+    outline      : none;
+    border-color : #3b82f6;
+    box-shadow   : 0 0 0 2px rgba(59,130,246,.15);
+}
+
+.tset-toggle-cell { text-align: center; }
+
+/* =========================================================================
+   Toggle switch
+   ========================================================================= */
+
+.tset-toggle {
+    position : relative;
+    display  : inline-block;
+    width    : 38px;
+    height   : 22px;
+    cursor   : pointer;
+}
+
+.tset-toggle input {
+    opacity : 0;
+    width   : 0;
+    height  : 0;
+}
+
+.tset-slider {
+    position      : absolute;
+    inset         : 0;
+    background    : #d1d5db;
+    border-radius : 22px;
+    transition    : background 0.2s;
+}
+
+.tset-slider::before {
+    content       : "";
+    position      : absolute;
+    width         : 16px;
+    height        : 16px;
+    left          : 3px;
+    top           : 3px;
+    background    : #fff;
+    border-radius : 50%;
+    box-shadow    : 0 1px 3px rgba(0,0,0,.2);
+    transition    : transform 0.2s;
+}
+
+.tset-toggle input:checked + .tset-slider            { background: #3b82f6; }
+.tset-toggle input:checked + .tset-slider::before    { transform: translateX(16px); }
+.tset-toggle:hover .tset-slider                      { filter: brightness(0.95); }
+
+/* =========================================================================
+   Footer — Save button
+   ========================================================================= */
+
+.tset-footer {
+    display        : flex;
+    justify-content: flex-start;
+    padding-top    : 0.25rem;
+    margin-bottom  : 1rem;
+}
+
+.tset-save-btn {
+    display     : inline-flex;
+    align-items : center;
+    padding     : 0.6rem 1.75rem;
+    background  : #f59e0b;
+    color       : #fff;
+    border      : none;
+    border-radius: 6px;
+    font-size   : 0.9rem;
+    font-weight : 600;
+    cursor      : pointer;
+    transition  : background 0.2s, box-shadow 0.2s;
+    box-shadow  : 0 1px 3px rgba(0,0,0,.15);
+}
+
+.tset-save-btn:hover:not(:disabled) {
+    background : #d97706;
+    box-shadow : 0 2px 6px rgba(0,0,0,.2);
+}
+
+.tset-save-btn:disabled {
+    opacity : 0.6;
+    cursor  : not-allowed;
+}
+
+/* =========================================================================
+   Misc states
+   ========================================================================= */
+
+.tset-loading,
+.tset-empty {
+    color     : #64748b;
+    padding   : 1.25rem 0;
+    font-size : 0.9rem;
+    display   : flex;
+    align-items: center;
+    gap       : 0.5rem;
+}

@@ -1,0 +1,91 @@
+@* ===========================================================================
+   File        : TemplatePage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /template
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable page scaffold demonstrating the standard layout
+                 pattern.  Use as a starting point for new feature pages;
+                 replace stat card values and content card body with
+                 page-specific data bindings.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Stat card values are currently hard-coded to 0; replace with ViewModel
+       property bindings when wiring real data.
+     - SetBreadcrumb() call in OnInitialized() should be updated to reflect
+       the actual section and page title of the implementing page.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial template scaffold.
+   ===========================================================================
+*@
+@page "/template"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Page header — title bar
+   ========================================================================= *@
+
+<div class="page-header">
+    <h1 class="page-title">Page Title</h1>
+</div>
+
+@* =========================================================================
+   Section: Stat cards row — four summary metric cards
+   ========================================================================= *@
+<div class="stat-row">
+    <div class="stat-card">
+        <div class="stat-icon teal"><i class="bi bi-people"></i></div>
+        <div class="stat-body">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Total Students</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="bi bi-person-badge"></i></div>
+        <div class="stat-body">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Total Staff</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon amber"><i class="bi bi-clipboard-check"></i></div>
+        <div class="stat-body">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Absences Today</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red"><i class="bi bi-exclamation-triangle"></i></div>
+        <div class="stat-body">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Unresolved</span>
+        </div>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Content card — primary page content area
+   ========================================================================= *@
+<div class="content-card">
+    <div class="content-card-header">
+        <h2>Section Heading</h2>
+        <button class="btn-primary-sm">+ Add New</button>
+    </div>
+    <div class="content-card-body">
+        <p>Main content goes here. This card scrolls with the main area.</p>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.SetBreadcrumb("Home", "Template Page");
+    }
+}

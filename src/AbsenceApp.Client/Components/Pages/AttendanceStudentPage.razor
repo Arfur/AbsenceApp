@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : AttendanceStudentPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /attendance/student
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Placeholder page for viewing and managing student attendance.
+                 Will display per-student attendance records and allow
+                 attendance to be recorded by class or individual.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Content is a placeholder; replace with attendance ViewModel and table
+       once the student attendance service layer is available.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial placeholder implementation.
+   ===========================================================================
+*@
+@page "/attendance/student"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Page content — placeholder awaiting implementation
+   ========================================================================= *@
+<p>Student Attendance content goes here.</p>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Attendance", "Student Attendance");
+}

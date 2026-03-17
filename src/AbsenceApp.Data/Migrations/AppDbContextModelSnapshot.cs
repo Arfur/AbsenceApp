@@ -54,7 +54,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendance", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AuditLog", b =>
@@ -79,7 +79,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Class", b =>
@@ -99,7 +99,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("ClassId");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.ClassMember", b =>
@@ -118,7 +118,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ClassMembers");
+                    b.ToTable("ClassMembers", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Role", b =>
@@ -135,7 +135,53 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.TablePageSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DisplayLabel")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FieldName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsFilterable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSearchable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSortable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PageName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PageName", "FieldName")
+                        .IsUnique();
+
+                    b.ToTable("table_page_settings");
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.User", b =>
@@ -169,7 +215,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.UserRole", b =>
@@ -184,7 +230,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Attendance", b =>

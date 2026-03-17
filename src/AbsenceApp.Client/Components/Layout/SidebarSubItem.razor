@@ -1,0 +1,41 @@
+@* ===========================================================================
+   File        : SidebarSubItem.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Individual child link rendered inside a SidebarGroup submenu.
+                 Highlights with the sublink-active class when its href
+                 exactly matches the current navigation path.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Active matching is exact (CurrentPath == Href), unlike SidebarItem
+       which uses StartsWith, so that only one sub-item is active at a time.
+     - Icon defaults to bi-arrow-right-short if none is supplied.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Sub-item link — icon and label inside a group submenu
+   ========================================================================= *@
+<a href="@Href" class="sidebar-sublink @(IsActive ? "sublink-active" : "")">
+    <i class="bi @Icon"></i>
+    @Label
+</a>
+
+@* =========================================================================
+   Section: Component parameters and active-state computation
+   ========================================================================= *@
+@code {
+    [Parameter] public string Href        { get; set; } = "/";
+    [Parameter] public string Label       { get; set; } = "";
+    [Parameter] public string Icon        { get; set; } = "bi-arrow-right-short";
+    [Parameter] public string CurrentPath { get; set; } = "/";
+
+    bool IsActive => CurrentPath == Href;
+}

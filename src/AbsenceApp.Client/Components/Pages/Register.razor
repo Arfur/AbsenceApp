@@ -1,0 +1,90 @@
+@* ===========================================================================
+   File        : Register.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /register
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Registration page presenting a two-panel sign-up card.
+                 Left panel shows branding; right panel contains the
+                 registration form with email, password, and confirm-password
+                 fields.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - DoRegister() is currently a stub; replace body with a registration
+       service call and appropriate error/success feedback once wired.
+     - Username is derived from the email address (part before @) by
+       convention; make this explicit in the service layer.
+     - LoginLayout suppresses the main app shell so only the auth card
+       is visible.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/register"
+@layout LoginLayout
+
+@* =========================================================================
+   Section: Auth card — two-panel layout (branding left, form right)
+   ========================================================================= *@
+<div class="auth-card">
+
+    @* =========================================================================
+       Section: Left panel — logo, illustration, and tagline
+       ========================================================================= *@
+    <div class="auth-left">
+        <div class="auth-brand">
+            <i class="bi bi-calendar-check-fill auth-brand-icon"></i>
+            <span class="auth-brand-name">AbsenceApp</span>
+        </div>
+        <div class="auth-illustration">
+            <i class="bi bi-person-plus auth-illus-icon"></i>
+        </div>
+        <p class="auth-tagline">Create your account and<br/>get started today</p>
+    </div>
+
+    @* =========================================================================
+       Section: Right panel — registration form with email, password, and submit
+       ========================================================================= *@
+    <div class="auth-right">
+        <h2 class="auth-title">Join AbsenceApp</h2>
+        <p class="auth-subtitle">Create your account with your email address and password.</p>
+
+        <div class="auth-form">
+            <div class="auth-field">
+                <label>Email Address</label>
+                <input type="email" @bind="email" placeholder="Enter your email" />
+                <span class="auth-hint">Your username will be created from the part before @@</span>
+            </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <input type="password" @bind="password" placeholder="Create a password" />
+            </div>
+            <div class="auth-field">
+                <label>Confirm Password</label>
+                <input type="password" @bind="confirmPassword" placeholder="Repeat your password" />
+            </div>
+            <button class="auth-btn" @onclick="DoRegister">Create Account</button>
+        </div>
+
+        <p class="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+
+</div>
+
+@* =========================================================================
+   Section: Code-behind — form field state and registration handler
+   ========================================================================= *@
+@code {
+    string email           = "";
+    string password        = "";
+    string confirmPassword = "";
+
+    void DoRegister()
+    {
+        // TODO: wire to registration service
+    }
+}

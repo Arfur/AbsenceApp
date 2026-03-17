@@ -1,0 +1,89 @@
+@* ===========================================================================
+   File        : Login.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /login
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Authentication page presenting a two-panel sign-in card.
+                 Left panel shows branding; right panel contains the login
+                 form with username, password, and remember-me fields.
+                 On successful login navigates to /dashboard/overview.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - DoLogin() currently navigates directly without credential validation;
+       replace body with an auth service call once authentication is wired.
+     - LoginLayout suppresses the main app shell (navbar, sidebar) so only
+       the auth card is visible.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/login"
+@layout LoginLayout
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Auth card — two-panel layout (branding left, form right)
+   ========================================================================= *@
+<div class="auth-card">
+
+    @* =========================================================================
+       Section: Left panel — logo, illustration, and tagline
+       ========================================================================= *@
+    <div class="auth-left">
+        <div class="auth-brand">
+            <i class="bi bi-calendar-check-fill auth-brand-icon"></i>
+            <span class="auth-brand-name">AbsenceApp</span>
+        </div>
+        <div class="auth-illustration">
+            <i class="bi bi-shield-lock auth-illus-icon"></i>
+        </div>
+        <p class="auth-tagline">School Absence Management<br/>Made Simple</p>
+    </div>
+
+    @* =========================================================================
+       Section: Right panel — sign-in form with username, password, and submit
+       ========================================================================= *@
+    <div class="auth-right">
+        <h2 class="auth-title">Sign in</h2>
+        <p class="auth-subtitle">Welcome back! Please enter your details.</p>
+
+        <div class="auth-form">
+            <div class="auth-field">
+                <label>Username</label>
+                <input type="text" @bind="username" placeholder="Enter your username" />
+            </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <input type="password" @bind="password" placeholder="Enter your password" />
+                <a href="#" class="auth-forgot">Forgot password?</a>
+            </div>
+            <label class="auth-remember">
+                <input type="checkbox" @bind="rememberMe" /> Remember me
+            </label>
+            <button class="auth-btn" @onclick="DoLogin">Sign In</button>
+        </div>
+
+        <p class="auth-switch">Don't have an account? <a href="/register">Sign up</a></p>
+    </div>
+
+</div>
+
+@* =========================================================================
+   Section: Code-behind — form field state and login handler
+   ========================================================================= *@
+@code {
+    string username   = "";
+    string password   = "";
+    bool   rememberMe = false;
+
+    void DoLogin()
+    {
+        // TODO: wire to authentication service
+        Nav.NavigateTo("/dashboard/overview");
+    }
+}

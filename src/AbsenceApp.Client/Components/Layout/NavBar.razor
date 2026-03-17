@@ -1,0 +1,80 @@
+@* ===========================================================================
+   File        : NavBar.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Top navigation bar rendered across all authenticated pages.
+                 Contains the logo zone (aligned with sidebar), a centre zone
+                 with sidebar toggle and search input, and a right zone with
+                 notification bell and dark-mode toggle.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - ToggleSidebar() and ToggleDarkMode() are delegated to AppStateService
+       so the sidebar and all subscribed components re-render consistently.
+     - UnreadCount badge is hidden when count is 0 to avoid visual clutter.
+     - IDisposable unsubscribes OnChange to prevent memory leaks.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@inject AppStateService AppState
+@implements IDisposable
+
+@* =========================================================================
+   Section: App header — full-width top bar containing logo, search, and actions
+   ========================================================================= *@
+<header class="app-header">
+
+    @* =========================================================================
+       Section: Logo zone — brand mark aligned with sidebar width
+       ========================================================================= *@
+    <div class="header-logo-zone">
+        <span class="app-logo-link">
+            <i class="bi bi-calendar-check-fill logo-icon"></i>
+            <span class="logo-text">AbsenceApp</span>
+        </span>
+    </div>
+
+    @* =========================================================================
+       Section: Centre zone — sidebar toggle and global search input
+       ========================================================================= *@
+    <div class="header-centre">
+        <button class="icon-btn sidebar-toggle-btn" title="Toggle sidebar" @onclick="AppState.ToggleSidebar">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="header-search">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search pages, students, staff…" />
+        </div>
+    </div>
+
+    @* =========================================================================
+       Section: Right zone — notification bell and dark/light mode toggle
+       ========================================================================= *@
+    <div class="header-right">
+        <button class="icon-btn notif-btn" title="Notifications">
+            <i class="bi bi-bell"></i>
+            @if (AppState.UnreadCount > 0)
+            {
+                <span class="notif-badge">@AppState.UnreadCount</span>
+            }
+        </button>
+
+        <button class="icon-btn theme-btn" title="Toggle dark / light mode" @onclick="AppState.ToggleDarkMode">
+            <i class="bi @(AppState.DarkMode ? "bi-sun" : "bi-moon")"></i>
+        </button>
+    </div>
+
+</header>
+
+@* =========================================================================
+   Section: Code-behind — AppStateService change subscription
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized() => AppState.OnChange += StateHasChanged;
+    public void Dispose()                   => AppState.OnChange -= StateHasChanged;
+}

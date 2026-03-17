@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Root route handler that immediately redirects to /login.
+                 Ensures unauthenticated users are always directed to the
+                 login page on first load.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Uses replace: true so the redirect does not create a back-navigation
+       entry in the browser history stack.
+     - LoginLayout is applied so the app shell is not rendered during the
+       brief navigation transition.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/"
+@layout LoginLayout
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Code-behind — redirect to login on first load
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+    {
+        Nav.NavigateTo("/login", replace: true);
+    }
+}

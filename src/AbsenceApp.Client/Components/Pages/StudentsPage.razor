@@ -3,48 +3,344 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /students
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 3.0.0
    Created     : 2026-03-13
-   Updated     : 2026-03-13
+   Updated     : 2026-03-17
    ---------------------------------------------------------------------------
-   Purpose     : Displays the full list of students.
-                 Each entry links to the individual student details page.
+   Purpose     : Displays the full student list inside TablePageTemplate.
+                 Column visibility, labels, sort/search/filter flags, and
+                 display order are read dynamically from ITableSettingsService
+                 on page load and respected at runtime.
    ---------------------------------------------------------------------------
    Notes       :
-     - Data is not loaded automatically; the user must click Load Students to
-       trigger ViewModel.LoadAsync().
-     - Each list item href is built from the student Id at render time;
-       navigation will fail if Id is null or empty.
+     - Student model fields: Id, FirstName, LastName, YearGroup.
+     - Field "student_name" is a virtual field combining FirstName + LastName
+       and renders as a navigation link.
+     - Settings fall back to hard-coded defaults when the table_page_settings
+       table has no rows for "students".
+     - GetStudentValue() handles special fields (student_name) and falls back
+       to PascalCase reflection for any other field name.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-13  Initial implementation.
+     - 1.0.0  2026-03-13  Initial implementation (simple list).
+     - 2.0.0  2026-03-17  Replaced with TablePageTemplate-based layout.
+     - 3.0.0  2026-03-17  Dynamic columns driven by ITableSettingsService.
    ===========================================================================
 *@
 @page "/students"
-@inject StudentsViewModel ViewModel
+@inject AppStateService        AppState
+@inject StudentsViewModel      ViewModel
+@inject ITableSettingsService  TableSettingsService
 
 @* =========================================================================
-   Page content — load button and per-student navigation links
+   Section: TablePageTemplate — five-section reusable layout
    ========================================================================= *@
-<h3>Students</h3>
+<TablePageTemplate PageTitle="Student Management"
+                   ActiveFilters="activeFilters"
+                   OnRemoveFilter="RemoveFilter"
+                   OnClearAllFilters="ClearAllFilters"
+                   ShowEntries="showEntries"
+                   OnShowEntriesChanged="OnShowEntriesChanged"
+                   SearchValue="searchValue"
+                   OnSearchChanged="OnSearchChanged"
+                   TotalRows="FilteredStudents.Count()"
+                   CurrentPage="currentPage">
 
-<button @onclick="Load">Load Students</button>
-
-<ul>
-    @if (ViewModel.Students != null)
-    {
-        foreach (var s in ViewModel.Students)
+    @* =========================================================================
+       Section 1: Filters — one dropdown per filterable column from settings
+       ========================================================================= *@
+    <Filters>
+        @foreach (var col in columnSettings.Where(c => c.IsFilterable))
         {
-            <li>
-                <a href="/students/@s.Id">@s.FirstName @s.LastName (@s.YearGroup)</a>
-            </li>
+            var fc = col;
+            <select class="tpt-filter-select"
+                    @onchange='e => ApplyFilter(fc.FieldName, e.Value?.ToString() ?? "")'>
+                <option value="">@fc.DisplayLabel</option>
+                @foreach (var val in FilterOptions(fc.FieldName))
+                {
+                    <option value="@val">@val</option>
+                }
+            </select>
         }
-    }
-</ul>
+    </Filters>
+
+    @* =========================================================================
+       Section 2: Action buttons
+       ========================================================================= *@
+    <ActionButtons>
+        <a href="/students/add" class="tpt-btn tpt-btn-primary">
+            <i class="bi bi-person-plus"></i> Add Student
+        </a>
+    </ActionButtons>
+
+    @* =========================================================================
+       Section 3: Column headers — generated from visible settings columns
+       ========================================================================= *@
+    <TableHeader>
+        <th>SNo.</th>
+        @foreach (var col in VisibleColumns)
+        {
+            var hc = col;
+            <th>
+                @hc.DisplayLabel
+                @if (hc.IsSortable)
+                {
+                    <button class="tpt-sort-btn @SortClass(hc.FieldName)"
+                            @onclick="() => SetSort(hc.FieldName)">
+                        <span class="tpt-sort-up">▲</span>
+                        <span class="tpt-sort-dn">▼</span>
+                    </button>
+                }
+            </th>
+        }
+        <th>Action</th>
+    </TableHeader>
+
+    @* =========================================================================
+       Section 4: Data rows — paged student records, cells driven by settings
+       ========================================================================= *@
+    <TableBody>
+        @if (ViewModel.IsLoading)
+        {
+            <tr><td colspan="@ColSpan" style="text-align:center;padding:1.5rem;color:#64748b;">Loading…</td></tr>
+        }
+        else if (ViewModel.ErrorMessage is not null)
+        {
+            <tr><td colspan="@ColSpan" style="color:#dc2626;padding:1rem;">@ViewModel.ErrorMessage</td></tr>
+        }
+        else if (!PagedStudents.Any())
+        {
+            <tr><td colspan="@ColSpan" style="text-align:center;padding:1.5rem;color:#64748b;">No students found.</td></tr>
+        }
+        else
+        {
+            var rowBase = (currentPage - 1) * showEntries;
+            var rowIdx  = 0;
+            @foreach (var s in PagedStudents)
+            {
+                rowIdx++;
+                <tr>
+                    <td class="tpt-sno">@(rowBase + rowIdx)</td>
+                    @foreach (var col in VisibleColumns)
+                    {
+                        var bc = col;
+                        <td>
+                            @if (bc.FieldName == "student_name")
+                            {
+                                <a href="/students/@s.Id">@s.FirstName @s.LastName</a>
+                            }
+                            else
+                            {
+                                @(GetStudentValue(s, bc.FieldName) ?? string.Empty)
+                            }
+                        </td>
+                    }
+                    <td>
+                        <div class="tpt-actions">
+                            <a href="/students/@s.Id"
+                               class="tpt-action-icon tpt-action-view"
+                               title="View"><i class="bi bi-eye"></i></a>
+                            <button class="tpt-action-icon tpt-action-edit"
+                                    title="Edit"><i class="bi bi-pencil"></i></button>
+                            <button class="tpt-action-icon tpt-action-delete"
+                                    title="Delete"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </TableBody>
+
+    @* =========================================================================
+       Section 5: Pagination controls
+       ========================================================================= *@
+    <Pagination>
+        <button class="tpt-page-btn"
+                disabled="@(currentPage <= 1)"
+                @onclick="PrevPage">&#8592; Previous</button>
+
+        @for (int p = 1; p <= TotalPages; p++)
+        {
+            var pg = p;
+            <button class="tpt-page-btn @(currentPage == pg ? "tpt-active" : "")"
+                    @onclick="() => GoToPage(pg)">@pg</button>
+        }
+
+        <button class="tpt-page-btn"
+                disabled="@(currentPage >= TotalPages)"
+                @onclick="NextPage">Next &#8594;</button>
+    </Pagination>
+
+</TablePageTemplate>
 
 @* =========================================================================
-   Code block — async load handler delegating to MainViewModel
+   Section: Code-behind — state, computed properties, and event handlers
    ========================================================================= *@
 @code {
-    private async Task Load() => await ViewModel.LoadAsync();
+
+    // =========================================================================
+    // State
+    // =========================================================================
+
+    private IReadOnlyList<TablePageSettingDto> columnSettings = [];
+    private List<FilterChip>                   activeFilters  = new();
+    private string                             searchValue    = "";
+    private int                                showEntries    = 10;
+    private int                                currentPage    = 1;
+    private string                             sortCol        = "student_name";
+    private bool                               sortAsc        = true;
+
+    // =========================================================================
+    // Computed: visible columns ordered by DisplayOrder
+    // =========================================================================
+
+    private IEnumerable<TablePageSettingDto> VisibleColumns =>
+        columnSettings.Where(c => c.IsVisible).OrderBy(c => c.DisplayOrder);
+
+    // Colspan = SNo. (1) + visible data columns + Action (1)
+    private int ColSpan => VisibleColumns.Count() + 2;
+
+    // =========================================================================
+    // Computed: distinct year groups for the Year Group filter dropdown
+    // =========================================================================
+
+    private IEnumerable<string> AvailableYearGroups =>
+        (ViewModel.Students ?? Enumerable.Empty<Student>())
+            .Select(s => s.YearGroup)
+            .Where(y => !string.IsNullOrWhiteSpace(y))
+            .Distinct()
+            .OrderBy(y => y);
+
+    // =========================================================================
+    // Computed: filtered, sorted, and paged student rows
+    // =========================================================================
+
+    private IEnumerable<Student> FilteredStudents
+    {
+        get
+        {
+            var items = ViewModel.Students ?? Enumerable.Empty<Student>();
+
+            // Apply chip filters (filterable columns only)
+            foreach (var chip in activeFilters)
+                items = items.Where(s => GetStudentValue(s, chip.Name) == chip.Value);
+
+            // Apply free-text search (searchable columns only)
+            if (!string.IsNullOrWhiteSpace(searchValue))
+            {
+                var term    = searchValue.Trim().ToLowerInvariant();
+                var fields  = columnSettings.Where(c => c.IsSearchable).Select(c => c.FieldName).ToList();
+                items = items.Where(s =>
+                    fields.Any(f => (GetStudentValue(s, f) ?? "").ToLowerInvariant().Contains(term)));
+            }
+
+            // Apply column sort — named cases for type-aware ordering, reflection fallback
+            if (string.IsNullOrWhiteSpace(sortCol)) return items;
+            return (sortCol, sortAsc) switch
+            {
+                ("student_name", true)  => items.OrderBy(s => s.LastName).ThenBy(s => s.FirstName),
+                ("student_name", false) => items.OrderByDescending(s => s.LastName).ThenByDescending(s => s.FirstName),
+                ("year_group",   true)  => items.OrderBy(s => s.YearGroup),
+                ("year_group",   false) => items.OrderByDescending(s => s.YearGroup),
+                (_, true)               => items.OrderBy(s => GetStudentValue(s, sortCol)),
+                (_, false)              => items.OrderByDescending(s => GetStudentValue(s, sortCol))
+            };
+        }
+    }
+
+    private IEnumerable<Student> PagedStudents =>
+        FilteredStudents.Skip((currentPage - 1) * showEntries).Take(showEntries);
+
+    private int TotalPages =>
+        (int)Math.Ceiling((double)FilteredStudents.Count() / Math.Max(showEntries, 1));
+
+    // =========================================================================
+    // Filter options — per field name
+    // =========================================================================
+
+    private IEnumerable<string> FilterOptions(string fieldName) => fieldName switch
+    {
+        "year_group" => AvailableYearGroups,
+        _            => Enumerable.Empty<string>()
+    };
+
+    // =========================================================================
+    // Sort helper
+    // =========================================================================
+
+    private string SortClass(string fieldName) =>
+        sortCol == fieldName ? (sortAsc ? "asc" : "desc") : "";
+
+    private void SetSort(string fieldName)
+    {
+        if (sortCol == fieldName) sortAsc = !sortAsc;
+        else                      { sortCol = fieldName; sortAsc = true; }
+    }
+
+    // =========================================================================
+    // Lifecycle — load settings + data, set breadcrumb
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Students", "All Students");
+        columnSettings = await TableSettingsService.GetSettingsAsync("students");
+        sortCol = VisibleColumns.FirstOrDefault(c => c.IsSortable)?.FieldName ?? "student_name";
+        await ViewModel.LoadAsync();
+    }
+
+    // =========================================================================
+    // Filter handlers
+    // =========================================================================
+
+    private void ApplyFilter(string fieldName, string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return;
+        activeFilters.RemoveAll(c => c.Name == fieldName);
+        activeFilters.Add(new FilterChip(fieldName, value));
+        currentPage = 1;
+    }
+
+    private void RemoveFilter(FilterChip chip)
+    {
+        activeFilters.Remove(chip);
+        currentPage = 1;
+    }
+
+    private void ClearAllFilters()
+    {
+        activeFilters.Clear();
+        currentPage = 1;
+    }
+
+    // =========================================================================
+    // Search and show-entries handlers
+    // =========================================================================
+
+    private void OnSearchChanged(string value)      { searchValue  = value; currentPage = 1; }
+    private void OnShowEntriesChanged(int value)    { showEntries  = value; currentPage = 1; }
+
+    // =========================================================================
+    // Pagination handlers
+    // =========================================================================
+
+    private void GoToPage(int page)   => currentPage = page;
+    private void PrevPage()           { if (currentPage > 1)          currentPage--; }
+    private void NextPage()           { if (currentPage < TotalPages) currentPage++; }
+
+    // =========================================================================
+    // Value resolver — virtual + reflection-based fallback
+    // =========================================================================
+
+    private static string? GetStudentValue(Student s, string fieldName) => fieldName switch
+    {
+        "student_name" => $"{s.FirstName} {s.LastName}",
+        "year_group"   => s.YearGroup,
+        _              => typeof(Student).GetProperty(ToPascalCase(fieldName))?.GetValue(s)?.ToString()
+    };
+
+    private static string ToPascalCase(string snake) =>
+        string.Concat(snake.Split('_').Select(w => w.Length > 0
+            ? char.ToUpperInvariant(w[0]) + w[1..]
+            : w));
 }

@@ -1,0 +1,148 @@
+@* ===========================================================================
+   File        : DashboardOverviewPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /dashboard/overview
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Operational overview dashboard showing headline KPI cards,
+                 absence breakdown donut charts, and today's absence table.
+                 The breadcrumb is set via AppStateService on initialisation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - All data is currently static; replace with ViewModel bindings once
+       a dashboard service layer is available.
+     - Donut charts use CSS conic-gradient; no external charting library
+       is required.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/dashboard/overview"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: KPI cards — headline metrics for the current day
+   ========================================================================= *@
+<div class="db-kpi-row">
+    <div class="db-kpi-card kpi-blue">
+        <div class="kpi-icon-wrap"><i class="bi bi-person-x"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">18</span>
+            <span class="kpi-label">Student Absences Today</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-orange">
+        <div class="kpi-icon-wrap"><i class="bi bi-briefcase-x"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">3</span>
+            <span class="kpi-label">Staff Absences Today</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-red">
+        <div class="kpi-icon-wrap"><i class="bi bi-building-x"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">27</span>
+            <span class="kpi-label">Students Currently Off</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-red">
+        <div class="kpi-icon-wrap"><i class="bi bi-exclamation-circle"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">4</span>
+            <span class="kpi-label">Overdue Returns</span>
+        </div>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Action buttons — quick-launch shortcuts
+   ========================================================================= *@
+<div class="db-action-row">
+    <button class="db-action-btn"><i class="bi bi-person-plus"></i> Record Student Absence</button>
+    <button class="db-action-btn"><i class="bi bi-briefcase-fill"></i> Record Staff Absence</button>
+    <button class="db-action-btn"><i class="bi bi-calendar-check"></i> View Daily Register</button>
+    <button class="db-action-btn"><i class="bi bi-people"></i> View Student List</button>
+</div>
+
+@* =========================================================================
+   Section: Absence breakdown charts — student and staff donut charts
+   ========================================================================= *@
+<div class="db-row-2col">
+    <div class="db-card">
+        <div class="db-card-title">Student Absence Breakdown</div>
+        <div class="db-chart-area">
+            <div class="donut-wrap" style="background: conic-gradient(#3b82f6 0% 66.67%, #10b981 66.67% 88.89%, #f59e0b 88.89% 100%)">
+                <div class="donut-hole">
+                    <span class="donut-total">18</span>
+                    <span class="donut-sub">absences</span>
+                </div>
+            </div>
+            <div class="donut-legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> Illness &mdash; 12</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Medical &mdash; 4</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Authorised &mdash; 2</div>
+            </div>
+        </div>
+    </div>
+    <div class="db-card">
+        <div class="db-card-title">Staff Absence Breakdown</div>
+        <div class="db-chart-area">
+            <div class="donut-wrap" style="background: conic-gradient(#3b82f6 0% 66.67%, #f59e0b 66.67% 100%)">
+                <div class="donut-hole">
+                    <span class="donut-total">3</span>
+                    <span class="donut-sub">absences</span>
+                </div>
+            </div>
+            <div class="donut-legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> Sick Leave &mdash; 2</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Training &mdash; 1</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Today's absences table — per-student absence log for the day
+   ========================================================================= *@
+<div class="db-card">
+    <div class="db-card-title">Today's Absences</div>
+    <table class="db-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Reason</th>
+                <th>Expected Return</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Emily Carter</td>
+                <td>Year 4B</td>
+                <td>Illness</td>
+                <td>Tomorrow</td>
+                <td>Parent called in</td>
+            </tr>
+            <tr>
+                <td>James Holden</td>
+                <td>Year 2A</td>
+                <td>Medical Appointment</td>
+                <td>This afternoon</td>
+                <td>Dental appointment</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Dashboard", "Operational Overview");
+}

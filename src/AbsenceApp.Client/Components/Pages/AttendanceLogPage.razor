@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : AttendanceLogPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /attendance/log
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Placeholder page for logging attendance marks.
+                 Will provide a form or register view for recording
+                 morning and afternoon attendance codes.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Content is a placeholder; replace with attendance logging form once
+       the register service layer is available.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial placeholder implementation.
+   ===========================================================================
+*@
+@page "/attendance/log"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Page content — placeholder awaiting implementation
+   ========================================================================= *@
+<p>Log Attendance content goes here.</p>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Attendance", "Log Attendance");
+}

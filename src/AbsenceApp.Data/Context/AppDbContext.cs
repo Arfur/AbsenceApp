@@ -67,6 +67,11 @@ public class AppDbContext : DbContext
     public DbSet<StaffExternalAccountAudit> StaffExternalAccountAudit => Set<StaffExternalAccountAudit>();
     public DbSet<StudentAbsenceAudit> StudentAbsenceAudit => Set<StudentAbsenceAudit>();
 
+    // -------------------------------------------------------------------------
+    // Application configuration
+    // -------------------------------------------------------------------------
+    public DbSet<TablePageSetting> TablePageSettings => Set<TablePageSetting>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -78,6 +83,10 @@ public class AppDbContext : DbContext
         // -------------------------------------------------------------------------
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
+            // TablePageSetting uses SQL Server IDENTITY — its configuration
+            // explicitly sets UseIdentityColumn() and ValueGeneratedOnAdd().
+            if (entityType.ClrType == typeof(TablePageSetting)) continue;
+
             var pk = entityType.FindPrimaryKey();
             if (pk == null) continue;
             foreach (var prop in pk.Properties)

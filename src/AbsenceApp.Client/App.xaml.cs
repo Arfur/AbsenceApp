@@ -10,9 +10,6 @@
  Purpose     : Code-behind for the root MAUI Application class.
                Sets MainPage to the Blazor host ContentPage on startup.
 -------------------------------------------------------------------------------
- Changes     :
-   - 1.0.0  2026-03-13  Initial implementation.
--------------------------------------------------------------------------------
  Notes       :
    - MainPage is set in the constructor; no XAML code-behind logic required.
    - The root ContentPage hosts the BlazorWebView declared in MainPage.xaml.
@@ -21,16 +18,11 @@
 
 namespace AbsenceApp.Client;
 
-// =========================================================================
-// Application entry — sets the root ContentPage on application launch
-// =========================================================================
-
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
-
-		MainPage = new MainPage();
-	}
+    public App()
+    {
+        InitializeComponent();
+        MainPage = new MainPage();
+    }
 }

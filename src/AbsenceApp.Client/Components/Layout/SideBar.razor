@@ -1,0 +1,209 @@
+@* ===========================================================================
+   File        : SideBar.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Collapsible sidebar navigation component.
+                 Renders the user profile panel, an optional settings popup,
+                 and SidebarGroup/SidebarItem navigation links grouped by
+                 functional area.  Tracks current path to highlight the
+                 active group and sub-item.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - openGroup drives accordion behaviour; only one group is open at a time.
+     - ToggleGroup() also navigates to the first href in the group so the
+       user lands on a useful page immediately.
+     - IDisposable tears down both LocationChanged and OnChange subscriptions
+       to prevent memory leaks.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@inject AppStateService AppState
+@inject NavigationManager Nav
+@implements IDisposable
+
+@* =========================================================================
+   Section: Sidebar shell — collapsed/expanded aside element
+   ========================================================================= *@
+<aside class="app-sidebar @(AppState.SidebarCollapsed ? "collapsed" : "")">
+
+    @* =========================================================================
+       Section: User profile panel — avatar, name, role, and settings cog
+       ========================================================================= *@
+    <div class="sidebar-user @(AppState.SidebarCollapsed ? "collapsed" : "")">
+        <div class="sidebar-user-avatar">@(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")</div>
+        <div class="sidebar-user-info">
+            <span class="sidebar-user-name">@AppState.UserName</span>
+            <span class="sidebar-user-role">@AppState.UserRole</span>
+        </div>
+        @if (!AppState.SidebarCollapsed)
+        {
+            <button class="sidebar-user-cog @(settingsOpen ? "active" : "")" @onclick="ToggleSettings" title="Settings">
+                <i class="bi bi-gear-fill"></i>
+            </button>
+        }
+    </div>
+
+    @* =========================================================================
+       Section: Settings popup — profile, settings, and logout options
+       ========================================================================= *@
+    @if (settingsOpen)
+    {
+        <div class="settings-popup settings-popup-top">
+            <button class="settings-popup-item"><i class="bi bi-person-circle"></i> Profile Details</button>
+            <button class="settings-popup-item"><i class="bi bi-gear"></i> Settings</button>
+            <div class="settings-popup-divider"></div>
+            <button class="settings-popup-item settings-logout" @onclick="DoLogout"><i class="bi bi-box-arrow-right"></i> Log Out</button>
+        </div>
+    }
+
+    <nav class="sidebar-nav">
+
+        <SidebarGroup Icon="bi-speedometer2" Label="Dashboard"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Dashboard")"
+                      IsActive="@currentPath.StartsWith("/dashboard")"
+                      OnToggle="@(() => ToggleGroup("Dashboard"))">
+            <SidebarSubItem Href="/dashboard/overview"         Icon="bi-kanban"        Label="Operational Overview"     CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/dashboard/student-activity" Icon="bi-graph-up"      Label="Attendance &amp; Trends"  CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/dashboard/staff-activity"   Icon="bi-shield-check"  Label="Safeguarding &amp; Wellbeing" CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+        <SidebarSection Label="PEOPLE" Collapsed="AppState.SidebarCollapsed" />
+
+        <SidebarGroup Icon="bi-people" Label="Students"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Students")"
+                      IsActive="@currentPath.StartsWith("/students")"
+                      OnToggle="@(() => ToggleGroup("Students"))">
+            <SidebarSubItem Href="/students"         Icon="bi-list-ul"           Label="All Students"    CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/students/details" Icon="bi-person-lines-fill" Label="Student Details" CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/students/add"     Icon="bi-person-plus"       Label="Add Students"    CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+        <SidebarGroup Icon="bi-person-badge" Label="Staff"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Staff")"
+                      IsActive="@currentPath.StartsWith("/staff")"
+                      OnToggle="@(() => ToggleGroup("Staff"))">
+            <SidebarSubItem Href="/staff"         Icon="bi-list-ul"        Label="All Staff"     CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/staff/details" Icon="bi-person-vcard"   Label="Staff Details" CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/staff/add"     Icon="bi-person-plus"    Label="Add Staff"     CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+        <SidebarItem Href="/parents" Icon="bi-house-heart" Label="Parents" Collapsed="AppState.SidebarCollapsed" CurrentPath="@currentPath" />
+
+        <SidebarSection Label="ACADEMICS" Collapsed="AppState.SidebarCollapsed" />
+
+        <SidebarGroup Icon="bi-door-open" Label="Classes"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Classes")"
+                      IsActive="@currentPath.StartsWith("/classes")"
+                      OnToggle="@(() => ToggleGroup("Classes"))">
+            <SidebarSubItem Href="/classes"         Icon="bi-list-ul"      Label="All Classes"   CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/classes/details" Icon="bi-journal-text" Label="Class Details" CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/classes/add"     Icon="bi-plus-circle"  Label="Add Class"     CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+        <SidebarGroup Icon="bi-clipboard-check" Label="Attendance"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Attendance")"
+                      IsActive="@currentPath.StartsWith("/attendance")"
+                      OnToggle="@(() => ToggleGroup("Attendance"))">
+            <SidebarSubItem Href="/attendance/staff"   Icon="bi-person-check"      Label="Staff Attendance"   CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/attendance/student" Icon="bi-person-check-fill" Label="Student Attendance" CurrentPath="@currentPath" />
+            <SidebarSubItem Href="/attendance/log"     Icon="bi-pencil-square"     Label="Log Attendance"     CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+        <SidebarSection Label="CONFIGURATION" Collapsed="AppState.SidebarCollapsed" />
+
+        <SidebarGroup Icon="bi-gear" Label="Settings"
+                      Collapsed="AppState.SidebarCollapsed"
+                      IsOpen="@(openGroup == "Settings")"
+                      IsActive="@currentPath.StartsWith("/settings")"
+                      OnToggle="@(() => ToggleGroup("Settings"))">
+            <SidebarSubItem Href="/settings/table-settings" Icon="bi-table" Label="Table Settings" CurrentPath="@currentPath" />
+        </SidebarGroup>
+
+    </nav>
+
+</aside>
+
+@* =========================================================================
+   Section: Code-behind — navigation state, group toggling, and subscriptions
+   ========================================================================= *@
+@code {
+    string currentPath  = "/dashboard/overview";
+    string openGroup    = "Dashboard";
+    bool   settingsOpen = false;
+
+    protected override void OnInitialized()
+    {
+        currentPath = new Uri(Nav.Uri).AbsolutePath;
+        openGroup   = GroupForPath(currentPath);
+        Nav.LocationChanged += OnLocationChanged;
+        AppState.OnChange   += StateHasChanged;
+    }
+
+    void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentPath  = new Uri(e.Location).AbsolutePath;
+        openGroup    = GroupForPath(currentPath);
+        settingsOpen = false;
+        StateHasChanged();
+    }
+
+    void ToggleGroup(string label)
+    {
+        if (openGroup == label)
+        {
+            openGroup = "";
+        }
+        else
+        {
+            openGroup = label;
+            Nav.NavigateTo(FirstHref(label));
+        }
+    }
+
+    void ToggleSettings() => settingsOpen = !settingsOpen;
+
+    void DoLogout()
+    {
+        settingsOpen = false;
+        AppState.QuitApp();
+    }
+
+    string FirstHref(string group) => group switch
+    {
+        "Dashboard"  => "/dashboard/overview",
+        "Students"   => "/students",
+        "Staff"      => "/staff",
+        "Classes"    => "/classes",
+        "Attendance" => "/attendance/staff",
+        "Settings"   => "/settings/table-settings",
+        _            => "/dashboard/overview"
+    };
+
+    string GroupForPath(string path) => path switch
+    {
+        var p when p.StartsWith("/dashboard")  => "Dashboard",
+        var p when p.StartsWith("/students")   => "Students",
+        var p when p.StartsWith("/staff")      => "Staff",
+        var p when p.StartsWith("/classes")    => "Classes",
+        var p when p.StartsWith("/attendance") => "Attendance",
+        var p when p.StartsWith("/settings")   => "Settings",
+        _                                      => ""
+    };
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+        AppState.OnChange   -= StateHasChanged;
+    }
+}

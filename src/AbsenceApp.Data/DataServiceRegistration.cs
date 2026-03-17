@@ -70,6 +70,7 @@ public static class DataServiceRegistration
         services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IAttendanceService, AttendanceService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITableSettingsService, TableSettingsService>();
 
         return services;
     }

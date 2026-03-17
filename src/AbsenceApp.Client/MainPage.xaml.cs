@@ -33,9 +33,4 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 	}
-
-	private async void OnStudentsClicked(object sender, EventArgs e)
-	{
-		await Shell.Current.GoToAsync("/students");
-	}
 }

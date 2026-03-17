@@ -21,6 +21,7 @@
    ===========================================================================
 *@
 @page "/parents"
+@inject AppStateService AppState
 
 @* =========================================================================
    Page content — parent summary table with contact details
@@ -48,3 +49,11 @@
         </tr>
     </tbody>
 </table>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Parents", "Parents");
+}

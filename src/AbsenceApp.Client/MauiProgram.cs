@@ -81,6 +81,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ClientStudentService>();
         builder.Services.AddSingleton<ClientAbsenceService>();
         builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<AppStateService>();
 
         // =========================================================================
         // Per-page Core ViewModels — each scoped to a dedicated page
@@ -94,6 +95,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<AuditLogViewModel>();
         builder.Services.AddSingleton<AttendanceViewModel>();
         builder.Services.AddSingleton<StaffViewModel>();
+
+        builder.Services.AddSingleton<TableSettingsViewModel>();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

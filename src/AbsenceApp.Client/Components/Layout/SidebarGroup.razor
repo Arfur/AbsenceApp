@@ -1,0 +1,58 @@
+@* ===========================================================================
+   File        : SidebarGroup.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Collapsible accordion group for the sidebar navigation.
+                 Renders a toggle button that shows/hides a child submenu.
+                 Active and open states are controlled by the parent SideBar.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - IsOpen and IsActive are passed down from SideBar; the group itself
+       does not manage its own open/active state.
+     - The chevron icon rotates via CSS when the group-open class is applied.
+     - When collapsed (icon-only mode) the submenu is hidden regardless of
+       IsOpen to avoid layout overflow.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Group button and collapsible submenu
+   ========================================================================= *@
+<div class="sidebar-group">
+    <button class="sidebar-link sidebar-group-btn @(IsOpen ? "group-open" : "") @(IsActive ? "active" : "")"
+            @onclick="() => OnToggle.InvokeAsync()">
+        <i class="bi @Icon"></i>
+        @if (!Collapsed)
+        {
+            <span>@Label</span>
+            <i class="bi bi-chevron-right chevron"></i>
+        }
+    </button>
+
+    @if (IsOpen && !Collapsed)
+    {
+        <div class="sidebar-submenu">
+            @ChildContent
+        </div>
+    }
+</div>
+
+@* =========================================================================
+   Section: Component parameters
+   ========================================================================= *@
+@code {
+    [Parameter] public string          Icon        { get; set; } = "bi-circle";
+    [Parameter] public string          Label       { get; set; } = "";
+    [Parameter] public bool            Collapsed   { get; set; }
+    [Parameter] public bool            IsOpen      { get; set; }
+    [Parameter] public bool            IsActive    { get; set; }
+    [Parameter] public EventCallback   OnToggle    { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

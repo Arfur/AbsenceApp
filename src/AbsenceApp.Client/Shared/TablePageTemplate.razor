@@ -1,0 +1,264 @@
+@* ===========================================================================
+   File        : TablePageTemplate.razor
+   Namespace   : AbsenceApp.Client.Shared
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable five-section layout template for all table-based
+                 pages (Students, Staff, Classes, etc.).
+
+                 Section 1 — Filters area  : dropdown filters (Filters slot)
+                                              + active chip strip + Clear All
+                 Section 2 — Search line   : "Show X entries" (left) +
+                                              optional ActionButtons + search
+                 Section 3 — Column headers: dark header row; TableHeader slot
+                                              supplies the <th> cells + sort
+                 Section 4 — Data rows     : alternating colours; TableBody
+                                              slot supplies the <tr> rows
+                 Section 5 — Pagination    : "Showing X to Y of Z" (left) +
+                                              Pagination slot (right)
+
+                 Individual pages supply page-specific content exclusively
+                 via the four required RenderFragment parameters.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - ActiveFilters is caller-owned: OnRemoveFilter / OnClearAllFilters
+       fire callbacks so the caller can update its list and re-render.
+     - Search and ShowEntries are one-way in (caller writes the bound value);
+       the template raises OnSearchChanged / OnShowEntriesChanged on user
+       input so the caller can filter and paginate its data.
+     - ShowingFrom and ShowingTo are computed from CurrentPage, ShowEntries,
+       and TotalRows.  The caller must keep these parameters in sync.
+     - Sort button markup (class="tpt-sort-btn asc|desc") is caller-provided
+       inside TableHeader.  The template CSS styles the buttons via ::deep.
+     - All child-slot styling (th, td, tr, badges, action icons, page buttons)
+       is defined in TablePageTemplate.razor.css using ::deep selectors.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Page title — rendered above the filters area
+   ========================================================================= *@
+<div class="tpt-page-header">
+    <h1 class="tpt-page-title">@PageTitle</h1>
+</div>
+
+@* =========================================================================
+   Section 1: Filters area
+   — caller-supplied dropdown controls + auto-rendered active chip strip
+   ========================================================================= *@
+<div class="tpt-filters-area">
+
+    @* Dropdown row: caller fills Filters slot; Clear All sits on the right *@
+    <div class="tpt-filter-dropdowns">
+        @Filters
+        <button class="tpt-clear-all-btn" @onclick="HandleClearAll">CLEAR ALL</button>
+    </div>
+
+    @* Active chips — shown only when at least one filter is active *@
+    @if (ActiveFilters is { Count: > 0 })
+    {
+        <div class="tpt-chips-row">
+            @foreach (var chip in ActiveFilters)
+            {
+                var c = chip;
+                <span class="tpt-chip">
+                    <span class="tpt-chip-label">@c.Name:</span>&nbsp;@c.Value
+                    <button class="tpt-chip-remove"
+                            @onclick="() => HandleRemoveFilter(c)"
+                            title="Remove @c.Name filter">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </span>
+            }
+        </div>
+    }
+
+</div>
+
+@* =========================================================================
+   Section 2: Search line
+   — "Show X entries" on the left; action buttons + search box on the right
+   ========================================================================= *@
+<div class="tpt-search-line">
+
+    @* Left: show-entries selector *@
+    <div class="tpt-show-entries">
+        <span class="tpt-show-label">Show</span>
+        <select class="tpt-entries-select"
+                value="@ShowEntries"
+                @onchange="HandleShowEntriesChange">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span class="tpt-show-label">entries</span>
+    </div>
+
+    @* Right: optional action buttons then search box *@
+    <div class="tpt-search-right">
+
+        @if (ActionButtons is not null)
+        {
+            <div class="tpt-action-buttons">
+                @ActionButtons
+            </div>
+        }
+
+        <div class="tpt-search-box">
+            <i class="bi bi-search tpt-search-icon"></i>
+            <input class="tpt-search-input"
+                   type="text"
+                   placeholder="Search..."
+                   value="@SearchValue"
+                   @oninput="HandleSearchInput" />
+        </div>
+
+    </div>
+
+</div>
+
+@* =========================================================================
+   Sections 3 & 4: Table
+   — dark-background header row (Section 3) + alternating data rows (Section 4)
+   ========================================================================= *@
+<div class="tpt-table-wrapper">
+    <table class="tpt-table">
+        <thead>
+            <tr class="tpt-thead-row">
+                @TableHeader
+            </tr>
+        </thead>
+        <tbody>
+            @TableBody
+        </tbody>
+    </table>
+</div>
+
+@* =========================================================================
+   Section 5: Pagination footer
+   — "Showing X to Y of Z entries" on the left; page controls on the right
+   ========================================================================= *@
+<div class="tpt-pagination-footer">
+
+    <span class="tpt-showing-text">
+        Showing @ShowingFrom to @ShowingTo of @TotalRows entries
+    </span>
+
+    <div class="tpt-page-controls">
+        @Pagination
+    </div>
+
+</div>
+
+@* =========================================================================
+   Section: Component parameters, computed properties, and event handlers
+   ========================================================================= *@
+@code {
+
+    // =========================================================================
+    // Required RenderFragment slots — all four must be supplied by each page
+    // =========================================================================
+
+    /// <summary>Dropdown filter controls shown in Section 1.</summary>
+    [Parameter, EditorRequired]
+    public RenderFragment Filters     { get; set; } = default!;
+
+    /// <summary>Column &lt;th&gt; cells rendered inside the header row (Section 3).</summary>
+    [Parameter, EditorRequired]
+    public RenderFragment TableHeader { get; set; } = default!;
+
+    /// <summary>Data &lt;tr&gt; rows rendered inside &lt;tbody&gt; (Section 4).</summary>
+    [Parameter, EditorRequired]
+    public RenderFragment TableBody   { get; set; } = default!;
+
+    /// <summary>Pagination buttons rendered on the right of Section 5.</summary>
+    [Parameter, EditorRequired]
+    public RenderFragment Pagination  { get; set; } = default!;
+
+    // =========================================================================
+    // Optional RenderFragment slot
+    // =========================================================================
+
+    /// <summary>
+    /// Action buttons rendered between the entries selector and search box.
+    /// Examples: "+ Add Student", "Download Report".
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ActionButtons { get; set; }
+
+    // =========================================================================
+    // Page identity
+    // =========================================================================
+
+    /// <summary>Heading text displayed above the filters area.</summary>
+    [Parameter] public string PageTitle { get; set; } = "Page Title";
+
+    // =========================================================================
+    // Filter chip management
+    // The caller owns the ActiveFilters list.  The template fires callbacks
+    // so the caller can add/remove chips and re-render.
+    // =========================================================================
+
+    [Parameter] public List<FilterChip>          ActiveFilters     { get; set; } = new();
+    [Parameter] public EventCallback<FilterChip> OnRemoveFilter    { get; set; }
+    [Parameter] public EventCallback             OnClearAllFilters { get; set; }
+
+    // =========================================================================
+    // Show-entries selector
+    // Caller sets ShowEntries; template fires OnShowEntriesChanged on change.
+    // =========================================================================
+
+    [Parameter] public int                ShowEntries           { get; set; } = 10;
+    [Parameter] public EventCallback<int> OnShowEntriesChanged  { get; set; }
+
+    // =========================================================================
+    // Search box
+    // Caller sets SearchValue; template fires OnSearchChanged on each keystroke.
+    // =========================================================================
+
+    [Parameter] public string                SearchValue     { get; set; } = "";
+    [Parameter] public EventCallback<string> OnSearchChanged { get; set; }
+
+    // =========================================================================
+    // Row counts used to compute the "Showing X to Y of Z entries" string
+    // =========================================================================
+
+    /// <summary>Total filtered rows (across all pages).</summary>
+    [Parameter] public int TotalRows   { get; set; }
+
+    /// <summary>Currently active page number (1-based).</summary>
+    [Parameter] public int CurrentPage { get; set; } = 1;
+
+    // =========================================================================
+    // Computed: "Showing X to Y" range
+    // =========================================================================
+
+    private int ShowingFrom => TotalRows == 0 ? 0 : (CurrentPage - 1) * ShowEntries + 1;
+    private int ShowingTo   => Math.Min(CurrentPage * ShowEntries, TotalRows);
+
+    // =========================================================================
+    // Event handlers — delegate immediately to caller-supplied callbacks
+    // =========================================================================
+
+    private Task HandleRemoveFilter(FilterChip chip)
+        => OnRemoveFilter.InvokeAsync(chip);
+
+    private Task HandleClearAll()
+        => OnClearAllFilters.InvokeAsync();
+
+    private async Task HandleShowEntriesChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var val))
+            await OnShowEntriesChanged.InvokeAsync(val);
+    }
+
+    private async Task HandleSearchInput(ChangeEventArgs e)
+        => await OnSearchChanged.InvokeAsync(e.Value?.ToString() ?? "");
+}

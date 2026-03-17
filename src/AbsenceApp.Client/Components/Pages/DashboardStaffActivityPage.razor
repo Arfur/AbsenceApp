@@ -1,0 +1,178 @@
+@* ===========================================================================
+   File        : DashboardStaffActivityPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /dashboard/staff-activity
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Safeguarding and wellbeing dashboard showing safeguarding
+                 flag counts, medical alert counts, SEND student numbers,
+                 and recent absence activity.  Includes donut charts and
+                 active case tables for both safeguarding and medical registers.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - All data is currently static; replace with ViewModel bindings once
+       a safeguarding/wellbeing service layer is available.
+     - CP = Child Protection; CiN = Child in Need; DSL = Designated
+       Safeguarding Lead; SEND = Special Educational Needs & Disabilities.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+@page "/dashboard/staff-activity"
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: KPI cards — safeguarding, medical, SEND, and recent absence counts
+   ========================================================================= *@
+<div class="db-kpi-row">
+    <div class="db-kpi-card kpi-red">
+        <div class="kpi-icon-wrap"><i class="bi bi-shield-exclamation"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">7</span>
+            <span class="kpi-label">Safeguarding Flags</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-orange">
+        <div class="kpi-icon-wrap"><i class="bi bi-heart-pulse"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">12</span>
+            <span class="kpi-label">Medical Alerts</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-blue">
+        <div class="kpi-icon-wrap"><i class="bi bi-people"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">28</span>
+            <span class="kpi-label">SEND Students</span>
+        </div>
+    </div>
+    <div class="db-kpi-card kpi-orange">
+        <div class="kpi-icon-wrap"><i class="bi bi-clock-history"></i></div>
+        <div class="kpi-text">
+            <span class="kpi-value">19</span>
+            <span class="kpi-label">Absences (last 48h)</span>
+        </div>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Action buttons — quick-launch shortcuts for staff workflows
+   ========================================================================= *@
+<div class="db-action-row">
+    <button class="db-action-btn"><i class="bi bi-shield-check"></i> View Safeguarding</button>
+    <button class="db-action-btn"><i class="bi bi-heart-pulse"></i> View Medical</button>
+    <button class="db-action-btn"><i class="bi bi-journal-medical"></i> View SEND Register</button>
+    <button class="db-action-btn"><i class="bi bi-telephone"></i> Contact DSL</button>
+</div>
+
+@* =========================================================================
+   Section: Category donut charts — safeguarding and medical breakdowns
+   ========================================================================= *@
+<div class="db-row-2col">
+    <div class="db-card">
+        <div class="db-card-title">Safeguarding Categories</div>
+        <div class="db-chart-area">
+            <div class="donut-wrap" style="background: conic-gradient(#ef4444 0% 28.57%, #f59e0b 28.57% 42.86%, #3b82f6 42.86% 85.72%, #8b5cf6 85.72% 100%)">
+                <div class="donut-hole">
+                    <span class="donut-total">7</span>
+                    <span class="donut-sub">flags</span>
+                </div>
+            </div>
+            <div class="donut-legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> CP &mdash; 2</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> CiN &mdash; 1</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> Early Help &mdash; 3</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span> Other &mdash; 1</div>
+            </div>
+        </div>
+    </div>
+    <div class="db-card">
+        <div class="db-card-title">Medical Alert Categories</div>
+        <div class="db-chart-area">
+            <div class="donut-wrap" style="background: conic-gradient(#3b82f6 0% 41.67%, #10b981 41.67% 75%, #f59e0b 75% 83.33%, #8b5cf6 83.33% 100%)">
+                <div class="donut-hole">
+                    <span class="donut-total">12</span>
+                    <span class="donut-sub">alerts</span>
+                </div>
+            </div>
+            <div class="donut-legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span> Asthma &mdash; 5</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Allergies &mdash; 4</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Diabetes &mdash; 1</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span> Other &mdash; 2</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Active case tables — safeguarding cases and medical needs register
+   ========================================================================= *@
+<div class="db-row-2col">
+    <div class="db-card">
+        <div class="db-card-title">Active Safeguarding Cases</div>
+        <table class="db-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Category</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Aria Bennett</td>
+                    <td>CP</td>
+                    <td>Year 2B</td>
+                    <td style="color:#dc2626;font-weight:700">Review Due</td>
+                </tr>
+                <tr>
+                    <td>Ethan Murray</td>
+                    <td>Early Help</td>
+                    <td>Year 4A</td>
+                    <td style="color:#d97706;font-weight:700">Active</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="db-card">
+        <div class="db-card-title">Medical Needs Register</div>
+        <table class="db-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Condition</th>
+                    <th>Year</th>
+                    <th>Action Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Noah Lewis</td>
+                    <td>Asthma</td>
+                    <td>Year 3B</td>
+                    <td style="color:#059669;font-weight:700">On file</td>
+                </tr>
+                <tr>
+                    <td>Isla Turner</td>
+                    <td>Nut Allergy</td>
+                    <td>Year 1A</td>
+                    <td style="color:#059669;font-weight:700">On file</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Code-behind — breadcrumb initialisation
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Dashboard", "Safeguarding & Wellbeing");
+}

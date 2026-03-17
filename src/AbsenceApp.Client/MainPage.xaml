@@ -28,15 +28,12 @@
     -->
 
     <!-- =========================================================
-         Page layout â€” students button and BlazorWebView host
+         Page layout — BlazorWebView fills the entire page
          ========================================================= -->
-    <VerticalStackLayout>
-        <Button Text="Students" Clicked="OnStudentsClicked" />
-        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
-            <BlazorWebView.RootComponents>
-                <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
-            </BlazorWebView.RootComponents>
-        </BlazorWebView>
-    </VerticalStackLayout>
+    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
 
 </ContentPage>
