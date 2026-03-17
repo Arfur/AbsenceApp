@@ -62,6 +62,21 @@
             <option value="@opt.Value" selected="@(ViewModel.SelectedPage == opt.Value)">@opt.Label</option>
         }
     </select>
+    @if (!ViewModel.IsLoading && ViewModel.Settings.Count > 0)
+    {
+        <button class="tset-save-btn tset-save-btn-inline" @onclick="OnSave" disabled="@ViewModel.IsSaving">
+            @if (ViewModel.IsSaving)
+            {
+                <i class="bi bi-hourglass-split"></i>
+                @:&nbsp;Saving…
+            }
+            else
+            {
+                <i class="bi bi-floppy-fill"></i>
+                @:&nbsp;Save Changes
+            }
+        </button>
+    }
 </div>
 
 @* =========================================================================
@@ -137,26 +152,7 @@ else if (!ViewModel.IsLoading && ViewModel.Settings.Count == 0)
     </div>
 }
 
-@* =========================================================================
-   Section D: Save button
-   ========================================================================= *@
-@if (!ViewModel.IsLoading && ViewModel.Settings.Count > 0)
-{
-    <div class="tset-footer">
-        <button class="tset-save-btn" @onclick="OnSave" disabled="@ViewModel.IsSaving">
-            @if (ViewModel.IsSaving)
-            {
-                <i class="bi bi-hourglass-split"></i>
-                @:&nbsp;Saving…
-            }
-            else
-            {
-                <i class="bi bi-floppy-fill"></i>
-                @:&nbsp;Save Changes
-            }
-        </button>
-    </div>
-}
+@* Save button moved into the selector row above for inline right-aligned placement *@
 
 @* =========================================================================
    Section: Code-behind — table options, lifecycle, and event handlers
@@ -210,11 +206,18 @@ else if (!ViewModel.IsLoading && ViewModel.Settings.Count == 0)
 
         if (ViewModel.IsSaved)
         {
-            // Auto-dismiss success banner after 4 seconds
+            // Auto-dismiss success banner after 4 seconds.
+            // Guard with try/catch so that if the component is disposed before
+            // the delay completes (e.g. user navigated away) the exception is
+            // swallowed rather than crashing the Blazor circuit.
             _ = Task.Delay(4000).ContinueWith(_ =>
             {
-                ViewModel.ClearSaved();
-                InvokeAsync(StateHasChanged);
+                try
+                {
+                    ViewModel.ClearSaved();
+                    InvokeAsync(StateHasChanged);
+                }
+                catch { /* component already disposed — safe to ignore */ }
             });
         }
     }

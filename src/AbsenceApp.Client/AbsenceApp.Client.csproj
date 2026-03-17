@@ -52,9 +52,10 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
 
+
     <ItemGroup>
-        <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+        <!-- App Icon: full-design SVG (blue calendar + green tick); no separate foreground file -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" />
 
         <!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -75,11 +76,17 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AbsenceApp.Core\AbsenceApp.Core.csproj" />
       <ProjectReference Include="..\AbsenceApp.Data\AbsenceApp.Data.csproj" />
+    </ItemGroup>
+
+    <!-- appsettings.json must be embedded so MAUI can read it at runtime -->
+    <ItemGroup>
+      <EmbeddedResource Include="appsettings.json" />
     </ItemGroup>
 
 </Project>

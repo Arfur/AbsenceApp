@@ -42,6 +42,7 @@ using AbsenceApp.Core.ViewModels;
 using AbsenceApp.Data;
 using AbsenceApp.Data.Services;
 using AbsenceApp.Data.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AbsenceApp.Client;
@@ -63,6 +64,15 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
+
+        // =========================================================================
+        // Load appsettings.json from embedded resource — MAUI does NOT auto-load it
+        // from the file system the way ASP.NET Core does; it must be streamed in.
+        // =========================================================================
+        var assembly = typeof(MauiProgram).Assembly;
+        using var appSettingsStream = assembly.GetManifestResourceStream("AbsenceApp.Client.appsettings.json");
+        if (appSettingsStream is not null)
+            builder.Configuration.AddJsonStream(appSettingsStream);
 
         // =========================================================================
         // Data layer — registers AppDbContext + all EF repositories via extension
@@ -89,14 +99,14 @@ public static class MauiProgram
         builder.Services.AddSingleton<StudentsViewModel>();
         builder.Services.AddSingleton<StudentDetailsViewModel>();
         builder.Services.AddSingleton<AbsencesViewModel>();
-        builder.Services.AddSingleton<ClassesViewModel>();
+        builder.Services.AddScoped<ClassesViewModel>();   // Scoped: depends on IClassService (Scoped)
         builder.Services.AddSingleton<ClassDetailsViewModel>();
         builder.Services.AddSingleton<AbsenceDetailsViewModel>();
         builder.Services.AddSingleton<AuditLogViewModel>();
         builder.Services.AddSingleton<AttendanceViewModel>();
-        builder.Services.AddSingleton<StaffViewModel>();
+        builder.Services.AddScoped<StaffViewModel>();     // Scoped: depends on IUserService (Scoped)
 
-        builder.Services.AddSingleton<TableSettingsViewModel>();
+        builder.Services.AddScoped<TableSettingsViewModel>(); // Scoped: depends on ITableSettingsService (Scoped)
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
