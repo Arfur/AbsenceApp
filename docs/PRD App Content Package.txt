@@ -1,0 +1,713 @@
+Great — now that everything is in place, here is **the complete project context package**, written in a way that another AI can immediately understand the entire system without needing any prior conversation history.
+
+This package is structured, clean, and optimised for AI parsing.  
+It contains **all essential context**, but no unnecessary narrative.
+
+You can copy‑paste this whole document into a new chat and the AI will fully understand your project.
+
+---
+
+# 📦 **ABSENCE APPLICATION — COMPLETE PROJECT CONTEXT PACKAGE**  
+### *Copy‑ready for a new AI session*
+
+---
+
+# 1. **Project Overview**
+
+The Absence Application is a school‑focused management system designed to track:
+
+- Staff absences  
+- Student absences  
+- Attendance registers  
+- Medical information  
+- Safeguarding flags  
+- Staff roles, assignments, and responsibilities  
+- Devices issued to staff  
+- External accounts  
+- Audit logs for all critical actions  
+
+The system is being developed as a **Blazor Hybrid** application using **.NET** and **Entity Framework Core**, with a **local SQL Server Express** database during development.  
+When deployed, the database will be migrated to the school’s **on‑premises Microsoft SQL Server** instance.
+
+The application is intended for:
+
+- School administrators  
+- Senior leadership  
+- Teachers  
+- Office staff  
+- Attendance officers  
+- Safeguarding leads  
+
+It supports multi‑school setups, year groups, phases, classes, and detailed audit trails.
+
+---
+
+# 2. **Technical Architecture Summary**
+
+### **Frontend**
+- Blazor Hybrid (MAUI + Blazor WebView)
+- C# Razor components
+- Planned migration to MudBlazor for modern UI components
+
+### **Backend**
+- .NET 8 (or latest LTS)
+- Entity Framework Core for ORM
+- Repository + service layer pattern (planned)
+
+### **Database**
+- SQL Server Express (development)
+- SQL Server Standard/Enterprise (production)
+- EF Core migrations for schema evolution
+
+### **Deployment**
+- Local development: SQL Express instance  
+- Production: School server SQL instance  
+- Migration via EF Core + SQL backup/restore
+
+---
+
+# 3. **Database Philosophy**
+
+The schema is designed around:
+
+- **Normalised relational structure**  
+- **Clear foreign key relationships**  
+- **Auditability** (every major action is logged)  
+- **Multi‑school support**  
+- **Role‑based access**  
+- **Extensibility** (new absence types, roles, responsibilities, etc.)  
+
+The system separates:
+
+- **Users** (accounts)  
+- **Staff** (HR‑style records)  
+- **Students** (MIS‑style records)  
+- **Assignments** (roles, classes, responsibilities)  
+- **Absences** (staff + student)  
+- **Attendance** (registers + marks)  
+- **Audit logs** (for every change)  
+
+---
+
+# 4. **Full Database Schema (40 Tables)**  
+### *This is the exact schema you should paste into a new chat.*
+
+---
+
+## **TABLE1: users**
+```
+id (bigint, PK)
+name (string)
+username (string)
+email (string)
+email_verified_at (datetime)
+password (string, hashed)
+role_type_id (bigint, FK → role_types)
+status (string)
+is_admin (boolean)
+profile_photo_path (string)
+phone_number (string)
+last_login_at (datetime)
+last_login_ip (string)
+remember_token (string)
+created_at (datetime)
+updated_at (datetime)
+department_id (bigint, FK → departments)
+designation (string)
+login_count (int)
+is_two_factor_enabled (boolean)
+two_factor_secret (string)
+backup_codes (json)
+timezone (string)
+language_code (string)
+bio (text)
+date_of_birth (date)
+gender (string)
+address (string)
+city (string)
+country (string)
+postal_code (string)
+```
+
+---
+
+## **TABLE2: staff**
+```
+id (bigint, PK)
+staff_number (string)
+first_name (string)
+last_name (string)
+preferred_name (string)
+title (string)
+date_of_birth (date)
+gender (string)
+work_email (string)
+alt_email (string)
+phone_home (string)
+phone_mobile (string)
+phone_emergency (string)
+employment_type (string)
+contract_type (string)
+hire_date (date)
+end_date (date)
+work_location (string)
+reporting_manager_id (bigint, FK → staff)
+job_title_id (bigint, FK → job_titles)
+job_group_id (bigint, FK → job_groups)
+department_id (bigint, FK → departments)
+profile_photo_url (string)
+account_status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE3: departments**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+head_user_id (bigint, FK → users)
+status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE4: job_titles**
+```
+id (bigint, PK)
+title (string)
+code (string)
+description (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE5: job_groups**
+```
+id (bigint, PK)
+name (string)
+description (string)
+typical_members (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE6: schools**
+```
+id (bigint, PK)
+school_ref (string)
+name (string)
+code (string)
+description (string)
+status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE7: role_types**
+```
+id (bigint, PK)
+name (string)
+display_name (string)
+description (string)
+is_system_role (boolean)
+is_default (boolean)
+priority (int)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE8: user_profiles**
+```
+id (bigint, PK)
+user_id (bigint, FK → users)
+first_name (string)
+last_name (string)
+preferred_name (string)
+title (string)
+date_of_birth (date)
+profile_picture_url (string)
+bio (text)
+gender (string)
+timezone (string)
+language_code (string)
+department_id (bigint, FK → departments)
+job_title_id (bigint, FK → job_titles)
+school_id (bigint, FK → schools)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE9: classes**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE10: phases (version 1)**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE11: class_year_group_assignments**
+```
+id (bigint, PK)
+class_id (bigint, FK → classes)
+year_group_id (bigint, FK → year_groups)
+school_id (bigint, FK → schools)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE12: responsibilities**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+```
+
+---
+
+## **TABLE13: staff_assignments**
+```
+id (bigint, PK)
+staff_id (bigint, FK → staff)
+job_title_id (bigint, FK → job_titles)
+job_group_id (bigint, FK → job_groups)
+department_id (bigint, FK → departments)
+class_id (bigint, FK → classes)
+responsibility_id (bigint, FK → responsibilities)
+start_date (date)
+end_date (date)
+days_of_week (json)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE14: absence_types**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+is_paid (boolean)
+```
+
+---
+
+## **TABLE15: staff_absences**
+```
+id (bigint, PK)
+staff_id (bigint, FK → staff)
+absence_type_id (bigint, FK → absence_types)
+start_date (date)
+end_date (date)
+notes (text)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE16: staff_devices**
+```
+id (bigint, PK)
+staff_id (bigint, FK → staff)
+device_type (string)
+serial_number (string)
+assigned_date (date)
+returned_date (date)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE17: device_types**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE18: staff_external_accounts**
+```
+id (bigint, PK)
+staff_id (bigint, FK → staff)
+external_system_id (bigint, FK → external_systems)
+account_username (string)
+account_email (string)
+status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE19: external_systems**
+```
+id (bigint, PK)
+name (string)
+code (string)
+description (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE20: login_audit**
+```
+id (bigint, PK)
+user_id (bigint, FK → users)
+login_time (datetime)
+ip_address (string)
+user_agent (string)
+success (boolean)
+created_at (datetime)
+```
+
+---
+
+## **TABLE21: account_verification_events**
+```
+id (bigint, PK)
+user_id (bigint, FK → users)
+event_type (string)
+event_time (datetime)
+ip_address (string)
+metadata (json)
+created_at (datetime)
+```
+
+---
+
+## **TABLE22: role_change_audit**
+```
+id (bigint, PK)
+user_id (bigint, FK → users)
+old_role_id (bigint, FK → role_types)
+new_role_id (bigint, FK → role_types)
+changed_by (bigint, FK → users)
+change_time (datetime)
+reason (text)
+metadata (json)
+```
+
+---
+
+## **TABLE23: staff_assignment_audit**
+```
+id (bigint, PK)
+staff_assignment_id (bigint, FK → staff_assignments)
+staff_id (bigint, FK → staff)
+action (string)
+changed_by (bigint, FK → users)
+change_time (datetime)
+old_values (json)
+new_values (json)
+```
+
+---
+
+## **TABLE24: staff_absence_audit**
+```
+id (bigint, PK)
+staff_absence_id (bigint, FK → staff_absences)
+staff_id (bigint, FK → staff)
+action (string)
+changed_by (bigint, FK → users)
+change_time (datetime)
+old_values (json)
+new_values (json)
+```
+
+---
+
+## **TABLE25: staff_device_audit**
+```
+id (bigint, PK)
+staff_device_id (bigint, FK → staff_devices)
+staff_id (bigint, FK → staff)
+action (string)
+changed_by (bigint, FK → users)
+change_time (datetime)
+old_values (json)
+new_values (json)
+```
+
+---
+
+## **TABLE26: staff_external_account_audit**
+```
+id (bigint, PK)
+staff_external_account_id (bigint, FK → staff_external_accounts)
+staff_id (bigint, FK → staff)
+action (string)
+changed_by (bigint, FK → users)
+change_time (datetime)
+old_values (json)
+new_values (json)
+```
+
+---
+
+## **TABLE27: system_events**
+```
+id (bigint, PK)
+event_type (string)
+event_time (datetime)
+triggered_by (string)
+description (text)
+metadata (json)
+```
+
+---
+
+## **TABLE28: students**
+```
+id (bigint, PK)
+admission_number (string)
+first_name (string)
+middle_names (string)
+last_name (string)
+legal_first_name (string)
+legal_last_name (string)
+gender (string)
+date_of_birth (date)
+year_group_id (bigint, FK → year_groups)
+class_id (bigint, FK → classes)
+house_id (bigint, FK → houses)
+username (string)
+upn (string)
+school_id (bigint, FK → schools)
+admission_date (date)
+status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE29: year_groups**
+```
+id (bigint, PK)
+name (string)
+code (string)
+numeric_value (int)
+phase_id (bigint, FK → phases)
+school_id (bigint, FK → schools)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE30: student_absences**
+```
+id (bigint, PK)
+student_id (bigint, FK → students)
+absence_type_id (bigint, FK → absence_types)
+date (date)
+start_time (time)
+end_time (time)
+is_authorised (boolean)
+notes (string)
+recorded_by (bigint, FK → users)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE31: student_contacts**
+```
+id (bigint, PK)
+student_id (bigint, FK → students)
+contact_name (string)
+relationship (string)
+phone_mobile (string)
+phone_home (string)
+email (string)
+priority (int)
+lives_with_student (boolean)
+has_parental_responsibility (boolean)
+safeguarding_flag (boolean)
+notes (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE32: student_absence_audit**
+```
+id (bigint, PK)
+student_absence_id (bigint, FK → student_absences)
+student_id (bigint, FK → students)
+action (string)
+changed_by (bigint, FK → users)
+changed_at (datetime)
+field_name (string)
+old_value (string)
+new_value (string)
+notes (string)
+```
+
+---
+
+## **TABLE33: houses**
+```
+id (bigint, PK)
+name (string)
+colour (string)
+code (string)
+school_id (bigint, FK → schools)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE34: phases (version 2)**
+```
+id (bigint, PK)
+name (string)
+code (string)
+numeric_order (int)
+school_id (bigint, FK → schools)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE35: student_medical**
+```
+id (bigint, PK)
+student_id (bigint, FK → students)
+condition_name (string)
+severity (string)
+medication (string)
+care_plan_file (string)
+notes (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE36: student_flags**
+```
+id (bigint, PK)
+student_id (bigint, FK → students)
+flag_type (string)
+flag_value (string)
+start_date (date)
+end_date (date)
+notes (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE37: attendance_registers**
+```
+id (bigint, PK)
+class_id (bigint, FK → classes)
+date (date)
+session (string)
+opened_by (bigint, FK → users)
+closed_by (bigint, FK → users)
+status (string)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+## **TABLE38: attendance_marks**
+```
+id (bigint, PK)
+attendance_register_id (bigint, FK → attendance_registers)
+student_id (bigint, FK → students)
+mark_code (string)
+is_late (boolean)
+minutes_late (int)
+notes (string)
+recorded_by (bigint, FK → users)
+created_at (datetime)
+updated_at (datetime)
+```
+
+---
+
+# 5. **How to Use This Package in a New AI Chat**
+
+Paste the following in order:
+
+1. **Project Overview**  
+2. **Technical Architecture Summary**  
+3. **Database Philosophy**  
+4. **Full Database Schema (all 40 tables)**  
+
+This gives the new AI:
+
+- Full context  
+- Full structure  
+- Full data model  
+- Full relationships  
+- Full domain understanding  
+
+It will behave as if it has been working with you on this project from day one.
+
+---
+
+If you want, I can also generate:
+
+- A **domain glossary**  
+- A **system diagram (text‑based)**  
+- A **feature roadmap**  
+- A **UI architecture plan**  
+- A **developer onboarding guide**  
+
+Just tell me what you want next.

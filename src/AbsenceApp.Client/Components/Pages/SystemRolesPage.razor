@@ -1,0 +1,18 @@
+@page "/system/roles"
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+<h3>Roles</h3>
+<p class="page-placeholder-msg">This configuration page is not yet implemented.</p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (AppState.UserRole != "Super Admin")
+        {
+            Nav.NavigateTo("/dashboard/overview", replace: true);
+            return;
+        }
+        AppState.SetBreadcrumb("System Management", "Security", "Roles");
+    }
+}

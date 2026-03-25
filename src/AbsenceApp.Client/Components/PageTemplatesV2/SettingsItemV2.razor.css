@@ -1,0 +1,107 @@
+/* =============================================================================
+   File    : SettingsItemV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 5
+   Version : 1.1.0
+   Created : 2026-03-21
+   Updated : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose : Scoped CSS for SettingsItemV2. Single settings row with a
+             label/description column and a control/hint column.
+   ---------------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Header updated for Step 3 (no layout binding required).
+   ---------------------------------------------------------------------------
+   Notes   :
+     - Component stylesheet. No layout inheritance applies.
+============================================================================= */
+
+/* ── Row ────────────────────────────────────────────────────────────────── */
+.dsv2-settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--dsv2-space-3, 0.75rem);
+    padding: var(--dsv2-space-3, 0.75rem) var(--dsv2-space-4, 1rem);
+    border-bottom: 1px solid var(--dsv2-border, #dde1e7);
+    min-height: 52px;
+    transition: background-color 0.12s ease;
+}
+
+.dsv2-settings-item:last-child {
+    border-bottom: none;
+}
+
+.dsv2-settings-item:hover {
+    background: var(--dsv2-chrome-bg, #f5f6f8);
+}
+
+.dsv2-settings-item--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ── Label column ──────────────────────────────────────────────────────── */
+.dsv2-settings-item__label-col {
+    display: flex;
+    align-items: center;
+    gap: var(--dsv2-space-2, 0.5rem);
+    flex: 1;
+    min-width: 0;
+}
+
+.dsv2-settings-item__icon {
+    font-size: var(--dsv2-font-size-sm, 0.875rem);
+    color: var(--dsv2-text-muted, #7b8494);
+    flex-shrink: 0;
+}
+
+.dsv2-settings-item__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.dsv2-settings-item__label {
+    font-size: var(--dsv2-font-size-sm, 0.875rem);
+    font-weight: 500;
+    color: var(--dsv2-text, #2c3345);
+    display: flex;
+    align-items: center;
+    gap: var(--dsv2-space-1, 0.25rem);
+    flex-wrap: wrap;
+}
+
+.dsv2-settings-item__description {
+    font-size: var(--dsv2-font-size-xs, 0.75rem);
+    color: var(--dsv2-text-muted, #7b8494);
+    line-height: 1.4;
+    white-space: normal;
+}
+
+/* ── Badge ──────────────────────────────────────────────────────────────── */
+.dsv2-settings-item__badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--dsv2-accent, #2563eb);
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: var(--dsv2-radius-full, 9999px);
+}
+
+/* ── Control column ────────────────────────────────────────────────────── */
+.dsv2-settings-item__control-col {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.dsv2-settings-item__hint {
+    font-size: var(--dsv2-font-size-xs, 0.75rem);
+    color: var(--dsv2-text-muted, #7b8494);
+    font-style: italic;
+}

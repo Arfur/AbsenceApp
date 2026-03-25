@@ -1,0 +1,83 @@
+/* =============================================================================
+   File    : ScrollSpyV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 3
+   Created : 2026-03-21
+   Purpose : Scoped styles for ScrollSpyV2 component.
+             All values reference V2 design tokens from wwwroot/css/tokens/.
+============================================================================= */
+
+/* ── Sticky spy navigation ───────────────────────────────────────────────── */
+
+.dsv2-scrollspy__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    padding: var(--ds-spacing-2) var(--ds-spacing-1);
+    position: sticky;
+    top: var(--ds-spacing-4);
+    align-self: start;
+    min-width: 9rem;
+    max-width: 13rem;
+}
+
+.dsv2-scrollspy__nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-md);
+    color: var(--ds-color-neutral-60);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    text-decoration: none;
+    transition: background var(--ds-transition-fast), color var(--ds-transition-fast);
+    border-left: 2px solid transparent;
+}
+
+.dsv2-scrollspy__nav-item:hover {
+    background: var(--ds-color-neutral-5);
+    color: var(--ds-color-neutral-90);
+}
+
+.dsv2-scrollspy__nav-item--active {
+    background: var(--ds-color-accent-alpha-10);
+    color: var(--ds-color-accent);
+    border-left-color: var(--ds-color-accent);
+    font-weight: var(--ds-font-weight-semibold);
+}
+
+.dsv2-scrollspy__nav-icon {
+    font-size: var(--ds-font-size-sm);
+    flex-shrink: 0;
+}
+
+.dsv2-scrollspy__nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Scrollable content container ────────────────────────────────────────── */
+
+.dsv2-scrollspy__container {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    flex: 1;
+}
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+
+:global([data-theme="dark"]) .dsv2-scrollspy__nav-item {
+    color: var(--ds-color-neutral-40);
+}
+
+:global([data-theme="dark"]) .dsv2-scrollspy__nav-item:hover {
+    background: var(--ds-color-neutral-85);
+    color: var(--ds-color-neutral-10);
+}
+
+:global([data-theme="dark"]) .dsv2-scrollspy__nav-item--active {
+    background: var(--ds-color-accent-alpha-20);
+    color: var(--ds-color-accent-light);
+}

@@ -1,0 +1,753 @@
+PHASE 4 — TABLE SYSTEM (BLAZOR VERSION)
+Goal:
+  - Introduce a unified, reusable, configurable table system built entirely with Blazor components.
+  - Support sorting, filtering, searching, pagination, inline actions, skeleton loading, and empty states.
+  - Use JSON-driven configuration (from Phase 2).
+  - Ensure all new table components are additive and do not break existing pages.
+  - Prepare for gradual migration of existing table pages.
+
+Constraints:
+  - Do NOT modify or remove existing table implementations.
+  - Do NOT break existing pages.
+  - All new table components must be isolated under a new namespace.
+  - All styling must use CSS variables and scoped .razor.css files.
+  - All configuration must come from table-schema.json.
+
+----------------------------------------------------------------------
+4.1 TABLE COMPONENT ARCHITECTURE
+----------------------------------------------------------------------
+
+4.1.1 Create folder for table components
+  - Path: /Components/TableV2/
+
+4.1.2 Create TableV2.razor
+  - Responsibilities:
+      - Render table header
+      - Render filter row (optional)
+      - Render data rows
+      - Render inline actions column
+      - Render pagination
+      - Render skeleton rows when loading
+      - Render empty state when no data
+  - Parameters:
+      - Items (IEnumerable<T>)
+      - Columns (List<TableColumnModel>)
+      - IsLoading (bool)
+      - PageIndex
+      - PageSize
+      - TotalCount
+      - OnPageChanged
+      - OnSortChanged
+      - OnFilterChanged
+      - OnSearchChanged
+      - OnView
+      - OnEdit
+
+4.1.3 Create TableV2.razor.css
+  - Style using CSS variables:
+      --table-header-bg
+      --table-row-bg
+      --table-border-color
+      --space-*
+      --radius-*
+  - Use CSS Grid or table layout.
+
+4.1.4 Create TableColumnModel.cs
+  - Path: /Models/TableV2/TableColumnModel.cs
+  - Properties:
+      - string ColumnName
+      - string DisplayName
+      - bool Visible
+      - bool Sortable
+      - bool Filterable
+      - bool Searchable
+      - string Alignment
+      - int Order
+
+4.1.5 Create TableConfigService.cs
+  - Path: /Services/TableV2/TableConfigService.cs
+  - Responsibilities:
+      - Load table-schema.json from wwwroot/config/designsystem/
+      - Provide column definitions for each table
+      - Cache results
+
+4.1.6 Register service in MauiProgram.cs
+  - builder.Services.AddSingleton<TableConfigService>();
+
+----------------------------------------------------------------------
+4.2 COLUMN CONFIGURATION (VISIBLE, SORTABLE, FILTERABLE, SEARCHABLE)
+----------------------------------------------------------------------
+
+4.2.1 Implement column visibility
+  - TableV2.razor:
+      - Only render columns where Visible = true.
+
+4.2.2 Implement sorting
+  - Clicking header triggers:
+      OnSortChanged(columnName, direction)
+  - Sorting direction cycles:
+      None → Asc → Desc → None
+
+4.2.3 Implement filtering
+  - If Filterable = true:
+      - Render input in filter row
+      - Trigger OnFilterChanged(columnName, value)
+
+4.2.4 Implement searching
+  - Search bar is external to table
+  - TableV2 receives search text via parameter
+  - Only applies to Searchable columns
+
+4.2.5 Implement alignment
+  - Apply CSS class:
+      text-left
+      text-center
+      text-right
+
+4.2.6 Implement column ordering
+  - Sort columns by Order property before rendering.
+
+----------------------------------------------------------------------
+4.3 TABLE SETTINGS PAGE
+----------------------------------------------------------------------
+
+4.3.1 Create TableSettingsPageV2.razor
+  - Path: /Components/TableV2/TableSettingsPageV2.razor
+  - Responsibilities:
+      - Allow admin to configure:
+          - Column visibility
+          - Column order
+          - Sortable flag
+          - Filterable flag
+          - Searchable flag
+          - Alignment
+      - Save changes back to table-schema.json
+
+4.3.2 Create TableSettingsViewModelV2.cs
+  - Responsibilities:
+      - Load table-schema.json
+      - Bind to UI
+      - Save updated configuration
+
+4.3.3 UI elements:
+      - Checkbox for Visible
+      - Dropdown for Alignment
+      - Toggle switches for Sortable/Filterable/Searchable
+      - Drag handle for reordering (optional)
+
+4.3.4 Ensure backward compatibility
+  - Existing table settings remain untouched.
+
+----------------------------------------------------------------------
+4.4 FILTER ROW
+----------------------------------------------------------------------
+
+4.4.1 Create FilterRowV2.razor
+  - Path: /Components/TableV2/FilterRowV2.razor
+  - Responsibilities:
+      - Render filter inputs for each column
+      - Trigger OnFilterChanged events
+
+4.4.2 Create FilterRowV2.razor.css
+  - Style filter row using spacing tokens.
+
+4.4.3 Integrate into TableV2
+  - Only render if at least one column has Filterable = true.
+
+----------------------------------------------------------------------
+4.5 GLOBAL SEARCH
+----------------------------------------------------------------------
+
+4.5.1 Create SearchBarV2.razor
+  - Path: /Components/TableV2/SearchBarV2.razor
+  - Responsibilities:
+      - Provide search input
+      - Trigger OnSearchChanged
+
+4.5.2 Create SearchBarV2.razor.css
+  - Style using:
+      --space-*
+      --radius-*
+
+4.5.3 Integrate with TableV2
+  - TableV2 receives search text via parameter.
+
+----------------------------------------------------------------------
+4.6 INLINE ACTION BUTTONS
+----------------------------------------------------------------------
+
+4.6.1 Create InlineActionsV2.razor
+  - Path: /Components/TableV2/InlineActionsV2.razor
+  - Responsibilities:
+      - Render icon-only buttons for:
+          - View
+          - Edit
+      - Use IconButton component from Phase 2
+
+4.6.2 Create InlineActionsV2.razor.css
+  - Style using:
+      --space-*
+      --radius-*
+
+4.6.3 Integrate into TableV2
+  - Add final column for actions.
+
+----------------------------------------------------------------------
+4.7 LOADING STATE (SKELETON ROWS)
+----------------------------------------------------------------------
+
+4.7.1 Create SkeletonRowV2.razor
+  - Path: /Components/TableV2/SkeletonRowV2.razor
+  - Responsibilities:
+      - Display grey placeholder bars for each cell
+
+4.7.2 Create SkeletonRowV2.razor.css
+  - Use CSS animations for shimmer effect (optional)
+
+4.7.3 Integrate into TableV2
+  - Render skeleton rows when IsLoading = true.
+
+----------------------------------------------------------------------
+4.8 EMPTY STATE
+----------------------------------------------------------------------
+
+4.8.1 Create EmptyStateV2.razor
+  - Path: /Components/TableV2/EmptyStateV2.razor
+  - Responsibilities:
+      - Display message when no data is available
+      - Optional icon
+
+4.8.2 Create EmptyStateV2.razor.css
+  - Style using:
+      --space-*
+      --color-neutral-*
+
+4.8.3 Integrate into TableV2
+  - Render when:
+      Items.Count == 0 AND IsLoading == false
+
+----------------------------------------------------------------------
+4.9 PAGINATION
+----------------------------------------------------------------------
+
+4.9.1 Create PaginationV2.razor
+  - Path: /Components/TableV2/PaginationV2.razor
+  - Responsibilities:
+      - Previous/Next buttons
+      - Page number display
+      - Page size selector (optional)
+
+4.9.2 Create PaginationV2.razor.css
+  - Style using:
+      --space-*
+      --radius-*
+
+4.9.3 Integrate into TableV2
+  - Pagination appears below table.
+
+----------------------------------------------------------------------
+4.10 PHASE 4 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 4 is complete when:
+  - TableV2 exists and supports:
+      - Sorting
+      - Filtering
+      - Searching
+      - Pagination
+      - Inline actions
+      - Skeleton rows
+      - Empty state
+  - TableSettingsPageV2 exists and loads/saves configuration.
+  - All table components exist and function independently.
+  - No existing tables or pages have been modified.
+  - The app builds and runs with zero regressions.
+  - All new table components are additive and optional.
+
+END OF PHASE 4
+PHASE 5 — PAGE TEMPLATES (BLAZOR VERSION)
+Goal:
+  - Introduce a unified, reusable set of Blazor page templates for the Absence MAUI Blazor Hybrid app.
+  - Ensure all pages follow a consistent structure: header, breadcrumb, content, optional scroll-spy.
+  - Ensure templates use the new layout components (Phase 3) and design system (Phase 2).
+  - Ensure templates are additive and do not break existing pages.
+  - Prepare for gradual migration of existing pages to the new template system.
+
+Constraints:
+  - Do NOT modify or remove existing .razor pages.
+  - Do NOT break existing routing or navigation.
+  - All templates must be introduced in parallel under a new namespace.
+  - All templates must use CSS variables and scoped .razor.css files.
+  - All templates must be fully compatible with Blazor Hybrid.
+
+----------------------------------------------------------------------
+5.1 STANDARD PAGE TEMPLATE
+----------------------------------------------------------------------
+
+5.1.1 Create folder for templates
+  - Path: /Components/PageTemplatesV2/
+
+5.1.2 Create StandardPageV2.razor
+  - File: /Components/PageTemplatesV2/StandardPageV2.razor
+  - Responsibilities:
+      - Provide a standard layout for:
+          - List pages
+          - Dashboard pages
+          - Settings pages
+      - Wrap PageTemplateV2 (created in Phase 3)
+  - Parameters:
+      - Title
+      - Subtitle
+      - BreadcrumbItems (List<string>)
+      - ChildContent (RenderFragment)
+
+5.1.3 Create StandardPageV2.razor.css
+  - Style using:
+      --content-padding
+      --space-*
+      --radius-*
+
+5.1.4 Behaviour:
+  - Renders:
+      SidebarV2
+      HeaderV2
+      BreadcrumbV2
+      Main content area
+
+5.1.5 Backward compatibility:
+  - Existing pages remain unchanged.
+  - New pages may optionally use StandardPageV2.
+
+----------------------------------------------------------------------
+5.2 DETAIL PAGE TEMPLATE
+----------------------------------------------------------------------
+
+5.2.1 Create DetailPageV2.razor
+  - File: /Components/PageTemplatesV2/DetailPageV2.razor
+  - Responsibilities:
+      - Provide a structured detail layout with multiple sections.
+      - Support optional scroll-spy (Phase 3).
+  - Parameters:
+      - Title
+      - Subtitle
+      - BreadcrumbItems
+      - Sections (List<DetailSectionModel>)
+      - EnableScrollSpy (bool)
+
+5.2.2 Create DetailPageV2.razor.css
+  - Style:
+      - Section spacing
+      - Section headers
+      - Scroll-spy layout
+
+5.2.3 Create DetailSectionModel.cs
+  - Path: /Models/PageTemplatesV2/DetailSectionModel.cs
+  - Properties:
+      - string Id
+      - string Title
+      - RenderFragment Content
+
+5.2.4 Create DetailSectionV2.razor
+  - File: /Components/PageTemplatesV2/DetailSectionV2.razor
+  - Responsibilities:
+      - Render a section with title + content
+      - Provide anchor for scroll-spy
+
+5.2.5 Backward compatibility:
+  - Existing detail pages remain unchanged.
+
+----------------------------------------------------------------------
+5.3 FORM PAGE TEMPLATE
+----------------------------------------------------------------------
+
+5.3.1 Create FormPageV2.razor
+  - File: /Components/PageTemplatesV2/FormPageV2.razor
+  - Responsibilities:
+      - Provide a consistent layout for forms.
+      - Support:
+          - Form sections
+          - Validation summary
+          - Save/Cancel buttons
+  - Parameters:
+      - Title
+      - Subtitle
+      - BreadcrumbItems
+      - Sections (List<FormSectionModel>)
+      - OnSave (EventCallback)
+      - OnCancel (EventCallback)
+
+5.3.2 Create FormPageV2.razor.css
+  - Style:
+      --space-*
+      --radius-*
+      --form-section-gap
+
+5.3.3 Create FormSectionModel.cs
+  - Path: /Models/PageTemplatesV2/FormSectionModel.cs
+  - Properties:
+      - string Title
+      - RenderFragment Content
+
+5.3.4 Create FormSectionV2.razor
+  - File: /Components/PageTemplatesV2/FormSectionV2.razor
+  - Responsibilities:
+      - Render a titled form section
+
+5.3.5 Create FormFooterV2.razor
+  - File: /Components/PageTemplatesV2/FormFooterV2.razor
+  - Responsibilities:
+      - Render Save/Cancel buttons
+      - Use IconButton or Button styles from Phase 2
+
+5.3.6 Backward compatibility:
+  - Existing forms remain unchanged.
+
+----------------------------------------------------------------------
+5.4 SETTINGS PAGE TEMPLATE
+----------------------------------------------------------------------
+
+5.4.1 Create SettingsPageV2.razor
+  - File: /Components/PageTemplatesV2/SettingsPageV2.razor
+  - Responsibilities:
+      - Provide a layout for grouped settings
+      - Support:
+          - Settings groups
+          - Settings items
+  - Parameters:
+      - Title
+      - Subtitle
+      - BreadcrumbItems
+      - Groups (List<SettingsGroupModel>)
+
+5.4.2 Create SettingsPageV2.razor.css
+  - Style:
+      --space-*
+      --radius-*
+      --settings-group-gap
+
+5.4.3 Create SettingsGroupModel.cs
+  - Path: /Models/PageTemplatesV2/SettingsGroupModel.cs
+  - Properties:
+      - string Title
+      - List<SettingsItemModel> Items
+
+5.4.4 Create SettingsItemModel.cs
+  - Path: /Models/PageTemplatesV2/SettingsItemModel.cs
+  - Properties:
+      - string Label
+      - string Description
+      - RenderFragment Control
+
+5.4.5 Create SettingsGroupV2.razor
+  - Renders group title + items
+
+5.4.6 Create SettingsItemV2.razor
+  - Renders label + description + control
+
+5.4.7 Backward compatibility:
+  - Existing settings pages remain unchanged.
+
+----------------------------------------------------------------------
+5.5 DASHBOARD TEMPLATE
+----------------------------------------------------------------------
+
+5.5.1 Create DashboardPageV2.razor
+  - File: /Components/PageTemplatesV2/DashboardPageV2.razor
+  - Responsibilities:
+      - Provide a grid layout for dashboard cards
+      - Support responsive layout
+
+5.5.2 Create DashboardPageV2.razor.css
+  - Style:
+      --dashboard-grid-gap
+      --dashboard-card-min-width
+
+5.5.3 Create DashboardCardV2.razor
+  - File: /Components/PageTemplatesV2/DashboardCardV2.razor
+  - Responsibilities:
+      - Render:
+          - Icon (optional)
+          - Title
+          - Value
+          - Footer (optional)
+
+5.5.4 Backward compatibility:
+  - Existing dashboard remains unchanged.
+
+----------------------------------------------------------------------
+5.6 PHASE 5 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 5 is complete when:
+  - All page templates exist:
+      - StandardPageV2
+      - DetailPageV2
+      - FormPageV2
+      - SettingsPageV2
+      - DashboardPageV2
+  - All supporting components exist:
+      - DetailSectionV2
+      - FormSectionV2
+      - FormFooterV2
+      - SettingsGroupV2
+      - SettingsItemV2
+      - DashboardCardV2
+  - All templates use:
+      - LayoutV2 components (Phase 3)
+      - Design tokens (Phase 2)
+  - No existing pages have been modified.
+  - The app builds and runs with zero regressions.
+  - All templates are additive and optional.
+
+END OF PHASE 5
+PHASE 6 — DATA & SERVICES (BLAZOR VERSION)
+Goal:
+  - Establish a unified, scalable, maintainable data and service layer for the Absence MAUI Blazor Hybrid app.
+  - Introduce consistent API service patterns, data models, ViewModels, and state management.
+  - Ensure all new data/service components are additive and do not break existing functionality.
+  - Prepare for gradual migration of existing pages to the new data/service architecture.
+
+Constraints:
+  - Do NOT modify or remove existing services.
+  - Do NOT break existing API calls or data flows.
+  - All new services must be introduced in parallel under a new namespace.
+  - All new models must be additive.
+  - All new ViewModels must not replace existing ViewModels.
+  - All changes must be additive and reversible.
+
+----------------------------------------------------------------------
+6.1 API SERVICE ARCHITECTURE
+----------------------------------------------------------------------
+
+6.1.1 Create folder for new API services
+  - Path: /Services/ApiV2/
+
+6.1.2 Create ApiClientV2.cs
+  - File: /Services/ApiV2/ApiClientV2.cs
+  - Responsibilities:
+      - Wrap HttpClient
+      - Provide:
+          Task<T> GetAsync<T>(string endpoint)
+          Task<T> PostAsync<T>(string endpoint, object body)
+          Task<T> PutAsync<T>(string endpoint, object body)
+          Task DeleteAsync(string endpoint)
+      - Handle:
+          - Base URL (from appsettings.json)
+          - Authentication headers (if required)
+          - Error handling
+          - Logging (optional)
+  - Must NOT replace existing HttpClient usage.
+
+6.1.3 Create ApiServiceBaseV2.cs
+  - File: /Services/ApiV2/ApiServiceBaseV2.cs
+  - Responsibilities:
+      - Provide protected ApiClientV2 instance
+      - Provide helper methods:
+          BuildEndpoint(string path)
+          HandleApiException(Exception ex)
+
+6.1.4 Create module-specific API services
+  - Folder: /Services/ApiV2/Modules/
+  - Files:
+      StudentsApiServiceV2.cs
+      StaffApiServiceV2.cs
+      ClassesApiServiceV2.cs
+      AttendanceApiServiceV2.cs
+      AuditLogApiServiceV2.cs
+      SettingsApiServiceV2.cs
+  - Each service:
+      - Inherits ApiServiceBaseV2
+      - Provides CRUD methods
+      - Does NOT replace existing services
+
+6.1.5 Register services in MauiProgram.cs
+  - builder.Services.AddSingleton<ApiClientV2>();
+  - builder.Services.AddSingleton<StudentsApiServiceV2>();
+  - builder.Services.AddSingleton<StaffApiServiceV2>();
+  - builder.Services.AddSingleton<ClassesApiServiceV2>();
+  - builder.Services.AddSingleton<AttendanceApiServiceV2>();
+  - builder.Services.AddSingleton<AuditLogApiServiceV2>();
+  - builder.Services.AddSingleton<SettingsApiServiceV2>();
+
+6.1.6 Backward compatibility
+  - Existing services remain untouched.
+  - New services exist in parallel.
+
+----------------------------------------------------------------------
+6.2 DATA MODELS
+----------------------------------------------------------------------
+
+6.2.1 Create folder for new models
+  - Path: /Models/DataV2/
+
+6.2.2 Create BaseModelV2.cs
+  - Properties:
+      string Id
+      DateTime CreatedAt
+      DateTime UpdatedAt
+      bool IsActive (optional)
+      bool IsDeleted (optional)
+
+6.2.3 Create module-specific models
+  - Files:
+      StudentModelV2.cs
+      StaffModelV2.cs
+      ClassModelV2.cs
+      AttendanceRecordModelV2.cs
+      AuditLogEntryModelV2.cs
+      SettingsModelV2.cs
+  - Each model:
+      - Matches API schema
+      - Does NOT replace existing models
+
+6.2.4 Create DTO models (optional)
+  - Folder: /Models/DataV2/Dto/
+  - Only needed if API schema differs from internal schema.
+
+6.2.5 Backward compatibility
+  - Existing models remain unchanged.
+
+----------------------------------------------------------------------
+6.3 VIEWMODELS
+----------------------------------------------------------------------
+
+6.3.1 Create folder for new ViewModels
+  - Path: /ViewModels/V2/
+
+6.3.2 Create BaseViewModelV2.cs
+  - Responsibilities:
+      - Implement INotifyPropertyChanged
+      - Provide:
+          bool IsLoading
+          bool IsBusy
+          string ErrorMessage
+          SetProperty<T>(ref T field, T value)
+
+6.3.3 Create module-specific ViewModels
+  - Files:
+      StudentsListViewModelV2.cs
+      StudentDetailViewModelV2.cs
+      StudentFormViewModelV2.cs
+      StaffListViewModelV2.cs
+      StaffDetailViewModelV2.cs
+      StaffFormViewModelV2.cs
+      ClassesListViewModelV2.cs
+      ClassDetailViewModelV2.cs
+      ClassFormViewModelV2.cs
+      AttendanceListViewModelV2.cs
+      AttendanceDetailViewModelV2.cs
+      AuditLogViewModelV2.cs
+      SettingsViewModelV2.cs
+  - Each ViewModel:
+      - Uses new ApiServiceV2 services
+      - Uses new DataV2 models
+      - Does NOT replace existing ViewModels
+
+6.3.4 Create TableViewModelV2.cs
+  - Responsibilities:
+      - Load data for TableV2 (Phase 4)
+      - Apply:
+          Sorting
+          Filtering
+          Searching
+          Pagination
+      - Expose:
+          Items
+          TotalCount
+          PageIndex
+          PageSize
+          Commands for View/Edit actions
+
+6.3.5 Register ViewModels in MauiProgram.cs
+  - builder.Services.AddTransient<StudentsListViewModelV2>();
+  - builder.Services.AddTransient<StaffListViewModelV2>();
+  - etc.
+
+6.3.6 Backward compatibility
+  - Existing ViewModels remain unchanged.
+
+----------------------------------------------------------------------
+6.4 STATE MANAGEMENT
+----------------------------------------------------------------------
+
+6.4.1 Create folder for state
+  - Path: /State/V2/
+
+6.4.2 Create AppStateStoreV2.cs
+  - Responsibilities:
+      - Store global state:
+          CurrentUser
+          CurrentSchool
+          CurrentTheme
+          CachedData (optional)
+      - Provide events:
+          OnUserChanged
+          OnThemeChanged
+          OnDataInvalidated
+
+6.4.3 Create AppStateKeysV2.cs
+  - Defines keys for state dictionary.
+
+6.4.4 Create AppStateServiceV2.cs
+  - Responsibilities:
+      - Get<T>(string key)
+      - Set<T>(string key, T value)
+      - Remove(string key)
+      - Clear()
+
+6.4.5 Register in MauiProgram.cs
+  - builder.Services.AddSingleton<AppStateStoreV2>();
+  - builder.Services.AddSingleton<AppStateServiceV2>();
+
+6.4.6 Backward compatibility
+  - Existing AppState remains untouched.
+
+----------------------------------------------------------------------
+6.5 ERROR HANDLING & ALERTS
+----------------------------------------------------------------------
+
+6.5.1 Create ErrorHandlerV2.cs
+  - Responsibilities:
+      - Convert exceptions into user-friendly messages
+      - Handle:
+          API errors
+          Network errors
+          Validation errors
+
+6.5.2 Create AlertServiceV2.cs
+  - Responsibilities:
+      - Display alerts (success, warning, error)
+      - Display confirmation dialogs
+      - Provide Blazor-friendly API for showing messages
+
+6.5.3 Create AlertV2.razor
+  - Path: /Components/AlertsV2/AlertV2.razor
+  - Types:
+      Success
+      Warning
+      Error
+      Info
+
+6.5.4 Integrate ErrorHandlerV2 into ApiClientV2
+  - Wrap API calls in try/catch
+  - Convert exceptions to messages
+
+6.5.5 Backward compatibility
+  - Existing error handling remains unchanged.
+
+----------------------------------------------------------------------
+6.6 PHASE 6 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 6 is complete when:
+  - ApiClientV2 exists and supports GET/POST/PUT/DELETE.
+  - Module-specific ApiServiceV2 classes exist and are registered.
+  - All new DataV2 models exist and match API schema.
+  - All new ViewModels exist and use new services.
+  - State management V2 exists and is functional.
+  - Error handling and alert system V2 exist.
+  - No existing services or ViewModels have been modified.
+  - The app builds and runs with zero regressions.
+  - All new data/service components are additive and optional.
+
+END OF PHASE 6

@@ -1,0 +1,96 @@
+@* ===========================================================================
+   File        : AttendanceListPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Attendance
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Attendance list page. Displays a paged, searchable, sortable
+                 table of attendance records using StandardPageV2 and TableV2.
+                 Delegates all data and state to AttendanceListViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/attendance
+     - Register AttendanceListViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/attendance"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.Components.TableV2
+@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject AttendanceListViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Attendance list
+   ========================================================================= *@
+<StandardPageV2 PageTitle="Attendance">
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        <TableV2 TItem="AbsenceApp.Core.DTOs.AttendanceDto"
+                 Columns="AttendanceListViewModelV2.Columns"
+                 Items="ViewModel.Items"
+                 TotalCount="ViewModel.TotalCount"
+                 IsLoading="ViewModel.IsLoading"
+                 CurrentPage="ViewModel.Page"
+                 PageSize="ViewModel.PageSize"
+                 SortColumn="ViewModel.SortColumn"
+                 SortAscending="ViewModel.SortAscending"
+                 SearchPlaceholder="Search attendance�"
+                 AriaLabel="Attendance table"
+                 OnSearchChanged="OnSearch"
+                 OnSortChanged="OnSort"
+                 OnPageChanged="OnPageChanged"
+                 OnPageSizeChanged="OnPageSizeChanged">
+
+            <RowTemplate Context="record">
+                <td class="dsv2-table__td">@record.AttendanceId</td>
+                <td class="dsv2-table__td">@record.UserId</td>
+                <td class="dsv2-table__td">@(record.ClassId.HasValue ? record.ClassId.Value.ToString() : "�")</td>
+                <td class="dsv2-table__td">@record.Status</td>
+                <td class="dsv2-table__td">@record.Timestamp.ToString("dd MMM yyyy HH:mm")</td>
+                <td class="dsv2-table__td">@record.RecordedBy</td>
+            </RowTemplate>
+
+            <RowActionsContent Context="record">
+                @if (record.ClassId.HasValue)
+                {
+                    <a href="@($"/v2/attendance/{record.ClassId.Value}")" class="dsv2-table__row-action">View Register</a>
+                    <a href="@($"/v2/attendance/{record.ClassId.Value}/mark")" class="dsv2-table__row-action">Mark</a>
+                }
+            </RowActionsContent>
+
+        </TableV2>
+    </BodyContent>
+
+</StandardPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and table callbacks
+   ========================================================================= *@
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Attendance", "Log Attendance");
+        await ViewModel.LoadAsync();
+    }
+
+    private async Task OnSearch(string term) => await ViewModel.SearchAsync(term);
+    private async Task OnSort((string Column, bool Ascending) args) =>
+        await ViewModel.SortAsync(args.Column, args.Ascending);
+    private async Task OnPageChanged(int page) => await ViewModel.GoToPageAsync(page);
+    private async Task OnPageSizeChanged(int size) => await ViewModel.ChangePageSizeAsync(size);
+}

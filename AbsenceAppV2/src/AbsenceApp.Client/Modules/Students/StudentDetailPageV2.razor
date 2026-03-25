@@ -1,0 +1,110 @@
+@* ===========================================================================
+   File        : StudentDetailPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Students
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Student detail page. Displays the full detail view of a
+                 single student using DetailPageV2 and DetailSectionV2
+                 components. Delegates data loading to StudentDetailViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/students/{Id:long}
+     - Register StudentDetailViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/students/{Id:long}"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject StudentDetailViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Student detail
+   ========================================================================= *@
+<DetailPageV2 PageTitle="@PageTitle"
+               BackHref="/v2/students"
+               BackLabel="Students">
+
+    <ActionsContent>
+        @if (ViewModel.Item is not null)
+        {
+            <a href="@($"/v2/students/{Id}/edit")" class="dsv2-btn dsv2-btn--secondary">
+                <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+            </a>
+        }
+    </ActionsContent>
+
+    <BodyContent>
+        @if (ViewModel.IsLoading)
+        {
+            <p class="dsv2-loading-text">Loading student�</p>
+        }
+        else if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+        else if (ViewModel.Item is not null)
+        {
+            var s = ViewModel.Item;
+
+            <DetailSectionV2 Title="Personal Details" Icon="bi-person">
+                <BodyContent>
+                    <span class="dsv2-detail-label">Admission No.</span>
+                    <span class="dsv2-detail-value">@s.AdmissionNumber</span>
+
+                    <span class="dsv2-detail-label">First Name</span>
+                    <span class="dsv2-detail-value">@s.FirstName</span>
+
+                    <span class="dsv2-detail-label">Last Name</span>
+                    <span class="dsv2-detail-value">@s.LastName</span>
+
+                    <span class="dsv2-detail-label">Gender</span>
+                    <span class="dsv2-detail-value">@s.Gender</span>
+
+                    <span class="dsv2-detail-label">Date of Birth</span>
+                    <span class="dsv2-detail-value">@s.DateOfBirth.ToString("dd/MM/yyyy")</span>
+
+                    <span class="dsv2-detail-label">Status</span>
+                    <span class="dsv2-detail-value">@s.Status</span>
+                </BodyContent>
+            </DetailSectionV2>
+
+            <DetailSectionV2 Title="Academic Details" Icon="bi-mortarboard">
+                <BodyContent>
+                    <span class="dsv2-detail-label">Year Group</span>
+                    <span class="dsv2-detail-value">@s.YearGroupName</span>
+
+                    <span class="dsv2-detail-label">Class</span>
+                    <span class="dsv2-detail-value">@s.ClassName</span>
+                </BodyContent>
+            </DetailSectionV2>
+        }
+    </BodyContent>
+
+</DetailPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and navigation
+   ========================================================================= *@
+@code {
+    [Parameter] public long Id { get; set; }
+
+    private string PageTitle => ViewModel.Item is not null
+        ? $"{ViewModel.Item.FirstName} {ViewModel.Item.LastName}"
+        : "Student Detail";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Students", "Student Detail");
+        await ViewModel.LoadAsync(Id);
+    }
+}

@@ -1,0 +1,70 @@
+/* =============================================================================
+   File    : FormSectionV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 5
+   Created : 2026-03-21
+   Purpose : Scoped CSS for FormSectionV2. Bordered card wrapping a titled
+             group of form fields.
+============================================================================= */
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+.dsv2-form-section {
+    background: var(--dsv2-surface, #ffffff);
+    border: 1px solid var(--dsv2-border, #dde1e7);
+    border-radius: var(--dsv2-radius-md, 8px);
+    overflow: hidden;
+    margin-bottom: var(--dsv2-space-4, 1rem);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.dsv2-form-section__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--dsv2-space-2, 0.5rem);
+    padding: var(--dsv2-space-3, 0.75rem) var(--dsv2-space-4, 1rem);
+    background: var(--dsv2-chrome-bg, #f5f6f8);
+    border-bottom: 1px solid var(--dsv2-border, #dde1e7);
+}
+
+.dsv2-form-section__icon {
+    font-size: var(--dsv2-font-size-sm, 0.875rem);
+    color: var(--dsv2-accent, #2563eb);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.dsv2-form-section__header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dsv2-form-section__title {
+    font-size: var(--dsv2-font-size-sm, 0.875rem);
+    font-weight: 600;
+    color: var(--dsv2-text, #2c3345);
+}
+
+.dsv2-form-section__description {
+    font-size: var(--dsv2-font-size-xs, 0.75rem);
+    color: var(--dsv2-text-muted, #7b8494);
+    line-height: 1.4;
+}
+
+/* ── Body ──────────────────────────────────────────────────────────────── */
+.dsv2-form-section__body {
+    padding: var(--dsv2-space-4, 1rem);
+    display: grid;
+    gap: var(--dsv2-space-3, 0.75rem) var(--dsv2-space-4, 1rem);
+}
+
+.dsv2-form-section__body--cols-1 { grid-template-columns: 1fr; }
+.dsv2-form-section__body--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.dsv2-form-section__body--cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 768px) {
+    .dsv2-form-section__body--cols-2,
+    .dsv2-form-section__body--cols-3 {
+        grid-template-columns: 1fr;
+    }
+}

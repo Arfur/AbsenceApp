@@ -1,0 +1,74 @@
+﻿@* ===========================================================================
+   File        : BreadcrumbV2.razor
+   Namespace   : AbsenceApp.Client.Components.LayoutV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 breadcrumb navigation component. Accepts either explicit Segments parameter or reads from AppStateService.Breadcrumb. Supports optional href links per segment and renders a semantic <nav aria-label="Breadcrumb">.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 3 component. Requires AppStateService.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Services
+@inject AppStateService AppState
+@implements IDisposable
+
+@* =========================================================================
+   Section: Breadcrumb trail
+   ========================================================================= *@
+<nav aria-label="Breadcrumb" class="dsv2-breadcrumb">
+    <ol class="dsv2-breadcrumb__list">
+        @{
+            var segments = Segments is not null && Segments.Count > 0
+                ? Segments
+                : AppState.Breadcrumb.Select(s => new BreadcrumbSegment(s)).ToList();
+
+            for (int i = 0; i < segments.Count; i++)
+            {
+                var seg    = segments[i];
+                var isLast = i == segments.Count - 1;
+
+                <li class="dsv2-breadcrumb__item @(isLast ? "dsv2-breadcrumb__item--active" : "")">
+                    @if (!isLast && !string.IsNullOrEmpty(seg.Href))
+                    {
+                        <a href="@seg.Href" class="dsv2-breadcrumb__link">@seg.Label</a>
+                    }
+                    else
+                    {
+                        <span class="@(isLast ? "dsv2-breadcrumb__current" : "dsv2-breadcrumb__link dsv2-breadcrumb__link--static")"
+                              aria-current="@(isLast ? "page" : null)">
+                            @seg.Label
+                        </span>
+                    }
+
+                    @if (!isLast)
+                    {
+                        <i class="bi bi-chevron-right dsv2-breadcrumb__sep" aria-hidden="true"></i>
+                    }
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+@* =========================================================================
+   Section: Navigation subscription and segment builder
+   ========================================================================= *@
+@code {
+    /// <summary>
+    /// Explicit breadcrumb segments. If null or empty, falls back to AppStateService.Breadcrumb.
+    /// </summary>
+    [Parameter] public List<BreadcrumbSegment>? Segments { get; set; }
+
+    protected override void OnInitialized() => AppState.OnChange += StateHasChanged;
+    public void Dispose() => AppState.OnChange -= StateHasChanged;
+
+    /// <summary>A single breadcrumb segment with an optional navigation href.</summary>
+    public sealed record BreadcrumbSegment(string Label, string? Href = null);
+}

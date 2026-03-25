@@ -1,0 +1,98 @@
+/* SettingsListPageV2.razor.css — scoped styles for the Settings list V2 page */
+
+.dsv2-loading-text {
+    color: var(--dsv2-color-text-muted, #6b7280);
+    font-size: 0.875rem;
+    padding: 1rem 0;
+}
+
+.dsv2-alert--danger {
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--dsv2-color-danger-bg, #fef2f2);
+    border: 1px solid var(--dsv2-color-danger-border, #fecaca);
+    color: var(--dsv2-color-danger-text, #b91c1c);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.dsv2-alert--warning {
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--dsv2-color-warning-bg, #fffbeb);
+    border: 1px solid var(--dsv2-color-warning-border, #fde68a);
+    color: var(--dsv2-color-warning-text, #92400e);
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.dsv2-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dsv2-settings-card {
+    border: 1px solid var(--dsv2-color-border, #e5e7eb);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: var(--dsv2-color-surface, #ffffff);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dsv2-settings-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dsv2-settings-card__title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--dsv2-color-text, #111827);
+    flex: 1;
+}
+
+.dsv2-settings-card__badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dsv2-settings-card__badge--ok {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.dsv2-settings-card__badge--warning {
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+
+.dsv2-settings-card__badge--error {
+    background-color: #fef2f2;
+    color: #b91c1c;
+}
+
+.dsv2-settings-card__meta {
+    font-size: 0.75rem;
+    color: var(--dsv2-color-text-muted, #6b7280);
+    margin: 0;
+}
+
+.dsv2-settings-card__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.dsv2-btn--sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+}

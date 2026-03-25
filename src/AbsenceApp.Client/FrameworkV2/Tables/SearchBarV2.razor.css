@@ -1,0 +1,84 @@
+/* =============================================================================
+   File    : SearchBarV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Created : 2026-03-21
+   Purpose : Scoped styles for SearchBarV2.
+============================================================================= */
+
+.dsv2-searchbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dsv2-searchbar__icon {
+    position: absolute;
+    left: var(--ds-spacing-2-5);
+    color: var(--ds-color-neutral-40);
+    font-size: var(--ds-font-size-sm);
+    pointer-events: none;
+}
+
+.dsv2-searchbar__input {
+    width: 100%;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-3) var(--ds-spacing-1-5) var(--ds-spacing-8);
+    border: 1px solid var(--ds-color-neutral-20);
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-color-surface-card);
+    color: var(--ds-color-neutral-90);
+    font-size: var(--ds-font-size-sm);
+    font-family: var(--ds-font-family-ui);
+    transition: border-color var(--ds-transition-fast), box-shadow var(--ds-transition-fast);
+    /* Remove native search input styling */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.dsv2-searchbar__input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.dsv2-searchbar__input::placeholder {
+    color: var(--ds-color-neutral-40);
+}
+
+.dsv2-searchbar__input:focus {
+    outline: none;
+    border-color: var(--ds-color-accent);
+    box-shadow: 0 0 0 3px var(--ds-color-accent-alpha-20);
+}
+
+.dsv2-searchbar--has-value .dsv2-searchbar__input {
+    padding-right: var(--ds-spacing-8);
+}
+
+.dsv2-searchbar__clear {
+    position: absolute;
+    right: var(--ds-spacing-2);
+    background: none;
+    border: none;
+    padding: var(--ds-spacing-1);
+    color: var(--ds-color-neutral-40);
+    cursor: pointer;
+    line-height: 1;
+    border-radius: var(--ds-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--ds-transition-fast);
+}
+
+.dsv2-searchbar__clear:hover {
+    color: var(--ds-color-neutral-70);
+}
+
+:global([data-theme="dark"]) .dsv2-searchbar__input {
+    background: var(--ds-color-dark-surface);
+    border-color: var(--ds-color-dark-border);
+    color: var(--ds-color-neutral-10);
+}
+
+:global([data-theme="dark"]) .dsv2-searchbar__icon {
+    color: var(--ds-color-neutral-50);
+}

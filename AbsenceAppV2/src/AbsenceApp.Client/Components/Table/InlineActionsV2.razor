@@ -1,0 +1,31 @@
+﻿@* ===========================================================================
+   File        : InlineActionsV2.razor
+   Namespace   : AbsenceApp.Client.Components.TableV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 inline-actions wrapper for table rows. Renders action buttons in a compact, horizontally-arranged strip. Designed to be placed in the last column of a TableV2 row. Accepts arbitrary button content via ChildContent render-fragment.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 4 component. No DI registration required.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Inline actions
+   ========================================================================= *@
+<div class="dsv2-inline-actions" role="group" aria-label="Row actions">
+    @ChildContent
+</div>
+
+@* =========================================================================
+   Section: Parameters and action rendering
+   ========================================================================= *@
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

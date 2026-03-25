@@ -1,0 +1,217 @@
+================================================================================
+  FILE        : baseline-architecture-phase1.txt
+  PROJECT     : AbsenceApp — Phase 1 Foundations & Audit
+  CREATED     : 2026-03-21
+  PURPOSE     : Defines the baseline architecture at Phase 1 completion.
+                Classifies every system element as FROZEN (must not change)
+                or SAFE-TO-EXTEND (V2 may reference but not modify).
+                Read-only reference — do NOT edit.
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+1. ARCHITECTURE OVERVIEW
+────────────────────────────────────────────────────────────────────────────────
+
+Technology Stack:
+  Runtime        : .NET 8.0 MAUI Blazor Hybrid (Windows desktop)
+  UI Engine      : Blazor WebView — Razor components rendered in MAUI WebView
+  Styling        : CSS custom properties + Bootstrap 5 (no XAML styles in UI)
+  Data Access    : Entity Framework Core — LocalDB (SQL Server LocalDB)
+  API Layer      : ASP.NET Core Minimal API (separate process, optional)
+  DI Container   : Microsoft.Extensions.DependencyInjection (MauiProgram.cs)
+  Auth           : Simple username/password (AuthService, AppStateService)
+  State          : AppStateService singleton (in-memory, no external store)
+  Testing        : xUnit (server) + bUnit (client components)
+
+Rendering Model:
+  - MAUI shell hosts a single BlazorWebView (MainPage.xaml)
+  - All UI rendering happens inside the WebView
+  - CSS from wwwroot/css/ is loaded via index.html <link> tags
+  - Blazor scoped CSS (.razor.css) is compiled and bundled automatically
+  - No native MAUI XAML controls are used in the UI layer
+
+────────────────────────────────────────────────────────────────────────────────
+2. FROZEN ELEMENTS — DO NOT MODIFY
+────────────────────────────────────────────────────────────────────────────────
+
+These elements are complete V1 foundations. V2 must never modify, delete, or
+restructure them. Any change here risks breaking the running application.
+
+Category              Element                              Reason
+────────────────────  ───────────────────────────────────  ──────────────────────
+MAUI Shell            App.xaml, App.xaml.cs                MAUI entry point
+MAUI Shell            MainPage.xaml, MainPage.xaml.cs      Hosts BlazorWebView
+MAUI Shell            MauiProgram.cs                       DI registration root
+MAUI Shell            Platforms/ (all)                     Platform config
+MAUI Shell            Resources/ (all)                     App icons, fonts, splash
+
+Blazor Host           wwwroot/index.html                   WebView HTML host
+Blazor Host           Components/Routes.razor              Routing config
+Blazor Host           Components/_Imports.razor            Global using directives
+
+V1 Layout             MainLayout.razor + .css              Authenticated shell
+V1 Layout             LoginLayout.razor                    Auth-only shell
+V1 Layout             NavBar.razor                         Top bar
+V1 Layout             SideBar.razor                        Collapsible sidebar
+V1 Layout             SidebarGroup.razor                   Sidebar accordion
+V1 Layout             SidebarItem.razor                    Nav link
+V1 Layout             SidebarSection.razor                 Section label
+V1 Layout             SidebarSubItem.razor                 Sub-link
+V1 Layout             AppFooter.razor                      Footer
+V1 Layout             NavMenu.razor + .css                 Legacy CSS compat
+
+V1 Pages (43)         Components/Pages/* (all files)       All live pages
+V1 Shared             Shared/TablePageTemplate.razor       Table layout V1
+V1 Shared             Shared/TablePageTemplate.razor.css   Scoped table styles
+V1 Shared             Shared/FilterChip.cs                 Filter chip model
+
+V1 Services           Services/AppStateService.cs          Singleton state
+V1 Services           Services/NavigationMetadataService   Nav registry
+V1 State              State/AppState.cs                    State model
+
+V1 CSS                wwwroot/css/app.css                  Global design system
+V1 CSS                wwwroot/css/bootstrap/ (all)         Bootstrap bundle
+
+Core DTOs             AbsenceApp.Core/DTOs/ (all)          Data transfer objects
+Core Interfaces       AbsenceApp.Core/Interfaces/ (all)    Service contracts
+Core ViewModels       AbsenceApp.Core/ViewModels/ (all)    V1 ViewModels
+Core Navigation       AbsenceApp.Core/Navigation/ (all)    Nav models
+Core Models           AbsenceApp.Core/Models/ (all)        Shared models
+
+Data Layer            AbsenceApp.Data/ (all files)         EF Core, repos, svcs
+Data Layer            AppDbContext.cs                      Database context
+Data Layer            Migrations/ (all)                    Schema history
+Data Layer            Seeding/DatabaseSeeder.cs            Seed data
+Data Layer            Seeding/CsvImportPipeline.cs         Import pipeline
+
+API Project           AbsenceApp.Api/ (all files)          REST endpoints
+EF Host               AbsenceApp.EfHost/ (all)             Migration host
+Analyzers             AbsenceApp.Analyzers/ (all)          Code analysis rules
+Updater               AbsenceApp.Updater/ (all)            Version stub
+Tests                 AbsenceApp.Tests/ (all)              Server tests
+Tests                 AbsenceApp.Client.Tests/ (all)       Client tests
+
+Config                appsettings.json (Client)            DB connection string
+Config                appsettings.json (Api)               API DB + logging
+Build                 build/ (all .sql)                    Phase SQL builds
+Docs                  docs/ (all existing files)           Architecture docs
+Scripts               scripts/ (all)                       SQL seed scripts
+Root                  AbsenceApp.sln                       Solution file
+Root                  Install-AbsenceApp.ps1               Installer
+Root                  Start-AbsenceApp.ps1                 Launcher
+Root                  add-headers.ps1                      Header tool
+Root                  migration_idempotent.sql             Schema migration
+
+────────────────────────────────────────────────────────────────────────────────
+3. SAFE-TO-EXTEND ELEMENTS — V2 MAY REFERENCE, MUST NOT MODIFY
+────────────────────────────────────────────────────────────────────────────────
+
+These elements may be USED (injected, referenced, read) by V2 components but
+must NOT be modified, wrapped, or replaced.
+
+Element                          V2 Use Case
+───────────────────────────────  ─────────────────────────────────────────────
+AppStateService                  V2 components may inject it for dark mode state
+NavigationMetadataService        V2 NavigationServiceV2 may reference its routes
+IAuthService                     V2 services may check auth status
+Core DTOs (all)                  V2 ViewModels may use the same DTOs
+Core Interfaces (all)            V2 services may implement or use these contracts
+AbsenceApp.Data services         V2 API services will call same underlying data
+appsettings.json (connection)    V2 API client will use the same DB connection
+app.css CSS variables            V2 token files will use the same variable names
+                                 to ensure visual consistency
+
+────────────────────────────────────────────────────────────────────────────────
+4. V2 NEW PATHS — WHERE NEW FILES WILL BE CREATED
+────────────────────────────────────────────────────────────────────────────────
+
+All V2 code lives in NEW paths. Nothing V1 will be in these paths.
+
+Path                                    Phase  Purpose
+──────────────────────────────────────  ─────  ──────────────────────────────
+wwwroot/css/tokens/                       2    CSS design token files
+wwwroot/config/designsystem/              2    JSON config files
+Components/DesignSystem/                  2    Icon, Card, SectionHeader, etc.
+Services/DesignSystemConfigService.cs     2    JSON config loader
+Services/IconService.cs                   2    Icon resolution
+Components/LayoutV2/                      3    SidebarV2, HeaderV2, etc.
+Components/PageTemplatesV2/               3    PageTemplateV2 (base)
+Services/NavigationServiceV2.cs           3    Navigation V2
+Components/TableV2/                       4    TableV2, FilterRow, Pagination…
+Models/TableV2/                           4    TableColumnModel
+Services/TableV2/                         4    TableConfigService
+ViewModels/V2/                            4+   All V2 ViewModels
+Components/PageTemplatesV2/ (expanded)    5    Standard, Detail, Form, etc.
+Models/V2/                                5    DetailSection, FormSection, etc.
+Services/ApiV2/                           6    ApiClientV2, ApiServiceBaseV2
+Services/ApiV2/Modules/                   6    Per-module API services
+Models/DataV2/                            6    V2 data models
+State/V2/                                 6    AppStateStoreV2, etc.
+Services/ErrorHandlerV2.cs                6    Error handling
+Services/AlertServiceV2.cs                6    Alert service
+Components/AlertsV2/                      6    AlertV2 component
+ModulesV2/                                7    Per-module pages (V2)
+Services/Theming/                         8    ThemeServiceV2, BrandingServiceV2
+Models/Theming/                           8    Theme/Branding models
+FrameworkV2/                              9    Full reusable framework copy
+docs/migration-plan-v2.txt               10    V1→V2 migration roadmap
+
+────────────────────────────────────────────────────────────────────────────────
+5. ARCHITECTURAL RULES — V2 MUST FOLLOW
+────────────────────────────────────────────────────────────────────────────────
+
+RULE 1  : All V2 components use CSS custom properties (tokens from Phase 2).
+          No hard-coded color, spacing, or font values in .razor.css files.
+
+RULE 2  : All V2 Razor components are self-contained with co-located .razor.css
+          scoped style files.
+
+RULE 3  : All V2 services follow the DI pattern. Services must be registered
+          in MauiProgram.cs before a V2 page can use them. (MauiProgram.cs
+          changes require explicit user instruction per phase.)
+
+RULE 4  : All V2 JSON configuration files live under wwwroot/config/ and are
+          loaded asynchronously via HttpClient or JSInterop.
+
+RULE 5  : No V2 component imports or inherits from V1 layout components.
+          V2 layout is self-contained.
+
+RULE 6  : V2 module pages (Phase 7) use only V2 templates, V2 tables, V2
+          services, and V2 ViewModels. Zero dependency on V1 pages.
+
+RULE 7  : Phase 9 (FrameworkV2) contains COPIES, not references, of V2 assets.
+          No cross-project reference is introduced.
+
+RULE 8  : V1 app.css CSS variable names are reused in V2 token files to ensure
+          V2 components visually match V1 until theming (Phase 8) is applied.
+
+RULE 9  : All V2 files include the standard AbsenceApp file header comment:
+            // File    : [filename]
+            // Project : AbsenceApp.Client
+            // Phase   : V2 Design System — Phase [N]
+            // Created : [date]
+
+RULE 10 : Stop and ask the user before registering any V2 service in
+          MauiProgram.cs. This is the only V1 file that may be modified,
+          and only with explicit user approval.
+
+────────────────────────────────────────────────────────────────────────────────
+6. PHASE EXECUTION GATES
+────────────────────────────────────────────────────────────────────────────────
+
+Phase  Deliverable                        Gate Condition
+─────  ─────────────────────────────────  ──────────────────────────────────────
+  1   Documentation (this set of files)   ✅ COMPLETE
+  2   CSS tokens + JSON + Components       User says "go ahead Phase 2"
+  3   Layout V2                           User says "go ahead Phase 3"
+  4   Table System V2                     User says "go ahead Phase 4"
+  5   Page Templates V2                   User says "go ahead Phase 5"
+  6   Data & Services V2                  User says "go ahead Phase 6"
+  7   Feature Modules V2                  User says "go ahead Phase 7"
+  8   Theming & Branding V2               User says "go ahead Phase 8"
+  9   Reusability Framework               User says "go ahead Phase 9"
+ 10   Integration & QA                   User says "go ahead Phase 10"
+
+================================================================================
+  END OF BASELINE-ARCHITECTURE-PHASE1.TXT
+================================================================================

@@ -1,0 +1,75 @@
+{
+  "_comment": "AbsenceApp V2 Design System — table-schema.json — Phase 2",
+  "_description": "Default table schema and column definitions used by TableV2 components. Loaded by TableConfigService in Phase 4.",
+  "version": "2.0.0",
+  "defaults": {
+    "pageSize": 25,
+    "pageSizeOptions": [10, 25, 50, 100],
+    "showSearch": true,
+    "showFilters": true,
+    "showPagination": true,
+    "showInlineActions": true,
+    "showSkeletonOnLoad": true,
+    "stickyHeader": true,
+    "striped": false,
+    "hoverable": true,
+    "bordered": false,
+    "compact": false
+  },
+  "tables": {
+    "students": {
+      "key": "students",
+      "title": "Students",
+      "columns": [
+        { "key": "fullName",     "label": "Name",        "sortable": true,  "filterable": true,  "visible": true,  "width": "" },
+        { "key": "yearGroup",    "label": "Year",        "sortable": true,  "filterable": true,  "visible": true,  "width": "80px" },
+        { "key": "house",        "label": "House",       "sortable": true,  "filterable": true,  "visible": true,  "width": "100px" },
+        { "key": "absenceCount", "label": "Absences",    "sortable": true,  "filterable": false, "visible": true,  "width": "90px" },
+        { "key": "status",       "label": "Status",      "sortable": false, "filterable": true,  "visible": true,  "width": "100px" }
+      ]
+    },
+    "staff": {
+      "key": "staff",
+      "title": "Staff",
+      "columns": [
+        { "key": "fullName",   "label": "Name",        "sortable": true,  "filterable": true,  "visible": true,  "width": "" },
+        { "key": "jobTitle",   "label": "Job Title",   "sortable": true,  "filterable": true,  "visible": true,  "width": "" },
+        { "key": "department", "label": "Department",  "sortable": true,  "filterable": true,  "visible": true,  "width": "" },
+        { "key": "email",      "label": "Email",       "sortable": false, "filterable": false, "visible": true,  "width": "" },
+        { "key": "status",     "label": "Status",      "sortable": false, "filterable": true,  "visible": true,  "width": "100px" }
+      ]
+    },
+    "classes": {
+      "key": "classes",
+      "title": "Classes",
+      "columns": [
+        { "key": "name",       "label": "Class Name",  "sortable": true,  "filterable": true,  "visible": true, "width": "" },
+        { "key": "yearGroup",  "label": "Year Group",  "sortable": true,  "filterable": true,  "visible": true, "width": "100px" },
+        { "key": "teacher",    "label": "Teacher",     "sortable": true,  "filterable": true,  "visible": true, "width": "" },
+        { "key": "size",       "label": "Size",        "sortable": true,  "filterable": false, "visible": true, "width": "70px" }
+      ]
+    },
+    "attendance": {
+      "key": "attendance",
+      "title": "Attendance",
+      "columns": [
+        { "key": "studentName", "label": "Student",    "sortable": true,  "filterable": true,  "visible": true, "width": "" },
+        { "key": "date",        "label": "Date",       "sortable": true,  "filterable": false, "visible": true, "width": "110px" },
+        { "key": "session",     "label": "Session",    "sortable": false, "filterable": true,  "visible": true, "width": "80px" },
+        { "key": "mark",        "label": "Mark",       "sortable": false, "filterable": true,  "visible": true, "width": "70px" },
+        { "key": "reason",      "label": "Reason",     "sortable": false, "filterable": true,  "visible": true, "width": "" }
+      ]
+    },
+    "auditLog": {
+      "key": "auditLog",
+      "title": "Audit Log",
+      "columns": [
+        { "key": "timestamp",   "label": "Timestamp",  "sortable": true,  "filterable": false, "visible": true, "width": "160px" },
+        { "key": "user",        "label": "User",       "sortable": true,  "filterable": true,  "visible": true, "width": "" },
+        { "key": "action",      "label": "Action",     "sortable": false, "filterable": true,  "visible": true, "width": "" },
+        { "key": "entity",      "label": "Entity",     "sortable": false, "filterable": true,  "visible": true, "width": "" },
+        { "key": "details",     "label": "Details",    "sortable": false, "filterable": false, "visible": true, "width": "" }
+      ]
+    }
+  }
+}

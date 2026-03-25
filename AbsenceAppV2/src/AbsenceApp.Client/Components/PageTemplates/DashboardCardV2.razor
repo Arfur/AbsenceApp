@@ -1,0 +1,107 @@
+﻿@* ===========================================================================
+   File        : DashboardCardV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Metric/summary card for DashboardPageV2. Displays a primary
+                 Value, a Label, an optional Icon, and an optional trend
+                 indicator. Can render a BodyContent slot for custom charting
+                 or detail content.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Header updated for Step 3 (no layout binding required).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+     - Not a page template — does not inherit BaseLayoutV2.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Dashboard card
+   ========================================================================= *@
+<div class="@CardClass()">
+    <div class="dsv2-dashboard-card__header">
+        @if (Icon is not null)
+        {
+            <div class="dsv2-dashboard-card__icon-wrap">
+                <i class="bi @Icon" aria-hidden="true"></i>
+            </div>
+        }
+        <span class="dsv2-dashboard-card__label">@Label</span>
+    </div>
+
+    <div class="dsv2-dashboard-card__body">
+        <span class="dsv2-dashboard-card__value">@Value</span>
+
+        @if (!string.IsNullOrEmpty(TrendValue))
+        {
+            <div class="@TrendClass()">
+                <i class="bi @TrendIcon()" aria-hidden="true"></i>
+                <span>@TrendValue</span>
+            </div>
+        }
+    </div>
+
+    @if (BodyContent is not null)
+    {
+        <div class="dsv2-dashboard-card__footer">
+            @BodyContent
+        </div>
+    }
+</div>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Enums
+    // -------------------------------------------------------------------------
+    public enum TrendDirection { None, Up, Down, Flat }
+
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? TrendValue { get; set; }
+    [Parameter] public TrendDirection Trend { get; set; } = TrendDirection.None;
+    [Parameter] public string Variant { get; set; } = "default";
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+    private string CardClass()
+    {
+        var cls = "dsv2-dashboard-card dsv2-dashboard-card--" + Variant;
+        return cls;
+    }
+
+    private string TrendClass()
+    {
+        var cls = "dsv2-dashboard-card__trend";
+        cls += Trend switch
+        {
+            TrendDirection.Up   => " dsv2-dashboard-card__trend--up",
+            TrendDirection.Down => " dsv2-dashboard-card__trend--down",
+            TrendDirection.Flat => " dsv2-dashboard-card__trend--flat",
+            _                   => string.Empty,
+        };
+        return cls;
+    }
+
+    private string TrendIcon() => Trend switch
+    {
+        TrendDirection.Up   => "bi-arrow-up-short",
+        TrendDirection.Down => "bi-arrow-down-short",
+        TrendDirection.Flat => "bi-dash",
+        _                   => "bi-dash",
+    };
+}

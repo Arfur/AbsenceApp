@@ -1,0 +1,88 @@
+﻿@* ===========================================================================
+   File        : Card.razor
+   Namespace   : AbsenceApp.Client.Components.DesignSystem
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable card container with optional header, footer, and configurable padding, shadow, and click behaviour.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 2 component. No DI registration required.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Card shell
+   ========================================================================= *@
+<div class="@ContainerClass" @onclick="OnClick" role="@(OnClick.HasDelegate ? "button" : null)" tabindex="@(OnClick.HasDelegate ? 0 : (int?)null)">
+    @if (Header is not null || !string.IsNullOrEmpty(Title))
+    {
+        <div class="ds-card__header">
+            @if (Header is not null)
+            {
+                @Header
+            }
+            else
+            {
+                <span class="ds-card__title">@Title</span>
+            }
+        </div>
+    }
+
+    <div class="ds-card__body">
+        @ChildContent
+    </div>
+
+    @if (Footer is not null)
+    {
+        <div class="ds-card__footer">
+            @Footer
+        </div>
+    }
+</div>
+
+@* =========================================================================
+   Section: Parameters and CSS class builder
+   ========================================================================= *@
+@code {
+    /// <summary>Main card content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Optional header slot. If null and Title is set, Title is rendered.</summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+
+    /// <summary>Optional footer slot.</summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    /// <summary>Simple title string for the header (used when Header slot is not set).</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Whether to render a divider between header and body.</summary>
+    [Parameter] public bool ShowDivider { get; set; } = true;
+
+    /// <summary>Shadow level: none | xs | sm | md.</summary>
+    [Parameter] public string Shadow { get; set; } = "xs";
+
+    /// <summary>Whether the card is clickable.</summary>
+    [Parameter] public bool Hoverable { get; set; }
+
+    /// <summary>Additional CSS classes.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Optional click handler — makes the card interactive.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    private string ContainerClass => string.Join(" ", new[]
+    {
+        "ds-card",
+        $"ds-card--shadow-{Shadow}",
+        (Hoverable || OnClick.HasDelegate) ? "ds-card--hoverable" : null,
+        ShowDivider ? "ds-card--divided" : null,
+        Class
+    }.Where(c => !string.IsNullOrWhiteSpace(c)));
+}

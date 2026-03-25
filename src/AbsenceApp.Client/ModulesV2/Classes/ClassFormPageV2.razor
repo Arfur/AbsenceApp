@@ -1,0 +1,99 @@
+@* ===========================================================================
+   File        : ClassFormPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Classes
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Class add/edit form page. Uses FormPageV2 and FormSectionV2
+                 components for the create and edit workflows. Delegates form
+                 state and API calls to ClassFormViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Routes: /v2/classes/new (add), /v2/classes/{Id:long}/edit (edit)
+     - Register ClassFormViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/classes/new"
+@page "/v2/classes/{Id:long}/edit"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject ClassFormViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Class form
+   ========================================================================= *@
+<FormPageV2 PageTitle="@PageTitle"
+            BackHref="@BackHref"
+            BackLabel="@BackLabel"
+            SubmitLabel="Save Class"
+            BusyLabel="Saving�"
+            CancelLabel="Cancel"
+            IsBusy="ViewModel.IsBusy"
+            OnSubmit="OnSave"
+            OnCancel="OnCancel">
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        <FormSectionV2 Title="Class Details" Icon="bi-mortarboard" Columns="2">
+            <BodyContent>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="name">Name</label>
+                    <input id="name" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.Name"
+                           placeholder="Class name" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="description">Description</label>
+                    <input id="description" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.Description"
+                           placeholder="Optional description" />
+                </div>
+            </BodyContent>
+        </FormSectionV2>
+    </BodyContent>
+
+</FormPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and form submission
+   ========================================================================= *@
+@code {
+    [Parameter] public long? Id { get; set; }
+
+    private bool   IsNew     => Id is null;
+    private string PageTitle => IsNew ? "Add Class" : "Edit Class";
+    private string BackHref  => IsNew ? "/v2/classes" : $"/v2/classes/{Id}";
+    private string BackLabel => IsNew ? "Classes" : "Class Detail";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Classes", PageTitle);
+        if (IsNew)
+            ViewModel.LoadForCreate();
+        else
+            await ViewModel.LoadForEditAsync(Id!.Value);
+    }
+
+    private async Task OnSave()
+    {
+        bool ok = await ViewModel.SaveAsync();
+        if (ok) Nav.NavigateTo("/v2/classes");
+    }
+
+    private void OnCancel() =>
+        Nav.NavigateTo(IsNew ? "/v2/classes" : $"/v2/classes/{Id}");
+}

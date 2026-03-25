@@ -1,0 +1,269 @@
+/* =============================================================================
+   File    : TableV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Created : 2026-03-21
+   Purpose : Scoped styles for TableV2 component.
+             All values reference V2 design tokens from wwwroot/css/tokens/.
+============================================================================= */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+
+.dsv2-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--ds-color-surface-card);
+    border: 1px solid var(--ds-color-neutral-10);
+    border-radius: var(--ds-radius-lg);
+    overflow: hidden;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+
+.dsv2-table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-bottom: 1px solid var(--ds-color-neutral-10);
+    gap: var(--ds-spacing-3);
+    flex-wrap: wrap;
+}
+
+.dsv2-table-toolbar__search {
+    flex: 1;
+    min-width: 12rem;
+    max-width: 24rem;
+}
+
+.dsv2-table-toolbar__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+}
+
+.dsv2-table-toolbar__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-3);
+    border: 1px solid var(--ds-color-neutral-20);
+    border-radius: var(--ds-radius-md);
+    background: transparent;
+    color: var(--ds-color-neutral-70);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    cursor: pointer;
+    transition: background var(--ds-transition-fast), border-color var(--ds-transition-fast);
+}
+
+.dsv2-table-toolbar__btn:hover {
+    background: var(--ds-color-neutral-5);
+    border-color: var(--ds-color-neutral-30);
+}
+
+.dsv2-table-toolbar__btn--active {
+    background: var(--ds-color-accent-alpha-10);
+    border-color: var(--ds-color-accent);
+    color: var(--ds-color-accent);
+}
+
+/* ── Scroll container ────────────────────────────────────────────────────── */
+
+.dsv2-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ── Table element ───────────────────────────────────────────────────────── */
+
+.dsv2-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-neutral-80);
+}
+
+/* ── Head ────────────────────────────────────────────────────────────────── */
+
+.dsv2-table__head {
+    background: var(--ds-color-neutral-3);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.dsv2-table__head-row {
+    border-bottom: 2px solid var(--ds-color-neutral-15);
+}
+
+.dsv2-table__th {
+    padding: var(--ds-table-cell-padding-y) var(--ds-table-cell-padding-x);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-color-neutral-60);
+    font-size: var(--ds-font-size-xs);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.dsv2-table__th--left   { text-align: left; }
+.dsv2-table__th--center { text-align: center; }
+.dsv2-table__th--right  { text-align: right; }
+
+.dsv2-table__th--checkbox,
+.dsv2-table__th--actions {
+    width: 2.75rem;
+    text-align: center;
+}
+
+/* ── Sort button ─────────────────────────────────────────────────────────── */
+
+.dsv2-table__sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-color-neutral-60);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color var(--ds-transition-fast);
+}
+
+.dsv2-table__sort-btn:hover,
+.dsv2-table__sort-btn--active {
+    color: var(--ds-color-accent);
+}
+
+.dsv2-table__sort-icon {
+    font-size: var(--ds-font-size-xs);
+    opacity: 0.5;
+}
+
+.dsv2-table__sort-btn--active .dsv2-table__sort-icon {
+    opacity: 1;
+}
+
+.dsv2-table__col-icon {
+    font-size: var(--ds-font-size-sm);
+    margin-right: var(--ds-spacing-1);
+}
+
+.dsv2-table__col-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+}
+
+/* ── Body rows ───────────────────────────────────────────────────────────── */
+
+.dsv2-table__row {
+    border-bottom: 1px solid var(--ds-color-neutral-8);
+    transition: background var(--ds-transition-fast);
+}
+
+.dsv2-table__row:last-child { border-bottom: none; }
+
+.dsv2-table__row:hover { background: var(--ds-color-neutral-3); }
+
+.dsv2-table__row--clickable { cursor: pointer; }
+
+.dsv2-table__row--selected { background: var(--ds-color-accent-alpha-5); }
+
+/* ── Cells ───────────────────────────────────────────────────────────────── */
+
+.dsv2-table__td {
+    padding: var(--ds-table-cell-padding-y) var(--ds-table-cell-padding-x);
+    vertical-align: middle;
+    color: var(--ds-color-neutral-80);
+}
+
+.dsv2-table__td--left   { text-align: left; }
+.dsv2-table__td--center { text-align: center; }
+.dsv2-table__td--right  { text-align: right; }
+
+.dsv2-table__td--checkbox,
+.dsv2-table__td--actions {
+    text-align: center;
+    width: 2.75rem;
+}
+
+/* ── Checkbox ────────────────────────────────────────────────────────────── */
+
+.dsv2-table__checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--ds-color-accent);
+    cursor: pointer;
+}
+
+/* ── Empty state cell ────────────────────────────────────────────────────── */
+
+.dsv2-table__empty-cell {
+    padding: var(--ds-spacing-10) var(--ds-spacing-5);
+}
+
+/* ── Responsive: hide columns on mobile ──────────────────────────────────── */
+
+@media (max-width: 899px) {
+    .dsv2-table__th--mobile-hidden,
+    .dsv2-table__td--mobile-hidden {
+        display: none;
+    }
+}
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+
+:global([data-theme="dark"]) .dsv2-table-wrapper {
+    background: var(--ds-color-dark-surface);
+    border-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-table-toolbar {
+    border-bottom-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-table-toolbar__btn {
+    border-color: var(--ds-color-dark-border);
+    color: var(--ds-color-neutral-30);
+}
+
+:global([data-theme="dark"]) .dsv2-table-toolbar__btn:hover {
+    background: var(--ds-color-dark-hover);
+}
+
+:global([data-theme="dark"]) .dsv2-table__head {
+    background: var(--ds-color-dark-surface-raised);
+}
+
+:global([data-theme="dark"]) .dsv2-table__head-row {
+    border-bottom-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-table__th {
+    color: var(--ds-color-neutral-40);
+}
+
+:global([data-theme="dark"]) .dsv2-table {
+    color: var(--ds-color-neutral-20);
+}
+
+:global([data-theme="dark"]) .dsv2-table__row:hover {
+    background: var(--ds-color-dark-hover);
+}
+
+:global([data-theme="dark"]) .dsv2-table__row {
+    border-bottom-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-table__td {
+    color: var(--ds-color-neutral-20);
+}

@@ -1,0 +1,79 @@
+⭐ 1. Recommended Folder Structure (Full Project Layout)
+This is the structure used in professional Blazor Hybrid / .NET client applications.
+
+Code
+AbsenceApp/
+│
+├── src/
+│   ├── AbsenceApp.Client/                # Blazor Hybrid UI project
+│   │   ├── Components/                   # Reusable UI components
+│   │   │   ├── Layout/                   # Sidebar, Header, Footer
+│   │   │   ├── Tables/                   # Paginated table components
+│   │   │   ├── Forms/                    # Absence form components
+│   │   │   └── Notifications/            # Notification UI components
+│   │   ├── Pages/                        # Main pages
+│   │   │   ├── Dashboard.razor
+│   │   │   ├── RecordAbsence.razor
+│   │   │   ├── StudentList.razor
+│   │   │   ├── AbsenceHistory.razor
+│   │   │   ├── Notifications.razor
+│   │   │   └── Reports.razor
+│   │   ├── Services/                     # Client-side services
+│   │   ├── Styles/                       # CSS, themes (dark mode)
+│   │   ├── Assets/                       # Icons, images
+│   │   └── App.xaml / MainWindow.xaml    # Windows shell
+│   │
+│   ├── AbsenceApp.Core/                  # Shared logic & models
+│   │   ├── Models/                       # Student, Absence, Notification
+│   │   ├── DTOs/                         # Data transfer objects
+│   │   ├── Interfaces/                   # Service interfaces
+│   │   ├── Enums/                        # Role types, notification types
+│   │   └── Helpers/                      # Utility classes
+│   │
+│   ├── AbsenceApp.Data/                  # Data access layer
+│   │   ├── Context/                      # EF Core DbContext
+│   │   ├── Migrations/                   # EF migrations
+│   │   ├── Repositories/                 # Data access logic
+│   │   ├── Seed/                         # Initial data seeding
+│   │   └── Sql/                          # Raw SQL scripts (optional)
+│   │
+│   ├── AbsenceApp.Updater/               # Auto-update module
+│   │   ├── UpdateService.cs
+│   │   └── VersionManifest.json
+│   │
+│   └── AbsenceApp.Tests/                 # Unit tests
+│       ├── ClientTests/
+│       ├── CoreTests/
+│       └── DataTests/
+│
+├── docs/                                 # Documentation
+│   ├── PRD/
+│   ├── Architecture/
+│   ├── DatabaseSchema/
+│   └── UI Wireframes/
+│
+├── tools/                                # Scripts, utilities
+│   ├── ImportScripts/                    # CSV import scripts
+│   └── BackupScripts/                    # DB backup scripts
+│
+└── build/                                # Build artifacts (ignored by Git)
+This structure is clean, scalable, and matches your future roadmap (medical logs, safeguarding, behaviour tracking).
+
+⭐ 2. What Goes Where (Simple Explanation)
+AbsenceApp.Client
+Your Blazor Hybrid UI — pages, components, layout, styling.
+
+AbsenceApp.Core
+Shared logic: models, enums, interfaces, helpers.
+
+AbsenceApp.Data
+Database access, EF Core, migrations, repositories.
+
+AbsenceApp.Updater
+Handles auto‑update logic.
+
+docs
+PRD, architecture diagrams, schema, UI mockups.
+
+tools
+CSV import scripts, backup scripts.

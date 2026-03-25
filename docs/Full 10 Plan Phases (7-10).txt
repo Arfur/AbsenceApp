@@ -1,0 +1,797 @@
+PHASE 7 — FEATURE MODULES (BLAZOR VERSION)
+Goal:
+  - Introduce a unified, modular structure for all feature areas of the Absence MAUI Blazor Hybrid app.
+  - Ensure each module (Students, Staff, Classes, Attendance, Audit Log, Settings) uses:
+      - New data/services (Phase 6)
+      - New page templates (Phase 5)
+      - New table system (Phase 4)
+      - New layout/navigation (Phase 3)
+      - New design system (Phase 2)
+  - Ensure all module updates are additive and do not break existing pages.
+  - Prepare for gradual migration of existing pages to the new module structure.
+
+Constraints:
+  - Do NOT modify or remove existing module pages.
+  - Do NOT break existing routing or navigation.
+  - All new module pages must be introduced under a new namespace.
+  - All new pages must use V2 components only.
+  - All changes must be additive and reversible.
+
+----------------------------------------------------------------------
+7.1 STUDENTS MODULE (V2)
+----------------------------------------------------------------------
+
+7.1.1 Create folder structure
+  - Path: /ModulesV2/Students/
+      /Pages
+      /ViewModels
+      /Components (optional)
+
+7.1.2 Create StudentsListPageV2.razor
+  - File: /ModulesV2/Students/Pages/StudentsListPageV2.razor
+  - Base template: StandardPageV2
+  - Content:
+      - SearchBarV2
+      - TableV2 configured for students
+  - Parameters:
+      - StudentsListViewModelV2 injected via [Inject]
+
+7.1.3 Create StudentsListPageV2.razor.css
+  - Style spacing and layout using CSS variables.
+
+7.1.4 Create StudentsListViewModelV2.cs
+  - Responsibilities:
+      - Load students via StudentsApiServiceV2
+      - Provide Items for TableV2
+      - Provide View/Edit commands
+      - Handle sorting/filtering/searching/pagination
+
+7.1.5 Create StudentDetailPageV2.razor
+  - Base template: DetailPageV2
+  - Sections:
+      - Personal Information
+      - Contact Information
+      - Attendance Summary
+      - Classes
+
+7.1.6 Create StudentDetailViewModelV2.cs
+  - Responsibilities:
+      - Load student details
+      - Load related data
+      - Provide section content
+
+7.1.7 Create StudentFormPageV2.razor
+  - Base template: FormPageV2
+  - Sections:
+      - Personal Information
+      - Contact Information
+      - Enrollment Information
+
+7.1.8 Create StudentFormViewModelV2.cs
+  - Responsibilities:
+      - Load existing student (if editing)
+      - Validate input
+      - Save via StudentsApiServiceV2
+
+7.1.9 Backward compatibility
+  - Existing Students pages remain unchanged.
+
+----------------------------------------------------------------------
+7.2 STAFF MODULE (V2)
+----------------------------------------------------------------------
+
+7.2.1 Create folder structure
+  - Path: /ModulesV2/Staff/
+
+7.2.2 Create StaffListPageV2.razor
+  - Base template: StandardPageV2
+  - Content: TableV2 configured for staff
+
+7.2.3 Create StaffListViewModelV2.cs
+  - Responsibilities:
+      - Load staff via StaffApiServiceV2
+      - Provide Items for TableV2
+
+7.2.4 Create StaffDetailPageV2.razor
+  - Base template: DetailPageV2
+  - Sections:
+      - Personal Information
+      - Employment Information
+      - Assigned Classes
+
+7.2.5 Create StaffDetailViewModelV2.cs
+  - Responsibilities:
+      - Load staff details
+      - Load related data
+
+7.2.6 Create StaffFormPageV2.razor
+  - Base template: FormPageV2
+
+7.2.7 Create StaffFormViewModelV2.cs
+  - Responsibilities:
+      - Load existing staff (if editing)
+      - Validate input
+      - Save via StaffApiServiceV2
+
+7.2.8 Backward compatibility
+  - Existing Staff pages remain unchanged.
+
+----------------------------------------------------------------------
+7.3 CLASSES MODULE (V2)
+----------------------------------------------------------------------
+
+7.3.1 Create folder structure
+  - Path: /ModulesV2/Classes/
+
+7.3.2 Create ClassesListPageV2.razor
+  - Base template: StandardPageV2
+  - Content: TableV2 configured for classes
+
+7.3.3 Create ClassesListViewModelV2.cs
+  - Responsibilities:
+      - Load classes via ClassesApiServiceV2
+
+7.3.4 Create ClassDetailPageV2.razor
+  - Base template: DetailPageV2
+  - Sections:
+      - Class Information
+      - Assigned Staff
+      - Enrolled Students
+
+7.3.5 Create ClassDetailViewModelV2.cs
+  - Responsibilities:
+      - Load class details
+      - Load related data
+
+7.3.6 Create ClassFormPageV2.razor
+  - Base template: FormPageV2
+
+7.3.7 Create ClassFormViewModelV2.cs
+  - Responsibilities:
+      - Load existing class (if editing)
+      - Validate input
+      - Save via ClassesApiServiceV2
+
+7.3.8 Backward compatibility
+  - Existing Classes pages remain unchanged.
+
+----------------------------------------------------------------------
+7.4 ATTENDANCE MODULE (V2)
+----------------------------------------------------------------------
+
+7.4.1 Create folder structure
+  - Path: /ModulesV2/Attendance/
+
+7.4.2 Create AttendanceListPageV2.razor
+  - Base template: StandardPageV2
+  - Content: TableV2 configured for attendance records
+
+7.4.3 Create AttendanceListViewModelV2.cs
+  - Responsibilities:
+      - Load attendance records
+      - Provide Items for TableV2
+
+7.4.4 Create AttendanceDetailPageV2.razor
+  - Base template: DetailPageV2
+  - Sections:
+      - Student Information
+      - Attendance History
+      - Notes
+
+7.4.5 Create AttendanceDetailViewModelV2.cs
+  - Responsibilities:
+      - Load attendance details
+
+7.4.6 Backward compatibility
+  - Existing Attendance pages remain unchanged.
+
+----------------------------------------------------------------------
+7.5 AUDIT LOG MODULE (V2)
+----------------------------------------------------------------------
+
+7.5.1 Create folder structure
+  - Path: /ModulesV2/AuditLog/
+
+7.5.2 Create AuditLogPageV2.razor
+  - Base template: StandardPageV2
+  - Content: TableV2 configured for audit log entries
+
+7.5.3 Create AuditLogViewModelV2.cs
+  - Responsibilities:
+      - Load audit log entries
+      - Provide Items for TableV2
+      - Support pagination for large datasets
+
+7.5.4 Backward compatibility
+  - Existing Audit Log pages remain unchanged.
+
+----------------------------------------------------------------------
+7.6 SETTINGS MODULE (V2)
+----------------------------------------------------------------------
+
+7.6.1 Create folder structure
+  - Path: /ModulesV2/Settings/
+
+7.6.2 Create SettingsHomePageV2.razor
+  - Base template: SettingsPageV2
+  - Groups:
+      - Table Settings
+      - Theme Settings
+      - App Settings
+
+7.6.3 Create SettingsHomeViewModelV2.cs
+  - Responsibilities:
+      - Load settings groups
+      - Provide navigation to sub-settings pages
+
+7.6.4 Integrate TableSettingsPageV2 (from Phase 4)
+
+7.6.5 Create ThemeSettingsPageV2.razor
+  - Controls:
+      - Light/Dark/System toggle
+      - Color pickers (optional)
+
+7.6.6 Create AppSettingsPageV2.razor
+  - Controls:
+      - API endpoint configuration
+      - Feature flags (optional)
+
+7.6.7 Backward compatibility
+  - Existing Settings pages remain unchanged.
+
+----------------------------------------------------------------------
+7.7 PHASE 7 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 7 is complete when:
+  - All modules have:
+      - New list pages (V2)
+      - New detail pages (V2)
+      - New form pages (V2)
+      - New ViewModels (V2)
+      - New API service usage (V2)
+  - All new module pages:
+      - Use PageTemplatesV2 (Phase 5)
+      - Use TableV2 (Phase 4)
+      - Use LayoutV2 (Phase 3)
+      - Use design tokens (Phase 2)
+  - No existing module pages have been modified.
+  - The app builds and runs with zero regressions.
+  - All new module pages are additive and optional.
+
+END OF PHASE 7
+PHASE 8 — THEMING & BRANDING (BLAZOR VERSION)
+Goal:
+  - Introduce a configurable theming and branding system for the Absence MAUI Blazor Hybrid app.
+  - Use CSS variables, JSON configuration, and DI services to control theme and branding.
+  - Ensure theming/branding is additive, non-breaking, and can coexist with existing CSS.
+  - Prepare for future white-labelling and school-specific branding.
+
+Constraints:
+  - Do NOT remove or rewrite existing app.css.
+  - Do NOT break existing light/dark behaviour (if any).
+  - All new theming/branding logic must be additive.
+  - All configuration must be JSON-driven from wwwroot.
+  - All changes must be reversible.
+
+----------------------------------------------------------------------
+8.1 THEME CONFIGURATION (LIGHT/DARK/SYSTEM)
+----------------------------------------------------------------------
+
+8.1.1 Confirm theme.json from Phase 2
+  - Path: /wwwroot/config/designsystem/theme.json
+  - Ensure it defines:
+      - PrimaryColor
+      - SecondaryColor
+      - NeutralPalette
+      - StatusColors
+      - Typography
+      - SpacingScale
+      - Modes: Light, Dark
+
+8.1.2 Create ThemeMode enum
+  - File: /Models/Theming/ThemeMode.cs
+  - Values:
+      - Light
+      - Dark
+      - System
+
+8.1.3 Create ThemeConfigModel.cs
+  - File: /Models/Theming/ThemeConfigModel.cs
+  - Properties:
+      - string PrimaryColor
+      - string SecondaryColor
+      - Dictionary<string, string> NeutralPalette
+      - Dictionary<string, string> StatusColors
+      - Dictionary<string, string> Typography
+      - List<int> SpacingScale
+
+----------------------------------------------------------------------
+8.2 THEME SERVICE
+----------------------------------------------------------------------
+
+8.2.1 Create ThemeServiceV2.cs
+  - Path: /Services/Theming/ThemeServiceV2.cs
+  - Responsibilities:
+      - Load theme.json from wwwroot/config/designsystem/
+      - Store current ThemeMode
+      - Apply theme to CSS variables at runtime
+      - Provide:
+          Task InitializeAsync()
+          ThemeMode CurrentMode { get; }
+          Task SetThemeModeAsync(ThemeMode mode)
+          event Action<ThemeMode> OnThemeChanged
+
+8.2.2 Implement CSS variable application
+  - Use IJSRuntime to:
+      - Set documentElement.style.setProperty('--color-primary', value)
+      - Set other variables for:
+          Colors
+          Spacing
+          Typography
+
+8.2.3 Register ThemeServiceV2 in MauiProgram.cs
+  - builder.Services.AddSingleton<ThemeServiceV2>();
+
+8.2.4 Initialize ThemeServiceV2 on app startup
+  - In App.razor or MainLayout.razor:
+      - OnAfterRenderAsync (firstRender):
+          await ThemeServiceV2.InitializeAsync();
+
+----------------------------------------------------------------------
+8.3 BRANDING CONFIGURATION
+----------------------------------------------------------------------
+
+8.3.1 Create branding.json
+  - Path: /wwwroot/config/designsystem/branding.json
+  - Defines:
+      - AppName
+      - LogoUrl
+      - FaviconUrl (optional)
+      - PrimaryColorOverride (optional)
+      - SidebarBackgroundColor (optional)
+      - HeaderBackgroundColor (optional)
+      - AccentColor (optional)
+
+8.3.2 Create BrandingConfigModel.cs
+  - File: /Models/Theming/BrandingConfigModel.cs
+  - Properties:
+      - string AppName
+      - string LogoUrl
+      - string FaviconUrl
+      - string PrimaryColorOverride
+      - string SidebarBackgroundColor
+      - string HeaderBackgroundColor
+      - string AccentColor
+
+8.3.3 Create BrandingServiceV2.cs
+  - Path: /Services/Theming/BrandingServiceV2.cs
+  - Responsibilities:
+      - Load branding.json
+      - Provide:
+          Task InitializeAsync()
+          BrandingConfigModel CurrentBranding { get; }
+          event Action<BrandingConfigModel> OnBrandingChanged
+      - Apply branding overrides to CSS variables:
+          --sidebar-bg
+          --header-bg
+          --color-primary (if override provided)
+
+8.3.4 Register BrandingServiceV2 in MauiProgram.cs
+  - builder.Services.AddSingleton<BrandingServiceV2>();
+
+8.3.5 Initialize BrandingServiceV2 on app startup
+  - In App.razor or MainLayout.razor:
+      - OnAfterRenderAsync (firstRender):
+          await BrandingServiceV2.InitializeAsync();
+
+----------------------------------------------------------------------
+8.4 INTEGRATION WITH LAYOUT & TEMPLATES
+----------------------------------------------------------------------
+
+8.4.1 Update SidebarV2.razor to use branding variables
+  - Use CSS variables:
+      --sidebar-bg
+      --sidebar-text
+      --sidebar-active-bg
+      --sidebar-active-text
+
+8.4.2 Update HeaderV2.razor to use branding variables
+  - Use:
+      --header-bg
+      --header-text
+
+8.4.3 Ensure PageTemplatesV2 use theme tokens
+  - StandardPageV2, DetailPageV2, FormPageV2, SettingsPageV2, DashboardPageV2:
+      - Use:
+          --content-padding
+          --space-*
+          --radius-*
+          --color-neutral-*
+
+8.4.4 Ensure TableV2 uses theme tokens
+  - Use:
+      --table-header-bg
+      --table-row-bg
+      --table-border-color
+
+8.4.5 Backward compatibility
+  - Existing layouts and CSS remain unchanged.
+  - New components only use new variables.
+
+----------------------------------------------------------------------
+8.5 THEME SETTINGS UI
+----------------------------------------------------------------------
+
+8.5.1 Create ThemeSettingsPageV2.razor (if not already created in Phase 7)
+  - Path: /ModulesV2/Settings/ThemeSettingsPageV2.razor
+  - Base template: SettingsPageV2
+  - Controls:
+      - Radio buttons or dropdown for ThemeMode:
+          Light / Dark / System
+      - Optional preview of theme
+
+8.5.2 Create ThemeSettingsViewModelV2.cs
+  - Responsibilities:
+      - Bind to ThemeServiceV2
+      - Get/Set ThemeMode
+      - Persist preference (optional) via local storage (IJSRuntime)
+
+8.5.3 Wire up ThemeSettingsPageV2
+  - On change:
+      await ThemeServiceV2.SetThemeModeAsync(selectedMode);
+
+----------------------------------------------------------------------
+8.6 BRANDING SETTINGS UI (OPTIONAL / FUTURE)
+----------------------------------------------------------------------
+
+8.6.1 Create BrandingSettingsPageV2.razor (optional)
+  - Path: /ModulesV2/Settings/BrandingSettingsPageV2.razor
+  - Base template: SettingsPageV2
+  - Controls:
+      - AppName input
+      - Logo URL input
+      - Primary color override input (color picker)
+      - Sidebar/Header background color inputs
+
+8.6.2 Create BrandingSettingsViewModelV2.cs
+  - Responsibilities:
+      - Load branding.json
+      - Bind to UI
+      - Save updated branding.json (if allowed)
+      - Trigger BrandingServiceV2 refresh
+
+8.6.3 Backward compatibility
+  - If branding editing is not desired yet:
+      - Keep this page internal or disabled.
+
+----------------------------------------------------------------------
+8.7 CSS TOKEN EXTENSIONS FOR THEMING/BRANDING
+----------------------------------------------------------------------
+
+8.7.1 Extend colors.css
+  - Add:
+      --sidebar-bg
+      --sidebar-text
+      --sidebar-active-bg
+      --sidebar-active-text
+      --header-bg
+      --header-text
+      --dashboard-card-bg
+      --dashboard-card-border
+
+8.7.2 Extend layout.css
+  - Ensure:
+      --sidebar-width
+      --header-height
+      --content-padding
+      are used consistently.
+
+8.7.3 Ensure index.html includes all token files
+  - colors.css
+  - spacing.css
+  - typography.css
+  - radius.css
+  - layout.css
+
+----------------------------------------------------------------------
+8.8 PHASE 8 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 8 is complete when:
+  - theme.json and branding.json exist and load correctly.
+  - ThemeServiceV2:
+      - Initializes successfully.
+      - Applies CSS variables for theme.
+      - Supports Light/Dark/System modes.
+  - BrandingServiceV2:
+      - Initializes successfully.
+      - Applies branding overrides to CSS variables.
+  - LayoutV2 and PageTemplatesV2 use theme/branding variables.
+  - ThemeSettingsPageV2 exists and can change theme mode.
+  - No existing CSS or layouts have been broken.
+  - The app builds and runs with zero regressions.
+  - Theming and branding are fully additive and optional.
+
+END OF PHASE 8
+PHASE 9 — REUSABILITY FRAMEWORK (BLAZOR VERSION)
+Goal:
+  - Extract all V2 design system, layout, table, template, theming, and module infrastructure into a clear, reusable framework structure.
+  - Separate “framework” (generic, reusable) from “app” (Absence-specific).
+  - Prepare for future packaging as a Blazor component library or shared framework.
+  - Keep everything additive and non-breaking.
+
+Constraints:
+  - Do NOT move or delete existing V1 code.
+  - Do NOT break existing Absence-specific pages.
+  - All framework extraction must be done by copying, not moving.
+  - All changes must be reversible.
+  - No NuGet packaging yet — just internal framework structure.
+
+----------------------------------------------------------------------
+9.1 CREATE FRAMEWORK ROOT STRUCTURE
+----------------------------------------------------------------------
+
+9.1.1 Create framework root folder
+  - Path: /FrameworkV2/
+  - Purpose:
+      - Contain all reusable, app-agnostic V2 assets.
+
+9.1.2 Create subfolders
+  - /FrameworkV2/Components/
+  - /FrameworkV2/Layouts/
+  - /FrameworkV2/PageTemplates/
+  - /FrameworkV2/Tables/
+  - /FrameworkV2/Theming/
+  - /FrameworkV2/Config/
+  - /FrameworkV2/Models/
+  - /FrameworkV2/Services/
+  - /FrameworkV2/Docs/
+
+----------------------------------------------------------------------
+9.2 COPY REUSABLE COMPONENTS INTO FRAMEWORK
+----------------------------------------------------------------------
+
+9.2.1 Copy design system components
+  - From:
+      /Components/DesignSystem/
+  - To:
+      /FrameworkV2/Components/DesignSystem/
+  - Includes:
+      Icon.razor (+ .razor.css)
+      IconButton.razor (+ .razor.css)
+      SectionHeader.razor (+ .razor.css)
+      Card.razor (+ .razor.css)
+
+9.2.2 Copy layout components
+  - From:
+      /Components/LayoutV2/
+  - To:
+      /FrameworkV2/Layouts/
+  - Includes:
+      SidebarV2.razor (+ .razor.css)
+      HeaderV2.razor (+ .razor.css)
+      BreadcrumbV2.razor (+ .razor.css)
+      ScrollSpyV2.razor (+ .razor.css)
+
+9.2.3 Copy page templates
+  - From:
+      /Components/PageTemplatesV2/
+  - To:
+      /FrameworkV2/PageTemplates/
+  - Includes:
+      PageTemplateV2.razor
+      StandardPageV2.razor
+      DetailPageV2.razor
+      FormPageV2.razor
+      SettingsPageV2.razor
+      DashboardPageV2.razor
+      DetailSectionV2.razor
+      FormSectionV2.razor
+      FormFooterV2.razor
+      SettingsGroupV2.razor
+      SettingsItemV2.razor
+      DashboardCardV2.razor
+      (+ all .razor.css files)
+
+9.2.4 Copy table components
+  - From:
+      /Components/TableV2/
+  - To:
+      /FrameworkV2/Tables/
+  - Includes:
+      TableV2.razor
+      FilterRowV2.razor
+      SearchBarV2.razor
+      InlineActionsV2.razor
+      SkeletonRowV2.razor
+      EmptyStateV2.razor
+      PaginationV2.razor
+      TableSettingsPageV2.razor
+      (+ all .razor.css files)
+
+----------------------------------------------------------------------
+9.3 COPY MODELS & SERVICES INTO FRAMEWORK
+----------------------------------------------------------------------
+
+9.3.1 Copy shared models
+  - From:
+      /Models/PageTemplatesV2/
+      /Models/TableV2/
+      /Models/Theming/
+  - To:
+      /FrameworkV2/Models/
+  - Includes:
+      DetailSectionModel.cs
+      FormSectionModel.cs
+      SettingsGroupModel.cs
+      SettingsItemModel.cs
+      TableColumnModel.cs
+      ThemeMode.cs
+      ThemeConfigModel.cs
+      BrandingConfigModel.cs
+
+9.3.2 Copy shared services
+  - From:
+      /Services/TableV2/
+      /Services/Theming/
+      /Services/DesignSystemConfigService.cs
+      /Services/NavigationServiceV2.cs
+  - To:
+      /FrameworkV2/Services/
+  - Includes:
+      TableConfigService.cs
+      ThemeServiceV2.cs
+      BrandingServiceV2.cs
+      DesignSystemConfigService.cs
+      NavigationServiceV2.cs
+
+9.3.3 Keep app-specific services in place
+  - ApiV2 services and module-specific ViewModels remain in app folders.
+  - Only generic, reusable services are copied into /FrameworkV2/Services/.
+
+----------------------------------------------------------------------
+9.4 COPY CONFIG & TOKENS INTO FRAMEWORK
+----------------------------------------------------------------------
+
+9.4.1 Copy JSON config schemas
+  - From:
+      /wwwroot/config/designsystem/
+  - To:
+      /FrameworkV2/Config/
+  - Includes:
+      theme.json (as reference schema)
+      branding.json (as reference schema)
+      menu.json (as reference schema)
+      table-schema.json (as reference schema)
+      components.json (as reference schema)
+      icons.json (as reference schema)
+  - Note:
+      - These copies are documentation/reference, not live config.
+      - Live config remains in wwwroot.
+
+9.4.2 Copy CSS token definitions
+  - From:
+      /wwwroot/css/tokens/
+  - To:
+      /FrameworkV2/Config/Tokens/
+  - Includes:
+      colors.css
+      spacing.css
+      typography.css
+      radius.css
+      layout.css
+  - Note:
+      - These are reference token sets for the framework.
+
+----------------------------------------------------------------------
+9.5 FRAMEWORK DOCUMENTATION
+----------------------------------------------------------------------
+
+9.5.1 Create architecture overview doc
+  - File: /FrameworkV2/Docs/architecture.md
+  - Content:
+      - Purpose of FrameworkV2
+      - High-level diagram:
+          Design System
+          Layout
+          Page Templates
+          Tables
+          Theming/Branding
+          Config
+          Services
+      - Relationship between FrameworkV2 and Absence app
+
+9.5.2 Create design system doc
+  - File: /FrameworkV2/Docs/design-system.md
+  - Content:
+      - CSS tokens
+      - DesignSystem components
+      - Usage examples
+
+9.5.3 Create layout & templates doc
+  - File: /FrameworkV2/Docs/layout-templates.md
+  - Content:
+      - SidebarV2, HeaderV2, BreadcrumbV2, ScrollSpyV2
+      - PageTemplateV2, StandardPageV2, DetailPageV2, FormPageV2, SettingsPageV2, DashboardPageV2
+      - Example: how to build a new page using templates
+
+9.5.4 Create table system doc
+  - File: /FrameworkV2/Docs/tables.md
+  - Content:
+      - TableV2 architecture
+      - TableColumnModel
+      - TableConfigService
+      - TableSettingsPageV2
+      - Example: wiring a new table
+
+9.5.5 Create theming & branding doc
+  - File: /FrameworkV2/Docs/theming-branding.md
+  - Content:
+      - theme.json
+      - branding.json
+      - ThemeServiceV2
+      - BrandingServiceV2
+      - CSS variable application
+
+9.5.6 Create integration guide
+  - File: /FrameworkV2/Docs/integration-guide.md
+  - Content:
+      - How to integrate FrameworkV2 into a new Blazor app
+      - Required services registration
+      - Required CSS includes
+      - Required config files
+
+----------------------------------------------------------------------
+9.6 INTERNAL “FRAMEWORK DEMO” PAGES
+----------------------------------------------------------------------
+
+9.6.1 Create FrameworkDemo folder
+  - Path: /FrameworkV2/Demo/
+  - Purpose:
+      - Host internal demo pages that showcase framework components.
+
+9.6.2 Create:
+  - DesignSystemDemo.razor
+  - LayoutDemo.razor
+  - TableDemo.razor
+  - ThemingDemo.razor
+
+9.6.3 Each demo page:
+  - Uses only FrameworkV2 components and models.
+  - Does NOT depend on Absence-specific modules.
+
+----------------------------------------------------------------------
+9.7 NO RUNTIME BEHAVIOUR CHANGE
+----------------------------------------------------------------------
+
+9.7.1 Ensure all copies are non-invasive
+  - No references in the main app are changed to use FrameworkV2 yet.
+  - This phase is about extraction and documentation only.
+
+9.7.2 Ensure build still passes
+  - All new files compile.
+  - No existing code is modified.
+
+----------------------------------------------------------------------
+9.8 PHASE 9 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 9 is complete when:
+  - /FrameworkV2/ exists with:
+      - Components
+      - Layouts
+      - PageTemplates
+      - Tables
+      - Theming
+      - Config
+      - Models
+      - Services
+      - Docs
+      - Demo pages
+  - All framework assets are copies of V2 implementations (not moved).
+  - No existing Absence app behaviour has changed.
+  - The app builds and runs with zero regressions.
+  - FrameworkV2 is ready to be referenced by future apps or packaging work.
+
+END OF PHASE 9

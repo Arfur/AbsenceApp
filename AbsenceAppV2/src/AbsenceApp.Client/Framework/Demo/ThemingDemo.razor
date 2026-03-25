@@ -1,0 +1,177 @@
+@* ===========================================================================
+   File        : ThemingDemo.razor
+   Namespace   : AbsenceApp.Client.FrameworkV2.Demo
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Demo page for FrameworkV2 theming and branding services.
+                 Route: /v2/demo/theming
+                 No Absence-specific module dependencies.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Wrapped content in PageTemplateV2 to restore V2 chrome
+                           (header, sidebar) after MainLayoutV2 was made body-only.
+   ---------------------------------------------------------------------------
+   Notes       :
+     None.
+   ===========================================================================
+*@
+@page "/v2/demo/theming"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.DesignSystem
+@using AbsenceApp.Client.Models.Theming
+@using AbsenceApp.Client.Services.Theming
+@implements IDisposable
+@inject ThemeServiceV2 ThemeService
+@inject BrandingServiceV2 BrandingService
+
+<PageTemplateV2 PageTitleText="Theming Demo">
+<BodyContent>
+<div class="dsv2-demo-page">
+
+    <SectionHeader Title="Theming &amp; Branding Demo"
+                   Icon="bi-palette2"
+                   Subtitle="ThemeServiceV2 and BrandingServiceV2 in action">
+        <Actions>
+            <IconButton Icon="bi-sun" Title="Light mode" Variant="ghost" OnClick="SetLight" />
+            <IconButton Icon="bi-moon" Title="Dark mode" Variant="ghost" OnClick="SetDark" />
+            <IconButton Icon="bi-display" Title="System mode" Variant="ghost" OnClick="SetSystem" />
+        </Actions>
+    </SectionHeader>
+
+    @* =========================================================================
+   Section: Theme status
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">Active Theme</h3>
+        <div class="dsv2-demo-row dsv2-demo-row--wrap">
+            <Card Title="Current Mode">
+                <p>Mode: <strong>@(_config?.ActiveMode.ToString() ?? "�")</strong></p>
+                <p>Dark mode active: <strong>@ThemeService.IsDarkMode</strong></p>
+                <p>Body class: <code>@ThemeService.ActiveBodyClass</code></p>
+            </Card>
+            <Card Title="Toggle Controls">
+                <div class="dsv2-demo-row">
+                    <IconButton Icon="bi-sun"     Label="Light"  Variant="ghost" OnClick="SetLight" />
+                    <IconButton Icon="bi-moon"    Label="Dark"   Variant="ghost" OnClick="SetDark" />
+                    <IconButton Icon="bi-display" Label="System" Variant="ghost" OnClick="SetSystem" />
+                    <IconButton Icon="bi-arrow-repeat" Label="Cycle" Variant="primary" OnClick="Cycle" />
+                </div>
+            </Card>
+        </div>
+    </section>
+
+    @* =========================================================================
+   Section: Branding
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">Branding Config</h3>
+        @if (_branding is not null)
+        {
+            <div class="dsv2-demo-row dsv2-demo-row--wrap">
+                <Card Title="App Identity">
+                    <p>App Name: <strong>@_branding.AppName</strong></p>
+                    @if (!string.IsNullOrWhiteSpace(_branding.LogoUrl))
+                    {
+                        <p>Logo: <a href="@_branding.LogoUrl" target="_blank">@_branding.LogoUrl</a></p>
+                    }
+                    else
+                    {
+                        <p>Logo URL: <em>(not configured)</em></p>
+                    }
+                </Card>
+                <Card Title="Colors">
+                    <div style="display:flex;gap:var(--space-3,12px);align-items:center">
+                        <div style="width:40px;height:40px;border-radius:var(--radius-sm,4px);background:@_branding.PrimaryAccentColor"></div>
+                        <span>Primary: <code>@_branding.PrimaryAccentColor</code></span>
+                    </div>
+                    <div style="display:flex;gap:var(--space-3,12px);align-items:center;margin-top:var(--space-2,8px)">
+                        <div style="width:40px;height:40px;border-radius:var(--radius-sm,4px);background:@_branding.PrimaryAccentHoverColor"></div>
+                        <span>Hover: <code>@_branding.PrimaryAccentHoverColor</code></span>
+                    </div>
+                </Card>
+                <Card Title="Reload Branding">
+                    <IconButton Icon="bi-arrow-clockwise" Label="Reload branding.json" Variant="ghost" OnClick="ReloadBranding" />
+                </Card>
+            </div>
+        }
+        else
+        {
+            <p><Icon Name="bi-hourglass-split" Size="sm" /> Loading branding�</p>
+        }
+    </section>
+
+    @* =========================================================================
+   Section: CSS Token preview
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">CSS Token Preview</h3>
+        <p>These swatches use CSS custom properties from the token layer and switch when you toggle the theme above.</p>
+        <div class="dsv2-demo-row dsv2-demo-row--wrap">
+            @foreach (var token in _colorTokens)
+            {
+                <div class="dsv2-token-swatch">
+                    <div class="dsv2-token-swatch__dot" style="background:var(@token)"></div>
+                    <code>@token</code>
+                </div>
+            }
+        </div>
+    </section>
+
+</div>
+</BodyContent>
+</PageTemplateV2>
+
+@code {
+    private ThemeConfigModel? _config;
+    private BrandingConfigModel? _branding;
+
+    private static readonly string[] _colorTokens =
+    [
+        "--color-primary", "--color-secondary", "--color-success",
+        "--color-warning", "--color-danger", "--color-info",
+        "--color-bg", "--color-surface", "--color-text", "--color-border"
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        ThemeService.OnChange += HandleThemeChanged;
+        BrandingService.OnChange += HandleBrandingChanged;
+
+        _config   = await ThemeService.GetConfigAsync();
+        _branding = await BrandingService.GetConfigAsync();
+    }
+
+    private void HandleThemeChanged()
+    {
+        _ = ThemeService.GetConfigAsync().ContinueWith(t =>
+        {
+            _config = t.Result;
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private void HandleBrandingChanged()
+    {
+        _ = BrandingService.GetConfigAsync().ContinueWith(t =>
+        {
+            _branding = t.Result;
+            InvokeAsync(StateHasChanged);
+        });
+    }
+
+    private async Task SetLight()  => await ThemeService.SetModeAsync(ThemeMode.Light);
+    private async Task SetDark()   => await ThemeService.SetModeAsync(ThemeMode.Dark);
+    private async Task SetSystem() => await ThemeService.SetModeAsync(ThemeMode.System);
+    private async Task Cycle()     => await ThemeService.CycleModeAsync();
+    private async Task ReloadBranding() => await BrandingService.ReloadAsync();
+
+    public void Dispose()
+    {
+        ThemeService.OnChange   -= HandleThemeChanged;
+        BrandingService.OnChange -= HandleBrandingChanged;
+    }
+}

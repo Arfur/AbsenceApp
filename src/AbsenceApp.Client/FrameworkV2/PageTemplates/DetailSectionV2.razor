@@ -1,0 +1,115 @@
+﻿@* ===========================================================================
+   File        : DetailSectionV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Collapsible section card for detail view pages. Renders a titled bordered section with an optional field/value grid inside. Accepts a DetailSectionModel for configuration or inline parameters. Used inside DetailPageV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Models.V2
+
+@* =========================================================================
+   Section: Detail section
+   ========================================================================= *@
+<section class="@SectionClass()">
+    <div class="dsv2-detail-section__header"
+         role="button"
+         tabindex="0"
+         aria-expanded="@(!_collapsed)"
+         @onclick="ToggleCollapse"
+         @onkeydown="HandleKeyDown">
+
+        @if (Icon is not null)
+        {
+            <i class="bi @Icon dsv2-detail-section__icon" aria-hidden="true"></i>
+        }
+
+        <span class="dsv2-detail-section__title">@Title</span>
+
+        <i class="bi @(_collapsed ? "bi-chevron-down" : "bi-chevron-up") dsv2-detail-section__chevron"
+           aria-hidden="true"></i>
+    </div>
+
+    @if (!_collapsed)
+    {
+        <div class="dsv2-detail-section__body dsv2-detail-section__body--cols-@Columns">
+            @ChildContent
+        </div>
+    }
+</section>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    /// <summary>Optional model. When supplied its properties override individual parameter defaults.</summary>
+    [Parameter] public DetailSectionModel? Model { get; set; }
+
+    /// <summary>Section heading text.</summary>
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    /// <summary>Bootstrap icon class beside the title (e.g. "bi-person").</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>Number of field columns in the body grid (1–3). Default: 2.</summary>
+    [Parameter] public int Columns { get; set; } = 2;
+
+    /// <summary>Whether the section starts collapsed. Default: false.</summary>
+    [Parameter] public bool CollapsedByDefault { get; set; } = false;
+
+    /// <summary>Additional CSS class applied to the section wrapper.</summary>
+    [Parameter] public string? CssClass { get; set; }
+
+    /// <summary>Fields / content of the section.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // -------------------------------------------------------------------------
+
+    // State
+
+    // -------------------------------------------------------------------------
+    private bool _collapsed;
+
+    protected override void OnParametersSet()
+    {
+        if (Model is not null)
+        {
+            if (string.IsNullOrEmpty(Title)) Title = Model.Title;
+            Icon     ??= Model.Icon;
+            Columns    = Model.Columns;
+            CssClass ??= Model.CssClass;
+            _collapsed  = Model.CollapsedByDefault;
+        }
+        else
+        {
+            _collapsed = CollapsedByDefault;
+        }
+    }
+
+    private void ToggleCollapse() => _collapsed = !_collapsed;
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ") ToggleCollapse();
+    }
+
+    private string SectionClass()
+    {
+        var cls = "dsv2-detail-section";
+        if (_collapsed) cls += " dsv2-detail-section--collapsed";
+        if (!string.IsNullOrEmpty(CssClass)) cls += " " + CssClass;
+        return cls;
+    }
+}

@@ -1,0 +1,123 @@
+@* ===========================================================================
+   File        : DesignSystemDemo.razor
+   Namespace   : AbsenceApp.Client.FrameworkV2.Demo
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Demo page for FrameworkV2 DesignSystem components.
+                 Route: /v2/demo/design-system
+                 No Absence-specific module dependencies.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Wrapped content in PageTemplateV2 to restore V2 chrome
+                           (header, sidebar) after MainLayoutV2 was made body-only.
+   ---------------------------------------------------------------------------
+   Notes       :
+     None.
+   ===========================================================================
+*@
+@page "/v2/demo/design-system"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.DesignSystem
+
+<PageTemplateV2 PageTitleText="Design System Demo">
+<BodyContent>
+<div class="dsv2-demo-page">
+
+    <SectionHeader Title="DesignSystem Component Demo"
+                   Icon="bi-palette"
+                   Subtitle="Icons, IconButtons, Cards, and SectionHeaders" />
+
+    @* =========================================================================
+   Section: Icons
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">Icon</h3>
+        <div class="dsv2-demo-row">
+            <Icon Name="bi-star" Size="xs" />
+            <Icon Name="bi-star" Size="sm" />
+            <Icon Name="bi-star" Size="md" />
+            <Icon Name="bi-star" Size="lg" />
+            <Icon Name="bi-star" Size="xl" />
+        </div>
+        <div class="dsv2-demo-row">
+            <Icon Name="bi-check-circle" Color="var(--color-success, green)" AriaLabel="Success" />
+            <Icon Name="bi-exclamation-triangle" Color="var(--color-warning, orange)" AriaLabel="Warning" />
+            <Icon Name="bi-x-circle" Color="var(--color-danger, red)" AriaLabel="Error" />
+            <Icon Name="bi-info-circle" Color="var(--color-info, steelblue)" AriaLabel="Info" />
+        </div>
+    </section>
+
+    @* =========================================================================
+   Section: IconButtons
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">IconButton</h3>
+        <div class="dsv2-demo-row">
+            <IconButton Icon="bi-pencil" Title="Edit" Variant="ghost" />
+            <IconButton Icon="bi-trash" Title="Delete" Variant="ghost" />
+            <IconButton Icon="bi-plus" Title="Add" Variant="primary" />
+            <IconButton Icon="bi-download" Title="Download" Variant="secondary" />
+        </div>
+        <div class="dsv2-demo-row">
+            <IconButton Icon="bi-pencil" Label="Edit" Variant="ghost" Size="sm" />
+            <IconButton Icon="bi-pencil" Label="Edit" Variant="ghost" Size="md" />
+            <IconButton Icon="bi-pencil" Label="Edit" Variant="ghost" Size="lg" />
+        </div>
+        <div class="dsv2-demo-row">
+            <IconButton Icon="bi-save" Label="Disabled" Variant="primary" Disabled="true" />
+        </div>
+    </section>
+
+    @* =========================================================================
+   Section: Cards
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">Card</h3>
+        <div class="dsv2-demo-row dsv2-demo-row--wrap">
+            <Card Title="Default Card" Shadow="xs">
+                <p>Card with default shadow and divider.</p>
+            </Card>
+            <Card Title="Hoverable Card" Shadow="sm" Hoverable="true">
+                <p>This card has hover styling enabled.</p>
+            </Card>
+            <Card Title="No Divider" ShowDivider="false" Shadow="md">
+                <p>Card without the title divider.</p>
+            </Card>
+            <Card Shadow="none">
+                <p>Card with no shadow and no title.</p>
+            </Card>
+        </div>
+    </section>
+
+    @* =========================================================================
+   Section: SectionHeaders
+   ========================================================================= *@
+    <section class="dsv2-demo-section">
+        <h3 class="dsv2-demo-heading">SectionHeader</h3>
+        <SectionHeader Title="Small Header" Size="sm" ShowDivider="false" />
+        <SectionHeader Title="Medium Header"
+                       Icon="bi-people"
+                       Subtitle="With icon and subtitle"
+                       Size="md" />
+        <SectionHeader Title="Large Header with Actions"
+                       Icon="bi-gear"
+                       Subtitle="With right-aligned action slot"
+                       Size="lg">
+            <Actions>
+                <IconButton Icon="bi-plus" Title="Add" Variant="primary" />
+                <IconButton Icon="bi-arrow-clockwise" Title="Refresh" Variant="ghost" />
+            </Actions>
+        </SectionHeader>
+    </section>
+
+</div>
+</BodyContent>
+</PageTemplateV2>
+
+@code {
+    // No Absence-specific dependencies. Pure framework component demo.
+}

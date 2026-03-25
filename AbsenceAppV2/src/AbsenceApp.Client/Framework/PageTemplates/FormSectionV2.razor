@@ -1,0 +1,94 @@
+﻿@* ===========================================================================
+   File        : FormSectionV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Bordered group card for grouping form fields within FormPageV2. Accepts a FormSectionModel for configuration or inline parameters. Renders a header section (title, icon, description) and a grid body for Blazor form field content.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Models.V2
+
+@* =========================================================================
+   Section: Form section
+   ========================================================================= *@
+<div class="@SectionClass()">
+    <div class="dsv2-form-section__header">
+        @if (Icon is not null)
+        {
+            <i class="bi @Icon dsv2-form-section__icon" aria-hidden="true"></i>
+        }
+        <div class="dsv2-form-section__header-text">
+            <span class="dsv2-form-section__title">@Title</span>
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <span class="dsv2-form-section__description">@Description</span>
+            }
+        </div>
+    </div>
+
+    <div class="dsv2-form-section__body dsv2-form-section__body--cols-@Columns">
+        @ChildContent
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    /// <summary>Optional model. When supplied its properties override defaults.</summary>
+    [Parameter] public FormSectionModel? Model { get; set; }
+
+    /// <summary>Section heading text.</summary>
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    /// <summary>Bootstrap icon class beside the title (e.g. "bi-pencil").</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>Optional description rendered beneath the title.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>Number of form field columns in the body grid (1–3). Default: 2.</summary>
+    [Parameter] public int Columns { get; set; } = 2;
+
+    /// <summary>Additional CSS class applied to the section wrapper.</summary>
+    [Parameter] public string? CssClass { get; set; }
+
+    /// <summary>Form fields (content) of the section.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // -------------------------------------------------------------------------
+
+    // Lifecycle
+
+    // -------------------------------------------------------------------------
+    protected override void OnParametersSet()
+    {
+        if (Model is not null)
+        {
+            if (string.IsNullOrEmpty(Title)) Title = Model.Title;
+            Icon        ??= Model.Icon;
+            Description ??= Model.Description;
+            Columns       = Model.Columns;
+            CssClass    ??= Model.CssClass;
+        }
+    }
+
+    private string SectionClass()
+    {
+        var cls = "dsv2-form-section";
+        if (!string.IsNullOrEmpty(CssClass)) cls += " " + CssClass;
+        return cls;
+    }
+}

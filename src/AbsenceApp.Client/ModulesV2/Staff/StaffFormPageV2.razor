@@ -1,0 +1,185 @@
+@* ===========================================================================
+   File        : StaffFormPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Staff
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Staff add/edit form page. Uses FormPageV2 and FormSectionV2
+                 components for the create and edit workflows. Delegates form
+                 state and API calls to StaffFormViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Routes: /v2/staff/new (add), /v2/staff/{Id:long}/edit (edit)
+     - Register StaffFormViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/staff/new"
+@page "/v2/staff/{Id:long}/edit"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject StaffFormViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Staff form
+   ========================================================================= *@
+<FormPageV2 PageTitle="@PageTitle"
+            BackHref="@BackHref"
+            BackLabel="@BackLabel"
+            SubmitLabel="Save Staff Member"
+            BusyLabel="Saving�"
+            CancelLabel="Cancel"
+            IsBusy="ViewModel.IsBusy"
+            OnSubmit="OnSave"
+            OnCancel="OnCancel">
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        <FormSectionV2 Title="Personal Details" Icon="bi-person" Columns="2">
+            <BodyContent>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="staffNumber">Staff Number</label>
+                    <input id="staffNumber" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.StaffNumber"
+                           placeholder="e.g. STF-001" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="title">Title</label>
+                    <input id="title" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.Title"
+                           placeholder="e.g. Mr, Mrs, Dr" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="firstName">First Name</label>
+                    <input id="firstName" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.FirstName"
+                           placeholder="First name" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="lastName">Last Name</label>
+                    <input id="lastName" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.LastName"
+                           placeholder="Last name" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="workEmail">Work Email</label>
+                    <input id="workEmail" type="email" class="dsv2-form-input"
+                           @bind="@ViewModel.WorkEmail"
+                           placeholder="work@school.edu" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="accountStatus">Account Status</label>
+                    <input id="accountStatus" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.AccountStatus"
+                           placeholder="e.g. Active" />
+                </div>
+            </BodyContent>
+        </FormSectionV2>
+
+        <FormSectionV2 Title="Employment Details" Icon="bi-briefcase" Columns="2">
+            <BodyContent>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="employmentType">Employment Type</label>
+                    <input id="employmentType" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.EmploymentType"
+                           placeholder="e.g. Full-time" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="contractType">Contract Type</label>
+                    <input id="contractType" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.ContractType"
+                           placeholder="e.g. Permanent" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="workLocation">Work Location</label>
+                    <input id="workLocation" type="text" class="dsv2-form-input"
+                           @bind="@ViewModel.WorkLocation"
+                           placeholder="e.g. Main Campus" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="hireDate">Hire Date</label>
+                    <input id="hireDate" type="date" class="dsv2-form-input"
+                           value="@ViewModel.HireDate.ToString("yyyy-MM-dd")"
+                           @onchange="OnHireDateChanged" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="departmentId">Department ID</label>
+                    <input id="departmentId" type="number" class="dsv2-form-input"
+                           @bind="@ViewModel.DepartmentId" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="jobTitleId">Job Title ID</label>
+                    <input id="jobTitleId" type="number" class="dsv2-form-input"
+                           @bind="@ViewModel.JobTitleId" />
+                </div>
+
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="jobGroupId">Job Group ID</label>
+                    <input id="jobGroupId" type="number" class="dsv2-form-input"
+                           @bind="@ViewModel.JobGroupId" />
+                </div>
+            </BodyContent>
+        </FormSectionV2>
+    </BodyContent>
+
+</FormPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and form submission
+   ========================================================================= *@
+@code {
+    [Parameter] public long? Id { get; set; }
+
+    private bool   IsNew      => Id is null;
+    private string PageTitle  => IsNew ? "Add Staff Member" : "Edit Staff Member";
+    private string BackHref   => IsNew ? "/v2/staff" : $"/v2/staff/{Id}";
+    private string BackLabel  => IsNew ? "Staff" : "Staff Member";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Staff", PageTitle);
+        if (IsNew)
+            ViewModel.LoadForCreate();
+        else
+            await ViewModel.LoadForEditAsync(Id!.Value);
+    }
+
+    private void OnHireDateChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd",
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out DateOnly d))
+            ViewModel.HireDate = d;
+    }
+
+    private async Task OnSave()
+    {
+        bool ok = await ViewModel.SaveAsync();
+        if (ok) Nav.NavigateTo("/v2/staff");
+    }
+
+    private void OnCancel() =>
+        Nav.NavigateTo(IsNew ? "/v2/staff" : $"/v2/staff/{Id}");
+}

@@ -1,0 +1,28 @@
+@* ===========================================================================
+   File        : _Imports.razor
+   Namespace   : AbsenceApp.Client.ModulesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-24
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Global using directives for all Razor components under
+                 ModulesV2/ and its sub-folders. Mirrors the essential entries
+                 from Components/_Imports.razor so that ModulesV2 module pages
+                 do not need per-file @using declarations for the core
+                 application namespaces.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-24  Initial implementation.
+   ===========================================================================
+*@
+
+@using System.Net.Http
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+
+@using AbsenceApp.Client
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Components.Layout
+@using AbsenceApp.Core.DTOs

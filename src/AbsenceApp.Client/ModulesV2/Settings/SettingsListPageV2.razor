@@ -1,0 +1,89 @@
+@* ===========================================================================
+   File        : SettingsListPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Settings
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Settings list page. Lists all table settings pages sourced
+                 from the diagnostics report using StandardPageV2.
+                 Delegates data loading to SettingsModuleViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/settings
+     - Register SettingsModuleViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/settings"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject SettingsModuleViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Settings list
+   ========================================================================= *@
+<StandardPageV2 PageTitle="Table Settings">
+
+    <BodyContent>
+        @if (ViewModel.IsDiagnosticsLoading)
+        {
+            <p class="dsv2-loading-text">Loading settings pages�</p>
+        }
+        else if (ViewModel.DiagnosticsError is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.DiagnosticsError</div>
+        }
+        else if (ViewModel.DiagnosticsReport is not null)
+        {
+            <div class="dsv2-settings-grid">
+                @foreach (var pg in ViewModel.DiagnosticsReport.Pages)
+                {
+                    <div class="dsv2-settings-card">
+                        <div class="dsv2-settings-card__header">
+                            <i class="bi bi-table" aria-hidden="true"></i>
+                            <span class="dsv2-settings-card__title">@pg.PageKey</span>
+                            <span class="dsv2-settings-card__badge dsv2-settings-card__badge--@pg.Status.ToLowerInvariant()">
+                                @pg.Status
+                            </span>
+                        </div>
+                        <p class="dsv2-settings-card__meta">
+                            @pg.SavedFields.Count saved fields � @pg.SchemaFields.Count schema fields
+                        </p>
+                        <div class="dsv2-settings-card__actions">
+                            <a href="@($"/v2/settings/{pg.PageKey}")" class="dsv2-btn dsv2-btn--secondary dsv2-btn--sm">View</a>
+                            <a href="@($"/v2/settings/{pg.PageKey}/edit")" class="dsv2-btn dsv2-btn--primary dsv2-btn--sm">Edit</a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (ViewModel.DiagnosticsReport.OrphanedDbPageKeys.Count > 0)
+            {
+                <div class="dsv2-alert dsv2-alert--warning" role="note">
+                    <strong>Orphaned page keys in database:</strong>
+                    @string.Join(", ", ViewModel.DiagnosticsReport.OrphanedDbPageKeys)
+                </div>
+            }
+        }
+    </BodyContent>
+
+</StandardPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and navigation
+   ========================================================================= *@
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Settings", "Table Settings");
+        await ViewModel.LoadDiagnosticsAsync();
+    }
+}

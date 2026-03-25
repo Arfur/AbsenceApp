@@ -1,0 +1,33 @@
+<!--
+===============================================================================
+ File        : AppHost.razor
+ Namespace   : AbsenceApp.Client.Components
+ Author      : Michael
+ Version     : 2.0.0
+ Created     : 2026-03-23
+ Updated     : 2026-03-24
+-------------------------------------------------------------------------------
+ Purpose     : Root Blazor component for the MAUI BlazorWebView.
+               Renders the router directly. Shell chrome (header, sidebar,
+               footer) and auth guard are applied per-page via the layout
+               directives on each page and MainLayoutV2 / PageTemplateV2.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-03-23  Initial implementation.
+   - 2.0.0  2026-03-24  Removed BaseLayoutV2 wrapper. BaseLayoutV2 never
+                        rendered ChildContent (only Body), so Routes was
+                        silently swallowed: no pages loaded, no auth
+                        redirects fired. Routes now renders directly here.
+-------------------------------------------------------------------------------
+ Notes       :
+   - Registered as the RootComponent in MainPage.xaml.
+   - Index.razor (route "/") redirects to /login on startup.
+   - MainLayoutV2 acts as the auth guard for all authenticated pages.
+   - PageTemplateV2 provides the full shell (header, sidebar, content, footer).
+===============================================================================
+-->
+
+<!-- =========================================================
+     Section: Router host -- all layout/auth handled per-page
+     ========================================================= -->
+<Routes />

@@ -1,0 +1,115 @@
+@* ===========================================================================
+   File        : PageTemplateV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 3.3.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Core V2 page shell component. Full-screen layout with a
+                 full-width header at the top (above both sidebar and content)
+                 and a body row below containing sidebar (left) and scrollable
+                 main column (right: subheader + content + footer).
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 2.0.0  2026-03-23  Restored full shell after formatter regression.
+     - 2.1.0  2026-03-24  Moved BreadcrumbV2 into title row; footer always
+                          renders AppFooter; added Components.Layout using.
+     - 3.0.0  2026-03-24  Restructured from 2-column grid to flex-column.
+     - 3.1.0  2026-03-24  Split actions bar from breadcrumb; ensured HeaderV2
+                          spans full width above sidebar + content.
+     - 3.2.0  2026-03-24  h1 shows "Menu > Submenu"; BreadcrumbV2 shows category.
+     - 3.3.0  2026-03-24  SWAPPED breadcrumb ordering: LEFT now shows category
+                          (AppState.BreadcrumbCategory); RIGHT now shows the
+                          full "Menu > Submenu" trail via BreadcrumbV2.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Components.LayoutV2
+@using AbsenceApp.Client.Components.Layout
+@inject AppStateService AppState
+@implements IDisposable
+
+<div class="dsv2-page-shell @(AppState.DarkMode ? "dsv2-page-shell--dark" : "") @(AppState.SidebarCollapsed ? "dsv2-page-shell--sidebar-collapsed" : "")">
+
+    @* =========================================================================
+       Section: Top bar — HeaderV2 spans full window width
+       ========================================================================= *@
+    <div class="dsv2-page-shell__topbar">
+        <HeaderV2 />
+    </div>
+
+    @* =========================================================================
+       Section: Body row — sidebar (left) + main column (right)
+       ========================================================================= *@
+    <div class="dsv2-page-shell__body">
+
+        <div class="dsv2-page-shell__sidebar">
+            <SidebarV2 />
+        </div>
+
+        <div class="dsv2-page-shell__main">
+
+            @* =========================================================================
+               Section: Subheader — Category (left) + Trail (right)
+               ========================================================================= *@
+            <div class="dsv2-page-shell__subheader">
+
+                <div class="dsv2-page-shell__title-row">
+
+                    @* LEFT: Category label (Dashboard, PEOPLE, SYSTEM, etc.) *@
+                    <h1 class="dsv2-page-shell__page-title">
+                        @AppState.BreadcrumbCategory
+                    </h1>
+
+                    @* RIGHT: Full "Menu > Submenu" trail *@
+                    <div class="dsv2-page-shell__breadcrumb">
+                        <BreadcrumbV2 />
+                    </div>
+
+                </div>
+
+                @* Optional actions bar below title row *@
+                @if (ActionsContent is not null)
+                {
+                    <div class="dsv2-page-shell__actions-bar">
+                        @ActionsContent
+                    </div>
+                }
+
+            </div>
+
+            @* =========================================================================
+               Section: Main content area
+               ========================================================================= *@
+            <div class="dsv2-page-shell__content">
+                @BodyContent
+            </div>
+
+            @* =========================================================================
+               Section: Footer
+               ========================================================================= *@
+            <footer class="dsv2-page-shell__footer">
+                @if (FooterContent is not null)
+                {
+                    @FooterContent
+                }
+            </footer>
+
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string PageTitleText { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+
+    protected override void OnInitialized() => AppState.OnChange += StateHasChanged;
+    public void Dispose()                   => AppState.OnChange -= StateHasChanged;
+}

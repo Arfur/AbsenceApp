@@ -1,0 +1,52 @@
+/* =============================================================================
+   File    : FormPageV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 5
+   Version : 1.1.0
+   Created : 2026-03-21
+   Updated : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose : Scoped CSS for FormPageV2. Form page wrapper with a scrollable
+             sections area and a sticky FormFooterV2.
+   ---------------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Header updated for Step 3 (no layout binding required).
+   ---------------------------------------------------------------------------
+   Notes   :
+     - Component stylesheet. No layout inheritance applies.
+============================================================================= */
+
+/* ── Page wrapper ─────────────────────────────────────────────────────────── */
+.dsv2-form-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 960px;
+}
+
+/* ── Sections scroll area ─────────────────────────────────────────────────── */
+.dsv2-form-page__sections {
+    flex: 1;
+    overflow: auto;
+    padding-bottom: var(--ds-space-4);
+}
+
+/* ── Back link ────────────────────────────────────────────────────────────── */
+.dsv2-form-page__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    font-size: var(--ds-text-sm);
+    color: var(--ds-color-text-muted);
+    text-decoration: none;
+    padding: var(--ds-space-1) var(--ds-space-2);
+    border-radius: var(--ds-radius-sm);
+    transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.dsv2-form-page__back-link:hover {
+    color: var(--ds-color-text);
+    background: var(--ds-color-surface);
+    text-decoration: none;
+}

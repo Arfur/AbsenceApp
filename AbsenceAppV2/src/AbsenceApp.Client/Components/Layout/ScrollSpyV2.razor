@@ -1,0 +1,151 @@
+﻿@* ===========================================================================
+   File        : ScrollSpyV2.razor
+   Namespace   : AbsenceApp.Client.Components.LayoutV2
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : V2 scroll spy component. Tracks scroll position within a
+                 scrollable container and highlights the currently visible
+                 section in a sticky mini-nav. Uses IntersectionObserver via
+                 JS interop.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.1.0  2026-03-23  Suppressed CS0649 warning for _jsModule field to
+                          document intentional deferred JS module wiring.
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 3 component. Requires IJSRuntime.
+     - JS module reference is reserved for future external module extraction.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Services
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@* =========================================================================
+   Section: Spy navigation
+   ========================================================================= *@
+@if (ShowNav && Sections is not null && Sections.Count > 0)
+{
+    <nav class="dsv2-scrollspy__nav" aria-label="Page sections">
+        @foreach (var navItem in Sections)
+        {
+            <a class="dsv2-scrollspy__nav-item @(navItem.Id == _activeSectionId ? "dsv2-scrollspy__nav-item--active" : "")"
+               href="@("#" + navItem.Id)"
+               @onclick="@(() => ScrollToSection(navItem.Id))"
+               @onclick:preventDefault="true"
+               title="@navItem.Label">
+                @if (!string.IsNullOrEmpty(navItem.Icon))
+                {
+                    <i class="bi @navItem.Icon dsv2-scrollspy__nav-icon" aria-hidden="true"></i>
+                }
+                <span class="dsv2-scrollspy__nav-label">@navItem.Label</span>
+            </a>
+        }
+    </nav>
+}
+
+@* =========================================================================
+   Section: Scrollable content wrapper
+   ========================================================================= *@
+<div class="dsv2-scrollspy__container" id="@_containerId">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Sections the spy should track. Each must have a matching id="..." on a child element.</summary>
+    [Parameter] public List<ScrollSpySection>? Sections { get; set; }
+
+    /// <summary>Whether to render the sticky section navigation.</summary>
+    [Parameter] public bool ShowNav { get; set; } = true;
+
+    /// <summary>Scrollable child content containing section elements.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string _containerId = $"scrollspy-{Guid.NewGuid():N}";
+    private string _activeSectionId = string.Empty;
+
+#pragma warning disable CS0649
+    private IJSObjectReference? _jsModule;
+#pragma warning restore CS0649
+
+    private DotNetObjectReference<ScrollSpyV2>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || Sections is null || Sections.Count == 0) return;
+
+        try
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            var sectionIds = Sections.Select(s => s.Id).ToArray();
+            var idsJson = System.Text.Json.JsonSerializer.Serialize(sectionIds);
+            var cid = _containerId;
+
+            var jsScript =
+                "(function() {" +
+                "const container = document.getElementById('" + cid + "');" +
+                "if (!container) return;" +
+                "const ids = " + idsJson + ";" +
+                "const observer = new IntersectionObserver(function(entries) {" +
+                "  entries.forEach(function(entry) {" +
+                "    if (entry.isIntersecting) {" +
+                "      DotNet.invokeMethodAsync('AbsenceApp.Client', 'ScrollSpyV2_OnSectionVisible', entry.target.id);" +
+                "    }" +
+                "  });" +
+                "}, { root: container, threshold: 0.3 });" +
+                "ids.forEach(function(id) {" +
+                "  const el = document.getElementById(id);" +
+                "  if (el) observer.observe(el);" +
+                "});" +
+                "container._scrollspy = observer;" +
+                "})();";
+
+            await JS.InvokeVoidAsync("eval", jsScript);
+        }
+        catch
+        {
+            // ScrollSpy degrades gracefully — content remains accessible.
+        }
+    }
+
+    [JSInvokable("ScrollSpyV2_OnSectionVisible")]
+    public void OnSectionVisible(string sectionId)
+    {
+        _activeSectionId = sectionId;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ScrollToSection(string id)
+    {
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "eval",
+                $"document.getElementById('{id}')?.scrollIntoView({{ behavior: 'smooth', block: 'start' }});");
+        }
+        catch { }
+
+        _activeSectionId = id;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync(
+                "eval",
+                $"(function(){{ const c = document.getElementById('{_containerId}'); if(c && c._scrollspy) c._scrollspy.disconnect(); }})();");
+        }
+        catch { }
+
+        _dotNetRef?.Dispose();
+        if (_jsModule is not null) await _jsModule.DisposeAsync();
+    }
+
+    /// <summary>Defines a section the scroll spy should track.</summary>
+    public sealed record ScrollSpySection(string Id, string Label, string? Icon = null);
+}

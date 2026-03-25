@@ -1,0 +1,99 @@
+@* ===========================================================================
+   File        : ClassesListPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Classes
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Classes list page. Displays a paged, searchable, sortable
+                 table of classes using StandardPageV2 and TableV2 components.
+                 Delegates all data and state to ClassesListViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/classes
+     - Register ClassesListViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/classes"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.Components.TableV2
+@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject ClassesListViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Classes list
+   ========================================================================= *@
+<StandardPageV2 PageTitle="Classes">
+
+    <ActionsContent>
+        <button type="button"
+                class="dsv2-btn dsv2-btn--primary"
+                @onclick="@(() => Nav.NavigateTo("/v2/classes/new"))">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+            Add Class
+        </button>
+    </ActionsContent>
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        <TableV2 TItem="AbsenceApp.Core.DTOs.ClassDto"
+                 Columns="ClassesListViewModelV2.Columns"
+                 Items="ViewModel.Items"
+                 TotalCount="ViewModel.TotalCount"
+                 IsLoading="ViewModel.IsLoading"
+                 CurrentPage="ViewModel.Page"
+                 PageSize="ViewModel.PageSize"
+                 SortColumn="ViewModel.SortColumn"
+                 SortAscending="ViewModel.SortAscending"
+                 SearchPlaceholder="Search classes�"
+                 AriaLabel="Classes table"
+                 OnSearchChanged="OnSearch"
+                 OnSortChanged="OnSort"
+                 OnPageChanged="OnPageChanged"
+                 OnPageSizeChanged="OnPageSizeChanged">
+
+            <RowTemplate Context="cls">
+                <td class="dsv2-table__td">@cls.Id</td>
+                <td class="dsv2-table__td">@cls.Name</td>
+                <td class="dsv2-table__td">@(cls.Description ?? "�")</td>
+            </RowTemplate>
+
+            <RowActionsContent Context="cls">
+                <a href="@($"/v2/classes/{cls.Id}")" class="dsv2-table__row-action">View</a>
+                <a href="@($"/v2/classes/{cls.Id}/edit")" class="dsv2-table__row-action">Edit</a>
+            </RowActionsContent>
+
+        </TableV2>
+    </BodyContent>
+
+</StandardPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and table callbacks
+   ========================================================================= *@
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Classes", "All Classes");
+        await ViewModel.LoadAsync();
+    }
+
+    private async Task OnSearch(string term) => await ViewModel.SearchAsync(term);
+    private async Task OnSort((string Column, bool Ascending) args) =>
+        await ViewModel.SortAsync(args.Column, args.Ascending);
+    private async Task OnPageChanged(int page) => await ViewModel.GoToPageAsync(page);
+    private async Task OnPageSizeChanged(int size) => await ViewModel.ChangePageSizeAsync(size);
+}

@@ -1,47 +1,40 @@
-﻿/*
+/*
 ===============================================================================
  File        : MauiProgram.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-03-13
- Updated     : 2026-03-13
+ Updated     : 2026-03-18
 -------------------------------------------------------------------------------
- Purpose     : Bootstraps the .NET MAUI + Blazor hybrid application.
-               Configures fonts, registers all DI services, and builds the
-               MauiApp instance consumed by each platform entry point.
--------------------------------------------------------------------------------
- Description :
-   Service registrations:
-     IStudentService  → StudentService  (core business logic)
-     IAbsenceService  → AbsenceService  (core business logic)
-     StudentRepository / AbsenceRepository  (in-memory data stores)
-     ClientStudentService / ClientAbsenceService  (Blazor-facing wrappers)
-     MainViewModel  (shared view-model for page state)
-
-   BlazorWebViewDeveloperTools and debug logging are enabled in DEBUG builds.
-
-   EF Core:
-     Registers AppDbContext using the connection string defined in
-     appsettings.json (AbsenceAppDatabase).
+ Purpose     : MAUI application bootstrap.  Builds the MauiApp host, registers
+               the Blazor web view, loads the embedded appsettings.json, wires
+               the full EF data layer via AddDataLayer(), and registers all
+               application services and scoped ViewModels into the DI container.
+               Wraps the entire build in a try-catch that writes any startup
+               exception to Desktop/AbsenceApp_crash.log before re-throwing,
+               ensuring DI failures are visible rather than silently swallowed.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-13  Initial implementation.
-   - 1.1.0  2026-03-13  Added EF Core AppDbContext registration.
+   - 1.1.0  2026-03-17  Added SubjectListViewModel, SubjectDetailsViewModel,
+                         and SubjectAddViewModel DI registrations.
+   - 1.2.0  2026-03-18  Wrapped builder in try-catch crash logger so DI build
+                         failures are written to Desktop/AbsenceApp_crash.log.
 -------------------------------------------------------------------------------
  Notes       :
-   - All services are registered as singletons to share state across pages.
-   - DbContext is registered as scoped (default EF Core behaviour).
+   - appsettings.json is embedded as a ManifestResource so MAUI can read it
+     at runtime without requiring file-system access to the project directory.
+   - All ViewModels are registered Scoped to match the Scoped lifetime of the
+     EF Core DbContext and all repository/service dependencies.
 ===============================================================================
 */
 
+using AbsenceApp.Client.Extensions;
 using AbsenceApp.Client.Services;
-using AbsenceApp.Client.ViewModels;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Core.ViewModels;
 using AbsenceApp.Data;
-using AbsenceApp.Data.Services;
-using AbsenceApp.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -50,69 +43,96 @@ namespace AbsenceApp.Client;
 public static class MauiProgram
 {
     // =========================================================================
-    // Application bootstrap — creates and configures the MauiApp instance
+    // Bootstrap
     // =========================================================================
 
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
-        builder
-            .UseMauiApp<App>()
-            .ConfigureFonts(fonts =>
-            {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-            });
+        try
+        {
+            // -----------------------------------------------------------------
+            // Host builder — fonts and Blazor web view
+            // -----------------------------------------------------------------
+            var builder = MauiApp.CreateBuilder();
+            builder
+                .UseMauiApp<App>()
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                });
 
-        builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMauiBlazorWebView();
 
-        // =========================================================================
-        // Load appsettings.json from embedded resource — MAUI does NOT auto-load it
-        // from the file system the way ASP.NET Core does; it must be streamed in.
-        // =========================================================================
-        var assembly = typeof(MauiProgram).Assembly;
-        using var appSettingsStream = assembly.GetManifestResourceStream("AbsenceApp.Client.appsettings.json");
-        if (appSettingsStream is not null)
-            builder.Configuration.AddJsonStream(appSettingsStream);
+            // -----------------------------------------------------------------
+            // Configuration — load appsettings.json from embedded resource
+            // -----------------------------------------------------------------
+            var assembly = typeof(MauiProgram).Assembly;
+            using var appSettingsStream = assembly.GetManifestResourceStream("AbsenceApp.Client.appsettings.json");
+            if (appSettingsStream is not null)
+                builder.Configuration.AddJsonStream(appSettingsStream);
 
-        // =========================================================================
-        // Data layer — registers AppDbContext + all EF repositories via extension
-        // =========================================================================
-        builder.Services.AddDataLayer(
-            builder.Configuration["ConnectionStrings:AbsenceAppDatabase"]);
+            // -----------------------------------------------------------------
+            // Data layer — DbContext, EF repositories, and EF-backed services
+            // -----------------------------------------------------------------
+            builder.Services.AddDataLayer(
+                builder.Configuration["ConnectionStrings:AbsenceAppDatabase"]);
 
-        // =========================================================================
-        // Dependency injection registrations — all singletons; shared across pages
-        // Legacy in-memory AbsenceRecord/Student flow: bind repos to interfaces
-        // =========================================================================
-        builder.Services.AddSingleton<IAbsenceRepository, AbsenceRepository>();
-        builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
-        builder.Services.AddSingleton<IStudentService, StudentService>();
-        builder.Services.AddSingleton<IAbsenceService, AbsenceService>();
-        builder.Services.AddSingleton<ClientStudentService>();
-        builder.Services.AddSingleton<ClientAbsenceService>();
-        builder.Services.AddSingleton<MainViewModel>();
-        builder.Services.AddSingleton<AppStateService>();
+            // -----------------------------------------------------------------
+            // Application services
+            // -----------------------------------------------------------------
+            builder.Services.AddSingleton<AppStateService>();
+            builder.Services.AddSingleton<INavigationMetadataService, NavigationMetadataService>();
 
-        // =========================================================================
-        // Per-page Core ViewModels — each scoped to a dedicated page
-        // =========================================================================
-        builder.Services.AddSingleton<StudentsViewModel>();
-        builder.Services.AddSingleton<StudentDetailsViewModel>();
-        builder.Services.AddSingleton<AbsencesViewModel>();
-        builder.Services.AddScoped<ClassesViewModel>();   // Scoped: depends on IClassService (Scoped)
-        builder.Services.AddSingleton<ClassDetailsViewModel>();
-        builder.Services.AddSingleton<AbsenceDetailsViewModel>();
-        builder.Services.AddSingleton<AuditLogViewModel>();
-        builder.Services.AddSingleton<AttendanceViewModel>();
-        builder.Services.AddScoped<StaffViewModel>();     // Scoped: depends on IUserService (Scoped)
+            // -----------------------------------------------------------------
+            // ViewModels — scoped to align with scoped EF services
+            // -----------------------------------------------------------------
+            builder.Services.AddScoped<StudentsViewModel>();
+            builder.Services.AddScoped<StudentDetailsViewModel>();
+            builder.Services.AddScoped<ClassesViewModel>();
+            builder.Services.AddScoped<ClassDetailsViewModel>();
+            builder.Services.AddScoped<AuditLogViewModel>();
+            builder.Services.AddScoped<StaffViewModel>();
+            builder.Services.AddScoped<TableSettingsViewModel>();
+            builder.Services.AddScoped<StudentAddViewModel>();
+            builder.Services.AddScoped<StaffDetailsViewModel>();
+            builder.Services.AddScoped<StaffAddViewModel>();
+            builder.Services.AddScoped<ClassAddViewModel>();
+            builder.Services.AddScoped<ParentListViewModel>();
+            builder.Services.AddScoped<ParentDetailsViewModel>();
+            builder.Services.AddScoped<AttendanceStaffViewModel>();
+            builder.Services.AddScoped<AttendanceStudentViewModel>();
+            builder.Services.AddScoped<AttendanceLogViewModel>();
+            builder.Services.AddScoped<DashboardOverviewViewModel>();
+            builder.Services.AddScoped<DashboardStudentActivityViewModel>();
+            builder.Services.AddScoped<DashboardSafeguardingViewModel>();
+            builder.Services.AddScoped<SubjectListViewModel>();
+            builder.Services.AddScoped<SubjectDetailsViewModel>();
+            builder.Services.AddScoped<SubjectAddViewModel>();
 
-        builder.Services.AddScoped<TableSettingsViewModel>(); // Scoped: depends on ITableSettingsService (Scoped)
+            // -----------------------------------------------------------------
+            // V2 UI Framework — all V2 services, API clients, and ViewModels
+            // Isolated from V1: removing this line leaves V1 fully functional.
+            // -----------------------------------------------------------------
+            builder.Services.AddAbsenceAppV2Framework(builder.Configuration);
 
+            // -----------------------------------------------------------------
+            // Debug tooling
+            // -----------------------------------------------------------------
 #if DEBUG
-        builder.Services.AddBlazorWebViewDeveloperTools();
-        builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
-        return builder.Build();
+            return builder.Build();
+        }
+        catch (Exception ex)
+        {
+            // Write crash details to the Desktop before WinUI swallows the error.
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "AbsenceApp_crash.log");
+            File.WriteAllText(path, ex.ToString());
+            throw;
+        }
     }
 }

@@ -1,0 +1,111 @@
+@* ===========================================================================
+   File        : AttendanceDetailPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Attendance
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Attendance detail page. Displays the attendance register for
+                 a class session using DetailPageV2 and DetailSectionV2
+                 components. Delegates data loading to AttendanceDetailViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/attendance/{Id:long}  (Id = class ID)
+     - Register AttendanceDetailViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/attendance/{Id:long}"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject AttendanceDetailViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Attendance detail
+   ========================================================================= *@
+<DetailPageV2 PageTitle="@PageTitle"
+              BackHref="/v2/attendance"
+              BackLabel="Attendance">
+
+    <ActionsContent>
+        @if (ViewModel.Register is not null)
+        {
+            <a href="@($"/v2/attendance/{Id}/mark")" class="dsv2-btn dsv2-btn--primary">Mark Attendance</a>
+        }
+    </ActionsContent>
+
+    <BodyContent>
+        @if (ViewModel.IsLoading)
+        {
+            <p class="dsv2-loading-text">Loading�</p>
+        }
+        else if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+        else if (ViewModel.Register is not null)
+        {
+            var reg = ViewModel.Register;
+
+            <DetailSectionV2 Title="Register Details" Icon="bi-journal-check">
+                <BodyContent>
+                    <span class="dsv2-detail-label">Register ID</span>
+                    <span class="dsv2-detail-value">@reg.Id</span>
+
+                    <span class="dsv2-detail-label">Class ID</span>
+                    <span class="dsv2-detail-value">@reg.ClassId</span>
+
+                    <span class="dsv2-detail-label">Date</span>
+                    <span class="dsv2-detail-value">@reg.Date.ToString("dd MMM yyyy")</span>
+
+                    <span class="dsv2-detail-label">Session</span>
+                    <span class="dsv2-detail-value">@reg.Session</span>
+
+                    <span class="dsv2-detail-label">Status</span>
+                    <span class="dsv2-detail-value">@reg.Status</span>
+
+                    <span class="dsv2-detail-label">Opened By</span>
+                    <span class="dsv2-detail-value">@reg.OpenedBy</span>
+
+                    <span class="dsv2-detail-label">Closed By</span>
+                    <span class="dsv2-detail-value">@(reg.ClosedBy.HasValue ? reg.ClosedBy.Value.ToString() : "�")</span>
+
+                    <span class="dsv2-detail-label">Created</span>
+                    <span class="dsv2-detail-value">@reg.CreatedAt.ToString("dd MMM yyyy HH:mm")</span>
+
+                    <span class="dsv2-detail-label">Updated</span>
+                    <span class="dsv2-detail-value">@reg.UpdatedAt.ToString("dd MMM yyyy HH:mm")</span>
+                </BodyContent>
+            </DetailSectionV2>
+        }
+        else
+        {
+            <p class="dsv2-loading-text">No register found for this class.</p>
+        }
+    </BodyContent>
+
+</DetailPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and navigation
+   ========================================================================= *@
+@code {
+    [Parameter] public long Id { get; set; }
+
+    private string PageTitle => ViewModel.Register is not null
+        ? $"Register � Class {ViewModel.Register.ClassId}"
+        : "Attendance Register";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Attendance", "Register");
+        await ViewModel.LoadAsync(Id);
+    }
+}

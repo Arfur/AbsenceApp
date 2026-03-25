@@ -1,0 +1,77 @@
+﻿@* ===========================================================================
+   File        : TableDemo.razor
+   Namespace   : AbsenceApp.Client.FrameworkV2.Demo
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Demo page for the FrameworkV2 TableV2 component family.
+                 Route: /v2/demo/table
+                 Uses generic/sample data - no Absence-specific modules.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Wrapped content in PageTemplateV2 to restore V2 chrome
+                           (header, sidebar) after MainLayoutV2 was made body-only.
+   ---------------------------------------------------------------------------
+   Notes       :
+     None.
+   ===========================================================================
+*@
+@page "/v2/demo/table"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.DesignSystem
+@using AbsenceApp.Client.Components.TableV2
+@using AbsenceApp.Client.Models.TableV2
+
+<PageTemplateV2 PageTitleText="Table Demo">
+<BodyContent>
+<div class="dsv2-demo-page">
+
+    <SectionHeader Title="Table Demo"
+                   Icon="bi-table"
+                   Subtitle="TableV2 with sample data - sorting, search, pagination" />
+
+    <section class="dsv2-demo-section">
+
+        <TableV2 TItem="SampleRow"
+                 Columns="_columns"
+                 Items="_items"
+                 TotalCount="_items.Count"
+                 ShowSearch="true"
+                 SearchPlaceholder="Search rows..."
+                 ShowPagination="true" />
+
+    </section>
+
+</div>
+</BodyContent>
+</PageTemplateV2>
+
+@code {
+
+    private record SampleRow(int Id, string Name, string Department, string Status);
+
+    private readonly List<TableColumnModel> _columns =
+    [
+        new TableColumnModel { Key = "Id",         Label = "ID",         Sortable = true,  Visible = true,  Width = "60px"  },
+        new TableColumnModel { Key = "Name",       Label = "Name",       Sortable = true,  Visible = true                  },
+        new TableColumnModel { Key = "Department", Label = "Department", Sortable = true,  Visible = true                  },
+        new TableColumnModel { Key = "Status",     Label = "Status",     Sortable = false, Visible = true,  Width = "100px" },
+    ];
+
+    private readonly List<SampleRow> _items =
+    [
+        new(1,  "Alice Martin",   "Mathematics",  "Active"),
+        new(2,  "Bob Chen",       "Sciences",     "Active"),
+        new(3,  "Cara Walsh",     "English",      "Inactive"),
+        new(4,  "David Okafor",   "History",      "Active"),
+        new(5,  "Ella Rossi",     "Mathematics",  "Active"),
+        new(6,  "Frank Nkosi",    "PE",           "Active"),
+        new(7,  "Grace Kim",      "Sciences",     "Inactive"),
+        new(8,  "Hiro Tanaka",    "Languages",    "Active"),
+        new(9,  "Isla Fraser",    "Arts",         "Active"),
+        new(10, "James Osei",     "Mathematics",  "Active"),
+    ];
+}

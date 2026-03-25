@@ -1,0 +1,52 @@
+{
+  "_comment": "AbsenceApp V2 Design System — theme.json — Phase 2",
+  "_description": "Runtime theme configuration. Loaded by DesignSystemConfigService. DO NOT modify V1 app.css.",
+  "version": "2.0.0",
+  "defaultTheme": "light",
+  "themes": {
+    "light": {
+      "name": "Light",
+      "cssClass": "",
+      "colors": {
+        "chromeBg": "#f5f6f8",
+        "mainBg": "#eaecf0",
+        "border": "#dde1e7",
+        "text": "#2c3345",
+        "textMuted": "#7b8494",
+        "accent": "#2563eb",
+        "accentHover": "#1d4ed8",
+        "sidebarActiveBg": "#2563eb",
+        "sidebarActiveText": "#ffffff",
+        "sidebarHoverBg": "#e8eaed",
+        "sidebarSubBg": "#eef0f3",
+        "contentBoxBg": "#dde1ea",
+        "surfaceRaised": "#ffffff"
+      }
+    },
+    "dark": {
+      "name": "Dark",
+      "cssClass": "dark",
+      "colors": {
+        "chromeBg": "#1e2130",
+        "mainBg": "#161824",
+        "border": "#2e3248",
+        "text": "#e2e6f0",
+        "textMuted": "#8891a8",
+        "sidebarHoverBg": "#272b3f",
+        "sidebarSubBg": "#1a1e30",
+        "contentBoxBg": "#0f1122",
+        "surfaceRaised": "#252840"
+      }
+    }
+  },
+  "font": {
+    "family": "Inter, Segoe UI, Arial, sans-serif",
+    "sizeBase": "14px"
+  },
+  "layout": {
+    "headerHeight": "52px",
+    "footerHeight": "36px",
+    "sidebarWidth": "230px",
+    "sidebarCollapsed": "52px"
+  }
+}

@@ -3,9 +3,9 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /dashboard/overview
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.2.0
    Created     : 2026-03-17
-   Updated     : 2026-03-17
+   Updated     : 2026-03-24
    ---------------------------------------------------------------------------
    Purpose     : Operational overview dashboard showing headline KPI cards,
                  absence breakdown donut charts, and today's absence table.
@@ -19,10 +19,22 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-17  Initial implementation.
+     - 1.1.0  2026-03-23  Wrapped page content in StandardPageV2 to restore V2
+                           chrome (header, sidebar) — MainLayoutV2 is body-only;
+                           chrome is provided by the V2 page shell.
+     - 1.2.0  2026-03-24  Added @page "/v2/dashboard" so the sidebar menu item
+                           "Operational Overview" (href=/v2/dashboard) links here
+                           and the sidebar active-state highlighting works.
    ===========================================================================
 *@
 @page "/dashboard/overview"
+@page "/v2/dashboard"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
 @inject AppStateService AppState
+@inject DashboardOverviewViewModel ViewModel
+
+<StandardPageV2 PageTitle="Dashboard">
+<BodyContent>
 
 @* =========================================================================
    Section: KPI cards — headline metrics for the current day
@@ -31,7 +43,7 @@
     <div class="db-kpi-card kpi-blue">
         <div class="kpi-icon-wrap"><i class="bi bi-person-x"></i></div>
         <div class="kpi-text">
-            <span class="kpi-value">18</span>
+            <span class="kpi-value">@(ViewModel.Overview?.AbsencesToday ?? 0)</span>
             <span class="kpi-label">Student Absences Today</span>
         </div>
     </div>
@@ -45,14 +57,14 @@
     <div class="db-kpi-card kpi-red">
         <div class="kpi-icon-wrap"><i class="bi bi-building-x"></i></div>
         <div class="kpi-text">
-            <span class="kpi-value">27</span>
+            <span class="kpi-value">@(ViewModel.Overview?.UnauthorisedToday ?? 0)</span>
             <span class="kpi-label">Students Currently Off</span>
         </div>
     </div>
     <div class="db-kpi-card kpi-red">
         <div class="kpi-icon-wrap"><i class="bi bi-exclamation-circle"></i></div>
         <div class="kpi-text">
-            <span class="kpi-value">4</span>
+            <span class="kpi-value">@(ViewModel.Overview?.RegistersOpen ?? 0)</span>
             <span class="kpi-label">Overdue Returns</span>
         </div>
     </div>
@@ -142,7 +154,14 @@
 @* =========================================================================
    Section: Code-behind — breadcrumb initialisation
    ========================================================================= *@
+
+</BodyContent>
+</StandardPageV2>
+
 @code {
-    protected override void OnInitialized()
-        => AppState.SetBreadcrumb("Dashboard", "Operational Overview");
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Dashboard", "Operational Overview");
+        await ViewModel.LoadAsync();
+    }
 }

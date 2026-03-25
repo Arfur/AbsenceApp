@@ -1,0 +1,90 @@
+﻿@* ===========================================================================
+   File        : SettingsGroupV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Bordered settings group card rendered within SettingsPageV2. Groups related SettingsItemV2 rows under a titled header. Accepts a SettingsGroupModel for configuration or inline parameters.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Models.V2
+
+@* =========================================================================
+   Section: Settings group
+   ========================================================================= *@
+<div class="@GroupClass()">
+    <div class="dsv2-settings-group__header">
+        @if (Icon is not null)
+        {
+            <i class="bi @Icon dsv2-settings-group__icon" aria-hidden="true"></i>
+        }
+        <div class="dsv2-settings-group__header-text">
+            <span class="dsv2-settings-group__title">@Title</span>
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <span class="dsv2-settings-group__description">@Description</span>
+            }
+        </div>
+    </div>
+
+    <div class="dsv2-settings-group__body" role="list">
+        @ChildContent
+    </div>
+</div>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    /// <summary>Optional model. When supplied its properties override defaults.</summary>
+    [Parameter] public SettingsGroupModel? Model { get; set; }
+
+    /// <summary>Group heading text.</summary>
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    /// <summary>Optional supporting description beneath the title.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>Bootstrap icon class beside the title (e.g. "bi-gear").</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>Additional CSS class applied to the group wrapper.</summary>
+    [Parameter] public string? CssClass { get; set; }
+
+    /// <summary>SettingsItemV2 rows inside this group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // -------------------------------------------------------------------------
+
+    // Lifecycle
+
+    // -------------------------------------------------------------------------
+    protected override void OnParametersSet()
+    {
+        if (Model is not null)
+        {
+            if (string.IsNullOrEmpty(Title)) Title = Model.Title;
+            Description ??= Model.Description;
+            Icon        ??= Model.Icon;
+            CssClass    ??= Model.CssClass;
+        }
+    }
+
+    private string GroupClass()
+    {
+        var cls = "dsv2-settings-group";
+        if (!string.IsNullOrEmpty(CssClass)) cls += " " + CssClass;
+        return cls;
+    }
+}

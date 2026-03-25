@@ -1,0 +1,18 @@
+@page "/system/config/table-defaults"
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+<h3>Table Layout Defaults</h3>
+<p class="page-placeholder-msg">This configuration page is not yet implemented.</p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (AppState.UserRole != "Super Admin")
+        {
+            Nav.NavigateTo("/dashboard/overview", replace: true);
+            return;
+        }
+        AppState.SetBreadcrumb("System Management", "Global Configuration", "Table Layout Defaults");
+    }
+}

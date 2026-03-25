@@ -1,0 +1,144 @@
+@* ===========================================================================
+   File        : StudentFormPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Students
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Student add/edit form page. Uses FormPageV2 and FormSectionV2
+                 components for the create and edit workflows. Delegates form
+                 state and API calls to StudentFormViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Routes: /v2/students/new (add), /v2/students/{Id:long}/edit (edit)
+     - Register StudentFormViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/students/new"
+@page "/v2/students/{Id:long}/edit"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject StudentFormViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Student form
+   ========================================================================= *@
+<FormPageV2 PageTitle="@PageTitle"
+             BackHref="@BackHref"
+             BackLabel="@BackLabel"
+             SubmitLabel="Save Student"
+             BusyLabel="Saving�"
+             CancelLabel="Cancel"
+             IsBusy="ViewModel.IsBusy"
+             OnSubmit="OnSave"
+             OnCancel="OnCancel">
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        <FormSectionV2 Title="Personal Details" Icon="bi-person" Columns="2">
+            <BodyContent>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-admno">Admission Number</label>
+                    <input id="fld-admno" type="text" class="dsv2-form-input"
+                           @bind="ViewModel.AdmissionNumber" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-gender">Gender</label>
+                    <input id="fld-gender" type="text" class="dsv2-form-input"
+                           @bind="ViewModel.Gender" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-fname">First Name</label>
+                    <input id="fld-fname" type="text" class="dsv2-form-input"
+                           @bind="ViewModel.FirstName" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-lname">Last Name</label>
+                    <input id="fld-lname" type="text" class="dsv2-form-input"
+                           @bind="ViewModel.LastName" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-dob">Date of Birth</label>
+                    <input id="fld-dob" type="date" class="dsv2-form-input"
+                           value="@ViewModel.DateOfBirth.ToString("yyyy-MM-dd")"
+                           @onchange="OnDobChanged" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-status">Status</label>
+                    <input id="fld-status" type="text" class="dsv2-form-input"
+                           @bind="ViewModel.Status" />
+                </div>
+            </BodyContent>
+        </FormSectionV2>
+
+        <FormSectionV2 Title="Academic Details" Icon="bi-mortarboard" Columns="2">
+            <BodyContent>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-year">Year Group ID</label>
+                    <input id="fld-year" type="number" class="dsv2-form-input"
+                           @bind="ViewModel.YearGroupId" />
+                </div>
+                <div class="dsv2-form-field">
+                    <label class="dsv2-form-label" for="fld-class">Class ID</label>
+                    <input id="fld-class" type="number" class="dsv2-form-input"
+                           @bind="ViewModel.ClassId" />
+                </div>
+            </BodyContent>
+        </FormSectionV2>
+    </BodyContent>
+
+</FormPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and form submission
+   ========================================================================= *@
+@code {
+    [Parameter] public long? Id { get; set; }
+
+    private bool IsNew => Id is null;
+    private string PageTitle => IsNew ? "Add Student" : "Edit Student";
+    private string BackHref => IsNew ? "/v2/students" : $"/v2/students/{Id}";
+    private string BackLabel => IsNew ? "Students" : "Student Detail";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Students", PageTitle);
+        if (IsNew)
+            ViewModel.LoadForCreate();
+        else
+            await ViewModel.LoadForEditAsync(Id!.Value);
+    }
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok)
+            Nav.NavigateTo("/v2/students");
+    }
+
+    private void OnCancel()
+    {
+        if (IsNew)
+            Nav.NavigateTo("/v2/students");
+        else
+            Nav.NavigateTo($"/v2/students/{Id}");
+    }
+
+    private void OnDobChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var dob))
+            ViewModel.DateOfBirth = dob;
+    }
+}

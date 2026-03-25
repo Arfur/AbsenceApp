@@ -1,0 +1,48 @@
+@* ===========================================================================
+   File        : _Imports.razor
+   Namespace   : AbsenceApp.Client.Components
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Global using directives for all Razor components in this
+                 project.  Namespaces listed here are automatically available
+                 in every .razor file without explicit @using statements.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+                           and other V2 components under Components/ can use
+                           PageTemplateV2 without per-file @using declarations.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Blazor automatically processes this file; do not add markup or
+       directives other than @using, @inject, and similar non-render items.
+     - Add new project namespaces here to avoid repetitive @using lines
+       across individual page files.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Framework and BCL usings — ASP.NET Core and .NET runtime namespaces
+   ========================================================================= *@
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+
+@* =========================================================================
+   Application usings — AbsenceApp-specific namespaces
+   ========================================================================= *@
+@using AbsenceApp.Client
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Components
+@using AbsenceApp.Client.Components.Layout
+@using AbsenceApp.Client.Shared
+@using AbsenceApp.Core.Interfaces
+@using AbsenceApp.Core.Navigation
+@using AbsenceApp.Core.ViewModels
+@using AbsenceApp.Core.DTOs

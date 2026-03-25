@@ -1,0 +1,34 @@
+/* =============================================================================
+   File    : radius.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 2
+   Created : 2026-03-21
+   Purpose : Border-radius design tokens for V2 components.
+             DO NOT modify V1 app.css.
+============================================================================= */
+
+:root {
+    /* ── Radius scale ──────────────────────────────────────────────── */
+    --ds-radius-none:    0px;
+    --ds-radius-sm:      4px;
+    --ds-radius-md:      6px;
+    --ds-radius-lg:      8px;
+    --ds-radius-xl:      12px;
+    --ds-radius-2xl:     16px;
+    --ds-radius-full:    9999px;  /* pill shape */
+
+    /* ── Semantic — component radius ───────────────────────────────── */
+    --ds-radius-button:       var(--ds-radius-md);   /* 6px  */
+    --ds-radius-input:        var(--ds-radius-md);   /* 6px  */
+    --ds-radius-card:         var(--ds-radius-lg);   /* 8px  */
+    --ds-radius-badge:        var(--ds-radius-full);
+    --ds-radius-chip:         var(--ds-radius-full);
+    --ds-radius-tooltip:      var(--ds-radius-sm);   /* 4px  */
+    --ds-radius-modal:        var(--ds-radius-xl);   /* 12px */
+    --ds-radius-dropdown:     var(--ds-radius-lg);   /* 8px  */
+    --ds-radius-icon-btn:     var(--ds-radius-md);   /* 7px — matches V1 icon-btn */
+    --ds-radius-search:       var(--ds-radius-lg);   /* 8px — matches V1 header search */
+    --ds-radius-sidebar-item: var(--ds-radius-sm);   /* 4px  */
+    --ds-radius-table:        var(--ds-radius-lg);   /* 8px  */
+    --ds-radius-skeleton:     var(--ds-radius-sm);   /* 4px  */
+}

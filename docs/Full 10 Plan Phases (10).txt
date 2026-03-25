@@ -1,0 +1,317 @@
+PHASE 10 — FINAL INTEGRATION & QA (BLAZOR VERSION)
+Goal:
+  - Validate every V2 system (design system, layout, templates, tables, theming, services, modules, framework extraction).
+  - Ensure the Absence app remains fully functional with zero regressions.
+  - Ensure all V2 components work independently and safely.
+  - Ensure all changes from Phases 2–9 are additive, isolated, and reversible.
+  - Prepare a migration plan for future adoption of V2 components.
+
+Constraints:
+  - Do NOT modify existing V1 pages, components, CSS, or services.
+  - Do NOT replace existing routing or layouts.
+  - Do NOT migrate any pages yet.
+  - Only fix issues inside V2 components.
+  - All validation must be done in isolation using V2 demo/test pages.
+
+----------------------------------------------------------------------
+10.1 VALIDATE DESIGN SYSTEM (PHASE 2)
+----------------------------------------------------------------------
+
+10.1.1 Validate CSS tokens
+  - Ensure all token files load:
+      colors.css
+      spacing.css
+      typography.css
+      radius.css
+      layout.css
+  - Validate:
+      - No missing variables
+      - No naming collisions
+      - No overrides of existing CSS
+
+10.1.2 Validate design system components
+  - Icon.razor
+  - IconButton.razor
+  - SectionHeader.razor
+  - Card.razor
+  - Check:
+      - Rendering
+      - CSS variable usage
+      - Responsiveness
+      - Parameter binding
+
+10.1.3 Validate icons.json + IconService
+  - Ensure:
+      - Icons load correctly
+      - Categories filter correctly
+      - IconLibrary demo page works
+
+----------------------------------------------------------------------
+10.2 VALIDATE LAYOUT SYSTEM (PHASE 3)
+----------------------------------------------------------------------
+
+10.2.1 Validate SidebarV2
+  - Loads menu.json
+  - Highlights active route
+  - Handles nested groups
+  - Collapses/expands correctly
+
+10.2.2 Validate HeaderV2
+  - Renders title/subtitle
+  - Renders action buttons
+  - Applies branding overrides
+
+10.2.3 Validate BreadcrumbV2
+  - Correct breadcrumb generation
+  - Correct separators
+  - Correct active state
+
+10.2.4 Validate ScrollSpyV2
+  - Section detection
+  - Active section highlighting
+  - Smooth scrolling (optional)
+
+10.2.5 Validate PageTemplateV2
+  - Sidebar + Header + Breadcrumb + Content layout
+  - Responsive behaviour
+  - No layout shifts
+
+----------------------------------------------------------------------
+10.3 VALIDATE PAGE TEMPLATES (PHASE 5)
+----------------------------------------------------------------------
+
+10.3.1 Validate StandardPageV2
+  - Title/subtitle
+  - Breadcrumb
+  - Content padding
+  - Responsive layout
+
+10.3.2 Validate DetailPageV2
+  - Section rendering
+  - ScrollSpy integration
+  - Section anchors
+
+10.3.3 Validate FormPageV2
+  - Form sections
+  - Validation summary
+  - Save/Cancel footer
+
+10.3.4 Validate SettingsPageV2
+  - Group rendering
+  - Item rendering
+  - Control injection
+
+10.3.5 Validate DashboardPageV2
+  - Grid layout
+  - Card rendering
+  - Responsive behaviour
+
+----------------------------------------------------------------------
+10.4 VALIDATE TABLE SYSTEM (PHASE 4)
+----------------------------------------------------------------------
+
+10.4.1 Validate TableV2 core behaviour
+  - Sorting
+  - Filtering
+  - Searching
+  - Pagination
+  - Inline actions
+  - Column visibility
+  - Column ordering
+  - Alignment
+
+10.4.2 Validate loading states
+  - SkeletonRowV2 renders correctly
+  - No layout jumps
+
+10.4.3 Validate empty state
+  - EmptyStateV2 renders correctly
+
+10.4.4 Validate TableSettingsPageV2
+  - Loads table-schema.json
+  - Saves changes
+  - Updates TableV2 configuration
+
+----------------------------------------------------------------------
+10.5 VALIDATE DATA & SERVICES (PHASE 6)
+----------------------------------------------------------------------
+
+10.5.1 Validate ApiClientV2
+  - GET/POST/PUT/DELETE
+  - Error handling
+  - Logging (optional)
+  - Base URL resolution
+
+10.5.2 Validate ApiServiceV2 modules
+  - StudentsApiServiceV2
+  - StaffApiServiceV2
+  - ClassesApiServiceV2
+  - AttendanceApiServiceV2
+  - AuditLogApiServiceV2
+  - SettingsApiServiceV2
+  - Ensure:
+      - Endpoints correct
+      - DTO mapping correct
+      - Exceptions handled
+
+10.5.3 Validate ViewModelsV2
+  - List ViewModels:
+      - Sorting/filtering/searching/pagination logic
+  - Detail ViewModels:
+      - Section population
+  - Form ViewModels:
+      - Validation
+      - Save logic
+
+10.5.4 Validate StateV2
+  - AppStateStoreV2
+  - AppStateServiceV2
+  - Ensure:
+      - Set/Get/Remove works
+      - Events fire correctly
+
+----------------------------------------------------------------------
+10.6 VALIDATE THEMING & BRANDING (PHASE 8)
+----------------------------------------------------------------------
+
+10.6.1 Validate ThemeServiceV2
+  - Light mode
+  - Dark mode
+  - System mode
+  - CSS variable application
+  - Runtime switching
+
+10.6.2 Validate BrandingServiceV2
+  - Logo override
+  - Primary color override
+  - Sidebar/header background override
+  - Accent color override
+
+10.6.3 Validate ThemeSettingsPageV2
+  - Mode switching
+  - Persistence (optional)
+
+10.6.4 Validate branding integration
+  - SidebarV2 uses branding variables
+  - HeaderV2 uses branding variables
+  - Templates use theme variables
+
+----------------------------------------------------------------------
+10.7 VALIDATE MODULES (PHASE 7)
+----------------------------------------------------------------------
+
+10.7.1 Validate Students module (V2)
+  - List page
+  - Detail page
+  - Form page
+
+10.7.2 Validate Staff module (V2)
+  - List page
+  - Detail page
+  - Form page
+
+10.7.3 Validate Classes module (V2)
+  - List page
+  - Detail page
+  - Form page
+
+10.7.4 Validate Attendance module (V2)
+  - List page
+  - Detail page
+
+10.7.5 Validate Audit Log module (V2)
+  - List page
+  - Pagination performance
+
+10.7.6 Validate Settings module (V2)
+  - SettingsHomePageV2
+  - TableSettingsPageV2
+  - ThemeSettingsPageV2
+
+----------------------------------------------------------------------
+10.8 VALIDATE FRAMEWORK EXTRACTION (PHASE 9)
+----------------------------------------------------------------------
+
+10.8.1 Validate FrameworkV2 folder structure
+  - Components
+  - Layouts
+  - PageTemplates
+  - Tables
+  - Theming
+  - Config
+  - Models
+  - Services
+  - Docs
+  - Demo
+
+10.8.2 Validate demo pages
+  - DesignSystemDemo
+  - LayoutDemo
+  - TableDemo
+  - ThemingDemo
+
+10.8.3 Validate framework independence
+  - FrameworkV2 must compile without referencing Absence-specific code.
+
+----------------------------------------------------------------------
+10.9 PERFORMANCE VALIDATION
+----------------------------------------------------------------------
+
+10.9.1 Validate rendering performance
+  - TableV2 with large datasets
+  - SidebarV2 navigation
+  - DashboardPageV2
+
+10.9.2 Validate memory usage
+  - Ensure no ViewModel leaks
+  - Ensure no event handler leaks
+
+10.9.3 Validate responsiveness
+  - Desktop
+  - Tablet
+  - Mobile
+
+----------------------------------------------------------------------
+10.10 FINAL POLISH
+----------------------------------------------------------------------
+
+10.10.1 Remove unused V2 assets (optional)
+  - Only remove files not referenced by:
+      - FrameworkV2
+      - Demo pages
+      - V2 modules
+
+10.10.2 Consolidate CSS
+  - Ensure no duplicate variables
+  - Ensure no conflicting selectors
+
+10.10.3 Consolidate JSON schemas
+  - Ensure all config files have:
+      - Required fields
+      - Valid structure
+
+10.10.4 Prepare migration plan (Phase 10 output)
+  - Create:
+      /docs/migration-plan-v2.txt
+  - Sections:
+      - How to migrate list pages to TableV2
+      - How to migrate detail pages to DetailPageV2
+      - How to migrate forms to FormPageV2
+      - How to migrate settings pages
+      - How to migrate layouts
+      - How to migrate theming/branding
+
+----------------------------------------------------------------------
+10.11 PHASE 10 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 10 is complete when:
+  - All V2 systems have been validated independently.
+  - All V2 components function correctly in isolation.
+  - FrameworkV2 is complete and stable.
+  - No existing Absence app behaviour has changed.
+  - The app builds and runs with zero regressions.
+  - A full migration plan exists.
+  - The system is ready for controlled migration to V2.
+
+END OF PHASE 10

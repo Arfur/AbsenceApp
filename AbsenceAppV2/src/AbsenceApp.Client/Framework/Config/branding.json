@@ -1,0 +1,26 @@
+{
+  "_comment": "AbsenceApp V2 Design System — branding.json — Phase 8",
+  "_description": "Runtime branding configuration. Loaded by BrandingServiceV2. Edit to customise the app name, logo assets, and accent colour without modifying any C# or CSS files.",
+  "version": "2.0.0",
+
+  "identity": {
+    "appName": "AbsenceApp",
+    "appShortName": "AA",
+    "organisationName": ""
+  },
+
+  "logos": {
+    "logoUrl": "images/branding/logo.png",
+    "logoIconUrl": "images/branding/logo-icon.png",
+    "logoAltText": "AbsenceApp"
+  },
+
+  "colors": {
+    "primaryAccentColor": "",
+    "primaryAccentHoverColor": ""
+  },
+
+  "whiteLabel": {
+    "brandCssSuffix": ""
+  }
+}

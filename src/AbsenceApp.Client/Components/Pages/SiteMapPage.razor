@@ -1,0 +1,44 @@
+@page "/settings/site-map"
+@inject INavigationMetadataService NavMeta
+@inject AppStateService AppState
+
+<h3>Site Map</h3>
+<p class="page-subtitle">All pages in the application, grouped by area.</p>
+
+@foreach (var group in NavMeta.GetGroups())
+{
+    <div class="sitemap-group">
+        <h4 class="sitemap-group-title">@group</h4>
+        <div class="sitemap-items">
+            @foreach (var item in NavMeta.GetByGroup(group))
+            {
+                <div class="sitemap-item">
+                    <i class="bi @item.Icon sitemap-icon"></i>
+                    <div class="sitemap-item-body">
+                        <div class="sitemap-item-header">
+                            <a href="@item.Href" class="sitemap-item-title">@item.Title</a>
+                            <span class="badge @StatusBadgeClass(item.Status)">@item.Status</span>
+                        </div>
+                        @if (item.Description is not null)
+                        {
+                            <p class="sitemap-item-desc">@item.Description</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Settings", "Site Map");
+
+    static string StatusBadgeClass(PageStatus status) => status switch
+    {
+        PageStatus.Live    => "badge-green",
+        PageStatus.Beta    => "badge-orange",
+        PageStatus.Planned => "badge-gray",
+        _                  => "badge-gray"
+    };
+}

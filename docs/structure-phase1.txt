@@ -1,0 +1,357 @@
+================================================================================
+  FILE        : structure-phase1.txt
+  PROJECT     : AbsenceApp — Phase 1 Foundations & Audit
+  CREATED     : 2026-03-21
+  PURPOSE     : Authoritative snapshot of the V1 project structure at the start
+                of the V2 design system build. Read-only reference — do NOT edit.
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+1. SOLUTION OVERVIEW
+────────────────────────────────────────────────────────────────────────────────
+
+Solution File : AbsenceApp.sln
+Root Path     : C:\DevAbsence1\
+
+Projects:
+  AbsenceApp.Client        — .NET MAUI Blazor Hybrid (main UI, net8.0-windows)
+  AbsenceApp.Core          — Class Library (DTOs, Interfaces, ViewModels, Navigation)
+  AbsenceApp.Data          — Class Library (EF Core DbContext, Repos, Services, Mappers)
+  AbsenceApp.Api           — ASP.NET Core Minimal API (REST endpoints + Swagger)
+  AbsenceApp.EfHost        — Console (design-time IDbContextFactory for migrations)
+  AbsenceApp.Analyzers     — Roslyn Analyzer (header comment checker + code fix)
+  AbsenceApp.Updater       — Class Library (update/versioning stub)
+  AbsenceApp.Tests         — xUnit (server-side: mappers, repos, services)
+  AbsenceApp.Client.Tests  — xUnit + bUnit (client-side: components, ViewModels)
+
+────────────────────────────────────────────────────────────────────────────────
+2. CLIENT PROJECT FOLDER STRUCTURE (AbsenceApp.Client)
+────────────────────────────────────────────────────────────────────────────────
+
+src/AbsenceApp.Client/
+├── AbsenceApp.Client.csproj
+├── App.xaml
+├── App.xaml.cs
+├── MainPage.xaml
+├── MainPage.xaml.cs
+├── MauiProgram.cs
+├── appsettings.json
+│
+├── Components/
+│   ├── _Imports.razor
+│   ├── Routes.razor
+│   ├── Layout/
+│   │   ├── AppFooter.razor
+│   │   ├── LoginLayout.razor
+│   │   ├── MainLayout.razor
+│   │   ├── MainLayout.razor.css
+│   │   ├── NavBar.razor
+│   │   ├── NavMenu.razor
+│   │   ├── NavMenu.razor.css
+│   │   ├── SideBar.razor
+│   │   ├── SidebarGroup.razor
+│   │   ├── SidebarItem.razor
+│   │   ├── SidebarSection.razor
+│   │   └── SidebarSubItem.razor
+│   └── Pages/
+│       ├── Index.razor
+│       ├── Login.razor
+│       ├── Register.razor
+│       ├── DashboardOverviewPage.razor
+│       ├── DashboardStaffActivityPage.razor
+│       ├── DashboardStudentActivityPage.razor
+│       ├── StudentsPage.razor
+│       ├── StudentDetailsPage.razor
+│       ├── StudentDetailsListPage.razor
+│       ├── StudentAddPage.razor
+│       ├── StaffListPage.razor
+│       ├── StaffDetailsPage.razor
+│       ├── StaffDetailsListPage.razor
+│       ├── StaffAddPage.razor
+│       ├── ParentListPage.razor
+│       ├── ParentDetailsPage.razor
+│       ├── ClassListPage.razor
+│       ├── ClassDetailsPage.razor
+│       ├── ClassDetailsListPage.razor
+│       ├── ClassAddPage.razor
+│       ├── SubjectListPage.razor
+│       ├── SubjectDetailsPage.razor
+│       ├── SubjectAddPage.razor
+│       ├── AttendanceStaffPage.razor
+│       ├── AttendanceStudentPage.razor
+│       ├── AttendanceLogPage.razor
+│       ├── AuditLogPage.razor
+│       ├── TableSettingsPage.razor
+│       ├── TableSettingsPage.razor.css
+│       ├── TableSettingsDiagnosticsPage.razor
+│       ├── TableSettingsDiagnosticsPage.razor.css
+│       ├── SiteMapPage.razor
+│       ├── SystemDepartmentsPage.razor
+│       ├── SystemJobTitlesPage.razor
+│       ├── SystemHousesPage.razor
+│       ├── SystemYearGroupsPage.razor
+│       ├── SystemAbsenceTypesPage.razor
+│       ├── SystemUsersPage.razor
+│       ├── SystemRolesPage.razor
+│       ├── SystemConfigLogoPage.razor
+│       ├── SystemConfigButtonsPage.razor
+│       ├── SystemConfigFontsPage.razor
+│       ├── SystemConfigThemePage.razor
+│       ├── SystemConfigTableDefaultsPage.razor
+│       └── SystemConfigSpacingPage.razor
+│
+├── Shared/
+│   ├── FilterChip.cs
+│   ├── TablePageTemplate.razor
+│   └── TablePageTemplate.razor.css
+│
+├── Services/
+│   ├── AppStateService.cs
+│   └── NavigationMetadataService.cs
+│
+├── State/
+│   └── AppState.cs
+│
+└── wwwroot/
+    ├── favicon.png
+    ├── index.html
+    └── css/
+        ├── app.css
+        └── bootstrap/
+            └── (Bootstrap bundle)
+
+────────────────────────────────────────────────────────────────────────────────
+3. CORE PROJECT FOLDER STRUCTURE (AbsenceApp.Core)
+────────────────────────────────────────────────────────────────────────────────
+
+src/AbsenceApp.Core/
+├── DTOs/
+│   ├── AbsenceTypeDto.cs
+│   ├── AttendanceDto.cs
+│   ├── AttendanceMarkDto.cs
+│   ├── AttendanceRegisterDto.cs
+│   ├── AuditLogDto.cs
+│   ├── AuthResultDto.cs
+│   ├── ClassDto.cs
+│   ├── ClassFullViewDto.cs
+│   ├── DashboardDto.cs
+│   ├── DepartmentDto.cs
+│   ├── HouseDto.cs
+│   ├── JobTitleDto.cs
+│   ├── RoleDto.cs
+│   ├── StaffAbsenceDto.cs
+│   ├── StaffDto.cs
+│   ├── StaffFullViewDto.cs
+│   ├── StudentAbsenceDto.cs
+│   ├── StudentContactDto.cs
+│   ├── StudentDto.cs
+│   ├── StudentFullViewDto.cs
+│   ├── SubjectDto.cs
+│   ├── TablePageSettingDto.cs
+│   ├── TableSettingsDiagnosticDto.cs
+│   ├── UserDto.cs
+│   ├── UserFullViewDto.cs
+│   └── YearGroupDto.cs
+│
+├── Interfaces/
+│   ├── IAbsenceTypeService.cs
+│   ├── IAttendanceRegisterService.cs
+│   ├── IAttendanceService.cs
+│   ├── IAuditLogService.cs
+│   ├── IAuthService.cs
+│   ├── IClassFullViewService.cs
+│   ├── IClassService.cs
+│   ├── IDashboardService.cs
+│   ├── IDepartmentService.cs
+│   ├── IHouseService.cs
+│   ├── IJobTitleService.cs
+│   ├── INavigationMetadataService.cs
+│   ├── IRoleService.cs
+│   ├── IStaffAbsenceService.cs
+│   ├── IStaffFullViewService.cs
+│   ├── IStaffService.cs
+│   ├── IStudentAbsenceService.cs
+│   ├── IStudentContactService.cs
+│   ├── IStudentFullViewService.cs
+│   ├── IStudentService.cs
+│   ├── ISubjectService.cs
+│   ├── ITableSettingsService.cs
+│   ├── IUserFullViewService.cs
+│   ├── IUserService.cs
+│   └── IYearGroupService.cs
+│
+├── ViewModels/
+│   ├── AttendanceLogViewModel.cs
+│   ├── AttendanceStaffViewModel.cs
+│   ├── AttendanceStudentViewModel.cs
+│   ├── AuditLogViewModel.cs
+│   ├── ClassAddViewModel.cs
+│   ├── ClassDetailsViewModel.cs
+│   ├── ClassesViewModel.cs
+│   ├── DashboardOverviewViewModel.cs
+│   ├── DashboardSafeguardingViewModel.cs
+│   ├── DashboardStudentActivityViewModel.cs
+│   ├── ParentDetailsViewModel.cs
+│   ├── ParentListViewModel.cs
+│   ├── StaffAddViewModel.cs
+│   ├── StaffDetailsViewModel.cs
+│   ├── StaffViewModel.cs
+│   ├── StudentAddViewModel.cs
+│   ├── StudentDetailsViewModel.cs
+│   ├── StudentsViewModel.cs
+│   ├── SubjectAddViewModel.cs
+│   ├── SubjectDetailsViewModel.cs
+│   ├── SubjectListViewModel.cs
+│   └── TableSettingsViewModel.cs
+│
+├── Models/
+├── Navigation/
+└── Services/
+
+────────────────────────────────────────────────────────────────────────────────
+4. DATA PROJECT FOLDER STRUCTURE (AbsenceApp.Data)
+────────────────────────────────────────────────────────────────────────────────
+
+src/AbsenceApp.Data/
+├── Configurations/         — EF Fluent API configs (8 files)
+├── Context/
+│   └── AppDbContext.cs
+├── DataServiceRegistration.cs
+├── Mappers/                — Entity-to-DTO mappers (21 files)
+├── Migrations/             — EF migration history
+├── Models/                 — 42 EF entity classes
+├── Repositories/           — 16 repository classes
+├── Seeding/
+│   ├── DatabaseSeeder.cs
+│   └── CsvImportPipeline.cs
+└── Services/               — 22 EF-backed service implementations
+
+────────────────────────────────────────────────────────────────────────────────
+5. API PROJECT FOLDER STRUCTURE (AbsenceApp.Api)
+────────────────────────────────────────────────────────────────────────────────
+
+src/AbsenceApp.Api/
+├── AbsenceApp.Api.csproj
+├── appsettings.json
+├── Program.cs              — Minimal API with Swagger
+└── Endpoints/              — Users, Roles, Classes, Attendance, Audit
+
+────────────────────────────────────────────────────────────────────────────────
+6. EXISTING LAYOUT COMPONENTS (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+Component              File                      Role
+─────────────────────  ────────────────────────  ──────────────────────────────
+MainLayout             MainLayout.razor           Root authenticated shell
+LoginLayout            LoginLayout.razor          Minimal auth layout
+NavBar                 NavBar.razor               Top navigation bar
+SideBar                SideBar.razor              Collapsible accordion sidebar
+SidebarGroup           SidebarGroup.razor         Accordion group wrapper
+SidebarSection         SidebarSection.razor       Visual section header
+SidebarItem            SidebarItem.razor          Single nav link
+SidebarSubItem         SidebarSubItem.razor       Sub-link under group
+AppFooter              AppFooter.razor            Footer bar
+NavMenu                NavMenu.razor              Retained for CSS bundle compat
+
+────────────────────────────────────────────────────────────────────────────────
+7. EXISTING SHARED CONTROLS (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+Component              File                          Role
+─────────────────────  ────────────────────────────  ──────────────────────────
+TablePageTemplate      TablePageTemplate.razor        Reusable 5-section table
+                       TablePageTemplate.razor.css    layout: filters, search,
+                                                      headers, rows, pagination
+FilterChip             FilterChip.cs                  Filter chip model
+
+────────────────────────────────────────────────────────────────────────────────
+8. EXISTING SERVICES (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+Service                        File                          Role
+──────────────────────────────  ────────────────────────────  ─────────────────
+AppStateService                AppStateService.cs             Singleton — sidebar
+                                                              collapse, dark mode,
+                                                              breadcrumb, auth user,
+                                                              per-table UI state
+NavigationMetadataService      NavigationMetadataService.cs   Static nav registry
+                                                              (all routes + meta)
+
+────────────────────────────────────────────────────────────────────────────────
+9. EXISTING CSS / STYLES (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+File                                     Scope     Purpose
+───────────────────────────────────────  ────────  ─────────────────────────────
+wwwroot/css/app.css                      Global    Full design system — CSS vars
+                                                   for light/dark theme, layout
+                                                   shell, sidebar, nav, footer,
+                                                   auth pages, stat cards
+wwwroot/css/bootstrap/                   Global    Bootstrap CSS bundle
+Components/Layout/MainLayout.razor.css   Scoped    MainLayout overrides
+Components/Layout/NavMenu.razor.css      Scoped    NavMenu (legacy compat)
+Shared/TablePageTemplate.razor.css       Scoped    Table template layout
+Pages/TableSettingsPage.razor.css        Scoped    Table settings page
+Pages/TableSettingsDiagnosticsPage…css   Scoped    Diagnostics page
+
+CSS Custom Properties defined in app.css (:root):
+  Layout      : --hdr-h, --ftr-h, --sb-w, --sb-w-col
+  Colours     : --chrome-bg, --main-bg, --border, --text, --text-muted,
+                --accent, --accent-h
+  Sidebar     : --sb-active-bg, --sb-active-text, --sb-hover-bg,
+                --sb-sub-bg, --content-box-bg
+  Dark theme  : All of the above overridden under .dark {}
+
+────────────────────────────────────────────────────────────────────────────────
+10. EXISTING NAVIGATION & ROUTING (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+Router         : Routes.razor — Blazor <Router> scanning MauiProgram assembly
+Default layout : MainLayout
+Auth pages     : @layout LoginLayout (Login, Register)
+Nav registry   : INavigationMetadataService / NavigationMetadataService.cs
+                 Groups: Dashboard, Students, Staff, Parents, Classes, Subjects,
+                 Attendance, Audit, Settings, System-Data, System-Security,
+                 System-Config
+Page status    : Live | Beta | Planned (PageStatus enum)
+State          : AppStateService (Singleton) — sidebar, dark mode, breadcrumb,
+                 auth user, per-table state
+
+────────────────────────────────────────────────────────────────────────────────
+11. EXISTING CONFIG / JSON FILES (V1)
+────────────────────────────────────────────────────────────────────────────────
+
+File                                Type     Purpose
+──────────────────────────────────  ───────  ───────────────────────────────────
+src/AbsenceApp.Client/appsettings.json  JSON  Client LocalDB connection string
+src/AbsenceApp.Api/appsettings.json     JSON  API LocalDB connection string
+wwwroot/index.html                  HTML     Blazor WebView host page
+
+No design-system JSON config files exist in V1.
+
+────────────────────────────────────────────────────────────────────────────────
+12. PAGE COUNT SUMMARY
+────────────────────────────────────────────────────────────────────────────────
+
+Module              Pages
+──────────────────  ─────
+Auth                3  (Index, Login, Register)
+Dashboard           3  (Overview, StudentActivity, StaffActivity)
+Students            4  (List, Details, DetailsList, Add)
+Staff               4  (List, Details, DetailsList, Add)
+Parents             2  (List, Details)
+Classes             4  (List, Details, DetailsList, Add)
+Subjects            3  (List, Details, Add)
+Attendance          3  (Staff, Student, Log)
+Audit               1  (AuditLog)
+Settings/Table      2  (TableSettings, TableSettingsDiagnostics)
+Settings/System     1  (SiteMap)
+System-Data         5  (Departments, JobTitles, Houses, YearGroups, AbsenceTypes)
+System-Security     2  (Users, Roles)
+System-Config       6  (Logo, Buttons, Fonts, Theme, TableDefaults, Spacing)
+──────────────────  ─────
+TOTAL               43 pages
+
+================================================================================
+  END OF STRUCTURE-PHASE1.TXT
+================================================================================

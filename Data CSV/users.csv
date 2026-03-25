@@ -1,0 +1,2 @@
+id,name,username,email,email_verified_at,password,role_type_id,status,is_admin,profile_photo_path,phone_number,last_login_at,last_login_ip,remember_token,created_at,updated_at,department_id,designation,login_count,is_two_factor_enabled,two_factor_secret,backup_codes,timezone,language_code,bio,date_of_birth,gender,address,city,country,postal_code
+1,Michael Battle,mbattle,mbattle@absenceapp.local,,Admin1234,2,Active,1,,,,,, 2026-03-17 00:00:00,2026-03-17 00:00:00,,Admin,0,0,,,UTC,en,,,,,,,

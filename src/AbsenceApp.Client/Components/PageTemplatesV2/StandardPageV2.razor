@@ -1,0 +1,83 @@
+﻿@* ===========================================================================
+   File        : StandardPageV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.3.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : Standard list/collection page template. Composes PageTemplateV2
+                 and provides named slots for title, top-action buttons, filter
+                 area, and main table content. Intended as the base for all
+                 module list pages (e.g. Students, Staff, Classes).
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Added BaseLayoutV2 layout binding (Step 2).
+     - 1.2.0  2026-03-23  Updated layout directive to fully-qualified
+                          BaseLayoutV2 namespace.
+     - 1.3.0  2026-03-23  Replaced invalid BodyContent slot with BodyContent
+                          to match PageTemplateV2 contract.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+     - Inherits BaseLayoutV2 from Components.LayoutV2.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Components.PageTemplatesV2
+
+@* =========================================================================
+   Section: Standard page shell
+   ========================================================================= *@
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @ActionsContent
+    </ActionsContent>
+
+    <BodyContent>
+        <div class="dsv2-standard-page">
+
+            @if (FilterContent is not null)
+            {
+                <div class="dsv2-standard-page__filters">
+                    @FilterContent
+                </div>
+            }
+
+            @if (ToolbarContent is not null)
+            {
+                <div class="dsv2-standard-page__toolbar">
+                    @ToolbarContent
+                </div>
+            }
+
+            <div class="dsv2-standard-page__body">
+                @BodyContent
+            </div>
+
+        </div>
+    </BodyContent>
+
+</PageTemplateV2>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    /// <summary>Page heading text displayed in the title bar.</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+
+    /// <summary>Action buttons shown in the top-right of the title bar.</summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+
+    /// <summary>Filter UI shown above the table.</summary>
+    [Parameter] public RenderFragment? FilterContent { get; set; }
+
+    /// <summary>Toolbar row shown between filters and table body.</summary>
+    [Parameter] public RenderFragment? ToolbarContent { get; set; }
+
+    /// <summary>Main content area — typically a TableV2 component.</summary>
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+}

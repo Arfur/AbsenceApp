@@ -1,0 +1,79 @@
+﻿@* ===========================================================================
+   File        : AlertV2.razor
+   Namespace   : AbsenceApp.Client.Components.AlertsV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Subscribes to AlertServiceV2 and renders a fixed-position stack of alert notifications. Each alert shows an icon, severity class, message, and a dismiss button.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 6 component. Requires AlertServiceV2 (Singleton) in DI.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Services
+@inject AlertServiceV2 AlertService
+@implements IDisposable
+
+@if (AlertService.Alerts.Count > 0)
+{
+@* =========================================================================
+   Section: Alert stack
+   ========================================================================= *@
+    <div class="alertv2-stack" role="status" aria-live="polite" aria-atomic="false">
+        @foreach (var alert in AlertService.Alerts)
+        {
+            <div class="@AlertClass(alert.Severity)" role="alert">
+                <span class="alertv2-icon" aria-hidden="true">@AlertIcon(alert.Severity)</span>
+                <span class="alertv2-message">@alert.Message</span>
+                <button class="alertv2-dismiss"
+                        type="button"
+                        aria-label="Dismiss alert"
+                        @onclick="() => AlertService.Dismiss(alert.Id)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+    </div>
+}
+
+@* =========================================================================
+   Section: Alert subscription and dismiss
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+    {
+        AlertService.OnAlertsChanged += HandleAlertsChanged;
+    }
+
+    private void HandleAlertsChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private static string AlertClass(AlertSeverityV2 severity) => severity switch
+    {
+        AlertSeverityV2.Success => "alertv2 alertv2--success",
+        AlertSeverityV2.Warning => "alertv2 alertv2--warning",
+        AlertSeverityV2.Danger  => "alertv2 alertv2--danger",
+        _                       => "alertv2 alertv2--info"
+    };
+
+    private static string AlertIcon(AlertSeverityV2 severity) => severity switch
+    {
+        AlertSeverityV2.Success => "✓",
+        AlertSeverityV2.Warning => "⚠",
+        AlertSeverityV2.Danger  => "✕",
+        _                       => "ℹ"
+    };
+
+    public void Dispose()
+    {
+        AlertService.OnAlertsChanged -= HandleAlertsChanged;
+    }
+}

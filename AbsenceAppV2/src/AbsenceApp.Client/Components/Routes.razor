@@ -1,0 +1,64 @@
+﻿@* ===========================================================================
+   File        : Routes.razor
+   Namespace   : AbsenceApp.Client.Components
+   Author      : Michael
+   Version     : 2.2.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-25
+   ---------------------------------------------------------------------------
+   Purpose     : Root Blazor router component for AbsenceApp V2.
+                 Matches the current URL to a @page-decorated component and
+                 renders it using the V2 MainLayout shell.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+     - 2.0.0  2026-03-23  Switched DefaultLayout to MainLayout for V2 shell.
+     - 2.1.0  2026-03-24  Verified for AbsenceAppV2; no functional changes.
+     - 2.2.0  2026-03-25  Confirmed as V2 router after V1/V2 project split.
+                          Removed ambiguity with V1; V1 router restored separately.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Router — maps URLs to @page-decorated components using MainLayoutV2
+   ========================================================================= *@
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <ErrorBoundary>
+            <ChildContent>
+                @* TEMPORARY: V2 SHELL ACTIVATION *@
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+            </ChildContent>
+            <ErrorContent Context="ex">
+                @{ LogError(ex); }
+                <div style="padding:2rem;font-family:monospace;color:red;background:white;position:fixed;top:0;left:0;right:0;bottom:0;overflow:auto;z-index:9999;">
+                    <h2>Startup Error</h2>
+                    <p><strong>@ex.GetType().FullName</strong></p>
+                    <p>@ex.Message</p>
+                    <pre style="white-space:pre-wrap;font-size:0.8rem;">@ex.ToString()</pre>
+                </div>
+            </ErrorContent>
+        </ErrorBoundary>
+    </Found>
+    <NotFound>
+        <p>Page not found.</p>
+    </NotFound>
+</Router>
+
+@* =========================================================================
+   Section: Code-behind — diagnostic error logger
+   ========================================================================= *@
+@code {
+    static void LogError(Exception ex)
+    {
+        try
+        {
+            var path = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "AbsenceApp_crash.log");
+            System.IO.File.AppendAllText(path,
+                $"[{DateTime.Now:HH:mm:ss}] ErrorBoundary: {ex}{Environment.NewLine}");
+        }
+        catch { /* never throw from error logger */ }
+    }
+}

@@ -1,0 +1,91 @@
+{
+  "_comment": "AbsenceApp V2 Design System — icons.json — Phase 2",
+  "_description": "Icon registry for V2 design system. Uses Bootstrap Icons (bi-*) matching V1 app. Loaded by IconService.",
+  "version": "2.0.0",
+  "library": "bootstrap-icons",
+  "cdnClass": "bi",
+  "icons": {
+    "navigation": {
+      "dashboard":    "bi-speedometer2",
+      "students":     "bi-mortarboard",
+      "staff":        "bi-people",
+      "parents":      "bi-house-heart",
+      "classes":      "bi-journal-text",
+      "subjects":     "bi-book",
+      "attendance":   "bi-calendar-check",
+      "audit":        "bi-journal-check",
+      "settings":     "bi-gear",
+      "system":       "bi-database",
+      "security":     "bi-shield-lock",
+      "config":       "bi-sliders"
+    },
+    "actions": {
+      "add":          "bi-plus-circle",
+      "edit":         "bi-pencil",
+      "delete":       "bi-trash",
+      "view":         "bi-eye",
+      "save":         "bi-check-circle",
+      "cancel":       "bi-x-circle",
+      "search":       "bi-search",
+      "filter":       "bi-funnel",
+      "sort-asc":     "bi-sort-up",
+      "sort-desc":    "bi-sort-down",
+      "export":       "bi-download",
+      "import":       "bi-upload",
+      "refresh":      "bi-arrow-clockwise",
+      "back":         "bi-arrow-left",
+      "forward":      "bi-arrow-right",
+      "expand":       "bi-arrows-expand",
+      "collapse":     "bi-arrows-collapse",
+      "settings":     "bi-gear",
+      "more":         "bi-three-dots-vertical"
+    },
+    "status": {
+      "success":      "bi-check-circle-fill",
+      "warning":      "bi-exclamation-triangle-fill",
+      "danger":       "bi-x-circle-fill",
+      "info":         "bi-info-circle-fill",
+      "loading":      "bi-arrow-clockwise",
+      "live":         "bi-circle-fill",
+      "beta":         "bi-star-fill",
+      "planned":      "bi-clock"
+    },
+    "layout": {
+      "sidebar-toggle":   "bi-layout-sidebar",
+      "dark-mode":        "bi-moon",
+      "light-mode":       "bi-sun",
+      "notifications":    "bi-bell",
+      "user":             "bi-person-circle",
+      "logout":           "bi-box-arrow-right",
+      "home":             "bi-house",
+      "map":              "bi-map",
+      "breadcrumb-sep":   "bi-chevron-right"
+    },
+    "data": {
+      "list":         "bi-list-ul",
+      "grid":         "bi-grid",
+      "table":        "bi-table",
+      "chart":        "bi-graph-up",
+      "calendar":     "bi-calendar3",
+      "flag":         "bi-flag",
+      "tag":          "bi-tag",
+      "link":         "bi-link-45deg",
+      "copy":         "bi-clipboard",
+      "attachment":   "bi-paperclip",
+      "image":        "bi-image",
+      "document":     "bi-file-text"
+    },
+    "people": {
+      "person":           "bi-person",
+      "person-add":       "bi-person-plus",
+      "person-detail":    "bi-person-lines-fill",
+      "person-card":      "bi-person-vcard",
+      "person-check":     "bi-person-check",
+      "person-check-fill":"bi-person-check-fill",
+      "group":            "bi-people",
+      "shield":           "bi-shield-check",
+      "key":              "bi-key",
+      "lock":             "bi-lock"
+    }
+  }
+}

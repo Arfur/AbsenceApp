@@ -1,0 +1,51 @@
+/* =============================================================================
+   File    : SkeletonRowV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Created : 2026-03-21
+   Purpose : Scoped styles for SkeletonRowV2 shimmer animation.
+============================================================================= */
+
+.dsv2-skeleton-row__cell {
+    padding: var(--ds-table-cell-padding-y) var(--ds-table-cell-padding-x);
+    vertical-align: middle;
+}
+
+.dsv2-skeleton-row__shimmer {
+    display: block;
+    height: 0.875rem;
+    border-radius: var(--ds-radius-sm);
+    background: linear-gradient(
+        90deg,
+        var(--ds-color-neutral-8) 25%,
+        var(--ds-color-neutral-5) 50%,
+        var(--ds-color-neutral-8) 75%
+    );
+    background-size: 200% 100%;
+    animation: dsv2-shimmer 1.5s ease-in-out infinite;
+    width: 80%;
+    max-width: 12rem;
+}
+
+/* Vary shimmer width per cell for a natural look */
+.dsv2-skeleton-row__cell:nth-child(1) .dsv2-skeleton-row__shimmer { width: 40%; }
+.dsv2-skeleton-row__cell:nth-child(2) .dsv2-skeleton-row__shimmer { width: 75%; }
+.dsv2-skeleton-row__cell:nth-child(3) .dsv2-skeleton-row__shimmer { width: 55%; }
+.dsv2-skeleton-row__cell:nth-child(4) .dsv2-skeleton-row__shimmer { width: 65%; }
+.dsv2-skeleton-row__cell:nth-child(5) .dsv2-skeleton-row__shimmer { width: 50%; }
+
+@keyframes dsv2-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+:global([data-theme="dark"]) .dsv2-skeleton-row__shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--ds-color-dark-surface-raised) 25%,
+        var(--ds-color-dark-surface) 50%,
+        var(--ds-color-dark-surface-raised) 75%
+    );
+    background-size: 200% 100%;
+    animation: dsv2-shimmer 1.5s ease-in-out infinite;
+}

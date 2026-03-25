@@ -1,0 +1,105 @@
+/* =============================================================================
+   File    : EmptyStateV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Created : 2026-03-21
+   Purpose : Scoped styles for EmptyStateV2.
+============================================================================= */
+
+.dsv2-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-12) var(--ds-spacing-8);
+    color: var(--ds-color-neutral-60);
+}
+
+.dsv2-empty-state--sm {
+    padding: var(--ds-spacing-6) var(--ds-spacing-4);
+    gap: var(--ds-spacing-2);
+}
+
+.dsv2-empty-state--lg {
+    padding: var(--ds-spacing-16) var(--ds-spacing-10);
+    gap: var(--ds-spacing-4);
+}
+
+/* Icon */
+.dsv2-empty-state__icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-color-neutral-8);
+    flex-shrink: 0;
+}
+
+.dsv2-empty-state--sm .dsv2-empty-state__icon-wrap {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.dsv2-empty-state--lg .dsv2-empty-state__icon-wrap {
+    width: 5.5rem;
+    height: 5.5rem;
+}
+
+.dsv2-empty-state__icon {
+    font-size: 1.75rem;
+    color: var(--ds-color-neutral-40);
+}
+
+.dsv2-empty-state--sm .dsv2-empty-state__icon { font-size: 1.2rem; }
+.dsv2-empty-state--lg .dsv2-empty-state__icon { font-size: 2.5rem; }
+
+/* Title */
+.dsv2-empty-state__title {
+    margin: 0;
+    font-size: var(--ds-font-size-base);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-color-neutral-80);
+    line-height: var(--ds-line-height-tight);
+}
+
+.dsv2-empty-state--sm .dsv2-empty-state__title { font-size: var(--ds-font-size-sm); }
+.dsv2-empty-state--lg .dsv2-empty-state__title { font-size: var(--ds-font-size-lg); }
+
+/* Message */
+.dsv2-empty-state__message {
+    margin: 0;
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-neutral-50);
+    max-width: 28rem;
+    line-height: var(--ds-line-height-relaxed);
+}
+
+/* Actions */
+.dsv2-empty-state__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Dark mode */
+:global([data-theme="dark"]) .dsv2-empty-state {
+    color: var(--ds-color-neutral-40);
+}
+
+:global([data-theme="dark"]) .dsv2-empty-state__icon-wrap {
+    background: var(--ds-color-dark-surface-raised);
+}
+
+:global([data-theme="dark"]) .dsv2-empty-state__title {
+    color: var(--ds-color-neutral-20);
+}
+
+:global([data-theme="dark"]) .dsv2-empty-state__message {
+    color: var(--ds-color-neutral-40);
+}

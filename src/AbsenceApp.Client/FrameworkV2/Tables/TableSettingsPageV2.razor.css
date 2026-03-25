@@ -1,0 +1,311 @@
+/* =============================================================================
+   File    : TableSettingsPageV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Created : 2026-03-21
+   Purpose : Scoped styles for TableSettingsPageV2.
+             All values reference V2 design tokens from wwwroot/css/tokens/.
+============================================================================= */
+
+/* ── Page container ──────────────────────────────────────────────────────── */
+
+.dsv2-tspage {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: var(--ds-spacing-6) var(--ds-spacing-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-6);
+}
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+
+.dsv2-tspage__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+}
+
+.dsv2-tspage__back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--ds-color-neutral-15);
+    border-radius: var(--ds-radius-md);
+    background: transparent;
+    color: var(--ds-color-neutral-60);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: var(--ds-spacing-1);
+    transition: background var(--ds-transition-fast);
+}
+
+.dsv2-tspage__back-btn:hover {
+    background: var(--ds-color-neutral-5);
+    color: var(--ds-color-neutral-90);
+}
+
+.dsv2-tspage__title {
+    margin: 0;
+    font-size: var(--ds-font-size-xl);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-color-neutral-90);
+    line-height: var(--ds-line-height-tight);
+}
+
+.dsv2-tspage__subtitle {
+    margin: var(--ds-spacing-1) 0 0;
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-neutral-50);
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+
+.dsv2-tspage__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-3);
+}
+
+.dsv2-tspage__toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+}
+
+.dsv2-tspage__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+    border-radius: var(--ds-radius-md);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    font-family: var(--ds-font-family-ui);
+    cursor: pointer;
+    transition: background var(--ds-transition-fast), opacity var(--ds-transition-fast);
+    border: 1px solid transparent;
+}
+
+.dsv2-tspage__btn--primary {
+    background: var(--ds-color-accent);
+    color: #fff;
+    border-color: var(--ds-color-accent);
+}
+
+.dsv2-tspage__btn--primary:hover:not(:disabled) {
+    background: var(--ds-color-accent-dark);
+    border-color: var(--ds-color-accent-dark);
+}
+
+.dsv2-tspage__btn--secondary {
+    background: transparent;
+    color: var(--ds-color-neutral-70);
+    border-color: var(--ds-color-neutral-20);
+}
+
+.dsv2-tspage__btn--secondary:hover {
+    background: var(--ds-color-neutral-5);
+}
+
+.dsv2-tspage__btn--disabled,
+.dsv2-tspage__btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+
+.dsv2-tspage__section {
+    background: var(--ds-color-surface-card);
+    border: 1px solid var(--ds-color-neutral-10);
+    border-radius: var(--ds-radius-lg);
+    padding: var(--ds-spacing-5);
+}
+
+.dsv2-tspage__section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    margin: 0 0 var(--ds-spacing-1);
+    font-size: var(--ds-font-size-base);
+    font-weight: var(--ds-font-weight-semibold);
+    color: var(--ds-color-neutral-80);
+}
+
+.dsv2-tspage__section-desc {
+    margin: 0 0 var(--ds-spacing-4);
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-neutral-50);
+}
+
+/* ── Column list ─────────────────────────────────────────────────────────── */
+
+.dsv2-tspage__col-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+}
+
+.dsv2-tspage__col-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border: 1px solid var(--ds-color-neutral-10);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-color-neutral-1);
+    transition: background var(--ds-transition-fast), opacity var(--ds-transition-fast);
+}
+
+.dsv2-tspage__col-item--hidden {
+    opacity: 0.5;
+}
+
+.dsv2-tspage__drag-handle {
+    color: var(--ds-color-neutral-30);
+    cursor: grab;
+    flex-shrink: 0;
+    font-size: var(--ds-font-size-base);
+}
+
+/* Toggle switch */
+.dsv2-tspage__toggle {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.dsv2-tspage__toggle-input {
+    width: 2.25rem;
+    height: 1.25rem;
+    accent-color: var(--ds-color-accent);
+    cursor: pointer;
+}
+
+.dsv2-tspage__toggle-input:disabled { cursor: not-allowed; }
+
+/* Column info */
+.dsv2-tspage__col-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+}
+
+.dsv2-tspage__col-icon {
+    color: var(--ds-color-neutral-40);
+    flex-shrink: 0;
+}
+
+.dsv2-tspage__col-label {
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    color: var(--ds-color-neutral-80);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dsv2-tspage__badge {
+    padding: var(--ds-spacing-0-5) var(--ds-spacing-1-5);
+    border-radius: var(--ds-radius-sm);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    background: var(--ds-color-neutral-8);
+    color: var(--ds-color-neutral-50);
+    white-space: nowrap;
+}
+
+.dsv2-tspage__badge--locked {
+    background: var(--ds-color-warning-pale);
+    color: var(--ds-color-warning-dark);
+}
+
+/* Reorder buttons */
+.dsv2-tspage__reorder {
+    display: flex;
+    gap: var(--ds-spacing-1);
+    flex-shrink: 0;
+}
+
+.dsv2-tspage__reorder-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--ds-color-neutral-15);
+    border-radius: var(--ds-radius-sm);
+    background: transparent;
+    color: var(--ds-color-neutral-50);
+    cursor: pointer;
+    font-size: var(--ds-font-size-xs);
+    transition: background var(--ds-transition-fast);
+}
+
+.dsv2-tspage__reorder-btn:hover {
+    background: var(--ds-color-neutral-5);
+    color: var(--ds-color-neutral-80);
+}
+
+/* ── Preview info ────────────────────────────────────────────────────────── */
+
+.dsv2-tspage__preview-info {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-neutral-50);
+    margin: 0;
+}
+
+/* ── Loading / error states ──────────────────────────────────────────────── */
+
+.dsv2-tspage__loading,
+.dsv2-tspage__error {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    font-size: var(--ds-font-size-base);
+    color: var(--ds-color-neutral-50);
+    padding: var(--ds-spacing-8) 0;
+}
+
+.dsv2-tspage__spinner {
+    animation: dsv2-spin 1s linear infinite;
+}
+
+@keyframes dsv2-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+
+:global([data-theme="dark"]) .dsv2-tspage__title {
+    color: var(--ds-color-neutral-10);
+}
+
+:global([data-theme="dark"]) .dsv2-tspage__section {
+    background: var(--ds-color-dark-surface);
+    border-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-tspage__col-item {
+    background: var(--ds-color-dark-surface-raised);
+    border-color: var(--ds-color-dark-border);
+}
+
+:global([data-theme="dark"]) .dsv2-tspage__col-label {
+    color: var(--ds-color-neutral-20);
+}

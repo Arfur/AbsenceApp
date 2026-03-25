@@ -1,0 +1,99 @@
+@* ===========================================================================
+   File        : PlaceholderPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-24
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Shared placeholder page for all V2 routes that are defined in
+                 menu.json with status "Planned" but do not yet have a full
+                 implementation. Prevents "Page not found" errors when users
+                 navigate to these routes from the sidebar.
+                 All routes here match exactly the hrefs in menu.json v4.0.0.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-24  Initial implementation covering all planned routes
+                          from menu.json that have no dedicated module page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - DO NOT add Live routes here — Live routes must have dedicated pages.
+     - When a planned route gets a dedicated page, remove its @page directive.
+   ===========================================================================
+*@
+
+@* Dashboard planned routes *@
+@page "/v2/dashboard/attendance"
+@page "/v2/dashboard/safeguarding"
+
+@* Students planned routes *@
+@page "/v2/students/detail"
+
+@* Staff planned routes *@
+@page "/v2/staff/detail"
+
+@* People planned routes *@
+@page "/v2/parents"
+
+@* Academic planned routes *@
+@page "/v2/classes/detail"
+@page "/v2/subjects"
+@page "/v2/subjects/new"
+
+@* Attendance planned routes *@
+@page "/v2/attendance/staff"
+@page "/v2/attendance/student"
+
+@* Settings planned routes *@
+@page "/v2/settings/diagnostics"
+@page "/v2/settings/site-map"
+
+@* System planned routes *@
+@page "/v2/system/departments"
+@page "/v2/system/job-titles"
+@page "/v2/system/houses"
+@page "/v2/system/year-groups"
+@page "/v2/system/absence-types"
+@page "/v2/system/users"
+@page "/v2/system/roles"
+@page "/v2/system/config/logo"
+@page "/v2/system/config/buttons"
+@page "/v2/system/config/fonts"
+@page "/v2/system/config/table-defaults"
+@page "/v2/system/config/spacing"
+
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Coming soon placeholder
+   ========================================================================= *@
+<StandardPageV2 PageTitle="Coming Soon">
+
+    <BodyContent>
+        <div class="dsv2-placeholder">
+            <i class="bi bi-tools dsv2-placeholder__icon" aria-hidden="true"></i>
+            <h2 class="dsv2-placeholder__title">Feature in Development</h2>
+            <p class="dsv2-placeholder__message">
+                This section is planned and is currently under development.
+                It will be available in an upcoming release.
+            </p>
+            <a href="javascript:history.back()" class="dsv2-btn dsv2-btn--secondary">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Go Back
+            </a>
+        </div>
+    </BodyContent>
+
+</StandardPageV2>
+
+@* =========================================================================
+   Section: Code-behind
+   ========================================================================= *@
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.SetBreadcrumb("Coming Soon");
+    }
+}

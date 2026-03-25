@@ -1,0 +1,28 @@
+@* ===========================================================================
+   File        : AppHost.razor
+   Namespace   : AbsenceApp.Client.Components
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-13
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Root Blazor component for AbsenceApp V1.
+                 Hosts the router for the MAUI BlazorWebView. All layout and
+                 authentication behaviour is handled by the V1 MainLayout.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Registered as the RootComponent in MainPage.xaml.
+     - Index.razor (route "/") redirects to /login on startup.
+     - This file intentionally contains no V2 references.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-13  Initial implementation.
+     - 1.1.0  2026-03-24  Restored V1 behaviour after V1/V2 project split.
+                          Removed all V2 shell references.
+   ===========================================================================
+*@
+
+<!-- =========================================================
+     Section: Router host (V1)
+     ========================================================= -->
+<Routes />

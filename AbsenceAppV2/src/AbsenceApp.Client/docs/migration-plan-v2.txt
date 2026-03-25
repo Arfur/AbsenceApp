@@ -1,0 +1,527 @@
+================================================================================
+ File          : migration-plan-v2.txt
+ Project       : AbsenceApp.Client
+ Author        : Michael
+ Version       : 1.0.0
+ Created       : 2026-03-21
+--------------------------------------------------------------------------------
+ Purpose       : Phase 10 output — controlled migration plan from V1 pages and
+                 components to the V2 design system, layout, table, template,
+                 and theming stack.
+
+ Scope         : Read-only planning document. No files are changed by this plan.
+                 All migrations must be done incrementally, page by page.
+================================================================================
+
+--------------------------------------------------------------------------------
+SECTION 0 — PRINCIPLES
+--------------------------------------------------------------------------------
+
+  0.1  All V2 systems exist in parallel with V1. Nothing in V1 is changed.
+  0.2  Migrate one module at a time (Students → Staff → Classes → Attendance →
+       AuditLog → Settings).
+  0.3  Each migrated page keeps its original route (/students, /staff, etc.)
+       but uses the V2 page template and component stack.
+  0.4  A page is considered "migrated" when it uses:
+         - PageTemplateV2 / StandardPageV2 / DetailPageV2 / FormPageV2
+         - TableV2 (for list pages)
+         - ThemeServiceV2 (via PageTemplateV2)
+         - BrandingServiceV2 (via HeaderV2 / SidebarV2)
+         - V2 ViewModels
+  0.5  Proof: the ModulesV2/ pages already implement the full V2 stack. The
+       migration task is to REPLACE the V1 page registrations with the V2 ones
+       by updating the @page route directives.
+  0.6  Do NOT modify V1 source files. Instead, retire them by removing their
+       @page directive (turning them into non-routed components safely).
+
+--------------------------------------------------------------------------------
+SECTION 1 — HOW TO MIGRATE LIST PAGES TO TableV2
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 list pages typically use ad-hoc <table> markup or a custom
+  TablePageTemplate. V2 list pages use:
+    - StandardPageV2 (page shell)
+    - TableV2<TItem> (the data table)
+    - A V2 list ViewModel (StudentsListViewModelV2, etc.)
+    - TableConfigService for column persistence
+
+  STEP-BY-STEP
+  ------------
+  1. Open the existing V2 list page (e.g. ModulesV2/Students/StudentsListPageV2.razor).
+     Verify it already compiles and has @page "/v2/students" or similar.
+
+  2. In the V2 page, change or add the primary route:
+       @page "/students"          ← takes over the V1 route
+
+  3. In the V1 list page (Pages/Students/StudentList.razor), REMOVE the
+     @page directive. This makes it a non-routed component (it still compiles).
+     Do NOT delete the file.
+
+  4. Register the V2 ViewModel in Program.cs / MauiProgram.cs if not already:
+       builder.Services.AddTransient<StudentsListViewModelV2>();
+
+  5. Verify in the app that /students now loads the V2 table page.
+
+  TABLEV2 COLUMN DEFINITION PATTERN
+  -----------------------------------
+  private List<TableColumnModel> _columns = new()
+  {
+      new() { Key = "Name",   Label = "Name",   Sortable = true, Visible = true },
+      new() { Key = "Email",  Label = "Email",  Sortable = false, Visible = true },
+      new() { Key = "Status", Label = "Status", Sortable = true,  Filterable = true, Visible = true },
+  };
+
+  TABLEV2 USAGE PATTERN
+  ----------------------
+  <TableV2 TItem="StudentDto"
+            Columns="@_columns"
+            Items="@ViewModel.PagedItems"
+            TotalCount="@ViewModel.TotalCount"
+            IsLoading="@ViewModel.IsLoading"
+            ShowSearch="true"
+            CurrentPage="@ViewModel.Page"
+            PageSize="@ViewModel.PageSize"
+            OnPageChanged="ViewModel.SetPage"
+            OnSearchChanged="ViewModel.SetSearch"
+            AriaLabel="Students table">
+      <RowTemplate Context="s">
+          <td>@s.Name</td>
+          <td>@s.Email</td>
+          <td>@s.Status</td>
+      </RowTemplate>
+  </TableV2>
+
+  CHECKLIST
+  ---------
+  [ ] V2 list page compiles with no errors
+  [ ] Columns defined with correct Key/Label/Sortable/Filterable/Visible
+  [ ] ViewModel injected and OnInitializedAsync loads data
+  [ ] Pagination, search, and sort callbacks wired
+  [ ] Empty state message set (EmptyTitle, EmptyMessage)
+  [ ] V1 @page directive removed (not deleted)
+
+--------------------------------------------------------------------------------
+SECTION 2 — HOW TO MIGRATE DETAIL PAGES TO DetailPageV2
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 detail pages show entity fields in ad-hoc card/label grids.
+  V2 detail pages use:
+    - DetailPageV2 (page shell)
+    - DetailSectionModel + List<DetailSectionModel> for sections
+    - ScrollSpyV2 integration (auto-wired by DetailPageV2)
+    - A V2 detail ViewModel (StudentDetailViewModelV2, etc.)
+
+  STEP-BY-STEP
+  ------------
+  1. Open the existing V2 detail page (ModulesV2/Students/StudentDetailPageV2.razor).
+
+  2. Verify it uses <DetailPageV2> or <StandardPageV2> and populates
+     List<DetailSectionModel> from the ViewModel.
+
+  3. Change/add the primary route to replace the V1 route:
+       @page "/students/{Id:int}"
+
+  4. Remove (don't delete) the @page from the V1 detail page.
+
+  5. Register the V2 ViewModel: builder.Services.AddTransient<StudentDetailViewModelV2>();
+
+  DETAILSECTIONMODEL PATTERN
+  ---------------------------
+  var section = new DetailSectionModel
+  {
+      Id      = "personal",
+      Title   = "Personal Information",
+      Icon    = "bi-person",
+      Fields  = new()
+      {
+          new() { Label = "Full Name",     Value = student.FullName },
+          new() { Label = "Date of Birth", Value = student.DateOfBirth?.ToString("d") },
+          new() { Label = "Email",         Value = student.Email },
+      }
+  };
+
+  CHECKLIST
+  ---------
+  [ ] Sections populated with correct field labels and values
+  [ ] ScrollSpy anchors match section IDs
+  [ ] Action buttons (Edit, Back) are in the <Actions> slot
+  [ ] IsLoading state handled (skeleton or spinner)
+  [ ] V1 @page directive removed
+
+--------------------------------------------------------------------------------
+SECTION 3 — HOW TO MIGRATE FORMS TO FormPageV2
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 form pages use ad-hoc EditForm and input bindings. V2 uses:
+    - FormPageV2 (page shell with sticky footer)
+    - FormSectionV2 (grouped field sections)
+    - DataAnnotations validation via EditForm
+    - A V2 form ViewModel (StudentFormViewModelV2, etc.)
+
+  STEP-BY-STEP
+  ------------
+  1. Open the V2 form page (ModulesV2/Students/StudentFormPageV2.razor).
+
+  2. Verify it wraps an EditForm inside FormPageV2 with proper FormSectionV2 groupings.
+
+  3. Change/add the primary route:
+       @page "/students/{Id:int}/edit"
+       @page "/students/new"
+
+  4. Remove (don't delete) the @page from the V1 form page.
+
+  5. Register the V2 ViewModel: builder.Services.AddTransient<StudentFormViewModelV2>();
+
+  FORMPAGEV2 USAGE PATTERN
+  -------------------------
+  <FormPageV2 PageTitle="Edit Student"
+               IsBusy="@ViewModel.IsSaving"
+               SubmitLabel="Save"
+               OnSubmit="ViewModel.SaveAsync"
+               OnCancel="NavigateBack">
+      <BodyContent>
+          <EditForm Model="@ViewModel.Form" OnValidSubmit="ViewModel.SaveAsync">
+              <DataAnnotationsValidator />
+              <FormSectionV2 Title="Personal Info" Icon="bi-person">
+                  <div class="mb-3">
+                      <label>Full Name</label>
+                      <InputText class="form-control" @bind-Value="ViewModel.Form.FullName" />
+                      <ValidationMessage For="@(()=>ViewModel.Form.FullName)" />
+                  </div>
+              </FormSectionV2>
+          </EditForm>
+      </BodyContent>
+  </FormPageV2>
+
+  CHECKLIST
+  ---------
+  [ ] EditForm wraps all inputs
+  [ ] DataAnnotationsValidator present
+  [ ] FormSectionV2 groups related fields
+  [ ] FormFooterV2 shows IsBusy spinner during save
+  [ ] OnCancel navigates correctly
+  [ ] Validation messages render in correct position
+  [ ] V1 @page directive removed
+
+--------------------------------------------------------------------------------
+SECTION 4 — HOW TO MIGRATE SETTINGS PAGES
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 settings pages vary widely. V2 uses:
+    - SettingsPageV2 (page shell with optional left nav)
+    - SettingsGroupV2 (titled card group of settings rows)
+    - SettingsItemV2 (individual setting row with ChildContent slot for controls)
+    - SettingsGroupModel / SettingsItemModel for data-driven configs
+
+  STEP-BY-STEP
+  ------------
+  1. Open ModulesV2/Settings/SettingsListPageV2.razor (or SettingsDetailPageV2).
+
+  2. Map current V1 setting groups to SettingsGroupModel entries.
+
+  3. Inject each control (toggle, dropdown, text input) into SettingsItemV2 ChildContent.
+
+  4. Add ThemeSettingsPageV2 at @page "/settings/theme" for theming controls.
+
+  5. Add TableSettingsPageV2 at @page "/settings/tables" for column config.
+
+  SETTINGSPAGEV2 USAGE PATTERN
+  -----------------------------
+  <SettingsPageV2 PageTitle="Application Settings" Icon="bi-gear">
+      <SettingsGroupV2 Title="Notifications" Icon="bi-bell">
+          <SettingsItemV2 Label="Email alerts"
+                          Description="Receive absence alerts by email"
+                          Icon="bi-envelope">
+              <InputCheckbox @bind-Value="Settings.EmailAlerts" />
+          </SettingsItemV2>
+      </SettingsGroupV2>
+  </SettingsPageV2>
+
+  CHECKLIST
+  ---------
+  [ ] All V1 settings categories mapped to SettingsGroupV2 blocks
+  [ ] Each setting has a Label, Description, and Icon
+  [ ] Control (toggle/select/input) is in ChildContent slot
+  [ ] ThemeSettingsPageV2 route registered: /settings/theme
+  [ ] TableSettingsPageV2 route registered: /settings/tables
+  [ ] V1 settings pages have @page removed
+
+--------------------------------------------------------------------------------
+SECTION 5 — HOW TO MIGRATE LAYOUTS
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 uses MainLayout.razor with custom sidebar/header. V2 uses:
+    - PageTemplateV2 (the V2 layout wrapper — composes HeaderV2, SidebarV2,
+      BreadcrumbV2, and the page content area)
+    - All V2 page templates embed PageTemplateV2 automatically
+    - ThemeServiceV2.ActiveBodyClass drives the <body> CSS class
+
+  MIGRATION APPROACH
+  ------------------
+  The V2 layout is NOT a replacement for MainLayout — it is embedded in each
+  V2 page template. A migrated page automatically gets the V2 layout shell.
+
+  STEP-BY-STEP
+  ------------
+  1. In MauiProgram.cs / Program.cs, ensure the following services are registered:
+       builder.Services.AddSingleton<NavigationServiceV2>();
+       builder.Services.AddSingleton<ThemeServiceV2>();
+       builder.Services.AddSingleton<BrandingServiceV2>();
+       builder.Services.AddSingleton<DesignSystemConfigService>();
+       builder.Services.AddSingleton<IconService>();
+       builder.Services.AddSingleton<TableConfigService>();
+       builder.Services.AddSingleton<AppStateService>();
+
+  2. In App.razor or MainLayout.razor, apply the theme body class:
+       <body class="@ThemeService.ActiveBodyClass">
+
+  3. As each page is migrated to a V2 template, it renders its own V2 layout
+     shell via PageTemplateV2 internally.
+
+  4. Once ALL pages are migrated, MainLayout can be simplified to:
+       @inherits LayoutComponentBase
+       @Body
+     because each V2 page brings its own full layout.
+
+  CHECKLIST
+  ---------
+  [ ] All 6 services registered in DI container
+  [ ] menu.json loaded correctly (NavigationServiceV2)
+  [ ] branding.json loaded (BrandingServiceV2)
+  [ ] theme.json loaded (ThemeServiceV2)
+  [ ] SidebarV2 highlights active route correctly
+  [ ] BreadcrumbV2 generates correct trails
+
+--------------------------------------------------------------------------------
+SECTION 6 — HOW TO MIGRATE THEMING & BRANDING
+--------------------------------------------------------------------------------
+
+  OVERVIEW
+  --------
+  V1 hardcodes colors and has no runtime theming. V2 uses:
+    - CSS custom properties (design tokens) for all colors, spacing, typography
+    - ThemeServiceV2 for light/dark/system mode switching
+    - BrandingServiceV2 for logo, app name, and primary color overrides
+    - theme.json and branding.json as runtime config
+
+  STEP-BY-STEP — THEMING
+  ----------------------
+  1. Ensure token CSS files are loaded in index.html:
+       <link rel="stylesheet" href="css/tokens/colors.css" />
+       <link rel="stylesheet" href="css/tokens/spacing.css" />
+       <link rel="stylesheet" href="css/tokens/typography.css" />
+       <link rel="stylesheet" href="css/tokens/radius.css" />
+       <link rel="stylesheet" href="css/tokens/layout.css" />
+
+  2. Ensure theme.json exists at wwwroot/config/designsystem/theme.json.
+     Set "defaultMode": "System" for OS-aware default.
+
+  3. Register ThemeServiceV2:
+       builder.Services.AddSingleton<ThemeServiceV2>();
+
+  4. Apply the theme class on first load in App.razor:
+       protected override async Task OnInitializedAsync() {
+           await ThemeService.GetConfigAsync();
+       }
+
+  5. Add ThemeSettingsPageV2 at @page "/settings/theme" so users can switch modes.
+
+  STEP-BY-STEP — BRANDING
+  -----------------------
+  1. Edit wwwroot/config/designsystem/branding.json:
+       {
+         "appName": "YourAppName",
+         "appShortName": "YAN",
+         "logoUrl": "images/branding/logo.png",
+         "primaryAccentColor": "#0066cc"
+       }
+
+  2. Register BrandingServiceV2:
+       builder.Services.AddSingleton<BrandingServiceV2>();
+
+  3. BrandingServiceV2 is injected by HeaderV2 and SidebarV2 automatically.
+     The app name and logo update at runtime without recompile.
+
+  STEP-BY-STEP — V1 HARDCODED COLORS
+  ------------------------------------
+  1. Identify all hardcoded hex colors in V1 CSS files.
+  2. Map each to the nearest semantic token (e.g., #0066cc → var(--ds-color-primary)).
+  3. Replace in V1 component CSS files — this is the only V1 file that should change
+     during theming migration (CSS only, no Razor changes).
+  4. Test light and dark mode after replacement.
+
+  CHECKLIST
+  ---------
+  [ ] All 5 token CSS files loaded in index.html
+  [ ] theme.json present and valid
+  [ ] branding.json present with correct app identity
+  [ ] ThemeServiceV2 and BrandingServiceV2 registered in DI
+  [ ] ThemeSettingsPageV2 route registered: /settings/theme
+  [ ] Body class applied via ThemeService.ActiveBodyClass
+  [ ] Light/dark/system mode switches without page reload
+  [ ] Logo and app name render from branding.json
+
+--------------------------------------------------------------------------------
+SECTION 7 — MIGRATION ORDER (RECOMMENDED)
+--------------------------------------------------------------------------------
+
+  Priority 1 — Infrastructure (no UI visible to end users):
+    [ ] Step 1: Register all V2 services in DI (non-breaking, additive)
+    [ ] Step 2: Load CSS tokens in index.html (applies globally but non-breaking
+                since token names don't clash with V1 variables)
+    [ ] Step 3: Apply ThemeService.ActiveBodyClass to body
+
+  Priority 2 — Settings module (low risk, no critical data):
+    [ ] Step 4: Migrate /settings to SettingsListPageV2
+    [ ] Step 5: Activate /settings/theme (ThemeSettingsPageV2)
+    [ ] Step 6: Activate /settings/tables (TableSettingsPageV2)
+
+  Priority 3 — Read-only modules (AuditLog, then detail pages):
+    [ ] Step 7: Migrate /audit-log to AuditLogListPageV2
+    [ ] Step 8: Migrate student/staff/class/attendance DETAIL pages
+
+  Priority 4 — List pages (highest user impact):
+    [ ] Step 9:  Migrate /students list
+    [ ] Step 10: Migrate /staff list
+    [ ] Step 11: Migrate /classes list
+    [ ] Step 12: Migrate /attendance list
+
+  Priority 5 — Form pages (highest risk, validate thoroughly):
+    [ ] Step 13: Migrate student form
+    [ ] Step 14: Migrate staff form
+    [ ] Step 15: Migrate class form
+
+  Priority 6 — Layout switch (final step, full V2):
+    [ ] Step 16: After all pages migrated, simplify MainLayout to @Body only
+
+--------------------------------------------------------------------------------
+SECTION 8 — KNOWN LIMITATIONS & PLANNED IMPROVEMENTS
+--------------------------------------------------------------------------------
+
+  8.1  FrameworkV2 layout components (BreadcrumbV2, HeaderV2, SidebarV2,
+       PageTemplateV2) still reference AppStateService from the Absence app.
+       To achieve true framework independence, these components need to be
+       refactored to accept state via parameters or abstractions. This is
+       planned for a future phase when FrameworkV2 is extracted as a NuGet
+       package.
+
+  8.2  ScrollSpyV2 generates a CS0649 compiler warning (pre-existing) due to
+       a field assigned via JS interop that the compiler cannot detect.
+       No action required — this is a known Blazor/JSInterop pattern limitation.
+
+  8.3  TableSelectionMode is defined as a nested public enum inside TableV2.
+       External components using this enum in C# code (not Razor markup) must
+       use the fully qualified name. A future improvement would extract this
+       enum to a separate file in Models/TableV2/.
+
+  8.4  The FrameworkV2/Theming/ folder is reserved but currently empty.
+       ThemeSettingsPageV2 was excluded from FrameworkV2 per Phase 9 spec
+       (it depends on AppStateService). Future: add an abstracted version.
+
+  8.5  Demo pages (FrameworkV2/Demo/) are for development validation only.
+       They should be excluded from production builds via preprocessor
+       directives or a build configuration before shipping.
+
+--------------------------------------------------------------------------------
+SECTION 9 — PHASE 10 VALIDATION SUMMARY
+--------------------------------------------------------------------------------
+
+  VALIDATION RESULTS (2026-03-21)
+  --------------------------------
+
+  10.1  Design System Validation
+    [PASS] CSS token files: 5 files, 172 custom properties
+    [PASS] No CSS variable collisions between V2 tokens and V1 CSS
+    [PASS] All 4 DesignSystem components: Icon, IconButton, Card, SectionHeader
+    [PASS] JSON config: icons.json valid and parseable
+    [PASS] Demo page: /v2/demo/design-system renders all DesignSystem components
+
+  10.2  Layout System Validation
+    [PASS] BreadcrumbV2, HeaderV2, ScrollSpyV2, SidebarV2 — all present
+    [PASS] PageTemplateV2 composes all layout components
+    [PASS] Demo page: /v2/demo/layout documents all layout components
+    [NOTE] ScrollSpyV2 pre-existing CS0649 warning (JS interop field) — known
+
+  10.3  Page Templates Validation
+    [PASS] 12 page templates compiled and present (excluding ThemeSettingsPageV2)
+    [PASS] StandardPageV2, DetailPageV2, FormPageV2, SettingsPageV2,
+           DashboardPageV2 all available and compiling
+
+  10.4  Table System Validation
+    [PASS] TableV2 + 7 sub-components: all present and compiling
+    [PASS] TableV2 parameters: sorting, searching, filtering, pagination wired
+    [PASS] EmptyStateV2, SkeletonRowV2 present
+    [PASS] TableSettingsPageV2 present
+    [PASS] Demo page: /v2/demo/table renders full table with 120 sample rows
+
+  10.5  Data & Services Validation
+    [PASS] ApiClientV2.cs — present
+    [PASS] ApiServiceBaseV2.cs, PagedResultV2.cs, ApiErrorV2.cs — present
+    [PASS] API services: StudentsApiServiceV2, StaffApiServiceV2,
+           ClassesApiServiceV2, AttendanceApiServiceV2, AuditLogApiServiceV2,
+           SettingsApiServiceV2 — all present
+    [PASS] ViewModels: All V2 list/detail/form ViewModels present for
+           Students, Staff, Classes, Attendance, AuditLog, Settings
+    [PASS] State: AppStateStoreV2.cs, UiStateV2.cs, UserStateV2.cs — present
+
+  10.6  Theming & Branding Validation
+    [PASS] ThemeServiceV2 — present, API: GetConfigAsync/SetModeAsync/CycleModeAsync
+    [PASS] BrandingServiceV2 — present, API: GetConfigAsync/ReloadAsync
+    [PASS] ThemeConfigModel, BrandingConfigModel, ThemeMode — all present
+    [PASS] theme.json valid (1443 bytes)
+    [PASS] branding.json valid (693 bytes)
+    [PASS] Demo page: /v2/demo/theming renders live theme switching
+
+  10.7  Modules Validation
+    [PASS] Students: StudentsListPageV2, StudentDetailPageV2, StudentFormPageV2
+    [PASS] Staff: StaffListPageV2, StaffDetailPageV2, StaffFormPageV2
+    [PASS] Classes: ClassesListPageV2, ClassDetailPageV2, ClassFormPageV2
+    [PASS] Attendance: AttendanceListPageV2, AttendanceDetailPageV2, AttendanceFormPageV2
+    [PASS] AuditLog: AuditLogListPageV2, AuditLogDetailPageV2, AuditLogFormPageV2
+    [PASS] Settings: SettingsListPageV2, SettingsDetailPageV2, SettingsFormPageV2
+
+  10.8  FrameworkV2 Extraction Validation
+    [PASS] All 10 FrameworkV2 subfolders present:
+           Components/DesignSystem, Config/Tokens, Demo, Docs, Layouts,
+           Models, PageTemplates, Services, Tables, Theming
+    [PASS] FrameworkV2/_Imports.razor provides JSInterop + Web usings
+    [PASS] 4 demo pages present and compiling
+    [PASS] 6 documentation markdown files present
+    [PASS] Model namespaces: AbsenceApp.Client.FrameworkV2.Models
+    [PASS] Service namespaces: AbsenceApp.Client.FrameworkV2.Services
+    [NOTE] Layout components (BreadcrumbV2, HeaderV2, SidebarV2, PageTemplateV2)
+           reference AppStateService — planned for abstraction in future phase
+           (see Section 8.1)
+
+  10.9  Performance Notes
+    [PASS] No event handler leaks detected across all V2 razor components
+           (all components using OnChange subscriptions implement IDisposable)
+    [INFO] TableV2 paginates server-side via ViewModel — no large dataset risk
+    [INFO] SkeletonRowV2 prevents layout jumps during load
+
+  10.10 Final Polish
+    [PASS] No unused V2 assets identified
+    [PASS] No CSS duplicate collisions (all duplicates are intentional:
+           Bootstrap internals, light/dark token redefines)
+    [PASS] All 6 JSON configs are valid and parseable
+    [PASS] Migration plan created: docs/migration-plan-v2.txt
+
+  BUILD STATUS
+  ------------
+    Build succeeded. 0 Error(s). 6 Warning(s) — all pre-existing.
+    Warnings: ScrollSpyV2 JS interop field (x2, original + FrameworkV2 copy)
+              TablePageTemplate unused field (x1, pre-existing V1 component)
+
+================================================================================
+END OF MIGRATION PLAN
+================================================================================

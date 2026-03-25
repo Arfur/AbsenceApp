@@ -2,9 +2,9 @@
    File        : _Imports.razor
    Namespace   : AbsenceApp.Client.Components
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-13
-   Updated     : 2026-03-13
+   Updated     : 2026-03-23
    ---------------------------------------------------------------------------
    Purpose     : Global using directives for all Razor components in this
                  project.  Namespaces listed here are automatically available
@@ -12,6 +12,9 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-13  Initial implementation.
+     - 1.1.0  2026-03-23  Added PageTemplatesV2 namespace so TableSettingsPageV2
+                           and other V2 components under Components/ can use
+                           PageTemplateV2 without per-file @using declarations.
    ---------------------------------------------------------------------------
    Notes       :
      - Blazor automatically processes this file; do not add markup or
@@ -40,8 +43,8 @@
 @using AbsenceApp.Client.Components
 @using AbsenceApp.Client.Components.Layout
 @using AbsenceApp.Client.Shared
-@using AbsenceApp.Client.ViewModels
 @using AbsenceApp.Core.Interfaces
+@using AbsenceApp.Core.Navigation
 @using AbsenceApp.Core.ViewModels
-@using AbsenceApp.Core.Models
 @using AbsenceApp.Core.DTOs
+@using AbsenceApp.Client.Components.PageTemplatesV2

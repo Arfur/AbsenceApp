@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    ===========================================================================
+    File        : colors.xml
+    Project     : AbsenceApp.Client
+    Author      :
+    Version     : 1.0.0
+    Created     : 2026-03-13
+    Updated     : 2026-03-13
+    Purpose     : Android colour resource definitions
+    Description : Defines primary, dark primary, and accent colour values
+                  used by the Android Material theme for the application.
+    Changes     : 1.0.0 — Initial
+    Notes       : Consumed by the Android platform build.
+                  Update colorPrimary and colorAccent to match the application
+                  brand palette when the design system is finalised.
+    ===========================================================================
+    -->
+
+    <!-- ===========================================================================
+         Theme colours — primary, dark primary, and accent colour values
+    =========================================================================== -->
+    <color name="colorPrimary">#512BD4</color>
+    <color name="colorPrimaryDark">#2B0B98</color>
+    <color name="colorAccent">#2B0B98</color>
+</resources>

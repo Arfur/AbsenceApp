@@ -1,0 +1,21 @@
+/* =============================================================================
+   File    : StudentsListPageV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 7
+   Purpose : Scoped styles for StudentsListPageV2. Minimal overrides only —
+             layout and table styles come from template and TableV2 components.
+============================================================================= */
+
+.dsv2-alert {
+    padding: var(--space-300, 0.75rem) var(--space-400, 1rem);
+    border-radius: var(--radius-md, 0.375rem);
+    border: 1px solid transparent;
+    font-size: var(--font-size-sm, 0.875rem);
+    margin-bottom: var(--space-400, 1rem);
+}
+
+.dsv2-alert--danger {
+    background-color: var(--color-danger-subtle, #fef2f2);
+    border-color: var(--color-danger-border, #fecaca);
+    color: var(--color-danger-fg, #b91c1c);
+}

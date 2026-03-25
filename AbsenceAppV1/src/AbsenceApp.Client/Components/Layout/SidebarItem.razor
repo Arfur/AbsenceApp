@@ -1,0 +1,46 @@
+@* ===========================================================================
+   File        : SidebarItem.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Top-level navigation link rendered directly in the sidebar
+                 without a collapsible submenu.  Used for standalone
+                 destinations such as the Parents page.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - IsActive is computed from CurrentPath; the root "/" route uses exact
+       matching while all other routes use StartsWith prefix matching.
+     - When Collapsed is true only the icon is shown; the label is hidden to
+       preserve the narrow sidebar layout.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Navigation link — icon and optional label
+   ========================================================================= *@
+<a href="@Href" class="sidebar-link @(IsActive ? "active" : "")">
+    <i class="bi @Icon"></i>
+    @if (!Collapsed)
+    {
+        <span>@Label</span>
+    }
+</a>
+
+@* =========================================================================
+   Section: Component parameters and active-state computation
+   ========================================================================= *@
+@code {
+    [Parameter] public string Href        { get; set; } = "/";
+    [Parameter] public string Icon        { get; set; } = "bi-circle";
+    [Parameter] public string Label       { get; set; } = "";
+    [Parameter] public bool   Collapsed   { get; set; }
+    [Parameter] public string CurrentPath { get; set; } = "/";
+
+    bool IsActive => Href == "/" ? CurrentPath == "/" : CurrentPath.StartsWith(Href);
+}

@@ -1,0 +1,103 @@
+﻿@* ===========================================================================
+   File        : FormPageV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Data entry/edit form page template. Composes PageTemplateV2 and provides slots for title, form sections (FormSectionV2), and a sticky FormFooterV2. The body can be wrapped in an EditForm via BodyContent, or the default slot is used for vanilla HTML forms.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Components.PageTemplatesV2
+
+@* =========================================================================
+   Section: Form page shell
+   ========================================================================= *@
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @if (!string.IsNullOrEmpty(BackHref))
+        {
+            <a href="@BackHref"
+               class="dsv2-form-page__back-link">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                @(string.IsNullOrEmpty(BackLabel) ? "Back" : BackLabel)
+            </a>
+        }
+    </ActionsContent>
+
+    <BodyContent>
+        <div class="dsv2-form-page">
+            <div class="dsv2-form-page__sections">
+                @BodyContent
+            </div>
+
+            <FormFooterV2 SubmitLabel="@SubmitLabel"
+                          BusyLabel="@BusyLabel"
+                          CancelLabel="@CancelLabel"
+                          IsBusy="@IsBusy"
+                          IsDisabled="@IsDisabled"
+                          OnSubmit="OnSubmit"
+                          OnCancel="OnCancel">
+                @FooterExtraContent
+            </FormFooterV2>
+        </div>
+    </BodyContent>
+
+</PageTemplateV2>
+
+@* =========================================================================
+   Section: Parameters and submit handling
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    /// <summary>Page heading shown in the title bar (e.g. "Add Student", "Edit Staff Member").</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+
+    /// <summary>Optional href for the back navigation link.</summary>
+    [Parameter] public string? BackHref { get; set; }
+
+    /// <summary>Label for the back link. Default: "Back".</summary>
+    [Parameter] public string? BackLabel { get; set; }
+
+    /// <summary>One or more FormSectionV2 components containing form fields.</summary>
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+
+    /// <summary>Optional extra controls rendered on the left of the FormFooterV2 (e.g. Delete button).</summary>
+    [Parameter] public RenderFragment? FooterExtraContent { get; set; }
+
+    // -------------------------------------------------------------------------
+
+    // FormFooterV2 pass-through parameters
+
+    // -------------------------------------------------------------------------
+    /// <summary>Submit button label. Default: "Save".</summary>
+    [Parameter] public string SubmitLabel { get; set; } = "Save";
+
+    /// <summary>Busy-state label on the submit button. Default: "Saving…".</summary>
+    [Parameter] public string BusyLabel { get; set; } = "Saving\u2026";
+
+    /// <summary>Cancel button label. Default: "Cancel".</summary>
+    [Parameter] public string CancelLabel { get; set; } = "Cancel";
+
+    /// <summary>Puts the submit button into a loading/busy state.</summary>
+    [Parameter] public bool IsBusy { get; set; } = false;
+
+    /// <summary>Disables the submit button (e.g. when the form is invalid).</summary>
+    [Parameter] public bool IsDisabled { get; set; } = false;
+
+    /// <summary>Callback for the submit button.</summary>
+    [Parameter] public EventCallback OnSubmit { get; set; }
+
+    /// <summary>Callback for the cancel button. If not set the cancel button is hidden.</summary>
+    [Parameter] public EventCallback OnCancel { get; set; }
+}

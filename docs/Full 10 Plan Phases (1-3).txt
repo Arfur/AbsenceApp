@@ -1,0 +1,760 @@
+PHASE 1 — FOUNDATIONS & AUDIT
+Goal:
+  - Understand the current Absence .NET MAUI app structure, components, styles, and configuration.
+  - Identify what is already correct, what is fragile (e.g., CSS overrides), and what needs refactoring.
+  - Establish a stable baseline so later phases do not break existing functionality.
+
+Constraints:
+  - Do NOT break existing functionality.
+  - Do NOT remove existing CSS or styles yet.
+  - Only observe, document, and annotate in this phase.
+  - Any changes must be non-breaking and reversible.
+
+----------------------------------------------------------------------
+1.1 AUDIT EXISTING MAUI PROJECT STRUCTURE
+----------------------------------------------------------------------
+
+1.1.1 Locate the solution and main project
+  - Open the Absence solution in VS Code / Visual Studio.
+  - Identify the main .NET MAUI project (e.g., AbsenceApp, Absence.Mobile, etc.).
+  - Confirm:
+      - Target frameworks (e.g., net8.0-android, net8.0-ios, net8.0-windows).
+      - Startup project.
+
+1.1.2 Document the folder structure
+  - In the main MAUI project, list the top-level folders:
+      - /Views
+      - /Pages
+      - /Controls or /Components
+      - /ViewModels
+      - /Models
+      - /Services
+      - /Resources
+      - /Resources/Styles
+      - /Resources/Raw
+      - /Resources/Fonts
+      - /Resources/Images
+      - /Config or /Settings (if present)
+  - Create a text file in the root of the solution:
+      - File: /docs/structure-phase1.txt (create /docs if it does not exist)
+      - Paste the folder structure in a tree format, for example:
+          - /AbsenceApp
+              - /Views
+              - /Pages
+              - /Controls
+              - /ViewModels
+              - /Models
+              - /Services
+              - /Resources
+                  - /Styles
+                  - /Fonts
+                  - /Images
+              - /Config
+  - This file is documentation only; no runtime impact.
+
+1.1.3 Identify the app entry points
+  - Open:
+      - MauiProgram.cs
+      - App.xaml
+      - App.xaml.cs
+  - In MauiProgram.cs:
+      - Note how fonts, handlers, and services are registered.
+      - Note any existing style dictionaries or themes being added.
+  - In App.xaml:
+      - Note merged resource dictionaries.
+      - Note any global styles (e.g., for ContentPage, Label, Button).
+  - In App.xaml.cs:
+      - Note the initial MainPage.
+      - Note any navigation shell or root layout (e.g., Shell, NavigationPage, custom root).
+
+1.1.4 Identify navigation model
+  - Check if the app uses:
+      - Shell (AppShell.xaml / AppShell.xaml.cs)
+      - NavigationPage
+      - Custom root layout with manual navigation
+  - Document this in /docs/structure-phase1.txt:
+      - Example:
+          - Navigation model: Shell-based
+          - Root: AppShell.xaml
+          - Main sections: Dashboard, Students, Staff, etc.
+
+----------------------------------------------------------------------
+1.2 AUDIT EXISTING COMPONENTS
+----------------------------------------------------------------------
+
+1.2.1 Identify reusable controls/components
+  - Search for:
+      - /Controls
+      - /Components
+      - /Shared
+      - /Common
+  - For each control:
+      - Note the file name (e.g., SidebarView.xaml, TableView.xaml, FilterBar.xaml).
+      - Note its purpose (sidebar, header, table, filter row, etc.).
+  - Add a section to /docs/structure-phase1.txt:
+      - "Existing Components:"
+      - List each component with:
+          - Name
+          - Path
+          - Purpose
+          - Where it is used (if obvious).
+
+1.2.2 Identify page templates (if any)
+  - Look for:
+      - BasePage classes (e.g., BasePage.xaml.cs)
+      - Common layouts reused across pages
+  - Note:
+      - Whether pages share a common structure (header, content, footer).
+      - Whether there is any existing "page template" concept.
+  - Document in /docs/structure-phase1.txt:
+      - "Existing Page Templates:"
+      - If none, explicitly write: "No explicit page templates found; pages are standalone."
+
+1.2.3 Identify table/grid implementations
+  - Search for:
+      - "CollectionView"
+      - "DataGrid"
+      - "ListView"
+  - For each table-like view:
+      - Note:
+          - Which control is used (CollectionView, DataGrid, etc.).
+          - Whether there is a reusable table component or each page defines its own.
+          - Any custom filtering, sorting, or search logic.
+  - Document in /docs/structure-phase1.txt:
+      - "Existing Table Implementations:"
+      - For each:
+          - Page/Control name
+          - Control type
+          - Custom logic (sorting, filtering, search, pagination).
+
+----------------------------------------------------------------------
+1.3 AUDIT EXISTING GLOBAL CONFIGURATION
+----------------------------------------------------------------------
+
+1.3.1 Search for configuration files
+  - Look for:
+      - /Config
+      - /Settings
+      - appsettings.json
+      - *.json files that look like configuration
+  - Identify:
+      - Any JSON files that define:
+          - Menus
+          - Themes
+          - API endpoints
+          - Feature flags
+  - Document in /docs/structure-phase1.txt:
+      - "Existing Configuration Files:"
+      - For each:
+          - File path
+          - Purpose
+          - Format (JSON, C#, etc.).
+
+1.3.2 Identify hard-coded configuration in C#
+  - Search for:
+      - "const string"
+      - "static readonly"
+      - URLs, endpoints, or keys in code
+  - Note:
+      - Any configuration that should eventually move into JSON or a central config.
+  - Document:
+      - "Hard-coded Configuration:"
+      - List key locations and what they configure.
+
+1.3.3 Identify theme/style configuration
+  - Open:
+      - /Resources/Styles/*.xaml
+  - Note:
+      - Any color resources
+      - Any style dictionaries
+      - Any implicit styles (e.g., for Label, Button, Entry)
+  - Document:
+      - "Existing Style Resources:"
+      - List each XAML resource dictionary and its purpose.
+
+----------------------------------------------------------------------
+1.4 AUDIT EXISTING STYLES AND CSS (INCLUDING PROBLEMS)
+----------------------------------------------------------------------
+
+1.4.1 Locate all CSS files
+  - Search for:
+      - *.css in the project.
+  - Note:
+      - File names
+      - Where they are referenced (e.g., in XAML via <StyleSheet Source="...">).
+  - Document in /docs/structure-phase1.txt:
+      - "Existing CSS Files:"
+      - List each with:
+          - Path
+          - Where used.
+
+1.4.2 Identify known CSS issues (scrollbars, overrides, etc.)
+  - Specifically look for:
+      - Scrollbar-related CSS
+      - Global selectors that might override MAUI defaults
+      - Overly generic selectors (e.g., body, * , div)
+  - Document:
+      - "Known CSS Issues:"
+      - For each:
+          - File
+          - Selector
+          - Observed problem (e.g., vertical scrollbar hidden, layout broken).
+
+1.4.3 Identify XAML style conflicts
+  - Check:
+      - App.xaml merged dictionaries
+      - /Resources/Styles/*.xaml
+  - Look for:
+      - Duplicate style keys
+      - Conflicting implicit styles
+  - Document:
+      - "Potential XAML Style Conflicts:"
+      - List any duplicate keys or suspicious overlaps.
+
+1.4.4 Identify where CSS is used instead of XAML styles
+  - For key UI elements (sidebar, tables, headers, scrollable areas):
+      - Check if styling is done via CSS instead of XAML.
+  - Document:
+      - "CSS vs XAML Usage:"
+      - For each major UI area:
+          - Sidebar
+          - Main content
+          - Tables
+          - Headers
+          - Forms
+        Note whether styling is CSS-heavy or XAML-style-heavy.
+
+----------------------------------------------------------------------
+1.5 IDENTIFY GAPS VS. DESIRED DESIGN SYSTEM
+----------------------------------------------------------------------
+
+1.5.1 Compare current state to target design system concepts
+  - Target concepts (from our earlier decisions):
+      - Global design tokens (colors, spacing, typography).
+      - JSON-driven configuration for:
+          - Menus
+          - Tables
+          - Themes
+      - Reusable components for:
+          - Sidebar
+          - Header
+          - Page templates
+          - Tables
+      - Table behaviour:
+          - Sticky header
+          - Filter row under header
+          - Global search on "Searchable" fields only
+          - Icon-only inline action buttons
+          - Skeleton loading rows
+          - Empty state
+          - Pagination
+      - Icon system:
+          - Fluent UI System Icons
+          - Icon-only action buttons
+      - Non-breaking, incremental refactor.
+
+1.5.2 Create a gap analysis document
+  - Create a new file:
+      - /docs/gap-analysis-phase1.txt
+  - Structure it as:
+      - Section 1: Navigation
+          - Current:
+          - Target:
+          - Gap:
+      - Section 2: Sidebar & Layout
+          - Current:
+          - Target:
+          - Gap:
+      - Section 3: Tables
+          - Current:
+          - Target:
+          - Gap:
+      - Section 4: Styles & CSS
+          - Current:
+          - Target:
+          - Gap:
+      - Section 5: Configuration (JSON, etc.)
+          - Current:
+          - Target:
+          - Gap:
+      - Section 6: Components & Reusability
+          - Current:
+          - Target:
+          - Gap:
+  - Fill in each section based on:
+      - /docs/structure-phase1.txt
+      - Your knowledge of the target design system.
+
+1.5.3 Classify gaps by impact and risk
+  - In /docs/gap-analysis-phase1.txt, for each gap:
+      - Add:
+          - Impact: Low / Medium / High
+          - Risk: Low / Medium / High
+  - Example:
+      - Tables:
+          - Current: Each page defines its own CollectionView with custom logic.
+          - Target: Reusable table component with JSON-driven column config.
+          - Gap: No central table component; logic duplicated.
+          - Impact: High (affects many pages).
+          - Risk: Medium (refactor must be careful not to break existing tables).
+
+1.5.4 Identify "safe to change early" vs "change later"
+  - In /docs/gap-analysis-phase1.txt, add a final section:
+      - "Refactor Priority:"
+      - For each gap, assign:
+          - Priority: Early / Mid / Late
+  - Rules:
+      - Early:
+          - Changes that are low-risk and high-benefit.
+          - Changes that do not break existing functionality.
+          - Example: Adding new JSON config files, adding new styles without removing old ones.
+      - Mid:
+          - Changes that touch shared components but can be introduced gradually.
+          - Example: Introducing a new table component and migrating one page at a time.
+      - Late:
+          - Changes that affect core navigation or layout.
+          - Example: Replacing the sidebar structure or page templates.
+
+----------------------------------------------------------------------
+1.6 APPROVE FINAL ARCHITECTURE BASELINE
+----------------------------------------------------------------------
+
+1.6.1 Create a baseline summary document
+  - Create:
+      - /docs/baseline-architecture-phase1.txt
+  - Summarise:
+      - Current navigation model.
+      - Current layout structure.
+      - Current component set.
+      - Current table implementations.
+      - Current styling approach (XAML vs CSS).
+      - Current configuration approach (hard-coded vs JSON).
+
+1.6.2 Mark what is "frozen" for now
+  - In /docs/baseline-architecture-phase1.txt, add:
+      - "Frozen Elements (Do Not Change Yet):"
+      - List:
+          - Core navigation structure.
+          - Any critical pages that must remain stable.
+          - Any components that are heavily used and not yet understood fully.
+  - This list will guide later phases to avoid breaking these areas prematurely.
+
+1.6.3 Mark what is "safe to extend"
+  - In the same file, add:
+      - "Safe to Extend:"
+      - List:
+          - Areas where new components can be added without breaking existing ones.
+          - Areas where new JSON config can be introduced alongside existing code.
+          - Areas where new styles can be added without removing old ones.
+
+1.6.4 Confirm that no code changes in Phase 1 are breaking
+  - Verify:
+      - No existing files were modified in a way that changes runtime behaviour.
+      - Only new documentation files were added under /docs.
+  - If any code changes were made:
+      - Review them.
+      - Ensure they are non-breaking.
+      - If unsure, revert and keep Phase 1 purely observational.
+
+1.6.5 Phase 1 exit criteria
+  - Phase 1 is complete when:
+      - /docs/structure-phase1.txt exists and accurately reflects the project.
+      - /docs/gap-analysis-phase1.txt exists and lists current vs target vs gaps.
+      - /docs/baseline-architecture-phase1.txt exists and defines:
+          - Frozen elements.
+          - Safe-to-extend areas.
+      - The app still builds and runs as before.
+      - No regressions have been introduced.
+
+END OF PHASE 1
+PHASE 2 — GLOBAL DESIGN SYSTEM (BLAZOR)
+Goal:
+  - Establish a unified design system for the Absence MAUI Blazor Hybrid app.
+  - Introduce CSS variable tokens, reusable .razor components, and JSON-driven configuration.
+  - Ensure all new design system elements are additive and non-breaking.
+
+Constraints:
+  - Do NOT remove existing CSS.
+  - Do NOT modify existing components.
+  - All new design system elements must be isolated and namespaced.
+  - All changes must be additive.
+
+----------------------------------------------------------------------
+2.1 DEFINE GLOBAL TOKENS (COLORS, SPACING, TYPOGRAPHY)
+----------------------------------------------------------------------
+
+2.1.1 Create folder for design tokens
+  - Path: /wwwroot/css/tokens/
+
+2.1.2 Create color tokens file
+  - File: /wwwroot/css/tokens/colors.css
+  - Define CSS variables:
+      :root {
+        --color-primary: #0055ff;
+        --color-primary-light: #4d8aff;
+        --color-primary-dark: #003bb3;
+        --color-neutral-100: #f8f9fa;
+        --color-neutral-900: #111;
+        --color-success: #28a745;
+        --color-warning: #ffc107;
+        --color-error: #dc3545;
+      }
+
+2.1.3 Create spacing tokens file
+  - File: /wwwroot/css/tokens/spacing.css
+  - Define:
+      :root {
+        --space-0: 0px;
+        --space-1: 2px;
+        --space-2: 4px;
+        --space-3: 8px;
+        --space-4: 12px;
+        --space-5: 16px;
+        --space-6: 20px;
+        --space-7: 24px;
+        --space-8: 32px;
+      }
+
+2.1.4 Create typography tokens file
+  - File: /wwwroot/css/tokens/typography.css
+  - Define:
+      :root {
+        --font-size-12: 12px;
+        --font-size-14: 14px;
+        --font-size-16: 16px;
+        --font-weight-regular: 400;
+        --font-weight-medium: 500;
+        --font-weight-semibold: 600;
+        --font-weight-bold: 700;
+      }
+
+2.1.5 Create radius tokens file
+  - File: /wwwroot/css/tokens/radius.css
+  - Define:
+      :root {
+        --radius-0: 0px;
+        --radius-1: 2px;
+        --radius-2: 4px;
+        --radius-3: 8px;
+        --radius-4: 12px;
+      }
+
+2.1.6 Add tokens to index.html
+  - In /wwwroot/index.html:
+      <link href="css/tokens/colors.css" rel="stylesheet" />
+      <link href="css/tokens/spacing.css" rel="stylesheet" />
+      <link href="css/tokens/typography.css" rel="stylesheet" />
+      <link href="css/tokens/radius.css" rel="stylesheet" />
+
+----------------------------------------------------------------------
+2.2 DEFINE GLOBAL JSON CONFIGURATION SCHEMA
+----------------------------------------------------------------------
+
+2.2.1 Create folder for JSON config
+  - Path: /wwwroot/config/designsystem/
+
+2.2.2 Create theme.json
+  - Defines:
+      - PrimaryColor
+      - SecondaryColor
+      - NeutralPalette
+      - StatusColors
+      - Typography
+      - SpacingScale
+
+2.2.3 Create menu.json
+  - Defines:
+      - Menu items
+      - Submenus
+      - Icons
+      - Routes
+
+2.2.4 Create table-schema.json
+  - Defines:
+      - ColumnName
+      - DisplayName
+      - Visible
+      - Sortable
+      - Filterable
+      - Searchable
+      - Alignment
+      - Order
+
+2.2.5 Create components.json
+  - Defines:
+      - Sidebar width
+      - Header height
+      - Default padding
+      - Default spacing
+      - Default icon size
+
+2.2.6 Load JSON via DI
+  - Create service:
+      /Services/DesignSystemConfigService.cs
+  - Load JSON from wwwroot using HttpClient.
+
+----------------------------------------------------------------------
+2.3 DEFINE REUSABLE BLAZOR STYLES
+----------------------------------------------------------------------
+
+2.3.1 Create folder for component styles
+  - Path: /wwwroot/css/components/
+
+2.3.2 Create reusable CSS files:
+      button.css
+      card.css
+      table.css
+      layout.css
+      form.css
+
+2.3.3 Use CSS variables for all colors, spacing, typography.
+
+----------------------------------------------------------------------
+2.4 DEFINE REUSABLE BLAZOR COMPONENTS
+----------------------------------------------------------------------
+
+2.4.1 Create folder:
+  - /Components/DesignSystem/
+
+2.4.2 Create components:
+      Icon.razor
+      IconButton.razor
+      SectionHeader.razor
+      Card.razor
+
+2.4.3 Each component has:
+      - .razor file
+      - .razor.css file
+      - Parameters for customization
+
+----------------------------------------------------------------------
+2.5 DEFINE ICON SYSTEM & ICON LIBRARY PAGE
+----------------------------------------------------------------------
+
+2.5.1 Add Fluent UI icon font to /wwwroot/fonts/
+
+2.5.2 Create icons.json mapping file
+
+2.5.3 Create IconLibrary.razor page
+  - Search
+  - Filter
+  - Preview
+
+2.5.4 Create IconService.cs
+  - Loads icons.json
+  - Provides lookup
+
+----------------------------------------------------------------------
+2.6 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 2 is complete when:
+  - All CSS token files exist.
+  - All JSON config files exist.
+  - All reusable Blazor components exist.
+  - Icon system is functional.
+  - No existing UI is changed.
+  - App builds with zero regressions.
+
+END OF PHASE 2
+PHASE 3 — LAYOUT & NAVIGATION (BLAZOR VERSION)
+Goal:
+  - Establish a unified, reusable, scalable layout and navigation system for the Absence MAUI Blazor Hybrid app.
+  - Introduce a new sidebar, header, breadcrumb, and page template system using .razor components.
+  - Ensure all new layout elements are additive and do not break existing pages.
+  - Prepare for gradual migration of existing pages to the new layout system.
+
+Constraints:
+  - Do NOT modify or remove existing Blazor layouts.
+  - Do NOT break existing navigation or routes.
+  - All new layout components must be introduced in parallel.
+  - All new components must be namespaced and isolated.
+  - All changes must be additive.
+
+----------------------------------------------------------------------
+3.1 CREATE NEW LAYOUT COMPONENTS
+----------------------------------------------------------------------
+
+3.1.1 Create folder for layout components
+  - Path: /Components/LayoutV2/
+  - Purpose:
+      - Store new layout components without touching existing ones.
+
+3.1.2 Create SidebarV2.razor
+  - File: /Components/LayoutV2/SidebarV2.razor
+  - Responsibilities:
+      - Render menu items from menu.json (Phase 2).
+      - Support nested menu groups.
+      - Support expand/collapse.
+      - Highlight active route.
+  - Structure:
+      - <nav> element
+      - <ul> for top-level items
+      - <li> for submenus
+  - Must use CSS variables for colors and spacing.
+
+3.1.3 Create SidebarV2.razor.css
+  - File: /Components/LayoutV2/SidebarV2.razor.css
+  - Responsibilities:
+      - Style sidebar using tokens:
+          --sidebar-bg
+          --sidebar-text
+          --sidebar-active-bg
+          --sidebar-active-text
+      - Support collapsed mode (optional).
+
+3.1.4 Create HeaderV2.razor
+  - File: /Components/LayoutV2/HeaderV2.razor
+  - Responsibilities:
+      - Display page title
+      - Display optional subtitle
+      - Display right-aligned action buttons
+      - Display branding overrides (Phase 8)
+
+3.1.5 Create HeaderV2.razor.css
+  - Style header using:
+      --header-bg
+      --header-text
+      --space-*
+
+3.1.6 Create BreadcrumbV2.razor
+  - File: /Components/LayoutV2/BreadcrumbV2.razor
+  - Responsibilities:
+      - Render breadcrumb trail
+      - Accept list of breadcrumb items via parameter
+
+3.1.7 Create BreadcrumbV2.razor.css
+  - Style breadcrumb using:
+      --breadcrumb-text
+      --breadcrumb-separator
+
+----------------------------------------------------------------------
+3.2 CREATE NEW PAGE TEMPLATE SYSTEM
+----------------------------------------------------------------------
+
+3.2.1 Create folder for templates
+  - Path: /Components/PageTemplatesV2/
+
+3.2.2 Create PageTemplateV2.razor
+  - File: /Components/PageTemplatesV2/PageTemplateV2.razor
+  - Responsibilities:
+      - Provide a two-column layout:
+          Left: SidebarV2
+          Right: HeaderV2 + BreadcrumbV2 + Body
+      - Use CSS Grid or Flexbox
+  - Parameters:
+      - Title
+      - Subtitle
+      - BreadcrumbItems (List<string>)
+      - ChildContent (RenderFragment)
+
+3.2.3 Create PageTemplateV2.razor.css
+  - Style layout using:
+      --sidebar-width
+      --header-height
+      --content-padding
+
+3.2.4 Create StandardPageV2.razor
+  - File: /Components/PageTemplatesV2/StandardPageV2.razor
+  - Responsibilities:
+      - Wrap PageTemplateV2
+      - Provide default layout for list pages, dashboards, settings pages
+
+3.2.5 Create DetailPageV2.razor
+  - File: /Components/PageTemplatesV2/DetailPageV2.razor
+  - Responsibilities:
+      - Wrap PageTemplateV2
+      - Provide section-based detail layout
+      - Support optional scroll-spy (Phase 3.4)
+
+3.2.6 Create FormPageV2.razor
+  - File: /Components/PageTemplatesV2/FormPageV2.razor
+  - Responsibilities:
+      - Wrap PageTemplateV2
+      - Provide form layout with:
+          - Form sections
+          - Validation summary
+          - Save/Cancel buttons
+
+----------------------------------------------------------------------
+3.3 NAVIGATION & ROUTING INTEGRATION
+----------------------------------------------------------------------
+
+3.3.1 Create NavigationServiceV2.cs
+  - File: /Services/NavigationServiceV2.cs
+  - Responsibilities:
+      - Load menu.json
+      - Provide:
+          GetMenu()
+          GetActiveItem()
+          GetBreadcrumb(route)
+      - Cache menu structure
+
+3.3.2 Register service in MauiProgram.cs
+  - builder.Services.AddSingleton<NavigationServiceV2>();
+
+3.3.3 Update SidebarV2 to use NavigationServiceV2
+  - Load menu items
+  - Determine active route
+  - Expand parent groups automatically
+
+3.3.4 Update BreadcrumbV2 to use NavigationServiceV2
+  - Build breadcrumb trail dynamically
+
+3.3.5 Ensure backward compatibility
+  - Existing NavMenu.razor remains untouched.
+  - Existing routing remains untouched.
+
+----------------------------------------------------------------------
+3.4 SCROLL-SPY SYSTEM (OPTIONAL)
+----------------------------------------------------------------------
+
+3.4.1 Create ScrollSpyV2.razor
+  - File: /Components/LayoutV2/ScrollSpyV2.razor
+  - Responsibilities:
+      - Display list of sections
+      - Highlight active section based on scroll position
+  - Parameters:
+      - Sections (List<ScrollSpySection>)
+      - ActiveSectionId
+
+3.4.2 Create ScrollSpySection.cs
+  - File: /Models/ScrollSpySection.cs
+  - Properties:
+      - Id
+      - Label
+      - ElementId
+
+3.4.3 Integrate ScrollSpyV2 into DetailPageV2
+  - Optional sidebar on the right
+  - Enabled only when sections are provided
+
+----------------------------------------------------------------------
+3.5 LAYOUT CSS VARIABLES
+----------------------------------------------------------------------
+
+3.5.1 Create layout tokens file
+  - File: /wwwroot/css/tokens/layout.css
+  - Define:
+      :root {
+        --sidebar-width: 260px;
+        --header-height: 64px;
+        --content-padding: 24px;
+      }
+
+3.5.2 Add to index.html
+  - <link href="css/tokens/layout.css" rel="stylesheet" />
+
+----------------------------------------------------------------------
+3.6 PHASE 3 EXIT CRITERIA
+----------------------------------------------------------------------
+
+Phase 3 is complete when:
+  - SidebarV2, HeaderV2, BreadcrumbV2, ScrollSpyV2 exist and render correctly.
+  - PageTemplateV2, StandardPageV2, DetailPageV2, FormPageV2 exist and render correctly.
+  - NavigationServiceV2 loads menu.json and provides active route + breadcrumb.
+  - No existing pages or layouts have been modified.
+  - The app builds and runs with zero regressions.
+  - All new layout components are additive and optional.
+
+END OF PHASE 3

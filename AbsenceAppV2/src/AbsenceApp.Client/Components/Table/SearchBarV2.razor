@@ -1,0 +1,92 @@
+﻿@* ===========================================================================
+   File        : SearchBarV2.razor
+   Namespace   : AbsenceApp.Client.Components.TableV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 search input with debounce and clear button. Emits ValueChanged after a configurable delay (default 300ms) so parent components are not flooded during typing.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 4 component. No DI registration required.
+   ===========================================================================
+*@
+@implements IDisposable
+
+@* =========================================================================
+   Section: Search bar
+   ========================================================================= *@
+<div class="dsv2-searchbar @(string.IsNullOrEmpty(Value) ? "" : "dsv2-searchbar--has-value") @AdditionalClass">
+    <i class="bi bi-search dsv2-searchbar__icon" aria-hidden="true"></i>
+
+    <input type="search"
+           class="dsv2-searchbar__input"
+           value="@Value"
+           placeholder="@Placeholder"
+           autocomplete="off"
+           aria-label="@AriaLabel"
+           @oninput="OnInputChanged"
+           @onkeydown="OnKeyDown" />
+
+    @if (!string.IsNullOrEmpty(Value))
+    {
+        <button type="button"
+                class="dsv2-searchbar__clear"
+                @onclick="ClearSearch"
+                aria-label="Clear search">
+            <i class="bi bi-x-circle" aria-hidden="true"></i>
+        </button>
+    }
+</div>
+
+@* =========================================================================
+   Section: Parameters and debounce logic
+   ========================================================================= *@
+@code {
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public string Placeholder { get; set; } = "Search…";
+    [Parameter] public string AriaLabel { get; set; } = "Search";
+    [Parameter] public int DebounceMs { get; set; } = 300;
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // Allows the parent to pass a CSS class via the 'class' attribute
+    private string AdditionalClass =>
+        AdditionalAttributes?.TryGetValue("class", out var cls) == true ? cls?.ToString() ?? "" : "";
+
+    private System.Timers.Timer? _debounceTimer;
+
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        var text = e.Value?.ToString() ?? string.Empty;
+        _debounceTimer?.Stop();
+        _debounceTimer?.Dispose();
+        _debounceTimer = new System.Timers.Timer(DebounceMs) { AutoReset = false };
+        _debounceTimer.Elapsed += async (_, _) => await InvokeAsync(() => ValueChanged.InvokeAsync(text));
+        _debounceTimer.Start();
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+            await ClearSearch();
+    }
+
+    private async Task ClearSearch()
+    {
+        _debounceTimer?.Stop();
+        _debounceTimer?.Dispose();
+        _debounceTimer = null;
+        await ValueChanged.InvokeAsync(string.Empty);
+    }
+
+    public void Dispose()
+    {
+        _debounceTimer?.Stop();
+        _debounceTimer?.Dispose();
+    }
+}

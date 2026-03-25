@@ -1,0 +1,25 @@
+@* ===========================================================================
+   File        : LoginLayout.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Minimal layout applied to the Login and Register pages.
+                 Updated for V2 project structure. Renders only the auth-root
+                 shell without the app navbar, sidebar, or footer.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation (V1).
+     - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
+   ===========================================================================
+*@
+@inherits LayoutComponentBase
+
+@* =========================================================================
+   Section: Auth shell — full-viewport wrapper for authentication pages
+   ========================================================================= *@
+<div class="auth-root">
+    @Body
+</div>

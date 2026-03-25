@@ -1,0 +1,335 @@
+DESIGN SYSTEM DECISION LOG
+RAW QUESTION EXTRACTION — NUMBERED (BLOCK A)
+
+Question 1.
+Should breadcrumbs always be shown at the top of each page?
+
+My Final Answer:
+Yes — breadcrumbs should always be shown.
+
+
+Question 2.
+Where should the breadcrumb bar sit relative to the page title?
+
+My Final Answer:
+There should be no separate page title. The breadcrumb line replaces the page title entirely.
+
+
+Question 3.
+Do you want to move on to Page Layout next, or jump to another area (e.g., Tokens, Components, Forms, Tables)?
+
+My Final Answer:
+Move on to Page Layout next.
+
+
+Question 4.
+Do you want your content area to be:
+A) Full‑width fluid layout  
+B) Fixed‑width container  
+C) Hybrid (fluid for tables/dashboards, fixed for forms)?
+
+My Final Answer:
+Option C — Hybrid (fluid for tables and dashboards, fixed for forms).
+
+
+Question 5.
+How much vertical spacing should exist between form fields?
+
+My Final Answer:
+16px (standard spacing).
+
+
+Question 6.
+How should multi‑column forms behave?
+A) Always single‑column  
+B) Two‑column when space allows  
+C) Fully responsive grid (1–3 columns depending on width)
+
+My Final Answer:
+Option C — Fully responsive grid (1–3 columns depending on width).
+
+
+Question 7.
+How should form sections be separated?
+A) Section headers only  
+B) Section headers + subtle dividers  
+C) Card‑style sections
+
+My Final Answer:
+Section headers only.
+
+
+Question 8.
+Do you want form sections to have optional descriptions?
+
+My Final Answer:
+Yes — allow optional section descriptions only when relevant.
+
+
+Question 9.
+Where should the Save/Cancel buttons go on forms?
+A) Left‑aligned  
+B) Right‑aligned  
+C) Full‑width action bar
+
+My Final Answer:
+Right‑aligned (modern admin style).
+
+
+Question 10.
+How should table headers behave?
+A) Sticky header  
+B) Non‑sticky header  
+C) Sticky header + sticky first column
+
+My Final Answer:
+Sticky header.
+
+
+Question 11.
+How dense should table rows be?
+A) Compact (32px)  
+B) Standard (40px)  
+C) Spacious (48px)
+
+My Final Answer:
+Standard (40px row height).
+
+
+Question 12.
+Do you want zebra striping on table rows?
+
+My Final Answer:
+Yes — subtle zebra striping.
+
+
+Question 13.
+How should rows behave on hover?
+A) Subtle background highlight  
+B) Strong highlight  
+C) No hover state
+
+My Final Answer:
+Subtle background highlight.
+
+
+Question 14.
+How should row selection work?
+A) Click anywhere on the row  
+B) Checkbox only  
+C) Both
+
+My Final Answer:
+Click anywhere on the row to select it.
+
+
+Question 15.
+Do you want bulk selection in tables?
+
+My Final Answer:
+No bulk selection.
+
+
+Question 16.
+How should row actions be presented?
+A) Inline action buttons on the right  
+B) Single “…” menu  
+C) Row click opens detail page
+
+My Final Answer:
+Inline action buttons on the right, which navigate to a full detail/edit page.
+
+
+Question 17.
+How should sorting work in tables?
+A) Sortable columns with arrow indicators  
+B) Sortable columns without arrows  
+C) No sorting
+
+My Final Answer:
+Sortable columns with arrow indicators.
+
+
+Question 18.
+Which pagination pattern do you want?
+A) Pagination  
+B) Infinite scroll  
+C) Load more
+
+My Final Answer:
+Keep the existing pagination style already implemented.
+
+
+Question 19.
+How should column alignment work?
+A) Text left, numbers right, status centered  
+B) Everything left‑aligned  
+C) Text left, numbers right, dates right
+
+My Final Answer:
+Default to text left, numbers right, status centered — but allow alignment to be configurable per field in settings.
+
+
+Question 20.
+What should the empty state look like when no records exist?
+
+My Final Answer:
+Simple message only: “No records found.”
+
+
+Question 21.
+What loading state should tables use?
+A) Skeleton rows  
+B) Spinner  
+C) Spinner + text
+
+My Final Answer:
+Skeleton rows.
+
+
+Question 22.
+How should table filtering be presented?
+A) Filter row under the header  
+B) Filter panel  
+C) Filter bar above the table
+
+My Final Answer:
+Filter row directly under the table header.
+
+
+Question 23.
+How should global search behave?
+A) Search all visible columns  
+B) Search only columns marked “Searchable”  
+C) Search specific fields only
+
+My Final Answer:
+Search only columns marked “Searchable” in settings.
+
+
+Question 24.
+What should happen when a user clicks a table row?
+
+My Final Answer:
+Row click selects the row only. Navigation happens only via action buttons.
+
+
+Question 25.
+What style should inline action buttons use?
+1) Icon only  
+2) Text only  
+3) Icon + text
+
+My Final Answer:
+Icon‑only.
+
+
+Question 26.
+What icon set should be used?
+
+My Final Answer:
+Fluent UI System Icons.
+
+DESIGN SYSTEM DECISION LOG
+RAW QUESTION EXTRACTION — NUMBERED (BLOCK B)
+
+Question 27.
+Should all global UI settings be stored in the database?
+
+My Final Answer:
+No. Global UI settings should not be stored exclusively in the database.
+
+
+Question 28.
+Where should global UI configuration live instead?
+Options discussed:
+Database
+JSON files
+Hybrid approach
+
+My Final Answer:
+Use a hybrid approach. Core defaults and design‑system rules live in JSON files, with optional overrides stored in the database where appropriate.
+
+
+Question 29.
+Should the design system be able to support multiple MAUI apps?
+
+My Final Answer:
+Yes. The design system should be reusable and act as a template for other .NET MAUI applications.
+
+
+Question 30.
+Should the design system replace the existing Absence app structure immediately?
+
+My Final Answer:
+No. The existing Absence app already works and should not be broken. The design system must be introduced incrementally.
+
+
+Question 31.
+Should existing components be audited before any refactor or replacement?
+
+My Final Answer:
+Yes. Existing components and structure must be audited first before making changes.
+
+
+Question 32.
+Should changes be allowed if they break existing functionality?
+
+My Final Answer:
+Only if the change is a clear improvement to the current method or process. Otherwise, existing functionality must not be broken.
+
+
+Question 33.
+Should the design system be introduced as an overlay rather than a rewrite?
+
+My Final Answer:
+Yes. The design system should overlay and consolidate existing behaviour, not rewrite the app from scratch.
+
+
+Question 34.
+Should the plan be broken into phases rather than one large implementation?
+
+My Final Answer:
+Yes. The plan must be phased and broken into multiple steps.
+
+
+Question 35.
+Should the phased plan be reviewed before implementation details are added?
+
+My Final Answer:
+Yes. The structural framework must be approved before detailed steps are provided.
+
+
+Question 36.
+Should the phased plan respect existing components and structure?
+
+My Final Answer:
+Yes. The current Absence app already has components and structure in place, and the plan should confirm correctness rather than replace them blindly.
+
+
+Question 37.
+Should the plan explicitly distinguish between safe changes and breaking changes?
+
+My Final Answer:
+Yes. The plan must clearly identify non‑breaking changes versus breaking changes.
+
+
+Question 38.
+Should the plan be suitable for use with VS Code AI?
+
+My Final Answer:
+Yes. The plan should be written so it can be given to VS Code AI phase‑by‑phase.
+
+
+Question 39.
+Should the plan be copy‑paste friendly for external review?
+
+My Final Answer:
+Yes. The plan must be easy to copy, paste, and review in tools like Notepad++.
+
+
+Question 40.
+Should the final plan be reusable as a template for future MAUI apps?
+
+My Final Answer:
+Yes. The plan should act as a reusable blueprint for future .NET MAUI projects.

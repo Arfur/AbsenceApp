@@ -1,0 +1,136 @@
+@* ===========================================================================
+   File        : SettingsFormPageV2.razor
+   Namespace   : AbsenceApp.Client.ModulesV2.Settings
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : V2 Settings form/edit page. Allows inline editing of all field
+                 settings for a specific table page using FormPageV2 and
+                 FormSectionV2. Delegates state and saves to SettingsModuleViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/settings/{PageName}/edit
+     - Register SettingsModuleViewModelV2 as Scoped in Phase 10.
+   ===========================================================================
+*@
+
+@page "/v2/settings/{PageName}/edit"
+@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
+@using AbsenceApp.Client.Components.PageTemplatesV2
+@using AbsenceApp.Client.ViewModels.V2
+@inject SettingsModuleViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+
+@* =========================================================================
+   Section: Settings form
+   ========================================================================= *@
+<FormPageV2 PageTitle="@PageTitle"
+            BackHref="@($"/v2/settings/{PageName}")"
+            BackLabel="@BackLabel"
+            SubmitLabel="Save Settings"
+            BusyLabel="Saving�"
+            CancelLabel="Cancel"
+            IsBusy="ViewModel.IsBusy"
+            OnSubmit="OnSave"
+            OnCancel="@(() => Nav.NavigateTo($"/v2/settings/{PageName}"))">
+
+    <BodyContent>
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        @if (ViewModel.IsLoading)
+        {
+            <p class="dsv2-loading-text">Loading settings�</p>
+        }
+        else if (ViewModel.Settings.Count > 0)
+        {
+            <FormSectionV2 Title="Field Configuration" Icon="bi-sliders" Columns="1">
+                <BodyContent>
+                    @foreach (var setting in ViewModel.Settings)
+                    {
+                        <div class="dsv2-settings-row">
+                            <div class="dsv2-settings-row__field">
+                                <span class="dsv2-settings-row__key">@setting.FieldName</span>
+                            </div>
+
+                            <div class="dsv2-form-field">
+                                <label class="dsv2-form-label" for="@($"label-{setting.Id}")">Display Label</label>
+                                <input id="@($"label-{setting.Id}")" type="text" class="dsv2-form-input"
+                                       @bind="@setting.DisplayLabel" />
+                            </div>
+
+                            <div class="dsv2-settings-row__flags">
+                                <label class="dsv2-form-checkbox">
+                                    <input type="checkbox"
+                                           @bind="@setting.IsVisible" />
+                                    Visible
+                                </label>
+                                <label class="dsv2-form-checkbox">
+                                    <input type="checkbox"
+                                           @bind="@setting.IsSortable" />
+                                    Sortable
+                                </label>
+                                <label class="dsv2-form-checkbox">
+                                    <input type="checkbox"
+                                           @bind="@setting.IsSearchable" />
+                                    Searchable
+                                </label>
+                                <label class="dsv2-form-checkbox">
+                                    <input type="checkbox"
+                                           @bind="@setting.IsFilterable" />
+                                    Filterable
+                                </label>
+
+                                <div class="dsv2-form-field dsv2-form-field--inline">
+                                    <label class="dsv2-form-label" for="@($"order-{setting.Id}")">Order</label>
+                                    <input id="@($"order-{setting.Id}")" type="number" class="dsv2-form-input dsv2-form-input--narrow"
+                                           @bind="@setting.DisplayOrder" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </BodyContent>
+            </FormSectionV2>
+        }
+        else
+        {
+            <p class="dsv2-loading-text">No settings found for page "@PageName".</p>
+        }
+    </BodyContent>
+
+</FormPageV2>
+
+@* =========================================================================
+   Section: ViewModel wiring and form submission
+   ========================================================================= *@
+@code {
+    [Parameter] public string PageName { get; set; } = string.Empty;
+
+    private string PageTitle => string.IsNullOrEmpty(PageName)
+        ? "Edit Settings"
+        : $"Edit Settings � {PageName}";
+
+    private string BackLabel => string.IsNullOrEmpty(PageName)
+        ? "Settings"
+        : PageName;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        AppState.SetBreadcrumb("Settings", PageName);
+        await ViewModel.LoadSettingsAsync(PageName);
+    }
+
+    private async Task OnSave()
+    {
+        bool ok = await ViewModel.SaveSettingsAsync();
+        if (ok) Nav.NavigateTo($"/v2/settings/{PageName}");
+    }
+}

@@ -1,0 +1,66 @@
+﻿@* ===========================================================================
+   File        : ThemeSettingsPageV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-23
+   ---------------------------------------------------------------------------
+   Purpose     : V2 theme settings page template. Wraps PageTemplateV2 and
+                 provides a structured layout for theme configuration panels,
+                 such as colour palettes, spacing controls, and typography
+                 settings.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-23  Added @layout BaseLayoutV2 directive (Step 3).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+     - Now inherits BaseLayoutV2 for consistent V2 page structure.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Components.PageTemplatesV2
+
+@* =========================================================================
+   Section: Theme settings page shell
+   ========================================================================= *@
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @ActionsContent
+    </ActionsContent>
+
+    <BodyContent>
+        <div class="dsv2-theme-settings-page">
+
+            @if (BodyContent is not null)
+            {
+                <div class="dsv2-theme-settings-page__body">
+                    @BodyContent
+                </div>
+            }
+
+        </div>
+    </BodyContent>
+
+</PageTemplateV2>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+
+    /// <summary>Page heading text displayed in the title bar.</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+
+    /// <summary>Action buttons shown in the title bar (e.g. Save, Reset).</summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+
+    /// <summary>Main theme settings content (ThemeSettingsSectionV2 components).</summary>
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+}

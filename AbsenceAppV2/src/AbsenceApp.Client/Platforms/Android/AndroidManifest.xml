@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+    ===========================================================================
+    File        : AndroidManifest.xml
+    Project     : AbsenceApp.Client
+    Author      :
+    Version     : 1.0.0
+    Created     : 2026-03-13
+    Updated     : 2026-03-13
+    Purpose     : Android application manifest
+    Description : Declares the Android application metadata, icon references,
+                  and required permissions for network access.
+    Changes     : 1.0.0 — Initial
+    Notes       : Managed by .NET MAUI build tooling.
+                  The package attribute is injected at build time from
+                  ApplicationId in the csproj; do not set it manually here.
+    ===========================================================================
+    -->
+
+    <!-- ===========================================================================
+         Application declaration — icon, round icon, RTL, and backup settings
+    =========================================================================== -->
+    <application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true"></application>
+
+    <!-- ===========================================================================
+         Required permissions — network state and internet access
+    =========================================================================== -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

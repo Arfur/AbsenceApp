@@ -1,0 +1,60 @@
+@* ===========================================================================
+   File        : SubjectAddPage.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /subjects/add
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Form page for creating a new subject record.
+                 Bound to SubjectAddViewModel which delegates to ISubjectService.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     None.
+   ===========================================================================
+*@
+@page "/subjects/add"
+@inject SubjectAddViewModel ViewModel
+@inject AppStateService AppState
+
+@if (ViewModel.IsSaved)
+{
+    <div class="alert-box success">Subject added. ID: @ViewModel.NewSubject.Id</div>
+    <a href="/subjects">Back to Subjects</a>
+}
+else
+{
+    <h3>Add Subject</h3>
+
+    @if (ViewModel.ErrorMessage is not null)
+    {
+        <div class="alert-box error">@ViewModel.ErrorMessage</div>
+    }
+    <div class="form-card">
+        <div class="form-field">
+            <label>Subject Name</label>
+            <input type="text" @bind="ViewModel.NewSubject.Name" placeholder="e.g. Mathematics" />
+        </div>
+        <div class="form-field">
+            <label>Description</label>
+            <input type="text" @bind="ViewModel.NewSubject.Description" placeholder="Optional" />
+        </div>
+        <div class="form-actions">
+            <button class="btn-primary" @onclick="Save" disabled="@ViewModel.IsSaving">
+                @(ViewModel.IsSaving ? "Saving..." : "Save Subject")
+            </button>
+            <a href="/subjects">Cancel</a>
+        </div>
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+        => AppState.SetBreadcrumb("Subjects", "Add Subject");
+
+    async Task Save() => await ViewModel.SaveAsync();
+}

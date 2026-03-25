@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+  =============================================================================
+  File        : AbsenceApp.Core.csproj
+  Project     : AbsenceApp.Core
+  Author      :
+  Version     : 1.0.0
+  Created     : 2026-03-13
+  Updated     : 2026-03-13
+  Purpose     : Core domain library — models, interfaces, and services
+  Description : Class library targeting net8.0 containing the shared domain
+                models, service interfaces, and default service implementations
+                used by the client and data layers.
+  Changes     : 1.0.0 — Initial
+  Notes       : No external NuGet dependencies.
+                Avoid adding references to platform-specific packages here;
+                this library must remain portable across all target platforms.
+  =============================================================================
+  -->
+
+  <!-- ===========================================================================
+       Project settings — target framework, implicit usings, nullable
+  =========================================================================== -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

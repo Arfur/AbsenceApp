@@ -1,0 +1,28 @@
+@* ===========================================================================
+   File        : AppFooter.razor
+   Namespace   : AbsenceApp.Client.Components.Layout
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-17
+   ---------------------------------------------------------------------------
+   Purpose     : Persistent footer bar rendered at the bottom of the main
+                 content column.  Displays a copyright notice with the
+                 current year resolved at render time.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - DateTime.Now.Year is evaluated on each render; no code-behind
+       is required.
+     - Included directly in MainLayout below the <main> element.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation.
+   ===========================================================================
+*@
+
+@* =========================================================================
+   Section: Footer bar — copyright notice
+   ========================================================================= *@
+<footer class="app-footer">
+    <span>&copy; @DateTime.Now.Year AbsenceApp &mdash; All rights reserved.</span>
+</footer>

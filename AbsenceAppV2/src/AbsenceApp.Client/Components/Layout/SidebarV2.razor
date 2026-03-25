@@ -1,0 +1,347 @@
+﻿@* ===========================================================================
+   File        : SidebarV2.razor
+   Namespace   : AbsenceApp.Client.Components.LayoutV2
+   Author      : Michael
+   Version     : 2.4.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : V2 collapsible sidebar. Loads navigation groups from menu.json
+                 via NavigationServiceV2. Parallel to V1 SideBar.razor; does NOT
+                 modify or replace it.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 2.0.0  2026-03-23  Full rewrite to consume menu.json v4.0.0 category
+                           structure. Renders Categories (section headers),
+                           Flat links (direct nav), and Accordion groups from
+                           JSON only — zero hardcoded navigation logic.
+                           Role-based visibility driven by RequiredRole field
+                           at category, group, and item level via IsVisible().
+     - 2.1.0  2026-03-24  Fixed active-state false positive for accordion items
+                           and group buttons. Replaced StartsWith(href) with a
+                           "longest match wins" (bestMatchHref) pattern so that
+                           parent routes (e.g. /v2/dashboard) no longer light up
+                           when a child route (e.g. /v2/dashboard/attendance) is
+                           active. Fixed auto-open accordion to use the same
+                           consistent Equals || StartsWith("/") matching.
+     - 2.2.0  2026-03-24  Added settings gear icon link to user panel (visible
+                           when sidebar is expanded). Links to /v2/settings.
+                           Hidden when sidebar is collapsed to preserve icon-only
+                           collapsed layout.
+     - 2.3.0  2026-03-24  FIXED: Dashboard (and any parent group) now correctly
+                           auto-expands after login redirects. Added full
+                           auto-open evaluation to OnLocationChanged so that
+                           group expansion updates whenever navigation occurs.
+     - 2.4.0  2026-03-24  FIXED: Two logic issues confirmed by E7/E8/E9 images:
+                           (1) Parent group button was NOT highlighted when the
+                           group was expanded but the URL did not yet match a
+                           child route. Fixed: isActive now includes isOpen so
+                           an expanded group is always highlighted blue.
+                           (2) Clicking a parent group did NOT auto-navigate to
+                           its default submenu. Fixed: ToggleGroup now navigates
+                           to the first visible submenu item when opening a group
+                           whose URL is not already in the current path.
+     - 2.5.0  2026-03-24  FIXED: Pipe indicator missing on initial Dashboard
+                           load. Root cause: when currentPath is a V1 route
+                           (/dashboard/overview), no V2 Dashboard item URL
+                           matches so bestMatchHref is null → no itemActive.
+                           Fixed by computing effectiveBestHref which falls
+                           back to the first visible item when isOpen and
+                           bestMatchHref is null.
+                           ADDED: BreadcrumbCategory tracking. SidebarV2 now
+                           builds a group→category map from menu.json and
+                           calls AppState.SetBreadcrumbCategory() on every
+                           navigation, enabling BreadcrumbV2 to display
+                           only the section category (Part 3C).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 3 component. Requires NavigationServiceV2.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Models.V2
+@inject NavigationServiceV2 NavService
+@inject AppStateService AppState
+@inject NavigationManager Nav
+@implements IDisposable
+
+<aside class="@SidebarClass" aria-label="Main navigation">
+
+    @* =========================================================================
+       Section: User panel
+       ========================================================================= *@
+    <div class="dsv2-sidebar__user @(AppState.SidebarCollapsed ? "dsv2-sidebar__user--collapsed" : "")">
+        <div class="dsv2-sidebar__avatar">
+            @(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")
+        </div>
+
+        @if (!AppState.SidebarCollapsed)
+        {
+            <div class="dsv2-sidebar__user-info">
+                <span class="dsv2-sidebar__user-name">@AppState.UserName</span>
+                <span class="dsv2-sidebar__user-role">@AppState.UserRole</span>
+            </div>
+
+            <a href="/v2/settings"
+               class="dsv2-sidebar__settings-link"
+               title="Settings"
+               aria-label="Settings">
+                <i class="bi bi-gear" aria-hidden="true"></i>
+            </a>
+        }
+    </div>
+
+    @* =========================================================================
+       Section: Navigation
+       ========================================================================= *@
+    <nav class="dsv2-sidebar__nav">
+        @if (_menuCategories is not null)
+        {
+            @foreach (var cat in _menuCategories)
+            {
+                @if (IsVisible(cat.RequiredRole))
+                {
+                    @if (cat.Category is not null && !AppState.SidebarCollapsed)
+                    {
+                        <div class="dsv2-sidebar__section">@cat.Category</div>
+                    }
+
+                    @foreach (var group in cat.Groups)
+                    {
+                        @if (IsVisible(group.RequiredRole))
+                        {
+                            @if (group.Flat)
+                            {
+                                var flatItem = group.Items.FirstOrDefault();
+                                @if (flatItem is not null && IsVisible(flatItem.RequiredRole))
+                                {
+                                    var flatActive =
+                                        currentPath.Equals(flatItem.Href, StringComparison.OrdinalIgnoreCase)
+                                        || currentPath.StartsWith(flatItem.Href + "/", StringComparison.OrdinalIgnoreCase);
+
+                                    <a class="dsv2-sidebar__flat-link @(flatActive ? "dsv2-sidebar__flat-link--active" : "")"
+                                       href="@flatItem.Href"
+                                       title="@(AppState.SidebarCollapsed ? group.Group : flatItem.Description)">
+                                        <i class="bi @group.Icon dsv2-sidebar__item-icon"></i>
+                                        @if (!AppState.SidebarCollapsed)
+                                        {
+                                            <span class="dsv2-sidebar__item-label">@group.Group</span>
+                                        }
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                var isOpen = _openGroup == group.Group;
+
+                                var bestMatchHref = group.Items
+                                    .Where(i => IsVisible(i.RequiredRole)
+                                             && (currentPath.Equals(i.Href, StringComparison.OrdinalIgnoreCase)
+                                              || currentPath.StartsWith(i.Href + "/", StringComparison.OrdinalIgnoreCase)))
+                                    .OrderByDescending(i => i.Href.Length)
+                                    .FirstOrDefault()?.Href;
+
+                                var isActive = bestMatchHref is not null || isOpen;
+
+                                @* When the group is open but the URL doesn't match any child route
+                                   (e.g. user is on a V1 route that triggered AutoOpenGroup), fall
+                                   back to the first visible item so its pipe indicator still shows. *@
+                                var effectiveBestHref = bestMatchHref
+                                    ?? (isOpen
+                                        ? group.Items.FirstOrDefault(i => IsVisible(i.RequiredRole))?.Href
+                                        : null);
+
+                                <button class="dsv2-sidebar__group-btn @(isActive ? "dsv2-sidebar__group-btn--active" : "") @(isOpen ? "dsv2-sidebar__group-btn--open" : "")"
+                                        @onclick="@(() => ToggleGroup(group.Group))"
+                                        title="@(AppState.SidebarCollapsed ? group.Group : null)">
+                                    <i class="bi @group.Icon dsv2-sidebar__item-icon"></i>
+
+                                    @if (!AppState.SidebarCollapsed)
+                                    {
+                                        <span class="dsv2-sidebar__item-label">@group.Group</span>
+                                        <i class="bi bi-chevron-right dsv2-sidebar__chevron"></i>
+                                    }
+                                </button>
+
+                                @if (isOpen && !AppState.SidebarCollapsed)
+                                {
+                                    <div class="dsv2-sidebar__submenu">
+                                        @foreach (var item in group.Items)
+                                        {
+                                            @if (IsVisible(item.RequiredRole))
+                                            {
+                                                var itemActive =
+                                                    effectiveBestHref is not null &&
+                                                    item.Href.Equals(effectiveBestHref, StringComparison.OrdinalIgnoreCase);
+
+                                                <a class="dsv2-sidebar__sublink @(itemActive ? "dsv2-sidebar__sublink--active" : "")"
+                                                   href="@item.Href"
+                                                   title="@item.Description">
+                                                    <i class="bi @item.Icon dsv2-sidebar__item-icon"></i>
+                                                    <span class="dsv2-sidebar__item-label">@item.Title</span>
+
+                                                    @if (item.Status != "Live")
+                                                    {
+                                                        <span class="dsv2-sidebar__status-badge dsv2-sidebar__status-badge--@item.Status.ToLower()">@item.Status</span>
+                                                    }
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            <div class="dsv2-sidebar__loading">
+                <i class="bi bi-arrow-clockwise"></i>
+                @if (!AppState.SidebarCollapsed)
+                {
+                    <span>Loading…</span>
+                }
+            </div>
+        }
+    </nav>
+</aside>
+
+@code {
+    private List<MenuCategoryModel>? _menuCategories;
+    private string _openGroup = string.Empty;
+    private string currentPath = string.Empty;
+
+    // =========================================================================
+    // Section: Group-to-category lookup (built once from menu.json)
+    // =========================================================================
+    private Dictionary<string, string?> _groupToCategory = new(StringComparer.OrdinalIgnoreCase);
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.OnChange += StateHasChanged;
+        Nav.LocationChanged += OnLocationChanged;
+
+        currentPath = Nav.ToBaseRelativePath(Nav.Uri);
+        if (!currentPath.StartsWith("/")) currentPath = "/" + currentPath;
+
+        _menuCategories = await NavService.GetMenuCategoriesAsync();
+
+        // Build group → category map from menu.json (used for breadcrumb category display)
+        if (_menuCategories is not null)
+        {
+            _groupToCategory = _menuCategories
+                .SelectMany(cat => cat.Groups.Select(g => (g.Group, cat.Category)))
+                .ToDictionary(x => x.Group, x => x.Category, StringComparer.OrdinalIgnoreCase);
+        }
+
+        // Auto-open group on initial load
+        AutoOpenGroup();
+        UpdateBreadcrumbCategory();
+    }
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        currentPath = Nav.ToBaseRelativePath(e.Location);
+        if (!currentPath.StartsWith("/")) currentPath = "/" + currentPath;
+
+        // Auto-open group after ANY navigation (fixes Dashboard after login)
+        AutoOpenGroup();
+        UpdateBreadcrumbCategory();
+
+        InvokeAsync(StateHasChanged);
+    }
+
+private void AutoOpenGroup()
+{
+    if (_menuCategories is null) return;
+
+    // Hard rule: if we are on any dashboard route, force the "Dashboard" group open.
+    // This avoids any subtle mismatch between routes and menu hrefs.
+    if (currentPath.StartsWith("/v2/dashboard", StringComparison.OrdinalIgnoreCase)
+        || currentPath.StartsWith("/dashboard", StringComparison.OrdinalIgnoreCase))
+    {
+        _openGroup = "Dashboard";
+        return;
+    }
+
+    _openGroup = _menuCategories
+        .Where(cat => IsVisible(cat.RequiredRole))
+        .SelectMany(cat => cat.Groups)
+        .Where(g => IsVisible(g.RequiredRole) && !g.Flat)
+        .FirstOrDefault(g => g.Items
+            .Where(i => IsVisible(i.RequiredRole))
+            .Any(i => currentPath.Equals(i.Href, StringComparison.OrdinalIgnoreCase)
+                   || currentPath.StartsWith(i.Href + "/", StringComparison.OrdinalIgnoreCase)))
+        ?.Group ?? string.Empty;
+}
+
+
+    private void ToggleGroup(string group)
+    {
+        if (_openGroup == group)
+        {
+            // Collapsing — just close, do not navigate
+            _openGroup = string.Empty;
+            return;
+        }
+
+        _openGroup = group;
+        UpdateBreadcrumbCategory();
+
+        // Auto-navigate to the first visible submenu item when opening a group,
+        // but ONLY if the current URL is not already within this group's routes.
+        var groupDef = _menuCategories?
+            .SelectMany(cat => cat.Groups)
+            .FirstOrDefault(g => g.Group == group);
+
+        if (groupDef is null) return;
+
+        var alreadyInGroup = groupDef.Items
+            .Where(i => IsVisible(i.RequiredRole))
+            .Any(i => currentPath.Equals(i.Href, StringComparison.OrdinalIgnoreCase)
+                   || currentPath.StartsWith(i.Href + "/", StringComparison.OrdinalIgnoreCase));
+
+        if (!alreadyInGroup)
+        {
+            var firstItem = groupDef.Items.FirstOrDefault(i => IsVisible(i.RequiredRole));
+            if (firstItem is not null)
+                Nav.NavigateTo(firstItem.Href);
+        }
+    }
+
+    // =========================================================================
+    // Section: Breadcrumb category updater
+    // =========================================================================
+    private void UpdateBreadcrumbCategory()
+    {
+        // Derive the section category from the currently open group and notify
+        // BreadcrumbV2 so it can display just the category label on the right.
+        // Groups in the null-category bucket (Dashboard) fall back to "Dashboard".
+        if (_openGroup == string.Empty)
+        {
+            AppState.SetBreadcrumbCategory(string.Empty);
+            return;
+        }
+        var category = _groupToCategory.TryGetValue(_openGroup, out var cat) ? cat : null;
+        AppState.SetBreadcrumbCategory(category ?? _openGroup);
+    }
+
+    private bool IsVisible(string? requiredRole)
+        => requiredRole is null || requiredRole == AppState.UserRole;
+
+    private string SidebarClass => string.Join(" ", new[]
+    {
+        "dsv2-sidebar",
+        AppState.SidebarCollapsed ? "dsv2-sidebar--collapsed" : null
+    }.Where(c => c is not null));
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+}

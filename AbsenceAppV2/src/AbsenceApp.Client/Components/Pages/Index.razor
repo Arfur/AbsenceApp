@@ -1,0 +1,29 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /
+   Author      : Michael
+   Version     : 2.1.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-25
+   ---------------------------------------------------------------------------
+   Purpose     : V2 application entry point. Immediately redirects the root
+                 route ("/") to the first V2 module page (/v2/students).
+                 This replaces the V1 behaviour which redirected to /login.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial V1 implementation (redirected to /login).
+     - 2.0.0  2026-03-21  Introduced V2 entry point; redirect to /v2/students.
+     - 2.1.0  2026-03-25  Confirmed as V2-only after V1/V2 project split.
+                          Updated documentation; no functional changes.
+   ===========================================================================
+*@
+@page "/"
+@inject NavigationManager Nav
+
+@code {
+    protected override void OnInitialized()
+    {
+        Nav.NavigateTo("/v2/students", replace: true);
+    }
+}

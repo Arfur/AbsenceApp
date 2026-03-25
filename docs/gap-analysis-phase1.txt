@@ -1,0 +1,250 @@
+================================================================================
+  FILE        : gap-analysis-phase1.txt
+  PROJECT     : AbsenceApp — Phase 1 Foundations & Audit
+  CREATED     : 2026-03-21
+  PURPOSE     : Gap analysis comparing V1 current state to V2 target state.
+                Identifies what is missing, what needs to be added, and what
+                must NOT be changed. Read-only reference — do NOT edit.
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+1. SUMMARY
+────────────────────────────────────────────────────────────────────────────────
+
+V1 is a fully functional .NET MAUI Blazor Hybrid app with a working layout
+shell, 43 pages, a complete EF Core data layer, and a hand-crafted CSS design
+system defined in a single app.css file.
+
+V2 will build a structured design system alongside V1 — parallel, additive,
+and non-breaking — following the phased execution plan (Phases 2–10).
+
+────────────────────────────────────────────────────────────────────────────────
+2. CSS & DESIGN TOKENS
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 defines all design tokens inline in app.css as :root CSS variables.
+        There is no separation of token categories (color, spacing, typography,
+        radius, layout). Tokens are not documented or versioned independently.
+
+V2    : Introduce separate token files:
+          wwwroot/css/tokens/colors.css
+          wwwroot/css/tokens/spacing.css
+          wwwroot/css/tokens/typography.css
+          wwwroot/css/tokens/radius.css
+          wwwroot/css/tokens/layout.css
+        These will extend (not replace) the values currently in app.css.
+        V1 app.css is left completely untouched.
+
+STATUS: MISSING — to be created in Phase 2.
+
+────────────────────────────────────────────────────────────────────────────────
+3. DESIGN SYSTEM JSON CONFIGURATION
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 has no JSON-based design system config. Theme values, menu
+        structure, table schema defaults, component config, and icon registry
+        are all hardcoded in C# or Razor markup.
+
+V2    : Introduce structured JSON config:
+          wwwroot/config/designsystem/theme.json
+          wwwroot/config/designsystem/menu.json
+          wwwroot/config/designsystem/table-schema.json
+          wwwroot/config/designsystem/components.json
+          wwwroot/config/designsystem/icons.json
+          wwwroot/config/designsystem/branding.json  (Phase 8)
+
+STATUS: MISSING — to be created in Phase 2.
+
+────────────────────────────────────────────────────────────────────────────────
+4. REUSABLE DESIGN SYSTEM COMPONENTS
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 has no dedicated design system component library. Icons, buttons,
+        section headers, and cards are implemented ad-hoc per page.
+
+V2    : Introduce reusable components under Components/DesignSystem/:
+          Icon.razor + .css
+          IconButton.razor + .css
+          SectionHeader.razor + .css
+          Card.razor + .css
+
+STATUS: MISSING — to be created in Phase 2.
+
+────────────────────────────────────────────────────────────────────────────────
+5. DESIGN SYSTEM SERVICES
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 has no service that loads or exposes design system configuration.
+        NavigationMetadataService is hardcoded C#; there is no IconService.
+
+V2    : Introduce:
+          Services/DesignSystemConfigService.cs  — loads JSON configs
+          Services/IconService.cs                — resolves icon names/paths
+
+STATUS: MISSING — to be created in Phase 2.
+
+────────────────────────────────────────────────────────────────────────────────
+6. LAYOUT COMPONENTS (V2)
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 layout (SideBar, NavBar, MainLayout) is tightly coupled to the
+        existing AppStateService and NavigationMetadataService. There is no
+        versioned, independently testable, reusable layout system.
+
+V2    : Introduce parallel layout components under Components/LayoutV2/:
+          SidebarV2.razor + .css   — loads from menu.json
+          HeaderV2.razor + .css
+          BreadcrumbV2.razor + .css
+          ScrollSpyV2.razor + .css
+        And a base page template:
+          Components/PageTemplatesV2/PageTemplateV2.razor
+        And a new navigation service:
+          Services/NavigationServiceV2.cs
+
+STATUS: MISSING — to be created in Phase 3.
+
+────────────────────────────────────────────────────────────────────────────────
+7. TABLE SYSTEM (V2)
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 uses a single TablePageTemplate.razor with scoped CSS. It supports
+        basic filtering, search, and pagination, but:
+          - Has no skeleton loading rows
+          - Has no structured empty state component
+          - Has no structured inline actions component
+          - Column definitions are page-specific, not model-driven
+          - Table schema has no JSON-driven config
+
+V2    : Introduce a full table system under Components/TableV2/:
+          TableV2.razor, FilterRowV2.razor, SearchBarV2.razor,
+          InlineActionsV2.razor, SkeletonRowV2.razor, EmptyStateV2.razor,
+          PaginationV2.razor (+ .css files)
+        Backed by:
+          Models/TableV2/TableColumnModel.cs
+          Services/TableV2/TableConfigService.cs
+          ViewModels/V2/TableSettingsViewModelV2.cs
+          Components/TableV2/TableSettingsPageV2.razor
+
+STATUS: MISSING — to be created in Phase 4.
+
+────────────────────────────────────────────────────────────────────────────────
+8. PAGE TEMPLATES (V2)
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 pages implement their own layout structure inline. There is no
+        shared page template system for standard, detail, form, settings,
+        or dashboard page types.
+
+V2    : Introduce templates under Components/PageTemplatesV2/:
+          StandardPageV2, DetailPageV2, FormPageV2, SettingsPageV2,
+          DashboardPageV2
+        Supporting section/group components:
+          DetailSectionV2, FormSectionV2, FormFooterV2,
+          SettingsGroupV2, SettingsItemV2, DashboardCardV2
+        Supporting models:
+          Models/V2/DetailSectionModel.cs
+          Models/V2/FormSectionModel.cs
+          Models/V2/SettingsGroupModel.cs
+          Models/V2/SettingsItemModel.cs
+
+STATUS: MISSING — to be created in Phase 5.
+
+────────────────────────────────────────────────────────────────────────────────
+9. API CLIENT & V2 SERVICES
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 uses EF Core services directly injected into ViewModels. There is
+        no HTTP API client layer on the client side. The API project exists but
+        is not consumed by the client UI.
+
+V2    : Introduce an API client layer:
+          Services/ApiV2/ApiClientV2.cs
+          Services/ApiV2/ApiServiceBaseV2.cs
+          Services/ApiV2/Modules/ (6 module services)
+        Plus V2 data models, ViewModels, state management, and error handling.
+
+STATUS: MISSING — to be created in Phase 6.
+
+────────────────────────────────────────────────────────────────────────────────
+10. FEATURE MODULE PAGES (V2)
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 module pages exist under Components/Pages/ but use V1 layout,
+        V1 table template, V1 services, and ad-hoc styling.
+
+V2    : Introduce module pages under ModulesV2/:
+          Students, Staff, Classes, Attendance, AuditLog, Settings
+        Each with ListPageV2, DetailPageV2, FormPageV2 using V2 templates,
+        V2 tables, and V2 API services.
+        V1 pages are NOT modified.
+
+STATUS: MISSING — to be created in Phase 7.
+
+────────────────────────────────────────────────────────────────────────────────
+11. THEMING & BRANDING (V2)
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 theming is CSS-only (.dark class toggled via AppStateService).
+        There is no runtime theme or branding service, no JSON-driven branding
+        config, no ThemeManager class.
+
+V2    : Introduce:
+          Services/Theming/ThemeServiceV2.cs
+          Services/Theming/BrandingServiceV2.cs
+          Models/Theming/ThemeMode.cs, ThemeConfigModel.cs,
+          BrandingConfigModel.cs
+          wwwroot/config/designsystem/branding.json
+          Components/PageTemplatesV2/ThemeSettingsPageV2.razor
+
+STATUS: MISSING — to be created in Phase 8.
+
+────────────────────────────────────────────────────────────────────────────────
+12. REUSABILITY FRAMEWORK
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : V1 has no packaged framework or reusable template library. The app is
+        a single-project UI with no framework extraction.
+
+V2    : Copy all reusable V2 assets into /FrameworkV2/ with documentation,
+        reference configs, CSS tokens, and demo pages. This enables the V2
+        system to be adopted by other projects.
+
+STATUS: MISSING — to be created in Phase 9.
+
+────────────────────────────────────────────────────────────────────────────────
+13. QA & MIGRATION PLAN
+────────────────────────────────────────────────────────────────────────────────
+
+GAP   : There is no V2 test/demo page system and no migration plan document.
+
+V2    : Create test/demo pages for all V2 systems and produce:
+          docs/migration-plan-v2.txt
+
+STATUS: MISSING — to be created in Phase 10.
+
+────────────────────────────────────────────────────────────────────────────────
+14. WHAT ALREADY EXISTS AND IS SUFFICIENT (NO GAP)
+────────────────────────────────────────────────────────────────────────────────
+
+Area                        File(s)                      Notes
+──────────────────────────  ───────────────────────────  ──────────────────────
+EF Core data layer          AbsenceApp.Data/ (all)        Complete — no changes
+Service interfaces          AbsenceApp.Core/Interfaces/   Complete — no changes
+V1 ViewModels               AbsenceApp.Core/ViewModels/   Complete — no changes
+V1 DTOs                     AbsenceApp.Core/DTOs/         Complete — no changes
+V1 pages (43)               Components/Pages/             Complete — no changes
+V1 layout shell             Components/Layout/            Complete — no changes
+V1 table template           Shared/TablePageTemplate      Complete — no changes
+V1 CSS design system        wwwroot/css/app.css           Complete — no changes
+V1 routing                  Routes.razor                  Complete — no changes
+V1 auth                     Login, Register, LoginLayout  Complete — no changes
+V1 state service            AppStateService.cs            Complete — no changes
+V1 nav service              NavigationMetadataService.cs  Complete — no changes
+AbsenceApp.Api              All endpoint files            Complete — no changes
+Test projects               Tests + Client.Tests          Complete — no changes
+Documentation               docs/ (existing files)        Complete — no changes
+Database / migrations       AppDbContext + Migrations      Complete — no changes
+
+================================================================================
+  END OF GAP-ANALYSIS-PHASE1.TXT
+================================================================================

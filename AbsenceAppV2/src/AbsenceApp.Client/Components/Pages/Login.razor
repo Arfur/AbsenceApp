@@ -1,0 +1,117 @@
+@* ===========================================================================
+   File        : Login.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Route       : /login
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-03-24
+   ---------------------------------------------------------------------------
+   Purpose     : Authentication page for V2. Migrated from V1 and integrated
+                 into the new V2 component structure and design-system shell.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation (V1).
+     - 1.1.0  2026-03-18  Updated @bind:event behaviour.
+     - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
+   ===========================================================================
+*@
+@page "/login"
+@layout LoginLayout
+@inject NavigationManager Nav
+@inject IAuthService AuthService
+@inject AppStateService AppState
+
+@* =========================================================================
+   Section: Auth card — two-panel layout (branding left, form right)
+   ========================================================================= *@
+<div class="auth-card">
+
+    @* =========================================================================
+       Section: Left panel — logo, illustration, and tagline
+       ========================================================================= *@
+    <div class="auth-left">
+        <div class="auth-brand">
+            <i class="bi bi-calendar-check-fill auth-brand-icon"></i>
+            <span class="auth-brand-name">AbsenceApp</span>
+        </div>
+        <div class="auth-illustration">
+            <i class="bi bi-shield-lock auth-illus-icon"></i>
+        </div>
+        <p class="auth-tagline">School Absence Management<br/>Made Simple</p>
+    </div>
+
+    @* =========================================================================
+       Section: Right panel — sign-in form with username, password, and submit
+       ========================================================================= *@
+    <div class="auth-right">
+        <h2 class="auth-title">Sign in</h2>
+        <p class="auth-subtitle">Welcome back! Please enter your details.</p>
+
+        <div class="auth-form">
+            <div class="auth-field">
+                <label>Username</label>
+                <input type="text" @bind="username" @bind:event="oninput" placeholder="Enter your username" @onkeydown="HandleKeyDown" />
+            </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <div class="auth-pw-wrap">
+                    <input type="@(showPassword ? "text" : "password")" @bind="password" @bind:event="oninput" placeholder="Enter your password" @onkeydown="HandleKeyDown" />
+                    <button type="button" class="auth-pw-toggle" @onclick="() => showPassword = !showPassword" tabindex="-1">
+                        <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
+                    </button>
+                </div>
+                <a href="#" class="auth-forgot">Forgot password?</a>
+            </div>
+            <label class="auth-remember">
+                <input type="checkbox" @bind="rememberMe" /> Remember me
+            </label>
+            <button class="auth-btn" @onclick="DoLogin">Sign In</button>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <p class="auth-error">@errorMessage</p>
+            }
+        </div>
+
+        <p class="auth-switch">Don't have an account? <a href="/register">Sign up</a></p>
+    </div>
+
+</div>
+
+@* =========================================================================
+   Section: Code-behind — form field state and login handler
+   ========================================================================= *@
+@code {
+    string username     = "";
+    string password     = "";
+    bool   rememberMe   = false;
+    bool   showPassword = false;
+    string errorMessage = "";
+
+    async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+            await DoLogin();
+    }
+
+    protected override void OnInitialized()
+    {
+        if (AppState.IsAuthenticated)
+            Nav.NavigateTo("/dashboard/overview", replace: true);
+    }
+
+    async Task DoLogin()
+    {
+        errorMessage = "";
+        var result = await AuthService.LoginAsync(username, password);
+        if (result.Success)
+        {
+            AppState.SetUser(result.UserId, result.UserName, result.Role);
+            Nav.NavigateTo("/dashboard/overview");
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage ?? "Login failed.";
+        }
+    }
+}

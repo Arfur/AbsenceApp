@@ -1,0 +1,105 @@
+﻿@* ===========================================================================
+   File        : SettingsPageV2.razor
+   Namespace   : AbsenceApp.Client.Components.PageTemplatesV2
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-21
+   ---------------------------------------------------------------------------
+   Purpose     : Settings/configuration page template. Composes PageTemplateV2 and provides a two-column layout (optional nav panel on the left and main content on the right). Renders SettingsGroupV2 sections in the body.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Phase 5 component. No DI registration required.
+   ===========================================================================
+*@
+@using AbsenceApp.Client.Components.PageTemplatesV2
+
+@* =========================================================================
+   Section: Settings page shell
+   ========================================================================= *@
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @ActionsContent
+    </ActionsContent>
+
+    <BodyContent>
+        <div class="@PageClass()">
+            @if (NavContent is not null)
+            {
+                <nav class="dsv2-settings-page__nav" aria-label="Settings navigation">
+                    @NavContent
+                </nav>
+            }
+
+            <div class="dsv2-settings-page__main">
+                @if (!string.IsNullOrEmpty(SectionTitle))
+                {
+                    <div class="dsv2-settings-page__section-header">
+                        @if (!string.IsNullOrEmpty(SectionIcon))
+                        {
+                            <i class="bi @SectionIcon dsv2-settings-page__section-icon"
+                               aria-hidden="true"></i>
+                        }
+                        <div>
+                            <h2 class="dsv2-settings-page__section-title">@SectionTitle</h2>
+                            @if (!string.IsNullOrEmpty(SectionDescription))
+                            {
+                                <p class="dsv2-settings-page__section-desc">@SectionDescription</p>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="dsv2-settings-page__groups">
+                    @BodyContent
+                </div>
+            </div>
+        </div>
+    </BodyContent>
+
+</PageTemplateV2>
+
+@* =========================================================================
+   Section: Parameters
+   ========================================================================= *@
+@code {
+    // -------------------------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------------------------
+    /// <summary>Page heading shown in the title bar (e.g. "System Settings").</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+
+    /// <summary>Optional sub-section title rendered above the settings groups.</summary>
+    [Parameter] public string? SectionTitle { get; set; }
+
+    /// <summary>Optional Bootstrap icon beside the section title.</summary>
+    [Parameter] public string? SectionIcon { get; set; }
+
+    /// <summary>Optional sub-section description rendered beneath the section title.</summary>
+    [Parameter] public string? SectionDescription { get; set; }
+
+    /// <summary>Optional left navigation panel (e.g. a list of settings categories).</summary>
+    [Parameter] public RenderFragment? NavContent { get; set; }
+
+    /// <summary>Action buttons in the title bar (e.g. Save All).</summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+
+    /// <summary>One or more SettingsGroupV2 components.</summary>
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+
+    // -------------------------------------------------------------------------
+
+    // Helpers
+
+    // -------------------------------------------------------------------------
+    private string PageClass()
+    {
+        var cls = "dsv2-settings-page";
+        if (NavContent is not null) cls += " dsv2-settings-page--with-nav";
+        return cls;
+    }
+}
