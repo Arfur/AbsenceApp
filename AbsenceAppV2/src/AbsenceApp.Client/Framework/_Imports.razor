@@ -2,13 +2,16 @@
    File        : _Imports.razor
    Namespace   : AbsenceApp.Client.Framework
    Author      : Michael
-   Version     : 1.2.0
+   Version     : 1.3.1
    Created     : 2026-03-21
-   Updated     : 2026-03-24
+   Updated     : 2026-03-25
    ---------------------------------------------------------------------------
    Purpose     : Global using directives for all Razor components in the
-                 Framework subtree. Mirrors the required framework and BCL
-                 namespaces from Components/_Imports.razor.
+                 Framework subtree. Provides shared imports for layout
+                 primitives, page templates, and reusable UI building blocks.
+                 Mirrors essential BCL and Blazor namespaces from
+                 Components/_Imports.razor while remaining independent of
+                 Modules and page-level dependencies.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation.
@@ -16,9 +19,13 @@
      - 1.2.0  2026-03-24  Updated namespaces after folder renames:
                           - FrameworkV2 → Framework
                           - PageTemplatesV2 → PageTemplates
+     - 1.3.1  2026-03-25  Removed invalid V2 namespace imports that did not
+                          exist in the project. Framework now only imports
+                          existing component namespaces.
    ---------------------------------------------------------------------------
    Notes       :
-     None.
+     - Keep Framework independent of Modules and Pages.
+     - Only include namespaces required by shared UI infrastructure.
    ===========================================================================
 *@
 
@@ -31,4 +38,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 
+@* Shared component imports *@
 @using AbsenceApp.Client.Components.PageTemplates
+@using AbsenceApp.Client.Components.Layout
+@using AbsenceApp.Client.Components.Table

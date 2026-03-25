@@ -2,13 +2,16 @@
    File        : _Imports.razor
    Namespace   : AbsenceApp.Client.Components
    Author      : Michael
-   Version     : 1.2.0
+   Version     : 1.3.0
    Created     : 2026-03-13
-   Updated     : 2026-03-24
+   Updated     : 2026-03-25
    ---------------------------------------------------------------------------
-   Purpose     : Global using directives for all Razor components in this
-                 project. Namespaces listed here are automatically available
-                 in every .razor file without explicit @using statements.
+   Purpose     : Global using directives for all Razor components in the
+                 Components/ folder. These imports provide shared access to
+                 core application namespaces used by reusable UI components.
+                 This file intentionally excludes V2 page-level namespaces
+                 (Framework.V2, PageTemplates, etc.) to keep Components
+                 independent and reusable across Modules and Pages.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-13  Initial implementation.
@@ -19,12 +22,14 @@
                           - TableV2 → Table
                           - FrameworkV2 → Framework
                           - ModulesV2 → Modules
+     - 1.3.0  2026-03-25  Removed V2 page-level imports to maintain proper
+                          separation of concerns. Components now reference
+                          only shared UI and application namespaces.
    ---------------------------------------------------------------------------
    Notes       :
      - Blazor automatically processes this file; do not add markup or
        directives other than @using, @inject, and similar non-render items.
-     - Add new project namespaces here to avoid repetitive @using lines
-       across individual page files.
+     - Keep this file focused on shared component dependencies only.
    ===========================================================================
 *@
 
