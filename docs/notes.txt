@@ -1,0 +1,28 @@
+.\tray-01-start.bat --skipCollectors
+
+AI response. What should we get the AI to do next. Make sure there is no guessing, making assumptions or hallucinating. 
+
+
+AI response. Tell me the next safe step. Analyse only the code I have provided. Do not guess, do not assume, and do not hallucinate anything that is not explicitly in the file. If the task involves modifying code, remind me to test the app first before applying any changes.
+
+
+"All Finished"
+
+Can you read this, just acknowledge?
+
+Username: mbattle
+Password: Admin1234
+
+I am testing 'All Students' table.
+1. When I make the App Screen width too small to fit the Table horizontally, a 'Horizontal Scrollbar' should appear, which I have asked for at leat 6 times, but it is still no
+
+
+build
+cd C:\DevAbsence1
+dotnet build src\AbsenceApp.Client -f net8.0-windows10.0.19041.0 -c Debug 2>&1 |
+    Select-String -Pattern "error|warning|Build succeeded|failed" |
+    Select-Object -Last 20
+
+dotnet run --project src\AbsenceApp.Client -c Debug -f net8.0-windows10.0.19041.0
+
+
