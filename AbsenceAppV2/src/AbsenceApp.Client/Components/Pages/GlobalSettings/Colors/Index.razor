@@ -1,0 +1,30 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Colors
+   Route       : /global-settings/colors
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-26
+   ---------------------------------------------------------------------------
+   Purpose     : Global Settings — Colors configuration page.
+                 Displays a hard-coded preview of the current colour palette
+                 via IDesignSystemService. No editing. No JSON loading.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
+   ===========================================================================
+*@
+
+@page "/global-settings/colours"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@using AbsenceApp.Client.Services.DesignSystem
+@using AbsenceApp.Client.Components.Templates
+@inject IDesignSystemService DesignSystem
+
+<BlankPageTemplate PageTitle="Colors — Global Settings">
+    <ChildContent>
+        <p class="gs-preview-label">Current preview</p>
+        <p class="gs-preview-value">@DesignSystem.GetColorPreview()</p>
+        <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
+    </ChildContent>
+</BlankPageTemplate>

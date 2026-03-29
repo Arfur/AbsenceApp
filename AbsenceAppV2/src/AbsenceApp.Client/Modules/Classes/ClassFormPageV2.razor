@@ -1,17 +1,21 @@
 @* ===========================================================================
    File        : ClassFormPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Classes
+   Namespace   : AbsenceApp.Client.Modules.Classes
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
-   Purpose     : V2 Class add/edit form page. Uses FormPageV2 and FormSectionV2
-                 components for the create and edit workflows. Delegates form
-                 state and API calls to ClassFormViewModelV2.
+   Purpose     : V2 Class add/edit form page. Uses the V2 PageTemplateV2
+                 primitive instead of deprecated FormPageV2 and FormSectionV2.
+                 Delegates form state and API calls to ClassFormViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced FormPageV2 + FormSectionV2 with PageTemplateV2.
+                          Updated namespace and layout. Preserved all bindings
+                          and ViewModel logic.
    ---------------------------------------------------------------------------
    Notes       :
      - Routes: /v2/classes/new (add), /v2/classes/{Id:long}/edit (edit)
@@ -21,34 +25,50 @@
 
 @page "/v2/classes/new"
 @page "/v2/classes/{Id:long}/edit"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Classes
+
 @using AbsenceApp.Client.ViewModels.V2
 @inject ClassFormViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Class form
-   ========================================================================= *@
-<FormPageV2 PageTitle="@PageTitle"
-            BackHref="@BackHref"
-            BackLabel="@BackLabel"
-            SubmitLabel="Save Class"
-            BusyLabel="Saving�"
-            CancelLabel="Cancel"
-            IsBusy="ViewModel.IsBusy"
-            OnSubmit="OnSave"
-            OnCancel="OnCancel">
+<PageTemplateV2 PageTitleText="@PageTitle">
 
-    <BodyContent>
+    <ActionsContent>
+        <button class="dsv2-btn dsv2-btn--primary"
+                disabled="@ViewModel.IsBusy"
+                @onclick="OnSave">
+            @(ViewModel.IsBusy ? "Saving…" : "Save Class")
+        </button>
+
+        <button class="dsv2-btn dsv2-btn--secondary"
+                disabled="@ViewModel.IsBusy"
+                @onclick="OnCancel">
+            Cancel
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">
+                @ViewModel.Error
+            </div>
         }
 
-        <FormSectionV2 Title="Class Details" Icon="bi-mortarboard" Columns="2">
-            <BodyContent>
+        @* ---------------------------------------------------------------
+           Class Details
+           --------------------------------------------------------------- *@
+        <section class="dsv2-form-section">
+            <header class="dsv2-form-section__header">
+                <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                <h2 class="dsv2-form-section__title">Class Details</h2>
+            </header>
+
+            <div class="dsv2-form-section__body dsv2-grid-2col">
+
                 <div class="dsv2-form-field">
                     <label class="dsv2-form-label" for="name">Name</label>
                     <input id="name" type="text" class="dsv2-form-input"
@@ -62,15 +82,14 @@
                            @bind="@ViewModel.Description"
                            placeholder="Optional description" />
                 </div>
-            </BodyContent>
-        </FormSectionV2>
-    </BodyContent>
 
-</FormPageV2>
+            </div>
+        </section>
 
-@* =========================================================================
-   Section: ViewModel wiring and form submission
-   ========================================================================= *@
+    </ChildContent>
+
+</PageTemplateV2>
+
 @code {
     [Parameter] public long? Id { get; set; }
 
@@ -82,6 +101,7 @@
     protected override async Task OnParametersSetAsync()
     {
         AppState.SetBreadcrumb("Classes", PageTitle);
+
         if (IsNew)
             ViewModel.LoadForCreate();
         else
@@ -91,7 +111,8 @@
     private async Task OnSave()
     {
         bool ok = await ViewModel.SaveAsync();
-        if (ok) Nav.NavigateTo("/v2/classes");
+        if (ok)
+            Nav.NavigateTo("/v2/classes");
     }
 
     private void OnCancel() =>

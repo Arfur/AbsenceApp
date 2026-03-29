@@ -3,9 +3,9 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /login
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.4.0
    Created     : 2026-03-17
-   Updated     : 2026-03-24
+   Updated     : 2026-03-29
    ---------------------------------------------------------------------------
    Purpose     : Authentication page for V2. Migrated from V1 and integrated
                  into the new V2 component structure and design-system shell.
@@ -14,10 +14,28 @@
      - 1.0.0  2026-03-17  Initial implementation (V1).
      - 1.1.0  2026-03-18  Updated @bind:event behaviour.
      - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
+     - 2.1.0  2026-03-25  Updated post-login navigation target to /v2/students.
+     - 2.2.0  2026-03-26  Replaced obsolete 'LoginLayout' with 'BaseLayoutV2'
+                          following removal of V1/V1.5 layout folders.
+                          No UI or behavioural changes.
+     - 2.3.0  2026-03-26  Phase 3 Layout Repair: changed post-login redirect
+                          from /v2/students to /v2/dashboard so that after
+                          login the user lands on the primary dashboard view.
+                          BaseLayoutV2 now hides the sidebar/header when not
+                          authenticated, so Login renders as a clean form.
+     - 2.4.0  2026-03-29  Phase 3 & 4 completion: changed @layout from
+                          BaseLayoutV2 to MainLayoutV2. Behaviour is identical
+                          (sidebar/header hidden when !IsAuthenticated); naming
+                          now matches the canonical V2 layout convention.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
+     - Redirects authenticated users to /v2/dashboard.
    ===========================================================================
 *@
+
 @page "/login"
-@layout LoginLayout
+@layout MainLayoutV2
 @inject NavigationManager Nav
 @inject IAuthService AuthService
 @inject AppStateService AppState
@@ -97,7 +115,7 @@
     protected override void OnInitialized()
     {
         if (AppState.IsAuthenticated)
-            Nav.NavigateTo("/dashboard/overview", replace: true);
+            Nav.NavigateTo("/v2/dashboard/overview", replace: true);
     }
 
     async Task DoLogin()
@@ -107,7 +125,7 @@
         if (result.Success)
         {
             AppState.SetUser(result.UserId, result.UserName, result.Role);
-            Nav.NavigateTo("/dashboard/overview");
+            Nav.NavigateTo("/v2/dashboard/overview");
         }
         else
         {

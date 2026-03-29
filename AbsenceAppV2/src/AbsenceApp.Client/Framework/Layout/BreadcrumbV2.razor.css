@@ -1,0 +1,80 @@
+/* =============================================================================
+   File    : BreadcrumbV2.razor.css
+   Project : AbsenceApp.Client
+   Author  : AI Assistant
+   Version : 1.2.0
+   Phase   : V2 Design System — Phase 3
+   Created : 2026-03-21
+   Updated : 2026-03-27
+   Purpose : Scoped styles for BreadcrumbV2.razor.
+             v1.2.0: RIGHT side (.dsv2-breadcrumb__trail) right-aligned.
+   Changes :
+     - 1.0.0  2026-03-21  Initial implementation (single-rail ol/li breadcrumb).
+     - 1.1.0  2026-03-27  Phase 3 Shell Fix: redesigned for the two-part layout
+                          matching the V2 spec. Added __category (left), __trail
+                          (right container), __segment (group label), __current
+                          (active page). Removed unused __list and __item rules.
+     - 1.2.0  2026-03-27  Phase 3 Issue Fixes: added justify-content: flex-end
+                          to .dsv2-breadcrumb__trail so the nav trail is
+                          right-aligned within the breadcrumb bar.
+============================================================================= */
+
+/* ── Bar container ─────────────────────────────────────────────────── */
+.dsv2-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 6px 20px;
+    background: var(--chrome-bg, #f5f6f8);
+    border-bottom: 1px solid var(--border, #dde1e7);
+    min-height: 34px;
+    flex-shrink: 0;
+}
+
+/* ── LEFT: category label ──────────────────────────────────────────── */
+/* e.g. "PEOPLE", "ACADEMICS", "CONFIGURATION", "Dashboard"            */
+.dsv2-breadcrumb__category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted, #7b8494);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ── RIGHT: nav trail ──────────────────────────────────────────────── */
+/* Contains segment + optional separator + current page label           */
+.dsv2-breadcrumb__trail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+}
+
+/* Group / section label (e.g. "Students", "Buttons") */
+.dsv2-breadcrumb__segment {
+    font-size: 0.8rem;
+    color: var(--text-muted, #7b8494);
+    white-space: nowrap;
+}
+
+/* Active / current page label (e.g. "All Students", "Global Settings") */
+.dsv2-breadcrumb__current {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text, #2c3345);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Chevron between segment and current */
+.dsv2-breadcrumb__sep {
+    font-size: 0.6rem;
+    color: var(--text-muted, #7b8494);
+    flex-shrink: 0;
+}
+

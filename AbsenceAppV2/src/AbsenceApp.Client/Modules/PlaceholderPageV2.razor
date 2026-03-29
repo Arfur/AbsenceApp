@@ -2,9 +2,9 @@
    File        : PlaceholderPageV2.razor
    Namespace   : AbsenceApp.Client.ModulesV2
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.2.0
    Created     : 2026-03-24
-   Updated     : 2026-03-24
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : Shared placeholder page for all V2 routes that are defined in
                  menu.json with status "Planned" but do not yet have a full
@@ -15,6 +15,16 @@
    Changes     :
      - 1.0.0  2026-03-24  Initial implementation covering all planned routes
                           from menu.json that have no dedicated module page.
+     - 1.0.1  2026-03-25  Removed invalid @using Components.PageTemplatesV2 and/or
+                          Components.TableV2. These components are provided via
+                          the correct Framework namespaces through Modules/_Imports.razor.
+     - 1.1.0  2026-03-26  Removed obsolete fully-qualified layout directive
+                          'AbsenceApp.Client.Components.Layout.MainLayoutV2'
+                          and replaced with 'MainLayoutV2' to align with V2
+                          Framework layout structure. No functional changes.
+     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout BaseLayoutV2;
+                          MainLayoutV2 no longer exists — BaseLayoutV2 is the
+                          V2 authenticated-shell layout (CS0246 build error fix).
    ---------------------------------------------------------------------------
    Notes       :
      - DO NOT add Live routes here — Live routes must have dedicated pages.
@@ -62,17 +72,16 @@
 @page "/v2/system/config/table-defaults"
 @page "/v2/system/config/spacing"
 
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+@layout BaseLayoutV2
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
 @* =========================================================================
    Section: Coming soon placeholder
    ========================================================================= *@
-<StandardPageV2 PageTitle="Coming Soon">
+<PageTemplateV2 PageTitleText="Coming Soon">
 
-    <BodyContent>
+    <ChildContent>
         <div class="dsv2-placeholder">
             <i class="bi bi-tools dsv2-placeholder__icon" aria-hidden="true"></i>
             <h2 class="dsv2-placeholder__title">Feature in Development</h2>
@@ -84,9 +93,9 @@
                 <i class="bi bi-arrow-left" aria-hidden="true"></i> Go Back
             </a>
         </div>
-    </BodyContent>
+    </ChildContent>
 
-</StandardPageV2>
+</PageTemplateV2>
 
 @* =========================================================================
    Section: Code-behind

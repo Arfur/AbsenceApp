@@ -1,0 +1,442 @@
+﻿@* ===========================================================================
+   File        : SidebarV2.razor
+   Namespace   : AbsenceApp.Client.Components.LayoutV2
+   Author      : AI Assistant
+   Version     : 1.7.0
+   Created     : 2026-03-21
+   Updated     : 2026-03-29
+   ---------------------------------------------------------------------------
+   Purpose     : V2 collapsible sidebar. Loads navigation categories from
+                 menu.json via NavigationServiceV2. Renders category section
+                 headers and accordion menu groups. When the current route
+                 starts with /global-settings/, loads the Global Settings
+                 menu via NavigationServiceV2 and shows a 'Back to Main Menu'
+                 link. Parallel to the V1 SideBar.razor.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-25  Confirmed as dedicated V2 sidebar.
+     - 1.2.0  2026-03-26  Added menu switching for /global-settings/ routes.
+     - 1.3.0  2026-03-26  Phase 3 Part 1: fixed OnLocationChanged to also
+                          update _openGroup on navigation.
+     - 1.4.0  2026-03-27  Phase 3 Part 2:
+                          (a) Switched to GetMenuCategoriesAsync().
+                          (b) Added flat group support.
+                          (c) Added HandleGroupClick for Global Config.
+                          (d) Improved active-route detection.
+                          (e) Extracted GetCleanPath helper.
+     - 1.6.0  2026-03-28  Phase 4 Fix: removed hardcoded "Global Config" special
+                          case in HandleGroupClick that incorrectly navigated to
+                          /global-settings/buttons (superadmin route). Global Config
+                          now expands as a regular accordion showing /global-config/*
+                          subitems. menu.json simultaneously fixed to correct
+                          categories format required by NavigationServiceV2.
+                          (a) Added 'Back to Main Menu' link at top of the
+                              superadmin sidebar so users can return without
+                              relying on the browser back button.
+                          (b) HandleGroupClick now navigates to the first
+                              item's href when OPENING a group so the default
+                              sub-menu is automatically highlighted.
+                          (c) Fixed ItemIsActive: when any menu item exactly
+                              matches the current path, ONLY exact matches are
+                              used — stopping sibling routes (e.g. /v2/dashboard)
+                              from incorrectly matching /v2/dashboard/safeguarding
+                              via the StartsWith prefix rule.
+                          (d) Added ComputeRouteMatch() called after every
+                              navigation to cache the exact-match flag.
+     - 1.6.1  2026-03-29  Fixed invalid call to GetMenuGroupsAsync(string).
+                          Sidebar now correctly calls
+                          GetSuperAdminMenuGroupsAsync() when loading the
+                          Global Settings menu.
+     - 1.6.2  2026-03-29  Fixed MenuItemModel rendering to use Title instead
+                          of non-existent Label property in submenu items.
+     - 1.7.0  2026-03-29  Goal E: added _loadError field and try/catch in
+                          LoadMenuAsync so any load failure renders a visible
+                          error placeholder instead of a blank sidebar.
+                          Added explicit empty-state placeholder when
+                          _superAdminGroups is non-null but empty.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Must only be used in V2 layouts (BaseLayoutV2).
+     - Sidebar collapse state and user info come from AppStateService.
+   ===========================================================================
+*@
+
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Models.V2
+@inject NavigationServiceV2 NavService
+@inject AppStateService AppState
+@inject NavigationManager Nav
+@implements IDisposable
+
+<aside class="@SidebarClass" aria-label="Main navigation">
+
+    @* =========================
+       SECTION: User panel
+       ========================= *@
+    <div class="dsv2-sidebar__user @(AppState.SidebarCollapsed ? "dsv2-sidebar__user--collapsed" : "")">
+        <div class="dsv2-sidebar__avatar">
+            @(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")
+        </div>
+        @if (!AppState.SidebarCollapsed)
+        {
+            <div class="dsv2-sidebar__user-info">
+                <span class="dsv2-sidebar__user-name">@AppState.UserName</span>
+                <span class="dsv2-sidebar__user-role">@AppState.UserRole</span>
+            </div>
+        }
+    </div>
+
+    @* =========================
+       SECTION: Navigation
+       ========================= *@
+    <nav class="dsv2-sidebar__nav">
+
+        @if (_isSuperAdminMenu)
+        {
+            @* =========================
+               SECTION: Back to Main Menu
+               Link rendered only in superadmin mode so users can
+               navigate back to the normal sidebar without browser back.
+               ========================= *@
+            <a class="dsv2-sidebar__back-link" href="/v2/dashboard"
+               title="@(AppState.SidebarCollapsed ? "Main Menu" : null)">
+                <i class="bi bi-arrow-left-circle dsv2-sidebar__item-icon"></i>
+                @if (!AppState.SidebarCollapsed)
+                {
+                    <span class="dsv2-sidebar__item-label">Main Menu</span>
+                }
+            </a>
+
+            @if (_loadError is not null)
+            {
+                @* Visible error — never silently blank *@
+                <div class="dsv2-sidebar__error">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    @if (!AppState.SidebarCollapsed)
+                    {
+                        <span>Menu failed to load</span>
+                    }
+                </div>
+            }
+            else if (_superAdminGroups is null || _superAdminGroups.Count == 0)
+            {
+                @* Visible empty state — never silently blank *@
+                <div class="dsv2-sidebar__loading">
+                    <i class="bi bi-inbox"></i>
+                    @if (!AppState.SidebarCollapsed) { <span>No menu items</span> }
+                </div>
+            }
+            else
+            {
+                @* Global Config accordion groups *@
+                @RenderGroups(_superAdminGroups)
+            }
+        }
+        else if (_loadError is not null)
+        {
+            @* Visible error placeholder for main menu load failure *@
+            <div class="dsv2-sidebar__error">
+                <i class="bi bi-exclamation-triangle"></i>
+                @if (!AppState.SidebarCollapsed) { <span>Menu failed to load</span> }
+            </div>
+        }
+        else if (_menuCategories is not null)
+        {
+            @* Normal menu: category headers → groups *@
+            @foreach (var cat in _menuCategories)
+            {
+                @if (!string.IsNullOrWhiteSpace(cat.Category) && !AppState.SidebarCollapsed)
+                {
+                    <div class="dsv2-sidebar__category-label">@cat.Category</div>
+                }
+                @RenderGroups(cat.Groups)
+            }
+        }
+        else
+        {
+            @* Loading state *@
+            <div class="dsv2-sidebar__loading">
+                <i class="bi bi-arrow-clockwise"></i>
+                @if (!AppState.SidebarCollapsed) { <span>Loading…</span> }
+            </div>
+        }
+
+    </nav>
+</aside>
+
+@* =========================
+   SECTION: Group rendering helper
+   Renders a list of groups as accordion buttons + optional submenus.
+   ========================= *@
+@code {
+    private RenderFragment RenderGroups(IEnumerable<MenuGroupModel> groups) =>
+        __builder =>
+        {
+            foreach (var group in groups)
+            {
+                var isOpen   = _openGroup == group.Group;
+                var isActive = GroupIsActive(group);
+
+                if (group.Flat && group.Items.Count > 0)
+                {
+                    @* Flat group: render as a direct navigation link *@
+                    var flatHref = group.Items[0].Href;
+                    var flatActive = ItemIsActive(flatHref);
+                    __builder.OpenElement(0, "a");
+                    __builder.AddAttribute(1, "href", flatHref);
+                    __builder.AddAttribute(2, "class",
+                        "dsv2-sidebar__group-btn dsv2-sidebar__group-btn--flat " +
+                        (flatActive ? "dsv2-sidebar__group-btn--active" : ""));
+                    __builder.AddAttribute(3, "title",
+                        AppState.SidebarCollapsed ? group.Group : null);
+                    __builder.OpenElement(4, "i");
+                    __builder.AddAttribute(5, "class", "bi " + group.Icon + " dsv2-sidebar__item-icon");
+                    __builder.CloseElement();
+                    if (!AppState.SidebarCollapsed)
+                    {
+                        __builder.OpenElement(6, "span");
+                        __builder.AddAttribute(7, "class", "dsv2-sidebar__item-label");
+                        __builder.AddContent(8, group.Group);
+                        __builder.CloseElement();
+                    }
+                    __builder.CloseElement();
+                }
+                else
+                {
+                    @* Accordion group: toggle button + submenu *@
+                    __builder.OpenElement(0, "button");
+                    __builder.AddAttribute(1, "class",
+                        "dsv2-sidebar__group-btn " +
+                        (isActive ? "dsv2-sidebar__group-btn--active" : "") + " " +
+                        (isOpen   ? "dsv2-sidebar__group-btn--open"   : ""));
+                    __builder.AddAttribute(2, "onclick",
+                        EventCallback.Factory.Create(this, () => HandleGroupClick(group)));
+                    __builder.AddAttribute(3, "title",
+                        AppState.SidebarCollapsed ? group.Group : null);
+                    __builder.OpenElement(4, "i");
+                    __builder.AddAttribute(5, "class", "bi " + group.Icon + " dsv2-sidebar__item-icon");
+                    __builder.CloseElement();
+                    if (!AppState.SidebarCollapsed)
+                    {
+                        __builder.OpenElement(6, "span");
+                        __builder.AddAttribute(7, "class", "dsv2-sidebar__item-label");
+                        __builder.AddContent(8, group.Group);
+                        __builder.CloseElement();
+                        __builder.OpenElement(9, "i");
+                        __builder.AddAttribute(10, "class", "bi bi-chevron-right dsv2-sidebar__chevron");
+                        __builder.CloseElement();
+                    }
+                    __builder.CloseElement(); // button
+
+                    if (isOpen && !AppState.SidebarCollapsed)
+                    {
+                        __builder.OpenElement(11, "div");
+                        __builder.AddAttribute(12, "class", "dsv2-sidebar__submenu");
+                        foreach (var item in group.Items)
+                        {
+                            var active = ItemIsActive(item.Href);
+                            __builder.OpenElement(13, "a");
+                            __builder.AddAttribute(14, "href", item.Href);
+                            __builder.AddAttribute(15, "class",
+                                "dsv2-sidebar__sublink " +
+                                (active ? "dsv2-sidebar__sublink--active" : ""));
+                            __builder.AddAttribute(16, "title", item.Description);
+                            __builder.OpenElement(17, "i");
+                            __builder.AddAttribute(18, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
+                            __builder.CloseElement();
+                            __builder.OpenElement(19, "span");
+                            __builder.AddAttribute(20, "class", "dsv2-sidebar__item-label");
+                            __builder.AddContent(21, item.Title);
+                            __builder.CloseElement();
+                            if (item.Status != "Live")
+                            {
+                                __builder.OpenElement(22, "span");
+                                __builder.AddAttribute(23, "class",
+                                    "dsv2-sidebar__status-badge dsv2-sidebar__status-badge--" +
+                                    item.Status.ToLower());
+                                __builder.AddContent(24, item.Status);
+                                __builder.CloseElement();
+                            }
+                            __builder.CloseElement(); // a
+                        }
+                        __builder.CloseElement(); // div.submenu
+                    }
+                }
+            }
+        };
+}
+
+@code {
+    // -------------------------------------------------------------------------
+    // State
+    // -------------------------------------------------------------------------
+    private List<MenuCategoryModel>? _menuCategories;   // normal menu
+    private List<MenuGroupModel>?    _superAdminGroups; // global-settings flat groups
+    private bool   _isSuperAdminMenu;
+    private string? _loadError;  // non-null when last menu load threw
+    private string  _openGroup  = string.Empty;
+    private string currentPath = string.Empty;
+    /// <summary>True when the current path exactly equals at least one menu item href.</summary>
+    private bool   _anyExactRouteMatch;
+
+    private IEnumerable<MenuGroupModel> EffectiveGroups =>
+        _isSuperAdminMenu
+            ? (_superAdminGroups ?? [])
+            : (_menuCategories?.SelectMany(c => c.Groups) ?? []);
+
+    // -------------------------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------------------------
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.OnChange += StateHasChanged;
+        Nav.LocationChanged += OnLocationChanged;
+        currentPath = GetCleanPath(Nav.Uri);
+        await LoadMenuAsync(currentPath);
+        ComputeRouteMatch();
+        AutoOpenGroup();
+    }
+
+    private void OnLocationChanged(
+        object? sender,
+        Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        currentPath = GetCleanPath(e.Location);
+        _ = InvokeAsync(async () =>
+        {
+            await LoadMenuAsync(currentPath);
+            ComputeRouteMatch();
+            AutoOpenGroup();
+        });
+        StateHasChanged();        
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+
+    // -------------------------------------------------------------------------
+    // Menu loading
+    // -------------------------------------------------------------------------
+
+    private async Task LoadMenuAsync(string path)
+    {
+        _isSuperAdminMenu = path.StartsWith("/global-settings/",
+            StringComparison.OrdinalIgnoreCase);
+        _loadError = null;
+
+        try
+        {
+            if (_isSuperAdminMenu)
+            {
+                _superAdminGroups = await NavService.GetGlobalSettingsMenuGroupsAsync();
+                _menuCategories   = null;
+            }
+            else
+            {
+                _menuCategories   = await NavService.GetMenuCategoriesAsync();
+                _superAdminGroups = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _loadError = ex.Message;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Group expand / navigation
+    // -------------------------------------------------------------------------
+
+    private void HandleGroupClick(MenuGroupModel group)
+    {
+        // Toggle accordion: one group open at a time.
+        bool isOpening = _openGroup != group.Group;
+        _openGroup = isOpening ? group.Group : string.Empty;
+
+        // When opening a new group, navigate to its first item so the
+        // default sub-menu entry is automatically highlighted via
+        // route-based active detection.
+        if (isOpening && group.Items.Count > 0)
+        {
+            Nav.NavigateTo(group.Items[0].Href);
+        }
+    }
+
+    /// <summary>Expand the first group whose items contain the current path.</summary>
+    private void AutoOpenGroup()
+    {
+        var match = EffectiveGroups.FirstOrDefault(g =>
+            g.Items.Any(i => ItemIsActive(i.Href)));
+        if (match is not null)
+            _openGroup = match.Group;
+    }
+
+    // -------------------------------------------------------------------------
+    // Active-route helpers
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// A group is active when any of its items matches the current path.
+    /// </summary>
+    private bool GroupIsActive(MenuGroupModel group) =>
+        group.Items.Any(i => ItemIsActive(i.Href));
+
+    /// <summary>
+    /// Caches whether any menu item's href EXACTLY equals the current path.
+    /// Must be called after each menu load and after each navigation.
+    /// </summary>
+    private void ComputeRouteMatch()
+    {
+        _anyExactRouteMatch = EffectiveGroups
+            .SelectMany(g => g.Items)
+            .Any(i => currentPath.Equals(i.Href, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// An item is active when:
+    ///   • (preferred) Its href exactly equals the current path.
+    ///   • (fallback)  The current path starts with href + "/" — used to
+    ///                 highlight a parent item for un-listed sub-pages
+    ///                 (e.g. /v2/students/123 highlights "All Students" at /v2/students).
+    ///
+    /// When ANY item in the menu exactly matches the current path, ONLY
+    /// exact matches are used. This prevents sibling routes such as
+    /// /v2/dashboard from incorrectly matching /v2/dashboard/safeguarding
+    /// via the StartsWith prefix rule.
+    /// </summary>
+    private bool ItemIsActive(string href)
+    {
+        if (_anyExactRouteMatch)
+            return currentPath.Equals(href, StringComparison.OrdinalIgnoreCase);
+
+        return href.Length > 1 &&
+               currentPath.StartsWith(href + "/", StringComparison.OrdinalIgnoreCase);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    private string GetCleanPath(string uri)
+    {
+        var path = Nav.ToBaseRelativePath(uri);
+        if (!path.StartsWith("/")) path = "/" + path;
+        // Strip query string and fragment.
+        var q = path.IndexOf('?');
+        if (q >= 0) path = path[..q];
+        var h = path.IndexOf('#');
+        if (h >= 0) path = path[..h];
+        return path;
+    }
+
+    private string SidebarClass => string.Join(" ", new[]
+    {
+        "dsv2-sidebar",
+        AppState.SidebarCollapsed ? "dsv2-sidebar--collapsed" : null
+    }.Where(c => c is not null));
+}

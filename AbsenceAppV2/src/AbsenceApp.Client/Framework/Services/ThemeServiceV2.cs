@@ -26,6 +26,7 @@
 */
 
 using AbsenceApp.Client.Models.Theming;
+using AbsenceApp.Client.Services;
 using System.Text.Json.Nodes;
 
 namespace AbsenceApp.Client.FrameworkV2.Services;

@@ -1,18 +1,20 @@
 @* ===========================================================================
    File        : ThemeSettingPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Settings
+   Namespace   : AbsenceApp.Client.Modules.Settings
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-24
-   Updated     : 2026-03-24
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Theme Settings page. Allows Super Admin users to customise
-                 application colour theme and branding. Uses StandardPageV2
-                 shell. Full implementation pending design-system phase.
+                 application colour theme and branding. Uses the V2
+                 PageTemplateV2 primitive instead of deprecated StandardPageV2.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-24  Initial implementation. Route /v2/settings/theme
-                          added to match menu.json v4.0.0 (Live item).
+     - 1.0.0  2026-03-24  Initial implementation. Route /v2/settings/theme added.
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
+                          Updated namespace and layout. No behavioural changes.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/settings/theme
@@ -21,32 +23,29 @@
 *@
 
 @page "/v2/settings/theme"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Settings
+
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Theme settings page
-   ========================================================================= *@
-<StandardPageV2 PageTitle="Theme Colours">
+<PageTemplateV2 PageTitleText="Theme Colours">
 
-    <BodyContent>
+    <ChildContent>
         <div class="dsv2-placeholder">
             <i class="bi bi-palette dsv2-placeholder__icon" aria-hidden="true"></i>
+
             <h2 class="dsv2-placeholder__title">Theme Configuration</h2>
+
             <p class="dsv2-placeholder__message">
                 Colour palette, typography, and branding customisation tools
                 will be available here in an upcoming release.
             </p>
         </div>
-    </BodyContent>
+    </ChildContent>
 
-</StandardPageV2>
+</PageTemplateV2>
 
-@* =========================================================================
-   Section: Code-behind
-   ========================================================================= *@
 @code {
     protected override void OnInitialized()
     {

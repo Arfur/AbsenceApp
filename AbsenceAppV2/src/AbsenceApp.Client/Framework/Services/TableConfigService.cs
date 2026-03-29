@@ -18,6 +18,7 @@
 */
 
 using AbsenceApp.Client.Models.TableV2;
+using AbsenceApp.Client.Services;
 using System.Text.Json;
 
 namespace AbsenceApp.Client.FrameworkV2.Services;

@@ -16,7 +16,9 @@
      - Route(s): /v2/table-settings/{SchemaKey}
    ===========================================================================
 *@
-@* @page directive removed — canonical route lives in Components/TableV2/TableSettingsPageV2.razor *@
+@* @page directive restored — Components/TableV2/TableSettingsPageV2.razor does not exist *@
+@page "/v2/table-settings/{SchemaKey}"
+@page "/v2/settings/table-settings"
 @using AbsenceApp.Client.Models.TableV2
 @using AbsenceApp.Client.Services.TableV2
 @using AbsenceApp.Client.ViewModels.V2

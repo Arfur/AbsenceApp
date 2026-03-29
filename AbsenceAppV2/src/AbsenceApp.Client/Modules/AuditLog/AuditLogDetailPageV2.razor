@@ -2,9 +2,9 @@
    File        : AuditLogDetailPageV2.razor
    Namespace   : AbsenceApp.Client.ModulesV2.AuditLog
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.2.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Audit Log detail page. Read-only view of a single audit log
                  entry using DetailPageV2 and DetailSectionV2 components.
@@ -12,6 +12,19 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid @using Components.PageTemplatesV2 and/or
+                          Components.TableV2. These components are provided via
+                          the correct Framework namespaces through Modules/_Imports.razor.
+     - 1.1.0  2026-03-26  Replaced fully-qualified layout
+                          'AbsenceApp.Client.Components.Layout.MainLayoutV2'
+                          with 'MainLayoutV2' to remove dependency on the
+                          obsolete Components.Layout namespace. Added explicit
+                          @using for Framework page templates so DetailPageV2
+                          and DetailSectionV2 resolve correctly. Normalised UI
+                          text encoding. No functional changes.
+     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout BaseLayoutV2;
+                          MainLayoutV2 no longer exists — BaseLayoutV2 is the
+                          V2 authenticated-shell layout (CS0246 build error fix).
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/auditlog/{Id:long}
@@ -20,23 +33,29 @@
 *@
 
 @page "/v2/auditlog/{Id:long}"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+
+@using AbsenceApp.Client.Framework.PageTemplates
 @using AbsenceApp.Client.ViewModels.V2
+
+@layout BaseLayoutV2
 @inject AuditLogDetailViewModelV2 ViewModel
 @inject AppStateService AppState
 
 @* =========================================================================
    Section: Audit log detail
    ========================================================================= *@
-<DetailPageV2 PageTitle="@PageTitle"
-              BackHref="/v2/auditlog"
-              BackLabel="Audit Log">
+<PageTemplateV2 PageTitleText="@PageTitle">
 
-    <BodyContent>
+    <ActionsContent>
+        <a href="/v2/auditlog" class="dsv2-btn dsv2-btn--secondary dsv2-btn--sm">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Audit Log
+        </a>
+    </ActionsContent>
+
+    <ChildContent>
         @if (ViewModel.IsLoading)
         {
-            <p class="dsv2-loading-text">Loading�</p>
+            <p class="dsv2-loading-text">Loading...</p>
         }
         else if (ViewModel.Error is not null)
         {
@@ -46,8 +65,12 @@
         {
             var entry = ViewModel.Item;
 
-            <DetailSectionV2 Title="Audit Entry" Icon="bi-shield-check">
-                <BodyContent>
+            <section class="dsv2-detail-section">
+                <h2 class="dsv2-detail-section__title">
+                    <i class="bi bi-shield-check" aria-hidden="true"></i>
+                    Audit Entry
+                </h2>
+                <div class="dsv2-detail-grid">
                     <span class="dsv2-detail-label">Audit ID</span>
                     <span class="dsv2-detail-value">@entry.AuditId</span>
 
@@ -59,12 +82,12 @@
 
                     <span class="dsv2-detail-label">Timestamp</span>
                     <span class="dsv2-detail-value">@entry.Timestamp.ToString("dd MMM yyyy HH:mm:ss")</span>
-                </BodyContent>
-            </DetailSectionV2>
+                </div>
+            </section>
         }
-    </BodyContent>
+    </ChildContent>
 
-</DetailPageV2>
+</PageTemplateV2>
 
 @* =========================================================================
    Section: ViewModel wiring and navigation

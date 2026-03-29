@@ -1,0 +1,158 @@
+These are teh answers to all you questions:
+1.1. Who will use it, just office staff, Head, SLT, SEND, Admin User
+1.2. There should be 3 levels of access.
+a)  The Admin has full access. Also allowed to change access rights.
+b)  Office staff to have almost full access. Can't change access rights
+c)  All others have reporting access only. 
+1.3 App should auto-detect Windows Login
+
+2.1 Absence is currently record and will continue to be recorded ina MIS System. This system is for when Parent/Carers ring in for a Student to say the will be absent from school.
+2.2 Staff just need to record absent for medical reasons from a parent/carer that has rung in that day. Keeping a tracking and history of absence.
+2.3 The System needs to support anytime a parent or carer rings in, or if a Student is sent home 
+2.4 Only the Admin should be able to edit past attendance
+
+3.1 Data is only from Phone calls or if Student is sent home.
+3.2 All the field information can be imported via a CSV from MIS System
+a) UPN Number
+b) Name
+c) Class
+d) Year Group
+e) Date of Birth
+f) SEN Status
+g) Medical Notes
+h) Reason for absense
+i) How long the Student will be off for
+j) Doctors Note Given/No Given
+k) name of the contact that rang in
+l) Date/Time stamp when record created (automatic)
+m) Name of the Logged in Staff memeber logging the Call (Automatic)
+
+4.1 Only need to Export to CSV/PDF
+4.2 Any user of system should be able to export reports
+
+5.1 App should flag
+a) Alert all staff on Persistent Absesces
+b) Alert return from absence is long that a day
+5.2 There should be a Notification Icon in the Header Nav Bar that should now indicate there are notification to read. Therefore, when clicked you will be taken to a notification page with all the Notification with a status or read/actioned and outstanding. Also, emails could be sent out to Teacher of the Student reminding them that the Student should be back in that day.
+
+6.1 the data be stored in SQL Server Express, on the Local Server.
+6.2 There could be up to 5+ using system at the same time.
+
+7.1 Yes similar layout (Modern UI webpage like design)
+a) Sidebar
+b) Header
+c) Footer
+d) Paginated Pages
+e) Serach filters
+f) Mulit-page navigation
+
+7.2 The App should support 
+a) Dark Modern
+
+8.1 Future features
+a) Medical logs 
+b) dietry needs
+c) Safeguarding Notes
+d) Behaviour tracking
+
+9.1 Data Security
+a) Database should be encrypted
+b) Uses Windows login automatically; no separate app login required.
+c) Must audit all changes
+d) Restrict access to certain fields
+
+10.1 Use Blazor Hybrid Windows App.
+10.2 use auto-update
+
+⭐ Quick Confirmation Summary (No action needed from you)
+Users & Access
+Office Staff, Head, SLT, SEND, Admin User
+
+3 access levels
+
+Windows login auto‑detected
+
+Admin can change access rights
+
+Office staff can do everything except access rights
+
+Others have reporting‑only access
+
+Attendance Workflow
+This system is not the main attendance register
+
+It records parent/carer phone‑ins and students sent home
+
+Tracks medical absences only
+
+Admin can edit past entries
+
+Everyone else can only record new ones
+
+Student Data
+Imported via CSV from MIS
+
+Includes UPN, Name, Class, Year, DOB, SEN, Medical Notes
+
+Absence record includes reason, duration, doctor’s note, caller name
+
+Automatic timestamp + automatic staff name
+
+Reporting
+Export to CSV/PDF
+
+Any user can export
+
+Notifications
+Persistent absence alerts
+
+Alerts when absence lasts longer than expected
+
+Notification icon in header
+
+Notification page with read/unread
+
+Optional email reminders to teachers
+
+Database & Deployment
+SQL Server Express on local server
+
+Up to 5+ concurrent users
+
+Blazor Hybrid Windows App
+
+Auto‑update enabled
+
+UI
+Modern dashboard layout
+
+Sidebar, header, footer
+
+Pagination, search filters
+
+Multi‑page navigation
+
+Dark mode
+
+Future Features
+Medical logs
+
+Dietary needs
+
+Safeguarding notes
+
+Behaviour tracking
+
+Security
+Database encrypted
+
+Windows login only
+
+Full audit logging
+
+Restricted fields
+
+Everything is consistent and fits together cleanly.
+
+⭐ Next Step
+I will now generate your full PRD — structured, professional, and ready for development or hand‑off.

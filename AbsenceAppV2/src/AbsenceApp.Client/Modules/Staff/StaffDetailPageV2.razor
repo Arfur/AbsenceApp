@@ -1,17 +1,22 @@
 @* ===========================================================================
    File        : StaffDetailPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Staff
+   Namespace   : AbsenceApp.Client.Modules.Staff
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Staff detail page. Displays the details of a single staff
-                 member using DetailPageV2 and DetailSectionV2 components.
+                 member using the V2 PageTemplateV2 primitive instead of
+                 deprecated DetailPageV2 and DetailSectionV2.
                  Delegates data loading to StaffDetailViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced DetailPageV2 + DetailSectionV2 with
+                          PageTemplateV2. Updated namespace and layout.
+                          Preserved all ViewModel logic and UI structure.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/staff/{Id:long}
@@ -20,42 +25,53 @@
 *@
 
 @page "/v2/staff/{Id:long}"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Staff
+
 @using AbsenceApp.Client.ViewModels.V2
 @inject StaffDetailViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Staff detail
-   ========================================================================= *@
-<DetailPageV2 PageTitle="@PageTitle"
-              BackHref="/v2/staff"
-              BackLabel="Staff">
+<PageTemplateV2 PageTitleText="@PageTitle">
 
     <ActionsContent>
         @if (ViewModel.Item is not null)
         {
-            <a href="@($"/v2/staff/{Id}/edit")" class="dsv2-btn dsv2-btn--secondary">Edit</a>
+            <a href="@($"/v2/staff/{Id}/edit")"
+               class="dsv2-btn dsv2-btn--secondary">
+                Edit
+            </a>
         }
     </ActionsContent>
 
-    <BodyContent>
+    <ChildContent>
+
         @if (ViewModel.IsLoading)
         {
-            <p class="dsv2-loading-text">Loading�</p>
+            <p class="dsv2-loading-text">Loading…</p>
         }
         else if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">
+                @ViewModel.Error
+            </div>
         }
         else if (ViewModel.Item is not null)
         {
             var item = ViewModel.Item;
 
-            <DetailSectionV2 Title="Personal Details" Icon="bi-person">
-                <BodyContent>
+            @* ---------------------------------------------------------------
+               Personal Details
+               --------------------------------------------------------------- *@
+            <section class="dsv2-detail-section">
+                <header class="dsv2-detail-section__header">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                    <h2 class="dsv2-detail-section__title">Personal Details</h2>
+                </header>
+
+                <div class="dsv2-detail-section__body">
+
                     <span class="dsv2-detail-label">Staff Number</span>
                     <span class="dsv2-detail-value">@item.StaffNumber</span>
 
@@ -66,7 +82,7 @@
                     <span class="dsv2-detail-value">@item.FirstName</span>
 
                     <span class="dsv2-detail-label">Preferred Name</span>
-                    <span class="dsv2-detail-value">@(item.PreferredName ?? "�")</span>
+                    <span class="dsv2-detail-value">@(item.PreferredName ?? "—")</span>
 
                     <span class="dsv2-detail-label">Last Name</span>
                     <span class="dsv2-detail-value">@item.LastName</span>
@@ -75,18 +91,28 @@
                     <span class="dsv2-detail-value">@item.DateOfBirth.ToString("dd MMM yyyy")</span>
 
                     <span class="dsv2-detail-label">Gender</span>
-                    <span class="dsv2-detail-value">@(item.Gender ?? "�")</span>
+                    <span class="dsv2-detail-value">@(item.Gender ?? "—")</span>
 
                     <span class="dsv2-detail-label">Work Email</span>
                     <span class="dsv2-detail-value">@item.WorkEmail</span>
 
                     <span class="dsv2-detail-label">Account Status</span>
                     <span class="dsv2-detail-value">@item.AccountStatus</span>
-                </BodyContent>
-            </DetailSectionV2>
 
-            <DetailSectionV2 Title="Employment Details" Icon="bi-briefcase">
-                <BodyContent>
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------
+               Employment Details
+               --------------------------------------------------------------- *@
+            <section class="dsv2-detail-section">
+                <header class="dsv2-detail-section__header">
+                    <i class="bi bi-briefcase" aria-hidden="true"></i>
+                    <h2 class="dsv2-detail-section__title">Employment Details</h2>
+                </header>
+
+                <div class="dsv2-detail-section__body">
+
                     <span class="dsv2-detail-label">Employment Type</span>
                     <span class="dsv2-detail-value">@item.EmploymentType</span>
 
@@ -100,7 +126,9 @@
                     <span class="dsv2-detail-value">@item.HireDate.ToString("dd MMM yyyy")</span>
 
                     <span class="dsv2-detail-label">End Date</span>
-                    <span class="dsv2-detail-value">@(item.EndDate.HasValue ? item.EndDate.Value.ToString("dd MMM yyyy") : "�")</span>
+                    <span class="dsv2-detail-value">
+                        @(item.EndDate.HasValue ? item.EndDate.Value.ToString("dd MMM yyyy") : "—")
+                    </span>
 
                     <span class="dsv2-detail-label">Department</span>
                     <span class="dsv2-detail-value">@item.DepartmentName</span>
@@ -112,39 +140,51 @@
                     <span class="dsv2-detail-value">@item.JobGroupName</span>
 
                     <span class="dsv2-detail-label">Reporting Manager</span>
-                    <span class="dsv2-detail-value">@(item.ReportingManagerName ?? "�")</span>
-                </BodyContent>
-            </DetailSectionV2>
+                    <span class="dsv2-detail-value">@(item.ReportingManagerName ?? "—")</span>
 
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------
+               Absence History
+               --------------------------------------------------------------- *@
             @if (ViewModel.Absences.Count > 0)
             {
-                <DetailSectionV2 Title="Absence History" Icon="bi-calendar-x">
-                    <BodyContent>
+                <section class="dsv2-detail-section">
+                    <header class="dsv2-detail-section__header">
+                        <i class="bi bi-calendar-x" aria-hidden="true"></i>
+                        <h2 class="dsv2-detail-section__title">Absence History</h2>
+                    </header>
+
+                    <div class="dsv2-detail-section__body">
                         @foreach (var absence in ViewModel.Absences)
                         {
                             <span class="dsv2-detail-label">Start Date</span>
                             <span class="dsv2-detail-value">@absence.StartDate.ToString("dd MMM yyyy")</span>
 
                             <span class="dsv2-detail-label">End Date</span>
-                            <span class="dsv2-detail-value">@(absence.EndDate.HasValue ? absence.EndDate.Value.ToString("dd MMM yyyy") : "Ongoing")</span>
+                            <span class="dsv2-detail-value">
+                                @(absence.EndDate.HasValue
+                                    ? absence.EndDate.Value.ToString("dd MMM yyyy")
+                                    : "Ongoing")
+                            </span>
                         }
-                    </BodyContent>
-                </DetailSectionV2>
+                    </div>
+                </section>
             }
         }
-    </BodyContent>
 
-</DetailPageV2>
+    </ChildContent>
 
-@* =========================================================================
-   Section: ViewModel wiring and navigation
-   ========================================================================= *@
+</PageTemplateV2>
+
 @code {
     [Parameter] public long Id { get; set; }
 
-    private string PageTitle => ViewModel.Item is not null
-        ? $"{ViewModel.Item.Title} {ViewModel.Item.FirstName} {ViewModel.Item.LastName}".Trim()
-        : "Staff Member";
+    private string PageTitle =>
+        ViewModel.Item is not null
+            ? $"{ViewModel.Item.Title} {ViewModel.Item.FirstName} {ViewModel.Item.LastName}".Trim()
+            : "Staff Member";
 
     protected override async Task OnParametersSetAsync()
     {

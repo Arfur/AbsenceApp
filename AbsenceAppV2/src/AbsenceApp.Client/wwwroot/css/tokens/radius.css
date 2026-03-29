@@ -1,9 +1,11 @@
 /* =============================================================================
    File    : radius.css
    Project : AbsenceApp.Client
-   Phase   : V2 Design System — Phase 2
+   Phase   : V2 Design System — Phase 4
    Created : 2026-03-21
+   Updated : 2026-03-27
    Purpose : Border-radius design tokens for V2 components.
+             --v2-radius-* aliases added in Phase 4.
              DO NOT modify V1 app.css.
 ============================================================================= */
 
@@ -31,4 +33,13 @@
     --ds-radius-sidebar-item: var(--ds-radius-sm);   /* 4px  */
     --ds-radius-table:        var(--ds-radius-lg);   /* 8px  */
     --ds-radius-skeleton:     var(--ds-radius-sm);   /* 4px  */
+
+    /* ── --v2-* radius aliases (Phase 4) ───────────────────────────── */
+    --v2-radius-xs:      2px;
+    --v2-radius-sm:      4px;
+    --v2-radius-md:      6px;
+    --v2-radius-base:    8px;
+    --v2-radius-lg:      12px;
+    --v2-radius-xl:      16px;
+    --v2-radius-full:    9999px;
 }

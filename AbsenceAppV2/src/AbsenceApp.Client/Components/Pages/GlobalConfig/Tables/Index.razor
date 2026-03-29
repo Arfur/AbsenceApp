@@ -1,0 +1,152 @@
+﻿@* ===========================================================================
+   File        : Index.razor (Global Config — Tables)
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalConfig.Tables
+   Route       : /global-config/tables
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-27
+   Updated     : 2026-03-28
+   Changes :
+     - 1.0.0  2026-03-27  Initial implementation.
+     - 2.0.0  2026-03-28  Rebuilt with Ki-Admin card structure and full table demos.
+   ===========================================================================
+*@
+
+@page "/global-config/tables"
+@layout AbsenceApp.Client.Framework.Layouts.BaseLayoutV2
+@namespace AbsenceApp.Client.Components.Pages.GlobalConfig.Tables
+@using AbsenceApp.Client.Framework.PageTemplates
+
+<PageTemplateV2 PageTitleText="Tables">
+    <ChildContent>
+        <div class="gc-page">
+
+            <!-- Simple Table -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Simple Table</h5>
+                            <span class="dsv2-card__subtitle">Standard data table with header, status badges and avatar cells</span>
+                        </div>
+                        <div class="dsv2-card__body--np">
+                            <div class="gc-table-wrap" style="border:none;border-radius:0">
+                                <table style="width:100%;border-collapse:collapse;font-size:0.875rem">
+                                    <thead>
+                                        <tr style="background:var(--v2-bg-subtle);border-bottom:2px solid var(--v2-border-color)">
+                                            <th style="padding:0.75rem 1rem;text-align:left;font-weight:600;color:var(--v2-text-secondary);white-space:nowrap">Name</th>
+                                            <th style="padding:0.75rem 1rem;text-align:left;font-weight:600;color:var(--v2-text-secondary)">Role</th>
+                                            <th style="padding:0.75rem 1rem;text-align:left;font-weight:600;color:var(--v2-text-secondary)">Department</th>
+                                            <th style="padding:0.75rem 1rem;text-align:left;font-weight:600;color:var(--v2-text-secondary)">Status</th>
+                                            <th style="padding:0.75rem 1rem;text-align:left;font-weight:600;color:var(--v2-text-secondary)">Contact</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom:1px solid var(--v2-border-color)">
+                                            <td style="padding:0.75rem 1rem">
+                                                <div style="display:flex;align-items:center;gap:0.5rem">
+                                                    <div style="width:28px;height:28px;border-radius:50%;background:var(--v2-color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">J</div>
+                                                    <span style="font-weight:500">Jane Smith</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">Class Teacher</td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">English</td>
+                                            <td style="padding:0.75rem 1rem"><span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(25,135,84,0.12);color:#198754">Active</span></td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-muted)">j.smith@school.edu</td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid var(--v2-border-color)">
+                                            <td style="padding:0.75rem 1rem">
+                                                <div style="display:flex;align-items:center;gap:0.5rem">
+                                                    <div style="width:28px;height:28px;border-radius:50%;background:var(--v2-color-success);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">T</div>
+                                                    <span style="font-weight:500">Tom Briggs</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">Head of Year</td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">Mathematics</td>
+                                            <td style="padding:0.75rem 1rem"><span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(255,193,7,0.15);color:#d97706">Review</span></td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-muted)">t.briggs@school.edu</td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid var(--v2-border-color)">
+                                            <td style="padding:0.75rem 1rem">
+                                                <div style="display:flex;align-items:center;gap:0.5rem">
+                                                    <div style="width:28px;height:28px;border-radius:50%;background:var(--v2-color-danger);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">A</div>
+                                                    <span style="font-weight:500">Aaliyah Hassan</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">SENCO</td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">Learning Support</td>
+                                            <td style="padding:0.75rem 1rem"><span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(220,53,69,0.12);color:#dc3545">Absent</span></td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-muted)">a.hassan@school.edu</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:0.75rem 1rem">
+                                                <div style="display:flex;align-items:center;gap:0.5rem">
+                                                    <div style="width:28px;height:28px;border-radius:50%;background:var(--v2-color-info);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">M</div>
+                                                    <span style="font-weight:500">Michael Battle</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">Admin</td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-secondary)">IT &amp; Systems</td>
+                                            <td style="padding:0.75rem 1rem"><span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:rgba(25,135,84,0.12);color:#198754">Active</span></td>
+                                            <td style="padding:0.75rem 1rem;color:var(--v2-text-muted)">m.battle@school.edu</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Striped Table + Dark Header -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Striped Rows</h5>
+                            <span class="dsv2-card__subtitle">Alternating row tint for readability</span>
+                        </div>
+                        <div class="dsv2-card__body--np">
+                            <table style="width:100%;border-collapse:collapse;font-size:0.875rem">
+                                <thead>
+                                    <tr style="background:#1e3a5f;color:#fff">
+                                        <th style="padding:0.625rem 1rem;text-align:left;font-weight:600">Student</th>
+                                        <th style="padding:0.625rem 1rem;text-align:left;font-weight:600">Year</th>
+                                        <th style="padding:0.625rem 1rem;text-align:left;font-weight:600">Days Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background:var(--v2-bg-surface)"><td style="padding:0.5rem 1rem">Priya Nair</td><td style="padding:0.5rem 1rem">Year 9</td><td style="padding:0.5rem 1rem">3</td></tr>
+                                    <tr style="background:var(--v2-bg-subtle)"><td style="padding:0.5rem 1rem">Oliver King</td><td style="padding:0.5rem 1rem">Year 10</td><td style="padding:0.5rem 1rem">1</td></tr>
+                                    <tr style="background:var(--v2-bg-surface)"><td style="padding:0.5rem 1rem">Zara Ahmed</td><td style="padding:0.5rem 1rem">Year 8</td><td style="padding:0.5rem 1rem">5</td></tr>
+                                    <tr style="background:var(--v2-bg-subtle)"><td style="padding:0.5rem 1rem">Daniel Cox</td><td style="padding:0.5rem 1rem">Year 11</td><td style="padding:0.5rem 1rem">0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Design Tokens</h5>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <table class="gc-token-table">
+                                <thead><tr><th class="gc-token-table__th">Token</th><th class="gc-token-table__th">Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-table-head-bg</td>    <td class="gc-token-table__td">Table header background (#1e3a5f)</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-table-head-color</td> <td class="gc-token-table__td">Table header text colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-table-row-h</td>      <td class="gc-token-table__td">Table row height (40px)</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-table-cell-px</td>    <td class="gc-token-table__td">Cell horizontal padding</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-table-stripe</td>     <td class="gc-token-table__td">Alternating row tint colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-border-color</td>     <td class="gc-token-table__td">Row divider colour</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ChildContent>
+</PageTemplateV2>

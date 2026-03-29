@@ -1,0 +1,197 @@
+﻿@* ===========================================================================
+   File        : Index.razor (Global Config — Forms)
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalConfig.Forms
+   Route       : /global-config/forms
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-27
+   Updated     : 2026-03-28
+   Changes :
+     - 1.0.0  2026-03-27  Initial implementation.
+     - 2.0.0  2026-03-28  Rebuilt with Ki-Admin card structure and full form component demos.
+   ===========================================================================
+*@
+
+@page "/global-config/forms"
+@layout AbsenceApp.Client.Framework.Layouts.BaseLayoutV2
+@namespace AbsenceApp.Client.Components.Pages.GlobalConfig.Forms
+@using AbsenceApp.Client.Framework.PageTemplates
+
+<PageTemplateV2 PageTitleText="Forms">
+    <ChildContent>
+        <div class="gc-page">
+
+            <!-- Vertical Form + Horizontal Form -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Vertical Form</h5>
+                            <span class="dsv2-card__subtitle">Standard stacked label-input layout</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div style="display:flex;flex-direction:column;gap:1rem">
+                                <div>
+                                    <label style="display:block;font-size:0.8125rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-secondary)">First Name</label>
+                                    <input type="text" placeholder="Enter first name" style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8125rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-secondary)">Email Address</label>
+                                    <input type="email" placeholder="name@school.edu" style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8125rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-secondary)">Department</label>
+                                    <select style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box">
+                                        <option value="">Select department...</option>
+                                        <option>English</option>
+                                        <option>Mathematics</option>
+                                        <option>Science</option>
+                                        <option>IT &amp; Systems</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8125rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-secondary)">Notes</label>
+                                    <textarea rows="3" placeholder="Optional notes..." style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;resize:vertical;box-sizing:border-box"></textarea>
+                                </div>
+                                <div>
+                                    <button style="padding:0.5rem 1.25rem;background:var(--v2-color-primary);color:#fff;border:none;border-radius:var(--v2-radius-sm);font-size:0.875rem;font-weight:600;cursor:pointer">Save</button>
+                                    <button style="padding:0.5rem 1.25rem;background:transparent;color:var(--v2-text-secondary);border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;margin-left:0.5rem;cursor:pointer">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Horizontal Form</h5>
+                            <span class="dsv2-card__subtitle">Side-by-side label and input layout</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div style="display:flex;flex-direction:column;gap:0.875rem">
+                                <div style="display:flex;align-items:center;gap:0.75rem">
+                                    <label style="width:130px;flex-shrink:0;font-size:0.8125rem;font-weight:600;color:var(--v2-text-secondary);text-align:right">Year Group</label>
+                                    <input type="text" placeholder="e.g. Year 10" style="flex:1;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                </div>
+                                <div style="display:flex;align-items:center;gap:0.75rem">
+                                    <label style="width:130px;flex-shrink:0;font-size:0.8125rem;font-weight:600;color:var(--v2-text-secondary);text-align:right">House</label>
+                                    <select style="flex:1;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box">
+                                        <option>Select house...</option>
+                                        <option>Alderman</option>
+                                        <option>Bradfield</option>
+                                        <option>Cromwell</option>
+                                    </select>
+                                </div>
+                                <div style="display:flex;align-items:flex-start;gap:0.75rem">
+                                    <label style="width:130px;flex-shrink:0;font-size:0.8125rem;font-weight:600;color:var(--v2-text-secondary);text-align:right;padding-top:6px">Active</label>
+                                    <div style="display:flex;flex-direction:column;gap:0.5rem;padding-top:4px">
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="radio" name="status_h" checked /> Yes — allow login</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="radio" name="status_h" /> No — suspended</label>
+                                    </div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:0.75rem">
+                                    <label style="width:130px;flex-shrink:0;font-size:0.8125rem;font-weight:600;color:var(--v2-text-secondary);text-align:right">Send Welcome</label>
+                                    <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="checkbox" /> Email welcome message</label>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:0.75rem">
+                                    <div style="width:130px;flex-shrink:0"></div>
+                                    <button style="padding:0.5rem 1.25rem;background:var(--v2-color-primary);color:#fff;border:none;border-radius:var(--v2-radius-sm);font-size:0.875rem;font-weight:600;cursor:pointer">Save Group</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input States + Select, Checkbox, Radio -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Input States</h5>
+                            <span class="dsv2-card__subtitle">Default, focused, valid, invalid, disabled</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div style="display:flex;flex-direction:column;gap:0.875rem">
+                                <div>
+                                    <label style="display:block;font-size:0.75rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-muted);text-transform:uppercase;letter-spacing:.04em">Default</label>
+                                    <input type="text" placeholder="Standard input" style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.75rem;font-weight:600;margin-bottom:4px;color:var(--v2-color-success);text-transform:uppercase;letter-spacing:.04em">Valid</label>
+                                    <input type="text" value="jane.smith" style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-color-success);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                    <span style="font-size:0.75rem;color:var(--v2-color-success);margin-top:2px;display:block">Looks good!</span>
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.75rem;font-weight:600;margin-bottom:4px;color:var(--v2-color-danger);text-transform:uppercase;letter-spacing:.04em">Invalid</label>
+                                    <input type="text" value="bad email" style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-color-danger);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-surface);color:var(--v2-text-primary);outline:none;box-sizing:border-box" />
+                                    <span style="font-size:0.75rem;color:var(--v2-color-danger);margin-top:2px;display:block">Please enter a valid email.</span>
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.75rem;font-weight:600;margin-bottom:4px;color:var(--v2-text-muted);text-transform:uppercase;letter-spacing:.04em">Disabled</label>
+                                    <input type="text" value="Locked field" disabled style="width:100%;padding:0.5rem 0.75rem;border:1px solid var(--v2-border-color);border-radius:var(--v2-radius-sm);font-size:0.875rem;background:var(--v2-bg-subtle);color:var(--v2-text-muted);outline:none;box-sizing:border-box;cursor:not-allowed;opacity:.65" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Checkboxes &amp; Radios</h5>
+                            <span class="dsv2-card__subtitle">Grouped selection controls</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div style="display:flex;flex-direction:column;gap:1.25rem">
+                                <div>
+                                    <p style="font-size:0.75rem;font-weight:600;color:var(--v2-text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:0.5rem">Notification Preferences</p>
+                                    <div style="display:flex;flex-direction:column;gap:0.5rem">
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="checkbox" checked /> Email notifications</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="checkbox" /> SMS alerts</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="checkbox" checked /> In-app notifications</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer;opacity:.55"><input type="checkbox" disabled /> Push (unavailable)</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p style="font-size:0.75rem;font-weight:600;color:var(--v2-text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:0.5rem">Role</p>
+                                    <div style="display:flex;flex-direction:column;gap:0.5rem">
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="radio" name="role_demo" checked /> Teacher</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="radio" name="role_demo" /> Admin</label>
+                                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer"><input type="radio" name="role_demo" /> Viewer (read-only)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Reference -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Design Tokens</h5>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <table class="gc-token-table">
+                                <thead><tr><th class="gc-token-table__th">Token</th><th class="gc-token-table__th">Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-input-padding</td>    <td class="gc-token-table__td">Input internal padding</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-input-height</td>     <td class="gc-token-table__td">Standard input height (36px)</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-radius-sm</td>        <td class="gc-token-table__td">Input / control border radius</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-primary</td>    <td class="gc-token-table__td">Focus ring and accent colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-success</td>    <td class="gc-token-table__td">Valid state border colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-danger</td>     <td class="gc-token-table__td">Invalid state border colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-border-color</td>     <td class="gc-token-table__td">Default input border colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-bg-subtle</td>        <td class="gc-token-table__td">Disabled input background</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ChildContent>
+</PageTemplateV2>

@@ -1,0 +1,35 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Dashboards
+   Route       : /global-settings/dashboards
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-03-26
+   Updated     : 2026-03-27
+   ---------------------------------------------------------------------------
+   Purpose     : Global Settings — Dashboards configuration page.
+                 Displays a hard-coded preview of the current dashboard style
+                 via IDesignSystemService. No editing. No JSON loading.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
+     - 1.1.0  2026-03-27  Fix: DashboardPageTemplate does not have a PageTitle
+                          parameter — using it caused a runtime parameter error.
+                          Replaced with BlankPageTemplate which correctly accepts
+                          PageTitle. Subtitle moved inside ChildContent.
+   ===========================================================================
+*@
+
+@page "/global-settings/dashboards"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@using AbsenceApp.Client.Services.DesignSystem
+@using AbsenceApp.Client.Components.Templates
+@inject IDesignSystemService DesignSystem
+
+<BlankPageTemplate PageTitle="Dashboards — Global Settings">
+    <ChildContent>
+        <p class="gs-preview-label">Current preview</p>
+        <p class="gs-preview-value">@DesignSystem.GetDashboardPreview()</p>
+        <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
+    </ChildContent>
+</BlankPageTemplate>

@@ -1,0 +1,60 @@
+@* ===========================================================================
+   File        : UnderConstructionTemplate.razor
+   Namespace   : AbsenceApp.Client.Components.Templates
+   Author      : AI Assistant
+   Version     : 1.0.1
+   Created     : 2026-03-26
+   Updated     : 2026-03-26
+   ---------------------------------------------------------------------------
+   Purpose     : Renders a consistent "Under Construction" notice for any
+                 route or page that is declared in a menu JSON file but does
+                 not yet have a full implementation. Prevents blank screens
+                 and "Page not found." errors for planned routes.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1).
+     - 1.0.1  2026-03-26  Phase 3 Part 1: added HEADER / LAYOUT ROOT /
+                          CONTENT REGION / PLACEHOLDER REGION section
+                          comments. Placeholder icon and message confirmed
+                          present. No functional changes.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - No JSON loading. No business logic.
+     - Use this component as the entire body of any planned page.
+     - Regions are defined and ready for JSON defaults in Phase 2.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.Templates
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   ========================= *@
+<div class="gs-template gs-template--under-construction">
+
+    @* =========================
+       SECTION: HEADER
+       ========================= *@
+    <div class="gs-template__uc-icon">
+        <i class="bi bi-cone-striped"></i>
+    </div>
+    <h2 class="gs-template__uc-title">@(string.IsNullOrWhiteSpace(PageTitle) ? "Coming Soon" : PageTitle)</h2>
+
+    @* =========================
+       SECTION: CONTENT REGION
+       ========================= *@
+    <p class="gs-template__uc-body">
+        This page is under construction. Check back in a future release.
+    </p>
+
+    @* =========================
+       SECTION: PLACEHOLDER REGION
+       ========================= *@
+    @* Placeholder reserved for Phase 2 progress indicator or ETA. *@
+
+</div>
+
+@code {
+    /// <summary>Optional page title to display above the notice.</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+}

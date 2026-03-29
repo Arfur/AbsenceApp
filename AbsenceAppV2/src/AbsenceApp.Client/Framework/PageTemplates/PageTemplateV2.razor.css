@@ -3,136 +3,80 @@
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Purpose : Scoped styles for PageTemplateV2 shell layout.
-             All values reference V2 design tokens from wwwroot/css/tokens/.
+   Updated : 2026-03-27
+   Version : 2.0.0
+   -----------------------------------------------------------------------
+   Purpose : Scoped styles for the redesigned PageTemplateV2 (v2.0.0).
+             The component no longer renders its own Sidebar/Header/Breadcrumb
+             grid shell — BaseLayoutV2 owns those. This file styles only:
+               dsv2-page-inner          — flex column wrapper
+               dsv2-page-inner__title-row — title + actions row
+               dsv2-page-inner__page-title — h1 title text
+               dsv2-page-inner__actions   — right-aligned action buttons
+               dsv2-page-inner__content   — inner content slot
+               dsv2-page-inner__footer    — optional footer strip
+   -----------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-21  Initial implementation (full shell grid CSS).
+     - 2.0.0  2026-03-27  Phase 3 Part 2 — Shell deduplication fix.
+                          Removed all dsv2-page-shell__* grid/sidebar/header
+                          rules. Added dsv2-page-inner__* rules for the
+                          simplified two-section layout (title row + content).
 ============================================================================= */
 
-/* ── Root shell grid ─────────────────────────────────────────────────────── */
+/* ── Page inner wrapper ──────────────────────────────────────────────── */
 
-.dsv2-page-shell {
-    display: grid;
-    grid-template-columns: var(--ds-sidebar-width) 1fr;
-    grid-template-rows: 1fr;
-    min-height: 100vh;
-    background: var(--ds-color-surface-page);
-    color: var(--ds-color-neutral-90);
-    font-family: var(--ds-font-family-ui);
-    transition: grid-template-columns var(--ds-transition-sidebar);
-}
-
-.dsv2-page-shell--sidebar-collapsed {
-    grid-template-columns: var(--ds-sidebar-collapsed-width) 1fr;
-}
-
-/* ── Sidebar column ──────────────────────────────────────────────────────── */
-
-.dsv2-page-shell__sidebar {
-    grid-column: 1;
-    grid-row: 1;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    z-index: var(--ds-z-sidebar);
-    background: var(--ds-color-sidebar-bg);
-    border-right: 1px solid var(--ds-color-neutral-10);
-}
-
-/* ── Main column ─────────────────────────────────────────────────────────── */
-
-.dsv2-page-shell__main {
-    grid-column: 2;
-    grid-row: 1;
+.dsv2-page-inner {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow: hidden;
+    gap: 16px;
 }
 
-/* ── Header strip ────────────────────────────────────────────────────────── */
+/* ── Title row ───────────────────────────────────────────────────────── */
 
-.dsv2-page-shell__header {
-    position: sticky;
-    top: 0;
-    z-index: var(--ds-z-header);
-    flex-shrink: 0;
-}
-
-/* ── Sub-header (breadcrumb + title row) ─────────────────────────────────── */
-
-.dsv2-page-shell__subheader {
-    padding: var(--ds-spacing-3) var(--ds-spacing-5) var(--ds-spacing-2);
-    border-bottom: 1px solid var(--ds-color-neutral-10);
-    flex-shrink: 0;
-    background: var(--ds-color-surface-page);
-}
-
-.dsv2-page-shell__breadcrumb {
-    margin-bottom: var(--ds-spacing-1);
-}
-
-.dsv2-page-shell__title-row {
+.dsv2-page-inner__title-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ds-spacing-4);
+    gap: 16px;
     flex-wrap: wrap;
     min-height: 2.25rem;
 }
 
-.dsv2-page-shell__page-title {
+.dsv2-page-inner__page-title {
     margin: 0;
-    font-size: var(--ds-font-size-xl);
-    font-weight: var(--ds-font-weight-semibold);
-    color: var(--ds-color-neutral-90);
-    line-height: var(--ds-line-height-tight);
+    font-size: var(--v2-text-xl, 1.25rem);
+    font-weight: var(--v2-font-semibold, 600);
+    color: var(--text, #1a2032);
+    line-height: 1.2;
 }
 
-.dsv2-page-shell__actions {
+.dsv2-page-inner__actions {
     display: flex;
     align-items: center;
-    gap: var(--ds-spacing-2);
+    gap: 8px;
     flex-shrink: 0;
 }
 
-/* ── Scrollable content area ─────────────────────────────────────────────── */
+/* ── Content area ────────────────────────────────────────────────────── */
 
-.dsv2-page-shell__content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--ds-spacing-5);
-    scroll-behavior: smooth;
+.dsv2-page-inner__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-/* ── Footer ──────────────────────────────────────────────────────────────── */
+/* ── Optional footer ─────────────────────────────────────────────────── */
 
-.dsv2-page-shell__footer {
-    flex-shrink: 0;
-    padding: var(--ds-spacing-3) var(--ds-spacing-5);
-    border-top: 1px solid var(--ds-color-neutral-10);
-    font-size: var(--ds-font-size-sm);
-    color: var(--ds-color-neutral-50);
-    background: var(--ds-color-surface-page);
+.dsv2-page-inner__footer {
+    padding-top: 8px;
+    border-top: 1px solid var(--v2-border-color, #dee2e6);
+    font-size: var(--v2-text-sm, 0.875rem);
+    color: var(--text-muted, #7b8494);
 }
 
-/* ── Dark mode overrides ─────────────────────────────────────────────────── */
+/* ── Dark mode ───────────────────────────────────────────────────────── */
 
-.dsv2-page-shell--dark {
-    background: var(--ds-color-dark-bg);
-    color: var(--ds-color-neutral-10);
-}
-
-.dsv2-page-shell--dark .dsv2-page-shell__subheader,
-.dsv2-page-shell--dark .dsv2-page-shell__content,
-.dsv2-page-shell--dark .dsv2-page-shell__footer {
-    background: var(--ds-color-dark-bg);
-    border-color: var(--ds-color-dark-border);
-}
-
-.dsv2-page-shell--dark .dsv2-page-shell__page-title {
-    color: var(--ds-color-neutral-10);
-}
-
-.dsv2-page-shell--dark .dsv2-page-shell__sidebar {
-    border-right-color: var(--ds-color-dark-border);
-}
+/* Dark mode is inherited from the `.dark` class on v2-layout-root.
+   No explicit dark overrides needed because all colours use V1 CSS
+   custom properties that are already overridden by .dark in app.css. */

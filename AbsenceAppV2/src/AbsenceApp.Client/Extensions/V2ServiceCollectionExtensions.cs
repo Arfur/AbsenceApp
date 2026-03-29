@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-22
- Updated     : 2026-03-22
+ Updated     : 2026-03-26
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -19,6 +19,8 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-22  Initial extraction from MauiProgram.cs (Phase 11).
+   - 1.1.0  2026-03-26  Added IDesignSystemService / DesignSystemService
+                         registration (Phase 1 placeholder, Singleton).
 -------------------------------------------------------------------------------
  Notes       :
    - HttpClient is registered as a singleton for BrandingServiceV2 and
@@ -34,6 +36,7 @@
 using AbsenceApp.Client.Services;
 using AbsenceApp.Client.Services.ApiV2;
 using AbsenceApp.Client.Services.ApiV2.Modules;
+using AbsenceApp.Client.Services.DesignSystem;
 using AbsenceApp.Client.Services.TableV2;
 using AbsenceApp.Client.Services.Theming;
 using AbsenceApp.Client.ViewModels.V2;
@@ -74,6 +77,7 @@ public static class V2ServiceCollectionExtensions
         services.AddSingleton<NavigationServiceV2>();
         services.AddSingleton<ThemeServiceV2>();
         services.AddSingleton<BrandingServiceV2>();
+        services.AddSingleton<IDesignSystemService, DesignSystemService>();
 
         // -----------------------------------------------------------------
         // V2 Scoped services — new instance per Blazor scope (page lifetime)

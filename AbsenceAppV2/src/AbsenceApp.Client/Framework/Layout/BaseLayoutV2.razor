@@ -1,0 +1,154 @@
+@* ===========================================================================
+   File        : BaseLayoutV2.razor
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : AI Assistant
+   Version     : 1.5.0
+   Created     : 2026-03-23
+   Updated     : 2026-03-27
+   ---------------------------------------------------------------------------
+   Purpose     : Base layout for all V2 pages. Provides the universal shell
+                 including SidebarV2, HeaderV2, BreadcrumbV2, a scrollable
+                 main content area, and a fixed footer.
+                 Sidebar, header, breadcrumb, and footer are hidden when the
+                 user is not authenticated, so the Login page renders as a
+                 clean centred full-screen card inside the same layout.
+                 Applies the `dark` CSS class to the root div when dark mode
+                 is active so all CSS custom property overrides in app.css
+                 and the token files cascade down to every child component.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-23  Initial creation.
+     - 1.1.0  2026-03-23  Added ChildContent parameter.
+     - 1.2.0  2026-03-26  Moved to Framework/Layouts; corrected namespace.
+     - 1.3.0  2026-03-26  Phase 3 Part 1: added v2-layout-root wrapper,
+                          auth-conditional sidebar/header/breadcrumb,
+                          IDisposable subscription to AppState.OnChange.
+     - 1.4.0  2026-03-27  Phase 3 Part 2: dark class, v2-main--auth, v2-footer.
+     - 1.4.1  2026-03-27  Phase 3 Shell Fix: confirmed layout structure is
+                          correct. SidebarV2 is a direct child of v2-layout-root
+                          (flex row) so HeaderV2 spans the full content column.
+                          No markup changes — version bump confirms review.
+     - 1.5.0  2026-03-27  Phase 3 Part 2 — Login flash fix: added _isInitializing
+                          guard so a spinner overlay shows for the first render
+                          cycle, preventing the brief flicker of the auth layout
+                          before AppState is fully hydrated.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - `dark` class in app.css overrides all V1 CSS custom properties.
+     - V2 token files reference V1 properties, so dark mode cascades fully.
+     - ChildContent retained for backward compatibility; only @Body is used.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Framework.Layouts
+@inherits LayoutComponentBase
+@using AbsenceApp.Client.Services
+@inject AppStateService AppState
+@implements IDisposable
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   Full-screen flex row: sidebar (left) + content column (right).
+   'dark' class enables the dark CSS custom property overrides in app.css.
+   ========================= *@
+@* =========================
+   SECTION: INIT LOADER
+   Shown for the first render cycle only while AppState hydrates.
+   Prevents the brief flash of the auth section before IsAuthenticated
+   is determined. Hidden by setting _isInitializing=false in OnAfterRenderAsync.
+   ========================= *@
+@if (_isInitializing)
+{
+    <div class="v2-app-loader" role="status" aria-label="Loading AbsenceApp">
+        <div class="v2-app-loader__ring"></div>
+    </div>
+}
+else
+{
+<div class="v2-layout-root @(AppState.DarkMode ? "dark" : "")">
+
+    @* =========================
+       SECTION: SIDEBAR
+       Only rendered when the user is authenticated.
+       ========================= *@
+    @if (AppState.IsAuthenticated)
+    {
+        <SidebarV2 />
+    }
+
+    @* =========================
+       SECTION: CONTENT AREA
+       Flex column: header → breadcrumb → main → footer.
+       ========================= *@
+    <div class="v2-content-area">
+
+        @if (AppState.IsAuthenticated)
+        {
+            @* =========================
+               SECTION: HEADER + BREADCRUMB
+               ========================= *@
+            <HeaderV2 />
+            <BreadcrumbV2 />
+
+            @* =========================
+               SECTION: MAIN CONTENT (authenticated)
+               Scrollable page content in a padded container.
+               ========================= *@
+            <main class="v2-main">
+                <div class="v2-page-container">
+                    @Body
+                </div>
+            </main>
+
+            @* =========================
+               SECTION: FOOTER
+               Sticky bar at the bottom of the content column.
+               ========================= *@
+            <footer class="v2-footer">
+                <span>&copy; 2026 AbsenceApp — All rights reserved.</span>
+            </footer>
+        }
+        else
+        {
+            @* =========================
+               SECTION: MAIN CONTENT (unauthenticated)
+               Full-height centred container for the login page.
+               No page-container wrap, no padding — the login card
+               handles its own layout via CSS.
+               ========================= *@
+            <main class="v2-main v2-main--auth">
+                @Body
+            </main>
+        }
+
+    </div>
+
+</div>
+} @* end else _isInitializing *@
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool _isInitializing = true;
+
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isInitializing = false;
+            StateHasChanged();
+        }
+        await Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

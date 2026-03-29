@@ -1,0 +1,112 @@
+﻿@* ===========================================================================
+   File        : FormPageTemplate.razor
+   Namespace   : AbsenceApp.Client.Components.Templates
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-26
+   Updated     : 2026-03-28
+   ---------------------------------------------------------------------------
+   Purpose     : Form page content layout template. Provides a consistent inner
+                 layout for form and settings pages: optional inline header,
+                 a scrollable form body slot, and a footer action area
+                 (Save / Cancel). Mirrors V1 form page structure.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
+     - 1.0.1  2026-03-26  Phase 3 Part 1: section comments added.
+     - 2.0.0  2026-03-28  Phase 5 visual parity: replaced gs-template-* class
+                          prefix with dsv2-form-tpl-* to match V2 naming
+                          convention. Added FormPageTemplate.razor.css.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - No JSON loading. No runtime data dependencies.
+     - Compose inside PageTemplateV2 ChildContent.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.Templates
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   ========================= *@
+<div class="dsv2-form-tpl">
+
+    @* =========================
+       SECTION: HEADER REGION
+       Optional inline title and subtitle (supplement to outer PageTemplateV2 title).
+       ========================= *@
+    @if (!string.IsNullOrWhiteSpace(PageTitle) || !string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <div class="dsv2-form-tpl__header">
+            @if (!string.IsNullOrWhiteSpace(PageTitle))
+            {
+                <h2 class="dsv2-form-tpl__title">@PageTitle</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(Subtitle))
+            {
+                <p class="dsv2-form-tpl__subtitle">@Subtitle</p>
+            }
+        </div>
+    }
+
+    @* =========================
+       SECTION: FORM BODY REGION
+       Caller supplies form fields via FormContent slot.
+       Falls back to placeholder fields when not provided.
+       ========================= *@
+    <div class="dsv2-form-tpl__body">
+        @if (FormContent is not null)
+        {
+            @FormContent
+        }
+        else
+        {
+            @* =========================
+               SECTION: PLACEHOLDER REGION
+               ========================= *@
+            <div class="dsv2-form-tpl__field">
+                <label class="dsv2-form-tpl__label">Field label</label>
+                <div class="dsv2-form-tpl__input-placeholder"></div>
+            </div>
+            <div class="dsv2-form-tpl__field">
+                <label class="dsv2-form-tpl__label">Field label</label>
+                <div class="dsv2-form-tpl__input-placeholder"></div>
+            </div>
+            <div class="dsv2-form-tpl__field">
+                <label class="dsv2-form-tpl__label">Field label</label>
+                <div class="dsv2-form-tpl__input-placeholder"></div>
+            </div>
+        }
+    </div>
+
+    @* =========================
+       SECTION: FOOTER / ACTIONS REGION
+       Save and Cancel buttons. Caller can override via FooterContent.
+       ========================= *@
+    <div class="dsv2-form-tpl__footer">
+        @if (FooterContent is not null)
+        {
+            @FooterContent
+        }
+        else
+        {
+            <button class="dsv2-form-tpl__btn dsv2-form-tpl__btn--secondary" type="button" disabled>Cancel</button>
+            <button class="dsv2-form-tpl__btn dsv2-form-tpl__btn--primary"   type="button" disabled>Save</button>
+        }
+    </div>
+
+</div>
+
+@code {
+    /// <summary>Optional form section title (supplements outer page title).</summary>
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+
+    /// <summary>Optional subtitle / description text.</summary>
+    [Parameter] public string Subtitle { get; set; } = string.Empty;
+
+    /// <summary>FORM BODY REGION — form field content supplied by caller.</summary>
+    [Parameter] public RenderFragment? FormContent { get; set; }
+
+    /// <summary>FOOTER/ACTIONS REGION — Save/Cancel or custom actions.</summary>
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+}

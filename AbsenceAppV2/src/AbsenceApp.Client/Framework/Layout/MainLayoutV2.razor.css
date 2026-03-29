@@ -1,0 +1,163 @@
+/* ===========================================================================
+   File        : MainLayoutV2.razor.css
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-29
+   Updated     : 2026-03-29
+   ---------------------------------------------------------------------------
+   Purpose     : Component-scoped structural CSS for MainLayoutV2.
+                 Defines the full-screen flex shell that positions SidebarV2
+                 on the left and the content column on the right.
+                 All selectors here are automatically scoped by Blazor to
+                 elements rendered by MainLayoutV2.razor only.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - CSS custom properties (--main-bg, --chrome-bg, --border, etc.) are
+       defined in app.css; the `.dark` class (also in app.css) overrides
+       them. Applying `dark` to v2-layout-root propagates dark tokens to
+       every element inside the shell.
+     - SidebarV2 width is controlled by SidebarV2.razor.css, not here.
+       This layout simply lets it size itself and gives the content area
+       `flex: 1` to fill the remainder.
+     - Child component styles (header, sidebar, breadcrumb) live in their
+       own .razor.css files and are not overridden here.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-29  Initial implementation. Structural rules extracted
+                          from BaseLayoutV2.razor.css so MainLayoutV2 has its
+                          own component-scoped stylesheet. Rules are identical
+                          in function; BaseLayoutV2.razor.css is not removed.
+   ===========================================================================
+*/
+
+/* ===========================================================================
+   Section: Layout root
+   Full-screen horizontal flex container. Sidebar is fixed-width (defined in
+   SidebarV2.razor.css); content column takes all remaining width.
+   ===========================================================================
+*/
+
+.v2-layout-root {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--main-bg, #eaecf0);
+}
+
+/* ===========================================================================
+   Section: App init loader
+   Full-screen spinner shown for the first render cycle (prevents auth flash).
+   ===========================================================================
+*/
+
+.v2-app-loader {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9000;
+}
+
+.v2-app-loader__ring {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e5e7eb;
+    border-top-color: var(--ds-color-accent, #2563eb);
+    border-radius: 50%;
+    animation: v2-boot-spin 0.8s linear infinite;
+}
+
+@keyframes v2-boot-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===========================================================================
+   Section: Content area
+   Right-hand column: takes all remaining width after the sidebar.
+   ===========================================================================
+*/
+
+.v2-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+/* ===========================================================================
+   Section: Main — authenticated
+   Fills all remaining height; scrolls independently so header/footer are
+   always visible.
+   ===========================================================================
+*/
+
+.v2-main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--main-bg, #eaecf0);
+    min-height: 0;
+}
+
+/* ===========================================================================
+   Section: Main — unauthenticated (login page)
+   Full-height centred container: the login card controls its own sizing.
+   ===========================================================================
+*/
+
+.v2-main--auth {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    background: var(--main-bg, #eaecf0);
+    min-height: 0;
+}
+
+/* ===========================================================================
+   Section: Page container
+   Inner padding applied around @Body content for authenticated pages.
+   ===========================================================================
+*/
+
+.v2-page-container {
+    padding: 20px 24px;
+    min-height: 100%;
+}
+
+/* ===========================================================================
+   Section: Footer
+   Fixed-height copyright bar at the bottom of the content column.
+   ===========================================================================
+*/
+
+.v2-footer {
+    flex-shrink: 0;
+    height: var(--ftr-h, 36px);
+    background: var(--chrome-bg, #f5f6f8);
+    border-top: 1px solid var(--border, #dde1e7);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 0.78rem;
+    color: var(--text-muted, #7b8494);
+}
+
+/* ===========================================================================
+   Section: Responsive
+   Stack vertically on screens smaller than 768px.
+   ===========================================================================
+*/
+
+@media (max-width: 768px) {
+    .v2-layout-root {
+        flex-direction: column;
+    }
+}

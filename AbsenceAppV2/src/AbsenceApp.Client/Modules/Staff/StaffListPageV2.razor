@@ -1,17 +1,21 @@
 @* ===========================================================================
    File        : StaffListPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Staff
+   Namespace   : AbsenceApp.Client.Modules.Staff
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Staff list page. Displays a paged, searchable, sortable
-                 table of staff members using StandardPageV2 and TableV2.
-                 Delegates all data and state to StaffListViewModelV2.
+                 table of staff members using the V2 PageTemplateV2 primitive
+                 instead of deprecated StandardPageV2. Delegates all data and
+                 state to StaffListViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
+                          Updated namespace and layout. Preserved table logic.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/staff
@@ -20,19 +24,16 @@
 *@
 
 @page "/v2/staff"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
-@using AbsenceApp.Client.Components.TableV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Staff
+
 @using AbsenceApp.Client.Models.TableV2
 @using AbsenceApp.Client.ViewModels.V2
 @inject StaffListViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Staff list
-   ========================================================================= *@
-<StandardPageV2 PageTitle="Staff">
+<PageTemplateV2 PageTitleText="Staff">
 
     <ActionsContent>
         <button type="button"
@@ -43,10 +44,13 @@
         </button>
     </ActionsContent>
 
-    <BodyContent>
+    <ChildContent>
+
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">
+                @ViewModel.Error
+            </div>
         }
 
         <TableV2 TItem="AbsenceApp.Core.DTOs.StaffDto"
@@ -58,7 +62,7 @@
                  PageSize="ViewModel.PageSize"
                  SortColumn="ViewModel.SortColumn"
                  SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search staff�"
+                 SearchPlaceholder="Search staff…"
                  AriaLabel="Staff table"
                  OnSearchChanged="OnSearch"
                  OnSortChanged="OnSort"
@@ -81,13 +85,11 @@
             </RowActionsContent>
 
         </TableV2>
-    </BodyContent>
 
-</StandardPageV2>
+    </ChildContent>
 
-@* =========================================================================
-   Section: ViewModel wiring and table callbacks
-   ========================================================================= *@
+</PageTemplateV2>
+
 @code {
     protected override async Task OnInitializedAsync()
     {
@@ -95,9 +97,15 @@
         await ViewModel.LoadAsync();
     }
 
-    private async Task OnSearch(string term) => await ViewModel.SearchAsync(term);
+    private async Task OnSearch(string term) =>
+        await ViewModel.SearchAsync(term);
+
     private async Task OnSort((string Column, bool Ascending) args) =>
         await ViewModel.SortAsync(args.Column, args.Ascending);
-    private async Task OnPageChanged(int page) => await ViewModel.GoToPageAsync(page);
-    private async Task OnPageSizeChanged(int size) => await ViewModel.ChangePageSizeAsync(size);
+
+    private async Task OnPageChanged(int page) =>
+        await ViewModel.GoToPageAsync(page);
+
+    private async Task OnPageSizeChanged(int size) =>
+        await ViewModel.ChangePageSizeAsync(size);
 }

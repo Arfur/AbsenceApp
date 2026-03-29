@@ -1,0 +1,117 @@
+@* ===========================================================================
+   File        : GlobalErrorBoundaryV2.razor
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-27
+   ---------------------------------------------------------------------------
+   Purpose     : Global error boundary that wraps the entire V2 shell.
+                 Catches ALL unhandled exceptions — including layout-level
+                 failures in SidebarV2, HeaderV2, BreadcrumbV2, and page
+                 components — and renders a styled fallback UI.
+
+                 Shell structure (sidebar, header) remains visible in the
+                 fallback so the user can navigate away without restarting.
+
+                 Errors are:
+                   - Written to a crash log on the user's Desktop.
+                   - Logged to the console via ILogger.
+                   - Displayed in a styled red card in the content area.
+
+                 The Recover() method is exposed so the "Try Again" button
+                 can reset the boundary without a full app restart.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-27  Initial implementation (Section A — 40-point fixes).
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Framework.Layouts
+@inherits ErrorBoundary
+@using Microsoft.Extensions.Logging
+@inject ILogger<GlobalErrorBoundaryV2> Logger
+
+@if (CurrentException is null)
+{
+    @ChildContent
+}
+else
+{
+    @* =========================
+       SECTION: GLOBAL ERROR FALLBACK
+       Full-screen overlay that preserves the shell chrome while showing
+       a styled error card in the content area. The sidebar and header are
+       rendered by BaseLayoutV2 as siblings, so the overlay sits only in
+       the main content column. Here we render a self-contained full-screen
+       fallback that overlays the entire WebView for catastrophic failures.
+       ========================= *@
+    <div class="geb-overlay" role="alert" aria-live="assertive">
+
+        <div class="geb-card">
+            <div class="geb-card__icon-row">
+                <i class="bi bi-exclamation-triangle-fill geb-card__icon" aria-hidden="true"></i>
+            </div>
+
+            <h1 class="geb-card__title">Something went wrong</h1>
+            <p class="geb-card__summary">
+                An unexpected error occurred. The application has been paused
+                to prevent data loss. You can try to recover or restart.
+            </p>
+
+            <div class="geb-card__actions">
+                <button class="geb-card__btn geb-card__btn--primary"
+                        type="button"
+                        @onclick="TryRecover">
+                    <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                    Try Again
+                </button>
+            </div>
+
+            <details class="geb-card__details">
+                <summary class="geb-card__details-toggle">Technical details</summary>
+                <div class="geb-card__trace">
+                    <p class="geb-card__error-type">@CurrentException.GetType().FullName</p>
+                    <p class="geb-card__error-msg">@CurrentException.Message</p>
+                    <pre class="geb-card__stacktrace">@CurrentException.ToString()</pre>
+                </div>
+            </details>
+        </div>
+
+    </div>
+}
+
+@code {
+    protected override async Task OnErrorAsync(Exception exception)
+    {
+        Logger.LogCritical(exception,
+            "GlobalErrorBoundaryV2 caught unhandled exception: {Message}",
+            exception.Message);
+
+        await WriteToDesktopLog(exception);
+    }
+
+    private void TryRecover()
+    {
+        Recover();
+    }
+
+    private static async Task WriteToDesktopLog(Exception ex)
+    {
+        try
+        {
+            var path = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "AbsenceApp_crash.log");
+            var entry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] GLOBAL ERROR BOUNDARY{Environment.NewLine}" +
+                        $"  Type   : {ex.GetType().FullName}{Environment.NewLine}" +
+                        $"  Message: {ex.Message}{Environment.NewLine}" +
+                        $"  Stack  :{Environment.NewLine}{ex}{Environment.NewLine}" +
+                        new string('-', 80) + Environment.NewLine;
+            await System.IO.File.AppendAllTextAsync(path, entry);
+        }
+        catch
+        {
+            // Never crash inside the error handler.
+        }
+    }
+}

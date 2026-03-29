@@ -1,11 +1,14 @@
 /* =============================================================================
    File    : colors.css
    Project : AbsenceApp.Client
-   Phase   : V2 Design System — Phase 2
+   Phase   : V2 Design System — Phase 4
    Created : 2026-03-21
+   Updated : 2026-03-27
    Purpose : Color design tokens for V2 components.
              Variable names are aligned with V1 app.css to ensure visual
              consistency. V2-specific tokens are prefixed with --ds-.
+             --v2-* aliases added in Phase 4 so all new Global Config
+             components and the GlobalErrorBoundaryV2 can use them.
              DO NOT modify V1 app.css.
 ============================================================================= */
 
@@ -61,6 +64,45 @@
 
     /* ── Table (matches V1 .tpt-thead-row background exactly) ──────── */
     --ds-color-table-head-bg:    #1e3a5f;
+
+    /* =========================================================
+       --v2-* semantic aliases (Phase 4)
+       All new components (Global Config demo pages,
+       GlobalErrorBoundaryV2) use this naming scheme.
+       They map directly to the --ds-* tokens above so
+       both schemes resolve to the same value.
+       ========================================================= */
+
+    /* Colours */
+    --v2-color-primary:          #0d6efd;
+    --v2-color-secondary:        #6c757d;
+    --v2-color-success:          #198754;
+    --v2-color-danger:           #dc3545;
+    --v2-color-warning:          #ffc107;
+    --v2-color-info:             #0dcaf0;
+    --v2-color-light:            #f8f9fa;
+    --v2-color-dark:             #212529;
+
+    /* Surface */
+    --v2-bg-surface:             #ffffff;
+    --v2-bg-page:                #f0f2f5;
+    --v2-bg-subtle:              #f8f9fa;
+    --v2-bg-sidebar:             var(--chrome-bg, #1e2130);
+    --v2-bg-header:              #ffffff;
+
+    /* Text */
+    --v2-text-primary:           #212529;
+    --v2-text-secondary:         #6c757d;
+    --v2-text-muted:             #adb5bd;
+    --v2-text-on-primary:        #ffffff;
+
+    /* Border */
+    --v2-border-color:           #dee2e6;
+
+    /* Shadows */
+    --v2-shadow-sm:              0 1px 4px rgba(0, 0, 0, 0.07);
+    --v2-shadow-md:              0 2px 8px rgba(0, 0, 0, 0.10);
+    --v2-shadow-lg:              0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* ── Dark theme overrides ───────────────────────────────────────────────── */
@@ -73,4 +115,17 @@
     --ds-color-text-muted:       var(--text-muted,    #8891a8);
     --ds-color-sidebar-hover:    var(--sb-hover-bg,   #272b3f);
     --ds-color-sidebar-sub:      var(--sb-sub-bg,     #1a1e30);
+
+    /* --v2-* dark overrides */
+    --v2-bg-surface:             #1e2130;
+    --v2-bg-page:                #161824;
+    --v2-bg-subtle:              #151824;
+    --v2-bg-header:              #1e2130;
+    --v2-text-primary:           #e9ecef;
+    --v2-text-secondary:         #9aa0b8;
+    --v2-text-muted:             #5c6380;
+    --v2-border-color:           #2d3348;
+    --v2-shadow-sm:              0 1px 4px rgba(0, 0, 0, 0.25);
+    --v2-shadow-md:              0 2px 8px rgba(0, 0, 0, 0.30);
+    --v2-shadow-lg:              0 4px 16px rgba(0, 0, 0, 0.35);
 }

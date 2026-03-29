@@ -1,0 +1,39 @@
+{
+  "_comment": "Global Config Sidebar",
+  "_version": "1.0.0",
+  "_updated": "2026-03-29",
+  "categories": [
+    {
+      "category": "DESIGN SYSTEM",
+      "groups": [
+        {
+          "group": "Foundations",
+          "icon": "bi-sliders",
+          "items": [
+            { "label": "Colours",     "href": "/global-settings/colours",     "icon": "bi-palette2" },
+            { "label": "Typography",  "href": "/global-settings/typography",  "icon": "bi-type" },
+            { "label": "Spacing",     "href": "/global-settings/spacing",     "icon": "bi-distribute-vertical" },
+            { "label": "Icons",       "href": "/global-settings/icons",       "icon": "bi-emoji-smile" }
+          ]
+        },
+        {
+          "group": "Components",
+          "icon": "bi-grid-3x3-gap-fill",
+          "items": [
+            { "label": "Buttons",     "href": "/global-settings/buttons",     "icon": "bi-stop-btn" },
+            { "label": "Cards",       "href": "/global-settings/cards",       "icon": "bi-card-heading" },
+            { "label": "Forms",       "href": "/global-settings/forms",       "icon": "bi-input-cursor-text" },
+            { "label": "Tables",      "href": "/global-settings/tables",      "icon": "bi-table" }
+          ]
+        },
+        {
+          "group": "Templates",
+          "icon": "bi-layout-text-window",
+          "items": [
+            { "label": "Dashboards",  "href": "/global-settings/dashboards",  "icon": "bi-speedometer" }
+          ]
+        }
+      ]
+    }
+  ]
+}

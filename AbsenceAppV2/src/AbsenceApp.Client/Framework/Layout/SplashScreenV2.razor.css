@@ -1,0 +1,112 @@
+/* =============================================================================
+   File    : SplashScreenV2.razor.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 4
+   Version : 1.0.0
+   Created : 2026-03-28
+   Updated : 2026-03-28
+   -----------------------------------------------------------------------
+   Purpose : Scoped styles for SplashScreenV2.razor.
+             Full-screen branded splash displayed before the router loads.
+             Uses hardcoded values (no token dependency) so it renders
+             correctly even before wwwroot/css is fully loaded.
+============================================================================= */
+
+/* ── Full-screen overlay ─────────────────────────────────────────────── */
+
+.v2-splash {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────── */
+
+.v2-splash__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 48px 40px;
+    text-align: center;
+    animation: v2-splash-fade-in 0.4s ease forwards;
+}
+
+@keyframes v2-splash-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Logo ────────────────────────────────────────────────────────────── */
+
+.v2-splash__logo-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.30);
+}
+
+.v2-splash__logo-icon {
+    font-size: 2rem;
+    color: #ffffff;
+    line-height: 1;
+}
+
+/* ── Typography ──────────────────────────────────────────────────────── */
+
+.v2-splash__title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a2032;
+    letter-spacing: -0.5px;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.v2-splash__tagline {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 0.2px;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────── */
+
+.v2-splash__spinner-wrap {
+    margin-top: 8px;
+}
+
+.v2-splash__spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: v2-splash-spin 0.8s linear infinite;
+}
+
+@keyframes v2-splash-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Version badge ───────────────────────────────────────────────────── */
+
+.v2-splash__version {
+    margin-top: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}

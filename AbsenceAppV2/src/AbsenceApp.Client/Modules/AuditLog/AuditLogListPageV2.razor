@@ -2,16 +2,29 @@
    File        : AuditLogListPageV2.razor
    Namespace   : AbsenceApp.Client.ModulesV2.AuditLog
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.2.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Audit Log list page. Read-only paged table of audit log
                  entries using StandardPageV2 and TableV2. No add/edit/delete
-                 actions � audit log entries are immutable.
+                 actions – audit log entries are immutable.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid @using Components.PageTemplatesV2 and/or
+                          Components.TableV2. These components are provided via
+                          the correct Framework namespaces through Modules/_Imports.razor.
+     - 1.1.0  2026-03-26  Replaced fully-qualified layout
+                          'AbsenceApp.Client.Components.Layout.MainLayoutV2'
+                          with 'MainLayoutV2' to remove dependency on the
+                          obsolete Components.Layout namespace, and added an
+                          explicit @using for Framework page templates so
+                          StandardPageV2 resolves correctly. Normalised text
+                          encoding for UI copy. No functional changes.
+     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout BaseLayoutV2;
+                          MainLayoutV2 no longer exists — BaseLayoutV2 is the
+                          V2 authenticated-shell layout (CS0246 build error fix).
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/auditlog
@@ -20,11 +33,11 @@
 *@
 
 @page "/v2/auditlog"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
-@using AbsenceApp.Client.Components.TableV2
-@using AbsenceApp.Client.Models.TableV2
+
+@using AbsenceApp.Client.Framework.PageTemplates
 @using AbsenceApp.Client.ViewModels.V2
+
+@layout BaseLayoutV2
 @inject AuditLogListViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
@@ -32,9 +45,9 @@
 @* =========================================================================
    Section: Audit log list
    ========================================================================= *@
-<StandardPageV2 PageTitle="Audit Log">
+<PageTemplateV2 PageTitleText="Audit Log">
 
-    <BodyContent>
+    <ChildContent>
         @if (ViewModel.Error is not null)
         {
             <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
@@ -49,7 +62,7 @@
                  PageSize="ViewModel.PageSize"
                  SortColumn="ViewModel.SortColumn"
                  SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search audit log�"
+                 SearchPlaceholder="Search audit log..."
                  AriaLabel="Audit log table"
                  OnSearchChanged="OnSearch"
                  OnSortChanged="OnSort"
@@ -68,9 +81,9 @@
             </RowActionsContent>
 
         </TableV2>
-    </BodyContent>
+    </ChildContent>
 
-</StandardPageV2>
+</PageTemplateV2>
 
 @* =========================================================================
    Section: ViewModel wiring and table callbacks
@@ -82,9 +95,15 @@
         await ViewModel.LoadAsync();
     }
 
-    private async Task OnSearch(string term) => await ViewModel.SearchAsync(term);
+    private async Task OnSearch(string term) =>
+        await ViewModel.SearchAsync(term);
+
     private async Task OnSort((string Column, bool Ascending) args) =>
         await ViewModel.SortAsync(args.Column, args.Ascending);
-    private async Task OnPageChanged(int page) => await ViewModel.GoToPageAsync(page);
-    private async Task OnPageSizeChanged(int size) => await ViewModel.ChangePageSizeAsync(size);
+
+    private async Task OnPageChanged(int page) =>
+        await ViewModel.GoToPageAsync(page);
+
+    private async Task OnPageSizeChanged(int size) =>
+        await ViewModel.ChangePageSizeAsync(size);
 }

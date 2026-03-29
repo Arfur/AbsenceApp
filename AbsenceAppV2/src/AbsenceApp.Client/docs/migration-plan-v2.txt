@@ -185,7 +185,7 @@ SECTION 3 — HOW TO MIGRATE FORMS TO FormPageV2
                SubmitLabel="Save"
                OnSubmit="ViewModel.SaveAsync"
                OnCancel="NavigateBack">
-      <BodyContent>
+      <ChildContent>
           <EditForm Model="@ViewModel.Form" OnValidSubmit="ViewModel.SaveAsync">
               <DataAnnotationsValidator />
               <FormSectionV2 Title="Personal Info" Icon="bi-person">
@@ -196,7 +196,7 @@ SECTION 3 — HOW TO MIGRATE FORMS TO FormPageV2
                   </div>
               </FormSectionV2>
           </EditForm>
-      </BodyContent>
+      </ChildContent>
   </FormPageV2>
 
   CHECKLIST

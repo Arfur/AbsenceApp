@@ -1,0 +1,62 @@
+@* ===========================================================================
+   File        : SplashScreenV2.razor
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-28
+   Updated     : 2026-03-28
+   ---------------------------------------------------------------------------
+   Purpose     : Branded application splash screen shown while the Blazor app
+                 initialises on first load. Displayed by AppHost.razor for
+                 a fixed duration (1 500 ms) before the router and shell
+                 components are revealed. Covers the white flash that occurs
+                 between the static HTML loader (in index.html) and the first
+                 Blazor render of BaseLayoutV2.
+
+                 Behaviour:
+                   1. index.html static loader (aa-boot-loader) — shown while
+                      the .NET runtime downloads and Blazor hydrates.
+                   2. SplashScreenV2 (this component) — Blazor-rendered branded
+                      splash with logo, app name, version, and spinner. Shown
+                      for 1 500 ms via a Task.Delay in AppHost.razor.
+                   3. Shell (BaseLayoutV2 → login or dashboard) — normal app.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-28  Initial implementation (Phase 4 fix).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - No code-behind required; the delay is handled in AppHost.razor.
+     - CSS is scoped to this component via SplashScreenV2.razor.css.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Framework.Layouts
+
+<div class="v2-splash" role="status" aria-label="AbsenceApp is loading">
+
+    @* =========================================================================
+       SECTION: Splash card
+       Centred card with logo, app name, tagline, and spinner.
+       ========================================================================= *@
+    <div class="v2-splash__card">
+
+        @* Logo mark *@
+        <div class="v2-splash__logo-wrap">
+            <i class="bi bi-calendar-check-fill v2-splash__logo-icon" aria-hidden="true"></i>
+        </div>
+
+        @* App name + tagline *@
+        <h1 class="v2-splash__title">AbsenceApp</h1>
+        <p class="v2-splash__tagline">School Absence Management</p>
+
+        @* Loading spinner *@
+        <div class="v2-splash__spinner-wrap">
+            <div class="v2-splash__spinner"></div>
+        </div>
+
+        @* Version badge *@
+        <span class="v2-splash__version">V2</span>
+
+    </div>
+
+</div>

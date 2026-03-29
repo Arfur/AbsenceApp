@@ -1,0 +1,176 @@
+@* ===========================================================================
+   File        : MainLayoutV2.razor
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : Michael
+   Version     : 1.3.0
+   Created     : 2026-03-29
+   Updated     : 2026-03-29
+   ---------------------------------------------------------------------------
+   Purpose     : Root layout component for all authenticated V2 pages.
+                 Composes HeaderV2, SidebarV2, BreadcrumbV2, the main @Body
+                 content area, and a copyright footer into the full V2 app
+                 shell. Login and other unauthenticated routes share this
+                 layout — the sidebar and header are hidden by an auth
+                 conditional so the login card renders as a clean centred
+                 full-screen form.
+
+                 Mirrors the structure of V1 MainLayout.razor while using the
+                 V2 Ki-Admin design-system components (HeaderV2, SidebarV2,
+                 BreadcrumbV2) and V2 CSS custom properties.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Auth redirect: after first render, unauthenticated users are sent to
+       /login (same pattern as V1 MainLayout.razor OnAfterRenderAsync).
+     - Dark mode: AppState.DarkMode adds the `dark` class to v2-layout-root
+       which cascades the V2 dark-token overrides to every child element.
+     - _isInitializing guard: a spinner overlay covers the first render cycle
+       so the sidebar/header never flicker before AppState.IsAuthenticated is
+       resolved (same pattern as BaseLayoutV2.razor).
+     - SidebarV2 auto-detects /global-settings/* routes and switches to the
+       Global Config secondary sidebar without any change in this layout.
+     - DefaultLayout for Routes.razor points here. Module pages that
+       explicitly declare @layout BaseLayoutV2 continue to work because
+       BaseLayoutV2.razor is not removed.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-29  Initial implementation. Canonical V2 root layout.
+     - 1.1.0  2026-03-29  Diagnostic instrumentation to verify layout wiring.
+     - 1.2.0  2026-03-29  Temporary removal of sidebar auth gate to isolate
+                          AppState.IsAuthenticated timing issue.
+     - 1.3.0  2026-03-29  Restored production layout behaviour. Sidebar and
+                          header are again gated by AppState.IsAuthenticated.
+                          Diagnostic artefacts removed. Layout contract
+                          stabilised; auth state fix to follow in
+                          AppStateService.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Framework.Layouts
+@inherits LayoutComponentBase
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Framework.Layout
+@inject AppStateService AppState
+@inject NavigationManager Nav
+@implements IDisposable
+
+@* =========================================================================
+   SECTION: INIT LOADER
+   Full-screen spinner shown for the first render cycle while AppState
+   resolves IsAuthenticated. Prevents the sidebar/header from briefly
+   appearing before auth state is known.
+   ========================================================================= *@
+@if (_isInitializing)
+{
+    <div class="v2-app-loader" role="status" aria-label="Loading AbsenceApp">
+        <div class="v2-app-loader__ring"></div>
+    </div>
+}
+else
+{
+
+@* =========================================================================
+   SECTION: LAYOUT ROOT
+   Full-screen flex row. SidebarV2 sits on the left; the content column
+   takes all remaining width. The `dark` CSS class triggers all V2 dark
+   custom-property overrides defined in app.css.
+   ========================================================================= *@
+<div class="v2-layout-root @(AppState.DarkMode ? "dark" : "")">
+
+    @* =========================================================================
+       SECTION: SIDEBAR
+       Rendered only when the user is authenticated so the login page
+       renders without a sidebar.
+       ========================================================================= *@
+    @if (AppState.IsAuthenticated)
+    {
+        <SidebarV2 />
+    }
+
+    @* =========================================================================
+       SECTION: CONTENT AREA
+       Flex column that fills the remaining width:
+         header → breadcrumb → main (scrollable) → footer
+       ========================================================================= *@
+    <div class="v2-content-area">
+
+        @if (AppState.IsAuthenticated)
+        {
+            @* =========================================================================
+               SECTION: HEADER
+               Full-width top bar: logo, sidebar toggle, search, actions.
+               ========================================================================= *@
+            <HeaderV2 />
+
+            @* =========================================================================
+               SECTION: BREADCRUMB
+               Route-tracking bar below the header.
+               ========================================================================= *@
+            <BreadcrumbV2 />
+
+            @* =========================================================================
+               SECTION: MAIN CONTENT (authenticated)
+               Scrollable padded container for page @Body content.
+               ========================================================================= *@
+            <main class="v2-main">
+                <div class="v2-page-container">
+                    @Body
+                </div>
+            </main>
+
+            @* =========================================================================
+               SECTION: FOOTER
+               Copyright bar fixed at the bottom of the content column.
+               ========================================================================= *@
+            <footer class="v2-footer">
+                <span>&copy; 2026 AbsenceApp — All rights reserved.</span>
+            </footer>
+        }
+        else
+        {
+            @* =========================================================================
+               SECTION: MAIN CONTENT (unauthenticated)
+               Full-height centred wrapper for the login card.
+               ========================================================================= *@
+            <main class="v2-main v2-main--auth">
+                @Body
+            </main>
+        }
+
+    </div>
+
+</div>
+
+}
+
+@* =========================================================================
+   SECTION: CODE-BEHIND
+   AppState subscription, auth redirect, and init guard lifecycle.
+   ========================================================================= *@
+@code {
+    private bool _isInitializing = true;
+
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isInitializing = false;
+
+            if (!AppState.IsAuthenticated)
+                Nav.NavigateTo("/login", replace: true);
+
+            StateHasChanged();
+        }
+
+        await Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

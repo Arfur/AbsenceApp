@@ -1,0 +1,171 @@
+﻿@* ===========================================================================
+   File        : Index.razor (Global Config — Buttons)
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalConfig.Buttons
+   Route       : /global-config/buttons
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-27
+   Updated     : 2026-03-28
+   ---------------------------------------------------------------------------
+   Purpose     : Global Config — Buttons demo page.
+                 Ki-Admin–style card layout. Each variant is in its own
+                 dsv2-card with header + body. Visual demo only.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-27  Initial implementation.
+     - 2.0.0  2026-03-28  Rebuilt with Ki-Admin card structure (gc-page layout).
+   ===========================================================================
+*@
+
+@page "/global-config/buttons"
+@layout AbsenceApp.Client.Framework.Layouts.BaseLayoutV2
+@namespace AbsenceApp.Client.Components.Pages.GlobalConfig.Buttons
+@using AbsenceApp.Client.Framework.PageTemplates
+
+<PageTemplateV2 PageTitleText="Buttons">
+    <ChildContent>
+        <div class="gc-page">
+
+            <!-- Basic Buttons -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Basic Buttons</h5>
+                            <span class="dsv2-card__subtitle">Use DSv2 button classes for semantic colour variants</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-btn-row">
+                                <button class="dsv2-btn dsv2-btn--primary"   type="button">Primary</button>
+                                <button class="dsv2-btn dsv2-btn--secondary" type="button">Secondary</button>
+                                <button class="dsv2-btn dsv2-btn--success"   type="button">Success</button>
+                                <button class="dsv2-btn dsv2-btn--danger"    type="button">Danger</button>
+                                <button class="dsv2-btn dsv2-btn--warning"   type="button">Warning</button>
+                                <button class="dsv2-btn dsv2-btn--info"      type="button">Info</button>
+                                <button class="dsv2-btn dsv2-btn--light"     type="button">Light</button>
+                                <button class="dsv2-btn dsv2-btn--dark"      type="button">Dark</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outline Buttons -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Outline Buttons</h5>
+                            <span class="dsv2-card__subtitle">Transparent background with coloured border</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-btn-row">
+                                <button class="dsv2-btn dsv2-btn--outline-primary"   type="button">Primary</button>
+                                <button class="dsv2-btn dsv2-btn--outline-secondary" type="button">Secondary</button>
+                                <button class="dsv2-btn dsv2-btn--outline-success"   type="button">Success</button>
+                                <button class="dsv2-btn dsv2-btn--outline-danger"    type="button">Danger</button>
+                                <button class="dsv2-btn dsv2-btn--outline-warning"   type="button">Warning</button>
+                                <button class="dsv2-btn dsv2-btn--outline-info"      type="button">Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Icon Buttons + Sizes -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Icon Buttons</h5>
+                            <span class="dsv2-card__subtitle">Icon + label combinations</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-btn-row">
+                                <button class="dsv2-btn dsv2-btn--primary" type="button">
+                                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Add Record
+                                </button>
+                                <button class="dsv2-btn dsv2-btn--secondary" type="button">
+                                    <i class="bi bi-download" aria-hidden="true"></i> Export
+                                </button>
+                                <button class="dsv2-btn dsv2-btn--danger" type="button">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                </button>
+                                <button class="dsv2-btn dsv2-btn--outline-primary" type="button">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+                                </button>
+                                <button class="dsv2-btn dsv2-btn--outline-secondary" type="button">
+                                    <i class="bi bi-funnel" aria-hidden="true"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Button Sizes</h5>
+                            <span class="dsv2-card__subtitle">lg / default / sm size modifiers</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-btn-row gc-btn-row--align-center">
+                                <button class="dsv2-btn dsv2-btn--primary dsv2-btn--lg" type="button">Large</button>
+                                <button class="dsv2-btn dsv2-btn--primary"              type="button">Default</button>
+                                <button class="dsv2-btn dsv2-btn--primary dsv2-btn--sm" type="button">Small</button>
+                            </div>
+                            <div class="gc-btn-row" style="margin-top:0.75rem">
+                                <button class="dsv2-btn dsv2-btn--outline-primary dsv2-btn--lg" type="button">Large Outline</button>
+                                <button class="dsv2-btn dsv2-btn--outline-primary"              type="button">Default Outline</button>
+                                <button class="dsv2-btn dsv2-btn--outline-primary dsv2-btn--sm" type="button">Small Outline</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disabled + Token Reference -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Disabled State</h5>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-btn-row">
+                                <button class="dsv2-btn dsv2-btn--primary"   type="button" disabled>Primary</button>
+                                <button class="dsv2-btn dsv2-btn--secondary" type="button" disabled>Secondary</button>
+                                <button class="dsv2-btn dsv2-btn--danger"    type="button" disabled>Danger</button>
+                                <button class="dsv2-btn dsv2-btn--outline-primary" type="button" disabled>Outline</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Design Tokens</h5>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <table class="gc-token-table">
+                                <thead>
+                                    <tr>
+                                        <th class="gc-token-table__th">Token</th>
+                                        <th class="gc-token-table__th">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-primary</td>    <td class="gc-token-table__td">Primary action colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-secondary</td>  <td class="gc-token-table__td">Secondary / neutral colour</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-success</td>    <td class="gc-token-table__td">Positive / confirm actions</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-color-danger</td>     <td class="gc-token-table__td">Destructive actions</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-radius-sm</td>        <td class="gc-token-table__td">Button border radius</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ChildContent>
+</PageTemplateV2>

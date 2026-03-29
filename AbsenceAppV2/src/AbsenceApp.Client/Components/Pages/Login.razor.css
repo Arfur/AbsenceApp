@@ -1,0 +1,22 @@
+/* =============================================================================
+   File    : Login.razor.css
+   Project : AbsenceApp.Client
+   Author  : AI Assistant
+   Version : 1.0.0
+   Phase   : V2 Design System — Phase 3
+   Created : 2026-03-27
+   -----------------------------------------------------------------------
+   Purpose : Scoped styles for Login.razor.
+             Login card centering is handled by BaseLayoutV2 via the
+             .v2-main--auth CSS rule (display:flex; align-items:center;
+             justify-content:center). The .auth-card styles are defined
+             globally in app.css and are not overridden here.
+             This file exists as a placeholder so that component-scoped
+             styles can be added here if needed in future phases.
+   ---------------------------------------------------------------------------
+   Notes   :
+     - To override .auth-card dimensions or padding, add styles here.
+     - Do NOT add centering rules here; that belongs in BaseLayoutV2.razor.css.
+============================================================================= */
+
+/* Placeholder — no overrides needed at this time. */

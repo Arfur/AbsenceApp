@@ -1,0 +1,120 @@
+@* ===========================================================================
+   File        : DashboardPageTemplate.razor
+   Namespace   : AbsenceApp.Client.Components.Templates
+   Author      : AI Assistant
+   Version     : 1.1.0
+   Created     : 2026-03-26
+   Updated     : 2026-03-27
+   ---------------------------------------------------------------------------
+   Purpose     : Dashboard content layout template. Provides the inner layout
+                 for dashboard-style pages: a metric stat card grid (CARDS
+                 REGION), optional inline header/subtitle (HEADER REGION), and
+                 a scrollable body for panels, tables, or charts (CONTENT/
+                 PANELS REGION). Intended to be composed inside PageTemplateV2's
+                 ChildContent to keep the outer page chrome (title bar, actions
+                 bar) in the outer template.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1, placeholder only).
+     - 1.0.1  2026-03-26  Phase 3 Part 1: added section comments.
+     - 1.1.0  2026-03-27  Phase 3 Shell Fix: restructured to match the wiring
+                          required by DashboardPageV2 v1.6.0. Added explicit
+                          HEADER, CARDS, CONTENT/PANELS, and FOOTER/ACTIONS
+                          region comments. Removed hard-coded placeholder cards
+                          in favour of the StatCards RenderFragment slot (caller
+                          is responsible for card content). Renamed ChildContent
+                          slot to be the PANELS REGION. CSS class names updated
+                          to dsv2-dash-tpl-* to avoid collision with
+                          dsv2-dashboard-page-* from DashboardPageV2.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - No JSON logic, no runtime data. Static layout wiring only.
+     - DashboardPageV2 passes the concrete stat cards and panels via slots.
+     - All layout CSS is in DashboardPageTemplate.razor.css.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.Templates
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   Column flex container wrapping all dashboard regions.
+   ========================= *@
+<div class="dsv2-dash-tpl">
+
+    @* =========================
+       SECTION: HEADER REGION
+       Optional subtitle / descriptive text below the page title.
+       The page title itself is in the outer PageTemplateV2 shell.
+       ========================= *@
+    @if (!string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <div class="dsv2-dash-tpl__header">
+            <p class="dsv2-dash-tpl__subtitle">@Subtitle</p>
+        </div>
+    }
+
+    @* =========================
+       SECTION: CARDS REGION
+       Responsive grid of metric stat cards.
+       Caller passes cards via the StatCards RenderFragment slot.
+       ========================= *@
+    <div class="dsv2-dash-tpl__cards">
+        @if (StatCards is not null)
+        {
+            @StatCards
+        }
+    </div>
+
+    @* =========================
+       SECTION: CONTENT REGION
+       Panels region: activity feeds, summary tables, charts, etc.
+       Caller passes panel content via the ChildContent RenderFragment slot.
+       ========================= *@
+    <div class="dsv2-dash-tpl__content">
+
+        @* =========================
+           SECTION: PANELS REGION
+           Rendered inside the content region. Caller is responsible for
+           the internal grid layout of the panels.
+           ========================= *@
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+
+    </div>
+
+    @* =========================
+       SECTION: FOOTER/ACTIONS REGION
+       Reserved for future page-level actions (e.g. export, refresh).
+       Not rendered unless ActionsContent is provided.
+       ========================= *@
+    @if (ActionsContent is not null)
+    {
+        <div class="dsv2-dash-tpl__actions">
+            @ActionsContent
+        </div>
+    }
+
+</div>
+
+@code {
+    /// <summary>Optional subtitle text rendered below the page title.</summary>
+    [Parameter] public string? Subtitle { get; set; }
+
+    /// <summary>
+    /// CARDS REGION — metric stat cards rendered in the responsive grid.
+    /// </summary>
+    [Parameter] public RenderFragment? StatCards { get; set; }
+
+    /// <summary>
+    /// PANELS REGION — panels, tables, charts rendered in the content area.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// FOOTER/ACTIONS REGION — page-level action buttons (optional).
+    /// </summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+}

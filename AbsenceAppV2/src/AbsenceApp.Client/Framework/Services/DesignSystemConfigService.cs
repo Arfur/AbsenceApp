@@ -3,28 +3,34 @@
  File        : DesignSystemConfigService.cs
  Namespace   : AbsenceApp.Client.Services
  Author      : Michael
- Version     : 1.0.0
+ Version     : 2.0.0
  Created     : 2026-03-21
- Updated     : 2026-03-21
+ Updated     : 2026-03-29
 -------------------------------------------------------------------------------
- Purpose     : V2 design system configuration service. Provides read/write
-               access to design token overrides (colour palette, spacing scale,
-               border-radius, shadow) stored in local preferences. Exposes an
-               OnChange event so components can react to live theme changes.
+ Purpose     : V2 design system configuration service. Loads V2 design-system
+               JSON config files on demand and caches them for the lifetime of
+               the application. Reads files directly from disk using FileStream
+               so it works correctly in MAUI Blazor Hybrid where native C# code
+               cannot reach the WebView2 virtual http://localhost/ scheme.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation.
+   - 2.0.0  2026-03-29  BUG FIX: Replaced HttpClient.GetFromJsonAsync with
+                         FileStream reading from AppContext.BaseDirectory/wwwroot.
+                         In MAUI Blazor Hybrid the C# HttpClient cannot reach
+                         http://localhost/ — that scheme exists only inside the
+                         WebView2 browser context, not in native C# code.
+                         HttpClient dependency removed from constructor.
 -------------------------------------------------------------------------------
  Notes       :
    - Phase 2 service. Register as Singleton in DI.
 ===============================================================================
 */
 
-using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace AbsenceApp.Client.FrameworkV2.Services;
+namespace AbsenceApp.Client.Services;
 
 /// <summary>
 /// Singleton service that loads V2 design system JSON config files on demand
@@ -32,7 +38,8 @@ namespace AbsenceApp.Client.FrameworkV2.Services;
 /// </summary>
 public class DesignSystemConfigService
 {
-    private readonly HttpClient _http;
+    private static readonly string _wwwrootBase =
+        Path.Combine(AppContext.BaseDirectory, "wwwroot");
 
     private JsonObject? _theme;
     private JsonObject? _menu;
@@ -47,9 +54,8 @@ public class DesignSystemConfigService
         AllowTrailingCommas = true
     };
 
-    public DesignSystemConfigService(HttpClient http)
+    public DesignSystemConfigService()
     {
-        _http = http;
     }
 
     // -------------------------------------------------------------------------
@@ -71,6 +77,11 @@ public class DesignSystemConfigService
 
     public async Task<JsonObject> GetIconsAsync()
         => _icons ??= await LoadAsync("config/designsystem/icons.json");
+
+    private JsonObject? _globalSettingsMenu;
+
+    public async Task<JsonObject> GetGlobalSettingsMenuAsync()
+        => _globalSettingsMenu ??= await LoadAsync("config/designsystem/menu.globalsettings.json");
 
     /// <summary>
     /// Reads a nested value from a loaded config object given a dot-separated path.
@@ -95,11 +106,16 @@ public class DesignSystemConfigService
     // -------------------------------------------------------------------------
     private async Task<JsonObject> LoadAsync(string relativePath)
     {
-        var node = await _http.GetFromJsonAsync<JsonNode>(relativePath, _jsonOptions)
-                   ?? throw new InvalidOperationException($"DesignSystemConfigService: failed to load '{relativePath}'.");
+        var fullPath = Path.Combine(_wwwrootBase, relativePath);
+        await using var stream = new FileStream(
+            fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var node = await JsonSerializer.DeserializeAsync<JsonNode>(stream, _jsonOptions)
+                   ?? throw new InvalidOperationException(
+                       $"DesignSystemConfigService: failed to load '{relativePath}'.");
 
         if (node is not JsonObject obj)
-            throw new InvalidOperationException($"DesignSystemConfigService: '{relativePath}' is not a JSON object.");
+            throw new InvalidOperationException(
+                $"DesignSystemConfigService: '{relativePath}' is not a JSON object.");
 
         return obj;
     }

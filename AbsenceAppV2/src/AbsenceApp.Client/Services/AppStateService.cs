@@ -2,29 +2,31 @@
    File        : AppStateService.cs
    Namespace   : AbsenceApp.Client.Services
    Author      : Michael
-   Version     : 2.1.0
+   Version     : 2.4.0
    Created     : 2026-03-17
-   Updated     : 2026-03-25
+   Updated     : 2026-03-29
    ----------------------------------------------------------------------------
    Purpose     : Singleton UI state container shared across all layout and
                  shell components. Tracks:
                    - Sidebar collapsed/expanded
-                   - Dark/light mode
+                   - Dark/light mode (persisted across cold starts)
                    - Breadcrumb segments + category
-                   - User identity + authentication state
+                   - User identity + authentication state (in-memory only)
                    - Per-page table UI state (search, filters, show-entries)
    ----------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-17  Initial implementation.
-     - 2.0.0  2026-03-21  Extended for V2 shell: BreadcrumbCategory, V2 menu
-                          integration, and expanded table-state persistence.
-     - 2.1.0  2026-03-25  Confirmed as shared V2 service after V1/V2 split.
-                          Added full header + section comments; no functional
-                          changes.
+     - 2.2.0  2026-03-27  DarkMode persisted to MAUI Preferences.
+     - 2.3.0  2026-03-29  Authentication state and user identity persisted and
+                          restored on app startup.
+     - 2.3.1  2026-03-29  Restored TablePageUiState DTO in-file to resolve build
+                          errors after auth persistence update.
+     - 2.4.0  2026-03-29  Enforced mandatory login on every cold start by
+                          removing authentication persistence and restoration.
    ============================================================================
 */
 
 using AbsenceApp.Client.Shared;
+using Microsoft.Maui.Storage;
 
 namespace AbsenceApp.Client.Services;
 
@@ -41,6 +43,12 @@ namespace AbsenceApp.Client.Services;
 public class AppStateService
 {
     /* ============================================================================
+       Section: Persistence keys
+       ============================================================================ */
+
+    private const string DarkModeKey = "app.dark_mode";
+
+    /* ============================================================================
        Section: Backing fields
        ============================================================================ */
 
@@ -48,14 +56,28 @@ public class AppStateService
         new(StringComparer.OrdinalIgnoreCase);
 
     /* ============================================================================
+       Section: Constructor — restore persisted state
+       ============================================================================ */
+
+    public AppStateService()
+    {
+        // Restore the last selected theme so cold starts honour the user's
+        // preference without defaulting back to Light mode every time.
+        DarkMode = Preferences.Default.Get(DarkModeKey, false);
+
+        // Authentication is intentionally NOT restored.
+        // Users must log in on every cold start for security.
+    }
+
+    /* ============================================================================
        Section: Global UI state
        ============================================================================ */
 
     public bool   SidebarCollapsed { get; private set; } = false;
-    public bool   DarkMode         { get; private set; } = false;
+    public bool   DarkMode         { get; private set; }
     public int    UnreadCount      { get; set; }         = 4;
-    public string UserName         { get; set; }         = string.Empty;
-    public string UserRole         { get; set; }         = string.Empty;
+    public string UserName         { get; private set; } = string.Empty;
+    public string UserRole         { get; private set; } = string.Empty;
     public bool   IsAuthenticated  { get; private set; } = false;
     public long   CurrentUserId    { get; private set; }
 
@@ -89,7 +111,13 @@ public class AppStateService
 
     public void ToggleDarkMode()
     {
-        DarkMode = !DarkMode;
+        SetDarkMode(!DarkMode);
+    }
+
+    public void SetDarkMode(bool value)
+    {
+        DarkMode = value;
+        Preferences.Default.Set(DarkModeKey, value);
         Notify();
     }
 
@@ -142,6 +170,7 @@ public class AppStateService
         UserName        = name;
         UserRole        = role;
         IsAuthenticated = true;
+
         Notify();
     }
 
@@ -151,6 +180,7 @@ public class AppStateService
         CurrentUserId   = 0;
         UserName        = string.Empty;
         UserRole        = string.Empty;
+
         Notify();
     }
 

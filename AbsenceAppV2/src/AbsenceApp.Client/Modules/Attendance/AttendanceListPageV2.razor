@@ -1,17 +1,21 @@
 @* ===========================================================================
    File        : AttendanceListPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Attendance
+   Namespace   : AbsenceApp.Client.Modules.Attendance
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Attendance list page. Displays a paged, searchable, sortable
-                 table of attendance records using StandardPageV2 and TableV2.
-                 Delegates all data and state to AttendanceListViewModelV2.
+                 table of attendance records using the V2 PageTemplateV2
+                 primitive instead of deprecated StandardPageV2. Delegates all
+                 data and state to AttendanceListViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
+                          Updated namespace and layout. Preserved table logic.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/attendance
@@ -20,24 +24,24 @@
 *@
 
 @page "/v2/attendance"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
-@using AbsenceApp.Client.Components.TableV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Attendance
+
 @using AbsenceApp.Client.Models.TableV2
 @using AbsenceApp.Client.ViewModels.V2
 @inject AttendanceListViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Attendance list
-   ========================================================================= *@
-<StandardPageV2 PageTitle="Attendance">
+<PageTemplateV2 PageTitleText="Attendance">
 
-    <BodyContent>
+    <ChildContent>
+
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">
+                @ViewModel.Error
+            </div>
         }
 
         <TableV2 TItem="AbsenceApp.Core.DTOs.AttendanceDto"
@@ -49,7 +53,7 @@
                  PageSize="ViewModel.PageSize"
                  SortColumn="ViewModel.SortColumn"
                  SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search attendance�"
+                 SearchPlaceholder="Search attendance…"
                  AriaLabel="Attendance table"
                  OnSearchChanged="OnSearch"
                  OnSortChanged="OnSort"
@@ -59,7 +63,9 @@
             <RowTemplate Context="record">
                 <td class="dsv2-table__td">@record.AttendanceId</td>
                 <td class="dsv2-table__td">@record.UserId</td>
-                <td class="dsv2-table__td">@(record.ClassId.HasValue ? record.ClassId.Value.ToString() : "�")</td>
+                <td class="dsv2-table__td">
+                    @(record.ClassId.HasValue ? record.ClassId.Value.ToString() : "—")
+                </td>
                 <td class="dsv2-table__td">@record.Status</td>
                 <td class="dsv2-table__td">@record.Timestamp.ToString("dd MMM yyyy HH:mm")</td>
                 <td class="dsv2-table__td">@record.RecordedBy</td>
@@ -68,19 +74,24 @@
             <RowActionsContent Context="record">
                 @if (record.ClassId.HasValue)
                 {
-                    <a href="@($"/v2/attendance/{record.ClassId.Value}")" class="dsv2-table__row-action">View Register</a>
-                    <a href="@($"/v2/attendance/{record.ClassId.Value}/mark")" class="dsv2-table__row-action">Mark</a>
+                    <a href="@($"/v2/attendance/{record.ClassId.Value}")"
+                       class="dsv2-table__row-action">
+                        View Register
+                    </a>
+
+                    <a href="@($"/v2/attendance/{record.ClassId.Value}/mark")"
+                       class="dsv2-table__row-action">
+                        Mark
+                    </a>
                 }
             </RowActionsContent>
 
         </TableV2>
-    </BodyContent>
 
-</StandardPageV2>
+    </ChildContent>
 
-@* =========================================================================
-   Section: ViewModel wiring and table callbacks
-   ========================================================================= *@
+</PageTemplateV2>
+
 @code {
     protected override async Task OnInitializedAsync()
     {
@@ -88,9 +99,15 @@
         await ViewModel.LoadAsync();
     }
 
-    private async Task OnSearch(string term) => await ViewModel.SearchAsync(term);
+    private async Task OnSearch(string term) =>
+        await ViewModel.SearchAsync(term);
+
     private async Task OnSort((string Column, bool Ascending) args) =>
         await ViewModel.SortAsync(args.Column, args.Ascending);
-    private async Task OnPageChanged(int page) => await ViewModel.GoToPageAsync(page);
-    private async Task OnPageSizeChanged(int size) => await ViewModel.ChangePageSizeAsync(size);
+
+    private async Task OnPageChanged(int page) =>
+        await ViewModel.GoToPageAsync(page);
+
+    private async Task OnPageSizeChanged(int size) =>
+        await ViewModel.ChangePageSizeAsync(size);
 }

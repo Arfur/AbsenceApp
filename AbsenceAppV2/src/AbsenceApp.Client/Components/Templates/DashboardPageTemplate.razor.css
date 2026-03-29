@@ -1,0 +1,74 @@
+﻿/* =============================================================================
+   File    : DashboardPageTemplate.razor.css
+   Project : AbsenceApp.Client
+   Author  : AI Assistant
+   Version : 1.1.0
+   Phase   : V2 Design System — Phase 3
+   Created : 2026-03-27
+   Updated : 2026-03-27
+   -----------------------------------------------------------------------
+   Purpose : Scoped styles for DashboardPageTemplate.razor.
+             Provides grid layout for the CARDS REGION and CONTENT/PANELS
+             REGION without any hardcoded colours — all values use V1 CSS
+             custom properties so dark mode cascades correctly.
+   ---------------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-27  Initial implementation (placeholder CSS only).
+     - 1.1.0  2026-03-27  Phase 3 Shell Fix: updated to match new dsv2-dash-tpl-*
+                          class names. Added proper card grid, panels grid, and
+                          header/actions region styles. Updated all token refs to
+                          V1 CSS custom properties for dark mode compatibility.
+   ---------------------------------------------------------------------------
+   Notes   :
+     - CSS classes are dsv2-dash-tpl-* to avoid collision with
+       dsv2-dashboard-page-* used in DashboardPageV2.razor.css.
+     - Stat card and panel styles remain in DashboardPageV2.razor.css.
+============================================================================= */
+
+/* ── Layout root ──────────────────────────────────────────────────────── */
+.dsv2-dash-tpl {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── HEADER REGION: optional subtitle ────────────────────────────────── */
+.dsv2-dash-tpl__header {
+    margin: 0;
+}
+
+.dsv2-dash-tpl__subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted, #7b8494);
+    margin: 0;
+}
+
+/* ── CARDS REGION: responsive stat card grid ──────────────────────────── */
+.dsv2-dash-tpl__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+/* ── CONTENT / PANELS REGION ──────────────────────────────────────────── */
+.dsv2-dash-tpl__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ── FOOTER / ACTIONS REGION ──────────────────────────────────────────── */
+.dsv2-dash-tpl__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border, #dde1e7);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .dsv2-dash-tpl__cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}

@@ -1,0 +1,65 @@
+@* ===========================================================================
+   File        : BlankPageTemplate.razor
+   Namespace   : AbsenceApp.Client.Components.Templates
+   Author      : AI Assistant
+   Version     : 1.0.1
+   Created     : 2026-03-26
+   Updated     : 2026-03-26
+   ---------------------------------------------------------------------------
+   Purpose     : Blank page template. Provides a minimal titled container
+                 with a content slot. Use for pages that need no predefined
+                 structure. Placeholder only — no business logic.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1).
+     - 1.0.1  2026-03-26  Phase 3 Part 1: added HEADER / LAYOUT ROOT /
+                          CONTENT REGION / PLACEHOLDER REGION section
+                          comments. Placeholder values confirmed present.
+                          No functional changes.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - No JSON loading. No runtime data dependencies.
+     - Regions are defined and ready for JSON defaults in Phase 2.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.Templates
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   ========================= *@
+<div class="gs-template gs-template--blank">
+
+    @* =========================
+       SECTION: HEADER
+       ========================= *@
+    @if (!string.IsNullOrWhiteSpace(PageTitle))
+    {
+        <div class="gs-template__header">
+            <h1 class="gs-template__title">@PageTitle</h1>
+        </div>
+    }
+
+    @* =========================
+       SECTION: CONTENT REGION
+       ========================= *@
+    <div class="gs-template__body">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @* =========================
+               SECTION: PLACEHOLDER REGION
+               ========================= *@
+            <p class="gs-template__placeholder-text">No content provided.</p>
+        }
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string PageTitle { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

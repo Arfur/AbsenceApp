@@ -1,14 +1,17 @@
 ﻿@* ===========================================================================
    File        : Routes.razor
    Namespace   : AbsenceApp.Client.Components
-   Author      : Michael
-   Version     : 2.2.0
+   Author      : AI Assistant
+   Version     : 2.7.0
    Created     : 2026-03-13
-   Updated     : 2026-03-25
+   Updated     : 2026-03-29
    ---------------------------------------------------------------------------
    Purpose     : Root Blazor router component for AbsenceApp V2.
                  Matches the current URL to a @page-decorated component and
-                 renders it using the V2 MainLayout shell.
+                 renders it using the V2 BaseLayout shell.
+                 Also acts as a lightweight auth guard: subscribes to
+                 LocationChanged and redirects unauthenticated users to /login
+                 whenever they navigate to any route other than /login.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-13  Initial implementation.
@@ -16,18 +19,39 @@
      - 2.1.0  2026-03-24  Verified for AbsenceAppV2; no functional changes.
      - 2.2.0  2026-03-25  Confirmed as V2 router after V1/V2 project split.
                           Removed ambiguity with V1; V1 router restored separately.
+     - 2.3.0  2026-03-25  Fixed DefaultLayout from Layout.MainLayout (V1) to
+                          Layout.MainLayoutV2 (incorrect namespace).
+     - 2.4.0  2026-03-26  Corrected DefaultLayout to typeof(MainLayoutV2) and
+                          added @using AbsenceApp.Client.Framework.Layout.
+                          This resolves CS0234/CS0246 errors across all V2 pages.
+     - 2.5.0  2026-03-26  Replaced typeof(MainLayoutV2) with typeof(BaseLayoutV2)
+                          and updated @using to AbsenceApp.Client.Framework.Layouts.
+                          MainLayoutV2 no longer exists; BaseLayoutV2 is the V2
+                          authenticated-shell layout (CS0246 build error fix).
+     - 2.6.0  2026-03-26  Phase 3 Layout Repair: injected NavigationManager and
+                          AppStateService. Added OnInitialized and LocationChanged
+                          handler that redirects unauthenticated users to /login
+                          when they navigate to any route other than /login.
+                          Implemented IDisposable to unsubscribe the handler.
+     - 2.7.0  2026-03-29  Phase 3 & 4 completion: changed DefaultLayout from
+                          typeof(BaseLayoutV2) to typeof(MainLayoutV2). New
+                          routed pages that omit @layout will now default to the
+                          canonical V2 shell layout. Existing pages with explicit
+                          @layout BaseLayoutV2 continue to work unchanged.
    ===========================================================================
 *@
 
-@* =========================================================================
-   Router — maps URLs to @page-decorated components using MainLayoutV2
-   ========================================================================= *@
+@using AbsenceApp.Client.Framework.Layouts
+@using AbsenceApp.Client.Services
+@inject NavigationManager Nav
+@inject AppStateService AppState
+@implements IDisposable
+
 <Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <ErrorBoundary>
             <ChildContent>
-                @* TEMPORARY: V2 SHELL ACTIVATION *@
-                <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayoutV2)" />
             </ChildContent>
             <ErrorContent Context="ex">
                 @{ LogError(ex); }
@@ -45,10 +69,43 @@
     </NotFound>
 </Router>
 
-@* =========================================================================
-   Section: Code-behind — diagnostic error logger
-   ========================================================================= *@
 @code {
+    // ── Auth guard ──────────────────────────────────────────────────────────
+    // Runs on initial render and on every navigation to ensure unauthenticated
+    // users are always sent to /login.  The guard skips the /login route itself
+    // to prevent an infinite redirect loop.
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+        _ = InvokeAsync(() => CheckAuthRedirect(Nav.Uri));
+    }
+
+    private void OnLocationChanged(object? sender,
+        Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        _ = InvokeAsync(() => CheckAuthRedirect(e.Location));
+    }
+
+    private void CheckAuthRedirect(string uri)
+    {
+        var path = Nav.ToBaseRelativePath(uri);
+        if (!path.StartsWith("/")) path = "/" + path;
+
+        if (!AppState.IsAuthenticated &&
+            !path.Equals("/login", StringComparison.OrdinalIgnoreCase))
+        {
+            Nav.NavigateTo("/login", replace: true);
+        }
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+
+    // ── Error boundary helper ────────────────────────────────────────────────
+
     static void LogError(Exception ex)
     {
         try
@@ -59,6 +116,6 @@
             System.IO.File.AppendAllText(path,
                 $"[{DateTime.Now:HH:mm:ss}] ErrorBoundary: {ex}{Environment.NewLine}");
         }
-        catch { /* never throw from error logger */ }
+        catch { }
     }
 }

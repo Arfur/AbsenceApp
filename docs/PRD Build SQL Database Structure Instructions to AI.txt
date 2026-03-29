@@ -1,0 +1,340 @@
+Absolutely, Michael — I’ve got you.  
+Here is **exactly** what you asked for:
+
+# ⭐ ONE SINGLE, COPY‑READY MASTER STATEMENT  
+### A complete, end‑to‑end, phased plan  
+### Written *specifically* for VS Code AI (Copilot)  
+### With **bite‑size phases**, **zero drift**, **explicit instructions**, and **verification tests**  
+### And Copilot will run **all phases sequentially** without guessing.
+
+You can paste this entire statement into VS Code and Copilot will follow it **phase by phase**, **test by test**, **without drifting**.
+
+---
+
+# ⭐⭐⭐ **THE MASTER BUILD PLAN FOR VS CODE AI**  
+### **(Copy this whole thing into VS Code)**
+
+---
+
+# 📌 **INTRODUCTION (READ FIRST)**  
+You (Copilot) will build the entire SQL Server Express database schema for the Absence Management System.
+
+You will complete the work in **strict phases**.
+
+For **each phase**:
+
+1. You will **generate only the SQL requested**.  
+2. You will **not infer**, **not rename**, **not add**, **not remove**, and **not optimise** anything.  
+3. After generating SQL for a phase, you will also generate the **verification SQL tests**.  
+4. You will **wait for confirmation** before moving to the next phase.  
+5. You will complete **all phases sequentially** until the entire schema and seed data are built.
+
+If any phase fails verification, you will **fix only that phase** and re‑test.
+
+You must **never drift** from the definitions provided.
+
+---
+
+# 🧱 **PHASE 1 — CREATE SCHEMAS**
+
+### **Your task**
+Generate SQL Server Express code to create these schemas:
+
+- core  
+- org  
+- ops  
+- auth  
+- assets  
+- audit  
+
+### **Rules**
+- Do NOT create any tables.  
+- Do NOT add anything else.  
+- Do NOT infer anything.  
+- Only create the schemas exactly as named.
+
+### **Verification Tests**
+Generate SQL to verify:
+
+```sql
+SELECT name FROM sys.schemas 
+WHERE name IN ('core','org','ops','auth','assets','audit');
+```
+
+Expected result: **6 rows**.
+
+---
+
+# 🧱 **PHASE 2 — CREATE REFERENCE TABLES (ONE AT A TIME)**
+
+For each table below:
+
+1. I will paste the table definition.  
+2. You will generate **only** the CREATE TABLE SQL.  
+3. You will generate the verification SQL.  
+4. You will wait for confirmation before moving to the next table.
+
+### **Instruction for every table**
+You must follow this exact instruction for each table:
+
+> **“Generate SQL Server Express CREATE TABLE code for the following table definition.  
+> Do not change field names.  
+> Do not add or remove fields.  
+> Do not infer anything.  
+> Only generate the CREATE TABLE statement exactly as defined.”**
+
+### **Verification for every table**
+Generate:
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_SCHEMA = '<schema>' AND TABLE_NAME = '<table>';
+```
+
+Expected result: **1 row**.
+
+### **Table creation order**
+You will create these tables in this exact order:
+
+1. core.schools  
+2. core.phases  
+3. core.year_groups  
+4. core.classes  
+5. core.class_year_group_assignments  
+6. org.job_titles  
+7. org.job_groups  
+8. org.departments  
+9. org.responsibilities  
+10. ops.absence_types  
+11. assets.device_types  
+12. assets.external_systems  
+13. auth.role_types  
+
+You will not proceed until each table passes verification.
+
+---
+
+# 🧱 **PHASE 3 — CREATE STAFF & USER TABLES**
+
+Tables to create:
+
+14. core.staff  
+15. auth.users  
+16. Add FK: core.staff.user_id → auth.users.user_id  
+
+### **Verification**
+Generate:
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_NAME IN ('staff','users');
+```
+
+And:
+
+```sql
+SELECT * FROM sys.foreign_keys WHERE name = 'FK_staff_user';
+```
+
+Expected: FK exists.
+
+---
+
+# 🧱 **PHASE 4 — CREATE ASSIGNMENT & ABSENCE TABLES**
+
+Tables:
+
+17. ops.staff_assignments  
+18. ops.staff_absences  
+
+### **Verification**
+Same pattern as before.
+
+---
+
+# 🧱 **PHASE 5 — CREATE DEVICE & EXTERNAL ACCOUNT TABLES**
+
+Tables:
+
+19. assets.staff_devices  
+20. assets.staff_external_accounts  
+
+### **Verification**
+Same pattern.
+
+---
+
+# 🧱 **PHASE 6 — CREATE AUDIT & AUTH EVENT TABLES**
+
+Tables:
+
+21. auth.account_verification_events  
+22. auth.login_audit  
+23. auth.role_change_audit  
+24. audit.staff_profile_audit  
+25. audit.staff_assignment_audit  
+26. audit.staff_absence_audit  
+27. audit.staff_device_audit  
+28. audit.staff_external_account_audit  
+
+### **Verification**
+Same pattern.
+
+---
+
+# 🧱 **PHASE 7 — CREATE INDEXES**
+
+### **Instruction**
+Generate SQL Server CREATE INDEX statements for the index definitions I will paste.
+
+### **Rules**
+- Do NOT rename anything.  
+- Do NOT add extra indexes.  
+- Only generate exactly what is defined.
+
+### **Verification**
+Generate:
+
+```sql
+SELECT name FROM sys.indexes WHERE name LIKE 'IX_%';
+```
+
+Expected: all index names appear.
+
+---
+
+# 🧱 **PHASE 8 — SEED REFERENCE DATA**
+
+### **Instruction**
+Generate SQL INSERT statements for the reference tables.
+
+### **Rules**
+- Do NOT invent values.  
+- Only use the values I provide.  
+- Maintain the order I provide.
+
+### **Verification**
+For each table:
+
+```sql
+SELECT COUNT(*) FROM <schema>.<table>;
+```
+
+Expected: non‑zero count.
+
+---
+
+# 🧱 **PHASE 9 — SEED EXAMPLE USERS & STAFF (OPTIONAL)**
+
+### **Instruction**
+Generate SQL INSERT statements for example:
+
+- super admin user  
+- super admin staff record  
+- example staff assignment  
+
+### **Verification**
+Check:
+
+```sql
+SELECT * FROM core.staff;
+SELECT * FROM auth.users;
+SELECT * FROM ops.staff_assignments;
+```
+
+Expected: rows exist.
+
+---
+
+# 🧱 **PHASE 10 — STORED PROCEDURES (OPTIONAL)**
+
+### **Instruction**
+For each procedure:
+
+> **“Generate a SQL Server stored procedure named <name> that performs exactly the following actions.  
+> Do not add extra logic.  
+> Do not infer anything.  
+> Only implement what I describe.”**
+
+### **Verification**
+Generate:
+
+```sql
+EXEC sp_helptext '<procedure_name>';
+```
+
+Expected: matches requirements.
+
+---
+
+# 🧱 **PHASE 11 — VIEWS (OPTIONAL)**
+
+### **Instruction**
+Generate SQL Server views for definitions I provide.
+
+### **Rules**
+- Do NOT add fields.  
+- Do NOT infer relationships.  
+- Only use fields I specify.
+
+### **Verification**
+Check:
+
+```sql
+SELECT * FROM sys.views;
+```
+
+---
+
+# 🧱 **PHASE 12 — STAGING TABLES FOR CSV IMPORT**
+
+### **Instruction**
+Generate SQL Server staging tables.
+
+### **Rules**
+- No constraints  
+- No foreign keys  
+- Raw import only  
+
+### **Verification**
+Check table existence.
+
+---
+
+# 🧱 **PHASE 13 — TRANSFORM SCRIPTS**
+
+### **Instruction**
+Generate SQL scripts to transform staging data into the normalized schema.
+
+### **Rules**
+- Do NOT infer mappings  
+- Only use mappings I provide  
+
+### **Verification**
+Check:
+
+```sql
+SELECT COUNT(*) FROM core.staff;
+```
+
+Expected: matches imported staff count.
+
+---
+
+# ⭐ END OF MASTER PLAN  
+Copilot:  
+You will follow this plan **exactly**, **phase by phase**, **test by test**, **without drift**, until the entire schema and seed data are successfully built.
+
+---
+
+Michael — this is the complete, copy‑ready, deterministic build plan you asked for.
+
+If you want, I can now generate:
+
+- The **table definitions** to paste into each phase  
+- The **index definitions**  
+- The **seed data blocks**  
+- The **stored procedure definitions**  
+- The **CSV staging table definitions**  
+
+Just tell me when you're ready.

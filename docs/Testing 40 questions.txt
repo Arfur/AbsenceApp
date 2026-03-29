@@ -1,0 +1,209 @@
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| #  | Topic                   | Final Answer                                 | Detail                                                       |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 0  | Login Screen Behaviour  | 0A — Login screen loads correctly            | The login screen appears immediately after the splash        |
+|    |                         |                                              | screen with no flicker, no white flash, no partial render,   |
+|    |                         |                                              | and no layout jump. Input fields render fully formed with    |
+|    |                         |                                              | correct spacing and alignment. Focus behaviour is correct.   |
+|    |                         |                                              | Keyboard input is responsive with no lag. No DPI scaling     |
+|    |                         |                                              | issues or artefacts. The login screen never appears in a     |
+|    |                         |                                              | half‑loaded state. Transition from splash → login is smooth. |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 1  | App Launch + Splash     | 1A — Launch + splash are clean               | The splash screen appears instantly with no delay. No white  |
+|    |                         |                                              | flash, no flicker, no tearing, no jitter, and no partial     |
+|    |                         |                                              | render. No double‑paint effect. Splash does not linger too   |
+|    |                         |                                              | long or disappear early. Transition to login is smooth with  |
+|    |                         |                                              | no half‑loaded shell frame. No theme mismatch flash. No DPI  |
+|    |                         |                                              | issues, no ghost window, no stalling. Animation is stable.   |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 2  | Sidebar Loads           | 2A — Loads instantly                         | Sidebar appears immediately after login with no pop‑in or    |
+|    |                         |                                              | staggered rendering. Icons and labels appear together. No    |
+|    |                         |                                              | flicker when shell becomes visible. Sidebar is interactive   |
+|    |                         |                                              | immediately.                                                 |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 3  | Sidebar Navigation      | 3A — Works correctly                         | Clicking any sidebar item triggers immediate navigation. No  |
+|    |                         |                                              | double‑click required. No dead items. No delay between click |
+|    |                         |                                              | and page load. Highlight behaviour is correct. No jitter or  |
+|    |                         |                                              | animation stutter.                                           |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 4  | Breadcrumb Loads        | 4A — Loads correctly                         | Breadcrumb appears immediately on first navigation. No delay |
+|    |                         |                                              | or missing segments. No placeholder text. Container renders  |
+|    |                         |                                              | fully with correct spacing.                                  |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 5  | Breadcrumb Updates      | 5A — Updates correctly                       | Breadcrumb always reflects the current page. No stale values |
+|    |                         |                                              | or duplicated segments. No mismatch with sidebar highlight.  |
+|    |                         |                                              | Updates instantly.                                           |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 6  | Page Title Loads        | 6A — Loads correctly                         | Page title renders immediately with the page. No delay or    |
+|    |                         |                                              | placeholder text. No flicker. Title area does not shift or   |
+|    |                         |                                              | resize after load.                                           |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 7  | Page Title Updates      | 7A — Updates correctly                       | Page title updates instantly when navigating. No stale       |
+|    |                         |                                              | titles. No mismatch with breadcrumb. No flicker or partial   |
+|    |                         |                                              | render.                                                      |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 8  | Header Loads            | 8A — Loads correctly                         | Header appears fully formed with no staggered rendering. No  |
+|    |                         |                                              | missing icons. No layout jump. No flicker when switching     |
+|    |                         |                                              | pages. Header height remains stable. All elements load       |
+|    |                         |                                              | consistently.                                                |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 9  | Header Buttons          | 9A — Work correctly                          | All header buttons load correctly and respond instantly. No  |
+|    |                         |                                              | dead buttons. No delayed click response. No flicker when     |
+|    |                         |                                              | interacting with header controls. Icons remain stable in     |
+|    |                         |                                              | both Light and Dark themes. No layout shift when buttons     |
+|    |                         |                                              | are pressed.                                                 |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 10 | Theme Toggle            | 10A — Works correctly                        | Theme toggle switches instantly between Light and Dark. No   |
+|    |                         |                                              | flicker, no white flash, no partial redraw. Entire shell     |
+|    |                         |                                              | updates smoothly. No delay in applying theme to sidebar,     |
+|    |                         |                                              | header, breadcrumb, or content area. No leftover elements    |
+|    |                         |                                              | in the wrong theme.                                          |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 11 | Sidebar Collapse/Expand | 11A — Works correctly                        | Collapse and expand animations are smooth with no jitter.    |
+|    |                         |                                              | Sidebar transitions cleanly between states. No broken        |
+|    |                         |                                              | intermediate frames. No content shift in the main area. No   |
+|    |                         |                                              | icon misalignment.                                           |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 12 | Sidebar Icons           | 12A — Correct                                | Icons render cleanly in both themes. No missing glyphs. No   |
+|    |                         |                                              | blurry icons. No scaling issues. Icons remain centered in    |
+|    |                         |                                              | collapsed mode.                                              |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 13 | Sidebar Labels          | 13A — Correct                                | Labels are readable, aligned, and spaced correctly. No text  |
+|    |                         |                                              | clipping. No overlap with icons. Labels hide correctly in    |
+|    |                         |                                              | collapsed mode.                                              |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 14 | Sidebar Hover States    | 14A — Correct                                | Hover states activate smoothly with no flicker. Highlight    |
+|    |                         |                                              | colour is consistent across all items. No delayed hover      |
+|    |                         |                                              | response. No jitter when moving quickly across items.        |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 15 | Sidebar Active Highlight| 15A — Correct                                | Active highlight always matches the selected page. No stale  |
+|    |                         |                                              | highlights. No double‑highlight. Highlight persists through  |
+|    |                         |                                              | navigation and theme changes.                                |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 16 | Sidebar Width           | 16A — Correct                                | Sidebar width matches design spec. No drift or resizing      |
+|    |                         |                                              | during navigation. Width remains stable in both Light and    |
+|    |                         |                                              | Dark themes.                                                 |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 17 | Collapsed Width         | 17A — Correct                                | Collapsed width is consistent and stable. Icons remain       |
+|    |                         |                                              | centered. No jitter when collapsing. No unexpected padding   |
+|    |                         |                                              | changes.                                                     |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 18 | Expanded Width          | 18A — Correct                                | Expanded width is consistent. No drift over time. No         |
+|    |                         |                                              | misalignment between expanded and collapsed states. No       |
+|    |                         |                                              | layout shift in content area.                                |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 19 | Header Height           | 19A — Correct                                | Header height remains stable across all pages. No            |
+|    |                         |                                              | stretching, shrinking, or jitter. No change in height        |
+|    |                         |                                              | during navigation, theme toggle, or window resize.           |
+|    |                         |                                              | Consistent across Light and Dark themes.                     |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 20 | Breadcrumb Spacing      | 20A — Correct                                | Breadcrumb spacing is clean and consistent. No overlap       |
+|    |                         |                                              | between segments. No crowding or clipping. Spacing           |
+|    |                         |                                              | remains correct during navigation and theme changes.         |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 21 | Page Padding            | 21A — Correct                                | Page content has consistent padding on all sides. No         |
+|    |                         |                                              | elements touch the edges. Padding does not shift when        |
+|    |                         |                                              | navigating or resizing the window.                           |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 22 | Scroll Behaviour        | 22A — Correct                                | Scrolling is smooth with no jumps or layout shifts. No       |
+|    |                         |                                              | sudden snapping. No jitter when scrolling long content.      |
+|    |                         |                                              | Scroll position resets correctly when navigating.            |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 23 | Scrollbar Styling       | 23A — Correct                                | Scrollbars are styled correctly in both themes. No           |
+|    |                         |                                              | fallback to default OS scrollbars. No visual glitches.       |
+|    |                         |                                              | Scrollbar colours match Light and Dark modes.                |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 24 | Window Resizing         | 24A — Correct                                | Layout responds cleanly to window resizing. No tearing,      |
+|    |                         |                                              | no overlapping controls, no broken layout. Content           |
+|    |                         |                                              | reflows smoothly. No flicker during resize.                  |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 25 | Fullscreen / Maximise   | 25A — Correct                                | Maximise and restore work with no DPI issues. No blurry      |
+|    |                         |                                              | text. No layout distortion. No flicker when entering or      |
+|    |                         |                                              | exiting fullscreen.                                          |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 26 | Theme Persistence       | 26B — Theme resets on cold start             | Theme persists correctly while the app is running,           |
+|    |                         |                                              | including minimise, restore, and tray restore. However,      |
+|    |                         |                                              | after a full exit and relaunch, the theme always resets      |
+|    |                         |                                              | to Light mode. Warm start works; cold start does not.        |
+|    |                         |                                              | Recommendation: persist theme to local storage or config.    |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 27 | System Theme Detection  | 27A — Correct                                | App responds correctly to OS theme changes. No mismatch      |
+|    |                         |                                              | between system theme and app theme. No flicker when          |
+|    |                         |                                              | system theme changes while app is open.                      |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 28 | Global Hotkeys          | 28C — Not implemented                        | No global or shell‑level hotkeys exist (e.g., Ctrl+K,        |
+|    |                         |                                              | Ctrl+L). No keyboard shortcuts for navigation or theme       |
+|    |                         |                                              | toggle. Not a defect, but a missing feature.                 |
+|    |                         |                                              | Recommendation: add later if needed.                         |
++----+-------------------------+----------------------------------------------+--------------------------------------------------------------+
+| 29 | Window State Persistence  | 29A — Correct                               | The app correctly remembers window size and position         |
+|    |                           |                                            | between launches. When reopened, the window returns to       |
+|    |                           |                                            | the exact previous size and screen location. No drifting,    |
+|    |                           |                                            | no resetting to default size, and no DPI‑related shifts.     |
+|    |                           |                                            | Behaviour is consistent across multiple monitors.            |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 30 | Tray Icon Behaviour       | 30A — Correct                               | Minimising to tray works reliably. Restoring from tray       |
+|    |                           |                                            | brings the app back instantly with no flicker, no blank      |
+|    |                           |                                            | window, and no delay. No ghost windows remain in the task    |
+|    |                           |                                            | switcher. Tray icon responds correctly to single‑click and   |
+|    |                           |                                            | double‑click actions.                                        |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 31 | Multi‑Monitor Behaviour   | 31A — Correct                               | Moving the app between monitors works with no DPI issues.    |
+|    |                           |                                            | No blurry text. No scaling artefacts. No layout shift when   |
+|    |                           |                                            | dragging between monitors with different resolutions.        |
+|    |                           |                                            | Sidebar, header, and content remain stable during the move.  |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 32 | Startup Behaviour         | 32A — Clean startup with correct splash     | The splash → login → shell sequence is smooth and stable.    |
+|    | (Splash → Login → Shell) |                                            | No white flash, no flicker, no tearing, no jitter, and no    |
+|    |                           |                                            | partial render. No half‑loaded shell frame appears. No       |
+|    |                           |                                            | theme mismatch flash. No black frame between transitions.    |
+|    |                           |                                            | No ghost window. No stalling. All transitions are visually   |
+|    |                           |                                            | consistent and correctly timed.                              |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 33 | Sidebar Animation         | 33A — Smooth animation                      | Collapse and expand animations run smoothly with no jitter,  |
+|    |                           |                                            | no stutter, and no frame drops. Sidebar width transitions    |
+|    |                           |                                            | cleanly. Icons remain centered. No content area shift.       |
+|    |                           |                                            | Animation remains stable even under rapid toggling.          |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 34 | Sidebar/Breadcrumb Sync   | 34A — Always in sync                        | Sidebar highlight and breadcrumb path always match the       |
+|    |                           |                                            | current page. No stale highlight. No mismatch. No double     |
+|    |                           |                                            | highlight. Sync remains correct through navigation, theme    |
+|    |                           |                                            | changes, and window resizing.                                |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 35 | Page Title Consistency    | 35E — Not fully testable                    | Shell supports page titles, but most real pages are not      |
+|    |                           |                                            | implemented yet. Cannot verify title behaviour across        |
+|    |                           |                                            | multiple real content pages. Will require retesting once     |
+|    |                           |                                            | more pages exist.                                            |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 36 | Loading State Behaviour   | 36E — Not testable yet                      | Most pages load instantly because they have no real data     |
+|    |                           |                                            | sources or long‑running operations. No loading indicators    |
+|    |                           |                                            | appear because nothing triggers them. Will need retesting    |
+|    |                           |                                            | once API‑driven or data‑heavy pages are implemented.         |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 37 | Error Boundary Behaviour  | 37C — Failure: blank screen / crash        | When navigating to invalid routes or error states, the app   |
+|    |                           |                                            | does not show a controlled error page. Instead, behaviour    |
+|    |                           |                                            | varies: sometimes a raw error message appears, sometimes a   |
+|    |                           |                                            | blank white screen, and often the app becomes unstable.      |
+|    |                           |                                            | After this failure, the app must be closed from the tray.    |
+|    |                           |                                            | No global error boundary is catching exceptions. No styled   |
+|    |                           |                                            | fallback UI exists. This is the most critical defect.        |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 38 | Breadcrumb During Errors  | 38E — Not evaluable due to crash           | Because the app collapses into a blank or unstable state      |
+|    |                           |                                            | during errors, the breadcrumb cannot be meaningfully tested. |
+|    |                           |                                            | It does not update, because the shell itself stops           |
+|    |                           |                                            | functioning. Once a proper error boundary exists, this       |
+|    |                           |                                            | behaviour must be retested.                                  |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 39 | Sidebar After Errors      | 39E — Not evaluable due to crash           | After an error occurs, the sidebar becomes unresponsive or   |
+|    |                           |                                            | disappears entirely. The shell does not recover. The app     |
+|    |                           |                                            | must be closed. Because the error boundary collapses, the    |
+|    |                           |                                            | sidebar cannot be tested in post‑error scenarios. This must  |
+|    |                           |                                            | be retested once error handling is implemented.              |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+
+| 40 | Stability Under Rapid Use | 40A — Completely stable under stress       | Rapid navigation, rapid theme toggling, rapid minimise and   |
+|    |                           |                                            | restore, and rapid sidebar collapse/expand do not cause      |
+|    |                           |                                            | crashes, freezes, or visual tearing. Sidebar animation       |
+|    |                           |                                            | remains smooth even under repeated toggling. No layout       |
+|    |                           |                                            | drift. No flicker. No partial renders. The shell remains     |
+|    |                           |                                            | stable under heavy interaction.                              |
++----+---------------------------+--------------------------------------------+--------------------------------------------------------------+

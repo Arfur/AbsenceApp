@@ -1,17 +1,22 @@
 @* ===========================================================================
    File        : SettingsDetailPageV2.razor
-   Namespace   : AbsenceApp.Client.ModulesV2.Settings
+   Namespace   : AbsenceApp.Client.Modules.Settings
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-21
+   Updated     : 2026-03-26
    ---------------------------------------------------------------------------
    Purpose     : V2 Settings detail page. Displays all field settings for a
-                 specific table page using DetailPageV2 and DetailSectionV2.
+                 specific table page using the V2 PageTemplateV2 primitive
+                 instead of deprecated DetailPageV2 and DetailSectionV2.
                  Delegates data loading to SettingsModuleViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
+     - 1.1.0  2026-03-26  Replaced DetailPageV2 + DetailSectionV2 with
+                          PageTemplateV2. Updated namespace and layout.
+                          Corrected ChildContent + ActionsContent usage.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/settings/{PageName}
@@ -20,70 +25,94 @@
 *@
 
 @page "/v2/settings/{PageName}"
-@layout AbsenceApp.Client.Components.Layout.MainLayoutV2
-@using AbsenceApp.Client.Components.PageTemplatesV2
+@layout BaseLayoutV2
+@namespace AbsenceApp.Client.Modules.Settings
+
 @using AbsenceApp.Client.ViewModels.V2
 @inject SettingsModuleViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
-@* =========================================================================
-   Section: Settings detail
-   ========================================================================= *@
-<DetailPageV2 PageTitle="@PageTitle"
-              BackHref="/v2/settings"
-              BackLabel="Settings">
+<PageTemplateV2 PageTitleText="@PageTitle">
 
     <ActionsContent>
-        <a href="@($"/v2/settings/{PageName}/edit")" class="dsv2-btn dsv2-btn--secondary">Edit Settings</a>
+        <a href="@($"/v2/settings/{PageName}/edit")"
+           class="dsv2-btn dsv2-btn--secondary">
+            Edit Settings
+        </a>
     </ActionsContent>
 
-    <BodyContent>
+    <ChildContent>
+
         @if (ViewModel.IsLoading)
         {
-            <p class="dsv2-loading-text">Loading�</p>
+            <p class="dsv2-loading-text">Loading…</p>
         }
         else if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">
+                @ViewModel.Error
+            </div>
         }
         else if (ViewModel.Settings.Count > 0)
         {
-            <DetailSectionV2 Title="Field Settings" Icon="bi-sliders">
-                <BodyContent>
+            <section class="dsv2-detail-section">
+                <header class="dsv2-detail-section__header">
+                    <i class="bi bi-sliders" aria-hidden="true"></i>
+                    <h2 class="dsv2-detail-section__title">Field Settings</h2>
+                </header>
+
+                <div class="dsv2-detail-section__body">
                     @foreach (var setting in ViewModel.Settings)
                     {
-                        <span class="dsv2-detail-label">@setting.FieldName</span>
-                        <span class="dsv2-detail-value">
-                            @setting.DisplayLabel
-                            <span class="dsv2-settings-flags">
-                                @if (setting.IsVisible)   { <span class="dsv2-flag dsv2-flag--on">Visible</span> }
-                                @if (setting.IsSortable)  { <span class="dsv2-flag dsv2-flag--on">Sortable</span> }
-                                @if (setting.IsSearchable){ <span class="dsv2-flag dsv2-flag--on">Searchable</span> }
-                                @if (setting.IsFilterable){ <span class="dsv2-flag dsv2-flag--on">Filterable</span> }
+                        <div class="dsv2-detail-row">
+                            <span class="dsv2-detail-label">@setting.FieldName</span>
+
+                            <span class="dsv2-detail-value">
+                                @setting.DisplayLabel
+
+                                <span class="dsv2-settings-flags">
+                                    @if (setting.IsVisible)
+                                    {
+                                        <span class="dsv2-flag dsv2-flag--on">Visible</span>
+                                    }
+                                    @if (setting.IsSortable)
+                                    {
+                                        <span class="dsv2-flag dsv2-flag--on">Sortable</span>
+                                    }
+                                    @if (setting.IsSearchable)
+                                    {
+                                        <span class="dsv2-flag dsv2-flag--on">Searchable</span>
+                                    }
+                                    @if (setting.IsFilterable)
+                                    {
+                                        <span class="dsv2-flag dsv2-flag--on">Filterable</span>
+                                    }
+                                </span>
                             </span>
-                        </span>
+                        </div>
                     }
-                </BodyContent>
-            </DetailSectionV2>
+                </div>
+            </section>
         }
         else
         {
-            <p class="dsv2-loading-text">No settings found for page "@PageName".</p>
+            <p class="dsv2-loading-text">
+                No settings found for page "@PageName".
+            </p>
         }
-    </BodyContent>
 
-</DetailPageV2>
+    </ChildContent>
 
-@* =========================================================================
-   Section: ViewModel wiring and navigation
-   ========================================================================= *@
+</PageTemplateV2>
+
 @code {
     [Parameter] public string PageName { get; set; } = string.Empty;
 
-    private string PageTitle => string.IsNullOrEmpty(PageName)
-        ? "Page Settings"
-        : $"Settings � {PageName}";
+    private string PageTitle =>
+        string.IsNullOrEmpty(PageName)
+            ? "Page Settings"
+            : $"Settings – {PageName}";
 
     protected override async Task OnParametersSetAsync()
     {

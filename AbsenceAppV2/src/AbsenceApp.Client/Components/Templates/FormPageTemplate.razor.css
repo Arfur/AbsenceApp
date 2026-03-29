@@ -1,0 +1,126 @@
+﻿/* =============================================================================
+   File    : FormPageTemplate.razor.css
+   Project : AbsenceApp.Client
+   Author  : Michael
+   Version : 1.0.0
+   Phase   : V2 Design System -- Phase 5
+   Created : 2026-03-28
+   -----------------------------------------------------------------------
+   Purpose : Scoped styles for FormPageTemplate.razor (v2.0.0).
+             Covers all form template regions using the dsv2-form-tpl-*
+             class prefix.
+   ---------------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-28  Phase 5: initial CSS matching V1 form page structure.
+============================================================================= */
+
+/* -- Layout root ----------------------------------------------------------- */
+.dsv2-form-tpl {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* -- HEADER REGION --------------------------------------------------------- */
+.dsv2-form-tpl__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dsv2-form-tpl__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text, #2c3345);
+    margin: 0;
+}
+
+.dsv2-form-tpl__subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted, #7b8494);
+    margin: 0;
+}
+
+/* -- FORM BODY REGION ------------------------------------------------------ */
+.dsv2-form-tpl__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* -- PLACEHOLDER FIELDS ---------------------------------------------------- */
+.dsv2-form-tpl__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dsv2-form-tpl__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted, #7b8494);
+}
+
+.dsv2-form-tpl__input-placeholder {
+    height: 36px;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 0.375rem;
+    background: var(--chrome-bg, #f5f6f8);
+    opacity: 0.6;
+}
+
+/* -- FOOTER / ACTIONS REGION ----------------------------------------------- */
+.dsv2-form-tpl__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border, #e2e8f0);
+}
+
+.dsv2-form-tpl__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.4rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border, #cbd5e1);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.dsv2-form-tpl__btn--primary {
+    background: var(--accent, #2563eb);
+    border-color: var(--accent, #2563eb);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.dsv2-form-tpl__btn--primary:hover:not(:disabled) {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.dsv2-form-tpl__btn--secondary {
+    background: var(--surface, #ffffff);
+    color: var(--text, #334155);
+    border-color: var(--border, #cbd5e1);
+}
+
+.dsv2-form-tpl__btn--secondary:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.dsv2-form-tpl__btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

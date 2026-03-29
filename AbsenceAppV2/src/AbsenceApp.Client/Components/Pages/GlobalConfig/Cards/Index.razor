@@ -1,0 +1,181 @@
+﻿@* ===========================================================================
+   File        : Index.razor (Global Config — Cards)
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalConfig.Cards
+   Route       : /global-config/cards
+   Author      : Michael
+   Version     : 2.0.0
+   Created     : 2026-03-27
+   Updated     : 2026-03-28
+   Changes :
+     - 1.0.0  2026-03-27  Initial implementation.
+     - 2.0.0  2026-03-28  Rebuilt with Ki-Admin card structure.
+   ===========================================================================
+*@
+
+@page "/global-config/cards"
+@layout AbsenceApp.Client.Framework.Layouts.BaseLayoutV2
+@namespace AbsenceApp.Client.Components.Pages.GlobalConfig.Cards
+@using AbsenceApp.Client.Framework.PageTemplates
+
+<PageTemplateV2 PageTitleText="Cards">
+    <ChildContent>
+        <div class="gc-page">
+
+            <!-- Basic Cards -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Basic Cards</h5>
+                            <span class="dsv2-card__subtitle">Standard card with header, body, and optional footer</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-cards-grid">
+                                <div class="dsv2-card" style="margin:0">
+                                    <div class="dsv2-card__header"><span class="dsv2-card__title" style="font-size:0.875rem">Card Header</span></div>
+                                    <div class="dsv2-card__body">
+                                        <p style="margin:0;color:var(--v2-text-secondary);font-size:0.875rem">Card body with supporting text. Used for forms, panels and section containers.</p>
+                                    </div>
+                                </div>
+                                <div class="dsv2-card" style="margin:0">
+                                    <div class="dsv2-card__body">
+                                        <p style="margin:0;color:var(--v2-text-secondary);font-size:0.875rem">Card body only — no header. Minimal variant with just inner content.</p>
+                                    </div>
+                                    <div class="dsv2-card__footer">Card Footer</div>
+                                </div>
+                                <div class="dsv2-card" style="margin:0">
+                                    <div class="dsv2-card__header"><span class="dsv2-card__title" style="font-size:0.875rem">Card Header</span></div>
+                                    <div class="dsv2-card__body">
+                                        <p style="margin:0;color:var(--v2-text-secondary);font-size:0.875rem">Card with both header and footer zones. Footer holds action buttons.</p>
+                                    </div>
+                                    <div class="dsv2-card__footer">
+                                        <button class="dsv2-btn dsv2-btn--sm dsv2-btn--primary" type="button">Action</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI / Stat Cards + Coloured Variants -->
+            <div class="gc-row">
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">KPI Stat Cards</h5>
+                            <span class="dsv2-card__subtitle">Metric summary used on dashboards</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div class="gc-kpi-grid" style="grid-template-columns:1fr 1fr">
+                                <div class="dsv2-stat-card">
+                                    <div class="dsv2-stat-card__icon-wrap dsv2-stat-card__icon-wrap--primary">
+                                        <i class="bi bi-people dsv2-stat-card__icon"></i>
+                                    </div>
+                                    <div class="dsv2-stat-card__body">
+                                        <div class="dsv2-stat-card__value">248</div>
+                                        <div class="dsv2-stat-card__label">Total Students</div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-stat-card">
+                                    <div class="dsv2-stat-card__icon-wrap dsv2-stat-card__icon-wrap--warning">
+                                        <i class="bi bi-calendar-x dsv2-stat-card__icon"></i>
+                                    </div>
+                                    <div class="dsv2-stat-card__body">
+                                        <div class="dsv2-stat-card__value">7</div>
+                                        <div class="dsv2-stat-card__label">Pending Reviews</div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-stat-card">
+                                    <div class="dsv2-stat-card__icon-wrap dsv2-stat-card__icon-wrap--danger">
+                                        <i class="bi bi-person-x dsv2-stat-card__icon"></i>
+                                    </div>
+                                    <div class="dsv2-stat-card__body">
+                                        <div class="dsv2-stat-card__value">18</div>
+                                        <div class="dsv2-stat-card__label">Absences Today</div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-stat-card">
+                                    <div class="dsv2-stat-card__icon-wrap dsv2-stat-card__icon-wrap--info">
+                                        <i class="bi bi-check2-circle dsv2-stat-card__icon"></i>
+                                    </div>
+                                    <div class="dsv2-stat-card__body">
+                                        <div class="dsv2-stat-card__value">94.2%</div>
+                                        <div class="dsv2-stat-card__label">Attendance Rate</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gc-col-half">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header">
+                            <h5 class="dsv2-card__title">Colour Variant Cards</h5>
+                            <span class="dsv2-card__subtitle">Left-border accent for status indication</span>
+                        </div>
+                        <div class="dsv2-card__body">
+                            <div style="display:flex;flex-direction:column;gap:0.75rem">
+                                <div class="dsv2-card dsv2-card--primary" style="margin:0">
+                                    <div class="dsv2-card__body">
+                                        <div style="display:flex;align-items:center;gap:0.5rem">
+                                            <i class="bi bi-info-circle" style="color:var(--v2-color-primary)"></i>
+                                            <span style="font-weight:500">Primary — informational action</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-card dsv2-card--success" style="margin:0">
+                                    <div class="dsv2-card__body">
+                                        <div style="display:flex;align-items:center;gap:0.5rem">
+                                            <i class="bi bi-check-circle-fill" style="color:var(--v2-color-success)"></i>
+                                            <span style="font-weight:500">Success — operation completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-card dsv2-card--warning" style="margin:0">
+                                    <div class="dsv2-card__body">
+                                        <div style="display:flex;align-items:center;gap:0.5rem">
+                                            <i class="bi bi-exclamation-triangle-fill" style="color:var(--v2-color-warning)"></i>
+                                            <span style="font-weight:500">Warning — requires attention</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dsv2-card dsv2-card--danger" style="margin:0">
+                                    <div class="dsv2-card__body">
+                                        <div style="display:flex;align-items:center;gap:0.5rem">
+                                            <i class="bi bi-x-circle-fill" style="color:var(--v2-color-danger)"></i>
+                                            <span style="font-weight:500">Danger — critical or destructive</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Reference -->
+            <div class="gc-row">
+                <div class="gc-col-full">
+                    <div class="dsv2-card">
+                        <div class="dsv2-card__header"><h5 class="dsv2-card__title">Design Tokens</h5></div>
+                        <div class="dsv2-card__body">
+                            <table class="gc-token-table">
+                                <thead><tr><th class="gc-token-table__th">Token</th><th class="gc-token-table__th">Description</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-card-radius</td>       <td class="gc-token-table__td">Card border radius (8px)</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-card-padding</td>      <td class="gc-token-table__td">Card body inner padding</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-card-shadow</td>       <td class="gc-token-table__td">Box shadow for elevated cards</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-card-border-color</td> <td class="gc-token-table__td">Border colour (dark mode aware)</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-bg-surface</td>        <td class="gc-token-table__td">Card background</td></tr>
+                                    <tr><td class="gc-token-table__td gc-token-table__td--code">--v2-bg-subtle</td>         <td class="gc-token-table__td">Card header / footer background</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ChildContent>
+</PageTemplateV2>

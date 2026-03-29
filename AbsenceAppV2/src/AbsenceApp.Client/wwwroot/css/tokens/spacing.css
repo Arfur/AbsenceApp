@@ -53,4 +53,42 @@
     /* ── Card spacing ──────────────────────────────────────────────── */
     --ds-card-padding:     var(--ds-space-4);  /* 16px */
     --ds-card-gap:         var(--ds-space-4);  /* 16px */
+
+    /* ── --v2-* spacing aliases (Phase 4) ──────────────────────────── */
+    --v2-space-1:    4px;
+    --v2-space-2:    8px;
+    --v2-space-3:    12px;
+    --v2-space-4:    16px;
+    --v2-space-5:    20px;
+    --v2-space-6:    24px;
+    --v2-space-8:    32px;
+    --v2-space-10:   40px;
+    --v2-space-12:   48px;
+
+    --v2-padding-xs:   4px;
+    --v2-padding-sm:   8px;
+    --v2-padding-md:   16px;
+    --v2-padding-lg:   24px;
+    --v2-padding-xl:   32px;
+
+    --v2-gap-xs:       4px;
+    --v2-gap-sm:       8px;
+    --v2-gap-md:       16px;
+    --v2-gap-lg:       24px;
+
+    /* ── --v2-* layout aliases ──────────────────────────────────────── */
+    --v2-header-height:     var(--hdr-h,     52px);
+    --v2-sidebar-width:     var(--sb-w,      230px);
+    --v2-sidebar-collapsed: var(--sb-w-col,  52px);
+    --v2-footer-height:     var(--ftr-h,     36px);
+
+    /* ── --v2-* table spacing ───────────────────────────────────────── */
+    --v2-table-cell-px:  12px;
+    --v2-table-cell-py:   8px;
+    --v2-table-row-h:    40px;
+    --v2-table-header-h: 36px;
+
+    /* ── --v2-* card spacing ────────────────────────────────────────── */
+    --v2-card-padding: 16px;
+    --v2-card-gap:     16px;
 }

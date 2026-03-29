@@ -1,45 +1,46 @@
 @* ===========================================================================
    File        : _Imports.razor
-   Namespace   : AbsenceApp.Client.Components
+   Namespace   : AbsenceApp.Client.Modules
    Author      : Michael
-   Version     : 1.4.0
-   Created     : 2026-03-13
-   Updated     : 2026-03-25
+   Version     : 1.0.3
+   Created     : 2026-03-25
    ---------------------------------------------------------------------------
-   Purpose     : Global using directives for all Razor components in the
-                 Components/ folder. These imports provide shared access to
-                 core application namespaces used by reusable UI components.
-                 This file intentionally excludes V2 page-level namespaces
-                 (Framework.V2, PageTemplates, etc.) to keep Components
-                 independent and reusable across Modules and Pages.
+   Purpose     : Global using directives for all Razor components under the
+                 Modules/ subtree. Ensures that all V2 pages (Attendance,
+                 AuditLog, Classes, Staff, Students, etc.) correctly resolve
+                 Framework V2 components such as:
+                   - TableV2
+                   - RowTemplate
+                   - RowActionsContent
+                   - PaginationV2
+                   - PageTemplateV2
+                 This file intentionally avoids importing legacy namespaces
+                 such as AbsenceApp.Client.Components.Table to prevent
+                 duplicate component definitions (RZ9985).
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-13  Initial implementation.
-     - 1.1.0  2026-03-23  Added PageTemplatesV2 namespace.
-     - 1.2.0  2026-03-24  Updated namespaces after folder renames:
-                          - PageTemplatesV2 → PageTemplates
-                          - LayoutV2 merged into Layout
-                          - TableV2 → Table
-                          - FrameworkV2 → Framework
-                          - ModulesV2 → Modules
-     - 1.3.0  2026-03-25  Removed V2 page-level imports to maintain proper
-                          separation of concerns. Components now reference
-                          only shared UI and application namespaces.
-     - 1.4.0  2026-03-25  Removed Components.Table from global imports to
-                          avoid duplicate V2 table components with
-                          Framework.Tables.
+     - 1.0.0  2026-03-25  Initial implementation. Added Framework.Tables and
+                          Framework.PageTemplates imports. Excluded all
+                          legacy Components.Table namespaces.
+     - 1.0.1  2026-03-25  Fixed @using AbsenceApp.Client.Framework.Layout to
+                          AbsenceApp.Client.Framework.Layouts to match actual
+                          auto-inferred namespace for the Framework/Layouts/
+                          folder (CS0234 build error).
+     - 1.0.2  2026-03-25  Attempted update to PageTemplatesV2 namespace after
+                          folder restructuring (later found to be incorrect).
+     - 1.0.3  2026-03-25  Corrected PageTemplates namespace to
+                          AbsenceApp.Client.Framework.PageTemplates after
+                          confirming final folder location.
    ---------------------------------------------------------------------------
    Notes       :
-     - Components/_Imports is for shared, reusable component dependencies.
-     - V2 table primitives should be resolved from Framework.Tables in
-       Framework/Modules scopes, not via Components.Table here.
-     - PageTemplates here are the reusable building blocks; page-level
-       wiring lives under Framework and Modules.
+     - Modules depend on Framework V2 components, not legacy Components.Table.
+     - This file must remain minimal and deterministic.
+     - Do NOT add Components.Table here under any circumstances.
    ===========================================================================
 *@
 
 @* =========================================================================
-   Framework and BCL usings — ASP.NET Core and .NET runtime namespaces
+   Framework and BCL usings
    ========================================================================= *@
 @using System.Net.Http
 @using System.Net.Http.Json
@@ -54,11 +55,16 @@
    ========================================================================= *@
 @using AbsenceApp.Client
 @using AbsenceApp.Client.Services
-@using AbsenceApp.Client.Components
-@using AbsenceApp.Client.Components.Layout
-@using AbsenceApp.Client.Components.PageTemplates
 @using AbsenceApp.Client.Shared
 @using AbsenceApp.Core.Interfaces
 @using AbsenceApp.Core.Navigation
 @using AbsenceApp.Core.ViewModels
 @using AbsenceApp.Core.DTOs
+
+@* =========================================================================
+   V2 Framework imports — REQUIRED for all V2 pages
+   ========================================================================= *@
+@using AbsenceApp.Client.Framework.Tables
+@using AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.Framework.Layouts
+@using AbsenceApp.Client.Components.Templates

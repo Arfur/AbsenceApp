@@ -2,34 +2,70 @@
    File        : AppHost.razor
    Namespace   : AbsenceApp.Client.Components
    Author      : Michael
-   Version     : 2.1.0
+   Version     : 4.0.0
    Created     : 2026-03-23
-   Updated     : 2026-03-24
+   Updated     : 2026-03-28
    ---------------------------------------------------------------------------
    Purpose     : Root Blazor component for the MAUI BlazorWebView.
-                 Renders the router directly. Shell chrome (header, sidebar,
-                 footer) and auth guard are applied per-page via the layout
-                 directives on each page and MainLayout / PageTemplate.
+                 Renders a branded SplashScreenV2 for 1 500 ms while the app
+                 initialises, then reveals the router inside a GLOBAL ERROR
+                 BOUNDARY so that ALL unhandled exceptions — including
+                 layout-level failures in SidebarV2, HeaderV2, BreadcrumbV2,
+                 and page components — are caught and shown as a styled
+                 fallback rather than a blank screen or raw exception dump.
    ---------------------------------------------------------------------------
    Notes       :
      - Registered as the RootComponent in MainPage.xaml.
      - Index.razor (route "/") redirects to /login on startup.
-     - MainLayout acts as the auth guard for all authenticated pages.
-     - PageTemplate provides the full shell (header, sidebar, content, footer).
+     - BaseLayoutV2 acts as the auth guard for all authenticated pages.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-23  Initial implementation.
-     - 2.0.0  2026-03-24  Removed BaseLayoutV2 wrapper. BaseLayoutV2 never
-                          rendered ChildContent (only Body), so Routes was
-                          silently swallowed: no pages loaded, no auth
-                          redirects fired. Routes now renders directly here.
-     - 2.1.0  2026-03-24  Added @using AbsenceApp.Client so <Routes /> resolves
-                          correctly after namespace separation in V2.
+     - 2.0.0  2026-03-24  Removed BaseLayoutV2 wrapper (Routes was swallowed).
+     - 2.1.0  2026-03-24  Added @using AbsenceApp.Client for <Routes /> resolution.
+     - 3.0.0  2026-03-27  Section A fix: wrapped <Routes /> with
+                          GlobalErrorBoundaryV2 so all unhandled exceptions are
+                          caught globally, logged, and shown as a styled fallback.
+     - 4.0.0  2026-03-28  Phase 4 fix: added SplashScreenV2 shown for 1 500 ms
+                          on first load before the router is revealed. Restores
+                          the branded loading experience that was missing in V2.
    ===========================================================================
 *@
 @using AbsenceApp.Client
+@using AbsenceApp.Client.Framework.Layouts
 
 <!-- =========================================================
-     Section: Router host -- all layout/auth handled per-page
+     Section: SPLASH SCREEN
+     Shown for 1 500 ms on first load as a branded loading
+     experience before the shell and router are revealed.
      ========================================================= -->
-<Routes />
+@if (_showSplash)
+{
+    <SplashScreenV2 />
+}
+else
+{
+    <!-- =========================================================
+         Section: GLOBAL ERROR BOUNDARY
+         Wraps the entire router so all unhandled exceptions —
+         including layout-level failures — are caught, logged, and
+         shown as a styled fallback rather than a blank screen.
+         ========================================================= -->
+    <GlobalErrorBoundaryV2>
+        <Routes />
+    </GlobalErrorBoundaryV2>
+}
+
+@code {
+    private bool _showSplash = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1500);
+            _showSplash = false;
+            StateHasChanged();
+        }
+    }
+}

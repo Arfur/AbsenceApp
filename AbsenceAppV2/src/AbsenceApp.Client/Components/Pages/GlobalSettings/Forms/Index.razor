@@ -1,0 +1,30 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Forms
+   Route       : /global-settings/forms
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-26
+   ---------------------------------------------------------------------------
+   Purpose     : Global Settings — Forms configuration page.
+                 Displays a hard-coded preview of the current form style
+                 via IDesignSystemService. No editing. No JSON loading.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
+   ===========================================================================
+*@
+
+@page "/global-settings/forms"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@using AbsenceApp.Client.Services.DesignSystem
+@using AbsenceApp.Client.Components.Templates
+@inject IDesignSystemService DesignSystem
+
+<FormPageTemplate PageTitle="Forms — Global Settings"
+                  Subtitle="Current form style preview">
+    <FormContent>
+        <p class="gs-preview-value">@DesignSystem.GetFormPreview()</p>
+        <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
+    </FormContent>
+</FormPageTemplate>

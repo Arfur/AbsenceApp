@@ -1,0 +1,239 @@
+do you not remember this:
+Alright Michael — I’ve now **read every CSV you uploaded**, and since you said **“analyse now”**, this is where we switch gears.
+
+Before I start designing the full staff‑centred data model, I need to **ask you a structured set of questions**.  
+These questions will uncover:
+
+- what data you truly need  
+- how the tables should relate  
+- what historical tracking matters  
+- what operational workflows the school uses  
+- what future features you want to support  
+
+This ensures we build a **clean, normalised, future‑proof schema** that won’t need ripping apart later.
+
+I’ll keep this organised and easy to work through.
+
+---
+
+# ⭐ FIRST: What you already have (summary)
+
+From your CSVs, you already have:
+
+### **Reference tables**
+- job_titles  
+- job_groups  
+- departments  
+- schools  
+- role_types  
+
+### **User‑related tables**
+- users  
+- user_profiles  
+- staff_details (your legacy spreadsheet)
+
+These contain a mixture of:
+
+- personal info  
+- employment info  
+- availability info  
+- job role info  
+- department info  
+- school info  
+- login/account info  
+
+…but they are **not yet normalised**, and several fields overlap or conflict.
+
+---
+
+# ⭐ SECOND: Before designing the schema, I need answers to these questions
+
+I’ll ask them in logical groups.  
+You can answer in short bullet points — no essays needed.
+
+---
+
+# **1. Employment & Availability**
+
+You have fields like:
+
+- Employment_Status  
+- Availability_Status  
+
+### **Q1 — Do you want to track absence history?**  
+Example:  
+- Sick from 1st–5th March  
+- Maternity leave from June–December  
+- Training day on 12th April  
+
+Or do you only need the *current* availability?
+
+1. Employment & Availability:
+Because the system will initially be about tracking absence for Students, I also want to track Staff as well, so I need a field that will store a Staff member availability. Therefore, the staff member could be 'Active', which is they currently work at the School, however, their availablility could be that they are off sick 'Absent'. Their sickness could be 1 day, or serious and off weeks or months. I would also, like to be able to enter future dates, so if the Staff member is going to be off for a week. I do not need to enter a absent record every day, I can just enter start dat and return date. I need to be able to track their absense history, with likely examples you have given:
+- Sick from 1st–5th March  
+- Maternity leave from June–December  
+- Training day on 12th April  
+
+# **2. Job Roles & Structure**
+
+You have:
+
+- job_titles  
+- job_groups  
+- departments  
+- staff_details “Staff Role”  
+- staff_details “Staff Group”  
+- staff_details “Area”  
+- staff_details “Area Group”
+
+### **Q2 — Which of these are real organisational structures, and which are just labels?**
+
+For example:
+
+- Is “Area Group” (e.g., Key Stage 1) the same as a department?  
+- Is “Staff Group” the same as job_group?  
+- Should “Staff Role” map to job_title?  
+- Should “Class Teacher / Leadership Team / Support Staff” be a job group?  
+
+I need to know what is *real* and what is *spreadsheet noise*.
+
+---
+
+# **3. Class / Phase / Year Group Assignments**
+
+Your staff_details includes:
+
+- Class Teacher (Main / Shared / N/A)  
+- Area (e.g., Class 01, Class 02, Foundation Green)  
+- Area Group (e.g., Key Stage 1, Upper KS2)
+
+### **Q3 — Do you want a proper table for classes / year groups / phases?**
+
+For example:
+
+- classes  
+- year_groups  
+- phases  
+
+And then link staff to them?
+
+Or is this just descriptive text?
+
+---
+
+# **4. Multi‑school support**
+
+Your schools.csv lists 12 schools.
+
+### **Q4 — Do staff belong to exactly one school, or can they work across multiple schools?**
+
+This affects whether we need:
+
+- user_school (many‑to‑many)  
+or  
+- user.school_id (one‑to‑one)
+
+---
+
+# **5. Login & Authentication**
+
+Your users.csv includes:
+
+- username  
+- email  
+- password hash  
+- role_type_id  
+- otp_code  
+- otp_expires_at  
+- is_verified  
+
+### **Q5 — Do you want to support multiple login accounts per staff member, or exactly one?**
+
+If exactly one, we keep users.user_id → user_profiles.user_id.
+
+If multiple, we need a separate linking table.
+
+---
+
+# **6. Staff Profile Information**
+
+Your user_profiles.csv includes:
+
+- first_name  
+- last_name  
+- preferred_name  
+- title  
+- date_of_birth  
+- gender  
+- timezone  
+- language  
+- department_id  
+- job_title_id  
+- school_id  
+
+### **Q6 — Do you want to expand staff profiles with:**
+
+- phone numbers?  
+- address?  
+- emergency contacts?  
+- start date / end date?  
+- national insurance number?  
+- contract type (full‑time, part‑time, term‑time)?  
+- payroll number?  
+
+Tell me which of these matter.
+
+---
+
+# **7. Audit & Activity Tracking**
+
+You mentioned login audit.
+
+### **Q7 — What do you want to track?**
+
+Examples:
+
+- login time  
+- logout time  
+- IP address  
+- device info  
+- failed login attempts  
+- password reset events  
+- MFA usage  
+
+Tell me what’s required.
+
+---
+
+# ⭐ Once you answer these questions…
+
+I will:
+
+- design the full relational schema  
+- list every table  
+- list every field  
+- define all foreign keys  
+- normalise the structure  
+- remove duplication  
+- map your CSV fields into the new schema  
+- generate CSV templates for import  
+- highlight missing data  
+- prepare a clean migration plan  
+
+This will give you a **complete staff‑centred data model** that is:
+
+- scalable  
+- maintainable  
+- future‑proof  
+- cleanly normalised  
+- easy to query  
+- easy to integrate with your app  
+
+---
+
+# ⭐ Your turn
+
+Please answer **Q1–Q7** in your own words.  
+Short bullet points are perfect.
+
+Once I have your answers, I’ll build the full schema.
