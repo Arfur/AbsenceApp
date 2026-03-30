@@ -1,0 +1,138 @@
+/* ===========================================================================
+   File        : GlobalSettingsLayout.razor.css
+   Namespace   : AbsenceApp.Client.Framework.Layouts
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-03-30
+   ---------------------------------------------------------------------------
+   Purpose     : Component-scoped structural CSS for GlobalSettingsLayout.
+                 Provides the same full-screen flex shell as MainLayoutV2
+                 (sidebar left + content column right) with the fixed header
+                 and sidebar-offset rules so the header never overlaps the
+                 sidebar or page content on /global-settings/* pages.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Rules here mirror MainLayoutV2.razor.css intentionally.
+       GlobalSettingsLayout is a standalone LayoutComponentBase so it does
+       not inherit MainLayoutV2's CSS scope.
+     - The ::deep rules target RenderTreeBuilder-emitted elements inside
+       SidebarV2 and HeaderV2 that do not receive Blazor's scope attribute.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-30  Initial implementation. All structural + containment
+                          rules ported from MainLayoutV2.razor.css so
+                          /global-settings/* pages render with the correct
+                          fixed-header / sidebar-offset layout.
+   ===========================================================================
+*/
+
+/* ===========================================================================
+   Section: Layout root
+   Full-screen horizontal flex container. Sidebar is fixed-width;
+   content column takes all remaining width.
+   ===========================================================================
+*/
+
+.v2-layout-root {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--main-bg, #eaecf0);
+}
+
+/* ===========================================================================
+   Section: Content area
+   Right-hand column: flex column containing header, breadcrumb, main, footer.
+   padding-top reserves space below the fixed header so nothing is obscured.
+   ===========================================================================
+*/
+
+.v2-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    padding-top: var(--ds-layout-header-h, 52px);
+}
+
+/* ===========================================================================
+   Section: Main
+   Fills all remaining height; scrolls independently so header and footer
+   stay visible at all times.
+   ===========================================================================
+*/
+
+.v2-main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--main-bg, #eaecf0);
+    min-height: 0;
+}
+
+/* ===========================================================================
+   Section: Page container
+   Inner padding applied around @Body content.
+   ===========================================================================
+*/
+
+.v2-page-container {
+    padding: 20px 24px;
+    min-height: 100%;
+}
+
+/* ===========================================================================
+   Section: Footer
+   Fixed-height copyright bar at the bottom of the content column.
+   ===========================================================================
+*/
+
+.v2-footer {
+    flex-shrink: 0;
+    height: var(--ftr-h, 36px);
+    background: var(--chrome-bg, #f5f6f8);
+    border-top: 1px solid var(--border, #dde1e7);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 0.78rem;
+    color: var(--text-muted, #7b8494);
+}
+
+/* ===========================================================================
+   Section: Responsive
+   Stack vertically on screens narrower than 768 px.
+   ===========================================================================
+*/
+
+@media (max-width: 768px) {
+    .v2-layout-root {
+        flex-direction: column;
+    }
+}
+
+/* ===========================================================================
+   Section: Layout containment — fixed header above sidebar
+   Header is rendered inside v2-content-area but must visually span the full
+   viewport width and sit above both sidebar and content.
+   Sidebar and content column are offset downward by the header height.
+   ===========================================================================
+*/
+
+/* Header: fixed at top, full viewport width, above all other elements */
+.v2-layout-root ::deep .dsv2-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 250;
+}
+
+/* Sidebar: starts below the fixed header; height fills the remaining space */
+.v2-layout-root ::deep .dsv2-sidebar {
+    margin-top: var(--ds-layout-header-h, 52px);
+    height: calc(100% - var(--ds-layout-header-h, 52px));
+}
