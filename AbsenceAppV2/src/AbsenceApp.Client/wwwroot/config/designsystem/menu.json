@@ -1,7 +1,7 @@
 ﻿{
   "_comment": "Main Sidebar",
-  "_version": "5.1.0",
-  "_updated": "2026-03-29",
+  "_version": "6.0.0",
+  "_updated": "2026-03-30",
   "categories": [
     {
       "category": null,
@@ -9,9 +9,6 @@
         {
           "group": "Dashboard",
           "icon": "bi-speedometer2",
-          "flat": true,
-          "href": "/v2/dashboard/overview",
-          "description": "Operational overview and activity feeds",
           "items": [
             {
               "label": "Operational Overview",
@@ -19,16 +16,14 @@
               "icon": "bi-graph-up"
             },
             {
-              "label": "Staff Activity",
-              "href": "/v2/dashboard/overview",
-              "icon": "bi-person-lines-fill",
-              "status": "beta"
+              "label": "Attendance & Trends",
+              "href": "/v2/dashboard/trends",
+              "icon": "bi-bar-chart-line"
             },
             {
-              "label": "Student Activity",
-              "href": "/v2/dashboard/overview",
-              "icon": "bi-people",
-              "status": "beta"
+              "label": "Safeguarding & Wellbeing",
+              "href": "/v2/dashboard/safeguarding",
+              "icon": "bi-shield-check"
             }
           ]
         }
@@ -38,42 +33,60 @@
       "category": "PEOPLE",
       "groups": [
         {
-          "group": "People",
-          "icon": "bi-people-fill",
-          "description": "Students, staff and parent contacts",
+          "group": "Students",
+          "icon": "bi-mortarboard",
           "items": [
             {
               "label": "All Students",
               "href": "/v2/students",
-              "icon": "bi-mortarboard"
+              "icon": "bi-people"
+            },
+            {
+              "label": "Student Details",
+              "href": "/v2/students/details",
+              "icon": "bi-person-lines-fill"
             },
             {
               "label": "Add Student",
               "href": "/v2/students/new",
               "icon": "bi-person-plus"
-            },
-            {
-              "label": "All Staff",
-              "href": "/v2/staff",
-              "icon": "bi-person-badge"
-            },
-            {
-              "label": "Add Staff Member",
-              "href": "/v2/staff/new",
-              "icon": "bi-person-plus-fill"
-            },
-            {
-              "label": "Parent Contacts",
-              "href": "/v2/students",
-              "icon": "bi-telephone-inbound",
-              "status": "planned"
             }
           ]
         },
         {
-          "group": "Academics",
+          "group": "Staff",
+          "icon": "bi-person-badge",
+          "items": [
+            {
+              "label": "All Staff",
+              "href": "/v2/staff",
+              "icon": "bi-people-fill"
+            },
+            {
+              "label": "Staff Details",
+              "href": "/v2/staff/details",
+              "icon": "bi-person-lines-fill"
+            },
+            {
+              "label": "Add Staff",
+              "href": "/v2/staff/new",
+              "icon": "bi-person-plus-fill"
+            }
+          ]
+        },
+        {
+          "group": "Parents",
+          "icon": "bi-telephone-inbound",
+          "items": []
+        }
+      ]
+    },
+    {
+      "category": "ACADEMICS",
+      "groups": [
+        {
+          "group": "Classes",
           "icon": "bi-book-fill",
-          "description": "Class and subject management",
           "items": [
             {
               "label": "All Classes",
@@ -81,15 +94,14 @@
               "icon": "bi-building"
             },
             {
+              "label": "Class Details",
+              "href": "/v2/classes/details",
+              "icon": "bi-card-text"
+            },
+            {
               "label": "Add Class",
               "href": "/v2/classes/new",
               "icon": "bi-plus-square"
-            },
-            {
-              "label": "All Subjects",
-              "href": "/v2/classes",
-              "icon": "bi-journal-text",
-              "status": "planned"
             }
           ]
         }
@@ -101,27 +113,12 @@
         {
           "group": "Attendance",
           "icon": "bi-calendar-check-fill",
-          "description": "Daily registers, absence tracking and reports",
+          "flat": true,
           "items": [
             {
-              "label": "Attendance Register",
+              "label": "Attendance",
               "href": "/v2/attendance",
-              "icon": "bi-card-checklist"
-            },
-            {
-              "label": "Staff Attendance",
-              "href": "/v2/attendance",
-              "icon": "bi-person-check"
-            },
-            {
-              "label": "Student Attendance",
-              "href": "/v2/attendance",
-              "icon": "bi-check2-square"
-            },
-            {
-              "label": "Absence Log",
-              "href": "/v2/attendance",
-              "icon": "bi-journal-x"
+              "icon": "bi-calendar-check-fill"
             }
           ]
         }
@@ -131,85 +128,55 @@
       "category": "CONFIGURATION",
       "groups": [
         {
-          "group": "Configuration",
-          "icon": "bi-gear-fill",
-          "description": "Audit trail, table settings and diagnostics",
+          "group": "Audit Log",
+          "icon": "bi-journal-check",
+          "flat": true,
           "items": [
             {
               "label": "Audit Log",
               "href": "/v2/auditlog",
               "icon": "bi-journal-check"
-            },
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "SETTINGS",
+      "groups": [
+        {
+          "group": "Table Settings",
+          "icon": "bi-table",
+          "flat": true,
+          "items": [
             {
               "label": "Table Settings",
               "href": "/v2/settings",
               "icon": "bi-table"
-            },
-            {
-              "label": "Theme Settings",
-              "href": "/v2/settings/theme",
-              "icon": "bi-palette"
-            },
-            {
-              "label": "Diagnostics",
-              "href": "/v2/settings",
-              "icon": "bi-activity",
-              "status": "planned"
-            },
-            {
-              "label": "Site Map",
-              "href": "/v2/settings",
-              "icon": "bi-diagram-3",
-              "status": "planned"
             }
           ]
         },
         {
-          "group": "System",
-          "icon": "bi-server",
-          "description": "Departments, roles, users and reference data",
+          "group": "Diagnostics",
+          "icon": "bi-activity",
+          "flat": true,
           "items": [
             {
-              "label": "Departments",
-              "href": "/v2/settings",
-              "icon": "bi-building-gear",
-              "status": "planned"
-            },
+              "label": "Diagnostics",
+              "href": "/v2/diagnostics",
+              "icon": "bi-activity"
+            }
+          ]
+        },
+        {
+          "group": "Site",
+          "icon": "bi-diagram-3",
+          "flat": true,
+          "items": [
             {
-              "label": "Job Titles",
-              "href": "/v2/settings",
-              "icon": "bi-briefcase",
-              "status": "planned"
-            },
-            {
-              "label": "Houses",
-              "href": "/v2/settings",
-              "icon": "bi-house",
-              "status": "planned"
-            },
-            {
-              "label": "Year Groups",
-              "href": "/v2/settings",
-              "icon": "bi-layers",
-              "status": "planned"
-            },
-            {
-              "label": "Absence Types",
-              "href": "/v2/settings",
-              "icon": "bi-exclamation-triangle",
-              "status": "planned"
-            },
-            {
-              "label": "Users",
-              "href": "/v2/settings",
-              "icon": "bi-person-gear",
-              "status": "planned"
-            },
-            {
-              "label": "Roles",
-              "href": "/v2/settings",
-              "icon": "bi-shield-lock",
-              "status": "planned"
+              "label": "Site",
+              "href": "/v2/site",
+              "icon": "bi-diagram-3"
             }
           ]
         }
@@ -221,52 +188,12 @@
         {
           "group": "Global Config",
           "icon": "bi-grid-3x3-gap-fill",
-          "description": "Design system tokens and component library",
+          "flat": true,
           "items": [
             {
-              "label": "Colours",
+              "label": "Global Config",
               "href": "/global-settings/colours",
-              "icon": "bi-palette2"
-            },
-            {
-              "label": "Typography",
-              "href": "/global-settings/typography",
-              "icon": "bi-type"
-            },
-            {
-              "label": "Buttons",
-              "href": "/global-settings/buttons",
-              "icon": "bi-stop-btn"
-            },
-            {
-              "label": "Cards",
-              "href": "/global-settings/cards",
-              "icon": "bi-card-heading"
-            },
-            {
-              "label": "Tables",
-              "href": "/global-settings/tables",
-              "icon": "bi-table"
-            },
-            {
-              "label": "Forms",
-              "href": "/global-settings/forms",
-              "icon": "bi-input-cursor-text"
-            },
-            {
-              "label": "Dashboards",
-              "href": "/global-settings/dashboards",
-              "icon": "bi-speedometer"
-            },
-            {
-              "label": "Spacing",
-              "href": "/global-settings/spacing",
-              "icon": "bi-distribute-vertical"
-            },
-            {
-              "label": "Icons",
-              "href": "/global-settings/icons",
-              "icon": "bi-emoji-smile"
+              "icon": "bi-grid-3x3-gap-fill"
             }
           ]
         }

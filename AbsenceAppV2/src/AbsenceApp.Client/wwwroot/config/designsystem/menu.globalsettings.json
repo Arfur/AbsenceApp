@@ -1,7 +1,7 @@
 {
-  "_comment": "Global Config Sidebar",
-  "_version": "1.0.0",
-  "_updated": "2026-03-29",
+  "_comment": "Global Config / Design System Sidebar",
+  "_version": "2.0.0",
+  "_updated": "2026-03-30",
   "categories": [
     {
       "category": "DESIGN SYSTEM",
@@ -10,27 +10,51 @@
           "group": "Foundations",
           "icon": "bi-sliders",
           "items": [
-            { "label": "Colours",     "href": "/global-settings/colours",     "icon": "bi-palette2" },
-            { "label": "Typography",  "href": "/global-settings/typography",  "icon": "bi-type" },
-            { "label": "Spacing",     "href": "/global-settings/spacing",     "icon": "bi-distribute-vertical" },
-            { "label": "Icons",       "href": "/global-settings/icons",       "icon": "bi-emoji-smile" }
+            { "label": "Colours",    "href": "/global-settings/colours",    "icon": "bi-palette2" },
+            { "label": "Typography", "href": "/global-settings/typography", "icon": "bi-type" },
+            { "label": "Spacing",    "href": "/global-settings/spacing",    "icon": "bi-distribute-vertical" },
+            { "label": "Icons",      "href": "/global-settings/icons",      "icon": "bi-emoji-smile" }
           ]
         },
         {
           "group": "Components",
           "icon": "bi-grid-3x3-gap-fill",
           "items": [
-            { "label": "Buttons",     "href": "/global-settings/buttons",     "icon": "bi-stop-btn" },
-            { "label": "Cards",       "href": "/global-settings/cards",       "icon": "bi-card-heading" },
-            { "label": "Forms",       "href": "/global-settings/forms",       "icon": "bi-input-cursor-text" },
-            { "label": "Tables",      "href": "/global-settings/tables",      "icon": "bi-table" }
+            { "label": "Buttons",       "href": "/global-settings/buttons",       "icon": "bi-stop-btn" },
+            { "label": "Cards",         "href": "/global-settings/cards",         "icon": "bi-card-heading" },
+            { "label": "Tables",        "href": "/global-settings/tables",        "icon": "bi-table" },
+            { "label": "Forms",         "href": "/global-settings/forms",         "icon": "bi-input-cursor-text" },
+            { "label": "Alerts",        "href": "/global-settings/alerts",        "icon": "bi-exclamation-circle" },
+            { "label": "Badges",        "href": "/global-settings/badges",        "icon": "bi-tag" },
+            { "label": "Dropdowns",     "href": "/global-settings/dropdowns",     "icon": "bi-chevron-down" },
+            { "label": "Grid",          "href": "/global-settings/grid",          "icon": "bi-grid" },
+            { "label": "Avatar",        "href": "/global-settings/avatar",        "icon": "bi-person-circle" },
+            { "label": "Tabs",          "href": "/global-settings/tabs",          "icon": "bi-folder" },
+            { "label": "Accordions",    "href": "/global-settings/accordions",    "icon": "bi-layout-text-sidebar" },
+            { "label": "Progress",      "href": "/global-settings/progress",      "icon": "bi-hourglass-split" },
+            { "label": "Notifications", "href": "/global-settings/notifications", "icon": "bi-bell" },
+            { "label": "Lists",         "href": "/global-settings/lists",         "icon": "bi-list-ul" },
+            { "label": "Helper Classes","href": "/global-settings/helper-classes","icon": "bi-tools" },
+            { "label": "Background",    "href": "/global-settings/background",    "icon": "bi-image" },
+            { "label": "Divider",       "href": "/global-settings/divider",       "icon": "bi-dash-lg" },
+            { "label": "Ribbons",       "href": "/global-settings/ribbons",       "icon": "bi-bookmark-star" },
+            { "label": "Editor",        "href": "/global-settings/editor",        "icon": "bi-pencil-square" },
+            { "label": "Collapse",      "href": "/global-settings/collapse",      "icon": "bi-arrows-collapse" },
+            { "label": "Footer",        "href": "/global-settings/footer",        "icon": "bi-layout-text-window-reverse" },
+            { "label": "Shadow",        "href": "/global-settings/shadow",        "icon": "bi-circle-half" },
+            { "label": "Wrapper",       "href": "/global-settings/wrapper",       "icon": "bi-box" },
+            { "label": "Bullet",        "href": "/global-settings/bullet",        "icon": "bi-dot" },
+            { "label": "Placeholder",   "href": "/global-settings/placeholder",   "icon": "bi-square-half" },
+            { "label": "Alignment",     "href": "/global-settings/alignment",     "icon": "bi-align-center" }
           ]
         },
         {
           "group": "Templates",
           "icon": "bi-layout-text-window",
           "items": [
-            { "label": "Dashboards",  "href": "/global-settings/dashboards",  "icon": "bi-speedometer" }
+            { "label": "Dashboards", "href": "/global-settings/dashboards", "icon": "bi-speedometer" },
+            { "label": "Layouts",    "href": "/global-settings/layouts",    "icon": "bi-layout-wtf" },
+            { "label": "Pages",      "href": "/global-settings/pages",      "icon": "bi-file-earmark" }
           ]
         }
       ]

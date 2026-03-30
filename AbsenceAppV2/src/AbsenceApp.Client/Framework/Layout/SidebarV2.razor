@@ -201,6 +201,39 @@
                         __builder.CloseElement();
                     }
                     __builder.CloseElement();
+                    @* Additional items beyond Items[0] rendered as sub-links when not collapsed *@
+                    if (!AppState.SidebarCollapsed && group.Items.Count > 1)
+                    {
+                        __builder.OpenElement(9, "div");
+                        __builder.AddAttribute(10, "class", "dsv2-sidebar__submenu");
+                        foreach (var item in group.Items.Skip(1))
+                        {
+                            var active = ItemIsActive(item.Href);
+                            __builder.OpenElement(11, "a");
+                            __builder.AddAttribute(12, "href", item.Href);
+                            __builder.AddAttribute(13, "class",
+                                "dsv2-sidebar__sublink " +
+                                (active ? "dsv2-sidebar__sublink--active" : ""));
+                            __builder.OpenElement(14, "i");
+                            __builder.AddAttribute(15, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
+                            __builder.CloseElement();
+                            __builder.OpenElement(16, "span");
+                            __builder.AddAttribute(17, "class", "dsv2-sidebar__item-label");
+                            __builder.AddContent(18, item.Title);
+                            __builder.CloseElement();
+                            if (!string.IsNullOrEmpty(item.Status) && item.Status != "Live")
+                            {
+                                __builder.OpenElement(19, "span");
+                                __builder.AddAttribute(20, "class",
+                                    "dsv2-sidebar__status-badge dsv2-sidebar__status-badge--" +
+                                    item.Status.ToLower());
+                                __builder.AddContent(21, item.Status);
+                                __builder.CloseElement();
+                            }
+                            __builder.CloseElement(); // a
+                        }
+                        __builder.CloseElement(); // div.submenu
+                    }
                 }
                 else
                 {
@@ -249,7 +282,7 @@
                             __builder.AddAttribute(20, "class", "dsv2-sidebar__item-label");
                             __builder.AddContent(21, item.Title);
                             __builder.CloseElement();
-                            if (item.Status != "Live")
+                            if (!string.IsNullOrEmpty(item.Status) && item.Status != "Live")
                             {
                                 __builder.OpenElement(22, "span");
                                 __builder.AddAttribute(23, "class",
@@ -309,8 +342,8 @@
             await LoadMenuAsync(currentPath);
             ComputeRouteMatch();
             AutoOpenGroup();
+            StateHasChanged();
         });
-        StateHasChanged();        
     }
 
     public void Dispose()
@@ -325,8 +358,8 @@
 
     private async Task LoadMenuAsync(string path)
     {
-        _isSuperAdminMenu = path.StartsWith("/global-settings/",
-            StringComparison.OrdinalIgnoreCase);
+        _isSuperAdminMenu = path.Equals("/global-settings", StringComparison.OrdinalIgnoreCase)
+            || path.StartsWith("/global-settings/", StringComparison.OrdinalIgnoreCase);
         _loadError = null;
 
         try

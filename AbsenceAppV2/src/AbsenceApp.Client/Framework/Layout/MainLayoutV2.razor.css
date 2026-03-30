@@ -88,6 +88,7 @@
     flex-direction: column;
     overflow: hidden;
     min-width: 0;
+    padding-top: var(--ds-layout-header-h, 52px);
 }
 
 /* ===========================================================================
@@ -160,4 +161,28 @@
     .v2-layout-root {
         flex-direction: column;
     }
+}
+
+/* ===========================================================================
+   Section: Layout containment — header fixed full-width above sidebar
+   The header is rendered inside v2-content-area (right column) but must
+   visually span the full viewport width and sit above both sidebar and
+   content. Using position: fixed achieves this without markup changes.
+   The sidebar and content column are offset by the header height.
+   ===========================================================================
+*/
+
+/* Header: fixed at top, full viewport width, above all other content */
+.v2-layout-root ::deep .dsv2-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 250;
+}
+
+/* Sidebar: starts below the fixed header */
+.v2-layout-root ::deep .dsv2-sidebar {
+    margin-top: var(--ds-layout-header-h, 52px);
+    height: calc(100% - var(--ds-layout-header-h, 52px));
 }
