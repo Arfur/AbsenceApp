@@ -3,9 +3,9 @@
  File        : StaffFullViewMapper.cs
  Namespace   : AbsenceApp.Data.Mappers
  Author      : Michael
- Version     : 1.0.0
- Created     : 2026-03-17
- Updated     : 2026-03-17
+   Version     : 1.1.0
+   Created     : 2026-03-17
+   Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : Maps a Staff entity plus resolved lookup names to a
                StaffFullViewDto.  Lookup names (JobTitleName, JobGroupName,
@@ -14,6 +14,8 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-17  Initial creation.
+   - 1.1.0  2026-04-06  Phase 3 V1 Parity Issue 4: added Id = entity.Id to
+                        ToDto() output to support navigation links.
 -------------------------------------------------------------------------------
  Notes       :
    - One-way mapping only (read projection — no ToEntity required).
@@ -49,6 +51,7 @@ public static class StaffFullViewMapper
         string  departmentName,
         string? managerName) => new()
     {
+        Id                    = entity.Id,
         StaffNumber           = entity.StaffNumber,
         FirstName             = entity.FirstName,
         LastName              = entity.LastName,

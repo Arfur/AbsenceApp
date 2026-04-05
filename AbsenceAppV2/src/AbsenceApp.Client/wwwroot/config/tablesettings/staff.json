@@ -1,0 +1,10 @@
+[
+  { "id": 0, "pageName": "staff", "fieldName": "upn",         "displayLabel": "UPN",         "isVisible": false, "isSortable": false, "isFilterable": false, "isSearchable": false, "displayOrder": 1 },
+  { "id": 0, "pageName": "staff", "fieldName": "staff_code",  "displayLabel": "Staff Code",  "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 2 },
+  { "id": 0, "pageName": "staff", "fieldName": "first_name",  "displayLabel": "First Name",  "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 3 },
+  { "id": 0, "pageName": "staff", "fieldName": "last_name",   "displayLabel": "Last Name",   "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 4 },
+  { "id": 0, "pageName": "staff", "fieldName": "email",       "displayLabel": "Email",       "isVisible": true,  "isSortable": false, "isFilterable": false, "isSearchable": true,  "displayOrder": 5 },
+  { "id": 0, "pageName": "staff", "fieldName": "job_title",   "displayLabel": "Job Title",   "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 6 },
+  { "id": 0, "pageName": "staff", "fieldName": "department",  "displayLabel": "Department",  "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 7 },
+  { "id": 0, "pageName": "staff", "fieldName": "status",      "displayLabel": "Status",      "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 8 }
+]

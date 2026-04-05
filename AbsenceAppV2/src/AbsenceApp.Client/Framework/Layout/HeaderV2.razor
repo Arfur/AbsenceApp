@@ -2,22 +2,59 @@
    File        : HeaderV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 2.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-27
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
-   Purpose     : V2 top navigation header. Provides logo zone, sidebar toggle, optional search slot, dark-mode toggle, and notification bell. Parallel to V1 NavBar.razor; does NOT modify or replace it.
+   Purpose     : V2 top navigation header. Provides logo zone, sidebar toggle,
+                 optional search slot, dark-mode toggle, message icon with
+                 unread badge, notification bell with unread badge, and a user
+                 identity cluster (avatar + username + role) with an anchored
+                 dropdown menu. Parallel to V1 NavBar.razor; does NOT modify
+                 or replace it.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-27  Phase 3 stabilisation; search and actions slots.
+     - 2.0.0  2026-04-05  Phase 3 Header Nav Identity & Messaging parity:
+                          added user identity cluster (avatar + username +
+                          role) with anchored dropdown (Profile Details,
+                          Settings, Log Out). Added message icon with badge
+                          and conditional dropdown. Upgraded notification
+                          bell with conditional dropdown. Added full-screen
+                          transparent overlay for outside-click dismiss.
+                          Role sourced dynamically via AppState.UserRole,
+                          which is set at login from AuthService using
+                          RoleTypes.DisplayName from the database.
+     - 2.1.0  2026-04-05  Phase 3 messaging enablement: replaced all static
+                          demo MessageItem/NotifItem lists with bindings to
+                          AppState.UnreadMessages and AppState.UnreadNotifications
+                          (populated from DB at login via
+                          IMessageService.GetUnreadMessagesAsync and
+                          INotificationService.GetUnreadNotificationsAsync).
+                          Removed _messages and _notifs static fields.
+                          Updated badge/guard references to use
+                          UnreadMessagesCount / UnreadNotificationsCount.
+                          Added DEV-ONLY role debug display.
    ---------------------------------------------------------------------------
    Notes       :
      - Phase 3 component. Requires AppStateService.
+     - Role is NOT hardcoded: AppState.UserRole is populated at login from
+       AuthService.LoginAsync → RoleTypes.DisplayName (database lookup).
+       Fallback “Admin”/“Staff” strings only execute when the DB has no
+       matching RoleType row for the authenticated user’s role_type_id.
    ===========================================================================
 *@
 @using AbsenceApp.Client.Services
 @inject AppStateService AppState
+@inject NavigationManager Nav
 @implements IDisposable
+
+@* Transparent full-screen overlay — intercepts outside clicks to close all open menus *@
+@if (_userOpen || _msgOpen || _notifOpen)
+{
+    <div class="dsv2-header__overlay" @onclick="CloseAll"></div>
+}
 
 <header class="dsv2-header" role="banner">
     @* =========================================================================
@@ -62,7 +99,7 @@
     </div>
 
 @* =========================================================================
-   Section: Right zone — actions
+   Section: Right zone — dark mode / messages / notifications / user cluster
    ========================================================================= *@
     <div class="dsv2-header__right">
         @if (ActionsContent is not null)
@@ -78,20 +115,118 @@
             <i class="bi @(AppState.DarkMode ? "bi-sun" : "bi-moon")" aria-hidden="true"></i>
         </button>
 
-        @* Notifications *@
-        <button class="dsv2-header__icon-btn dsv2-header__notif-btn"
-                title="Notifications"
-                aria-label="Notifications (@AppState.UnreadCount unread)">
-            <i class="bi bi-bell" aria-hidden="true"></i>
-            @if (AppState.UnreadCount > 0)
+        @* Messages — badge shown when unread > 0; dropdown opens only when count > 0 *@
+        <div class="dsv2-header__dd-wrap">
+            <button class="dsv2-header__icon-btn"
+                    title="Messages (@AppState.UnreadMessagesCount unread)"
+                    aria-label="Messages (@AppState.UnreadMessagesCount unread)"
+                    aria-expanded="@_msgOpen"
+                    @onclick="ToggleMsg">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                @if (AppState.UnreadMessagesCount > 0)
+                {
+                    <span class="dsv2-header__notif-badge" aria-live="polite">@AppState.UnreadMessagesCount</span>
+                }
+            </button>
+            @if (_msgOpen)
             {
-                <span class="dsv2-header__notif-badge" aria-live="polite">@AppState.UnreadCount</span>
+                <div class="dsv2-header__dropdown">
+                    <div class="dsv2-header__dd-header">Messages</div>
+                    @foreach (var m in AppState.UnreadMessages)
+                    {
+                        <div class="dsv2-header__dd-item">
+                            <span class="dsv2-header__dd-item-title">@m.SenderName</span>
+                            <span class="dsv2-header__dd-item-preview">@m.Preview</span>
+                            <span class="dsv2-header__dd-item-time">@m.CreatedAt.ToString("HH:mm dd MMM")</span>
+                        </div>
+                    }
+                </div>
             }
-        </button>
+        </div>
+
+        @* Notifications — badge shown when unread > 0; dropdown opens only when count > 0 *@
+        <div class="dsv2-header__dd-wrap">
+            <button class="dsv2-header__icon-btn dsv2-header__notif-btn"
+                    title="Notifications (@AppState.UnreadNotificationsCount unread)"
+                    aria-label="Notifications (@AppState.UnreadNotificationsCount unread)"
+                    aria-expanded="@_notifOpen"
+                    @onclick="ToggleNotif">
+                <i class="bi bi-bell" aria-hidden="true"></i>
+                @if (AppState.UnreadNotificationsCount > 0)
+                {
+                    <span class="dsv2-header__notif-badge" aria-live="polite">@AppState.UnreadNotificationsCount</span>
+                }
+            </button>
+            @if (_notifOpen)
+            {
+                <div class="dsv2-header__dropdown">
+                    <div class="dsv2-header__dd-header">Notifications</div>
+                    @foreach (var n in AppState.UnreadNotifications)
+                    {
+                        <div class="dsv2-header__dd-item">
+                            <span class="dsv2-header__dd-item-title">@n.Title</span>
+                            <span class="dsv2-header__dd-item-time">@n.CreatedAt.ToString("HH:mm dd MMM")</span>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        @* User identity cluster: avatar + username + role — opens anchored dropdown menu *@
+        <div class="dsv2-header__dd-wrap dsv2-header__user-wrap">
+            <button class="dsv2-header__user-btn"
+                    type="button"
+                    aria-label="User menu for @AppState.UserName"
+                    aria-expanded="@_userOpen"
+                    aria-haspopup="menu"
+                    @onclick="ToggleUser">
+                <span class="dsv2-header__user-avatar" aria-hidden="true">
+                    @(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")
+                </span>
+                <span class="dsv2-header__user-info">
+                    <span class="dsv2-header__user-name">@AppState.UserName</span>
+                    <span class="dsv2-header__user-role">@AppState.UserRole</span>
+                </span>
+                <i class="bi bi-chevron-down dsv2-header__user-chevron @(_userOpen ? "dsv2-header__user-chevron--open" : "")"
+                   aria-hidden="true"></i>
+            </button>
+            @if (_userOpen)
+            {
+                <ul class="dsv2-header__dropdown dsv2-header__dropdown--user" role="menu">
+                    <li role="none" class="dsv2-header__dd-debug" aria-label="Role debug">
+                        @* DEV ONLY: Shows the exact role value resolved at login *@
+                        <span class="dsv2-header__dd-debug-label">Authenticated Role (from login): <strong>@AppState.UserRole</strong></span>
+                    </li>
+                    <li role="none">
+                        <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">
+                            <i class="bi bi-person" aria-hidden="true"></i>
+                            Profile Details
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">
+                            <i class="bi bi-gear" aria-hidden="true"></i>
+                            Settings
+                        </a>
+                    </li>
+                    <li class="dsv2-header__dd-divider" role="separator"></li>
+                    <li role="none">
+                        <button class="dsv2-header__dd-link dsv2-header__dd-link--danger"
+                                type="button"
+                                role="menuitem"
+                                @onclick="HandleLogout">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                            Log Out
+                        </button>
+                    </li>
+                </ul>
+            }
+        </div>
     </div>
 </header>
 
 @code {
+    // ── Parameters ────────────────────────────────────────────────────────────────────────────
     /// <summary>Whether to show the default search input in the centre zone.</summary>
     [Parameter] public bool ShowDefaultSearch { get; set; } = true;
 
@@ -107,8 +242,56 @@
     /// <summary>Fires when the user presses Enter in the default search input.</summary>
     [Parameter] public EventCallback<string> OnSearch { get; set; }
 
+    // ── Demo data removed: HeaderV2 now binds directly to AppState.UnreadMessages
+    // and AppState.UnreadNotifications populated at login from the database.
+    // See Login.razor DoLogin() → IMessageService + INotificationService → AppState.SetMessagingData()
+
+    // ── Dropdown open / close state ──────────────────────────────────────────────────────
+    private bool _userOpen;
+    private bool _msgOpen;
+    private bool _notifOpen;
+
+    private void ToggleUser()
+    {
+        _userOpen  = !_userOpen;
+        _msgOpen   = false;
+        _notifOpen = false;
+    }
+
+    private void ToggleMsg()
+    {
+        if (AppState.UnreadMessagesCount <= 0) return;
+        _msgOpen   = !_msgOpen;
+        _userOpen  = false;
+        _notifOpen = false;
+    }
+
+    private void ToggleNotif()
+    {
+        if (AppState.UnreadNotificationsCount <= 0) return;
+        _notifOpen = !_notifOpen;
+        _userOpen  = false;
+        _msgOpen   = false;
+    }
+
+    private void CloseAll()
+    {
+        _userOpen  = false;
+        _msgOpen   = false;
+        _notifOpen = false;
+    }
+
+    private void HandleLogout()
+    {
+        CloseAll();
+        AppState.AuthLogout();
+        Nav.NavigateTo("/login");
+    }
+
+    // ── Search ─────────────────────────────────────────────────────────────────────────────
     private string _searchValue = string.Empty;
 
+    // ── Lifecycle ───────────────────────────────────────────────────────────────────────
     protected override void OnInitialized()
     {
         AppState.OnChange += StateHasChanged;

@@ -2,9 +2,9 @@
    File        : AppStateService.cs
    Namespace   : AbsenceApp.Client.Services
    Author      : Michael
-   Version     : 2.4.0
+   Version     : 2.7.0
    Created     : 2026-03-17
-   Updated     : 2026-03-29
+   Updated     : 2026-04-05
    ----------------------------------------------------------------------------
    Purpose     : Singleton UI state container shared across all layout and
                  shell components. Tracks:
@@ -22,10 +22,26 @@
                           errors after auth persistence update.
      - 2.4.0  2026-03-29  Enforced mandatory login on every cold start by
                           removing authentication persistence and restoration.
+     - 2.5.0  2026-04-06  Phase 3 V1 Parity Issue 5: added OnTableSettingsChanged
+                          event and NotifyTableSettingsChanged() so table pages
+                          can reload column settings immediately after a save.
+     - 2.6.0  2026-04-05  Phase 3 Header Nav Identity: added UnreadMessages
+                          property for the message badge count displayed in
+                          the HeaderV2 messages icon.
+     - 2.7.0  2026-04-05  Phase 3 Header Nav Identity — messaging enablement:
+                          replaced hardcoded UnreadCount (int=4) and
+                          UnreadMessages (int=2) with database-backed
+                          UnreadMessages (IReadOnlyList<MessageDto>) and
+                          UnreadNotifications (IReadOnlyList<AppNotificationDto>).
+                          Added UnreadMessagesCount and UnreadNotificationsCount
+                          computed properties. Added SetMessagingData() method
+                          called from Login.razor after successful authentication.
+                          Cleared messaging state on AuthLogout().
    ============================================================================
 */
 
 using AbsenceApp.Client.Shared;
+using AbsenceApp.Core.DTOs;
 using Microsoft.Maui.Storage;
 
 namespace AbsenceApp.Client.Services;
@@ -75,11 +91,20 @@ public class AppStateService
 
     public bool   SidebarCollapsed { get; private set; } = false;
     public bool   DarkMode         { get; private set; }
-    public int    UnreadCount      { get; set; }         = 4;
     public string UserName         { get; private set; } = string.Empty;
     public string UserRole         { get; private set; } = string.Empty;
     public bool   IsAuthenticated  { get; private set; } = false;
     public long   CurrentUserId    { get; private set; }
+
+    // ── Messaging state (populated from DB at login; cleared on logout) ────
+    public IReadOnlyList<MessageDto>         UnreadMessages      { get; private set; } = Array.Empty<MessageDto>();
+    public IReadOnlyList<AppNotificationDto> UnreadNotifications { get; private set; } = Array.Empty<AppNotificationDto>();
+
+    /// <summary>Count of unread messages — drives the header badge.</summary>
+    public int UnreadMessagesCount      => UnreadMessages.Count;
+
+    /// <summary>Count of unread notifications — drives the header badge.</summary>
+    public int UnreadNotificationsCount => UnreadNotifications.Count;
 
     /* ============================================================================
        Section: Breadcrumb + category
@@ -98,6 +123,19 @@ public class AppStateService
     public event Action? OnChange;
 
     private void Notify() => OnChange?.Invoke();
+
+    /* ============================================================================
+       Section: Table-settings change notification (Issue 5 — V1 parity)
+       ============================================================================ */
+
+    /// <summary>
+    /// Raised whenever a table's column settings are saved via SettingsListPageV2.
+    /// Table pages subscribe to reload settings and call StateHasChanged().
+    /// </summary>
+    public event Action? OnTableSettingsChanged;
+
+    /// <summary>Fires <see cref="OnTableSettingsChanged"/>.</summary>
+    public void NotifyTableSettingsChanged() => OnTableSettingsChanged?.Invoke();
 
     /* ============================================================================
        Section: Sidebar + theme toggles
@@ -174,12 +212,27 @@ public class AppStateService
         Notify();
     }
 
+    /// <summary>
+    /// Stores the authenticated user's unread messages and notifications.
+    /// Called by Login.razor immediately after <see cref="SetUser"/>.
+    /// </summary>
+    public void SetMessagingData(
+        List<MessageDto>         messages,
+        List<AppNotificationDto> notifications)
+    {
+        UnreadMessages      = messages;
+        UnreadNotifications = notifications;
+        Notify();
+    }
+
     public void AuthLogout()
     {
-        IsAuthenticated = false;
-        CurrentUserId   = 0;
-        UserName        = string.Empty;
-        UserRole        = string.Empty;
+        IsAuthenticated     = false;
+        CurrentUserId       = 0;
+        UserName            = string.Empty;
+        UserRole            = string.Empty;
+        UnreadMessages      = Array.Empty<MessageDto>();
+        UnreadNotifications = Array.Empty<AppNotificationDto>();
 
         Notify();
     }

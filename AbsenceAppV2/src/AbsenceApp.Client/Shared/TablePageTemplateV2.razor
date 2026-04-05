@@ -2,9 +2,9 @@
    File        : TablePageTemplateV2.razor
    Namespace   : AbsenceApp.Client.Shared
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.2.0
    Created     : 2026-03-17
-   Updated     : 2026-03-25
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
    Purpose     : Reusable five-section layout template for all V2 table-based
                  pages (Students, Staff, Classes, etc.). Parallel to the V1
@@ -19,6 +19,14 @@
      - 2.0.0  2026-03-25  Adopted as dedicated V2 table template after V1/V2
                           project split. No functional changes; documentation
                           and separation clarified.
+     - 2.1.0  2026-04-06  Phase 3 V1 Parity Issue 1: wrapped all five sections
+                          in a single .tpt-card container to match V1 unified
+                          card layout. Removed individual card styling from
+                          .tpt-filters-area and .tpt-table-wrapper.
+     - 2.2.0  2026-04-05  Phase 3 Final Container Parity: introduced inner
+                          .tpt-filters-box nested container around only the
+                          filters content to match V1 two-level container
+                          hierarchy. Removed border-bottom separator.
    ===========================================================================
 *@
 @using AbsenceApp.Client.Services
@@ -28,36 +36,43 @@
 @inject NavigationManager Navigation
 
 @* =========================================================================
+   Single unified card — wraps all five sections (V1 parity)
+   ========================================================================= *@
+<div class="tpt-card">
+
+@* =========================================================================
    Section 1: Filters area
    — caller-supplied dropdown controls + auto-rendered active chip strip
    ========================================================================= *@
 <div class="tpt-filters-area">
+    <div class="tpt-filters-box">
 
-    @* Dropdown row: caller fills Filters slot; Clear All sits on the right *@
-    <div class="tpt-filter-dropdowns">
-        @Filters
-        <button class="tpt-clear-all-btn" @onclick="HandleClearAll">CLEAR ALL</button>
-    </div>
-
-    @* Active chips — shown only when at least one filter is active *@
-    @if (ActiveFilters is { Count: > 0 })
-    {
-        <div class="tpt-chips-row">
-            @foreach (var chip in ActiveFilters)
-            {
-                var c = chip;
-                <span class="tpt-chip">
-                    <span class="tpt-chip-label">@c.Name:</span>&nbsp;@c.Value
-                    <button class="tpt-chip-remove"
-                            @onclick="() => HandleRemoveFilter(c)"
-                            title="Remove @c.Name filter">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </span>
-            }
+        @* Dropdown row: caller fills Filters slot; Clear All sits on the right *@
+        <div class="tpt-filter-dropdowns">
+            @Filters
+            <button class="tpt-clear-all-btn" @onclick="HandleClearAll">CLEAR ALL</button>
         </div>
-    }
 
+        @* Active chips — shown only when at least one filter is active *@
+        @if (ActiveFilters is { Count: > 0 })
+        {
+            <div class="tpt-chips-row">
+                @foreach (var chip in ActiveFilters)
+                {
+                    var c = chip;
+                    <span class="tpt-chip">
+                        <span class="tpt-chip-label">@c.Name:</span>&nbsp;@c.Value
+                        <button class="tpt-chip-remove"
+                                @onclick="() => HandleRemoveFilter(c)"
+                                title="Remove @c.Name filter">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </span>
+                }
+            </div>
+        }
+
+    </div>
 </div>
 
 @* =========================================================================
@@ -136,6 +151,8 @@
     <div class="tpt-page-controls">
         @Pagination
     </div>
+
+</div>
 
 </div>
 

@@ -1,16 +1,16 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : PlaceholderPageV2.razor
    Namespace   : AbsenceApp.Client.ModulesV2
    Author      : Michael
-   Version     : 1.2.0
+   Version     : 1.2.3
    Created     : 2026-03-24
-   Updated     : 2026-03-26
+   Updated     : 2026-04-06
    ---------------------------------------------------------------------------
    Purpose     : Shared placeholder page for all V2 routes that are defined in
                  menu.json with status "Planned" but do not yet have a full
                  implementation. Prevents "Page not found" errors when users
                  navigate to these routes from the sidebar.
-                 All routes here match exactly the hrefs in menu.json v4.0.0.
+                 All routes here match exactly the hrefs in menu.json v6.0.0.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-24  Initial implementation covering all planned routes
@@ -22,9 +22,12 @@
                           'AbsenceApp.Client.Components.Layout.MainLayoutV2'
                           and replaced with 'MainLayoutV2' to align with V2
                           Framework layout structure. No functional changes.
-     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout BaseLayoutV2;
+     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout MainLayoutV2;
                           MainLayoutV2 no longer exists — BaseLayoutV2 is the
                           V2 authenticated-shell layout (CS0246 build error fix).
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
+     - 1.2.2  2026-04-05  Phase 3 Remediation Issue 1: added /v2/staff/details and /v2/students/details routes to match menu.json nav targets (previously only had singular /detail variants causing Page Not Found).
+     - 1.2.3  2026-04-06  Phase 3 Route Repair: added /v2/dashboard/trends, /v2/classes/details, /v2/diagnostics, /v2/site to match exact hrefs in menu.json v6.0.0.
    ---------------------------------------------------------------------------
    Notes       :
      - DO NOT add Live routes here — Live routes must have dedicated pages.
@@ -33,20 +36,24 @@
 *@
 
 @* Dashboard planned routes *@
+@page "/v2/dashboard/trends"
 @page "/v2/dashboard/attendance"
 @page "/v2/dashboard/safeguarding"
 
 @* Students planned routes *@
 @page "/v2/students/detail"
+@page "/v2/students/details"
 
 @* Staff planned routes *@
 @page "/v2/staff/detail"
+@page "/v2/staff/details"
 
 @* People planned routes *@
 @page "/v2/parents"
 
 @* Academic planned routes *@
 @page "/v2/classes/detail"
+@page "/v2/classes/details"
 @page "/v2/subjects"
 @page "/v2/subjects/new"
 
@@ -55,6 +62,8 @@
 @page "/v2/attendance/student"
 
 @* Settings planned routes *@
+@page "/v2/diagnostics"
+@page "/v2/site"
 @page "/v2/settings/diagnostics"
 @page "/v2/settings/site-map"
 
@@ -72,7 +81,7 @@
 @page "/v2/system/config/table-defaults"
 @page "/v2/system/config/spacing"
 
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @inject AppStateService AppState
 @inject NavigationManager Nav
 

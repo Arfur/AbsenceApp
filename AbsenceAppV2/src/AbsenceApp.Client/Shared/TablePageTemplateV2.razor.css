@@ -2,9 +2,9 @@
    File        : TablePageTemplateV2.razor.css
    Namespace   : AbsenceApp.Client.Shared
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.2.0
    Created     : 2026-03-25
-   Updated     : 2026-03-25
+   Updated     : 2026-04-05
    ----------------------------------------------------------------------------
    Purpose     : Scoped styles for the V2 TablePageTemplateV2 component.
                  Derived from the V1 TablePageTemplate.razor.css but isolated
@@ -47,6 +47,13 @@
      - 1.2.0  2026-03-23  V1 CS0414 suppression and IDisposable contract.
      - 2.0.0  2026-03-25  Adopted as dedicated V2 stylesheet. No functional
                           changes; documentation and separation clarified.
+     - 2.1.0  2026-04-06  Phase 3 V1 Parity Issue 1: added .tpt-card wrapper
+                          style; removed individual card styling from
+                          .tpt-filters-area and .tpt-table-wrapper.
+     - 2.2.0  2026-04-05  Phase 3 Final Container Parity: removed border-bottom
+                          separator from .tpt-filters-area; added .tpt-filters-box
+                          inner nested container with background, border, and
+                          padding to match V1 two-level container hierarchy.
    ============================================================================
 */
 
@@ -64,15 +71,30 @@
 }
 
 
-/* ── Section 1: Filters area ────────────────────────────────────────────────── */
+/* ── Unified card container (wraps all five sections) ───────────────────────── */
 
-.tpt-filters-area {
+.tpt-card {
     background: var(--surface, #ffffff);
     border: 1px solid var(--border, #e2e8f0);
     border-radius: 0.5rem;
-    padding: 0.875rem 1rem;
-    margin-bottom: 1rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
+}
+
+
+/* ── Section 1: Filters area ────────────────────────────────────────────────── */
+
+.tpt-filters-area {
+    padding: 0;
+    margin-bottom: 0.875rem;
+}
+
+/* Inner filter box — V1 nested container with own background + border */
+.tpt-filters-box {
+    background: #f8fafc;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 0.375rem;
+    padding: 0.75rem;
 }
 
 /* Dropdown row */
@@ -332,9 +354,8 @@
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    border-radius: 0.5rem;
+    border-radius: 0.375rem;
     border: 1px solid var(--border, #e2e8f0);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     margin-bottom: 1rem;
 }
 
@@ -378,12 +399,20 @@
     border: none;
     color: rgba(255, 255, 255, 0.55);
     cursor: pointer;
-    padding: 0 0 0 0.3rem;
+    padding: 0;
     vertical-align: middle;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: 1;
+    gap: 0.35rem;
+}
+
+/* Stacked up/down arrows to the right of the column label */
+.tpt-thead-row ::deep .tpt-sort-icons {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    line-height: 1;
     gap: 1px;
 }
 

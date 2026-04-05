@@ -1,3 +1,40 @@
+/*
+===============================================================================
+ File        : AuthService.cs
+ Namespace   : AbsenceApp.Data.Services
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-03-22
+ Updated     : 2026-03-26
+-------------------------------------------------------------------------------
+ Purpose     : Provides authentication services for the AbsenceApp platform,
+               including user login, registration, and logout operations.
+
+               This service validates credentials against the Users table in
+               the application database and returns a structured AuthResultDto
+               describing the outcome of the authentication attempt.
+
+               The service is designed to be consumed by UI layers (MAUI /
+               Blazor Hybrid) and must be registered with a Scoped lifetime to
+               ensure safe usage of the underlying EF Core DbContext.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-03-22  Initial implementation of login and registration logic
+                         using AppDbContext (Phase 1).
+-------------------------------------------------------------------------------
+ Notes       :
+   - Passwords are currently stored and compared as plain text for development
+     purposes only. This MUST be replaced with a secure hashing algorithm
+     (e.g. BCrypt or PBKDF2) before any production deployment.
+   - All EF Core queries are executed sequentially and awaited to avoid
+     concurrency issues.
+   - AppDbContext MUST be registered as Scoped. AuthService MUST NOT be
+     registered as Singleton.
+   - No server-side session state is maintained; authentication state is
+     managed by the client application.
+===============================================================================
+*/
+
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data.Context;

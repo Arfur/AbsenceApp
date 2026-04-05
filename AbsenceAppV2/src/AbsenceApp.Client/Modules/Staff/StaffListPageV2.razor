@@ -2,110 +2,446 @@
    File        : StaffListPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Staff
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 2.0.0
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-06
    ---------------------------------------------------------------------------
-   Purpose     : V2 Staff list page. Displays a paged, searchable, sortable
-                 table of staff members using the V2 PageTemplateV2 primitive
-                 instead of deprecated StandardPageV2. Delegates all data and
-                 state to StaffListViewModelV2.
+   Purpose     : V2 Staff list page — V1-matching layout using
+                 TablePageTemplateV2 with filter dropdowns, V1 sort buttons,
+                 and V1 pagination. Delegates data and state to
+                 StaffListViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
      - 1.0.1  2026-03-25  Removed invalid V2 component imports.
      - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
-                          Updated namespace and layout. Preserved table logic.
+     - 1.1.1  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout to
+                          MainLayoutV2 for correct fixed-header shell.
+     - 2.0.0  2026-04-06  Phase 3 V1 Parity Issue 4: rewrote to use
+                          TablePageTemplateV2 (not TableV2). Replaced
+                          StaffApiServiceV2 (HTTP) with IStaffFullViewService
+                          (EF Core direct) via StaffListViewModelV2.
+                          Issue 5: load column settings from
+                          TableSettingsFileService; subscribe to
+                          AppState.OnTableSettingsChanged for live updates.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/staff
-     - Register StaffListViewModelV2 as Scoped in Phase 10.
    ===========================================================================
 *@
 
 @page "/v2/staff"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Staff
 
-@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.Shared
 @using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Client.Services.TableV2
+@using AbsenceApp.Core.DTOs
 @inject StaffListViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
+@inject TableSettingsFileService SettingsFile
+@implements IDisposable
 
 <PageTemplateV2 PageTitleText="Staff">
 
-    <ActionsContent>
-        <button type="button"
-                class="dsv2-btn dsv2-btn--primary"
-                @onclick="@(() => Nav.NavigateTo("/v2/staff/new"))">
-            <i class="bi bi-plus-circle" aria-hidden="true"></i>
-            Add Staff Member
-        </button>
-    </ActionsContent>
-
     <ChildContent>
 
+        @* Error banner *@
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">
-                @ViewModel.Error
-            </div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
         }
 
-        <TableV2 TItem="AbsenceApp.Core.DTOs.StaffDto"
-                 Columns="StaffListViewModelV2.Columns"
-                 Items="ViewModel.Items"
-                 TotalCount="ViewModel.TotalCount"
-                 IsLoading="ViewModel.IsLoading"
-                 CurrentPage="ViewModel.Page"
-                 PageSize="ViewModel.PageSize"
-                 SortColumn="ViewModel.SortColumn"
-                 SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search staff…"
-                 AriaLabel="Staff table"
-                 OnSearchChanged="OnSearch"
-                 OnSortChanged="OnSort"
-                 OnPageChanged="OnPageChanged"
-                 OnPageSizeChanged="OnPageSizeChanged">
+        <TablePageTemplateV2
 
-            <RowTemplate Context="staff">
-                <td class="dsv2-table__td">@staff.StaffNumber</td>
-                <td class="dsv2-table__td">@staff.Title</td>
-                <td class="dsv2-table__td">@staff.FirstName</td>
-                <td class="dsv2-table__td">@staff.LastName</td>
-                <td class="dsv2-table__td">@staff.WorkEmail</td>
-                <td class="dsv2-table__td">@staff.EmploymentType</td>
-                <td class="dsv2-table__td">@staff.AccountStatus</td>
-            </RowTemplate>
+            TotalRows="@ViewModel.TotalCount"
+            CurrentPage="@ViewModel.Page"
+            ShowEntries="@ViewModel.PageSize"
+            SearchValue="@ViewModel.SearchTerm"
+            ActiveFilters="@_activeFilterChips"
 
-            <RowActionsContent Context="staff">
-                <a href="@($"/v2/staff/{staff.Id}")" class="dsv2-table__row-action">View</a>
-                <a href="@($"/v2/staff/{staff.Id}/edit")" class="dsv2-table__row-action">Edit</a>
-            </RowActionsContent>
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnRemoveFilter="@OnRemoveFilter"
+            OnClearAllFilters="@OnClearAllFilters">
 
-        </TableV2>
+            <ActionButtons>
+                <button type="button"
+                        class="tpt-btn tpt-btn-primary"
+                        @onclick="@(() => Nav.NavigateTo("/v2/staff/new"))">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                    Add Staff Member
+                </button>
+            </ActionButtons>
+
+            @* =========================================================
+               FILTERS — filterable fields per staff.json
+               ========================================================= *@
+            <Filters>
+                <select class="tpt-filter-select"
+                        value="@_f["job_title"]"
+                        @onchange="@(e => SetFilter("job_title", "Job Title", e.Value?.ToString()))">
+                    <option value="">Job Title</option>
+                    @foreach (var v in _filterOptions["job_title"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["department"]"
+                        @onchange="@(e => SetFilter("department", "Department", e.Value?.ToString()))">
+                    <option value="">Department</option>
+                    @foreach (var v in _filterOptions["department"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["status"]"
+                        @onchange="@(e => SetFilter("status", "Status", e.Value?.ToString()))">
+                    <option value="">Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Suspended">Suspended</option>
+                </select>
+            </Filters>
+
+            @* =========================================================
+               TABLE HEADER — settings-driven visible columns
+               ========================================================= *@
+            <TableHeader>
+                @if (IsVisible("staff_code"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("staff_code")"
+                                @onclick="@(() => OnSort("staff_code"))">
+                            @ColLabel("staff_code")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("first_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("first_name")"
+                                @onclick="@(() => OnSort("first_name"))">
+                            @ColLabel("first_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("last_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("last_name")"
+                                @onclick="@(() => OnSort("last_name"))">
+                            @ColLabel("last_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("email"))
+                {
+                    <th class="tpt-th">@ColLabel("email")</th>
+                }
+                @if (IsVisible("job_title"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("job_title")"
+                                @onclick="@(() => OnSort("job_title"))">
+                            @ColLabel("job_title")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("department"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("department")"
+                                @onclick="@(() => OnSort("department"))">
+                            @ColLabel("department")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("status"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("status")"
+                                @onclick="@(() => OnSort("status"))">
+                            @ColLabel("status")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                <th class="tpt-th tpt-th--actions">Actions</th>
+            </TableHeader>
+
+            @* =========================================================
+               TABLE BODY
+               ========================================================= *@
+            <TableBody>
+                @if (ViewModel.IsLoading)
+                {
+                    @for (var i = 0; i < ViewModel.PageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            @for (var c = 0; c < _colCount; c++)
+                            {
+                                <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            }
+                        </tr>
+                    }
+                }
+                else if (ViewModel.Items.Count == 0)
+                {
+                    <tr>
+                        <td class="tpt-td tpt-td--empty" colspan="@_colCount">No staff found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var staff in ViewModel.Items)
+                    {
+                        <tr class="tpt-tr">
+                            @if (IsVisible("staff_code")) { <td class="tpt-td">@staff.StaffNumber</td> }
+                            @if (IsVisible("first_name")) { <td class="tpt-td">@staff.FirstName</td> }
+                            @if (IsVisible("last_name"))  { <td class="tpt-td">@staff.LastName</td> }
+                            @if (IsVisible("email"))      { <td class="tpt-td">@staff.WorkEmail</td> }
+                            @if (IsVisible("job_title"))  { <td class="tpt-td">@staff.JobTitleName</td> }
+                            @if (IsVisible("department")) { <td class="tpt-td">@staff.DepartmentName</td> }
+                            @if (IsVisible("status"))
+                            {
+                                <td class="tpt-td">
+                                    <span class="tpt-badge tpt-badge-@staff.AccountStatus.ToLowerInvariant()">@staff.AccountStatus</span>
+                                </td>
+                            }
+                            <td class="tpt-td tpt-td--actions">
+                                <a href="@($"/v2/staff/{staff.Id}")" class="tpt-action-icon tpt-action-view" title="View">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="@($"/v2/staff/{staff.Id}/edit")" class="tpt-action-icon tpt-action-edit" title="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            @* =========================================================
+               PAGINATION — 10-page sliding window + ellipsis
+               ========================================================= *@
+            <Pagination>
+                @{
+                    var totalPages = ViewModel.PageSize > 0
+                        ? (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize)
+                        : 1;
+                    var page       = ViewModel.Page;
+                    var winStart   = Math.Max(1, page - 4);
+                    var winEnd     = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
+                }
+
+                <button class="tpt-page-btn tpt-page-prev"
+                        disabled="@(page <= 1)"
+                        @onclick="@(() => OnPageChanged(page - 1))">
+                    &#8592; Previous
+                </button>
+
+                @for (var p = winStart; p <= winEnd; p++)
+                {
+                    var pCopy = p;
+                    <button class="tpt-page-btn @(pCopy == page ? "tpt-active" : "")"
+                            @onclick="@(() => OnPageChanged(pCopy))">
+                        @pCopy
+                    </button>
+                }
+
+                @if (winEnd < totalPages)
+                {
+                    <span class="tpt-page-ellipsis">...</span>
+                }
+
+                <button class="tpt-page-btn tpt-page-next"
+                        disabled="@(page >= totalPages)"
+                        @onclick="@(() => OnPageChanged(page + 1))">
+                    Next &#8594;
+                </button>
+            </Pagination>
+
+        </TablePageTemplateV2>
 
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
+
+    // -------------------------------------------------------------------------
+    // Table Settings state (Issue 5)
+    // -------------------------------------------------------------------------
+
+    private List<TablePageSettingDto> _settings = [];
+
+    private bool IsVisible(string fieldName) =>
+        _settings.Count == 0 ||
+        (_settings.FirstOrDefault(s => s.FieldName == fieldName)?.IsVisible ?? true);
+
+    private string ColLabel(string fieldName) =>
+        _settings.FirstOrDefault(s => s.FieldName == fieldName)?.DisplayLabel ?? fieldName;
+
+    private int _colCount => _settings.Count == 0
+        ? 8
+        : _settings.Count(s => s.IsVisible) + 1;
+
+    // -------------------------------------------------------------------------
+    // Filter state
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<string, string> _f = new()
+    {
+        ["job_title"]  = "",
+        ["department"] = "",
+        ["status"]     = ""
+    };
+
+    private readonly Dictionary<string, List<string>> _filterOptions = new()
+    {
+        ["job_title"]  = [],
+        ["department"] = [],
+    };
+
+    private List<FilterChip> _activeFilterChips = [];
+
+    private static readonly Dictionary<string, string> _keyToLabel = new()
+    {
+        ["job_title"]  = "Job Title",
+        ["department"] = "Department",
+        ["status"]     = "Status"
+    };
+
+    private static readonly Dictionary<string, string> _labelToKey =
+        new(_keyToLabel.Select(kv => KeyValuePair.Create(kv.Value, kv.Key)));
+
+    // -------------------------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------------------------
+
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Staff", "All Staff");
+        AppState.OnTableSettingsChanged += OnSettingsChanged;
+        _settings = await SettingsFile.LoadAsync("staff");
         await ViewModel.LoadAsync();
+        RebuildFilterOptions();
     }
 
-    private async Task OnSearch(string term) =>
+    // -------------------------------------------------------------------------
+    // Filter helpers
+    // -------------------------------------------------------------------------
+
+    private async Task SetFilter(string key, string label, string? value)
+    {
+        _f[key] = value ?? string.Empty;
+        RebuildChips();
+        await ViewModel.ApplyFiltersAsync(
+            _f.Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+              .ToDictionary(kv => kv.Key, kv => kv.Value));
+    }
+
+    private async Task OnRemoveFilter(FilterChip chip)
+    {
+        var key = _labelToKey.GetValueOrDefault(chip.Name ?? "");
+        if (key is not null) _f[key] = string.Empty;
+        RebuildChips();
+        await ViewModel.ApplyFiltersAsync(
+            _f.Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+              .ToDictionary(kv => kv.Key, kv => kv.Value));
+    }
+
+    private async Task OnClearAllFilters()
+    {
+        foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
+        _activeFilterChips = [];
+        await ViewModel.ClearFiltersAsync();
+    }
+
+    private void RebuildChips()
+    {
+        _activeFilterChips = _f
+            .Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+            .Select(kv => new FilterChip(_keyToLabel[kv.Key], kv.Value))
+            .ToList();
+    }
+
+    private void RebuildFilterOptions()
+    {
+        _filterOptions["job_title"]  = ViewModel.Items.Select(s => s.JobTitleName).Distinct().Order().ToList();
+        _filterOptions["department"] = ViewModel.Items.Select(s => s.DepartmentName).Distinct().Order().ToList();
+    }
+
+    // -------------------------------------------------------------------------
+    // Search / sort / paging
+    // -------------------------------------------------------------------------
+
+    private async Task OnSearchChanged(string term) =>
         await ViewModel.SearchAsync(term);
 
-    private async Task OnSort((string Column, bool Ascending) args) =>
-        await ViewModel.SortAsync(args.Column, args.Ascending);
+    private async Task OnSort(string column)
+    {
+        var ascending = ViewModel.SortColumn == column ? !ViewModel.SortAscending : true;
+        await ViewModel.SortAsync(column, ascending);
+    }
 
     private async Task OnPageChanged(int page) =>
         await ViewModel.GoToPageAsync(page);
 
-    private async Task OnPageSizeChanged(int size) =>
+    private async Task OnShowEntriesChanged(int size) =>
         await ViewModel.ChangePageSizeAsync(size);
+
+    // -------------------------------------------------------------------------
+    // Sort class helper
+    // -------------------------------------------------------------------------
+
+    private string SortClass(string column) =>
+        ViewModel.SortColumn != column ? "" :
+        ViewModel.SortAscending ? "asc" : "desc";
+
+    // -------------------------------------------------------------------------
+    // Settings change (Issue 5)
+    // -------------------------------------------------------------------------
+
+    private void OnSettingsChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            _settings = await SettingsFile.LoadAsync("staff");
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        AppState.OnTableSettingsChanged -= OnSettingsChanged;
+    }
 }
+

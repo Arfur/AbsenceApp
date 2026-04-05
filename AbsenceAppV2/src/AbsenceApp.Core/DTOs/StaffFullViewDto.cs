@@ -3,18 +3,20 @@
  File        : StaffFullViewDto.cs
  Namespace   : AbsenceApp.Core.DTOs
  Author      : Michael
- Version     : 1.0.0
- Created     : 2026-03-17
- Updated     : 2026-03-17
+   Version     : 1.1.0
+   Created     : 2026-03-17
+   Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : Flattened read-only projection of a Staff record for Table
                Settings display. FK IDs are replaced with human-readable names
                resolved via lookup tables at the service layer.
-               System fields (Id, CreatedAt, UpdatedAt) and raw FK IDs
+               System fields (CreatedAt, UpdatedAt) and raw FK IDs
                (JobTitleId, JobGroupId, DepartmentId, ReportingManagerId) excluded.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-17  Initial creation.
+   - 1.1.0  2026-04-06  Phase 3 V1 Parity Issue 4: added Id property so list
+                        views can build navigation links (Detail/Edit).
 -------------------------------------------------------------------------------
  Notes       :
    - Not an EF Core entity — never tracked or persisted.
@@ -31,6 +33,11 @@ namespace AbsenceApp.Core.DTOs;
 
 public class StaffFullViewDto
 {
+    // -------------------------------------------------------------------------
+    // Primary key — needed for navigation links (Detail / Edit)
+    // -------------------------------------------------------------------------
+    public long Id { get; set; }
+
     // -------------------------------------------------------------------------
     // Identity
     // -------------------------------------------------------------------------

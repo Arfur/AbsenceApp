@@ -2,9 +2,9 @@
    File        : DashboardPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Dashboard
    Author      : Michael
-   Version     : 1.8.0
+   Version     : 1.8.1
    Created     : 2026-03-21
-   Updated     : 2026-03-28
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : Dashboard page at /v2/dashboard. Composes PageTemplateV2 (outer
                  chrome) with DashboardPageTemplate (inner grid layout). Stat
@@ -13,7 +13,7 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation.
-     - 1.1.0  2026-03-23  Added @layout BaseLayoutV2 directive.
+     - 1.1.0  2026-03-23  Added @layout MainLayoutV2 directive.
      - 1.1.1  2026-03-25  Removed invalid @using directives.
      - 1.2.0  2026-03-25  Moved to Modules/Dashboard. Corrected namespace.
      - 1.3.0  2026-03-25  Updated route to /v2/dashboard.
@@ -36,7 +36,7 @@
 
 @page "/v2/dashboard"
 @page "/v2/dashboard/overview"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Dashboard
 
 <PageTemplateV2 PageTitleText="Operational Overview">

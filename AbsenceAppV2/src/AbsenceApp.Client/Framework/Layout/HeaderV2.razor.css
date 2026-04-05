@@ -3,8 +3,18 @@
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
+   Updated : 2026-04-05
+   Version : 2.1.0
    Purpose : Scoped styles for HeaderV2.razor.
              Uses V2 design tokens. Does not affect V1 .app-header.
+   Changes :
+     - 1.0.0  2026-03-21  Initial implementation.
+     - 1.1.0  2026-03-27  Phase 3 stabilisation; logo, search, icon buttons.
+     - 2.0.0  2026-04-05  Phase 3 Header Nav Identity & Messaging parity:
+                          added overlay, dropdown panels (messages, notifs,
+                          user menu), and user identity cluster button styles.
+     - 2.1.0  2026-04-05  Phase 3 messaging enablement: added debug label
+                          styles for DEV-ONLY authenticated role display.
 ============================================================================= */
 
 .dsv2-header {
@@ -140,4 +150,208 @@
     line-height: 1.4;
     min-width: 16px;
     text-align: center;
+}
+/* ── Full-screen overlay — transparent, closes all open menus on click ── */
+.dsv2-header__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 240;
+    background: transparent;
+    cursor: default;
+}
+
+/* ── Dropdown wrapper — relative-position anchor for absolute dropdown ─── */
+.dsv2-header__dd-wrap {
+    position: relative;
+}
+
+/* ── Shared dropdown panel (messages, notifications, user menu) ──────── */
+.dsv2-header__dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 220px;
+    max-width: 340px;
+    background: var(--ds-color-surface, #ffffff);
+    border: 1px solid var(--ds-color-border, #dde1e7);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.dsv2-header__dd-header {
+    padding: 0.55rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ds-color-text-muted, #7b8494);
+    border-bottom: 1px solid var(--ds-color-border, #dde1e7);
+}
+
+.dsv2-header__dd-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--ds-color-bg, #f0f2f5);
+    cursor: default;
+}
+
+.dsv2-header__dd-item:last-child {
+    border-bottom: none;
+}
+
+.dsv2-header__dd-item-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ds-color-text, #2c3345);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dsv2-header__dd-item-preview {
+    font-size: 0.78rem;
+    color: var(--ds-color-text-muted, #7b8494);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
+}
+
+.dsv2-header__dd-item-time {
+    font-size: 0.72rem;
+    color: var(--ds-color-text-muted, #7b8494);
+}
+
+/* ── User menu dropdown ───────────────────────────────────────────────── */
+.dsv2-header__dropdown--user {
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0;
+    min-width: 180px;
+}
+
+.dsv2-header__dd-link {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    color: var(--ds-color-text, #2c3345);
+    background: none;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--ds-transition-fast, 0.12s ease);
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.dsv2-header__dd-link:hover {
+    background: var(--ds-color-sidebar-hover, #e8eaed);
+}
+
+.dsv2-header__dd-link--danger {
+    color: var(--ds-color-danger, #dc2626);
+}
+
+.dsv2-header__dd-link--danger:hover {
+    background: #fef2f2;
+}
+
+.dsv2-header__dd-divider {
+    height: 1px;
+    background: var(--ds-color-border, #dde1e7);
+    margin: 0.25rem 0;
+}
+
+/* ── User identity cluster button ─────────────────────────────────────── */
+.dsv2-header__user-wrap {
+    margin-left: 4px;
+}
+
+.dsv2-header__user-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    border-radius: var(--ds-radius-icon-btn, 7px);
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: background var(--ds-transition-fast, 0.12s ease);
+    color: var(--ds-color-text, #2c3345);
+}
+
+.dsv2-header__user-btn:hover {
+    background: var(--ds-color-sidebar-hover, #e8eaed);
+}
+
+.dsv2-header__user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--ds-radius-full, 9999px);
+    background: var(--ds-color-accent, #2563eb);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.dsv2-header__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+}
+
+.dsv2-header__user-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ds-color-text, #2c3345);
+    white-space: nowrap;
+}
+
+.dsv2-header__user-role {
+    font-size: 0.7rem;
+    color: var(--ds-color-text-muted, #7b8494);
+    white-space: nowrap;
+}
+
+.dsv2-header__user-chevron {
+    font-size: 0.75rem;
+    color: var(--ds-color-text-muted, #7b8494);
+    transition: transform var(--ds-transition-fast, 0.12s ease);
+}
+
+.dsv2-header__user-chevron--open {
+    transform: rotate(180deg);
+}
+
+/* ── DEV ONLY: Authenticated role debug label ──────────────────────── */
+.dsv2-header__dd-debug {
+    padding: 6px 14px 4px;
+    border-bottom: 1px dashed var(--ds-color-border, #dde1e7);
+    margin-bottom: 2px;
+    pointer-events: none;
+}
+
+.dsv2-header__dd-debug-label {
+    font-size: 0.72rem;
+    color: var(--ds-color-text-muted, #7b8494);
+    white-space: nowrap;
+}
+
+.dsv2-header__dd-debug-label strong {
+    color: #c026d3; /* distinct magenta — clearly dev artefact */
+    font-weight: 700;
 }

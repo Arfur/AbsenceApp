@@ -1,0 +1,9 @@
+[
+  { "id": 0, "pageName": "classes", "fieldName": "class_code",  "displayLabel": "Class Code",  "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 1 },
+  { "id": 0, "pageName": "classes", "fieldName": "class_name",  "displayLabel": "Class Name",  "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": true,  "displayOrder": 2 },
+  { "id": 0, "pageName": "classes", "fieldName": "year_group",  "displayLabel": "Year Group",  "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 3 },
+  { "id": 0, "pageName": "classes", "fieldName": "teacher",     "displayLabel": "Teacher",     "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": true,  "displayOrder": 4 },
+  { "id": 0, "pageName": "classes", "fieldName": "subject",     "displayLabel": "Subject",     "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 5 },
+  { "id": 0, "pageName": "classes", "fieldName": "room",        "displayLabel": "Room",        "isVisible": false, "isSortable": false, "isFilterable": false, "isSearchable": false, "displayOrder": 6 },
+  { "id": 0, "pageName": "classes", "fieldName": "size",        "displayLabel": "Size",        "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": false, "displayOrder": 7 }
+]

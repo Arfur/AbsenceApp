@@ -2,112 +2,666 @@
    File        : StudentsListPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Students
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 2.3.0
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
-   Purpose     : V2 Students list page. Displays a paged, searchable, sortable
-                 table of students using the V2 PageTemplateV2 primitive
-                 instead of deprecated StandardPageV2. Delegates all data and
-                 state to StudentsListViewModelV2.
+   Purpose     : V2 Students list page — V1-matching layout using
+                 TablePageTemplateV2 with 10 filter dropdowns, V1 sort buttons,
+                 and V1 pagination. Delegates data and state to
+                 StudentsListViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
-     - 1.0.1  2026-03-25  Removed invalid V2 component imports.
-     - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
-                          Updated namespace and layout. Preserved table logic.
+     - 1.0.1  2026-03-25  Replaced StandardPageV2 with PageTemplateV2.
+     - 1.1.0  2026-03-26  Updated namespace and layout. Preserved table logic.
+     - 2.0.0  2026-03-27  Switched to TablePageTemplateV2 for V1-matching
+                          filter-bar layout. Added 10 filter dropdowns, V1
+                          sort headers, amber Add Student button, V1 pagination.
+     - 2.1.0  2026-04-04  Phase 3 Stabilisation Issues 2+3: changed @layout to
+                          MainLayoutV2 for correct fixed-header shell; aligned
+                          column labels and data fields to V1 reference exactly
+                          (Admission Number, First Name, First Name [legal],
+                          Last Name [legal], Gender, Date Of Birth,
+                          Year Group Name, Class Name, House Name,
+                          Admission Date, Status); default ShowEntries=10.
+     - 2.2.0  2026-04-05  Phase 3 Remediation Issue 2: ViewModel now returns
+                          StudentFullViewDto; update table cells to use
+                          YearGroupName, ClassName, HouseName (resolved names)
+                          instead of raw integer FK IDs; update filter options
+                          to populate from resolved name fields.
+     - 2.3.0  2026-04-06  Phase 3 V1 Parity Issues 2+3: replaced ±2-window
+                          prev/next pagination with 10-page sliding window
+                          plus ellipsis; removed « » Previous/Next buttons.
+                          Issue 5: load column settings from TableSettingsFileService;
+                          subscribe to AppState.OnTableSettingsChanged for
+                          immediate column-visibility updates.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/students
-     - Register StudentsListViewModelV2 as Scoped in Phase 10.
    ===========================================================================
 *@
 
 @page "/v2/students"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Students
 
-@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.Shared
 @using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Client.Services.TableV2
+@using AbsenceApp.Core.DTOs
 @inject StudentsListViewModelV2 ViewModel
 @inject AppStateService AppState
 @inject NavigationManager Nav
+@inject TableSettingsFileService SettingsFile
+@implements IDisposable
 
 <PageTemplateV2 PageTitleText="Students">
 
-    <ActionsContent>
-        <button type="button"
-                class="dsv2-btn dsv2-btn--primary"
-                @onclick="GoToAdd">
-            <i class="bi bi-plus-circle" aria-hidden="true"></i>
-            Add Student
-        </button>
-    </ActionsContent>
-
     <ChildContent>
 
+        @* =========================================================================
+           Error banner
+           ========================================================================= *@
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">
-                @ViewModel.Error
-            </div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
         }
 
-        <TableV2 TItem="AbsenceApp.Core.DTOs.StudentDto"
-                 Columns="StudentsListViewModelV2.Columns"
-                 Items="ViewModel.Items"
-                 TotalCount="ViewModel.TotalCount"
-                 IsLoading="ViewModel.IsLoading"
-                 CurrentPage="ViewModel.Page"
-                 PageSize="ViewModel.PageSize"
-                 SortColumn="ViewModel.SortColumn"
-                 SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search students…"
-                 AriaLabel="Students table"
-                 OnSearchChanged="OnSearch"
-                 OnSortChanged="OnSort"
-                 OnPageChanged="OnPageChanged"
-                 OnPageSizeChanged="OnPageSizeChanged">
+        @* =========================================================================
+           V1-matching table page template — filter bar + show-entries + search +
+           dark-header table + V1 pagination
+           ========================================================================= *@
+        <TablePageTemplateV2
 
-            <RowTemplate Context="student">
-                <td class="dsv2-table__td">@student.AdmissionNumber</td>
-                <td class="dsv2-table__td">@student.FirstName</td>
-                <td class="dsv2-table__td">@student.LastName</td>
-                <td class="dsv2-table__td">@student.Gender</td>
-                <td class="dsv2-table__td">@student.Status</td>
-                <td class="dsv2-table__td">@student.DateOfBirth.ToString("dd/MM/yyyy")</td>
-                <td class="dsv2-table__td">@student.YearGroupId</td>
-            </RowTemplate>
+            TotalRows="@ViewModel.TotalCount"
+            CurrentPage="@ViewModel.Page"
+            ShowEntries="@ViewModel.PageSize"
+            SearchValue="@ViewModel.SearchTerm"
+            ActiveFilters="@_activeFilterChips"
 
-            <RowActionsContent Context="student">
-                <a href="@DetailHref(student.Id)" class="dsv2-table__row-action">View</a>
-                <a href="@EditHref(student.Id)" class="dsv2-table__row-action">Edit</a>
-            </RowActionsContent>
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnRemoveFilter="@OnRemoveFilter"
+            OnClearAllFilters="@OnClearAllFilters">
 
-        </TableV2>
+            @* =========================================================
+               ACTION BUTTONS — amber "+ Add Student" button (V1 ref)
+               ========================================================= *@
+            <ActionButtons>
+                <button type="button"
+                        class="tpt-btn tpt-btn-primary"
+                        @onclick="GoToAdd">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                    Add Student
+                </button>
+            </ActionButtons>
+
+            @* =========================================================
+               FILTERS — 10 dropdown filters in two rows (V1 ref)
+               Row 1: Admission Number, First Name, Last Name, Gender,
+                      Date Of Birth, Year Group, Class, House
+               Row 2: Admission Date, Status
+               ========================================================= *@
+            <Filters>
+                @* Row 1 *@
+                <select class="tpt-filter-select"
+                        value="@_f["admission_number"]"
+                        @onchange="@(e => SetFilter("admission_number", "Admission No.", e.Value?.ToString()))">
+                    <option value="">Admission Number</option>
+                    @foreach (var v in _filterOptions["admission_number"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["first_name"]"
+                        @onchange="@(e => SetFilter("first_name", "First Name", e.Value?.ToString()))">
+                    <option value="">First Name</option>
+                    @foreach (var v in _filterOptions["first_name"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["last_name"]"
+                        @onchange="@(e => SetFilter("last_name", "Last Name", e.Value?.ToString()))">
+                    <option value="">Last Name</option>
+                    @foreach (var v in _filterOptions["last_name"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["gender"]"
+                        @onchange="@(e => SetFilter("gender", "Gender", e.Value?.ToString()))">
+                    <option value="">Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["date_of_birth"]"
+                        @onchange="@(e => SetFilter("date_of_birth", "Date Of Birth", e.Value?.ToString()))">
+                    <option value="">Date Of Birth</option>
+                    @foreach (var v in _filterOptions["date_of_birth"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["year_group"]"
+                        @onchange="@(e => SetFilter("year_group", "Year Group", e.Value?.ToString()))">
+                    <option value="">Year Group</option>
+                    @foreach (var v in _filterOptions["year_group"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["class_name"]"
+                        @onchange="@(e => SetFilter("class_name", "Class", e.Value?.ToString()))">
+                    <option value="">Class</option>
+                    @foreach (var v in _filterOptions["class_name"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["house_name"]"
+                        @onchange="@(e => SetFilter("house_name", "House", e.Value?.ToString()))">
+                    <option value="">House</option>
+                    @foreach (var v in _filterOptions["house_name"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                @* Row 2 *@
+                <select class="tpt-filter-select"
+                        value="@_f["admission_date"]"
+                        @onchange="@(e => SetFilter("admission_date", "Admission Date", e.Value?.ToString()))">
+                    <option value="">Admission Date</option>
+                    @foreach (var v in _filterOptions["admission_date"])
+                    { <option value="@v">@v</option> }
+                </select>
+
+                <select class="tpt-filter-select"
+                        value="@_f["status"]"
+                        @onchange="@(e => SetFilter("status", "Status", e.Value?.ToString()))">
+                    <option value="">Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Suspended">Suspended</option>
+                    <option value="Left">Left</option>
+                </select>
+            </Filters>
+
+            @* =========================================================
+               TABLE HEADER — dark navy row, V1 sort buttons
+               ========================================================= *@
+            <TableHeader>
+                @if (IsVisible("admission_number"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("admission_number")"
+                                @onclick="@(() => OnSort("admission_number"))">
+                            @ColLabel("admission_number")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("first_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("first_name")"
+                                @onclick="@(() => OnSort("first_name"))">
+                            @ColLabel("first_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("middle_names"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("middle_names")"
+                                @onclick="@(() => OnSort("middle_names"))">
+                            @ColLabel("middle_names")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("last_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("last_name")"
+                                @onclick="@(() => OnSort("last_name"))">
+                            @ColLabel("last_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("legal_first_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("legal_first_name")"
+                                @onclick="@(() => OnSort("legal_first_name"))">
+                            @ColLabel("legal_first_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("legal_last_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("legal_last_name")"
+                                @onclick="@(() => OnSort("legal_last_name"))">
+                            @ColLabel("legal_last_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("gender"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("gender")"
+                                @onclick="@(() => OnSort("gender"))">
+                            @ColLabel("gender")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("date_of_birth"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("date_of_birth")"
+                                @onclick="@(() => OnSort("date_of_birth"))">
+                            @ColLabel("date_of_birth")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("year_group"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("year_group")"
+                                @onclick="@(() => OnSort("year_group"))">
+                            @ColLabel("year_group")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("class_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("class_name")"
+                                @onclick="@(() => OnSort("class_name"))">
+                            @ColLabel("class_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("house_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("house_name")"
+                                @onclick="@(() => OnSort("house_name"))">
+                            @ColLabel("house_name")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("admission_date"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("admission_date")"
+                                @onclick="@(() => OnSort("admission_date"))">
+                            @ColLabel("admission_date")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("status"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("status")"
+                                @onclick="@(() => OnSort("status"))">
+                            @ColLabel("status")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("upn"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("upn")"
+                                @onclick="@(() => OnSort("upn"))">
+                            @ColLabel("upn")
+                            <span class="tpt-sort-icons">
+                                <span class="tpt-sort-up">▲</span>
+                                <span class="tpt-sort-dn">▼</span>
+                            </span>
+                        </button>
+                    </th>
+                }
+                <th class="tpt-th tpt-th--actions">Actions</th>
+            </TableHeader>
+
+            @* =========================================================
+               TABLE BODY — skeleton rows while loading, then data rows
+               ========================================================= *@
+            <TableBody>
+                @if (ViewModel.IsLoading)
+                {
+                    @for (var i = 0; i < ViewModel.PageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            @for (var c = 0; c < _colCount; c++)
+                            {
+                                <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            }
+                        </tr>
+                    }
+                }
+                else if (ViewModel.Items.Count == 0)
+                {
+                    <tr>
+                        <td class="tpt-td tpt-td--empty" colspan="@_colCount">No students found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in ViewModel.Items)
+                    {
+                        <tr class="tpt-tr">
+                            @if (IsVisible("admission_number")) { <td class="tpt-td">@student.AdmissionNumber</td> }
+                            @if (IsVisible("first_name"))       { <td class="tpt-td">@student.FirstName</td> }
+                            @if (IsVisible("middle_names"))     { <td class="tpt-td">@(student.MiddleNames ?? "—")</td> }
+                            @if (IsVisible("last_name"))        { <td class="tpt-td">@student.LastName</td> }
+                            @if (IsVisible("legal_first_name")) { <td class="tpt-td">@student.LegalFirstName</td> }
+                            @if (IsVisible("legal_last_name"))  { <td class="tpt-td">@student.LegalLastName</td> }
+                            @if (IsVisible("gender"))           { <td class="tpt-td">@student.Gender</td> }
+                            @if (IsVisible("date_of_birth"))    { <td class="tpt-td">@student.DateOfBirth.ToString("dd/MM/yyyy")</td> }
+                            @if (IsVisible("year_group"))       { <td class="tpt-td">@student.YearGroupName</td> }
+                            @if (IsVisible("class_name"))       { <td class="tpt-td">@student.ClassName</td> }
+                            @if (IsVisible("house_name"))       { <td class="tpt-td">@(student.HouseName ?? "—")</td> }
+                            @if (IsVisible("admission_date"))   { <td class="tpt-td">@student.AdmissionDate.ToString("dd/MM/yyyy")</td> }
+                            @if (IsVisible("status"))
+                            {
+                                <td class="tpt-td">
+                                    <span class="tpt-badge tpt-badge-@student.Status.ToLowerInvariant()">@student.Status</span>
+                                </td>
+                            }
+                            @if (IsVisible("upn"))              { <td class="tpt-td">@(student.Upn ?? "—")</td> }
+                            <td class="tpt-td tpt-td--actions">
+                                <a href="@DetailHref(student.Id)" class="tpt-action-icon tpt-action-view" title="View">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="@EditHref(student.Id)" class="tpt-action-icon tpt-action-edit" title="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            @* =========================================================
+               PAGINATION — 10-page sliding window + ellipsis (V1 parity)
+               No Previous/Next buttons per V1 spec.
+               ========================================================= *@
+            <Pagination>
+                @{
+                    var totalPages = ViewModel.PageSize > 0
+                        ? (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize)
+                        : 1;
+                    var page       = ViewModel.Page;
+                    var winStart   = Math.Max(1, page - 4);
+                    var winEnd     = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
+                }
+
+                <button class="tpt-page-btn tpt-page-prev"
+                        disabled="@(page <= 1)"
+                        @onclick="@(() => OnPageChanged(page - 1))">
+                    &#8592; Previous
+                </button>
+
+                @for (var p = winStart; p <= winEnd; p++)
+                {
+                    var pCopy = p;
+                    <button class="tpt-page-btn @(pCopy == page ? "tpt-active" : "")"
+                            @onclick="@(() => OnPageChanged(pCopy))">
+                        @pCopy
+                    </button>
+                }
+
+                @if (winEnd < totalPages)
+                {
+                    <span class="tpt-page-ellipsis">...</span>
+                }
+
+                <button class="tpt-page-btn tpt-page-next"
+                        disabled="@(page >= totalPages)"
+                        @onclick="@(() => OnPageChanged(page + 1))">
+                    Next &#8594;
+                </button>
+            </Pagination>
+
+        </TablePageTemplateV2>
 
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
+
+    // -------------------------------------------------------------------------
+    // Table Settings state (Issue 5)
+    // -------------------------------------------------------------------------
+
+    private List<TablePageSettingDto> _settings = [];
+
+    private bool IsVisible(string fieldName) =>
+        _settings.Count == 0 ||
+        (_settings.FirstOrDefault(s => s.FieldName == fieldName)?.IsVisible ?? true);
+
+    private string ColLabel(string fieldName) =>
+        _settings.FirstOrDefault(s => s.FieldName == fieldName)?.DisplayLabel ?? fieldName;
+
+    // Visible data columns (excludes always-shown Actions column)
+    private int _colCount => _settings.Count == 0
+        ? 12
+        : _settings.Count(s => s.IsVisible) + 1;
+
+    // -------------------------------------------------------------------------
+    // Filter state
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<string, string> _f = new()
+    {
+        ["admission_number"] = "",
+        ["first_name"]       = "",
+        ["last_name"]        = "",
+        ["gender"]           = "",
+        ["date_of_birth"]    = "",
+        ["year_group"]       = "",
+        ["class_name"]       = "",
+        ["house_name"]       = "",
+        ["admission_date"]   = "",
+        ["status"]           = ""
+    };
+
+    // Distinct option sets — populated from loaded data (add to as data grows)
+    private readonly Dictionary<string, List<string>> _filterOptions = new()
+    {
+        ["admission_number"] = [],
+        ["first_name"]       = [],
+        ["last_name"]        = [],
+        ["date_of_birth"]    = [],
+        ["year_group"]       = [],
+        ["class_name"]       = [],
+        ["house_name"]       = [],
+        ["admission_date"]   = []
+    };
+
+    private List<FilterChip> _activeFilterChips = [];
+
+    // -------------------------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------------------------
+
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Students", "All Students");
+        AppState.OnTableSettingsChanged += OnSettingsChanged;
+        _settings = await SettingsFile.LoadAsync("students");
         await ViewModel.LoadAsync();
+        RebuildFilterOptions();
     }
 
-    private async Task OnSearch(string term) =>
+    // -------------------------------------------------------------------------
+    // Filter helpers
+    // -------------------------------------------------------------------------
+
+    private async Task SetFilter(string key, string label, string? value)
+    {
+        _f[key] = value ?? string.Empty;
+        RebuildChips();
+        await ViewModel.ApplyFiltersAsync(
+            _f.Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+              .ToDictionary(kv => kv.Key, kv => kv.Value));
+    }
+
+    private async Task OnRemoveFilter(FilterChip chip)
+    {
+        // chip.Name is the label; find the key whose label maps to chip.Name
+        var key = _labelToKey.GetValueOrDefault(chip.Name ?? "");
+        if (key is not null) _f[key] = string.Empty;
+        RebuildChips();
+        await ViewModel.ApplyFiltersAsync(
+            _f.Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+              .ToDictionary(kv => kv.Key, kv => kv.Value));
+    }
+
+    private async Task OnClearAllFilters()
+    {
+        foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
+        _activeFilterChips = [];
+        await ViewModel.ClearFiltersAsync();
+    }
+
+    private void RebuildChips()
+    {
+        _activeFilterChips = _f
+            .Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+            .Select(kv => new FilterChip(_keyToLabel[kv.Key], kv.Value))
+            .ToList();
+    }
+
+    private static readonly Dictionary<string, string> _keyToLabel = new()
+    {
+        ["admission_number"] = "Admission No.",
+        ["first_name"]       = "First Name",
+        ["last_name"]        = "Last Name",
+        ["gender"]           = "Gender",
+        ["date_of_birth"]    = "Date Of Birth",
+        ["year_group"]       = "Year Group",
+        ["class_name"]       = "Class",
+        ["house_name"]       = "House",
+        ["admission_date"]   = "Admission Date",
+        ["status"]           = "Status"
+    };
+
+    private static readonly Dictionary<string, string> _labelToKey =
+        new Dictionary<string, string>(
+            _keyToLabel.Select(kv => KeyValuePair.Create(kv.Value, kv.Key)));
+
+    private void RebuildFilterOptions()
+    {
+        // Populate dropdowns with distinct values from the current page of data.
+        // In a full implementation these would come from the API; here we seed
+        // from loaded items so filters are immediately useful.
+        _filterOptions["admission_number"] = ViewModel.Items
+            .Select(s => s.AdmissionNumber).Distinct().Order().ToList();
+        _filterOptions["first_name"] = ViewModel.Items
+            .Select(s => s.FirstName).Distinct().Order().ToList();
+        _filterOptions["last_name"] = ViewModel.Items
+            .Select(s => s.LastName).Distinct().Order().ToList();
+        _filterOptions["date_of_birth"] = ViewModel.Items
+            .Select(s => s.DateOfBirth.ToString("dd/MM/yyyy")).Distinct().Order().ToList();
+        _filterOptions["year_group"] = ViewModel.Items
+            .Select(s => s.YearGroupName).Distinct().Order().ToList();
+        _filterOptions["class_name"] = ViewModel.Items
+            .Select(s => s.ClassName).Distinct().Order().ToList();
+        _filterOptions["house_name"] = ViewModel.Items
+            .Select(s => s.HouseName ?? "").Where(v => v != "").Distinct().Order().ToList();
+        _filterOptions["admission_date"] = ViewModel.Items
+            .Select(s => s.AdmissionDate.ToString("dd/MM/yyyy")).Distinct().Order().ToList();
+    }
+
+    // -------------------------------------------------------------------------
+    // Search / sort / paging
+    // -------------------------------------------------------------------------
+
+    private async Task OnSearchChanged(string term) =>
         await ViewModel.SearchAsync(term);
 
-    private async Task OnSort((string Column, bool Ascending) args) =>
-        await ViewModel.SortAsync(args.Column, args.Ascending);
+    private async Task OnSort(string column)
+    {
+        var ascending = ViewModel.SortColumn == column ? !ViewModel.SortAscending : true;
+        await ViewModel.SortAsync(column, ascending);
+    }
 
     private async Task OnPageChanged(int page) =>
         await ViewModel.GoToPageAsync(page);
 
-    private async Task OnPageSizeChanged(int size) =>
+    private async Task OnShowEntriesChanged(int size) =>
         await ViewModel.ChangePageSizeAsync(size);
+
+    // -------------------------------------------------------------------------
+    // Sort class helper
+    // -------------------------------------------------------------------------
+
+    private string SortClass(string column) =>
+        ViewModel.SortColumn != column ? "" :
+        ViewModel.SortAscending ? "asc" : "desc";
+
+    // -------------------------------------------------------------------------
+    // Navigation
+    // -------------------------------------------------------------------------
 
     private void GoToAdd() =>
         Nav.NavigateTo("/v2/students/new");
@@ -117,4 +671,22 @@
 
     private static string EditHref(long id) =>
         $"/v2/students/{id}/edit";
+
+    // -------------------------------------------------------------------------
+    // Settings change notification (Issue 5)
+    // -------------------------------------------------------------------------
+
+    private void OnSettingsChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            _settings = await SettingsFile.LoadAsync("students");
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        AppState.OnTableSettingsChanged -= OnSettingsChanged;
+    }
 }

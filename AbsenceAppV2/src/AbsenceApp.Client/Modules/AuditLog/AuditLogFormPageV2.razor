@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : AuditLogFormPageV2.razor
    Namespace   : AbsenceApp.Client.ModulesV2.AuditLog
    Author      : Michael
-   Version     : 1.2.0
+   Version     : 1.2.1
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Audit Log view page ("form" stub). Read-only view displaying
                  a single audit log entry with a notice that entries are
@@ -22,9 +22,10 @@
                           @using for Framework page templates so DetailPageV2
                           and DetailSectionV2 resolve correctly. Normalised UI
                           text encoding. No functional changes.
-     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout BaseLayoutV2;
+     - 1.2.0  2026-03-26  Replaced @layout MainLayoutV2 with @layout MainLayoutV2;
                           MainLayoutV2 no longer exists — BaseLayoutV2 is the
                           V2 authenticated-shell layout (CS0246 build error fix).
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/auditlog/{Id:long}/view
@@ -37,7 +38,7 @@
 @using AbsenceApp.Client.Framework.PageTemplates
 @using AbsenceApp.Client.ViewModels.V2
 
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @inject AuditLogDetailViewModelV2 ViewModel
 @inject AppStateService AppState
 

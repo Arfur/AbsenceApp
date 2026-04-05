@@ -95,6 +95,12 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<AttendanceApiServiceV2>();
         services.AddScoped<AuditLogApiServiceV2>();
         services.AddScoped<SettingsApiServiceV2>();
+        services.AddScoped<ParentsApiServiceV2>();
+
+        // -----------------------------------------------------------------
+        // V2 Table settings — Singleton: shared local-file store
+        // -----------------------------------------------------------------
+        services.AddSingleton<TableSettingsFileService>();
 
         // -----------------------------------------------------------------
         // V2 ViewModels — Scoped to align with Scoped EF Core services

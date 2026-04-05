@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : StaffDetailPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Staff
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.1.1
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Staff detail page. Displays the details of a single staff
                  member using the V2 PageTemplateV2 primitive instead of
@@ -17,6 +17,7 @@
      - 1.1.0  2026-03-26  Replaced DetailPageV2 + DetailSectionV2 with
                           PageTemplateV2. Updated namespace and layout.
                           Preserved all ViewModel logic and UI structure.
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/staff/{Id:long}
@@ -25,7 +26,7 @@
 *@
 
 @page "/v2/staff/{Id:long}"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Staff
 
 @using AbsenceApp.Client.ViewModels.V2

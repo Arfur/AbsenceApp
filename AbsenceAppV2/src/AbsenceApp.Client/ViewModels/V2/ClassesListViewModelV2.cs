@@ -3,38 +3,51 @@
  File        : ClassesListViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.2.0
  Created     : 2026-03-21
- Updated     : 2026-03-21
+ Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for ClassesListPageV2. Manages paged class data,
                search, sort, and the column schema for the V2 table component.
-               Delegates data access to ClassesApiServiceV2.
+               Uses IClassService (EF Core direct) for data access — required
+               because HTTP calls are unreachable from native C# in MAUI
+               Blazor Hybrid context.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   - 1.2.0  2026-04-06  Phase 3 V1 Parity Issue 4: replaced ClassesApiServiceV2
+                        (HTTP) with IClassService (EF Core direct).
+                        Implemented in-memory search, sort, and paging.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DI (Phase 10).
-   - Columns is a static property — schema defined once, shared across renders.
+   - All data operations are performed in-memory after a single EF Core load.
 ===============================================================================
 */
 
 using AbsenceApp.Client.Models.DataV2;
 using AbsenceApp.Client.Models.TableV2;
-using AbsenceApp.Client.Services.ApiV2.Modules;
 using AbsenceApp.Core.DTOs;
+using AbsenceApp.Core.Interfaces;
 
 namespace AbsenceApp.Client.ViewModels.V2;
 
 /// <summary>
-/// Drives the Classes list page V2. Register as Scoped (Phase 10).
+/// Drives the Classes list page V2. Loads all classes via EF Core
+/// (IClassService) and applies search/sort/paging in memory.
+/// Register as Scoped (Phase 10).
 /// </summary>
 public sealed class ClassesListViewModelV2
 {
-    private readonly ClassesApiServiceV2 _api;
+    private readonly IClassService _svc;
 
-    public ClassesListViewModelV2(ClassesApiServiceV2 api) => _api = api;
+    public ClassesListViewModelV2(IClassService svc) => _svc = svc;
+
+    // -------------------------------------------------------------------------
+    // Full dataset cached after first load
+    // -------------------------------------------------------------------------
+
+    private IReadOnlyList<ClassDto> _all = [];
 
     // -------------------------------------------------------------------------
     // Data state
@@ -43,7 +56,7 @@ public sealed class ClassesListViewModelV2
     public List<ClassDto> Items { get; private set; } = [];
     public int TotalCount { get; private set; }
     public int Page { get; private set; } = 1;
-    public int PageSize { get; private set; } = 25;
+    public int PageSize { get; private set; } = 10;
     public string SearchTerm { get; private set; } = string.Empty;
     public string SortColumn { get; private set; } = string.Empty;
     public bool SortAscending { get; private set; } = true;
@@ -56,9 +69,8 @@ public sealed class ClassesListViewModelV2
 
     public static List<TableColumnModel> Columns =>
     [
-        new() { Key = "id",          Label = "ID",          Visible = true, Sortable = true, Order = 0, Width = "80px" },
-        new() { Key = "name",        Label = "Class Name",  Visible = true, Sortable = true, Order = 1 },
-        new() { Key = "description", Label = "Description", Visible = true, Sortable = false, Order = 2 },
+        new() { Key = "name",        Label = "Class Name",  Visible = true, Sortable = true,  Order = 0 },
+        new() { Key = "description", Label = "Description", Visible = true, Sortable = false, Order = 1 },
     ];
 
     // -------------------------------------------------------------------------
@@ -69,41 +81,79 @@ public sealed class ClassesListViewModelV2
     {
         IsLoading = true;
         Error = null;
-        var result = await _api.GetPagedAsync(Page, PageSize, BuildQueryString(), ct);
-        if (result.Success && result.Data is not null)
+        try
         {
-            Items = result.Data.Items;
-            TotalCount = result.Data.TotalCount;
+            _all = (await _svc.GetAllAsync()).ToList();
+            ApplyView();
         }
-        else
+        catch (Exception ex)
         {
-            Error = result.ErrorMessage ?? "Failed to load classes.";
+            Error = ex.Message;
         }
-        IsLoading = false;
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
-    public async Task GoToPageAsync(int page, CancellationToken ct = default)
-    { Page = page; await LoadAsync(ct); }
-
-    public async Task ChangePageSizeAsync(int size, CancellationToken ct = default)
-    { PageSize = size; Page = 1; await LoadAsync(ct); }
-
-    public async Task SearchAsync(string term, CancellationToken ct = default)
-    { SearchTerm = term; Page = 1; await LoadAsync(ct); }
-
-    public async Task SortAsync(string column, bool ascending, CancellationToken ct = default)
-    { SortColumn = column; SortAscending = ascending; await LoadAsync(ct); }
-
-    private string BuildQueryString()
+    public Task GoToPageAsync(int page, CancellationToken ct = default)
     {
-        var parts = new List<string>();
+        Page = page;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task ChangePageSizeAsync(int size, CancellationToken ct = default)
+    {
+        PageSize = size;
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task SearchAsync(string term, CancellationToken ct = default)
+    {
+        SearchTerm = term;
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task SortAsync(string column, bool ascending, CancellationToken ct = default)
+    {
+        SortColumn = column;
+        SortAscending = ascending;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    // -------------------------------------------------------------------------
+    // In-memory view computation
+    // -------------------------------------------------------------------------
+
+    private void ApplyView()
+    {
+        IEnumerable<ClassDto> query = _all;
+
+        // Search across Name and Description
         if (!string.IsNullOrWhiteSpace(SearchTerm))
-            parts.Add($"search={Uri.EscapeDataString(SearchTerm)}");
-        if (!string.IsNullOrWhiteSpace(SortColumn))
         {
-            parts.Add($"sortBy={SortColumn}");
-            parts.Add($"sortDir={( SortAscending ? "asc" : "desc" )}");
+            var term = SearchTerm.Trim();
+            query = query.Where(c =>
+                c.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (c.Description ?? "").Contains(term, StringComparison.OrdinalIgnoreCase));
         }
-        return string.Join("&", parts);
+
+        // Sort
+        query = SortColumn switch
+        {
+            "name" => SortAscending ? query.OrderBy(c => c.Name) : query.OrderByDescending(c => c.Name),
+            _      => query.OrderBy(c => c.Name)
+        };
+
+        var list = query.ToList();
+        TotalCount = list.Count;
+        Items = list.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
     }
 }
+

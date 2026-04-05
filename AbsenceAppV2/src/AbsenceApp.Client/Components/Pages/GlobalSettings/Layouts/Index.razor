@@ -1,0 +1,27 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Layouts
+   Route       : /global-settings/layouts
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-06
+   ---------------------------------------------------------------------------
+   Purpose     : Global Settings — Layouts template page.
+                 Placeholder page matching menu.globalsettings.json href
+                 /global-settings/layouts. Prevents "Page not found" when
+                 navigating to Global Settings → Templates → Layouts.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-06  Phase 3 Route Repair: Initial implementation.
+   ===========================================================================
+*@
+
+@page "/global-settings/layouts"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@using AbsenceApp.Client.Components.Templates
+
+<BlankPageTemplate PageTitle="Layouts — Global Settings">
+    <ChildContent>
+        <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
+    </ChildContent>
+</BlankPageTemplate>

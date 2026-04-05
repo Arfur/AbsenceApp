@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : AttendanceFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Attendance
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.1.1
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Attendance mark form page. Records an attendance mark for a
                  specific student in a class session using the V2
@@ -17,6 +17,7 @@
      - 1.1.0  2026-03-26  Replaced FormPageV2 + FormSectionV2 with PageTemplateV2.
                           Updated namespace and layout. Preserved all bindings
                           and ViewModel logic.
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/attendance/{Id:long}/mark
@@ -25,7 +26,7 @@
 *@
 
 @page "/v2/attendance/{Id:long}/mark"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Attendance
 
 @using AbsenceApp.Client.ViewModels.V2

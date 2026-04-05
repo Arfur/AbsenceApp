@@ -2,9 +2,9 @@
    File        : SidebarV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : AI Assistant
-   Version     : 1.7.0
+   Version     : 1.8.0
    Created     : 2026-03-21
-   Updated     : 2026-03-29
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
    Purpose     : V2 collapsible sidebar. Loads navigation categories from
                  menu.json via NavigationServiceV2. Renders category section
@@ -55,10 +55,14 @@
                           error placeholder instead of a blank sidebar.
                           Added explicit empty-state placeholder when
                           _superAdminGroups is non-null but empty.
+     - 1.8.0  2026-04-05  Phase 3 Header Nav Identity: removed User panel
+                          (avatar + username + role display) from sidebar.
+                          Identity UI is now rendered exclusively in HeaderV2.
+                          Sidebar is now navigation-only.
    ---------------------------------------------------------------------------
    Notes       :
      - Must only be used in V2 layouts (BaseLayoutV2).
-     - Sidebar collapse state and user info come from AppStateService.
+     - Sidebar collapse state is provided by AppStateService.
    ===========================================================================
 *@
 
@@ -70,22 +74,6 @@
 @implements IDisposable
 
 <aside class="@SidebarClass" aria-label="Main navigation">
-
-    @* =========================
-       SECTION: User panel
-       ========================= *@
-    <div class="dsv2-sidebar__user @(AppState.SidebarCollapsed ? "dsv2-sidebar__user--collapsed" : "")">
-        <div class="dsv2-sidebar__avatar">
-            @(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")
-        </div>
-        @if (!AppState.SidebarCollapsed)
-        {
-            <div class="dsv2-sidebar__user-info">
-                <span class="dsv2-sidebar__user-name">@AppState.UserName</span>
-                <span class="dsv2-sidebar__user-role">@AppState.UserRole</span>
-            </div>
-        }
-    </div>
 
     @* =========================
        SECTION: Navigation

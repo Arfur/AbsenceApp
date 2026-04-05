@@ -3,9 +3,9 @@
  File        : StudentFullViewDto.cs
  Namespace   : AbsenceApp.Core.DTOs
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-17
- Updated     : 2026-03-17
+ Updated     : 2026-04-05
 -------------------------------------------------------------------------------
  Purpose     : Flattened read-only projection of a Student record for Table
                Settings display. FK IDs are replaced with human-readable names
@@ -14,11 +14,14 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-17  Initial creation.
+   - 1.1.0  2026-04-05  Phase 3 Remediation Issue 2: added Id property so
+                         list views can build navigation links (Detail/Edit).
 -------------------------------------------------------------------------------
  Notes       :
    - Not an EF Core entity — never tracked or persisted.
    - SchoolId suppressed entirely (single-school deployment).
    - YearGroupName, ClassName, HouseName resolved by StudentFullViewService.
+   - Id included for navigation link generation only.
 ===============================================================================
 */
 
@@ -30,6 +33,11 @@ namespace AbsenceApp.Core.DTOs;
 
 public class StudentFullViewDto
 {
+    // -------------------------------------------------------------------------
+    // Primary key — needed for navigation links (Detail / Edit)
+    // -------------------------------------------------------------------------
+    public long Id { get; set; }
+
     // -------------------------------------------------------------------------
     // Identity
     // -------------------------------------------------------------------------

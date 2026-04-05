@@ -1,0 +1,9 @@
+[
+  { "id": 0, "pageName": "attendance", "fieldName": "student_name", "displayLabel": "Student Name", "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": true,  "displayOrder": 1 },
+  { "id": 0, "pageName": "attendance", "fieldName": "date",         "displayLabel": "Date",         "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": false, "displayOrder": 2 },
+  { "id": 0, "pageName": "attendance", "fieldName": "session",      "displayLabel": "Session",      "isVisible": true,  "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 3 },
+  { "id": 0, "pageName": "attendance", "fieldName": "mark",         "displayLabel": "Mark",         "isVisible": true,  "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 4 },
+  { "id": 0, "pageName": "attendance", "fieldName": "reason",       "displayLabel": "Reason",       "isVisible": true,  "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 5 },
+  { "id": 0, "pageName": "attendance", "fieldName": "year_group",   "displayLabel": "Year Group",   "isVisible": false, "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 6 },
+  { "id": 0, "pageName": "attendance", "fieldName": "class_name",   "displayLabel": "Class Name",   "isVisible": false, "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 7 }
+]

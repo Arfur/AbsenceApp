@@ -79,4 +79,30 @@ public sealed class StudentsApiServiceV2 : ApiServiceBaseV2
         long studentId,
         CancellationToken ct = default) =>
         Client.GetAsync<List<StudentAbsenceDto>>($"{RoutePrefix}/{studentId}/absences", ct);
+
+    // -------------------------------------------------------------------------
+    // Search / Filter
+    // -------------------------------------------------------------------------
+
+    /// <summary>Full-text search across student records.</summary>
+    public Task<ApiResponseV2<PagedResultV2<StudentDto>>> SearchAsync(
+        string term,
+        int page = 1,
+        int pageSize = 25,
+        CancellationToken ct = default) =>
+        GetPagedAsync<StudentDto>(page, pageSize, $"search={Uri.EscapeDataString(term)}", ct);
+
+    /// <summary>Filter students by one or more field values.</summary>
+    public Task<ApiResponseV2<PagedResultV2<StudentDto>>> FilterAsync(
+        Dictionary<string, string> filters,
+        int page = 1,
+        int pageSize = 25,
+        CancellationToken ct = default) =>
+        GetPagedAsync<StudentDto>(
+            page,
+            pageSize,
+            string.Join("&", filters
+                .Where(f => !string.IsNullOrWhiteSpace(f.Value))
+                .Select(f => $"{f.Key}={Uri.EscapeDataString(f.Value)}")),
+            ct);
 }

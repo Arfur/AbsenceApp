@@ -3,53 +3,75 @@
  File        : StudentsListViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.2.0
  Created     : 2026-03-21
- Updated     : 2026-03-21
+ Updated     : 2026-04-05
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for StudentsListPageV2. Manages paged student data,
-               search, sort, and the column schema for the V2 table component.
-               Delegates data access to StudentsApiServiceV2.
+               search, sort, filter, and the column schema for the V2 table component.
+               Uses IStudentFullViewService (EF Core direct) for data access —
+               required because HTTP calls to http://localhost/ are unreachable
+               from native C# in MAUI Blazor Hybrid context.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   - 1.1.0  2026-04-04  Phase 3 Stabilisation Issue 3: default PageSize changed
+                         from 25 to 10 to match V1 reference; added filter state
+                         and ApplyFiltersAsync/ClearFiltersAsync methods.
+   - 1.2.0  2026-04-05  Phase 3 Remediation Issue 2: replaced StudentsApiServiceV2
+                         (HTTP) with IStudentFullViewService (EF Core direct).
+                         Implemented in-memory search, sort, filter, and paging
+                         so data displays correctly in MAUI Blazor Hybrid.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DI (Phase 10).
-   - Columns is a static property — schema defined once, shared across renders.
+   - All data operations are performed in-memory after a single EF Core load.
 ===============================================================================
 */
 
 using AbsenceApp.Client.Models.DataV2;
 using AbsenceApp.Client.Models.TableV2;
-using AbsenceApp.Client.Services.ApiV2.Modules;
 using AbsenceApp.Core.DTOs;
+using AbsenceApp.Core.Interfaces;
 
 namespace AbsenceApp.Client.ViewModels.V2;
 
 /// <summary>
-/// Drives the Students list page V2. Holds paged state and exposes
-/// the column schema for TableV2. Register as Scoped (Phase 10).
+/// Drives the Students list page V2. Loads all students via EF Core
+/// (IStudentFullViewService) and applies search/filter/sort/paging in memory.
+/// Register as Scoped (Phase 10).
 /// </summary>
 public sealed class StudentsListViewModelV2
 {
-    private readonly StudentsApiServiceV2 _api;
+    private readonly IStudentFullViewService _svc;
 
-    public StudentsListViewModelV2(StudentsApiServiceV2 api) => _api = api;
+    public StudentsListViewModelV2(IStudentFullViewService svc) => _svc = svc;
+
+    // -------------------------------------------------------------------------
+    // Full dataset cached after first load
+    // -------------------------------------------------------------------------
+
+    private IReadOnlyList<StudentFullViewDto> _all = [];
 
     // -------------------------------------------------------------------------
     // Data state
     // -------------------------------------------------------------------------
 
-    public List<StudentDto> Items { get; private set; } = [];
+    public List<StudentFullViewDto> Items { get; private set; } = [];
     public int TotalCount { get; private set; }
     public int Page { get; private set; } = 1;
-    public int PageSize { get; private set; } = 25;
+    public int PageSize { get; private set; } = 10;
     public string SearchTerm { get; private set; } = string.Empty;
     public string SortColumn { get; private set; } = string.Empty;
     public bool SortAscending { get; private set; } = true;
     public bool IsLoading { get; private set; }
     public string? Error { get; private set; }
+
+    // -------------------------------------------------------------------------
+    // Filter state — keyed by field name
+    // -------------------------------------------------------------------------
+
+    private Dictionary<string, string> _activeFilters = new();
 
     // -------------------------------------------------------------------------
     // Column schema — static, shared across all renders
@@ -63,7 +85,7 @@ public sealed class StudentsListViewModelV2
         new() { Key = "gender",          Label = "Gender",     Visible = true, Sortable = true, Order = 3, Width = "90px" },
         new() { Key = "status",          Label = "Status",     Visible = true, Sortable = true, Order = 4, Width = "100px" },
         new() { Key = "dateOfBirth",     Label = "DOB",        Visible = true, Sortable = true, Order = 5, DataType = "date", Width = "110px" },
-        new() { Key = "yearGroupId",     Label = "Year",       Visible = true, Sortable = false, Order = 6, Width = "70px" },
+        new() { Key = "yearGroupName",   Label = "Year",       Visible = true, Sortable = true, Order = 6, Width = "70px" },
     ];
 
     // -------------------------------------------------------------------------
@@ -74,60 +96,129 @@ public sealed class StudentsListViewModelV2
     {
         IsLoading = true;
         Error = null;
-        var result = await _api.GetPagedAsync(Page, PageSize, BuildQueryString(), ct);
-        if (result.Success && result.Data is not null)
+        try
         {
-            Items = result.Data.Items;
-            TotalCount = result.Data.TotalCount;
+            _all = await _svc.GetAllAsync();
+            ApplyView();
         }
-        else
+        catch (Exception ex)
         {
-            Error = result.ErrorMessage ?? "Failed to load students.";
+            Error = ex.Message;
         }
-        IsLoading = false;
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
-    public async Task GoToPageAsync(int page, CancellationToken ct = default)
+    public Task GoToPageAsync(int page, CancellationToken ct = default)
     {
         Page = page;
-        await LoadAsync(ct);
+        ApplyView();
+        return Task.CompletedTask;
     }
 
-    public async Task ChangePageSizeAsync(int size, CancellationToken ct = default)
+    public Task ChangePageSizeAsync(int size, CancellationToken ct = default)
     {
         PageSize = size;
         Page = 1;
-        await LoadAsync(ct);
+        ApplyView();
+        return Task.CompletedTask;
     }
 
-    public async Task SearchAsync(string term, CancellationToken ct = default)
+    public Task SearchAsync(string term, CancellationToken ct = default)
     {
         SearchTerm = term;
         Page = 1;
-        await LoadAsync(ct);
+        ApplyView();
+        return Task.CompletedTask;
     }
 
-    public async Task SortAsync(string column, bool ascending, CancellationToken ct = default)
+    public Task SortAsync(string column, bool ascending, CancellationToken ct = default)
     {
         SortColumn = column;
         SortAscending = ascending;
-        await LoadAsync(ct);
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task ApplyFiltersAsync(Dictionary<string, string> filters, CancellationToken ct = default)
+    {
+        _activeFilters = new Dictionary<string, string>(filters);
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task ClearFiltersAsync(CancellationToken ct = default)
+    {
+        _activeFilters.Clear();
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
     }
 
     // -------------------------------------------------------------------------
-    // Private helpers
+    // In-memory view computation
     // -------------------------------------------------------------------------
 
-    private string BuildQueryString()
+    private void ApplyView()
     {
-        var parts = new List<string>();
+        IEnumerable<StudentFullViewDto> query = _all;
+
+        // Search across key text fields
         if (!string.IsNullOrWhiteSpace(SearchTerm))
-            parts.Add($"search={Uri.EscapeDataString(SearchTerm)}");
-        if (!string.IsNullOrWhiteSpace(SortColumn))
         {
-            parts.Add($"sortBy={SortColumn}");
-            parts.Add($"sortDir={( SortAscending ? "asc" : "desc" )}");
+            var term = SearchTerm.Trim().ToLowerInvariant();
+            query = query.Where(s =>
+                s.AdmissionNumber.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase)       ||
+                s.LastName.Contains(term, StringComparison.OrdinalIgnoreCase)        ||
+                s.LegalFirstName.Contains(term, StringComparison.OrdinalIgnoreCase)  ||
+                s.LegalLastName.Contains(term, StringComparison.OrdinalIgnoreCase)   ||
+                s.YearGroupName.Contains(term, StringComparison.OrdinalIgnoreCase)   ||
+                s.ClassName.Contains(term, StringComparison.OrdinalIgnoreCase)       ||
+                (s.HouseName ?? "").Contains(term, StringComparison.OrdinalIgnoreCase));
         }
-        return string.Join("&", parts);
+
+        // Dropdown filters
+        foreach (var (key, value) in _activeFilters.Where(f => !string.IsNullOrWhiteSpace(f.Value)))
+        {
+            query = key switch
+            {
+                "admission_number" => query.Where(s => s.AdmissionNumber == value),
+                "first_name"       => query.Where(s => s.FirstName == value),
+                "last_name"        => query.Where(s => s.LastName == value),
+                "gender"           => query.Where(s => s.Gender == value),
+                "date_of_birth"    => query.Where(s => s.DateOfBirth.ToString("dd/MM/yyyy") == value),
+                "year_group"       => query.Where(s => s.YearGroupName == value),
+                "class_name"       => query.Where(s => s.ClassName == value),
+                "house_name"       => query.Where(s => s.HouseName == value),
+                "admission_date"   => query.Where(s => s.AdmissionDate.ToString("dd/MM/yyyy") == value),
+                "status"           => query.Where(s => s.Status == value),
+                _                  => query
+            };
+        }
+
+        // Sort
+        query = SortColumn switch
+        {
+            "admission_number" => SortAscending ? query.OrderBy(s => s.AdmissionNumber)    : query.OrderByDescending(s => s.AdmissionNumber),
+            "first_name"       => SortAscending ? query.OrderBy(s => s.FirstName)          : query.OrderByDescending(s => s.FirstName),
+            "legal_first_name" => SortAscending ? query.OrderBy(s => s.LegalFirstName)     : query.OrderByDescending(s => s.LegalFirstName),
+            "legal_last_name"  => SortAscending ? query.OrderBy(s => s.LegalLastName)      : query.OrderByDescending(s => s.LegalLastName),
+            "gender"           => SortAscending ? query.OrderBy(s => s.Gender)             : query.OrderByDescending(s => s.Gender),
+            "date_of_birth"    => SortAscending ? query.OrderBy(s => s.DateOfBirth)        : query.OrderByDescending(s => s.DateOfBirth),
+            "year_group"       => SortAscending ? query.OrderBy(s => s.YearGroupName)      : query.OrderByDescending(s => s.YearGroupName),
+            "class_name"       => SortAscending ? query.OrderBy(s => s.ClassName)          : query.OrderByDescending(s => s.ClassName),
+            "house_name"       => SortAscending ? query.OrderBy(s => s.HouseName)          : query.OrderByDescending(s => s.HouseName),
+            "admission_date"   => SortAscending ? query.OrderBy(s => s.AdmissionDate)      : query.OrderByDescending(s => s.AdmissionDate),
+            "status"           => SortAscending ? query.OrderBy(s => s.Status)             : query.OrderByDescending(s => s.Status),
+            _                  => query.OrderBy(s => s.LegalLastName)
+        };
+
+        var filtered = query.ToList();
+        TotalCount = filtered.Count;
+        Items = filtered.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
     }
 }

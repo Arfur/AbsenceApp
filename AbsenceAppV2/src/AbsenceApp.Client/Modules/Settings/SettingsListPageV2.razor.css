@@ -1,52 +1,288 @@
-/* SettingsListPageV2.razor.css — scoped styles for the Settings list V2 page */
+/* ===========================================================================
+   File        : SettingsListPageV2.razor.css
+   Component   : SettingsListPageV2
+   Purpose     : Scoped styles for the Table Settings page.
+                 Matches V1 reference: dark-navy header, iOS toggle switches,
+                 amber Save Changes button (via tpt-btn-primary reuse).
+   =========================================================================== */
 
-.dsv2-loading-text {
-    color: var(--dsv2-color-text-muted, #6b7280);
-    font-size: 0.875rem;
-    padding: 1rem 0;
-}
+/* ---------------------------------------------------------------------------
+   1. Selector bar  (Select Table: dropdown)
+   --------------------------------------------------------------------------- */
 
-.dsv2-alert--danger {
-    padding: 0.75rem 1rem;
-    border-radius: 0.375rem;
-    background-color: var(--dsv2-color-danger-bg, #fef2f2);
-    border: 1px solid var(--dsv2-color-danger-border, #fecaca);
-    color: var(--dsv2-color-danger-text, #b91c1c);
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
-}
-
-.dsv2-alert--warning {
-    padding: 0.75rem 1rem;
-    border-radius: 0.375rem;
-    background-color: var(--dsv2-color-warning-bg, #fffbeb);
-    border: 1px solid var(--dsv2-color-warning-border, #fde68a);
-    color: var(--dsv2-color-warning-text, #92400e);
-    font-size: 0.875rem;
-    margin-top: 1rem;
-}
-
-.dsv2-settings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.dsv2-settings-card {
-    border: 1px solid var(--dsv2-color-border, #e5e7eb);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    background-color: var(--dsv2-color-surface, #ffffff);
+.ts-selector-bar {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
-.dsv2-settings-card__header {
+.ts-selector-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+}
+
+.ts-selector-select {
+    height: 2.125rem;
+    padding: 0 0.625rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+    min-width: 10rem;
+}
+
+    .ts-selector-select:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+    }
+
+/* Save area: confirmation msg + button, pushed to far right (V1 parity) */
+.ts-save-area {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-left: auto;
+}
+
+/* Inline save confirmation text that appears to the left of Save button */
+.ts-save-msg {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #065f46;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Table wrapper  (card with shadow + horizontal scroll)
+   --------------------------------------------------------------------------- */
+
+.ts-table-wrap {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ---------------------------------------------------------------------------
+   3. Table structure
+   --------------------------------------------------------------------------- */
+
+.ts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+/* Header row  — dark navy, matches .tpt-thead-row */
+.ts-thead-row {
+    background-color: #1e3a5f;
+    color: #ffffff;
+}
+
+.ts-th {
+    padding: 0.625rem 0.875rem;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    letter-spacing: 0.025em;
+}
+
+.ts-th--field {
+    min-width: 8rem;
+}
+
+.ts-th--label {
+    min-width: 10rem;
+}
+
+.ts-th--toggle {
+    text-align: center;
+    width: 6.5rem;
+}
+
+.ts-th--order {
+    text-align: center;
+    width: 5rem;
+}
+
+/* Data rows */
+.ts-tr {
+    border-bottom: 1px solid #f0f2f5;
+    transition: background 0.1s;
+}
+
+    .ts-tr:nth-child(even) {
+        background: #f8fafc;
+    }
+
+    .ts-tr:hover {
+        background: #eef4ff;
+    }
+
+.ts-td {
+    padding: 0.5rem 0.875rem;
+    vertical-align: middle;
+    color: #374151;
+}
+
+.ts-td--field {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.ts-td--label {
+    min-width: 10rem;
+}
+
+.ts-td--toggle {
+    text-align: center;
+}
+
+.ts-td--order {
+    text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
+   4. Editable display-label input
+   --------------------------------------------------------------------------- */
+
+.ts-input {
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    color: #374151;
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+    .ts-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+    }
+
+/* ---------------------------------------------------------------------------
+   5. Display-order number input
+   --------------------------------------------------------------------------- */
+
+.ts-order-input {
+    width: 4rem;
+    padding: 0.25rem 0.375rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    text-align: center;
+    color: #374151;
+    background: #ffffff;
+}
+
+    .ts-order-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+    }
+
+/* ---------------------------------------------------------------------------
+   6. iOS-style toggle switch
+      Markup pattern:
+        <label class="ts-toggle">
+          <input type="checkbox" ... />
+          <span class="ts-toggle__track"></span>
+        </label>
+   --------------------------------------------------------------------------- */
+
+.ts-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 38px;
+    height: 22px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+    .ts-toggle input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.ts-toggle__track {
+    position: absolute;
+    inset: 0;
+    border-radius: 11px;
+    background: #d1d5db;
+    transition: background 0.2s;
+}
+
+    .ts-toggle__track::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+    }
+
+.ts-toggle input[type="checkbox"]:checked + .ts-toggle__track {
+    background: #2563eb;
+}
+
+    .ts-toggle input[type="checkbox"]:checked + .ts-toggle__track::before {
+        transform: translateX(16px);
+    }
+
+.ts-toggle input[type="checkbox"]:focus-visible + .ts-toggle__track {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #2563eb;
+}
+
+/* ---------------------------------------------------------------------------
+   7. Status / feedback messages
+   --------------------------------------------------------------------------- */
+
+.ts-loading {
+    padding: 1rem 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.ts-alert {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.ts-alert--success {
+    background: #ecfdf5;
+    border: 1px solid #6ee7b7;
+    color: #065f46;
+}
+
+.ts-alert--danger {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
 }
 
 .dsv2-settings-card__title {

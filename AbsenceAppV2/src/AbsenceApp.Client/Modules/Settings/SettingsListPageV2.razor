@@ -2,86 +2,201 @@
    File        : SettingsListPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Settings
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 2.3.0
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-06
    ---------------------------------------------------------------------------
-   Purpose     : V2 Settings list page. Lists all table settings pages sourced
-                 from the diagnostics report using the V2 PageTemplateV2
-                 primitive instead of the deprecated StandardPageV2 wrapper.
+   Purpose     : V2 Table Settings page. Matches V1 reference exactly.
+                 Provides a "Select Table" dropdown, a field-by-field
+                 configuration table with iOS-style toggle switches for
+                 Visible / Sortable / Filterable / Searchable, a numeric
+                 Order column, and a "Save Changes" button that persists
+                 settings to wwwroot/config/tablesettings/{tablename}.json.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+     - 1.0.0  2026-03-21  Initial implementation (diagnostics card list).
      - 1.0.1  2026-03-25  Removed invalid V2 component imports.
      - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
-                          Updated namespace. Updated layout to BaseLayoutV2.
-                          Corrected ChildContent slot usage.
+     - 2.0.0  2026-04-03  Phase 3 rewrite: replaced diagnostics card list
+                          with the full V1-reference Table Settings UI.
+                          Uses TableSettingsFileService for local JSON I/O.
+     - 2.1.0  2026-04-04  Phase 3 Stabilisation Issues 2+4: changed @layout
+                          from BaseLayoutV2 to MainLayoutV2 for correct
+                          fixed-header shell layout.
+     - 2.2.0  2026-04-05  Phase 3 Remediation Issue 3: moved Save Changes
+                          button from ActionsContent slot into the selector bar
+                          alongside Select Table to match V1 layout exactly
+                          (both controls on same horizontal row).
+     - 2.3.0  2026-04-06  Phase 3 V1 Parity Issue 5: fire
+                          AppState.NotifyTableSettingsChanged() after a
+                          successful save so subscribed table pages update
+                          column visibility immediately.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/settings
-     - Register SettingsModuleViewModelV2 as Scoped in Phase 10.
    ===========================================================================
 *@
 
 @page "/v2/settings"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Settings
 
-@using AbsenceApp.Client.ViewModels.V2
-@inject SettingsModuleViewModelV2 ViewModel
+@using AbsenceApp.Client.Services.TableV2
+@using AbsenceApp.Core.DTOs
+@inject TableSettingsFileService SettingsFile
 @inject AppStateService AppState
-@inject NavigationManager Nav
 
 <PageTemplateV2 PageTitleText="Table Settings">
 
     <ChildContent>
 
-        @if (ViewModel.IsDiagnosticsLoading)
+        @* =========================================================================
+           SECTION: Alert banner — errors only
+           ========================================================================= *@
+        @if (_error is not null)
         {
-            <p class="dsv2-loading-text">Loading settings pages…</p>
+            <div class="ts-alert ts-alert--danger" role="alert">@_error</div>
         }
-        else if (ViewModel.DiagnosticsError is not null)
-        {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">
-                @ViewModel.DiagnosticsError
-            </div>
-        }
-        else if (ViewModel.DiagnosticsReport is not null)
-        {
-            <div class="dsv2-settings-grid">
-                @foreach (var pg in ViewModel.DiagnosticsReport.Pages)
+
+        @* =========================================================================
+           SECTION: Table selector — Select Table (left) + Save Changes (right)
+           Matches V1 reference: both controls on the same horizontal row.
+           Save confirmation appears inline to the left of the Save button.
+           ========================================================================= *@
+        <div class="ts-selector-bar">
+            <label class="ts-selector-label" for="ts-table-select">Select Table:</label>
+            <select id="ts-table-select"
+                    class="ts-selector-select"
+                    value="@_selectedTable"
+                    @onchange="OnTableChanged">
+                <option value="students">Students</option>
+                <option value="staff">Staff</option>
+                <option value="classes">Classes</option>
+                <option value="attendance">Attendance</option>
+                <option value="auditlog">Audit Log</option>
+            </select>
+            <div class="ts-save-area">
+                @if (_saveSuccess)
                 {
-                    <div class="dsv2-settings-card">
-                        <div class="dsv2-settings-card__header">
-                            <i class="bi bi-table" aria-hidden="true"></i>
-                            <span class="dsv2-settings-card__title">@pg.PageKey</span>
-                            <span class="dsv2-settings-card__badge dsv2-settings-card__badge--@pg.Status.ToLowerInvariant()">
-                                @pg.Status
-                            </span>
-                        </div>
-
-                        <p class="dsv2-settings-card__meta">
-                            @pg.SavedFields.Count saved fields • @pg.SchemaFields.Count schema fields
-                        </p>
-
-                        <div class="dsv2-settings-card__actions">
-                            <a href="@($"/v2/settings/{pg.PageKey}")"
-                               class="dsv2-btn dsv2-btn--secondary dsv2-btn--sm">View</a>
-
-                            <a href="@($"/v2/settings/{pg.PageKey}/edit")"
-                               class="dsv2-btn dsv2-btn--primary dsv2-btn--sm">Edit</a>
-                        </div>
-                    </div>
+                    <span class="ts-save-msg" role="status">&#10003; Settings saved.</span>
                 }
+                <button type="button"
+                        class="tpt-btn tpt-btn-primary"
+                        disabled="@_isSaving"
+                        @onclick="OnSave">
+                    <i class="bi bi-floppy" aria-hidden="true"></i>
+                    @(_isSaving ? "Saving…" : "Save Changes")
+                </button>
             </div>
+        </div>
 
-            @if (ViewModel.DiagnosticsReport.OrphanedDbPageKeys.Count > 0)
-            {
-                <div class="dsv2-alert dsv2-alert--warning" role="note">
-                    <strong>Orphaned page keys in database:</strong>
-                    @string.Join(", ", ViewModel.DiagnosticsReport.OrphanedDbPageKeys)
-                </div>
-            }
+        @* =========================================================================
+           SECTION: Settings table
+           ========================================================================= *@
+        @if (_isLoading)
+        {
+            <p class="ts-loading">Loading…</p>
+        }
+        else if (_settings.Count == 0)
+        {
+            <p class="ts-loading">No settings found for this table.</p>
+        }
+        else
+        {
+            <div class="ts-table-wrap">
+                <table class="ts-table">
+
+                    @* =========================================================
+                       Dark navy header row — matches V1 reference exactly
+                       ========================================================= *@
+                    <thead>
+                        <tr class="ts-thead-row">
+                            <th class="ts-th ts-th--field">Field Name</th>
+                            <th class="ts-th ts-th--label">Display Label</th>
+                            <th class="ts-th ts-th--toggle">Visible</th>
+                            <th class="ts-th ts-th--toggle">Sortable</th>
+                            <th class="ts-th ts-th--toggle">Filterable</th>
+                            <th class="ts-th ts-th--toggle">Searchable</th>
+                            <th class="ts-th ts-th--order">Order</th>
+                        </tr>
+                    </thead>
+
+                    @* =========================================================
+                       Data rows — alternating white / #f8fafc, hover highlight
+                       ========================================================= *@
+                    <tbody>
+                        @foreach (var row in _settings)
+                        {
+                            <tr class="ts-tr">
+
+                                @* Field name (monospace, muted) *@
+                                <td class="ts-td ts-td--field">@row.FieldName</td>
+
+                                @* Display label (editable text input) *@
+                                <td class="ts-td ts-td--label">
+                                    <input type="text"
+                                           class="ts-input"
+                                           value="@row.DisplayLabel"
+                                           @onchange="@(e => row.DisplayLabel = e.Value?.ToString() ?? row.DisplayLabel)"
+                                           aria-label="Display label for @row.FieldName" />
+                                </td>
+
+                                @* Visible toggle *@
+                                <td class="ts-td ts-td--toggle">
+                                    <label class="ts-toggle" aria-label="Visible: @row.FieldName">
+                                        <input type="checkbox"
+                                               checked="@row.IsVisible"
+                                               @onchange="@(e => row.IsVisible = (bool)(e.Value ?? false))" />
+                                        <span class="ts-toggle__track"></span>
+                                    </label>
+                                </td>
+
+                                @* Sortable toggle *@
+                                <td class="ts-td ts-td--toggle">
+                                    <label class="ts-toggle" aria-label="Sortable: @row.FieldName">
+                                        <input type="checkbox"
+                                               checked="@row.IsSortable"
+                                               @onchange="@(e => row.IsSortable = (bool)(e.Value ?? false))" />
+                                        <span class="ts-toggle__track"></span>
+                                    </label>
+                                </td>
+
+                                @* Filterable toggle *@
+                                <td class="ts-td ts-td--toggle">
+                                    <label class="ts-toggle" aria-label="Filterable: @row.FieldName">
+                                        <input type="checkbox"
+                                               checked="@row.IsFilterable"
+                                               @onchange="@(e => row.IsFilterable = (bool)(e.Value ?? false))" />
+                                        <span class="ts-toggle__track"></span>
+                                    </label>
+                                </td>
+
+                                @* Searchable toggle *@
+                                <td class="ts-td ts-td--toggle">
+                                    <label class="ts-toggle" aria-label="Searchable: @row.FieldName">
+                                        <input type="checkbox"
+                                               checked="@row.IsSearchable"
+                                               @onchange="@(e => row.IsSearchable = (bool)(e.Value ?? false))" />
+                                        <span class="ts-toggle__track"></span>
+                                    </label>
+                                </td>
+
+                                @* Display order (numeric input) *@
+                                <td class="ts-td ts-td--order">
+                                    <input type="number"
+                                           class="ts-order-input"
+                                           value="@row.DisplayOrder"
+                                           min="1"
+                                           @onchange="@(e => { if (int.TryParse(e.Value?.ToString(), out var n)) row.DisplayOrder = n; })"
+                                           aria-label="Display order for @row.FieldName" />
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
         }
 
     </ChildContent>
@@ -89,9 +204,70 @@
 </PageTemplateV2>
 
 @code {
+
+    // -------------------------------------------------------------------------
+    // State
+    // -------------------------------------------------------------------------
+
+    private string _selectedTable = "students";
+    private List<TablePageSettingDto> _settings = [];
+    private bool _isLoading;
+    private bool _isSaving;
+    private bool _saveSuccess;
+    private string? _error;
+
+    // -------------------------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------------------------
+
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Settings", "Table Settings");
-        await ViewModel.LoadDiagnosticsAsync();
+        await LoadTableAsync(_selectedTable);
+    }
+
+    // -------------------------------------------------------------------------
+    // Event handlers
+    // -------------------------------------------------------------------------
+
+    private async Task OnTableChanged(ChangeEventArgs e)
+    {
+        _selectedTable = e.Value?.ToString() ?? "students";
+        _saveSuccess = false;
+        _error = null;
+        await LoadTableAsync(_selectedTable);
+    }
+
+    private async Task OnSave()
+    {
+        _isSaving = true;
+        _saveSuccess = false;
+        _error = null;
+
+        try
+        {
+            await SettingsFile.SaveAsync(_selectedTable, _settings);
+            AppState.NotifyTableSettingsChanged();
+            _saveSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            _error = $"Failed to save: {ex.Message}";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Private helpers
+    // -------------------------------------------------------------------------
+
+    private async Task LoadTableAsync(string tableName)
+    {
+        _isLoading = true;
+        _settings = await SettingsFile.LoadAsync(tableName);
+        _isLoading = false;
     }
 }

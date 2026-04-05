@@ -3,9 +3,9 @@
  File        : MauiProgram.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.2.2
  Created     : 2026-03-13
- Updated     : 2026-03-18
+ Updated     : 2026-04-04
 -------------------------------------------------------------------------------
  Purpose     : MAUI application bootstrap.  Builds the MauiApp host, registers
                the Blazor web view, loads the embedded appsettings.json, wires
@@ -21,6 +21,14 @@
                          and SubjectAddViewModel DI registrations.
    - 1.2.0  2026-03-18  Wrapped builder in try-catch crash logger so DI build
                          failures are written to Desktop/AbsenceApp_crash.log.
+   - 1.2.1  2026-03-26  Changed AppStateService lifetime from Singleton to
+                         Scoped to align with EF Core DbContext lifetime and
+                         prevent concurrent DbContext usage during login.
+   - 1.2.2  2026-04-04  Phase 3 Stabilisation Issue 1: reverted AppStateService
+                         from Scoped back to Singleton. AppStateService holds
+                         no DbContext reference; Scoped lifetime caused auth
+                         state (IsAuthenticated) to reset on certain navigations,
+                         causing redirect-to-login loops.
 -------------------------------------------------------------------------------
  Notes       :
    - appsettings.json is embedded as a ManifestResource so MAUI can read it

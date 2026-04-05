@@ -1,0 +1,8 @@
+[
+  { "id": 0, "pageName": "auditlog", "fieldName": "timestamp",  "displayLabel": "Timestamp",  "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": false, "displayOrder": 1 },
+  { "id": 0, "pageName": "auditlog", "fieldName": "user",       "displayLabel": "User",       "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": true,  "displayOrder": 2 },
+  { "id": 0, "pageName": "auditlog", "fieldName": "action",     "displayLabel": "Action",     "isVisible": true,  "isSortable": false, "isFilterable": true,  "isSearchable": true,  "displayOrder": 3 },
+  { "id": 0, "pageName": "auditlog", "fieldName": "entity",     "displayLabel": "Entity",     "isVisible": true,  "isSortable": false, "isFilterable": true,  "isSearchable": false, "displayOrder": 4 },
+  { "id": 0, "pageName": "auditlog", "fieldName": "entity_id",  "displayLabel": "Entity ID",  "isVisible": false, "isSortable": false, "isFilterable": false, "isSearchable": false, "displayOrder": 5 },
+  { "id": 0, "pageName": "auditlog", "fieldName": "details",    "displayLabel": "Details",    "isVisible": true,  "isSortable": false, "isFilterable": false, "isSearchable": true,  "displayOrder": 6 }
+]

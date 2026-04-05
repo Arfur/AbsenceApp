@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : ThemeSettingPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Settings
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.1.1
    Created     : 2026-03-24
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Theme Settings page. Allows Super Admin users to customise
                  application colour theme and branding. Uses the V2
@@ -15,6 +15,7 @@
      - 1.0.1  2026-03-25  Removed invalid V2 component imports.
      - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
                           Updated namespace and layout. No behavioural changes.
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/settings/theme
@@ -23,7 +24,7 @@
 *@
 
 @page "/v2/settings/theme"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Settings
 
 @inject AppStateService AppState

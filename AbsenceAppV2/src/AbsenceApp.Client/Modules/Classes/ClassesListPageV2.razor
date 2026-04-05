@@ -2,32 +2,35 @@
    File        : ClassesListPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Classes
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 2.0.0
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-06
    ---------------------------------------------------------------------------
-   Purpose     : V2 Classes list page. Displays a paged, searchable, sortable
-                 table of classes using the V2 PageTemplateV2 primitive instead
-                 of deprecated StandardPageV2. Delegates all data and state to
-                 ClassesListViewModelV2.
+   Purpose     : V2 Classes list page — V1-matching layout using
+                 TablePageTemplateV2 with search, sort, and V1 pagination.
+                 Delegates data and state to ClassesListViewModelV2.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation (Phase 7).
      - 1.0.1  2026-03-25  Removed invalid V2 component imports.
      - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
-                          Updated namespace and layout. Preserved table logic.
+     - 1.1.1  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout to
+                          MainLayoutV2 for correct fixed-header shell.
+     - 2.0.0  2026-04-06  Phase 3 V1 Parity Issue 4: rewrote to use
+                          TablePageTemplateV2 (not TableV2). Replaced
+                          ClassesApiServiceV2 (HTTP) with IClassService (EF
+                          Core direct) via ClassesListViewModelV2.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/classes
-     - Register ClassesListViewModelV2 as Scoped in Phase 10.
    ===========================================================================
 *@
 
 @page "/v2/classes"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Classes
 
-@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.Shared
 @using AbsenceApp.Client.ViewModels.V2
 @inject ClassesListViewModelV2 ViewModel
 @inject AppStateService AppState
@@ -35,73 +38,172 @@
 
 <PageTemplateV2 PageTitleText="Classes">
 
-    <ActionsContent>
-        <button type="button"
-                class="dsv2-btn dsv2-btn--primary"
-                @onclick="@(() => Nav.NavigateTo("/v2/classes/new"))">
-            <i class="bi bi-plus-circle" aria-hidden="true"></i>
-            Add Class
-        </button>
-    </ActionsContent>
-
     <ChildContent>
 
+        @* Error banner *@
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">
-                @ViewModel.Error
-            </div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
         }
 
-        <TableV2 TItem="AbsenceApp.Core.DTOs.ClassDto"
-                 Columns="ClassesListViewModelV2.Columns"
-                 Items="ViewModel.Items"
-                 TotalCount="ViewModel.TotalCount"
-                 IsLoading="ViewModel.IsLoading"
-                 CurrentPage="ViewModel.Page"
-                 PageSize="ViewModel.PageSize"
-                 SortColumn="ViewModel.SortColumn"
-                 SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search classes…"
-                 AriaLabel="Classes table"
-                 OnSearchChanged="OnSearch"
-                 OnSortChanged="OnSort"
-                 OnPageChanged="OnPageChanged"
-                 OnPageSizeChanged="OnPageSizeChanged">
+        <TablePageTemplateV2
 
-            <RowTemplate Context="cls">
-                <td class="dsv2-table__td">@cls.Id</td>
-                <td class="dsv2-table__td">@cls.Name</td>
-                <td class="dsv2-table__td">@(cls.Description ?? "—")</td>
-            </RowTemplate>
+            TotalRows="@ViewModel.TotalCount"
+            CurrentPage="@ViewModel.Page"
+            ShowEntries="@ViewModel.PageSize"
+            SearchValue="@ViewModel.SearchTerm"
+            ActiveFilters="@_emptyChips"
 
-            <RowActionsContent Context="cls">
-                <a href="@($"/v2/classes/{cls.Id}")" class="dsv2-table__row-action">View</a>
-                <a href="@($"/v2/classes/{cls.Id}/edit")" class="dsv2-table__row-action">Edit</a>
-            </RowActionsContent>
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnRemoveFilter="@(_ => Task.CompletedTask)"
+            OnClearAllFilters="@(() => Task.CompletedTask)">
 
-        </TableV2>
+            <ActionButtons>
+                <button type="button"
+                        class="tpt-btn tpt-btn-primary"
+                        @onclick="@(() => Nav.NavigateTo("/v2/classes/new"))">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                    Add Class
+                </button>
+            </ActionButtons>
+
+            @* =========================================================
+               TABLE HEADER — hardcoded (classes.json fields don't
+               match ClassDto: Id, Name, Description)
+               ========================================================= *@
+            <TableHeader>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("name")"
+                            @onclick="@(() => OnSort("name"))">
+                        Class Name
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th">Description</th>
+                <th class="tpt-th tpt-th--actions">Actions</th>
+            </TableHeader>
+
+            @* =========================================================
+               TABLE BODY
+               ========================================================= *@
+            <TableBody>
+                @if (ViewModel.IsLoading)
+                {
+                    @for (var i = 0; i < ViewModel.PageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                        </tr>
+                    }
+                }
+                else if (ViewModel.Items.Count == 0)
+                {
+                    <tr>
+                        <td class="tpt-td tpt-td--empty" colspan="3">No classes found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var cls in ViewModel.Items)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td">@cls.Name</td>
+                            <td class="tpt-td">@(cls.Description ?? "—")</td>
+                            <td class="tpt-td tpt-td--actions">
+                                <a href="@($"/v2/classes/{cls.Id}")"
+                                   class="tpt-action-icon tpt-action-view" title="View">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="@($"/v2/classes/{cls.Id}/edit")"
+                                   class="tpt-action-icon tpt-action-edit" title="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            @* =========================================================
+               PAGINATION — 10-page sliding window + ellipsis
+               ========================================================= *@
+            <Pagination>
+                @{
+                    var totalPages = ViewModel.PageSize > 0
+                        ? (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize)
+                        : 1;
+                    var page     = ViewModel.Page;
+                    var winStart = Math.Max(1, page - 4);
+                    var winEnd   = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
+                }
+
+                <button class="tpt-page-btn tpt-page-prev"
+                        disabled="@(page <= 1)"
+                        @onclick="@(() => OnPageChanged(page - 1))">
+                    &#8592; Previous
+                </button>
+
+                @for (var p = winStart; p <= winEnd; p++)
+                {
+                    var pCopy = p;
+                    <button class="tpt-page-btn @(pCopy == page ? "tpt-active" : "")"
+                            @onclick="@(() => OnPageChanged(pCopy))">
+                        @pCopy
+                    </button>
+                }
+
+                @if (winEnd < totalPages)
+                {
+                    <span class="tpt-page-ellipsis">...</span>
+                }
+
+                <button class="tpt-page-btn tpt-page-next"
+                        disabled="@(page >= totalPages)"
+                        @onclick="@(() => OnPageChanged(page + 1))">
+                    Next &#8594;
+                </button>
+            </Pagination>
+
+        </TablePageTemplateV2>
 
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
+
+    private static readonly List<FilterChip> _emptyChips = [];
+
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Classes", "All Classes");
         await ViewModel.LoadAsync();
     }
 
-    private async Task OnSearch(string term) =>
+    private async Task OnSearchChanged(string term) =>
         await ViewModel.SearchAsync(term);
 
-    private async Task OnSort((string Column, bool Ascending) args) =>
-        await ViewModel.SortAsync(args.Column, args.Ascending);
+    private async Task OnSort(string column)
+    {
+        var ascending = ViewModel.SortColumn == column ? !ViewModel.SortAscending : true;
+        await ViewModel.SortAsync(column, ascending);
+    }
 
     private async Task OnPageChanged(int page) =>
         await ViewModel.GoToPageAsync(page);
 
-    private async Task OnPageSizeChanged(int size) =>
+    private async Task OnShowEntriesChanged(int size) =>
         await ViewModel.ChangePageSizeAsync(size);
+
+    private string SortClass(string column) =>
+        ViewModel.SortColumn != column ? "" :
+        ViewModel.SortAscending ? "asc" : "desc";
 }
+

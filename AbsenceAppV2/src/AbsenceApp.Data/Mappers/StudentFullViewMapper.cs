@@ -3,9 +3,9 @@
  File        : StudentFullViewMapper.cs
  Namespace   : AbsenceApp.Data.Mappers
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-17
- Updated     : 2026-03-17
+ Updated     : 2026-04-05
 -------------------------------------------------------------------------------
  Purpose     : Maps a Student entity plus resolved lookup names to a
                StudentFullViewDto.  The lookup names (YearGroupName, ClassName,
@@ -14,6 +14,7 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-17  Initial creation.
+   - 1.1.0  2026-04-05  Phase 3 Remediation Issue 2: map Id from entity.
 -------------------------------------------------------------------------------
  Notes       :
    - One-way mapping only (read projection — no ToEntity required).
@@ -46,6 +47,7 @@ public static class StudentFullViewMapper
         string  className,
         string? houseName) => new()
     {
+        Id              = entity.Id,
         AdmissionNumber = entity.AdmissionNumber,
         FirstName       = entity.FirstName,
         MiddleNames     = entity.MiddleNames,

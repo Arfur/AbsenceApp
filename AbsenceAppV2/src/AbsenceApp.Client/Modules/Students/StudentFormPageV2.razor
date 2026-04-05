@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : StudentFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Students
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.1.1
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Student add/edit form page. Uses the V2 PageTemplateV2
                  primitive instead of deprecated FormPageV2 and FormSectionV2.
@@ -16,6 +16,7 @@
      - 1.1.0  2026-03-26  Replaced FormPageV2 + FormSectionV2 with PageTemplateV2.
                           Updated namespace and layout. Preserved all bindings,
                           validation, and ViewModel logic.
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Routes: /v2/students/new (add), /v2/students/{Id:long}/edit (edit)
@@ -25,7 +26,7 @@
 
 @page "/v2/students/new"
 @page "/v2/students/{Id:long}/edit"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Students
 
 @using AbsenceApp.Client.ViewModels.V2

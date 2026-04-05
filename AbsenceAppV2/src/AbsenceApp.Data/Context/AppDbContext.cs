@@ -72,6 +72,12 @@ public class AppDbContext : DbContext
     // -------------------------------------------------------------------------
     public DbSet<TablePageSetting> TablePageSettings => Set<TablePageSetting>();
 
+    // -------------------------------------------------------------------------
+    // Phase 3 — In-app messaging + notifications (Header Nav Identity)
+    // -------------------------------------------------------------------------
+    public DbSet<Message>          Messages         => Set<Message>();
+    public DbSet<AppNotification>  AppNotifications => Set<AppNotification>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

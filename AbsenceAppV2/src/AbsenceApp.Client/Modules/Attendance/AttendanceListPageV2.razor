@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : AttendanceListPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Attendance
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.1.1
    Created     : 2026-03-21
-   Updated     : 2026-03-26
+   Updated     : 2026-04-04
    ---------------------------------------------------------------------------
    Purpose     : V2 Attendance list page. Displays a paged, searchable, sortable
                  table of attendance records using the V2 PageTemplateV2
@@ -16,6 +16,7 @@
      - 1.0.1  2026-03-25  Removed invalid V2 component imports.
      - 1.1.0  2026-03-26  Replaced StandardPageV2 with PageTemplateV2.
                           Updated namespace and layout. Preserved table logic.
+     - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/attendance
@@ -24,7 +25,7 @@
 *@
 
 @page "/v2/attendance"
-@layout BaseLayoutV2
+@layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Attendance
 
 @using AbsenceApp.Client.Models.TableV2

@@ -3,9 +3,9 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /login
    Author      : Michael
-   Version     : 2.4.0
+   Version     : 2.5.0
    Created     : 2026-03-17
-   Updated     : 2026-03-29
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
    Purpose     : Authentication page for V2. Migrated from V1 and integrated
                  into the new V2 component structure and design-system shell.
@@ -27,6 +27,11 @@
                           BaseLayoutV2 to MainLayoutV2. Behaviour is identical
                           (sidebar/header hidden when !IsAuthenticated); naming
                           now matches the canonical V2 layout convention.
+     - 2.5.0  2026-04-05  Phase 3 Header Nav Identity: injected
+                          IMessageService and INotificationService. After a
+                          successful login, loads unread messages and
+                          notifications for the authenticated user and stores
+                          them in AppState via SetMessagingData().
    ---------------------------------------------------------------------------
    Notes       :
      - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
@@ -38,6 +43,8 @@
 @layout MainLayoutV2
 @inject NavigationManager Nav
 @inject IAuthService AuthService
+@inject IMessageService MessageService
+@inject INotificationService NotificationService
 @inject AppStateService AppState
 
 @* =========================================================================
@@ -125,6 +132,13 @@
         if (result.Success)
         {
             AppState.SetUser(result.UserId, result.UserName, result.Role);
+
+            // Load unread messages + notifications from the database and
+            // store in AppState so HeaderV2 can bind to them immediately.
+            var messages      = await MessageService.GetUnreadMessagesAsync(result.UserId);
+            var notifications = await NotificationService.GetUnreadNotificationsAsync(result.UserId);
+            AppState.SetMessagingData(messages, notifications);
+
             Nav.NavigateTo("/v2/dashboard/overview");
         }
         else

@@ -1,0 +1,27 @@
+@* ===========================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Spacing
+   Route       : /global-settings/spacing
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-06
+   ---------------------------------------------------------------------------
+   Purpose     : Global Settings — Spacing configuration page.
+                 Placeholder page matching menu.globalsettings.json href
+                 /global-settings/spacing. Prevents "Page not found" when
+                 navigating to Global Settings → Foundations → Spacing.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-06  Phase 3 Route Repair: Initial implementation.
+   ===========================================================================
+*@
+
+@page "/global-settings/spacing"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@using AbsenceApp.Client.Components.Templates
+
+<BlankPageTemplate PageTitle="Spacing — Global Settings">
+    <ChildContent>
+        <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
+    </ChildContent>
+</BlankPageTemplate>
