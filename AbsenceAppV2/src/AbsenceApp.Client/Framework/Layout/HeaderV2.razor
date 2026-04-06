@@ -130,8 +130,11 @@
             </button>
             @if (_msgOpen)
             {
-                <div class="dsv2-header__dropdown">
-                    <div class="dsv2-header__dd-header">Messages</div>
+                <div class="dsv2-header__dropdown dsv2-header__dropdown--msgs">
+                    <div class="dsv2-header__dd-hdr-coloured dsv2-header__dd-hdr-coloured--msgs">
+                        <span class="dsv2-header__dd-hdr-count">@AppState.UnreadMessagesCount.ToString("D2")</span>
+                        <span class="dsv2-header__dd-hdr-label">Messages</span>
+                    </div>
                     @foreach (var m in AppState.UnreadMessages)
                     {
                         <div class="dsv2-header__dd-item">
@@ -159,8 +162,11 @@
             </button>
             @if (_notifOpen)
             {
-                <div class="dsv2-header__dropdown">
-                    <div class="dsv2-header__dd-header">Notifications</div>
+                <div class="dsv2-header__dropdown dsv2-header__dropdown--notifs">
+                    <div class="dsv2-header__dd-hdr-coloured dsv2-header__dd-hdr-coloured--notifs">
+                        <span class="dsv2-header__dd-hdr-count">@AppState.UnreadNotificationsCount.ToString("D2")</span>
+                        <span class="dsv2-header__dd-hdr-label">Notifications</span>
+                    </div>
                     @foreach (var n in AppState.UnreadNotifications)
                     {
                         <div class="dsv2-header__dd-item">
@@ -187,8 +193,6 @@
                     <span class="dsv2-header__user-name">@AppState.UserName</span>
                     <span class="dsv2-header__user-role">@AppState.UserRole</span>
                 </span>
-                <i class="bi bi-chevron-down dsv2-header__user-chevron @(_userOpen ? "dsv2-header__user-chevron--open" : "")"
-                   aria-hidden="true"></i>
             </button>
             @if (_userOpen)
             {

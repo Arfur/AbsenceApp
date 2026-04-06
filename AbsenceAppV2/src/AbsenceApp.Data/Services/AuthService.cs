@@ -79,7 +79,7 @@ public class AuthService : IAuthService
         {
             Success  = true,
             UserId   = user.Id,
-            UserName = user.Username,
+            UserName = user.Name,
             Role     = roleType?.DisplayName ?? (user.IsAdmin ? "Admin" : "Staff")
         };
     }

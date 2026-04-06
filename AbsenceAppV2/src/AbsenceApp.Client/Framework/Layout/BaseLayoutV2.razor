@@ -2,9 +2,9 @@
    File        : BaseLayoutV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : AI Assistant
-   Version     : 1.5.0
+   Version     : 1.6.0
    Created     : 2026-03-23
-   Updated     : 2026-03-27
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
    Purpose     : Base layout for all V2 pages. Provides the universal shell
                  including SidebarV2, HeaderV2, BreadcrumbV2, a scrollable
@@ -32,6 +32,8 @@
                           guard so a spinner overlay shows for the first render
                           cycle, preventing the brief flicker of the auth layout
                           before AppState is fully hydrated.
+     - 1.6.0  2026-04-05  Injected EntitlementsService and applied entitlement-
+                          driven visibility to the sidebar.
    ---------------------------------------------------------------------------
    Notes       :
      - `dark` class in app.css overrides all V1 CSS custom properties.
@@ -44,6 +46,7 @@
 @inherits LayoutComponentBase
 @using AbsenceApp.Client.Services
 @inject AppStateService AppState
+@inject EntitlementsService Entitlements
 @implements IDisposable
 
 @* =========================
@@ -71,7 +74,7 @@ else
        SECTION: SIDEBAR
        Only rendered when the user is authenticated.
        ========================= *@
-    @if (AppState.IsAuthenticated)
+    @if (AppState.IsAuthenticated && Entitlements.Has("ui.sidebar"))
     {
         <SidebarV2 />
     }

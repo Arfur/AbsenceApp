@@ -3,9 +3,9 @@
  File        : App.xaml.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.3.0
  Created     : 2026-03-13
- Updated     : 2026-03-18
+ Updated     : 2026-04-05
 -------------------------------------------------------------------------------
  Purpose     : Code-behind for the root MAUI Application class.
                Sets MainPage to the Blazor host ContentPage on startup.
@@ -17,6 +17,10 @@
    - 1.1.0  2026-03-18  Added AppDomain.UnhandledException handler to log
                          startup crashes to Desktop/AbsenceApp_crash.log
                          before WinUI swallows them in CoreMessagingXP.dll.
+   - 1.2.0  2026-04-05  Injected EntitlementsService — superseded.
+   - 1.3.0  2026-04-05  Removed EntitlementsService injection. Entitlements
+                         are loaded in Login.razor (Reset + LoadAsync) after
+                         successful authentication. No startup pre-load needed.
 -------------------------------------------------------------------------------
  Notes       :
    - The root ContentPage hosts the BlazorWebView declared in MainPage.xaml.

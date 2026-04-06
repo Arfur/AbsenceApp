@@ -3,7 +3,7 @@
    Namespace   : AbsenceApp.Client.Components.Pages
    Route       : /login
    Author      : Michael
-   Version     : 2.5.0
+   Version     : 2.6.0
    Created     : 2026-03-17
    Updated     : 2026-04-05
    ---------------------------------------------------------------------------
@@ -32,6 +32,14 @@
                           successful login, loads unread messages and
                           notifications for the authenticated user and stores
                           them in AppState via SetMessagingData().
+     - 2.6.0  2026-04-05  Entitlement governance (G1+G3): injected
+                          EntitlementsService. After each successful login
+                          calls Reset() to discard any prior session's
+                          entitlements, then LoadAsync() (try/catch) to load
+                          the effective entitlement set for the authenticated
+                          user. Closes the gap where LoadAsync was never
+                          invoked and stale entitlements persisted across
+                          logout/re-login cycles.
    ---------------------------------------------------------------------------
    Notes       :
      - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
@@ -46,6 +54,7 @@
 @inject IMessageService MessageService
 @inject INotificationService NotificationService
 @inject AppStateService AppState
+@inject EntitlementsService Entitlements
 
 @* =========================================================================
    Section: Auth card — two-panel layout (branding left, form right)
@@ -138,6 +147,21 @@
             var messages      = await MessageService.GetUnreadMessagesAsync(result.UserId);
             var notifications = await NotificationService.GetUnreadNotificationsAsync(result.UserId);
             AppState.SetMessagingData(messages, notifications);
+
+            // Reset and reload effective entitlements for this authenticated session.
+            // Reset() clears any entitlements carried over from a prior session and
+            // unsets the load flag so LoadAsync executes the HTTP call.
+            Entitlements.Reset();
+            try
+            {
+                await Entitlements.LoadAsync();
+            }
+            catch
+            {
+                // Non-fatal: entitlements remain empty until the backend
+                // entitlements endpoint is reachable. All Has() checks will
+                // return false until LoadAsync succeeds on a subsequent login.
+            }
 
             Nav.NavigateTo("/v2/dashboard/overview");
         }

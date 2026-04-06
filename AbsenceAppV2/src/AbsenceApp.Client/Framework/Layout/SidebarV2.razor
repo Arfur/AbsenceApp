@@ -2,7 +2,7 @@
    File        : SidebarV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : AI Assistant
-   Version     : 1.8.0
+   Version     : 1.9.0
    Created     : 2026-03-21
    Updated     : 2026-04-05
    ---------------------------------------------------------------------------
@@ -59,6 +59,12 @@
                           (avatar + username + role display) from sidebar.
                           Identity UI is now rendered exclusively in HeaderV2.
                           Sidebar is now navigation-only.
+     - 1.9.0  2026-04-05  Entitlement governance (G4): injected
+                          EntitlementsService. Global Settings (super-admin)
+                          menu content is now gated behind
+                          Entitlements.Has("ui.global-settings"). The Back to
+                          Main Menu link remains unconditional so users can
+                          always navigate away from a restricted route.
    ---------------------------------------------------------------------------
    Notes       :
      - Must only be used in V2 layouts (BaseLayoutV2).
@@ -70,6 +76,7 @@
 @using AbsenceApp.Client.Models.V2
 @inject NavigationServiceV2 NavService
 @inject AppStateService AppState
+@inject EntitlementsService Entitlements
 @inject NavigationManager Nav
 @implements IDisposable
 
@@ -96,6 +103,13 @@
                 }
             </a>
 
+            @* =========================
+               SECTION: Global Settings menu content
+               Gated by ui.global-settings entitlement. The Back link above
+               is unconditional so the user can always navigate away.
+               ========================= *@
+            @if (Entitlements.Has("ui.global-settings"))
+            {
             @if (_loadError is not null)
             {
                 @* Visible error — never silently blank *@
@@ -119,6 +133,7 @@
             {
                 @* Global Config accordion groups *@
                 @RenderGroups(_superAdminGroups)
+            }
             }
         }
         else if (_loadError is not null)

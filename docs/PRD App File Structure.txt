@@ -1,0 +1,39 @@
+MauiProgram.cs
+└── App.xaml.cs
+    └── MainPage.xaml
+        └── wwwroot/index.html
+            ├── css/bootstrap/bootstrap.min.css
+            ├── https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css
+            ├── css/app.css
+            ├── css/tokens/spacing.css
+            ├── css/tokens/colors.css
+            ├── css/tokens/typography.css
+            ├── css/tokens/radius.css
+            ├── css/tokens/layout.css
+            ├── css/global-config.css
+            ├── AbsenceApp.Client.styles.css
+            ├── favicon.png
+            ├── _framework/blazor.webview.js
+            ├── config/designsystem/
+            │   ├── menu.json                     ← confirmed
+            │   ├── menu.globalsettings.json
+            │   ├── theme.json
+            │   ├── table-schema.json
+            │   ├── components.json
+            │   └── icons.json
+            └── AppHost.razor
+                ├── SplashScreenV2.razor
+                │   └── SplashScreenV2.razor.css
+                ├── GlobalErrorBoundaryV2.razor
+                │   └── GlobalErrorBoundaryV2.razor.css
+                └── Routes.razor
+                    └── MainLayoutV2.razor
+                        ├── MainLayoutV2.razor.css
+                        ├── SidebarV2.razor
+                        │   ├── SidebarV2.razor.css
+                        │   └── NavigationServiceV2.cs
+                        │       └── DesignSystemConfigService.cs
+                        ├── HeaderV2.razor
+                        │   └── HeaderV2.razor.css
+                        └── BreadcrumbV2.razor
+                            └── BreadcrumbV2.razor.css

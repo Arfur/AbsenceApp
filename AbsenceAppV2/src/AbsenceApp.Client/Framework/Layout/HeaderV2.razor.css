@@ -177,7 +177,7 @@
     border-radius: 0.5rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     z-index: 10;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .dsv2-header__dd-header {
@@ -188,6 +188,61 @@
     text-transform: uppercase;
     color: var(--ds-color-text-muted, #7b8494);
     border-bottom: 1px solid var(--ds-color-border, #dde1e7);
+}
+
+/* ── Coloured header block (messages / notifications) ──────────────────── */
+.dsv2-header__dd-hdr-coloured {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    color: #fff;
+    border-bottom: none;
+}
+
+.dsv2-header__dd-hdr-coloured--msgs {
+    background: var(--ds-color-accent, #2563eb);
+}
+
+.dsv2-header__dd-hdr-coloured--notifs {
+    background: #7c3aed;
+}
+
+.dsv2-header__dd-hdr-count {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.dsv2-header__dd-hdr-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+}
+
+/* ── Dropdown caret triangle — points upward toward the triggering icon ─── */
+.dsv2-header__dropdown--msgs::before,
+.dsv2-header__dropdown--notifs::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 11px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.dsv2-header__dropdown--msgs::before {
+    border-bottom: 8px solid var(--ds-color-accent, #2563eb);
+}
+
+.dsv2-header__dropdown--notifs::before {
+    border-bottom: 8px solid #7c3aed;
 }
 
 .dsv2-header__dd-item {

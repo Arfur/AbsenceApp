@@ -1,0 +1,47 @@
+type,id,parent_id,label,icon,flat,route,sort_id
+category,100000,,Main Sidebar,,0,,100000
+menu,101000,100000,Dashboard,bi-speedometer2,0,,101000
+submenu,101010,101000,Operational Overview,bi-graph-up,0,/v2/dashboard/overview,101010
+submenu,101020,101000,Attendance & Trends,bi-bar-chart-line,0,/v2/dashboard/trends,101020
+submenu,101030,101000,Safeguarding & Wellbeing,bi-shield-check,0,/v2/dashboard/safeguarding,101030
+
+category,200000,,PEOPLE,,0,,200000
+menu,201000,200000,Students,bi-mortarboard,0,,201000
+submenu,201010,201000,All Students,bi-people,0,/v2/students,201010
+submenu,201020,201000,Student Details,bi-person-lines-fill,0,/v2/students/details,201020
+submenu,201030,201000,Add Student,bi-person-plus,0,/v2/students/new,201030
+
+menu,202000,200000,Staff,bi-person-badge,0,,202000
+submenu,202010,202000,All Staff,bi-people-fill,0,/v2/staff,202010
+submenu,202020,202000,Staff Details,bi-person-lines-fill,0,/v2/staff/details,202020
+submenu,202030,202000,Add Staff,bi-person-plus-fill,0,/v2/staff/new,202030
+
+menu,203000,200000,Parents,bi-telephone-inbound,0,,203000
+
+category,300000,,ACADEMICS,,0,,300000
+menu,301000,300000,Classes,bi-book-fill,0,,301000
+submenu,301010,301000,All Classes,bi-building,0,/v2/classes,301010
+submenu,301020,301000,Class Details,bi-card-text,0,/v2/classes/details,301020
+submenu,301030,301000,Add Class,bi-plus-square,0,/v2/classes/new,301030
+
+category,400000,,ATTENDANCE,,0,,400000
+menu,401000,400000,Attendance,bi-calendar-check-fill,1,,401000
+submenu,401010,401000,Attendance,bi-calendar-check-fill,0,/v2/attendance,401010
+
+category,500000,,CONFIGURATION,,0,,500000
+menu,501000,500000,Audit Log,bi-journal-check,1,,501000
+submenu,501010,501000,Audit Log,bi-journal-check,0,/v2/auditlog,501010
+
+category,600000,,SETTINGS,,0,,600000
+menu,601000,600000,Table Settings,bi-table,1,,601000
+submenu,601010,601000,Table Settings,bi-table,0,/v2/settings,601010
+
+menu,602000,600000,Diagnostics,bi-activity,1,,602000
+submenu,602010,602000,Diagnostics,bi-activity,0,/v2/diagnostics,602010
+
+menu,603000,600000,Site,bi-diagram-3,1,,603000
+submenu,603010,603000,Site,bi-diagram-3,0,/v2/site,603010
+
+category,700000,,DESIGN SYSTEM,,0,,700000
+menu,701000,700000,Global Config,bi-grid-3x3-gap-fill,1,,701000
+submenu,701010,701000,Global Config,bi-grid-3x3-gap-fill,0,/global-settings/colours,701010

@@ -3,9 +3,9 @@
  File        : MauiProgram.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.2.2
+ Version     : 1.2.3
  Created     : 2026-03-13
- Updated     : 2026-04-04
+ Updated     : 2026-04-05
 -------------------------------------------------------------------------------
  Purpose     : MAUI application bootstrap.  Builds the MauiApp host, registers
                the Blazor web view, loads the embedded appsettings.json, wires
@@ -29,6 +29,8 @@
                          no DbContext reference; Scoped lifetime caused auth
                          state (IsAuthenticated) to reset on certain navigations,
                          causing redirect-to-login loops.
+   - 1.2.3  2026-04-05  Added EntitlementsService as Scoped for Phase 2
+                         entitlement loading and UI permission checks.
 -------------------------------------------------------------------------------
  Notes       :
    - appsettings.json is embedded as a ManifestResource so MAUI can read it
@@ -87,6 +89,7 @@ public static class MauiProgram
             // Application services
             // -----------------------------------------------------------------
             builder.Services.AddSingleton<AppStateService>();
+            builder.Services.AddScoped<EntitlementsService>();
 
             // -----------------------------------------------------------------
             // V2 UI Framework — all V2 services, API clients, and ViewModels

@@ -2,9 +2,9 @@
    File        : AppHost.razor
    Namespace   : AbsenceApp.Client.Components
    Author      : Michael
-   Version     : 4.0.0
+   Version     : 4.1.0
    Created     : 2026-03-23
-   Updated     : 2026-03-28
+   Updated     : 2026-04-05
    ---------------------------------------------------------------------------
    Purpose     : Root Blazor component for the MAUI BlazorWebView.
                  Renders a branded SplashScreenV2 for 1 500 ms while the app
@@ -13,6 +13,8 @@
                  layout-level failures in SidebarV2, HeaderV2, BreadcrumbV2,
                  and page components — are caught and shown as a styled
                  fallback rather than a blank screen or raw exception dump.
+                 Injects EntitlementsService at the root of the Blazor tree so
+                 layouts and pages can perform permission checks.
    ---------------------------------------------------------------------------
    Notes       :
      - Registered as the RootComponent in MainPage.xaml.
@@ -29,10 +31,15 @@
      - 4.0.0  2026-03-28  Phase 4 fix: added SplashScreenV2 shown for 1 500 ms
                           on first load before the router is revealed. Restores
                           the branded loading experience that was missing in V2.
+     - 4.1.0  2026-04-05  Injected EntitlementsService at the Blazor root so
+                          layouts and pages can evaluate permissions.
    ===========================================================================
 *@
 @using AbsenceApp.Client
 @using AbsenceApp.Client.Framework.Layouts
+@using AbsenceApp.Client.Services
+
+@inject EntitlementsService Entitlements
 
 <!-- =========================================================
      Section: SPLASH SCREEN

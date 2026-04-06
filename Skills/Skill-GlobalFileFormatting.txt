@@ -1,0 +1,164 @@
+Skill Name: FileFormatting
+Description:
+  Governs all file header, section comment, versioning, and formatting rules
+  for all source files. Ensures deterministic, audit-safe, reproducible
+  file updates across all supported file types.
+
+Global Rules:
+  1. Never use XML documentation comments (<summary>, <remarks>, etc.).
+  2. Always preserve full file history in the "Changes" block.
+  3. Always append new entries to the "Changes" block when a file is updated.
+  4. Always bump the Version number when a file is updated, even for a one-line change.
+  5. Never delete or rewrite existing "Changes" entries.
+  6. Always provide a full drop-in file replacement when updating any file.
+  7. Never reorder, rename, or refactor code unless explicitly instructed.
+  8. Always use the correct header and section comment format for the file type.
+  9. Never introduce assumptions (e.g., claim names, namespaces, DbContext names).
+ 10. Never bundle future steps; only perform the requested step.
+
+-------------------------------------------------------------------------------
+File Type Rules
+-------------------------------------------------------------------------------
+
+CS Files (.cs):
+  Header format:
+    /*
+    ===============================================================================
+     File        : <filename>
+     Namespace   : <namespace>
+     Author      : Michael
+     Version     : <x.y.z>
+     Created     : <yyyy-mm-dd>
+     Updated     : <yyyy-mm-dd>
+    -------------------------------------------------------------------------------
+     Purpose     : <multi-line purpose text, aligned>
+    -------------------------------------------------------------------------------
+     Changes     :
+       - <version> <date> <description>
+    -------------------------------------------------------------------------------
+     Notes       :
+       - <optional notes>
+    ===============================================================================
+    */
+
+  Section comment format:
+    // ===========================================================================
+    // <Section Name>
+    // ===========================================================================
+
+  Subsection / explanatory block format:
+    // ---------------------------------------------------------------------------
+    // <Explanation text>
+    // ---------------------------------------------------------------------------
+
+  Extended explanatory block (multi-line):
+    // ---------------------------------------------------------------------------
+    // <Line 1>
+    // <Line 2>
+    // ---------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+Razor Files (.razor):
+  Header format (Razor-safe):
+    @*
+    ===============================================================================
+     File        : <filename>
+     Author      : Michael
+     Version     : <x.y.z>
+     Created     : <yyyy-mm-dd>
+     Updated     : <yyyy-mm-dd>
+    -------------------------------------------------------------------------------
+     Purpose     : <multi-line purpose text>
+    -------------------------------------------------------------------------------
+     Changes     :
+       - <version> <date> <description>
+    -------------------------------------------------------------------------------
+     Notes       :
+       - <optional notes>
+    ===============================================================================
+    *@
+
+  Section comment format:
+    @* ===========================================================================
+       <Section Name>
+       ========================================================================== *@
+
+-------------------------------------------------------------------------------
+
+Razor CSS Files (.razor.css):
+  Header format:
+    /* ===============================================================================
+       File        : <filename>
+       Author      : Michael
+       Version     : <x.y.z>
+       Created     : <yyyy-mm-dd>
+       Updated     : <yyyy-mm-dd>
+       -------------------------------------------------------------------------------
+       Purpose     : <multi-line purpose text>
+       -------------------------------------------------------------------------------
+       Changes     :
+         - <version> <date> <description>
+       -------------------------------------------------------------------------------
+       Notes       :
+         - <optional notes>
+       ===============================================================================
+    */
+
+  Section comment format:
+    /* ==========================================================================
+       <Section Name>
+       ========================================================================== */
+
+-------------------------------------------------------------------------------
+
+XML Files (.xml):
+  Header format:
+    <!-- ===============================================================================
+         File        : <filename>
+         Author      : Michael
+         Version     : <x.y.z>
+         Created     : <yyyy-mm-dd>
+         Updated     : <yyyy-mm-dd>
+         -------------------------------------------------------------------------------
+         Purpose     : <multi-line purpose text>
+         -------------------------------------------------------------------------------
+         Changes     :
+           - <version> <date> <description>
+         -------------------------------------------------------------------------------
+         Notes       :
+           - <optional notes>
+         ===============================================================================
+    -->
+
+  Section comment format:
+    <!-- ==========================================================================
+         <Section Name>
+         ========================================================================== -->
+
+-------------------------------------------------------------------------------
+
+JSON Files (.json):
+  JSON does not support comments; therefore use a top-level _meta block.
+
+  Required _meta structure:
+    {
+      "_meta": {
+        "version": "<x.y.z>",
+        "updated": "<yyyy-mm-dd>",
+        "changes": [
+          "<version> <date> <description>"
+        ]
+      },
+      ... actual JSON content ...
+    }
+
+  Rules:
+    - Always update version and append a new change entry when the file is modified.
+    - Never use // or /* */ comments.
+    - Always maintain the _meta block.
+    - Never reorder keys unless explicitly instructed.
+
+-------------------------------------------------------------------------------
+
+End of Skill
