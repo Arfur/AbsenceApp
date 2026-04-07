@@ -3,17 +3,17 @@
  File        : MauiProgram.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.2.3
+ Version     : 1.2.5
  Created     : 2026-03-13
- Updated     : 2026-04-05
+ Updated     : 2026-04-07
 -------------------------------------------------------------------------------
  Purpose     : MAUI application bootstrap.  Builds the MauiApp host, registers
                the Blazor web view, loads the embedded appsettings.json, wires
                the full EF data layer via AddDataLayer(), and registers all
                application services and scoped ViewModels into the DI container.
                Wraps the entire build in a try-catch that writes any startup
-               exception to Desktop/AbsenceApp_crash.log before re-throwing,
-               ensuring DI failures are visible rather than silently swallowed.
+               exception to C:\DevAbsence1\logs\AbsenceApp_crash.log before
+               re-throwing, ensuring DI failures are visible.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-13  Initial implementation.
@@ -29,8 +29,10 @@
                          no DbContext reference; Scoped lifetime caused auth
                          state (IsAuthenticated) to reset on certain navigations,
                          causing redirect-to-login loops.
-   - 1.2.3  2026-04-05  Added EntitlementsService as Scoped for Phase 2
-                         entitlement loading and UI permission checks.
+   - 1.2.3  2026-04-05  Added EntitlementsService as Scoped.
+   - 1.2.4  2026-04-06  Option A Phase 3: removed EntitlementsService.
+   - 1.2.5  2026-04-07  Crash log path changed from Desktop to
+                         C:\DevAbsence1\logs (unified log directory).
 -------------------------------------------------------------------------------
  Notes       :
    - appsettings.json is embedded as a ManifestResource so MAUI can read it
@@ -89,7 +91,6 @@ public static class MauiProgram
             // Application services
             // -----------------------------------------------------------------
             builder.Services.AddSingleton<AppStateService>();
-            builder.Services.AddScoped<EntitlementsService>();
 
             // -----------------------------------------------------------------
             // V2 UI Framework — all V2 services, API clients, and ViewModels
@@ -108,10 +109,10 @@ public static class MauiProgram
         }
         catch (Exception ex)
         {
-            // Write crash details to the Desktop before WinUI swallows the error.
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                "AbsenceApp_crash.log");
+            // Write crash details to the unified logs directory.
+            var dir  = @"C:\DevAbsence1\logs";
+            var path = Path.Combine(dir, "AbsenceApp_crash.log");
+            try { Directory.CreateDirectory(dir); } catch { }
             File.WriteAllText(path, ex.ToString());
             throw;
         }

@@ -1,10 +1,10 @@
 ﻿@* ===========================================================================
    File        : Routes.razor
    Namespace   : AbsenceApp.Client.Components
-   Author      : AI Assistant
-   Version     : 2.7.0
+   Author      : Michael
+   Version     : 2.12.0
    Created     : 2026-03-13
-   Updated     : 2026-03-29
+   Updated     : 2026-04-07
    ---------------------------------------------------------------------------
    Purpose     : Root Blazor router component for AbsenceApp V2.
                  Matches the current URL to a @page-decorated component and
@@ -18,26 +18,18 @@
      - 2.0.0  2026-03-23  Switched DefaultLayout to MainLayout for V2 shell.
      - 2.1.0  2026-03-24  Verified for AbsenceAppV2; no functional changes.
      - 2.2.0  2026-03-25  Confirmed as V2 router after V1/V2 project split.
-                          Removed ambiguity with V1; V1 router restored separately.
-     - 2.3.0  2026-03-25  Fixed DefaultLayout from Layout.MainLayout (V1) to
-                          Layout.MainLayoutV2 (incorrect namespace).
-     - 2.4.0  2026-03-26  Corrected DefaultLayout to typeof(MainLayoutV2) and
-                          added @using AbsenceApp.Client.Framework.Layout.
-                          This resolves CS0234/CS0246 errors across all V2 pages.
-     - 2.5.0  2026-03-26  Replaced typeof(MainLayoutV2) with typeof(BaseLayoutV2)
-                          and updated @using to AbsenceApp.Client.Framework.Layouts.
-                          MainLayoutV2 no longer exists; BaseLayoutV2 is the V2
-                          authenticated-shell layout (CS0246 build error fix).
-     - 2.6.0  2026-03-26  Phase 3 Layout Repair: injected NavigationManager and
-                          AppStateService. Added OnInitialized and LocationChanged
-                          handler that redirects unauthenticated users to /login
-                          when they navigate to any route other than /login.
-                          Implemented IDisposable to unsubscribe the handler.
-     - 2.7.0  2026-03-29  Phase 3 & 4 completion: changed DefaultLayout from
-                          typeof(BaseLayoutV2) to typeof(MainLayoutV2). New
-                          routed pages that omit @layout will now default to the
-                          canonical V2 shell layout. Existing pages with explicit
-                          @layout BaseLayoutV2 continue to work unchanged.
+     - 2.3.0  2026-03-25  Fixed DefaultLayout namespace.
+     - 2.4.0  2026-03-26  Corrected DefaultLayout to typeof(MainLayoutV2).
+     - 2.5.0  2026-03-26  Updated to typeof(BaseLayoutV2).
+     - 2.6.0  2026-03-26  Added auth guard + LocationChanged.
+     - 2.7.0  2026-03-29  DefaultLayout changed to MainLayoutV2.
+     - 2.8.0  2026-04-06  Diagnostic logging added.
+     - 2.9.0  2026-04-07  Crash log path unified + caller-origin tag.
+     - 2.10.0 2026-04-07  MAUI Hybrid fix: ignore stale WebView navigation
+                          events to authenticated routes when not authenticated.
+     - 2.11.0 2026-04-07  Added forced redirect to /login after ignoring stale
+                          MAUI navigation so the UI renders the correct page.
+     - 2.12.0 2026-04-07  Debug instrumentation: added Dispose log.
    ===========================================================================
 *@
 
@@ -70,52 +62,83 @@
 </Router>
 
 @code {
-    // ── Auth guard ──────────────────────────────────────────────────────────
-    // Runs on initial render and on every navigation to ensure unauthenticated
-    // users are always sent to /login.  The guard skips the /login route itself
-    // to prevent an infinite redirect loop.
-
     protected override void OnInitialized()
     {
+        AppLog.TestWrite();
+        AppLog.Write("Routes.razor", "OnInitialized",
+            $"Router started. IsAuthenticated={AppState.IsAuthenticated} URI={Nav.Uri}");
+
         Nav.LocationChanged += OnLocationChanged;
-        _ = InvokeAsync(() => CheckAuthRedirect(Nav.Uri));
+
+        _ = InvokeAsync(() => CheckAuthRedirect(Nav.Uri, "OnInitialized"));
     }
 
     private void OnLocationChanged(object? sender,
         Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
-        _ = InvokeAsync(() => CheckAuthRedirect(e.Location));
+        AppLog.Write("Routes.razor", "OnLocationChanged",
+            $"URI={e.Location} IsAuthenticated={AppState.IsAuthenticated}");
+
+        _ = InvokeAsync(() => CheckAuthRedirect(e.Location, "LocationChanged"));
     }
 
-    private void CheckAuthRedirect(string uri)
+    private void CheckAuthRedirect(string uri, string calledFrom = "")
     {
         var path = Nav.ToBaseRelativePath(uri);
         if (!path.StartsWith("/")) path = "/" + path;
 
+        // ───────────────────────────────────────────────────────────────
+        // MAUI Hybrid fix:
+        // Ignore stale WebView navigation events to authenticated routes
+        // when the user is not authenticated.
+        // ALSO: force router back to /login so UI is correct.
+        // ───────────────────────────────────────────────────────────────
+        if (!AppState.IsAuthenticated &&
+            path.StartsWith("/v2/", StringComparison.OrdinalIgnoreCase) &&
+            !path.Equals("/login", StringComparison.OrdinalIgnoreCase))
+        {
+            AppLog.Write("Routes.razor", "CheckAuthRedirect",
+                $"[from={calledFrom}] Ignoring stale MAUI WebView navigation to '{path}' while unauthenticated.");
+
+            Nav.NavigateTo("/login", replace: true);
+            return;
+        }
+
         if (!AppState.IsAuthenticated &&
             !path.Equals("/login", StringComparison.OrdinalIgnoreCase))
         {
+            AppLog.Write("Routes.razor", "CheckAuthRedirect",
+                $"[from={calledFrom}] Unauthenticated access to '{path}' — redirecting to /login");
+
             Nav.NavigateTo("/login", replace: true);
+        }
+        else
+        {
+            AppLog.Write("Routes.razor", "CheckAuthRedirect",
+                $"[from={calledFrom}] path='{path}' IsAuthenticated={AppState.IsAuthenticated} — no redirect");
         }
     }
 
     public void Dispose()
     {
+        AppLog.Write("Routes.razor", "Dispose",
+            $"Unsubscribing from Nav.LocationChanged. IsAuthenticated={AppState.IsAuthenticated}");
         Nav.LocationChanged -= OnLocationChanged;
     }
-
-    // ── Error boundary helper ────────────────────────────────────────────────
 
     static void LogError(Exception ex)
     {
         try
         {
-            var path = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                "AbsenceApp_crash.log");
+            var dir  = @"C:\DevAbsence1\logs";
+            var path = System.IO.Path.Combine(dir, "AbsenceApp_crash.log");
+            System.IO.Directory.CreateDirectory(dir);
             System.IO.File.AppendAllText(path,
                 $"[{DateTime.Now:HH:mm:ss}] ErrorBoundary: {ex}{Environment.NewLine}");
         }
         catch { }
+
+        AppLog.Write("Routes.razor", "LogError",
+            $"ErrorBoundary caught: {ex.GetType().Name}: {ex.Message}");
     }
 }

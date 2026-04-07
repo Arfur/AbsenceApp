@@ -1,10 +1,10 @@
 ﻿@* ===========================================================================
    File        : BreadcrumbV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
-   Author      : AI Assistant
-   Version     : 1.2.0
+   Author      : Michael
+   Version     : 2.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-27
+   Updated     : 2026-04-07
    ---------------------------------------------------------------------------
    Purpose     : Route-aware breadcrumb bar. Subscribes to
                  NavigationManager.LocationChanged, calls NavigationServiceV2
@@ -36,6 +36,16 @@
                               sibling items (e.g. /v2/dashboard) from stealing
                               the match for /v2/dashboard/safeguarding via the
                               prefix rule.
+     - 2.0.0  2026-04-06  Schema alignment: replaced all item.Href with
+                          item.Route to match MenuItemModel.Route (was Href).
+                          Replaced flat group detection (group.Flat && Items[0].Href)
+                          with DB-schema derivation (Items.Count == 0 &&
+                          group.Route). Author corrected to Michael.
+     - 2.1.0  2026-04-07  Debug instrumentation: injected AppStateService for
+                          logging context. Added AppLog.Write calls to
+                          OnInitializedAsync (with URI and IsAuthenticated),
+                          OnLocationChanged, UpdateAsync (entry, NavService call
+                          entry/result for both menu paths), and Dispose.
    ---------------------------------------------------------------------------
    Notes       :
      - No [Parameter] public slots — component is self-contained.
@@ -47,6 +57,7 @@
 @using AbsenceApp.Client.Models.V2
 @inject NavigationServiceV2 NavService
 @inject NavigationManager Nav
+@inject AppStateService AppState
 @implements IDisposable
 
 @* =========================
@@ -93,14 +104,20 @@
 
     protected override async Task OnInitializedAsync()
     {
+        AppLog.Write("BreadcrumbV2.razor", "OnInitializedAsync",
+            $"ENTER — IsAuthenticated={AppState.IsAuthenticated} CurrentUserId={AppState.CurrentUserId} URI='{Nav.Uri}'");
         Nav.LocationChanged += OnLocationChanged;
         await UpdateAsync(Nav.Uri);
+        AppLog.Write("BreadcrumbV2.razor", "OnInitializedAsync",
+            $"EXIT — _categoryLabel='{_categoryLabel}' _groupLabel='{_groupLabel}' _itemLabel='{_itemLabel}'");
     }
 
     private void OnLocationChanged(
         object? sender,
         Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
+        AppLog.Write("BreadcrumbV2.razor", "OnLocationChanged",
+            $"Location changed to '{e.Location}' IsAuthenticated={AppState.IsAuthenticated} — dispatching UpdateAsync");
         _ = InvokeAsync(async () =>
         {
             await UpdateAsync(e.Location);
@@ -110,6 +127,8 @@
 
     public void Dispose()
     {
+        AppLog.Write("BreadcrumbV2.razor", "Dispose",
+            $"Unsubscribing from Nav.LocationChanged. IsAuthenticated={AppState.IsAuthenticated}");
         Nav.LocationChanged -= OnLocationChanged;
     }
 
@@ -130,18 +149,24 @@
         _itemLabel     = string.Empty;
 
         var path = GetCleanPath(uri);
+        AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+            $"ENTER path='{path}' IsAuthenticated={AppState.IsAuthenticated} CurrentUserId={AppState.CurrentUserId}");
 
         // ---- Superadmin / Global Settings (/global-settings/*) ----------------
         if (path.StartsWith("/global-settings/", StringComparison.OrdinalIgnoreCase))
         {
+            AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+                $"Path is global-settings — calling NavService.GetGlobalSettingsMenuGroupsAsync()");
             var groups = await NavService.GetGlobalSettingsMenuGroupsAsync();
+            AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+                $"GetGlobalSettingsMenuGroupsAsync returned {groups.Count} groups");
 
             // Pass 1: exact match
             foreach (var group in groups)
             {
                 foreach (var item in group.Items)
                 {
-                    if (path.Equals(item.Href, StringComparison.OrdinalIgnoreCase))
+                    if (path.Equals(item.Route, StringComparison.OrdinalIgnoreCase))
                     {
                         _categoryLabel = group.Group;
                         _groupLabel    = item.Title;
@@ -156,8 +181,8 @@
             {
                 foreach (var item in group.Items)
                 {
-                    if (item.Href.Length > 1 &&
-                        path.StartsWith(item.Href + "/", StringComparison.OrdinalIgnoreCase))
+                    if (item.Route.Length > 1 &&
+                        path.StartsWith(item.Route + "/", StringComparison.OrdinalIgnoreCase))
                     {
                         _categoryLabel = group.Group;
                         _groupLabel    = item.Title;
@@ -174,7 +199,11 @@
         }
 
         // ---- Normal menu -------------------------------------------------------
+        AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+            $"Path is normal menu — calling NavService.GetMenuCategoriesAsync() for path='{path}' IsAuthenticated={AppState.IsAuthenticated}");
         var categories = await NavService.GetMenuCategoriesAsync();
+        AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+            $"GetMenuCategoriesAsync returned {categories.Count} categories for path='{path}'");
 
         // Pass 1: exact match across every item
         foreach (var cat in categories)
@@ -183,7 +212,7 @@
             {
                 foreach (var item in group.Items)
                 {
-                    if (path.Equals(item.Href, StringComparison.OrdinalIgnoreCase))
+                    if (path.Equals(item.Route, StringComparison.OrdinalIgnoreCase))
                     {
                         _categoryLabel = string.IsNullOrEmpty(cat.Category)
                             ? group.Group : cat.Category;
@@ -193,9 +222,10 @@
                     }
                 }
 
-                // Flat group exact match
-                if (group.Flat && group.Items.Count > 0 &&
-                    path.Equals(group.Items[0].Href, StringComparison.OrdinalIgnoreCase))
+                // Leaf group exact match (Items.Count == 0, direct route on group)
+                if (group.Items.Count == 0 &&
+                    !string.IsNullOrEmpty(group.Route) &&
+                    path.Equals(group.Route, StringComparison.OrdinalIgnoreCase))
                 {
                     _categoryLabel = string.IsNullOrEmpty(cat.Category)
                         ? group.Group : cat.Category;
@@ -212,8 +242,8 @@
             {
                 foreach (var item in group.Items)
                 {
-                    if (item.Href.Length > 1 &&
-                        path.StartsWith(item.Href + "/", StringComparison.OrdinalIgnoreCase))
+                    if (item.Route.Length > 1 &&
+                        path.StartsWith(item.Route + "/", StringComparison.OrdinalIgnoreCase))
                     {
                         _categoryLabel = string.IsNullOrEmpty(cat.Category)
                             ? group.Group : cat.Category;
@@ -226,6 +256,8 @@
         }
 
         // No match -- labels remain empty (reset at top of this method).
+        AppLog.Write("BreadcrumbV2.razor", "UpdateAsync",
+            $"EXIT path='{path}' \u2014 no route match found \u2014 labels remain empty");
     }
 
     private string GetCleanPath(string uri)

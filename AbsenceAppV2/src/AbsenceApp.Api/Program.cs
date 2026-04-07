@@ -3,9 +3,9 @@
  File        : Program.cs
  Namespace   : AbsenceApp.Api
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : 2026-03-13
- Updated     : 2026-04-05
+ Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : ASP.NET Core Minimal API startup.
 
@@ -16,12 +16,19 @@
                Phase 2 introduces entitlement-based feature resolution and
                exposes a dedicated endpoint for retrieving the effective
                entitlement set for the authenticated user.
+
+               Phase 3 (Option A) introduces API-authoritative access control:
+               - GET /api/menu returns the role-filtered, pruned menu tree.
+               - GET /api/features/allowed returns a per-feature boolean.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.1.0  2026-04-05  Registered entitlement resolver service as part of
                          Phase 2 navigation and feature control groundwork.
    - 1.2.0  2026-04-05  Added entitlements API endpoint exposing effective
                          feature keys for the authenticated user.
+   - 1.3.0  2026-04-06  Option A access control: registered IMenuResolver,
+                         IFeaturePermissionResolver. Added GET /api/menu and
+                         GET /api/features/allowed endpoints.
 -------------------------------------------------------------------------------
  Notes       :
    - Endpoint definitions are intentionally grouped and ordered.
@@ -33,6 +40,7 @@ using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data;
 using AbsenceApp.Api.Services.Entitlements;
+using AbsenceApp.Api.Services.Navigation;
 using AbsenceApp.Data.Context;
 using System.Security.Claims;
 
@@ -56,6 +64,12 @@ builder.Services.AddDataLayer(connectionString);
 // Phase 2 — Entitlement resolution
 // ---------------------------------------------------------------------------
 builder.Services.AddScoped<IEntitlementsResolver, EntitlementsResolver>();
+
+// ---------------------------------------------------------------------------
+// Phase 3 (Option A) — API-authoritative menu and feature permission
+// ---------------------------------------------------------------------------
+builder.Services.AddScoped<IMenuResolver, MenuResolver>();
+builder.Services.AddScoped<IFeaturePermissionResolver, FeaturePermissionResolver>();
 
 var app = builder.Build();
 
@@ -114,6 +128,58 @@ entitlements.MapGet("/effective", async (
         generatedAtUtc = DateTime.UtcNow
     });
 }).WithName("GetEffectiveEntitlements");
+
+// ===========================================================================
+// Menu endpoint
+// ===========================================================================
+var menu = app.MapGroup("/api/menu").WithTags("Menu");
+
+menu.MapGet("/", async (
+    ClaimsPrincipal user,
+    IMenuResolver resolver,
+    CancellationToken ct) =>
+{
+    // -----------------------------------------------------------------------
+    // Extract role type (int) from JWT
+    // -----------------------------------------------------------------------
+    var roleTypeRaw =
+        user.FindFirstValue("roleType") ??
+        user.FindFirstValue("RoleType");
+
+    if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
+        return Results.Problem("Authenticated roleType claim is missing or invalid.");
+
+    var result = await resolver.GetMenuAsync(roleType, ct);
+    return Results.Ok(result);
+}).WithName("GetMenu");
+
+// ===========================================================================
+// Feature permission endpoint
+// ===========================================================================
+var features = app.MapGroup("/api/features").WithTags("Features");
+
+features.MapGet("/allowed", async (
+    string key,
+    ClaimsPrincipal user,
+    IFeaturePermissionResolver resolver,
+    CancellationToken ct) =>
+{
+    // -----------------------------------------------------------------------
+    // Extract role type (int) from JWT
+    // -----------------------------------------------------------------------
+    var roleTypeRaw =
+        user.FindFirstValue("roleType") ??
+        user.FindFirstValue("RoleType");
+
+    if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
+        return Results.Problem("Authenticated roleType claim is missing or invalid.");
+
+    if (string.IsNullOrWhiteSpace(key))
+        return Results.BadRequest("Feature key is required.");
+
+    var allowed = await resolver.IsAllowedAsync(roleType, key, ct);
+    return Results.Ok(new { key, allowed });
+}).WithName("IsFeatureAllowed");
 
 // ===========================================================================
 // Classes endpoints

@@ -1,60 +1,83 @@
-@* ===========================================================================
-   File        : Login.razor
-   Namespace   : AbsenceApp.Client.Components.Pages
-   Route       : /login
-   Author      : Michael
-   Version     : 2.6.0
-   Created     : 2026-03-17
-   Updated     : 2026-04-05
-   ---------------------------------------------------------------------------
-   Purpose     : Authentication page for V2. Migrated from V1 and integrated
-                 into the new V2 component structure and design-system shell.
-   ---------------------------------------------------------------------------
-   Changes     :
-     - 1.0.0  2026-03-17  Initial implementation (V1).
-     - 1.1.0  2026-03-18  Updated @bind:event behaviour.
-     - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
-     - 2.1.0  2026-03-25  Updated post-login navigation target to /v2/students.
-     - 2.2.0  2026-03-26  Replaced obsolete 'LoginLayout' with 'BaseLayoutV2'
-                          following removal of V1/V1.5 layout folders.
-                          No UI or behavioural changes.
-     - 2.3.0  2026-03-26  Phase 3 Layout Repair: changed post-login redirect
-                          from /v2/students to /v2/dashboard so that after
-                          login the user lands on the primary dashboard view.
-                          BaseLayoutV2 now hides the sidebar/header when not
-                          authenticated, so Login renders as a clean form.
-     - 2.4.0  2026-03-29  Phase 3 & 4 completion: changed @layout from
-                          BaseLayoutV2 to MainLayoutV2. Behaviour is identical
-                          (sidebar/header hidden when !IsAuthenticated); naming
-                          now matches the canonical V2 layout convention.
-     - 2.5.0  2026-04-05  Phase 3 Header Nav Identity: injected
-                          IMessageService and INotificationService. After a
-                          successful login, loads unread messages and
-                          notifications for the authenticated user and stores
-                          them in AppState via SetMessagingData().
-     - 2.6.0  2026-04-05  Entitlement governance (G1+G3): injected
-                          EntitlementsService. After each successful login
-                          calls Reset() to discard any prior session's
-                          entitlements, then LoadAsync() (try/catch) to load
-                          the effective entitlement set for the authenticated
-                          user. Closes the gap where LoadAsync was never
-                          invoked and stale entitlements persisted across
-                          logout/re-login cycles.
-   ---------------------------------------------------------------------------
-   Notes       :
-     - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
-     - Redirects authenticated users to /v2/dashboard.
-   ===========================================================================
+@*
+===============================================================================
+ File        : Login.razor
+ Namespace   : AbsenceApp.Client.Components.Pages
+ Route       : /login
+ Author      : Michael
+ Version     : 3.2.0
+ Created     : 2026-03-17
+ Updated     : 2026-04-07
+-------------------------------------------------------------------------------
+ Purpose     : Authentication page for V2. Migrated from V1 and integrated
+               into the new V2 component structure and design-system shell.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-03-17  Initial implementation (V1).
+   - 1.1.0  2026-03-18  Updated @bind:event behaviour.
+   - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
+   - 2.1.0  2026-03-25  Updated post-login navigation target to /v2/students.
+   - 2.2.0  2026-03-26  Replaced obsolete 'LoginLayout' with 'BaseLayoutV2'
+                        following removal of V1/V1.5 layout folders.
+                        No UI or behavioural changes.
+   - 2.3.0  2026-03-26  Phase 3 Layout Repair: changed post-login redirect
+                        from /v2/students to /v2/dashboard so that after
+                        login the user lands on the primary dashboard view.
+                        BaseLayoutV2 now hides the sidebar/header when not
+                        authenticated, so Login renders as a clean form.
+   - 2.4.0  2026-03-29  Phase 3 & 4 completion: changed @layout from
+                        BaseLayoutV2 to MainLayoutV2. Behaviour is identical
+                        (sidebar/header hidden when !IsAuthenticated); naming
+                        now matches the canonical V2 layout convention.
+   - 2.5.0  2026-04-05  Phase 3 Header Nav Identity: injected
+                        IMessageService and INotificationService. After a
+                        successful login, loads unread messages and
+                        notifications for the authenticated user and stores
+                        them in AppState via SetMessagingData().
+   - 2.6.0  2026-04-05  Entitlement governance (G1+G3): injected
+                        EntitlementsService. After each successful login
+                        calls Reset() to discard any prior session's
+                        entitlements, then LoadAsync() (try/catch) to load
+                        the effective entitlement set for the authenticated
+                        user. Closes the gap where LoadAsync was never
+                        invoked and stale entitlements persisted across
+                        logout/re-login cycles.
+   - 2.7.0  2026-04-06  Option A: removed EntitlementsService dependency.
+                        Added NavigationServiceV2 injection. Calls
+                        NavService.Reset() after login so the navigation
+                        cache is cleared and the menu re-fetches fresh
+                        role-aware data for the newly authenticated user.
+   - 2.8.0  2026-04-06  MAUI render safety: yielded to the Blazor dispatcher
+                        before post-login navigation to ensure UI state
+                        changes are rendered deterministically.
+   - 2.9.0  2026-04-06  Diagnostic logging: added AppLog.Write calls at
+                        OnInitialized, DoLogin entry, login success/failure
+                        branches, and post-login navigation.
+   - 3.0.0  2026-04-07  MAUI render boundary: inserted explicit UI-thread
+                        yield between StateHasChanged and NavigateTo to
+                        guarantee repaint before post-login navigation.
+   - 3.1.0  2026-04-07  Debug instrumentation: added AppLog.Write to
+                        OnAfterRenderAsync, HandleKeyDown, and non-auth
+                        OnInitialized path. Enhanced DoLogin with state
+                        at SetUser, SetMessagingData, and NavService.Reset
+                        checkpoints.
+   - 3.2.0  2026-04-07  Updated NavService.Reset() call to await
+                        NavService.ResetAsync() after NavigationServiceV2
+                        was converted to async reset to avoid UI freeze.
+-------------------------------------------------------------------------------
+ Notes       :
+   - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
+   - Redirects authenticated users to /v2/dashboard.
+===============================================================================
 *@
 
 @page "/login"
-@layout MainLayoutV2
+@layout BaseLayoutV2
 @inject NavigationManager Nav
 @inject IAuthService AuthService
 @inject IMessageService MessageService
 @inject INotificationService NotificationService
 @inject AppStateService AppState
-@inject EntitlementsService Entitlements
+@inject NavigationServiceV2 NavService
 
 @* =========================================================================
    Section: Auth card — two-panel layout (branding left, form right)
@@ -85,29 +108,44 @@
         <div class="auth-form">
             <div class="auth-field">
                 <label>Username</label>
-                <input type="text" @bind="username" @bind:event="oninput" placeholder="Enter your username" @onkeydown="HandleKeyDown" />
+                <input type="text" @bind="username" @bind:event="oninput"
+                       placeholder="Enter your username"
+                       @onkeydown="HandleKeyDown" />
             </div>
+
             <div class="auth-field">
                 <label>Password</label>
                 <div class="auth-pw-wrap">
-                    <input type="@(showPassword ? "text" : "password")" @bind="password" @bind:event="oninput" placeholder="Enter your password" @onkeydown="HandleKeyDown" />
-                    <button type="button" class="auth-pw-toggle" @onclick="() => showPassword = !showPassword" tabindex="-1">
+                    <input type="@(showPassword ? "text" : "password")"
+                           @bind="password"
+                           @bind:event="oninput"
+                           placeholder="Enter your password"
+                           @onkeydown="HandleKeyDown" />
+                    <button type="button"
+                            class="auth-pw-toggle"
+                            @onclick="() => showPassword = !showPassword"
+                            tabindex="-1">
                         <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
                     </button>
                 </div>
                 <a href="#" class="auth-forgot">Forgot password?</a>
             </div>
+
             <label class="auth-remember">
                 <input type="checkbox" @bind="rememberMe" /> Remember me
             </label>
+
             <button class="auth-btn" @onclick="DoLogin">Sign In</button>
+
             @if (!string.IsNullOrEmpty(errorMessage))
             {
                 <p class="auth-error">@errorMessage</p>
             }
         </div>
 
-        <p class="auth-switch">Don't have an account? <a href="/register">Sign up</a></p>
+        <p class="auth-switch">
+            Don't have an account? <a href="/register">Sign up</a>
+        </p>
     </div>
 
 </div>
@@ -124,50 +162,87 @@
 
     async Task HandleKeyDown(KeyboardEventArgs e)
     {
+        AppLog.Write("Login.razor", "HandleKeyDown",
+            $"Key='{e.Key}' IsAuthenticated={AppState.IsAuthenticated}");
         if (e.Key == "Enter")
             await DoLogin();
     }
 
     protected override void OnInitialized()
     {
+        AppLog.Write("Login.razor", "OnInitialized",
+            $"IsAuthenticated={AppState.IsAuthenticated}");
+
         if (AppState.IsAuthenticated)
+        {
+            AppLog.Write("Login.razor", "OnInitialized",
+                "Already authenticated — redirecting to /v2/dashboard/overview");
             Nav.NavigateTo("/v2/dashboard/overview", replace: true);
+        }
+        else
+        {
+            AppLog.Write("Login.razor", "OnInitialized",
+                "Not authenticated — showing login form. username='' password='' errorMessage=''");
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        AppLog.Write("Login.razor", "OnAfterRender",
+            $"firstRender={firstRender} IsAuthenticated={AppState.IsAuthenticated} errorMessage='{errorMessage}'");
     }
 
     async Task DoLogin()
     {
+        AppLog.Write("Login.razor", "DoLogin",
+            $"Attempting login. username='{username}'");
+
         errorMessage = "";
+
         var result = await AuthService.LoginAsync(username, password);
+
         if (result.Success)
         {
+            AppLog.Write("Login.razor", "DoLogin",
+                $"LoginAsync succeeded. UserId={result.UserId} Role='{result.Role}'");
+
+            AppLog.Write("Login.razor", "DoLogin",
+                $"Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()");
             AppState.SetUser(result.UserId, result.UserName, result.Role);
 
-            // Load unread messages + notifications from the database and
-            // store in AppState so HeaderV2 can bind to them immediately.
+            AppLog.Write("Login.razor", "DoLogin",
+                $"AppState.SetUser done. IsAuthenticated={AppState.IsAuthenticated} — loading messages and notifications");
             var messages      = await MessageService.GetUnreadMessagesAsync(result.UserId);
             var notifications = await NotificationService.GetUnreadNotificationsAsync(result.UserId);
+
+            AppLog.Write("Login.razor", "DoLogin",
+                $"Calling AppState.SetMessagingData — will fire Notify() again");
             AppState.SetMessagingData(messages, notifications);
 
-            // Reset and reload effective entitlements for this authenticated session.
-            // Reset() clears any entitlements carried over from a prior session and
-            // unsets the load flag so LoadAsync executes the HTTP call.
-            Entitlements.Reset();
-            try
-            {
-                await Entitlements.LoadAsync();
-            }
-            catch
-            {
-                // Non-fatal: entitlements remain empty until the backend
-                // entitlements endpoint is reachable. All Has() checks will
-                // return false until LoadAsync succeeds on a subsequent login.
-            }
+            AppLog.Write("Login.razor", "DoLogin",
+                $"Messaging data loaded. messages={messages.Count} notifications={notifications.Count}");
+
+            AppLog.Write("Login.razor", "DoLogin",
+                $"Calling NavService.ResetAsync() — async reset to avoid UI thread blocking");
+            await NavService.ResetAsync();
+
+            AppLog.Write("Login.razor", "DoLogin",
+                "NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.");
+
+            await InvokeAsync(StateHasChanged);
+            await Task.Yield();
 
             Nav.NavigateTo("/v2/dashboard/overview");
+
+            AppLog.Write("Login.razor", "DoLogin",
+                "Nav.NavigateTo('/v2/dashboard/overview') called.");
         }
         else
         {
             errorMessage = result.ErrorMessage ?? "Login failed.";
+
+            AppLog.Write("Login.razor", "DoLogin",
+                $"LoginAsync failed. ErrorMessage='{errorMessage}'");
         }
     }
 }

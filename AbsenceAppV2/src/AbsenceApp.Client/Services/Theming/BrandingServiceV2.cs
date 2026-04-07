@@ -3,17 +3,23 @@
  File        : BrandingServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.Theming
  Author      : Michael
- Version     : 1.0.0
+ Version     : 2.0.0
  Created     : 2026-03-21
- Updated     : 2026-03-21
+ Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : V2 branding management service. Loads BrandingConfigModel from
-               wwwroot/config/designsystem/branding.json via HttpClient, caches
-               the result for the lifetime of the application, and raises an
-               OnChange event so components can react when branding is reloaded.
+               wwwroot/config/designsystem/branding.json, caches the result for
+               the lifetime of the application, and raises an OnChange event so
+               components can react when branding is reloaded.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation (Phase 8).
+   - 2.0.0  2026-04-06  BUG FIX: Replaced HttpClient.GetFromJsonAsync with
+                         FileStream reading from AppContext.BaseDirectory/wwwroot.
+                         In MAUI Blazor Hybrid the C# HttpClient cannot reach
+                         http://localhost/ — that scheme only exists inside the
+                         WebView2 browser context. HttpClient dependency removed
+                         from constructor.
 -------------------------------------------------------------------------------
  Notes       :
    - Phase 8 service. Register as Singleton in DI (Phase 10 step).
@@ -26,7 +32,6 @@
 */
 
 using AbsenceApp.Client.Models.Theming;
-using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace AbsenceApp.Client.Services.Theming;
@@ -41,7 +46,8 @@ public sealed class BrandingServiceV2
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    private readonly HttpClient _http;
+    private static readonly string _wwwrootBase =
+        Path.Combine(AppContext.BaseDirectory, "wwwroot");
 
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -69,9 +75,8 @@ public sealed class BrandingServiceV2
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    public BrandingServiceV2(HttpClient http)
+    public BrandingServiceV2()
     {
-        _http = http;
     }
 
     // -------------------------------------------------------------------------
@@ -107,10 +112,11 @@ public sealed class BrandingServiceV2
     {
         try
         {
-            var model = await _http.GetFromJsonAsync<BrandingConfigModel>(
-                "config/designsystem/branding.json", _jsonOptions);
-
-            _model = model ?? new BrandingConfigModel();
+            var fullPath = Path.Combine(_wwwrootBase, "config/designsystem/branding.json");
+            await using var stream = new FileStream(
+                fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _model = await JsonSerializer.DeserializeAsync<BrandingConfigModel>(
+                stream, _jsonOptions) ?? new BrandingConfigModel();
         }
         catch (Exception)
         {

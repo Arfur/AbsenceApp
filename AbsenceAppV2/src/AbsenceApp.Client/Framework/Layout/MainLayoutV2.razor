@@ -2,9 +2,9 @@
    File        : MainLayoutV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 1.3.0
+   Version     : 1.8.0
    Created     : 2026-03-29
-   Updated     : 2026-03-29
+   Updated     : 2026-04-07
    ---------------------------------------------------------------------------
    Purpose     : Root layout component for all authenticated V2 pages.
                  Composes HeaderV2, SidebarV2, BreadcrumbV2, the main @Body
@@ -19,18 +19,15 @@
                  BreadcrumbV2) and V2 CSS custom properties.
    ---------------------------------------------------------------------------
    Notes       :
-     - Auth redirect: after first render, unauthenticated users are sent to
-       /login (same pattern as V1 MainLayout.razor OnAfterRenderAsync).
-     - Dark mode: AppState.DarkMode adds the `dark` class to v2-layout-root
-       which cascades the V2 dark-token overrides to every child element.
-     - _isInitializing guard: a spinner overlay covers the first render cycle
-       so the sidebar/header never flicker before AppState.IsAuthenticated is
-       resolved (same pattern as BaseLayoutV2.razor).
-     - SidebarV2 auto-detects /global-settings/* routes and switches to the
-       Global Config secondary sidebar without any change in this layout.
-     - DefaultLayout for Routes.razor points here. Module pages that
-       explicitly declare @layout BaseLayoutV2 continue to work because
-       BaseLayoutV2.razor is not removed.
+     - Auth redirect: Routes.razor is the SOLE auth guard. This layout does
+       NOT redirect to /login — doing so created a second, duplicate redirect
+       source that caused spurious LocationChanged events and the startup
+       navigation loop seen in the diagnostic log.
+     - @Body is always rendered inside the SAME structural position
+       (v2-content-area > main > @Body) regardless of auth state. This
+       prevents Blazor from tearing down and recreating the page component
+       when IsAuthenticated changes. Only the header/footer/sidebar are
+       conditionally shown around the stable @Body location.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-29  Initial implementation. Canonical V2 root layout.
@@ -42,6 +39,24 @@
                           Diagnostic artefacts removed. Layout contract
                           stabilised; auth state fix to follow in
                           AppStateService.
+     - 1.4.0  2026-04-06  Fixed layout not re-rendering after login by invoking
+                          StateHasChanged on the Blazor dispatcher when
+                          AppState changes. Ensures SidebarV2 mounts
+                          immediately once IsAuthenticated becomes true.
+     - 1.5.0  2026-04-06  Diagnostic logging: added AppLog.Write hooks to
+                          OnInitialized, OnAfterRenderAsync, OnAppStateChanged,
+                          and Dispose.
+     - 1.6.0  2026-04-07  Forced final render boundary after initialisation
+                          to guarantee MAUI window repaint after auth change.
+     - 1.7.0  2026-04-07  ROOT CAUSE FIX (Bug 1 — dual redirect): removed
+                          Nav.NavigateTo('/login') from OnAfterRenderAsync.
+                          ROOT CAUSE FIX (Bug 2 — @Body stability).
+     - 1.8.0  2026-04-07  Debug instrumentation: added AppLog.Write to
+                          OnParametersSet, non-firstRender OnAfterRenderAsync
+                          path. Enhanced OnAppStateChanged with _isInitializing
+                          flag and sidebarWillRender evaluation. Enhanced
+                          OnAfterRenderAsync firstRender with SidebarV2
+                          mount-condition evaluation.
    ===========================================================================
 *@
 
@@ -50,14 +65,10 @@
 @using AbsenceApp.Client.Services
 @using AbsenceApp.Client.Framework.Layout
 @inject AppStateService AppState
-@inject NavigationManager Nav
 @implements IDisposable
 
 @* =========================================================================
    SECTION: INIT LOADER
-   Full-screen spinner shown for the first render cycle while AppState
-   resolves IsAuthenticated. Prevents the sidebar/header from briefly
-   appearing before auth state is known.
    ========================================================================= *@
 @if (_isInitializing)
 {
@@ -67,110 +78,99 @@
 }
 else
 {
-
-@* =========================================================================
-   SECTION: LAYOUT ROOT
-   Full-screen flex row. SidebarV2 sits on the left; the content column
-   takes all remaining width. The `dark` CSS class triggers all V2 dark
-   custom-property overrides defined in app.css.
-   ========================================================================= *@
 <div class="v2-layout-root @(AppState.DarkMode ? "dark" : "")">
 
-    @* =========================================================================
-       SECTION: SIDEBAR
-       Rendered only when the user is authenticated so the login page
-       renders without a sidebar.
-       ========================================================================= *@
     @if (AppState.IsAuthenticated)
     {
         <SidebarV2 />
     }
 
-    @* =========================================================================
-       SECTION: CONTENT AREA
-       Flex column that fills the remaining width:
-         header → breadcrumb → main (scrollable) → footer
-       ========================================================================= *@
     <div class="v2-content-area">
+
+        @* Header and breadcrumb visible only when authenticated *@
+        @if (AppState.IsAuthenticated)
+        {
+            <HeaderV2 />
+            <BreadcrumbV2 />
+        }
+
+        @* @Body is ALWAYS inside main > div.v2-page-container regardless of
+           auth state. This structural stability prevents Blazor from tearing
+           down and recreating the current page component when IsAuthenticated
+           changes. Only the CSS class on <main> changes conditionally. *@
+        <main class="@(AppState.IsAuthenticated ? "v2-main" : "v2-main v2-main--auth")">
+            <div class="v2-page-container">
+                @Body
+            </div>
+        </main>
 
         @if (AppState.IsAuthenticated)
         {
-            @* =========================================================================
-               SECTION: HEADER
-               Full-width top bar: logo, sidebar toggle, search, actions.
-               ========================================================================= *@
-            <HeaderV2 />
-
-            @* =========================================================================
-               SECTION: BREADCRUMB
-               Route-tracking bar below the header.
-               ========================================================================= *@
-            <BreadcrumbV2 />
-
-            @* =========================================================================
-               SECTION: MAIN CONTENT (authenticated)
-               Scrollable padded container for page @Body content.
-               ========================================================================= *@
-            <main class="v2-main">
-                <div class="v2-page-container">
-                    @Body
-                </div>
-            </main>
-
-            @* =========================================================================
-               SECTION: FOOTER
-               Copyright bar fixed at the bottom of the content column.
-               ========================================================================= *@
             <footer class="v2-footer">
                 <span>&copy; 2026 AbsenceApp — All rights reserved.</span>
             </footer>
-        }
-        else
-        {
-            @* =========================================================================
-               SECTION: MAIN CONTENT (unauthenticated)
-               Full-height centred wrapper for the login card.
-               ========================================================================= *@
-            <main class="v2-main v2-main--auth">
-                @Body
-            </main>
         }
 
     </div>
 
 </div>
-
 }
 
 @* =========================================================================
    SECTION: CODE-BEHIND
-   AppState subscription, auth redirect, and init guard lifecycle.
    ========================================================================= *@
 @code {
     private bool _isInitializing = true;
 
     protected override void OnInitialized()
     {
-        AppState.OnChange += StateHasChanged;
+        AppLog.Write("MainLayoutV2.razor", "OnInitialized",
+            $"Subscribing to AppState.OnChange. IsAuthenticated={AppState.IsAuthenticated}");
+        AppState.OnChange += OnAppStateChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        AppLog.Write("MainLayoutV2.razor", "OnParametersSet",
+            $"Parameters set. IsAuthenticated={AppState.IsAuthenticated} _isInitializing={_isInitializing}");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            AppLog.Write("MainLayoutV2.razor", "OnAfterRenderAsync",
+                $"firstRender=true. IsAuthenticated={AppState.IsAuthenticated}. Clearing _isInitializing. sidebarWillRender={AppState.IsAuthenticated} (SidebarV2 is mounted when IsAuthenticated=true)");
             _isInitializing = false;
 
+            // Routes.razor is the sole auth guard.
+            // This layout does NOT redirect to /login.
             if (!AppState.IsAuthenticated)
-                Nav.NavigateTo("/login", replace: true);
+                AppLog.Write("MainLayoutV2.razor", "OnAfterRenderAsync",
+                    "Not authenticated. Waiting for Routes.razor guard to redirect.");
 
             StateHasChanged();
+        }
+        else
+        {
+            AppLog.Write("MainLayoutV2.razor", "OnAfterRenderAsync",
+                $"firstRender=false (non-first render). IsAuthenticated={AppState.IsAuthenticated} _isInitializing={_isInitializing}");
         }
 
         await Task.CompletedTask;
     }
 
+    private void OnAppStateChanged()
+    {
+        AppLog.Write("MainLayoutV2.razor", "OnAppStateChanged",
+            $"AppState changed. IsAuthenticated={AppState.IsAuthenticated} _isInitializing={_isInitializing} — sidebarWillRender={(!_isInitializing && AppState.IsAuthenticated)} — invoking StateHasChanged");
+        InvokeAsync(StateHasChanged);
+    }
+
     public void Dispose()
     {
-        AppState.OnChange -= StateHasChanged;
+        AppLog.Write("MainLayoutV2.razor", "Dispose",
+            "Unsubscribing from AppState.OnChange");
+        AppState.OnChange -= OnAppStateChanged;
     }
 }

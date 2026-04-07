@@ -1,67 +1,59 @@
-@* ===========================================================================
-   File        : AppHost.razor
-   Namespace   : AbsenceApp.Client.Components
-   Author      : Michael
-   Version     : 4.1.0
-   Created     : 2026-03-23
-   Updated     : 2026-04-05
-   ---------------------------------------------------------------------------
-   Purpose     : Root Blazor component for the MAUI BlazorWebView.
-                 Renders a branded SplashScreenV2 for 1 500 ms while the app
-                 initialises, then reveals the router inside a GLOBAL ERROR
-                 BOUNDARY so that ALL unhandled exceptions — including
-                 layout-level failures in SidebarV2, HeaderV2, BreadcrumbV2,
-                 and page components — are caught and shown as a styled
-                 fallback rather than a blank screen or raw exception dump.
-                 Injects EntitlementsService at the root of the Blazor tree so
-                 layouts and pages can perform permission checks.
-   ---------------------------------------------------------------------------
-   Notes       :
-     - Registered as the RootComponent in MainPage.xaml.
-     - Index.razor (route "/") redirects to /login on startup.
-     - BaseLayoutV2 acts as the auth guard for all authenticated pages.
-   ---------------------------------------------------------------------------
-   Changes     :
-     - 1.0.0  2026-03-23  Initial implementation.
-     - 2.0.0  2026-03-24  Removed BaseLayoutV2 wrapper (Routes was swallowed).
-     - 2.1.0  2026-03-24  Added @using AbsenceApp.Client for <Routes /> resolution.
-     - 3.0.0  2026-03-27  Section A fix: wrapped <Routes /> with
-                          GlobalErrorBoundaryV2 so all unhandled exceptions are
-                          caught globally, logged, and shown as a styled fallback.
-     - 4.0.0  2026-03-28  Phase 4 fix: added SplashScreenV2 shown for 1 500 ms
-                          on first load before the router is revealed. Restores
-                          the branded loading experience that was missing in V2.
-     - 4.1.0  2026-04-05  Injected EntitlementsService at the Blazor root so
-                          layouts and pages can evaluate permissions.
-   ===========================================================================
+@*
+===============================================================================
+ File        : AppHost.razor
+ Author      : Michael
+ Version     : 4.3.0
+ Created     : 2026-03-23
+ Updated     : 2026-04-06
+-------------------------------------------------------------------------------
+ Purpose     : Root Blazor component for the MAUI BlazorWebView.
+
+               Hosts the global splash screen, router, and error boundary.
+               Ensures deterministic application startup and safe transition
+               from branded loading experience to interactive UI.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-03-23  Initial implementation.
+   - 2.0.0  2026-03-24  Removed BaseLayoutV2 wrapper (Routes was swallowed).
+   - 2.1.0  2026-03-24  Added @using AbsenceApp.Client for <Routes /> resolution.
+   - 3.0.0  2026-03-27  Section A fix: wrapped <Routes /> with
+                        GlobalErrorBoundaryV2 so all unhandled exceptions are
+                        caught globally, logged, and shown as a styled fallback.
+   - 4.0.0  2026-03-28  Phase 4 fix: added SplashScreenV2 shown for 1 500 ms
+                        on first load before the router is revealed. Restores
+                        the branded loading experience that was missing in V2.
+   - 4.1.0  2026-04-05  Injected EntitlementsService at the Blazor root so
+                        layouts and pages can evaluate permissions.
+   - 4.2.0  2026-04-06  Option A: removed EntitlementsService injection.
+                        Feature permission checks now flow through the API.
+   - 4.3.0  2026-04-06  MAUI fix: splash screen is now always rendered and
+                        visibility-controlled to prevent native input capture
+                        blocking the application after initial load.
+-------------------------------------------------------------------------------
+ Notes       :
+   - MAUI BlazorWebView can retain native views after conditional removal.
+   - SplashScreenV2 must remain mounted and release pointer events explicitly.
+===============================================================================
 *@
 @using AbsenceApp.Client
 @using AbsenceApp.Client.Framework.Layouts
 @using AbsenceApp.Client.Services
 
-@inject EntitlementsService Entitlements
+@* ===========================================================================
+   Section: SPLASH SCREEN
+   Always rendered to avoid MAUI native view retention.
+   Visibility and pointer interaction are controlled internally.
+   ========================================================================== *@
+<SplashScreenV2 Visible="_showSplash" />
 
-<!-- =========================================================
-     Section: SPLASH SCREEN
-     Shown for 1 500 ms on first load as a branded loading
-     experience before the shell and router are revealed.
-     ========================================================= -->
-@if (_showSplash)
-{
-    <SplashScreenV2 />
-}
-else
-{
-    <!-- =========================================================
-         Section: GLOBAL ERROR BOUNDARY
-         Wraps the entire router so all unhandled exceptions —
-         including layout-level failures — are caught, logged, and
-         shown as a styled fallback rather than a blank screen.
-         ========================================================= -->
-    <GlobalErrorBoundaryV2>
-        <Routes />
-    </GlobalErrorBoundaryV2>
-}
+@* ===========================================================================
+   Section: GLOBAL ERROR BOUNDARY & ROUTER
+   Always rendered so the application remains interactive regardless of
+   splash screen state.
+   ========================================================================== *@
+<GlobalErrorBoundaryV2>
+    <Routes />
+</GlobalErrorBoundaryV2>
 
 @code {
     private bool _showSplash = true;

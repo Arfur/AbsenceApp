@@ -2,14 +2,20 @@
    File    : SplashScreenV2.razor.css
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 4
-   Version : 1.0.0
+   Version : 1.1.0
    Created : 2026-03-28
-   Updated : 2026-03-28
+   Updated : 2026-04-06
    -----------------------------------------------------------------------
    Purpose : Scoped styles for SplashScreenV2.razor.
              Full-screen branded splash displayed before the router loads.
              Uses hardcoded values (no token dependency) so it renders
              correctly even before wwwroot/css is fully loaded.
+   -----------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-03-28  Initial implementation.
+     - 1.1.0  2026-04-06  Added .v2-splash--hidden modifier: opacity 0 +
+                          pointer-events none so the hidden splash does not
+                          block UI interaction.
 ============================================================================= */
 
 /* ── Full-screen overlay ─────────────────────────────────────────────── */
@@ -109,4 +115,11 @@
     text-transform: uppercase;
     color: #9ca3af;
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* ── Hidden state ────────────────────────────────────────────────────── */
+
+.v2-splash--hidden {
+    opacity: 0;
+    pointer-events: none;
 }

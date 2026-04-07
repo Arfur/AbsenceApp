@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.3.0
  Created     : 2026-03-22
- Updated     : 2026-03-26
+ Updated     : 2026-04-06
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -21,6 +21,12 @@
    - 1.0.0  2026-03-22  Initial extraction from MauiProgram.cs (Phase 11).
    - 1.1.0  2026-03-26  Added IDesignSystemService / DesignSystemService
                          registration (Phase 1 placeholder, Singleton).
+   - 1.2.0  2026-04-06  Option A: registered NavigationApiServiceV2 (Singleton);
+                         NavigationServiceV2 constructor updated to take
+                         NavigationApiServiceV2 (JSON loading removed).
+   - 1.3.0  2026-04-06  Option A Phase 3: registered FeaturePermissionApiServiceV2
+                         (Singleton). All feature permission checks now flow
+                         through the API.
 -------------------------------------------------------------------------------
  Notes       :
    - HttpClient is registered as a singleton for BrandingServiceV2 and
@@ -74,6 +80,8 @@ public static class V2ServiceCollectionExtensions
         // -----------------------------------------------------------------
         services.AddSingleton<DesignSystemConfigService>();
         services.AddSingleton<AlertServiceV2>();
+        services.AddSingleton<NavigationApiServiceV2>();
+        services.AddSingleton<FeaturePermissionApiServiceV2>();
         services.AddSingleton<NavigationServiceV2>();
         services.AddSingleton<ThemeServiceV2>();
         services.AddSingleton<BrandingServiceV2>();

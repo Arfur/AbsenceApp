@@ -2,9 +2,9 @@
    File        : SplashScreenV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-28
-   Updated     : 2026-03-28
+   Updated     : 2026-04-06
    ---------------------------------------------------------------------------
    Purpose     : Branded application splash screen shown while the Blazor app
                  initialises on first load. Displayed by AppHost.razor for
@@ -23,6 +23,9 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-28  Initial implementation (Phase 4 fix).
+     - 1.1.0  2026-04-06  Added [Parameter] Visible. Component stays mounted;
+                          v2-splash--hidden class applied when Visible==false
+                          so pointer events are released to the UI beneath.
    ---------------------------------------------------------------------------
    Notes       :
      - No code-behind required; the delay is handled in AppHost.razor.
@@ -32,7 +35,7 @@
 
 @namespace AbsenceApp.Client.Framework.Layouts
 
-<div class="v2-splash" role="status" aria-label="AbsenceApp is loading">
+<div class="v2-splash @(!Visible ? "v2-splash--hidden" : "")" role="status" aria-label="AbsenceApp is loading" aria-hidden="@(!Visible ? "true" : "false")">
 
     @* =========================================================================
        SECTION: Splash card
@@ -60,3 +63,7 @@
     </div>
 
 </div>
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+}

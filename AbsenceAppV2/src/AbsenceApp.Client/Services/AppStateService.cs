@@ -2,9 +2,9 @@
    File        : AppStateService.cs
    Namespace   : AbsenceApp.Client.Services
    Author      : Michael
-   Version     : 2.7.0
+ * Version     : 2.10.0
    Created     : 2026-03-17
-   Updated     : 2026-04-05
+   Updated     : 2026-04-07
    ----------------------------------------------------------------------------
    Purpose     : Singleton UI state container shared across all layout and
                  shell components. Tracks:
@@ -37,6 +37,15 @@
                           computed properties. Added SetMessagingData() method
                           called from Login.razor after successful authentication.
                           Cleared messaging state on AuthLogout().
+     - 2.8.0  2026-04-06  Diagnostic reliability: replaced Debug.WriteLine with
+                          Console.WriteLine for auth state transitions.
+     - 2.9.0  2026-04-06  Logging migration: replaced all Console.WriteLine calls
+                          with AppLog.Write for file-based diagnostic output.
+     - 2.10.0 2026-04-07  Debug instrumentation: added AppLog.Write calls to
+                          ToggleSidebar, ToggleDarkMode, SetDarkMode,
+                          SetBreadcrumb, SetBreadcrumbCategory, SetMessagingData,
+                          GetTablePageState, SetTablePageState, and enhanced
+                          AuthLogout with subscriber-count awareness.
    ============================================================================
 */
 
@@ -144,17 +153,23 @@ public class AppStateService
     public void ToggleSidebar()
     {
         SidebarCollapsed = !SidebarCollapsed;
+        AppLog.Write("AppStateService.cs", "ToggleSidebar",
+            $"SidebarCollapsed={SidebarCollapsed} — calling Notify()");
         Notify();
     }
 
     public void ToggleDarkMode()
     {
+        AppLog.Write("AppStateService.cs", "ToggleDarkMode",
+            $"Toggling DarkMode from {DarkMode} to {!DarkMode}");
         SetDarkMode(!DarkMode);
     }
 
     public void SetDarkMode(bool value)
     {
         DarkMode = value;
+        AppLog.Write("AppStateService.cs", "SetDarkMode",
+            $"DarkMode={DarkMode} — persisting to Preferences — calling Notify()");
         Preferences.Default.Set(DarkModeKey, value);
         Notify();
     }
@@ -166,12 +181,16 @@ public class AppStateService
     public void SetBreadcrumb(params string[] segments)
     {
         Breadcrumb = new List<string>(segments);
+        AppLog.Write("AppStateService.cs", "SetBreadcrumb",
+            $"Breadcrumb=[{string.Join(" > ", segments)}] — calling Notify()");
         Notify();
     }
 
     public void SetBreadcrumbCategory(string category)
     {
         BreadcrumbCategory = category;
+        AppLog.Write("AppStateService.cs", "SetBreadcrumbCategory",
+            $"BreadcrumbCategory='{category}' — calling Notify()");
         Notify();
     }
 
@@ -180,7 +199,12 @@ public class AppStateService
        ============================================================================ */
 
     public TablePageUiState? GetTablePageState(string key)
-        => _tablePageStates.TryGetValue(key, out var state) ? state.Clone() : null;
+    {
+        var found = _tablePageStates.TryGetValue(key, out var state);
+        AppLog.Write("AppStateService.cs", "GetTablePageState",
+            $"key='{key}' found={found}");
+        return found ? state?.Clone() : null;
+    }
 
     public void SetTablePageState(
         string key,
@@ -196,6 +220,8 @@ public class AppStateService
                 .Select(c => new FilterChip(c.Name, c.Value))
                 .ToList(),
         };
+        AppLog.Write("AppStateService.cs", "SetTablePageState",
+            $"key='{key}' searchValue='{searchValue}' showEntries={showEntries} activeFilters={_tablePageStates[key].ActiveFilters.Count}");
     }
 
     /* ============================================================================
@@ -205,6 +231,8 @@ public class AppStateService
     public void SetUser(long id, string name, string role)
     {
         CurrentUserId   = id;
+        AppLog.Write("AppStateService.cs", "SetUser",
+            $"CurrentUserId={id} UserName='{name}' Role='{role}' — calling Notify()");
         UserName        = name;
         UserRole        = role;
         IsAuthenticated = true;
@@ -222,6 +250,8 @@ public class AppStateService
     {
         UnreadMessages      = messages;
         UnreadNotifications = notifications;
+        AppLog.Write("AppStateService.cs", "SetMessagingData",
+            $"UnreadMessages={messages.Count} UnreadNotifications={notifications.Count} — calling Notify()");
         Notify();
     }
 
@@ -229,6 +259,8 @@ public class AppStateService
     {
         IsAuthenticated     = false;
         CurrentUserId       = 0;
+        AppLog.Write("AppStateService.cs", "AuthLogout",
+            "CurrentUserId reset to 0 — user logged out. Calling Notify()");
         UserName            = string.Empty;
         UserRole            = string.Empty;
         UnreadMessages      = Array.Empty<MessageDto>();

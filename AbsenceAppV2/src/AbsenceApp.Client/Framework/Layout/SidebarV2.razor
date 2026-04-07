@@ -1,82 +1,84 @@
-﻿@* ===========================================================================
+﻿@*
+===============================================================================
    File        : SidebarV2.razor
-   Namespace   : AbsenceApp.Client.Components.LayoutV2
-   Author      : AI Assistant
-   Version     : 1.9.0
+   Author      : Michael
+   Version     : 6.1.0
    Created     : 2026-03-21
-   Updated     : 2026-04-05
+   Updated     : 2026-04-07
    ---------------------------------------------------------------------------
    Purpose     : V2 collapsible sidebar. Loads navigation categories from
-                 menu.json via NavigationServiceV2. Renders category section
+                 the API via NavigationServiceV2. Renders category section
                  headers and accordion menu groups. When the current route
                  starts with /global-settings/, loads the Global Settings
-                 menu via NavigationServiceV2 and shows a 'Back to Main Menu'
-                 link. Parallel to the V1 SideBar.razor.
+                 groups from NavigationServiceV2 and shows a 'Back to Main
+                 Menu' link.
+
+                 The client performs no role checks, entitlement checks, or
+                 menu filtering. The API is the sole authority for content.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation.
      - 1.1.0  2026-03-25  Confirmed as dedicated V2 sidebar.
      - 1.2.0  2026-03-26  Added menu switching for /global-settings/ routes.
-     - 1.3.0  2026-03-26  Phase 3 Part 1: fixed OnLocationChanged to also
-                          update _openGroup on navigation.
-     - 1.4.0  2026-03-27  Phase 3 Part 2:
-                          (a) Switched to GetMenuCategoriesAsync().
-                          (b) Added flat group support.
-                          (c) Added HandleGroupClick for Global Config.
-                          (d) Improved active-route detection.
-                          (e) Extracted GetCleanPath helper.
-     - 1.6.0  2026-03-28  Phase 4 Fix: removed hardcoded "Global Config" special
-                          case in HandleGroupClick that incorrectly navigated to
-                          /global-settings/buttons (superadmin route). Global Config
-                          now expands as a regular accordion showing /global-config/*
-                          subitems. menu.json simultaneously fixed to correct
-                          categories format required by NavigationServiceV2.
-                          (a) Added 'Back to Main Menu' link at top of the
-                              superadmin sidebar so users can return without
-                              relying on the browser back button.
-                          (b) HandleGroupClick now navigates to the first
-                              item's href when OPENING a group so the default
-                              sub-menu is automatically highlighted.
-                          (c) Fixed ItemIsActive: when any menu item exactly
-                              matches the current path, ONLY exact matches are
-                              used — stopping sibling routes (e.g. /v2/dashboard)
-                              from incorrectly matching /v2/dashboard/safeguarding
-                              via the StartsWith prefix rule.
-                          (d) Added ComputeRouteMatch() called after every
-                              navigation to cache the exact-match flag.
-     - 1.6.1  2026-03-29  Fixed invalid call to GetMenuGroupsAsync(string).
-                          Sidebar now correctly calls
-                          GetSuperAdminMenuGroupsAsync() when loading the
-                          Global Settings menu.
-     - 1.6.2  2026-03-29  Fixed MenuItemModel rendering to use Title instead
-                          of non-existent Label property in submenu items.
-     - 1.7.0  2026-03-29  Goal E: added _loadError field and try/catch in
-                          LoadMenuAsync so any load failure renders a visible
-                          error placeholder instead of a blank sidebar.
-                          Added explicit empty-state placeholder when
-                          _superAdminGroups is non-null but empty.
-     - 1.8.0  2026-04-05  Phase 3 Header Nav Identity: removed User panel
-                          (avatar + username + role display) from sidebar.
-                          Identity UI is now rendered exclusively in HeaderV2.
-                          Sidebar is now navigation-only.
-     - 1.9.0  2026-04-05  Entitlement governance (G4): injected
-                          EntitlementsService. Global Settings (super-admin)
-                          menu content is now gated behind
-                          Entitlements.Has("ui.global-settings"). The Back to
-                          Main Menu link remains unconditional so users can
-                          always navigate away from a restricted route.
+     - 1.3.0  2026-03-26  Phase 3 Part 1: fixed OnLocationChanged.
+     - 1.4.0  2026-03-27  Phase 3 Part 2: various active-route improvements.
+     - 1.6.0  2026-03-28  Phase 4 Fix: removed hardcoded special cases.
+     - 1.6.1  2026-03-29  Fixed invalid GetMenuGroupsAsync call.
+     - 1.6.2  2026-03-29  Fixed MenuItemModel.Title rendering.
+     - 1.7.0  2026-03-29  Added _loadError and try/catch in LoadMenuAsync.
+     - 1.8.0  2026-04-05  Removed user panel from sidebar.
+     - 1.9.0  2026-04-05  Added EntitlementsService injection + gate.
+     - 2.0.0  2026-04-06  Option A: removed EntitlementsService injection
+                          and ui.global-settings gate. API is now
+                          authoritative for menu content. Sidebar renders
+                          exactly what NavigationServiceV2 returns.
+     - 3.0.0  2026-04-06  Schema alignment: replaced all item.Href with
+                          item.Route and group.Items[0].Href with group.Route.
+                          Removed item.Status badge and item.Description title
+                          attribute (not in DB schema). Replaced group.Flat
+                          flag with Items.Count == 0 derivation. Updated
+                          GroupIsActive, AutoOpenGroup, ComputeRouteMatch,
+                          and HandleGroupClick accordingly.
+     - 4.0.0  2026-04-06  MAUI render fix: added await InvokeAsync(StateHasChanged)
+                          at the end of OnInitializedAsync so the sidebar
+                          renders after LoadMenuAsync completes. Without this,
+                          MAUI Blazor Hybrid does not reliably fire the
+                          automatic post-OnInitializedAsync re-render when the
+                          EF Core DB call continuation runs on a thread-pool
+                          thread, leaving the sidebar permanently in the
+                          "Loading..." state until an incidental UI event
+                          triggers a render.
+     - 5.0.0  2026-04-06  MAUI render fix (correct approach): moved ALL async
+                          menu loading from OnInitializedAsync to
+                          OnAfterRenderAsync(firstRender guard). InvokeAsync
+                          (StateHasChanged) from the continuation of an EF Core
+                          await inside OnInitializedAsync does not reliably
+                          wake the MAUI WebView render pump (confirmed by user
+                          testing: no change observed from v4). StateHasChanged
+                          called from OnAfterRenderAsync IS reliable because
+                          the WebView render pipeline is already active at that
+                          point. Added Console.WriteLine timestamps for
+                          diagnosis. Added _loadPending guard to prevent
+                          repeated loads on subsequent re-renders.
+   - 6.0.0  2026-04-06  Logging migration: replaced all Console.WriteLine calls
+                          with AppLog.Write. Added AppLog.Write hooks to
+                          OnLocationChanged, HandleGroupClick, and Dispose.
+   - 6.1.0  2026-04-07  Debug instrumentation: enhanced OnInitialized with
+                          AppState.IsAuthenticated and _loadPending. Added
+                          _loadPending=false early-exit log in OnAfterRenderAsync.
+                          Enhanced OnAfterRenderAsync, LoadMenuAsync, and
+                          OnLocationChanged with flags and state values.
    ---------------------------------------------------------------------------
    Notes       :
      - Must only be used in V2 layouts (BaseLayoutV2).
      - Sidebar collapse state is provided by AppStateService.
-   ===========================================================================
+===============================================================================
 *@
 
 @using AbsenceApp.Client.Services
 @using AbsenceApp.Client.Models.V2
 @inject NavigationServiceV2 NavService
 @inject AppStateService AppState
-@inject EntitlementsService Entitlements
 @inject NavigationManager Nav
 @implements IDisposable
 
@@ -105,11 +107,9 @@
 
             @* =========================
                SECTION: Global Settings menu content
-               Gated by ui.global-settings entitlement. The Back link above
-               is unconditional so the user can always navigate away.
+               Rendered unconditionally — the API is authoritative for
+               what appears here. No client-side entitlement checks.
                ========================= *@
-            @if (Entitlements.Has("ui.global-settings"))
-            {
             @if (_loadError is not null)
             {
                 @* Visible error — never silently blank *@
@@ -133,7 +133,6 @@
             {
                 @* Global Config accordion groups *@
                 @RenderGroups(_superAdminGroups)
-            }
             }
         }
         else if (_loadError is not null)
@@ -181,13 +180,12 @@
                 var isOpen   = _openGroup == group.Group;
                 var isActive = GroupIsActive(group);
 
-                if (group.Flat && group.Items.Count > 0)
+                if (group.Items.Count == 0)
                 {
-                    @* Flat group: render as a direct navigation link *@
-                    var flatHref = group.Items[0].Href;
-                    var flatActive = ItemIsActive(flatHref);
+                    @* Leaf menu node with its own route — render as a direct navigation link *@
+                    var flatActive = ItemIsActive(group.Route);
                     __builder.OpenElement(0, "a");
-                    __builder.AddAttribute(1, "href", flatHref);
+                    __builder.AddAttribute(1, "href", group.Route);
                     __builder.AddAttribute(2, "class",
                         "dsv2-sidebar__group-btn dsv2-sidebar__group-btn--flat " +
                         (flatActive ? "dsv2-sidebar__group-btn--active" : ""));
@@ -204,39 +202,6 @@
                         __builder.CloseElement();
                     }
                     __builder.CloseElement();
-                    @* Additional items beyond Items[0] rendered as sub-links when not collapsed *@
-                    if (!AppState.SidebarCollapsed && group.Items.Count > 1)
-                    {
-                        __builder.OpenElement(9, "div");
-                        __builder.AddAttribute(10, "class", "dsv2-sidebar__submenu");
-                        foreach (var item in group.Items.Skip(1))
-                        {
-                            var active = ItemIsActive(item.Href);
-                            __builder.OpenElement(11, "a");
-                            __builder.AddAttribute(12, "href", item.Href);
-                            __builder.AddAttribute(13, "class",
-                                "dsv2-sidebar__sublink " +
-                                (active ? "dsv2-sidebar__sublink--active" : ""));
-                            __builder.OpenElement(14, "i");
-                            __builder.AddAttribute(15, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
-                            __builder.CloseElement();
-                            __builder.OpenElement(16, "span");
-                            __builder.AddAttribute(17, "class", "dsv2-sidebar__item-label");
-                            __builder.AddContent(18, item.Title);
-                            __builder.CloseElement();
-                            if (!string.IsNullOrEmpty(item.Status) && item.Status != "Live")
-                            {
-                                __builder.OpenElement(19, "span");
-                                __builder.AddAttribute(20, "class",
-                                    "dsv2-sidebar__status-badge dsv2-sidebar__status-badge--" +
-                                    item.Status.ToLower());
-                                __builder.AddContent(21, item.Status);
-                                __builder.CloseElement();
-                            }
-                            __builder.CloseElement(); // a
-                        }
-                        __builder.CloseElement(); // div.submenu
-                    }
                 }
                 else
                 {
@@ -271,29 +236,19 @@
                         __builder.AddAttribute(12, "class", "dsv2-sidebar__submenu");
                         foreach (var item in group.Items)
                         {
-                            var active = ItemIsActive(item.Href);
+                            var active = ItemIsActive(item.Route);
                             __builder.OpenElement(13, "a");
-                            __builder.AddAttribute(14, "href", item.Href);
+                            __builder.AddAttribute(14, "href", item.Route);
                             __builder.AddAttribute(15, "class",
                                 "dsv2-sidebar__sublink " +
                                 (active ? "dsv2-sidebar__sublink--active" : ""));
-                            __builder.AddAttribute(16, "title", item.Description);
-                            __builder.OpenElement(17, "i");
-                            __builder.AddAttribute(18, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
+                            __builder.OpenElement(16, "i");
+                            __builder.AddAttribute(17, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
                             __builder.CloseElement();
-                            __builder.OpenElement(19, "span");
-                            __builder.AddAttribute(20, "class", "dsv2-sidebar__item-label");
-                            __builder.AddContent(21, item.Title);
+                            __builder.OpenElement(18, "span");
+                            __builder.AddAttribute(19, "class", "dsv2-sidebar__item-label");
+                            __builder.AddContent(20, item.Title);
                             __builder.CloseElement();
-                            if (!string.IsNullOrEmpty(item.Status) && item.Status != "Live")
-                            {
-                                __builder.OpenElement(22, "span");
-                                __builder.AddAttribute(23, "class",
-                                    "dsv2-sidebar__status-badge dsv2-sidebar__status-badge--" +
-                                    item.Status.ToLower());
-                                __builder.AddContent(24, item.Status);
-                                __builder.CloseElement();
-                            }
                             __builder.CloseElement(); // a
                         }
                         __builder.CloseElement(); // div.submenu
@@ -315,6 +270,11 @@
     private string currentPath = string.Empty;
     /// <summary>True when the current path exactly equals at least one menu item href.</summary>
     private bool   _anyExactRouteMatch;
+    /// <summary>
+    /// True until the first OnAfterRenderAsync loads the menu.
+    /// Prevents re-loading on every subsequent render cycle.
+    /// </summary>
+    private bool   _loadPending = true;
 
     private IEnumerable<MenuGroupModel> EffectiveGroups =>
         _isSuperAdminMenu
@@ -325,21 +285,57 @@
     // Lifecycle
     // -------------------------------------------------------------------------
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         AppState.OnChange += StateHasChanged;
         Nav.LocationChanged += OnLocationChanged;
         currentPath = GetCleanPath(Nav.Uri);
+        // No async menu loading here. MAUI Blazor Hybrid does not reliably
+        // flush the WebView render queue when StateHasChanged is called from
+        // the continuation of an awaited DB call inside OnInitializedAsync.
+        // Menu loading is deferred to OnAfterRenderAsync (see below), where
+        // the WebView render pipeline is already active and StateHasChanged
+        // produces an immediate visual update.
+        AppLog.Write("SidebarV2.razor", "OnInitialized",
+            $"Setup complete. path='{currentPath}' IsAuthenticated={AppState.IsAuthenticated} _loadPending={_loadPending} _menuCategories={((_menuCategories is null) ? "null" : _menuCategories.Count.ToString())}");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // _loadPending is true exactly once: the first time the component is
+        // mounted. Setting it false before the await prevents re-entry on the
+        // re-render that StateHasChanged() below will trigger.
+        if (!_loadPending)
+        {
+            AppLog.Write("SidebarV2.razor", "OnAfterRenderAsync",
+                $"_loadPending=false — skipping (already loaded). _menuCategories={((_menuCategories is null) ? "null" : _menuCategories.Count.ToString())} _isSuperAdminMenu={_isSuperAdminMenu} _loadError='{_loadError ?? "none"}'");
+            return;
+        }
+        _loadPending = false;
+
+        AppLog.Write("SidebarV2.razor", "OnAfterRenderAsync",
+            $"Starting menu load for path='{currentPath}' IsAuthenticated={AppState.IsAuthenticated}");
         await LoadMenuAsync(currentPath);
         ComputeRouteMatch();
         AutoOpenGroup();
+        AppLog.Write("SidebarV2.razor", "OnAfterRenderAsync",
+            $"Menu load done. categories={_menuCategories?.Count ?? 0} "
+            + $"superAdminGroups={_superAdminGroups?.Count ?? 0} "
+            + $"_openGroup='{_openGroup}' _anyExactRouteMatch={_anyExactRouteMatch} "
+            + $"loadError='{_loadError ?? "none"}' — calling StateHasChanged");
+        // StateHasChanged from OnAfterRenderAsync is reliable in MAUI Blazor
+        // Hybrid because the WebView render pipeline is active at this point.
+        StateHasChanged();
     }
 
     private void OnLocationChanged(
         object? sender,
         Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
-        currentPath = GetCleanPath(e.Location);
+        var newPath = GetCleanPath(e.Location);
+        AppLog.Write("SidebarV2.razor", "OnLocationChanged",
+            $"path changed '{currentPath}' → '{newPath}' IsAuthenticated={AppState.IsAuthenticated} _menuCategories={((_menuCategories is null) ? "null" : _menuCategories.Count.ToString())}");
+        currentPath = newPath;
         _ = InvokeAsync(async () =>
         {
             await LoadMenuAsync(currentPath);
@@ -351,6 +347,8 @@
 
     public void Dispose()
     {
+        AppLog.Write("SidebarV2.razor", "Dispose",
+            "Unsubscribing from AppState.OnChange and Nav.LocationChanged");
         AppState.OnChange -= StateHasChanged;
         Nav.LocationChanged -= OnLocationChanged;
     }
@@ -365,22 +363,34 @@
             || path.StartsWith("/global-settings/", StringComparison.OrdinalIgnoreCase);
         _loadError = null;
 
+        AppLog.Write("SidebarV2.razor", "LoadMenuAsync",
+            $"ENTER path='{path}' _isSuperAdminMenu={_isSuperAdminMenu} IsAuthenticated={AppState.IsAuthenticated} CurrentUserId={AppState.CurrentUserId}");
+
         try
         {
             if (_isSuperAdminMenu)
             {
                 _superAdminGroups = await NavService.GetGlobalSettingsMenuGroupsAsync();
                 _menuCategories   = null;
+                AppLog.Write("SidebarV2.razor", "LoadMenuAsync",
+                    $"SuperAdmin groups loaded = {_superAdminGroups?.Count ?? 0}");
             }
             else
             {
+                AppLog.Write("SidebarV2.razor", "LoadMenuAsync",
+                    "Requesting main menu categories");
                 _menuCategories   = await NavService.GetMenuCategoriesAsync();
                 _superAdminGroups = null;
+                AppLog.Write("SidebarV2.razor", "LoadMenuAsync",
+                    $"Categories received = {_menuCategories?.Count ?? 0}");
             }
+            AppLog.Write("SidebarV2.razor", "LoadMenuAsync", "Menu bound to UI");
         }
         catch (Exception ex)
         {
             _loadError = ex.Message;
+            AppLog.Write("SidebarV2.razor", "LoadMenuAsync",
+                $"ERROR {ex.GetType().Name}: {ex.Message}");
         }
     }
 
@@ -393,13 +403,15 @@
         // Toggle accordion: one group open at a time.
         bool isOpening = _openGroup != group.Group;
         _openGroup = isOpening ? group.Group : string.Empty;
+        AppLog.Write("SidebarV2.razor", "HandleGroupClick",
+            $"group='{group.Group}' isOpening={isOpening}");
 
         // When opening a new group, navigate to its first item so the
         // default sub-menu entry is automatically highlighted via
         // route-based active detection.
         if (isOpening && group.Items.Count > 0)
         {
-            Nav.NavigateTo(group.Items[0].Href);
+            Nav.NavigateTo(group.Items[0].Route);
         }
     }
 
@@ -407,7 +419,7 @@
     private void AutoOpenGroup()
     {
         var match = EffectiveGroups.FirstOrDefault(g =>
-            g.Items.Any(i => ItemIsActive(i.Href)));
+            g.Items.Any(i => ItemIsActive(i.Route)));
         if (match is not null)
             _openGroup = match.Group;
     }
@@ -420,7 +432,9 @@
     /// A group is active when any of its items matches the current path.
     /// </summary>
     private bool GroupIsActive(MenuGroupModel group) =>
-        group.Items.Any(i => ItemIsActive(i.Href));
+        group.Items.Count > 0
+            ? group.Items.Any(i => ItemIsActive(i.Route))
+            : ItemIsActive(group.Route);
 
     /// <summary>
     /// Caches whether any menu item's href EXACTLY equals the current path.
@@ -428,9 +442,13 @@
     /// </summary>
     private void ComputeRouteMatch()
     {
-        _anyExactRouteMatch = EffectiveGroups
-            .SelectMany(g => g.Items)
-            .Any(i => currentPath.Equals(i.Href, StringComparison.OrdinalIgnoreCase));
+        _anyExactRouteMatch =
+            EffectiveGroups
+                .SelectMany(g => g.Items)
+                .Any(i => currentPath.Equals(i.Route, StringComparison.OrdinalIgnoreCase))
+            || EffectiveGroups
+                .Where(g => g.Items.Count == 0)
+                .Any(g => currentPath.Equals(g.Route, StringComparison.OrdinalIgnoreCase));
     }
 
     /// <summary>

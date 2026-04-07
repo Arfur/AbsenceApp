@@ -2,9 +2,9 @@
    File        : HeaderV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : Michael
-   Version     : 2.1.0
+   Version     : 2.2.0
    Created     : 2026-03-21
-   Updated     : 2026-04-05
+   Updated     : 2026-04-07
    ---------------------------------------------------------------------------
    Purpose     : V2 top navigation header. Provides logo zone, sidebar toggle,
                  optional search slot, dark-mode toggle, message icon with
@@ -26,16 +26,10 @@
                           Role sourced dynamically via AppState.UserRole,
                           which is set at login from AuthService using
                           RoleTypes.DisplayName from the database.
-     - 2.1.0  2026-04-05  Phase 3 messaging enablement: replaced all static
-                          demo MessageItem/NotifItem lists with bindings to
-                          AppState.UnreadMessages and AppState.UnreadNotifications
-                          (populated from DB at login via
-                          IMessageService.GetUnreadMessagesAsync and
-                          INotificationService.GetUnreadNotificationsAsync).
-                          Removed _messages and _notifs static fields.
-                          Updated badge/guard references to use
-                          UnreadMessagesCount / UnreadNotificationsCount.
-                          Added DEV-ONLY role debug display.
+     - 2.1.0  2026-04-05  Phase 3 messaging enablement.
+     - 2.2.0  2026-04-07  Debug instrumentation: added AppLog.Write to
+                          OnInitialized, Dispose, ToggleUser, ToggleMsg,
+                          ToggleNotif, CloseAll, and HandleLogout.
    ---------------------------------------------------------------------------
    Notes       :
      - Phase 3 component. Requires AppStateService.
@@ -257,6 +251,8 @@
 
     private void ToggleUser()
     {
+        AppLog.Write("HeaderV2.razor", "ToggleUser",
+            $"_userOpen={!_userOpen} UserName='{AppState.UserName}' UserRole='{AppState.UserRole}'");
         _userOpen  = !_userOpen;
         _msgOpen   = false;
         _notifOpen = false;
@@ -264,6 +260,8 @@
 
     private void ToggleMsg()
     {
+        AppLog.Write("HeaderV2.razor", "ToggleMsg",
+            $"UnreadMessagesCount={AppState.UnreadMessagesCount} — {(AppState.UnreadMessagesCount <= 0 ? "skipped (no messages)" : $"_msgOpen={!_msgOpen}")}");
         if (AppState.UnreadMessagesCount <= 0) return;
         _msgOpen   = !_msgOpen;
         _userOpen  = false;
@@ -272,6 +270,8 @@
 
     private void ToggleNotif()
     {
+        AppLog.Write("HeaderV2.razor", "ToggleNotif",
+            $"UnreadNotificationsCount={AppState.UnreadNotificationsCount} — {(AppState.UnreadNotificationsCount <= 0 ? "skipped (no notifications)" : $"_notifOpen={!_notifOpen}")}");
         if (AppState.UnreadNotificationsCount <= 0) return;
         _notifOpen = !_notifOpen;
         _userOpen  = false;
@@ -280,6 +280,8 @@
 
     private void CloseAll()
     {
+        AppLog.Write("HeaderV2.razor", "CloseAll",
+            $"Closing all dropdowns. _userOpen={_userOpen} _msgOpen={_msgOpen} _notifOpen={_notifOpen}");
         _userOpen  = false;
         _msgOpen   = false;
         _notifOpen = false;
@@ -287,6 +289,8 @@
 
     private void HandleLogout()
     {
+        AppLog.Write("HeaderV2.razor", "HandleLogout",
+            $"Logging out. UserName='{AppState.UserName}' IsAuthenticated={AppState.IsAuthenticated}");
         CloseAll();
         AppState.AuthLogout();
         Nav.NavigateTo("/login");
@@ -298,6 +302,8 @@
     // ── Lifecycle ───────────────────────────────────────────────────────────────────────
     protected override void OnInitialized()
     {
+        AppLog.Write("HeaderV2.razor", "OnInitialized",
+            $"IsAuthenticated={AppState.IsAuthenticated} UserName='{AppState.UserName}' UserRole='{AppState.UserRole}' UnreadMessages={AppState.UnreadMessagesCount} UnreadNotifications={AppState.UnreadNotificationsCount}");
         AppState.OnChange += StateHasChanged;
     }
 
@@ -307,5 +313,10 @@
             await OnSearch.InvokeAsync(_searchValue);
     }
 
-    public void Dispose() => AppState.OnChange -= StateHasChanged;
+    public void Dispose()
+    {
+        AppLog.Write("HeaderV2.razor", "Dispose",
+            $"Unsubscribing from AppState.OnChange. IsAuthenticated={AppState.IsAuthenticated}");
+        AppState.OnChange -= StateHasChanged;
+    }
 }

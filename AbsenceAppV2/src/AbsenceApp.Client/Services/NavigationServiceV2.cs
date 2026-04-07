@@ -3,13 +3,19 @@
  File        : NavigationServiceV2.cs
  Namespace   : AbsenceApp.Client.Services
  Author      : Michael
- Version     : 2.3.0
- Created     : 2026-03-21
- Updated     : 2026-04-05
+ Version     : 4.2.0
+   Created     : 2026-03-21
+   Updated     : 2026-04-07
 -------------------------------------------------------------------------------
- Purpose     : V2 navigation service. Loads the sidebar menu structure from
-               menu.json, resolves active routes, builds breadcrumb trails,
-               and exposes NavGroups to SidebarV2.
+ Purpose     : V2 navigation service. Retrieves the sidebar menu structure
+               from the database via NavigationApiServiceV2.
+               The DB is authoritative for menu content and role-based
+               visibility. This service performs no filtering of any kind.
+
+               The main menu and the Global Settings menu are both served by
+               the same DB call — the TVF decides what each role sees.
+               The client caches per-session with ResetAsync() clearing the
+               cache on logout.
 
                This service operates in parallel to the V1 navigation system
                and does not modify or replace it.
@@ -17,197 +23,207 @@
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation.
    - 2.0.0  2026-03-23  Upgraded to parse menu.json v4.0.0 category structure.
-                         Primary method is now GetMenuCategoriesAsync().
-   - 2.1.0  2026-03-26  Added GetGlobalSettingsMenuGroupsAsync() for
-                         /global-settings/ routes.
+   - 2.1.0  2026-03-26  Added GetGlobalSettingsMenuGroupsAsync().
    - 2.2.0  2026-03-26  Phase 3 layout repair; no functional changes.
-   - 2.3.0  2026-04-05  Phase 1 Step 4: introduced inert feature-flag seam
-                         for future DB-driven menu entitlements.
+   - 2.3.0  2026-04-05  Inert feature-flag seam for DB-driven menus.
+   - 3.0.0  2026-04-06  Option A refactor: replaced all JSON-file loading
+                         with NavigationApiServiceV2 (GET /api/menu).
+                         Removed DesignSystemConfigService dependency.
+                         Removed JSON/System.Text.Json.Nodes references.
+                         Added Reset() for logout cache clearing.
+                         GetGlobalSettingsMenuGroupsAsync() now extracts
+                         global-settings groups from the same API response.
+   - 4.0.0  2026-04-06  Schema alignment: replaced all i.Href references with
+                         i.Route to match MenuItemModel.Route (was Href).
+                         GetGlobalSettingsMenuGroupsAsync() updated to also
+                         detect leaf groups (no Items) whose own Route starts
+                         with /global-settings. FindItemByHrefAsync updated
+                         to match on i.Route.
+   - 4.1.0  2026-04-07  Debug instrumentation: added AppLog.Write calls to
+                         GetMenuCategoriesAsync (cache-hit/miss/lock/DB paths),
+                         GetGlobalSettingsMenuGroupsAsync, GetMenuGroupsAsync,
+                         FindItemByHrefAsync, GetAllItemsAsync, and Reset().
+                         Reset() logged BEFORE and AFTER _lock.Wait() so
+                         the synchronous block duration was visible.
+   - 4.2.0  2026-04-07  ***CRITICAL FIX*** Converted Reset() to ResetAsync()
+                         and replaced synchronous _lock.Wait() with
+                         await _lock.WaitAsync() to eliminate UI freeze
+                         during login when BreadcrumbV2 holds the async lock.
 -------------------------------------------------------------------------------
  Notes       :
-   - Feature flag seam is intentionally inert in Phase 1.
-   - Menu data continues to be sourced exclusively from menu.json.
-   - No role or user-based filtering is applied at this stage.
-   - Behaviour must remain non-breaking until Phase 2 is enabled.
+   - No role checks, entitlement checks, or menu filtering on the client.
+   - SidebarV2 renders exactly what this service returns.
 ===============================================================================
 */
 
 using AbsenceApp.Client.Models.V2;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using AbsenceApp.Client.Services.ApiV2.Modules;
 
 namespace AbsenceApp.Client.Services;
 
 public sealed class NavigationServiceV2
 {
-    private readonly DesignSystemConfigService _config;
+    // ---------------------------------------------------------------------------
+    // Dependencies
+    // ---------------------------------------------------------------------------
+
+    private readonly NavigationApiServiceV2 _api;
+
+    // ---------------------------------------------------------------------------
+    // Cache — cleared on ResetAsync() (called at logout)
+    // ---------------------------------------------------------------------------
 
     private List<MenuCategoryModel>? _cache;
     private readonly SemaphoreSlim _lock = new(1, 1);
 
-    private static readonly JsonSerializerOptions _jsonOpts = new()
+    public NavigationServiceV2(NavigationApiServiceV2 api)
     {
-        PropertyNameCaseInsensitive = true,
-    };
-
-    public NavigationServiceV2(DesignSystemConfigService config)
-    {
-        _config = config;
+        _api = api;
     }
 
-    // =========================================================================
-    // Load and return menu categories from menu.json
-    // =========================================================================
+    // ===========================================================================
+    // GetMenuCategoriesAsync
+    // Returns all categories from the API (main menu).
+    // ===========================================================================
+
     public async Task<List<MenuCategoryModel>> GetMenuCategoriesAsync()
     {
-        if (_cache is not null) return _cache;
+        if (_cache is not null)
+        {
+            AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+                $"CACHE HIT — returning {_cache.Count} cached categories");
+            return _cache;
+        }
 
+        AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+            "CACHE MISS — acquiring async lock");
         await _lock.WaitAsync();
+        AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+            "Lock acquired");
         try
         {
-            if (_cache is not null) return _cache;
-
-            // =========================================================================
-            // Feature flag seam — future DB-driven menu entitlements
-            // =========================================================================
-            // NOTE: Intentionally inert in Phase 1.
-            //       JSON remains authoritative until Phase 2 implements DB entitlements.
-            //
-            // if (UseDbMenuEntitlements)
-            // {
-            //     // Phase 2: Load categories/groups/items from DB/API entitlements here.
-            // }
-
-            var menuObj = await _config.GetMenuAsync();
-
-            if (!menuObj.TryGetPropertyValue("categories", out var categoriesNode) || categoriesNode is null)
+            if (_cache is not null)
             {
-                _cache = [];
+                AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+                    $"Double-check: cache was populated while we waited — returning {_cache.Count} cached categories");
                 return _cache;
             }
-
-            _cache = JsonSerializer.Deserialize<List<MenuCategoryModel>>(
-                categoriesNode.ToJsonString(), _jsonOpts) ?? [];
-        }
-        catch
-        {
-            _cache = [];
+            AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+                "Requesting from NavigationApiServiceV2");
+            _cache = await _api.GetMenuCategoriesAsync();
+            AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+                $"NavigationApiServiceV2 returned — caching {_cache?.Count ?? 0} categories");
         }
         finally
         {
             _lock.Release();
+            AppLog.Write("NavigationServiceV2.cs", "GetMenuCategoriesAsync",
+                "Lock released");
         }
 
-        return _cache;
+        return _cache!;
     }
 
-    // =========================================================================
-    // Return a flat list of all menu groups across all categories
-    // =========================================================================
+    // ===========================================================================
+    // GetGlobalSettingsMenuGroupsAsync
+    // ===========================================================================
+
+    public async Task<List<MenuGroupModel>> GetGlobalSettingsMenuGroupsAsync()
+    {
+        AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsMenuGroupsAsync",
+            "ENTER");
+        var categories = await GetMenuCategoriesAsync();
+        var groups = categories
+            .SelectMany(c => c.Groups)
+            .Where(g =>
+                (g.Items.Count > 0 &&
+                 g.Items.All(i => i.Route.StartsWith(
+                     "/global-settings", StringComparison.OrdinalIgnoreCase)))
+                ||
+                (g.Items.Count == 0 &&
+                 g.Route.StartsWith("/global-settings", StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+        AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsMenuGroupsAsync",
+            $"Returning {groups.Count} global-settings groups");
+        return groups;
+    }
+
+    // ===========================================================================
+    // GetMenuGroupsAsync
+    // ===========================================================================
+
     public async Task<List<MenuGroupModel>> GetMenuGroupsAsync()
     {
+        AppLog.Write("NavigationServiceV2.cs", "GetMenuGroupsAsync",
+            "ENTER");
         var categories = await GetMenuCategoriesAsync();
-        return categories.SelectMany(c => c.Groups).ToList();
+        var groups = categories.SelectMany(c => c.Groups).ToList();
+        AppLog.Write("NavigationServiceV2.cs", "GetMenuGroupsAsync",
+            $"Returning {groups.Count} groups");
+        return groups;
     }
 
-    // =========================================================================
-    // Locate a single menu item by its href
-    // =========================================================================
+    // ===========================================================================
+    // FindItemByHrefAsync
+    // ===========================================================================
+
     public async Task<MenuItemModel?> FindItemByHrefAsync(string href)
     {
+        AppLog.Write("NavigationServiceV2.cs", "FindItemByHrefAsync",
+            $"ENTER href='{href}'");
         var categories = await GetMenuCategoriesAsync();
-        return categories
+        var item = categories
             .SelectMany(c => c.Groups)
             .SelectMany(g => g.Items)
             .FirstOrDefault(i =>
-                string.Equals(i.Href, href, StringComparison.OrdinalIgnoreCase));
+                string.Equals(i.Route, href, StringComparison.OrdinalIgnoreCase));
+        AppLog.Write("NavigationServiceV2.cs", "FindItemByHrefAsync",
+            $"Result: {(item is null ? "null (not found)" : $"found '{item.Title}' at '{item.Route}'")} for href='{href}'");
+        return item;
     }
 
-    private List<MenuGroupModel>? _globalSettingsCache;
+    // ===========================================================================
+    // GetAllItemsAsync
+    // ===========================================================================
 
-    // =========================================================================
-    // Load and return Global Settings menu groups from menu.globalsettings.json
-    // =========================================================================
-    public async Task<List<MenuGroupModel>> GetGlobalSettingsMenuGroupsAsync()
+    public async Task<List<MenuItemModel>> GetAllItemsAsync()
     {
-        if (_globalSettingsCache is not null) return _globalSettingsCache;
+        AppLog.Write("NavigationServiceV2.cs", "GetAllItemsAsync",
+            "ENTER");
+        var categories = await GetMenuCategoriesAsync();
+        var items = categories
+            .SelectMany(c => c.Groups)
+            .SelectMany(g => g.Items)
+            .ToList();
+        AppLog.Write("NavigationServiceV2.cs", "GetAllItemsAsync",
+            $"Returning {items.Count} items");
+        return items;
+    }
+
+    // ===========================================================================
+    // ResetAsync  (FIXED)
+    // Clears the cache so the next call re-fetches from the API.
+    // Called from Login.razor on logout or re-login.
+    // ===========================================================================
+
+    public async Task ResetAsync()
+    {
+        AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
+            $"ENTER ResetAsync() — _cache is {(_cache is null ? "null" : $"populated ({_cache.Count} categories)")} — acquiring async lock");
 
         await _lock.WaitAsync();
+        AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
+            "Lock acquired — clearing cache");
+
         try
         {
-            if (_globalSettingsCache is not null) return _globalSettingsCache;
-
-            var menuObj = await _config.GetGlobalSettingsMenuAsync();
-
-            if (!menuObj.TryGetPropertyValue("categories", out var catNode) || catNode is null)
-            {
-                _globalSettingsCache = [];
-                return _globalSettingsCache;
-            }
-
-            var result = new List<MenuGroupModel>();
-            foreach (var catElement in catNode.AsArray())
-            {
-                if (catElement is not JsonObject catObj) continue;
-                if (!catObj.TryGetPropertyValue("groups", out var groupsNode) || groupsNode is null) continue;
-
-                foreach (var groupElement in groupsNode.AsArray())
-                {
-                    if (groupElement is not JsonObject groupObj) continue;
-
-                    var groupName = groupObj["group"]?.GetValue<string>() ?? string.Empty;
-                    var groupIcon = groupObj["icon"]?.GetValue<string>() ?? string.Empty;
-                    var items = new List<MenuItemModel>();
-
-                    if (groupObj.TryGetPropertyValue("items", out var itemsNode) &&
-                        itemsNode is JsonArray itemsArr)
-                    {
-                        foreach (var itemElement in itemsArr)
-                        {
-                            if (itemElement is not JsonObject itemObj) continue;
-
-                            items.Add(new MenuItemModel
-                            {
-                                Title  = itemObj["label"]?.GetValue<string>() ?? string.Empty,
-                                Href   = itemObj["href"]?.GetValue<string>() ?? string.Empty,
-                                Icon   = itemObj["icon"]?.GetValue<string>() ?? string.Empty,
-                                Status = "Live"
-                            });
-                        }
-                    }
-
-                    result.Add(new MenuGroupModel
-                    {
-                        Group = groupName,
-                        Icon  = groupIcon,
-                        Items = items
-                    });
-                }
-            }
-
-            _globalSettingsCache = result;
-        }
-        catch
-        {
-            _globalSettingsCache = [];
+            _cache = null;
         }
         finally
         {
             _lock.Release();
+            AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
+                "Cache cleared — lock released");
         }
-
-        return _globalSettingsCache;
-    }
-
-    // =========================================================================
-    // Return a flat list of all menu items across all categories and groups
-    // =========================================================================
-    public async Task<List<MenuItemModel>> GetAllItemsAsync()
-    {
-        var categories = await GetMenuCategoriesAsync();
-        return categories
-            .SelectMany(c => c.Groups)
-            .SelectMany(g => g.Items)
-            .ToList();
     }
 }

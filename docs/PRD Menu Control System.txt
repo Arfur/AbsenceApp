@@ -1,0 +1,309 @@
+Below is a **complete, clean, copy‑ready technical document** covering **everything we designed, validated, and locked**.  
+It is written to stand alone as an architectural record and can be pasted directly into your notes or documentation system.
+
+---
+
+# Role‑Based Menu & Feature Access Control  
+**Authoritative Architecture & Implementation Record**
+
+---
+
+## 1. Purpose
+
+This document records the full design, validation, and implementation of a **deterministic, role‑based access control system** governing:
+
+- Menu visibility (what users can see)
+- Feature permissions (what users can do)
+
+The system is:
+- Centralised
+- Data‑driven
+- Globally controllable
+- Non‑bypassable
+- Auditable
+- Safe to extend
+
+---
+
+## 2. Core Design Principles
+
+1. **Single Source of Truth**  
+   All access decisions are made in the database, not in UI or services.
+
+2. **Explicit Precedence**  
+   Global configuration can enable or disable enforcement entirely.
+
+3. **Default Deny**  
+   Absence of permission always results in denial.
+
+4. **Separation of Concerns**  
+   - Security logic is isolated
+   - Presentation logic is layered on top
+   - UI renders results only
+
+5. **No Assumptions**  
+   All logic is driven by confirmed schema and data.
+
+---
+
+## 3. Schema Overview
+
+### 3.1 RoleFeature Table
+
+This table governs **both menu and feature permissions**.
+
+| Column | Purpose |
+|------|--------|
+| RoleFeatureId | Primary key |
+| RoleType | Role identifier |
+| FeatureType | Discriminator (`menu`, `feature`) |
+| MenuItemId | Menu linkage (nullable) |
+| FeatureId | Feature linkage (nullable) |
+| IsAllowed | Permission flag |
+| CreatedAtUtc | Audit timestamp |
+
+---
+
+## 4. Global Configuration Precedence
+
+Two GlobalConfig flags control enforcement:
+
+### Menu Enforcement
+- `EnableGlobalSettings`
+- `EnableRoleBasedNavigation`
+
+### Feature Enforcement
+- `EnableGlobalSettings`
+- `EnableRoleBasedFeatures`
+
+If either flag is disabled:
+- Enforcement is bypassed
+- All items are allowed
+
+---
+
+## 5. Authoritative Menu Access Boundary
+
+### 5.1 Purpose
+
+This boundary answers one question:
+
+> “Which menu items are visible for this role right now?”
+
+No other code is permitted to query `MenuItems` directly.
+
+---
+
+### 5.2 Function: `fn_GetVisibleMenuItems`
+
+```sql
+CREATE FUNCTION dbo.fn_GetVisibleMenuItems
+(
+    @RoleType INT
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    WITH ConfigGate AS (
+        SELECT
+            CASE
+                WHEN gs.IsEnabled = 1
+                 AND gs.ConfigValue = 'true'
+                 AND rb.IsEnabled = 1
+                 AND rb.ConfigValue = 'true'
+                THEN 1
+                ELSE 0
+            END AS ApplyRoleBasedNavigation
+        FROM GlobalConfig gs
+        JOIN GlobalConfig rb
+            ON rb.ConfigKey = 'EnableRoleBasedNavigation'
+        WHERE gs.ConfigKey = 'EnableGlobalSettings'
+    )
+    SELECT
+        mi.*
+    FROM MenuItems mi
+    CROSS JOIN ConfigGate cg
+    WHERE
+        mi.IsHidden = 0
+        AND (
+            cg.ApplyRoleBasedNavigation = 0
+            OR EXISTS (
+                SELECT 1
+                FROM RoleFeature rf
+                WHERE rf.MenuItemId = mi.Id
+                  AND rf.RoleType = @RoleType
+                  AND rf.FeatureType = 'menu'
+                  AND rf.IsAllowed = 1
+            )
+        )
+);
+```
+
+---
+
+## 6. Parent Pruning (Presentation Hygiene)
+
+### 6.1 Purpose
+
+Remove empty containers from the menu tree:
+
+- Categories with no visible menus
+- Menus with no visible submenus
+
+This step **does not affect permissions**.
+
+---
+
+### 6.2 Parent‑Pruned Query
+
+```sql
+DECLARE @RoleType INT = 3;
+
+WITH VisibleMenus AS (
+    SELECT *
+    FROM dbo.fn_GetVisibleMenuItems(@RoleType)
+),
+PrunedMenus AS (
+    SELECT vm.*
+    FROM VisibleMenus vm
+    WHERE
+        vm.ItemType = 'submenu'
+        OR (
+            vm.ItemType = 'menu'
+            AND EXISTS (
+                SELECT 1
+                FROM VisibleMenus c
+                WHERE c.ParentId = vm.Id
+            )
+        )
+        OR (
+            vm.ItemType = 'category'
+            AND EXISTS (
+                SELECT 1
+                FROM VisibleMenus c
+                WHERE c.ParentId = vm.Id
+            )
+        )
+)
+SELECT *
+FROM PrunedMenus
+ORDER BY SortOrder;
+```
+
+---
+
+## 7. Menu Boundary Status
+
+**Locked and complete.**
+
+From this point forward:
+- Menu visibility is governed exclusively by `fn_GetVisibleMenuItems`
+- Parent pruning is applied after permission evaluation
+- UI and services consume results only
+
+---
+
+## 8. Authoritative Feature Access Boundary
+
+### 8.1 Purpose
+
+Answer one question reliably:
+
+> “Is this feature allowed for this role right now?”
+
+---
+
+### 8.2 Function: `fn_IsFeatureAllowed`
+
+```sql
+CREATE FUNCTION dbo.fn_IsFeatureAllowed
+(
+    @RoleType INT,
+    @FeatureId INT
+)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @IsAllowed BIT = 0;
+    DECLARE @ApplyRoleBasedFeatures BIT;
+
+    SELECT
+        @ApplyRoleBasedFeatures =
+            CASE
+                WHEN gs.IsEnabled = 1
+                 AND gs.ConfigValue = 'true'
+                 AND rf.IsEnabled = 1
+                 AND rf.ConfigValue = 'true'
+                THEN 1
+                ELSE 0
+            END
+    FROM GlobalConfig gs
+    JOIN GlobalConfig rf
+        ON rf.ConfigKey = 'EnableRoleBasedFeatures'
+    WHERE gs.ConfigKey = 'EnableGlobalSettings';
+
+    IF @ApplyRoleBasedFeatures = 0
+        RETURN 1;
+
+    IF EXISTS (
+        SELECT 1
+        FROM RoleFeature
+        WHERE RoleType = @RoleType
+          AND FeatureId = @FeatureId
+          AND FeatureType = 'feature'
+          AND IsAllowed = 1
+    )
+        SET @IsAllowed = 1;
+
+    RETURN @IsAllowed;
+END;
+```
+
+---
+
+## 9. Feature Boundary Usage
+
+### SQL
+```sql
+SELECT dbo.fn_IsFeatureAllowed(3, 42);
+```
+
+### Services / UI
+- Buttons render only if allowed
+- Pages redirect if denied
+- Actions are hidden or disabled
+
+No UI‑side permission logic is required.
+
+---
+
+## 10. Final Architecture Summary
+
+| Layer | Responsibility |
+|-----|----------------|
+| GlobalConfig | Enable / disable enforcement |
+| RoleFeature | Permission authority |
+| Menu Boundary | What users can see |
+| Feature Boundary | What users can do |
+| Parent Pruning | Presentation hygiene |
+| UI | Rendering only |
+
+---
+
+## 11. Final Status
+
+- Menu access: **Complete**
+- Feature permissions: **Complete**
+- Enforcement: **Centralised**
+- Behaviour: **Deterministic**
+- System state: **Production‑ready**
+
+---
+
+**End of document.**
+
+---
+
+This is now a **finished, governed access control system**.  
+You can safely build on top of it without fear of drift or inconsistency.
