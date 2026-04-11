@@ -1,0 +1,36 @@
+@* ===========================================================================
+   File        : LoginLayout.razor
+   Namespace   : AbsenceApp.Client.Framework.Layout
+   Author      : Michael
+   Version     : 3.0.0
+   Created     : 2026-03-17
+   Updated     : 2026-04-07
+   ---------------------------------------------------------------------------
+   Purpose     : Minimal, full-viewport layout for authentication pages
+                 (Login, Register, Password Reset). Unlike BaseLayoutV2 and
+                 MainLayoutV2, this layout renders NO application chrome:
+                 - no sidebar
+                 - no header
+                 - no breadcrumb
+                 - no grid structure
+
+                 This ensures the auth card renders at its intended size
+                 without being constrained by the main application shell.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-03-17  Initial implementation (V1).
+     - 2.0.0  2026-03-24  Migrated to AbsenceAppV2 project structure.
+     - 3.0.0  2026-04-07  Restored for V2 authentication flow after login
+                          form shrink issue caused by BaseLayoutV2 grid.
+                          Updated namespace to Framework.Layout.
+   ===========================================================================
+*@
+
+@inherits LayoutComponentBase
+
+@* =========================================================================
+   Section: Auth shell — full-viewport wrapper for authentication pages
+   ========================================================================= *@
+<div class="auth-root">
+    @Body
+</div>

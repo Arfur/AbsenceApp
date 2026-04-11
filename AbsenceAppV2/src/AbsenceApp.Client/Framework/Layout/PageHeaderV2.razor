@@ -1,0 +1,296 @@
+@* ===========================================================================
+   File        : PageHeaderV2.razor
+   Namespace   : AbsenceApp.Client.Framework.Layout
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-04-13
+   Updated     : 2026-04-13
+   ---------------------------------------------------------------------------
+   Purpose     : Route-aware two-row page header. Replaces the combination of
+                 BreadcrumbV2 (thin layout bar) and PageTemplateV2's title row.
+
+                 Row 1 — LEFT : resolved page title (item name, or group name
+                                when there is no specific item in the route)
+                          RIGHT: optional action buttons slot (ActionsContent).
+                 Row 2 — LEFT : navigation path  ⌂ > GroupName [> ItemName]
+
+                 Subscribes to NavigationManager.LocationChanged and resolves
+                 the active group and item labels from NavigationServiceV2
+                 using the same three-pass (exact / prefix / group-root) and
+                 global-settings logic previously used by BreadcrumbV2.
+
+                 Clicking the home icon navigates to /v2/dashboard.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.1.0  2026-04-15  Issue 5: Row 2 breadcrumb redesign. Home icon link
+                          removed. Shows [CATEGORY in accent] > [GroupName in
+                          muted]. _itemLabel excluded from path (page title in
+                          Row 1 already shows it). _categoryLabel displayed.
+     - 1.0.0  2026-04-13  Initial implementation (renamed from HeaderV3.razor).
+                          Replaces BreadcrumbV2 and PageTemplateV2 title-row.
+                          Two-row layout with route-resolved title and
+                          breadcrumb path. CSS classes use phv2__ prefix.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Placed inside PageTemplateV2 (NOT in the layout shell).
+     - Accepts one optional slot: ActionsContent (right-aligned buttons).
+     - Title and path are fully resolved from NavigationServiceV2 — no page
+       parameter passing required.
+     - HeaderV2.razor (top navigation bar with logo/toggle/user-dropdown)
+       is a completely separate component and is NOT affected by this file.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Services
+@inject NavigationServiceV2 NavService
+@inject NavigationManager Nav
+@inject AppStateService AppState
+@implements IDisposable
+
+@{
+    var pageTitle = !string.IsNullOrEmpty(_itemLabel) ? _itemLabel
+                  : !string.IsNullOrEmpty(_groupLabel) ? _groupLabel
+                  : string.Empty;
+}
+
+<div class="phv2">
+
+    @* ── Row 1: page title (left) + action buttons (right) ──────────── *@
+    <div class="phv2__title-row">
+        <h1 class="phv2__title">@pageTitle</h1>
+
+        @if (ActionsContent is not null)
+        {
+            <div class="phv2__actions">@ActionsContent</div>
+        }
+    </div>
+
+    @* ── Row 2: navigation path ──────────────────────────────────────── *@
+    @* Issue 5: shows [CATEGORY in accent] > [GroupName in muted].
+       No home icon link — logo in HeaderV2 provides home navigation.
+       No item label — page title in Row 1 already shows the item name. *@
+    <div class="phv2__path-row">
+
+        @if (!string.IsNullOrEmpty(_categoryLabel))
+        {
+            <span class="phv2__category">@_categoryLabel</span>
+        }
+
+        @if (!string.IsNullOrEmpty(_groupLabel))
+        {
+            @if (!string.IsNullOrEmpty(_categoryLabel))
+            {
+                <i class="bi bi-chevron-right phv2__sep" aria-hidden="true"></i>
+            }
+            <span class="phv2__segment">@_groupLabel</span>
+        }
+
+    </div>
+
+</div>
+
+@code {
+
+    // -----------------------------------------------------------------------
+    // Parameters
+    // -----------------------------------------------------------------------
+
+    /// <summary>Right-aligned action buttons rendered in Row 1.</summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+
+    // -----------------------------------------------------------------------
+    // State
+    // -----------------------------------------------------------------------
+
+    private string _groupLabel    = string.Empty;
+    private string _itemLabel     = string.Empty;
+    // _categoryLabel shown in Row 2 as the first path segment (accent colour)
+    private string _categoryLabel = string.Empty;
+
+    // -----------------------------------------------------------------------
+    // Lifecycle
+    // -----------------------------------------------------------------------
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppLog.Write("PageHeaderV2.razor", "OnInitializedAsync",
+            $"ENTER — URI='{Nav.Uri}'");
+        Nav.LocationChanged += OnLocationChanged;
+        await UpdateAsync(Nav.Uri);
+        AppLog.Write("PageHeaderV2.razor", "OnInitializedAsync",
+            $"EXIT — _groupLabel='{_groupLabel}' _itemLabel='{_itemLabel}'");
+    }
+
+    private void OnLocationChanged(
+        object? sender,
+        Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        AppLog.Write("PageHeaderV2.razor", "OnLocationChanged",
+            $"Location changed to '{e.Location}' — dispatching UpdateAsync");
+        _ = InvokeAsync(async () =>
+        {
+            await UpdateAsync(e.Location);
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        AppLog.Write("PageHeaderV2.razor", "Dispose",
+            "Unsubscribing from Nav.LocationChanged");
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+
+    // -----------------------------------------------------------------------
+    // Route resolution — mirrors SidebarV2 three-pass logic
+    // -----------------------------------------------------------------------
+
+    private async Task UpdateAsync(string uri)
+    {
+        _categoryLabel = string.Empty;
+        _groupLabel    = string.Empty;
+        _itemLabel     = string.Empty;
+
+        var path = GetCleanPath(uri);
+        AppLog.Write("PageHeaderV2.razor", "UpdateAsync", $"ENTER path='{path}'");
+
+        // ── Global Settings (/global-settings/*) ─────────────────────────
+        if (path.StartsWith("/global-settings/", StringComparison.OrdinalIgnoreCase))
+        {
+            AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
+                "Path is global-settings — calling GetGlobalSettingsMenuGroupsAsync()");
+            var groups = await NavService.GetGlobalSettingsMenuGroupsAsync();
+
+            // Pass 1: exact
+            foreach (var group in groups)
+            {
+                foreach (var item in group.Items)
+                {
+                    if (path.Equals(item.Route, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _categoryLabel = "Configuration";
+                        _groupLabel    = group.Group;
+                        _itemLabel     = item.Title;
+                        return;
+                    }
+                }
+            }
+
+            // Pass 2: prefix
+            foreach (var group in groups)
+            {
+                foreach (var item in group.Items)
+                {
+                    if (item.Route.Length > 1 &&
+                        path.StartsWith(item.Route + "/", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _categoryLabel = "Configuration";
+                        _groupLabel    = group.Group;
+                        _itemLabel     = item.Title;
+                        return;
+                    }
+                }
+            }
+
+            // Fallback: at /global-settings/ root or unknown sub-path
+            _categoryLabel = "Configuration";
+            _groupLabel    = "Global Settings";
+            return;
+        }
+
+        // ── Normal menu ───────────────────────────────────────────────────
+        AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
+            $"Path is normal menu — calling GetMenuCategoriesAsync() path='{path}'");
+        var categories = await NavService.GetMenuCategoriesAsync();
+        AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
+            $"GetMenuCategoriesAsync returned {categories.Count} categories");
+
+        // Pass 1: exact match across every item
+        foreach (var cat in categories)
+        {
+            foreach (var group in cat.Groups)
+            {
+                foreach (var item in group.Items)
+                {
+                    if (path.Equals(item.Route, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _categoryLabel = NormaliseCategory(cat.Category);
+                        _groupLabel    = group.Group;
+                        _itemLabel     = item.Title;
+                        return;
+                    }
+                }
+
+                // Leaf group exact match (Items.Count == 0, route on group itself)
+                if (group.Items.Count == 0 &&
+                    !string.IsNullOrEmpty(group.Route) &&
+                    path.Equals(group.Route, StringComparison.OrdinalIgnoreCase))
+                {
+                    _categoryLabel = NormaliseCategory(cat.Category);
+                    _groupLabel    = group.Group;
+                    return;
+                }
+            }
+        }
+
+        // Pass 2: prefix match (un-listed sub-pages, e.g. /v2/students/123)
+        foreach (var cat in categories)
+        {
+            foreach (var group in cat.Groups)
+            {
+                foreach (var item in group.Items)
+                {
+                    if (item.Route.Length > 1 &&
+                        path.StartsWith(item.Route + "/", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _categoryLabel = NormaliseCategory(cat.Category);
+                        _groupLabel    = group.Group;
+                        _itemLabel     = item.Title;
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Pass 3: group-root prefix match
+        // Handles /v2/dashboard where items live at /v2/dashboard/operational-overview
+        foreach (var cat in categories)
+        {
+            foreach (var group in cat.Groups)
+            {
+                var hasChildMatch = group.Items.Any(i =>
+                    i.Route.Length > path.Length &&
+                    i.Route[path.Length] == '/' &&
+                    i.Route.StartsWith(path, StringComparison.OrdinalIgnoreCase));
+                if (hasChildMatch)
+                {
+                    _categoryLabel = NormaliseCategory(cat.Category);
+                    _groupLabel    = group.Group;
+                    // _itemLabel remains empty — at group root, not a specific sub-page
+                    return;
+                }
+            }
+        }
+
+        AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
+            $"EXIT path='{path}' — no route match found — labels remain empty");
+    }
+
+    private static string NormaliseCategory(string? cat) =>
+        string.IsNullOrEmpty(cat) ||
+        string.Equals(cat, "MAIN SIDEBAR", StringComparison.OrdinalIgnoreCase)
+            ? string.Empty
+            : cat;
+
+    private string GetCleanPath(string uri)
+    {
+        var path = Nav.ToBaseRelativePath(uri);
+        if (!path.StartsWith("/")) path = "/" + path;
+        var q = path.IndexOf('?');
+        if (q >= 0) path = path[..q];
+        var h = path.IndexOf('#');
+        if (h >= 0) path = path[..h];
+        return path;
+    }
+}

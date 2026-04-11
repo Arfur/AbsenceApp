@@ -3,9 +3,9 @@
  File        : NavigationServiceV2.cs
  Namespace   : AbsenceApp.Client.Services
  Author      : Michael
- Version     : 4.2.0
+ Version     : 4.4.0
    Created     : 2026-03-21
-   Updated     : 2026-04-07
+   Updated     : 2026-04-12
 -------------------------------------------------------------------------------
  Purpose     : V2 navigation service. Retrieves the sidebar menu structure
                from the database via NavigationApiServiceV2.
@@ -49,6 +49,21 @@
                          and replaced synchronous _lock.Wait() with
                          await _lock.WaitAsync() to eliminate UI freeze
                          during login when BreadcrumbV2 holds the async lock.
+   - 4.3.0  2026-04-10  Added GetGlobalSettingsCategoriesAsync() returning a
+                         filtered List<MenuCategoryModel> for global-settings
+                         mode. Preserves category structure (labels + groups)
+                         so SidebarV2 can render section headers in the
+                         global-settings sidebar.
+   - 4.4.0  2026-04-12  Reworked GetGlobalSettingsCategoriesAsync() to call
+                         NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync()
+                         which reads dbo.MenuItemsGlobalConfig directly.
+                         Added separate _globalSettingsCache + _gsLock for the
+                         global settings hierarchy (same double-check pattern
+                         as the main menu cache). Updated
+                         GetGlobalSettingsMenuGroupsAsync() to flatten groups
+                         from GetGlobalSettingsCategoriesAsync() instead of
+                         filtering the main menu. Updated ResetAsync() to also
+                         clear the global settings cache.
 -------------------------------------------------------------------------------
  Notes       :
    - No role checks, entitlement checks, or menu filtering on the client.
@@ -75,6 +90,11 @@ public sealed class NavigationServiceV2
 
     private List<MenuCategoryModel>? _cache;
     private readonly SemaphoreSlim _lock = new(1, 1);
+
+    // Global settings has its own independent cache and lock so that
+    // the main-menu and global-settings read paths never contend.
+    private List<MenuCategoryModel>? _globalSettingsCache;
+    private readonly SemaphoreSlim _gsLock = new(1, 1);
 
     public NavigationServiceV2(NavigationApiServiceV2 api)
     {
@@ -126,26 +146,67 @@ public sealed class NavigationServiceV2
 
     // ===========================================================================
     // GetGlobalSettingsMenuGroupsAsync
+    // Returns the flat list of all groups from the Global Settings menu.
+    // Delegates to GetGlobalSettingsCategoriesAsync() so both methods share
+    // the same cached, correctly-sourced data.
     // ===========================================================================
 
     public async Task<List<MenuGroupModel>> GetGlobalSettingsMenuGroupsAsync()
     {
         AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsMenuGroupsAsync",
             "ENTER");
-        var categories = await GetMenuCategoriesAsync();
+        var categories = await GetGlobalSettingsCategoriesAsync();
         var groups = categories
             .SelectMany(c => c.Groups)
-            .Where(g =>
-                (g.Items.Count > 0 &&
-                 g.Items.All(i => i.Route.StartsWith(
-                     "/global-settings", StringComparison.OrdinalIgnoreCase)))
-                ||
-                (g.Items.Count == 0 &&
-                 g.Route.StartsWith("/global-settings", StringComparison.OrdinalIgnoreCase)))
             .ToList();
         AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsMenuGroupsAsync",
             $"Returning {groups.Count} global-settings groups");
         return groups;
+    }
+
+    // ===========================================================================
+    // GetGlobalSettingsCategoriesAsync
+    // Returns the full category → group → submenu hierarchy for the Global
+    // Settings sidebar by reading dbo.MenuItemsGlobalConfig via the API service.
+    // Cached separately from the main menu; cleared by ResetAsync().
+    // ===========================================================================
+
+    public async Task<List<MenuCategoryModel>> GetGlobalSettingsCategoriesAsync()
+    {
+        if (_globalSettingsCache is not null)
+        {
+            AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                $"CACHE HIT — returning {_globalSettingsCache.Count} cached categories");
+            return _globalSettingsCache;
+        }
+
+        AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+            "CACHE MISS — acquiring async lock");
+        await _gsLock.WaitAsync();
+        AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+            "Lock acquired");
+        try
+        {
+            if (_globalSettingsCache is not null)
+            {
+                AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                    $"Double-check: cache was populated while we waited — returning {_globalSettingsCache.Count} cached categories");
+                return _globalSettingsCache;
+            }
+            AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                "Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync");
+            _globalSettingsCache = await _api.GetGlobalSettingsCategoriesAsync();
+            AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                $"NavigationApiServiceV2 returned — caching {_globalSettingsCache?.Count ?? 0} categories");
+        }
+        finally
+        {
+            _gsLock.Release();
+            AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                "Lock released");
+        }
+
+        return _globalSettingsCache!;
     }
 
     // ===========================================================================
@@ -213,7 +274,7 @@ public sealed class NavigationServiceV2
 
         await _lock.WaitAsync();
         AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
-            "Lock acquired — clearing cache");
+            "Lock acquired — clearing main menu cache");
 
         try
         {
@@ -223,7 +284,22 @@ public sealed class NavigationServiceV2
         {
             _lock.Release();
             AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
-                "Cache cleared — lock released");
+                "Main menu cache cleared — lock released");
+        }
+
+        await _gsLock.WaitAsync();
+        AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
+            "gsLock acquired — clearing global settings cache");
+
+        try
+        {
+            _globalSettingsCache = null;
+        }
+        finally
+        {
+            _gsLock.Release();
+            AppLog.Write("NavigationServiceV2.cs", "ResetAsync",
+                "Global settings cache cleared — gsLock released");
         }
     }
 }

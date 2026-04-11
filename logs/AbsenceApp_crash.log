@@ -1,0 +1,56 @@
+[01:37:01] ErrorBoundary: Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Category'.
+Invalid column name 'GroupName'.
+Invalid column name 'GroupIcon'.
+Invalid column name 'IsFlat'.
+Invalid column name 'Status'.
+Invalid column name 'Description'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__209_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.FromSqlQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.FromSqlQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at AbsenceApp.Client.Services.ApiV2.Modules.NavigationApiServiceV2.GetMenuCategoriesAsync(CancellationToken ct) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\ApiV2\Modules\NavigationApiServiceV2.cs:line 130
+   at AbsenceApp.Client.Services.NavigationServiceV2.GetMenuCategoriesAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\NavigationServiceV2.cs:line 113
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.UpdateAsync(String uri) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 204
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.OnInitializedAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 110
+   at Microsoft.AspNetCore.Components.ComponentBase.RunInitAndSetParametersAsync()
+   at Microsoft.AspNetCore.Components.RenderTree.Renderer.GetErrorHandledTask(Task taskToHandle, ComponentState owningComponentState)
+ClientConnectionId:ad2642ee-9f00-427b-9df8-ca8992f93a9e
+Error Number:207,State:1,Class:16
+[18:30:55] ErrorBoundary: System.InvalidCastException: Unable to cast object of type 'System.Int32' to type 'System.Boolean'.
+   at Microsoft.Data.SqlClient.SqlBuffer.get_Boolean()
+   at Microsoft.Data.SqlClient.SqlDataReader.GetBoolean(Int32 i)
+   at lambda_method21(Closure, QueryContext, DbDataReader, Int32[])
+   at Microsoft.EntityFrameworkCore.Query.Internal.FromSqlQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at AbsenceApp.Client.Services.ApiV2.Modules.NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync(CancellationToken ct) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\ApiV2\Modules\NavigationApiServiceV2.cs:line 213
+   at AbsenceApp.Client.Services.NavigationServiceV2.GetGlobalSettingsCategoriesAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\NavigationServiceV2.cs:line 198
+   at AbsenceApp.Client.Services.NavigationServiceV2.GetGlobalSettingsMenuGroupsAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\NavigationServiceV2.cs:line 158
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.UpdateAsync(String uri) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 183
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.OnInitializedAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 133
+   at Microsoft.AspNetCore.Components.ComponentBase.RunInitAndSetParametersAsync()
+   at Microsoft.AspNetCore.Components.RenderTree.Renderer.GetErrorHandledTask(Task taskToHandle, ComponentState owningComponentState)
+[18:39:26] ErrorBoundary: System.InvalidCastException: Unable to cast object of type 'System.Int32' to type 'System.Boolean'.
+   at Microsoft.Data.SqlClient.SqlBuffer.get_Boolean()
+   at Microsoft.Data.SqlClient.SqlDataReader.GetBoolean(Int32 i)
+   at lambda_method13(Closure, QueryContext, DbDataReader, Int32[])
+   at Microsoft.EntityFrameworkCore.Query.Internal.FromSqlQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at AbsenceApp.Client.Services.ApiV2.Modules.NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync(CancellationToken ct) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\ApiV2\Modules\NavigationApiServiceV2.cs:line 213
+   at AbsenceApp.Client.Services.NavigationServiceV2.GetGlobalSettingsCategoriesAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\NavigationServiceV2.cs:line 198
+   at AbsenceApp.Client.Services.NavigationServiceV2.GetGlobalSettingsMenuGroupsAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Services\NavigationServiceV2.cs:line 158
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.UpdateAsync(String uri) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 183
+   at AbsenceApp.Client.Framework.Layout.BreadcrumbV2.OnInitializedAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\BreadcrumbV2.razor:line 133
+   at Microsoft.AspNetCore.Components.ComponentBase.RunInitAndSetParametersAsync()
+   at Microsoft.AspNetCore.Components.RenderTree.Renderer.GetErrorHandledTask(Task taskToHandle, ComponentState owningComponentState)

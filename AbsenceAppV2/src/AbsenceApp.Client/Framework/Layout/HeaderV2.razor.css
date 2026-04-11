@@ -3,8 +3,8 @@
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Updated : 2026-04-05
-   Version : 2.1.0
+   Updated : 2026-04-12
+   Version : 2.3.0
    Purpose : Scoped styles for HeaderV2.razor.
              Uses V2 design tokens. Does not affect V1 .app-header.
    Changes :
@@ -15,6 +15,8 @@
                           user menu), and user identity cluster button styles.
      - 2.1.0  2026-04-05  Phase 3 messaging enablement: added debug label
                           styles for DEV-ONLY authenticated role display.
+     - 2.2.0  2026-04-12  Removed box-shadow from .dsv2-header so the bottom
+                          edge matches the thin 1px sidebar border (E6 Issue 1a).
 ============================================================================= */
 
 .dsv2-header {
@@ -26,7 +28,6 @@
     align-items: center;
     gap: 0;
     z-index: var(--ds-z-header, 200);
-    box-shadow: var(--ds-shadow-header, var(--ds-shadow-sm));
 }
 
 /* ── Logo zone ─────────────────────────────────────────────────────── */
@@ -372,7 +373,7 @@
 .dsv2-header__user-name {
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--ds-color-text, #2c3345);
+    color: var(--ds-color-accent, #2563eb);
     white-space: nowrap;
 }
 

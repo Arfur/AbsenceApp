@@ -4,7 +4,7 @@
  Namespace   : AbsenceApp.Client.Components.Pages
  Route       : /login
  Author      : Michael
- Version     : 3.2.0
+ Version     : 3.3.0
  Created     : 2026-03-17
  Updated     : 2026-04-07
 -------------------------------------------------------------------------------
@@ -63,15 +63,19 @@
    - 3.2.0  2026-04-07  Updated NavService.Reset() call to await
                         NavService.ResetAsync() after NavigationServiceV2
                         was converted to async reset to avoid UI freeze.
+   - 3.3.0  2026-04-07  Restored LoginLayout usage to fix login form shrink
+                        caused by BaseLayoutV2 grid constraints.
 -------------------------------------------------------------------------------
  Notes       :
-   - Uses BaseLayoutV2 layout (sidebar/header hidden by auth conditional).
+   - Uses LoginLayout so the login card renders at full width.
    - Redirects authenticated users to /v2/dashboard.
 ===============================================================================
 *@
 
 @page "/login"
-@layout BaseLayoutV2
+@using AbsenceApp.Client.Framework.Layout
+@layout LoginLayout
+
 @inject NavigationManager Nav
 @inject IAuthService AuthService
 @inject IMessageService MessageService

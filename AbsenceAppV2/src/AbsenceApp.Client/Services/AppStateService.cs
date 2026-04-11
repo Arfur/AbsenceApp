@@ -2,9 +2,9 @@
    File        : AppStateService.cs
    Namespace   : AbsenceApp.Client.Services
    Author      : Michael
- * Version     : 2.10.0
+ * Version     : 2.12.0
    Created     : 2026-03-17
-   Updated     : 2026-04-07
+   Updated     : 2026-04-08
    ----------------------------------------------------------------------------
    Purpose     : Singleton UI state container shared across all layout and
                  shell components. Tracks:
@@ -13,39 +13,39 @@
                    - Breadcrumb segments + category
                    - User identity + authentication state (in-memory only)
                    - Per-page table UI state (search, filters, show-entries)
+                   - (2.11.0) Last main-menu route + open group for sidebar
+                               restoration when returning from Global Config.
+                   - (2.12.0) RestoreMainMenuRequested flag for deterministic
+                               sidebar switching back from Global Config.
    ----------------------------------------------------------------------------
    Changes     :
-     - 2.2.0  2026-03-27  DarkMode persisted to MAUI Preferences.
-     - 2.3.0  2026-03-29  Authentication state and user identity persisted and
-                          restored on app startup.
-     - 2.3.1  2026-03-29  Restored TablePageUiState DTO in-file to resolve build
-                          errors after auth persistence update.
-     - 2.4.0  2026-03-29  Enforced mandatory login on every cold start by
-                          removing authentication persistence and restoration.
-     - 2.5.0  2026-04-06  Phase 3 V1 Parity Issue 5: added OnTableSettingsChanged
-                          event and NotifyTableSettingsChanged() so table pages
-                          can reload column settings immediately after a save.
-     - 2.6.0  2026-04-05  Phase 3 Header Nav Identity: added UnreadMessages
-                          property for the message badge count displayed in
-                          the HeaderV2 messages icon.
-     - 2.7.0  2026-04-05  Phase 3 Header Nav Identity — messaging enablement:
-                          replaced hardcoded UnreadCount (int=4) and
-                          UnreadMessages (int=2) with database-backed
-                          UnreadMessages (IReadOnlyList<MessageDto>) and
-                          UnreadNotifications (IReadOnlyList<AppNotificationDto>).
-                          Added UnreadMessagesCount and UnreadNotificationsCount
-                          computed properties. Added SetMessagingData() method
-                          called from Login.razor after successful authentication.
-                          Cleared messaging state on AuthLogout().
-     - 2.8.0  2026-04-06  Diagnostic reliability: replaced Debug.WriteLine with
-                          Console.WriteLine for auth state transitions.
-     - 2.9.0  2026-04-06  Logging migration: replaced all Console.WriteLine calls
-                          with AppLog.Write for file-based diagnostic output.
-     - 2.10.0 2026-04-07  Debug instrumentation: added AppLog.Write calls to
-                          ToggleSidebar, ToggleDarkMode, SetDarkMode,
-                          SetBreadcrumb, SetBreadcrumbCategory, SetMessagingData,
-                          GetTablePageState, SetTablePageState, and enhanced
-                          AuthLogout with subscriber-count awareness.
+     - 2.2.0   2026-03-27  DarkMode persisted to MAUI Preferences.
+     - 2.3.0   2026-03-29  Authentication state and user identity persisted and
+                           restored on app startup.
+     - 2.3.1   2026-03-29  Restored TablePageUiState DTO in-file to resolve build
+                           errors after auth persistence update.
+     - 2.4.0   2026-03-29  Enforced mandatory login on every cold start by
+                           removing authentication persistence and restoration.
+     - 2.5.0   2026-04-06  Phase 3 V1 Parity Issue 5: added OnTableSettingsChanged
+                           event and NotifyTableSettingsChanged() so table pages
+                           can reload column settings immediately after a save.
+     - 2.6.0   2026-04-05  Phase 3 Header Nav Identity: added UnreadMessages
+                           property for the message badge count displayed in
+                           the HeaderV2 messages icon.
+     - 2.7.0   2026-04-05  Phase 3 Header Nav Identity — messaging enablement:
+                           replaced hardcoded UnreadCount with DB-backed
+                           UnreadMessages + UnreadNotifications.
+     - 2.8.0   2026-04-06  Diagnostic reliability: replaced Debug.WriteLine with
+                           Console.WriteLine for auth state transitions.
+     - 2.9.0   2026-04-06  Logging migration: replaced all Console.WriteLine calls
+                           with AppLog.Write for file-based diagnostic output.
+     - 2.10.0  2026-04-07  Debug instrumentation across UI state setters.
+     - 2.11.0  2026-04-08  Step 2: Added last-main-menu state storage +
+                           SetLastMainMenuState(), GetLastMainMenuState(),
+                           RestoreMainMenu() for sidebar switching logic.
+     - 2.12.0  2026-04-08  Step 2 (Option A): Added RestoreMainMenuRequested flag
+                           and ClearRestoreMainMenuRequest() so SidebarV2 can
+                           deterministically react to RestoreMainMenu().
    ============================================================================
 */
 
@@ -59,12 +59,6 @@ namespace AbsenceApp.Client.Services;
    Section: Service definition
    ============================================================================ */
 
-/// <summary>
-/// Singleton service that holds UI-level state shared across all layout
-/// components: sidebar collapsed/expanded, dark/light mode, unread notification
-/// count, user identity, authentication state, breadcrumb trail, and per-page
-/// table UI state.
-/// </summary>
 public class AppStateService
 {
     /* ============================================================================
@@ -80,18 +74,20 @@ public class AppStateService
     private readonly Dictionary<string, TablePageUiState> _tablePageStates =
         new(StringComparer.OrdinalIgnoreCase);
 
+    // Step 2 (v2.11.0): Backing fields for last main-menu state
+    private string _lastMainMenuRoute     = "/v2/dashboard";
+    private string _lastMainMenuOpenGroup = string.Empty;
+
+    // Step 2 (v2.12.0): Flag to signal a requested restore to main menu
+    public bool RestoreMainMenuRequested { get; private set; }
+
     /* ============================================================================
        Section: Constructor — restore persisted state
        ============================================================================ */
 
     public AppStateService()
     {
-        // Restore the last selected theme so cold starts honour the user's
-        // preference without defaulting back to Light mode every time.
         DarkMode = Preferences.Default.Get(DarkModeKey, false);
-
-        // Authentication is intentionally NOT restored.
-        // Users must log in on every cold start for security.
     }
 
     /* ============================================================================
@@ -105,24 +101,17 @@ public class AppStateService
     public bool   IsAuthenticated  { get; private set; } = false;
     public long   CurrentUserId    { get; private set; }
 
-    // ── Messaging state (populated from DB at login; cleared on logout) ────
     public IReadOnlyList<MessageDto>         UnreadMessages      { get; private set; } = Array.Empty<MessageDto>();
     public IReadOnlyList<AppNotificationDto> UnreadNotifications { get; private set; } = Array.Empty<AppNotificationDto>();
 
-    /// <summary>Count of unread messages — drives the header badge.</summary>
     public int UnreadMessagesCount      => UnreadMessages.Count;
-
-    /// <summary>Count of unread notifications — drives the header badge.</summary>
     public int UnreadNotificationsCount => UnreadNotifications.Count;
 
     /* ============================================================================
        Section: Breadcrumb + category
        ============================================================================ */
 
-    /// <summary>Breadcrumb segments shown in the main area.</summary>
     public List<string> Breadcrumb { get; private set; } = new() { "Home" };
-
-    /// <summary>Category label for the current page (from V2 menu.json).</summary>
     public string BreadcrumbCategory { get; private set; } = string.Empty;
 
     /* ============================================================================
@@ -134,16 +123,10 @@ public class AppStateService
     private void Notify() => OnChange?.Invoke();
 
     /* ============================================================================
-       Section: Table-settings change notification (Issue 5 — V1 parity)
+       Section: Table-settings change notification
        ============================================================================ */
 
-    /// <summary>
-    /// Raised whenever a table's column settings are saved via SettingsListPageV2.
-    /// Table pages subscribe to reload settings and call StateHasChanged().
-    /// </summary>
     public event Action? OnTableSettingsChanged;
-
-    /// <summary>Fires <see cref="OnTableSettingsChanged"/>.</summary>
     public void NotifyTableSettingsChanged() => OnTableSettingsChanged?.Invoke();
 
     /* ============================================================================
@@ -195,7 +178,7 @@ public class AppStateService
     }
 
     /* ============================================================================
-       Section: Table page state (search, filters, show-entries)
+       Section: Table page state
        ============================================================================ */
 
     public TablePageUiState? GetTablePageState(string key)
@@ -240,12 +223,8 @@ public class AppStateService
         Notify();
     }
 
-    /// <summary>
-    /// Stores the authenticated user's unread messages and notifications.
-    /// Called by Login.razor immediately after <see cref="SetUser"/>.
-    /// </summary>
     public void SetMessagingData(
-        List<MessageDto>         messages,
+        List<MessageDto> messages,
         List<AppNotificationDto> notifications)
     {
         UnreadMessages      = messages;
@@ -267,6 +246,48 @@ public class AppStateService
         UnreadNotifications = Array.Empty<AppNotificationDto>();
 
         Notify();
+    }
+
+    /* ============================================================================
+       Section: Step 2 — Last main-menu state (v2.11.0 / v2.12.0)
+       ============================================================================ */
+
+    public void SetLastMainMenuState(string route, string openGroup)
+    {
+        _lastMainMenuRoute     = route;
+        _lastMainMenuOpenGroup = openGroup;
+
+        AppLog.Write("AppStateService.cs", "SetLastMainMenuState",
+            $"route='{route}' openGroup='{openGroup}'");
+    }
+
+    public (string Route, string OpenGroup) GetLastMainMenuState()
+        => (_lastMainMenuRoute, _lastMainMenuOpenGroup);
+
+    /// <summary>
+    /// Signals that the UI should restore the main menu. SidebarV2 will
+    /// observe RestoreMainMenuRequested, perform the restore, then call
+    /// ClearRestoreMainMenuRequest().
+    /// </summary>
+    public void RestoreMainMenu()
+    {
+        RestoreMainMenuRequested = true;
+        AppLog.Write("AppStateService.cs", "RestoreMainMenu",
+            $"Restoring main menu: route='{_lastMainMenuRoute}' openGroup='{_lastMainMenuOpenGroup}' — setting RestoreMainMenuRequested=true and calling Notify()");
+        Notify();
+    }
+
+    /// <summary>
+    /// Clears the RestoreMainMenuRequested flag after SidebarV2 has
+    /// processed the restore request.
+    /// </summary>
+    public void ClearRestoreMainMenuRequest()
+    {
+        if (!RestoreMainMenuRequested) return;
+
+        RestoreMainMenuRequested = false;
+        AppLog.Write("AppStateService.cs", "ClearRestoreMainMenuRequest",
+            "RestoreMainMenuRequested reset to false");
     }
 
     /* ============================================================================

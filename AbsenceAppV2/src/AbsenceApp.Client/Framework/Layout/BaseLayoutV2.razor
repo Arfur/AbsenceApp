@@ -2,9 +2,9 @@
    File        : BaseLayoutV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 6.1.0
+   Version     : 6.2.0
    Created     : 2026-03-23
-   Updated     : 2026-04-07
+   Updated     : 2026-04-13
    ---------------------------------------------------------------------------
    Purpose     : Base layout for all V2 pages. Provides the universal shell
                  including SidebarV2, HeaderV2, BreadcrumbV2, a scrollable
@@ -56,6 +56,9 @@
                           the same structural position
                           (v2-content-area > main > div.v2-page-container)
                           regardless of AppState.IsAuthenticated.
+     - 6.2.0  2026-04-13  E8 — removed <BreadcrumbV2 /> from the auth
+                          conditional block. BreadcrumbV2 is replaced by
+                          HeaderV3 which renders inside PageTemplateV2.
      - 6.1.0  2026-04-07  Debug instrumentation: added AppLog.Write calls to
                           OnAfterRenderAsync non-firstRender path, Dispose,
                           and enhanced OnAfterRenderAsync/OnAppStateChanged
@@ -99,11 +102,10 @@ else
 
     <div class="v2-content-area">
 
-        @* Header and breadcrumb visible only when authenticated *@
+        @* Header visible only when authenticated *@
         @if (AppState.IsAuthenticated)
         {
             <HeaderV2 />
-            <BreadcrumbV2 />
         }
 
         @* @Body is ALWAYS inside main > div.v2-page-container regardless of

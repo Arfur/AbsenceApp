@@ -2,8 +2,9 @@
    File        : GlobalSettingsLayout.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-29
+   Updated     : 2026-04-13
    ---------------------------------------------------------------------------
    Purpose     : Layout for all Global Settings pages (/global-settings/*).
                  Mirrors the Ki-Admin structure of BaseLayoutV2 but is kept
@@ -15,6 +16,11 @@
    Notes       :
      - All Global Settings pages must declare @layout GlobalSettingsLayout.
      - Do NOT use BaseLayoutV2 for Global Settings pages.
+   Changes     :
+     - 1.0.0  2026-03-29  Initial implementation.
+     - 1.1.0  2026-04-13  E8 — removed <BreadcrumbV2 />. BreadcrumbV2 is
+                          replaced by HeaderV3 which renders inside each
+                          page’s PageTemplateV2.
    ===========================================================================
 *@
 
@@ -33,7 +39,6 @@
     <div class="v2-content-area">
 
         <HeaderV2 />
-        <BreadcrumbV2 />
 
         <main class="v2-main">
             <div class="v2-page-container">

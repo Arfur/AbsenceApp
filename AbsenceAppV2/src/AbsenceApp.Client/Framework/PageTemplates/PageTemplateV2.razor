@@ -2,9 +2,9 @@
    File        : PageTemplateV2.razor
    Namespace   : AbsenceApp.Client.Framework.PageTemplates
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 3.1.0
    Created     : 2026-03-21
-   Updated     : 2026-03-27
+   Updated     : 2026-04-13
    ---------------------------------------------------------------------------
    Purpose     : V2 base page template. A layout component (no @page directive)
                  that composes HeaderV2, SidebarV2, BreadcrumbV2, and a main
@@ -16,6 +16,15 @@
      - 1.0.1  2026-03-25  Removed invalid @using AbsenceApp.Client.Components.LayoutV2.
      - 1.1.0  2026-03-25  Corrected namespace to AbsenceApp.Client.Framework.PageTemplates
                           after restoring file to Framework/PageTemplates folder.
+     - 3.1.0  2026-04-13  E8 follow-up: renamed HeaderV3 → PageHeaderV2.
+                          Updated <HeaderV3> to <PageHeaderV2> and all
+                          related comments. No behavioural change.
+     - 3.0.0  2026-04-13  E8 — BreadcrumbV2 replacement. Removed title-row
+                          (h1 + actions) in favour of HeaderV3 which renders
+                          a two-row page header (resolved title + breadcrumb
+                          path) with the ActionsContent slot forwarded to it.
+                          PageTitle and PageTitleText parameters are retained
+                          as no-ops for backward compatibility.
      - 2.0.0  2026-03-27  Phase 3 Part 2 — Shell deduplication fix.
                           BREAKING: Removed the duplicate Sidebar, Header, and
                           Breadcrumb slots from PageTemplateV2. BaseLayoutV2
@@ -38,39 +47,22 @@
 *@
 
 @namespace AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.Framework.Layout
 
 @* =========================
    SECTION: PAGE INNER WRAPPER
-   Simple column layout. BaseLayoutV2 owns Sidebar + Header + Breadcrumb.
-   This component adds only the page title row and inner content area.
+   Simple column layout. BaseLayoutV2 owns Sidebar + Header (top nav bar).
+   This component adds the two-row page header (PageHeaderV2) and inner content area.
    ========================= *@
 <div class="dsv2-page-inner">
 
     @* =========================
-       SECTION: TITLE ROW
-       Optional page title (h1) and right-aligned action buttons.
-       Skipped entirely when neither PageTitle nor PageTitleText is set.
+       SECTION: PAGE HEADER
+       Two-row header: Row 1 = resolved title + actions, Row 2 = nav path.
+       PageHeaderV2 is self-contained — it resolves title from the active route
+       via NavigationServiceV2. ActionsContent slot is forwarded here.
        ========================= *@
-    @if (PageTitle is not null || PageTitleText is not null)
-    {
-        <div class="dsv2-page-inner__title-row">
-            @if (PageTitle is not null)
-            {
-                @PageTitle
-            }
-            else
-            {
-                <h1 class="dsv2-page-inner__page-title">@PageTitleText</h1>
-            }
-
-            @if (ActionsContent is not null)
-            {
-                <div class="dsv2-page-inner__actions">
-                    @ActionsContent
-                </div>
-            }
-        </div>
-    }
+    <PageHeaderV2 ActionsContent="@ActionsContent" />
 
     @* =========================
        SECTION: CONTENT AREA

@@ -24,6 +24,9 @@
                           Issue 5: load column settings from
                           TableSettingsFileService; subscribe to
                           AppState.OnTableSettingsChanged for live updates.
+     - 2.1.0  2026-04-14  E9 Change 7: moved 'Add Staff Member' button and
+                          new Export dropdown into PageTemplateV2 ActionsContent.
+                          Removed ActionButtons slot from TablePageTemplateV2.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/staff
@@ -45,6 +48,43 @@
 @implements IDisposable
 
 <PageTemplateV2 PageTitleText="Staff">
+
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+        <button type="button"
+                class="phv2-btn phv2-btn--add"
+                @onclick="@(() => Nav.NavigateTo("/v2/staff/new"))">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+            Add Staff Member
+        </button>
+    </ActionsContent>
 
     <ChildContent>
 
@@ -68,12 +108,6 @@
             OnClearAllFilters="@OnClearAllFilters">
 
             <ActionButtons>
-                <button type="button"
-                        class="tpt-btn tpt-btn-primary"
-                        @onclick="@(() => Nav.NavigateTo("/v2/staff/new"))">
-                    <i class="bi bi-plus-circle" aria-hidden="true"></i>
-                    Add Staff Member
-                </button>
             </ActionButtons>
 
             @* =========================================================
@@ -425,6 +459,10 @@
     private string SortClass(string column) =>
         ViewModel.SortColumn != column ? "" :
         ViewModel.SortAscending ? "asc" : "desc";
+
+    private bool _showExportMenu;
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
 
     // -------------------------------------------------------------------------
     // Settings change (Issue 5)

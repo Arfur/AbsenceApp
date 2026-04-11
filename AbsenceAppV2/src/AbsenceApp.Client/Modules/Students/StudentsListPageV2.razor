@@ -36,6 +36,12 @@
                           Issue 5: load column settings from TableSettingsFileService;
                           subscribe to AppState.OnTableSettingsChanged for
                           immediate column-visibility updates.
+     - 2.4.0  2026-04-14  E9 Change 7: moved 'Add Student' button and new
+                          Export dropdown (PDF/Excel, no back-end action yet)
+                          from TablePageTemplateV2 ActionButtons slot into
+                          PageTemplateV2 ActionsContent so they appear in the
+                          page header area. Removed ActionButtons slot from
+                          TablePageTemplateV2.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/students
@@ -57,6 +63,43 @@
 @implements IDisposable
 
 <PageTemplateV2 PageTitleText="Students">
+
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+        <button type="button"
+                class="phv2-btn phv2-btn--add"
+                @onclick="GoToAdd">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+            Add Student
+        </button>
+    </ActionsContent>
 
     <ChildContent>
 
@@ -86,18 +129,7 @@
             OnClearAllFilters="@OnClearAllFilters">
 
             @* =========================================================
-               ACTION BUTTONS — amber "+ Add Student" button (V1 ref)
-               ========================================================= *@
-            <ActionButtons>
-                <button type="button"
-                        class="tpt-btn tpt-btn-primary"
-                        @onclick="GoToAdd">
-                    <i class="bi bi-plus-circle" aria-hidden="true"></i>
-                    Add Student
-                </button>
-            </ActionButtons>
 
-            @* =========================================================
                FILTERS — 10 dropdown filters in two rows (V1 ref)
                Row 1: Admission Number, First Name, Last Name, Gender,
                       Date Of Birth, Year Group, Class, House
@@ -665,6 +697,10 @@
 
     private void GoToAdd() =>
         Nav.NavigateTo("/v2/students/new");
+
+    private bool _showExportMenu;
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
 
     private static string DetailHref(long id) =>
         $"/v2/students/{id}";

@@ -2,9 +2,9 @@
    File        : MainLayoutV2.razor.css
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-03-29
-   Updated     : 2026-03-29
+   Updated     : 2026-04-11
    ---------------------------------------------------------------------------
    Purpose     : Component-scoped structural CSS for MainLayoutV2.
                  Defines the full-screen flex shell that positions SidebarV2
@@ -24,6 +24,11 @@
        own .razor.css files and are not overridden here.
    ---------------------------------------------------------------------------
    Changes     :
+     - 1.1.0  2026-04-11  Issue 1: hide main-content scrollbar visually while
+                          keeping scroll functional. Added scrollbar-width: none
+                          (Firefox), -ms-overflow-style: none (IE/Edge), and
+                          ::-webkit-scrollbar { display: none } (Chromium/MAUI)
+                          to .v2-main and .v2-main--auth.
      - 1.0.0  2026-03-29  Initial implementation. Structural rules extracted
                           from BaseLayoutV2.razor.css so MainLayoutV2 has its
                           own component-scoped stylesheet. Rules are identical
@@ -104,6 +109,14 @@
     overflow-x: hidden;
     background: var(--main-bg, #eaecf0);
     min-height: 0;
+    /* Issue 1: hide scrollbar visually; scroll remains fully functional */
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* IE / Edge legacy */
+}
+
+/* Issue 1: WebKit / Chromium / MAUI WebView */
+.v2-main::-webkit-scrollbar {
+    display: none;
 }
 
 /* ===========================================================================
@@ -120,6 +133,12 @@
     overflow-y: auto;
     background: var(--main-bg, #eaecf0);
     min-height: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.v2-main--auth::-webkit-scrollbar {
+    display: none;
 }
 
 /* ===========================================================================

@@ -2,10 +2,10 @@
    File    : SidebarV2.razor.css
    Project : AbsenceApp.Client
    Author  : AI Assistant
-   Version : 1.4.0
+   Version : 2.3.0
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Updated : 2026-04-05
+   Updated : 2026-04-14
    Purpose : Scoped styles for SidebarV2.razor.
              Uses V2 design tokens exclusively. Does not affect V1 .app-sidebar.
    Changes :
@@ -28,6 +28,32 @@
      - 1.4.0  2026-04-05  Phase 3 Header Nav Identity: removed user panel CSS
                           (.dsv2-sidebar__user, __avatar, __user-info, __user-name,
                           __user-role). Identity UI now lives in HeaderV2.razor.css.
+     - 2.3.0  2026-04-11  Issue 1 (sidebar width shift fix): replaced the
+                          0px↔6px webkit scrollbar width toggle on hover with
+                          an always-6px-wide gutter whose thumb is transparent
+                          by default and coloured on hover. Firefox uses
+                          scrollbar-width:thin + scrollbar-color toggling.
+                          Gutter is constant → menu items never shift left.
+     - 2.2.0  2026-04-11  Issue 2: sidebar scrollbar hidden by default; thin
+                          scrollbar (6px) appears only on hover. No arrows.
+                          Rounded subtle thumb. No layout shift.
+     - 2.1.0  2026-04-15  Issue 3: replaced full-height border-left "|" bar
+                          on sub-links with a ::before pseudo-element of
+                          fixed height (16px), centered vertically. Base
+                          sublink padding-left increased to 28px for more
+                          indentation. Active sublink padding-left unchanged
+                          (no longer needs the 3px border offset).
+                          Issue 6: pseudo-element approach means the "|"
+                          indicator correctly appears after logo navigation
+                          once ItemIsActive returns true for the first item.
+                          Change 4 — rounded rectangle group highlights:
+                          replaced full-width border-left indicator with rounded
+                          rectangle (border-radius: 8px, margin: 2px 6px) on all
+                          group buttons and flat links. Increased submenu item
+                          left-indent from 20px to 24px (active: 21px for 3px bar).
+                          Change 5 — category label accent colour:
+                          changed category label text from muted grey to
+                          var(--ds-color-accent) to match active item colour.
 ============================================================================= */
 
 .dsv2-sidebar {
@@ -53,7 +79,7 @@
     font-size: 0.67rem;
     font-weight: var(--ds-font-bold, 700);
     letter-spacing: 1.1px;
-    color: var(--ds-color-text-muted, #7b8494);
+    color: var(--ds-color-accent, #2563eb);
     padding: 14px 14px 4px;
     text-transform: uppercase;
     white-space: nowrap;
@@ -66,19 +92,61 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 8px 0;
+    /* Always reserve thin gutter (invisible by default) so menu items never
+       shift when the scrollbar thumb appears on hover. */
+    scrollbar-width: thin;                          /* Firefox: reserve gutter */
+    scrollbar-color: transparent transparent;       /* Firefox: invisible thumb+track */
+}
+
+/* WebKit/Chromium/MAUI: always reserve 6px — thumb transparent until hover */
+.dsv2-sidebar__nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dsv2-sidebar__nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* No arrows on the scrollbar track */
+.dsv2-sidebar__nav::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* Thumb invisible by default */
+.dsv2-sidebar__nav::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+}
+
+/* Reveal thumb on hover (Firefox + WebKit) */
+.dsv2-sidebar__nav:hover {
+    scrollbar-color: var(--ds-color-gray-300, #d1d5db) transparent; /* Firefox */
+}
+
+.dsv2-sidebar__nav:hover::-webkit-scrollbar-thumb {
+    background: var(--ds-color-gray-300, #d1d5db);
+}
+
+.dsv2-sidebar__nav:hover::-webkit-scrollbar-thumb:hover {
+    background: var(--ds-color-gray-400, #9ca3af);
 }
 
 /* ── Group button ───────────────────────────────────────────────────── */
+/* Rounded-rectangle highlight (Change 4): each button is inset from sidebar
+   edges via margin and has border-radius so the active fill looks like a
+   rounded card rather than a full-width bar. */
 ::deep .dsv2-sidebar__group-btn {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 9px 14px;
-    width: 100%;
+    padding: 9px 10px;
+    width: calc(100% - 12px);
+    margin: 2px 6px;
     text-align: left;
     background: none;
     border: none;
-    border-left: 3px solid transparent;
+    border-left: none;
+    border-radius: 8px;
     color: var(--ds-color-text, #2c3345);
     font-size: var(--ds-text-size-sidebar-item, 0.88rem);
     font-family: var(--ds-font-sans, inherit);
@@ -96,7 +164,6 @@
     background: var(--ds-color-accent, #2563eb);
     color: #ffffff;
     font-weight: var(--ds-font-semibold, 600);
-    border-left-color: var(--ds-color-accent-hover, #1d4ed8);
 }
 
 ::deep .dsv2-sidebar__group-btn--active:hover {
@@ -109,9 +176,12 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 9px 14px;
-    width: 100%;
-    border-left: 3px solid transparent;
+    padding: 9px 10px;
+    width: calc(100% - 12px);
+    margin: 2px 6px;
+    border: none;
+    border-left: none;
+    border-radius: 8px;
     text-decoration: none;
     font-size: var(--ds-text-size-sidebar-item, 0.88rem);
     color: var(--ds-color-text, #2c3345);
@@ -127,7 +197,6 @@
 ::deep .dsv2-sidebar__group-btn--flat.dsv2-sidebar__group-btn--active {
     background: var(--ds-color-accent, #2563eb);
     color: #ffffff;
-    border-left-color: var(--ds-color-accent-hover, #1d4ed8);
 }
 
 /* ── Chevron ────────────────────────────────────────────────────────── */
@@ -156,11 +225,11 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 14px 7px 20px;
+    position: relative;
+    padding: 7px 14px 7px 28px;
     color: var(--ds-color-text-muted, #7b8494);
     font-size: 0.83rem;
     text-decoration: none;
-    border-left: 3px solid transparent;
     transition: background var(--ds-transition-fast, 0.12s ease),
                 color var(--ds-transition-fast, 0.12s ease);
     white-space: nowrap;
@@ -172,13 +241,25 @@
     text-decoration: none;
 }
 
-/* Active sub-link: left-bar indicator + accent colour, no fill background */
+/* Active sub-link: short centered "|" pseudo-element instead of full-height
+   border-left. Height 16px, width 3px, rounded, centered vertically at 8px
+   from the left edge (indented away from the sidebar edge). */
 ::deep .dsv2-sidebar__sublink--active {
     color: var(--ds-color-accent, #2563eb);
     font-weight: var(--ds-font-semibold, 600);
-    border-left-color: var(--ds-color-accent, #2563eb);
-    padding-left: 17px; /* 20px minus the 3px border */
     background: transparent;
+}
+
+::deep .dsv2-sidebar__sublink--active::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--ds-color-accent, #2563eb);
 }
 
 ::deep .dsv2-sidebar__sublink--active:hover {

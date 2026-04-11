@@ -2,9 +2,9 @@
    File        : TablePageTemplateV2.razor
    Namespace   : AbsenceApp.Client.Shared
    Author      : Michael
-   Version     : 2.2.0
+   Version     : 2.3.0
    Created     : 2026-03-17
-   Updated     : 2026-04-05
+   Updated     : 2026-04-13
    ---------------------------------------------------------------------------
    Purpose     : Reusable five-section layout template for all V2 table-based
                  pages (Students, Staff, Classes, etc.). Parallel to the V1
@@ -23,7 +23,11 @@
                           in a single .tpt-card container to match V1 unified
                           card layout. Removed individual card styling from
                           .tpt-filters-area and .tpt-table-wrapper.
-     - 2.2.0  2026-04-05  Phase 3 Final Container Parity: introduced inner
+     - 2.3.0  2026-04-13  E8 RZ2012 fix: removed [EditorRequired] from Filters
+                          parameter and changed type to RenderFragment? so pages
+                          without filter dropdowns (e.g. ClassesListPageV2) do
+                          not generate a build warning. Added null guard in
+                          template: @if (Filters is not null) { @Filters }.
                           .tpt-filters-box nested container around only the
                           filters content to match V1 two-level container
                           hierarchy. Removed border-bottom separator.
@@ -49,7 +53,7 @@
 
         @* Dropdown row: caller fills Filters slot; Clear All sits on the right *@
         <div class="tpt-filter-dropdowns">
-            @Filters
+            @if (Filters is not null) { @Filters }
             <button class="tpt-clear-all-btn" @onclick="HandleClearAll">CLEAR ALL</button>
         </div>
 
@@ -165,9 +169,9 @@
     // Section: Required RenderFragment slots — all four must be supplied
     // =========================================================================
 
-    /// <summary>Dropdown filter controls shown in Section 1.</summary>
-    [Parameter, EditorRequired]
-    public RenderFragment Filters { get; set; } = default!;
+    /// <summary>Dropdown filter controls shown in Section 1. Optional — omit when the page has no filter dropdowns.</summary>
+    [Parameter]
+    public RenderFragment? Filters { get; set; }
 
     /// <summary>Column <th> cells rendered inside the header row (Section 3).</summary>
     [Parameter, EditorRequired]

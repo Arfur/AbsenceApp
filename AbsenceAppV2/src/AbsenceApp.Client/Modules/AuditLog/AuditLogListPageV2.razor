@@ -26,6 +26,8 @@
                           MainLayoutV2 no longer exists — BaseLayoutV2 is the
                           V2 authenticated-shell layout (CS0246 build error fix).
      - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
+     - 1.3.0  2026-04-14  E9 Change 7: added Export dropdown (PDF/Excel, no
+                          back-end action) in PageTemplateV2 ActionsContent.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/auditlog
@@ -47,6 +49,37 @@
    Section: Audit log list
    ========================================================================= *@
 <PageTemplateV2 PageTitleText="Audit Log">
+
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+    </ActionsContent>
 
     <ChildContent>
         @if (ViewModel.Error is not null)
@@ -107,4 +140,8 @@
 
     private async Task OnPageSizeChanged(int size) =>
         await ViewModel.ChangePageSizeAsync(size);
+
+    private bool _showExportMenu;
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
 }

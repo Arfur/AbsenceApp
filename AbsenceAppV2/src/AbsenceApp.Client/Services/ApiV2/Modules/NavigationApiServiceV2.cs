@@ -3,9 +3,9 @@
  File        : NavigationApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 4.0.0
+ Version     : 5.3.0
  Created     : 2026-04-06
- Updated     : 2026-04-06
+ Updated     : 2026-04-10
 -------------------------------------------------------------------------------
  Purpose     : Client-side navigation service that executes
                dbo.fn_GetVisibleMenuItems(@RoleType) via EF Core SqlQueryRaw
@@ -20,7 +20,10 @@
 
                The menu tree is assembled from TVF rows using the authoritative
                MenuItems schema: Id, ParentId, ItemType, Label, Icon, Route,
-               SortOrder, IsHidden. Hierarchy is derived solely from ParentId.
+               SortOrder, IsHidden, Category, GroupName, GroupIcon, IsFlat,
+               Status, Description. Hierarchy is derived from ParentId;
+               denormalised fields (GroupIcon, IsFlat) are used directly on
+               group nodes, and Status/Description are mapped to item nodes.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation (Phase 2 — Client Menu
@@ -39,6 +42,37 @@
    - 4.0.0  2026-04-06  Logging migration: replaced all Debug.WriteLine and
                          Console.WriteLine calls with AppLog.Write for
                          file-based diagnostic output. Removed System.Diagnostics.
+   - 4.1.0  2026-04-08  Schema expansion: added Category, GroupName, GroupIcon,
+                         IsFlat, Status, Description to SQL SELECT and to the
+                         private MenuItemRow projection. BuildCategories now maps
+                         GroupIcon (with Icon fallback) and IsFlat onto
+                         MenuGroupModel, and Status/Description onto MenuItemModel.
+   - 5.0.0  2026-04-10  Deterministic 3-phase hierarchy build in BuildCategories
+                         (category → menu → submenu) to guarantee parent-first
+                         construction, prevent orphaned submenus, and avoid
+                         accidental pruning of valid groups/categories. Pruning
+                         logic retained but applied after hierarchy assembly.
+   - 5.1.0  2026-04-10  Added single-submenu collapsing step in BuildCategories:
+                         when a group has exactly one submenu item whose Title
+                         matches the group's label (case-insensitive) and the
+                         group has no Route of its own, the group is promoted to
+                         a flat link using the submenu's Route and Icon. Prevents
+                         duplicate sidebar entries for menu/submenu pairs that
+                         represent the same logical destination.
+   - 5.2.0  2026-04-12  Added GetGlobalSettingsCategoriesAsync() which queries
+                         dbo.MenuItemsGlobalConfig directly (no role filter).
+                         Projects the table rows into the existing MenuItemRow
+                         shape using SQL NULLs for absent columns, then reuses
+                         BuildCategories() to produce the category → group →
+                         submenu hierarchy for the Global Settings sidebar.
+   - 5.3.0  2026-04-10  Fixed InvalidCastException in
+                         GetGlobalSettingsCategoriesAsync (E7 Issue 2).
+                         MenuItemsGlobalConfig.IsHidden was INT in the DB
+                         (now corrected to BIT). Added explicit
+                         CAST(IsHidden AS BIT) and CAST(IsFlat AS BIT) to
+                         the SQL projection to prevent future type-mismatch
+                         errors. Read Description from the table directly
+                         now that the column exists (was NULL placeholder).
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.
@@ -97,7 +131,7 @@ public sealed class NavigationApiServiceV2
             // -----------------------------------------------------------------------
             // Resolve current user's RoleTypeId
             // -----------------------------------------------------------------------
-            var userId     = _appState.CurrentUserId;
+            var userId = _appState.CurrentUserId;
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
                 $"CurrentUserId={userId}");
 
@@ -113,7 +147,8 @@ public sealed class NavigationApiServiceV2
             // Execute TVF — parameterised to prevent SQL injection
             // -----------------------------------------------------------------------
             const string sql = """
-                SELECT Id, ParentId, ItemType, Label, Icon, Route, SortOrder, IsHidden
+                SELECT Id, ParentId, ItemType, Label, Icon, Route, SortOrder, IsHidden,
+                       Category, GroupName, GroupIcon, IsFlat, Status, Description
                 FROM   dbo.fn_GetVisibleMenuItems(@RoleType)
                 ORDER  BY SortOrder;
                 """;
@@ -126,7 +161,8 @@ public sealed class NavigationApiServiceV2
                 $"Rows returned = {rows.Count}");
 
             // -----------------------------------------------------------------------
-            // Assemble tree: category → group → items (preserves TVF row order)
+            // Assemble tree: category → group → items (preserves TVF row order
+            // within each type; hierarchy is built parent-first).
             // -----------------------------------------------------------------------
             var categories = BuildCategories(rows);
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
@@ -142,71 +178,181 @@ public sealed class NavigationApiServiceV2
     }
 
     // ===========================================================================
+    // GetGlobalSettingsCategoriesAsync
+    // Queries dbo.MenuItemsGlobalConfig directly and builds the full
+    // category → group → submenu hierarchy for the Global Settings sidebar.
+    // No role filter is applied — this table is superadmin-only by design.
+    // The table columns (Id, ParentId, ItemType, Label, Icon, IsHidden, Route,
+    // SortOrder) are projected into the existing MenuItemRow shape so that
+    // BuildCategories() can be reused without modification.
+    // ===========================================================================
+
+    public async Task<List<MenuCategoryModel>> GetGlobalSettingsCategoriesAsync(
+        CancellationToken ct = default)
+    {
+        AppLog.Write("NavigationApiServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+            "ENTER GetGlobalSettingsCategoriesAsync");
+
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            // -----------------------------------------------------------------------
+            // Query MenuItemsGlobalConfig directly.
+            // Columns absent from this table are supplied as SQL NULLs / defaults
+            // so the projection matches MenuItemRow exactly and BuildCategories
+            // can be reused unchanged. Icon is used as GroupIcon fallback
+            // (BuildCategories does: row.GroupIcon ?? row.Icon ?? string.Empty).
+            // -----------------------------------------------------------------------
+            const string sql = """
+                SELECT Id, ParentId, ItemType, Label, Icon, Route, SortOrder,
+                       CAST(IsHidden AS BIT)  AS IsHidden,
+                       NULL                   AS Category,
+                       NULL                   AS GroupName,
+                       NULL                   AS GroupIcon,
+                       CAST(IsFlat  AS BIT)   AS IsFlat,
+                       NULL                   AS Status,
+                       Description
+                FROM   dbo.MenuItemsGlobalConfig
+                WHERE  IsHidden = 0
+                ORDER  BY SortOrder;
+                """;
+
+            var rows = await db.Database
+                .SqlQueryRaw<MenuItemRow>(sql)
+                .ToListAsync(ct);
+            AppLog.Write("NavigationApiServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                $"Rows returned = {rows.Count}");
+
+            var categories = BuildCategories(rows);
+            AppLog.Write("NavigationApiServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                $"Categories built = {categories.Count}");
+            return categories;
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("NavigationApiServiceV2.cs", "GetGlobalSettingsCategoriesAsync",
+                $"ERROR {ex.GetType().Name}: {ex.Message}");
+            throw;
+        }
+    }
+
+    // =======================================================================
     // BuildCategories
     // Assembles the TVF rows into the client-side hierarchy using ParentId.
-    // Rows are already sorted by SortOrder from the SQL ORDER BY clause.
-    // Prunes groups with no items and no direct route, then prunes empty categories.
-    // ===========================================================================
+    // Rows are sorted by SortOrder in SQL; hierarchy is built in three passes:
+    //   1) categories, 2) menus (groups), 3) submenus (items).
+    // Prunes groups with no items and no direct route, then prunes empty
+    // categories. No client-side role or entitlement filtering.
+    // =======================================================================
 
     private static List<MenuCategoryModel> BuildCategories(List<MenuItemRow> rows)
     {
-        // ---------------------------------------------------------------------------
-        // Index by Id for O(1) parent lookups
-        // ---------------------------------------------------------------------------
+        // -------------------------------------------------------------------
+        // Indexes for O(1) parent lookups
+        // -------------------------------------------------------------------
         var categoryById = new Dictionary<int, MenuCategoryModel>();
         var groupById    = new Dictionary<int, MenuGroupModel>();
         var categories   = new List<MenuCategoryModel>();
 
-        foreach (var row in rows)
+        // -------------------------------------------------------------------
+        // Phase 1: categories
+        // -------------------------------------------------------------------
+        foreach (var row in rows.Where(r => r.ItemType == "category"))
         {
-            switch (row.ItemType)
+            var cat = new MenuCategoryModel
             {
-                case "category":
-                    var cat = new MenuCategoryModel { Category = row.Label };
-                    categoryById[row.Id] = cat;
-                    categories.Add(cat);
-                    break;
+                Category = row.Label ?? string.Empty
+            };
 
-                case "menu":
-                    var grp = new MenuGroupModel
-                    {
-                        Group = row.Label ?? string.Empty,
-                        Icon  = row.Icon  ?? string.Empty,
-                        Route = row.Route ?? string.Empty,
-                    };
-                    groupById[row.Id] = grp;
-                    if (row.ParentId.HasValue &&
-                        categoryById.TryGetValue(row.ParentId.Value, out var parentCat))
-                    {
-                        parentCat.Groups.Add(grp);
-                    }
-                    else
-                    {
-                        // Orphan group: attach to an implicit unnamed category
-                        var root = new MenuCategoryModel();
-                        root.Groups.Add(grp);
-                        categories.Add(root);
-                    }
-                    break;
+            categoryById[row.Id] = cat;
+            categories.Add(cat);
+        }
 
-                case "submenu":
-                    if (row.ParentId.HasValue &&
-                        groupById.TryGetValue(row.ParentId.Value, out var parentGrp))
-                    {
-                        parentGrp.Items.Add(new MenuItemModel
-                        {
-                            Title = row.Label ?? string.Empty,
-                            Icon  = row.Icon  ?? string.Empty,
-                            Route = row.Route ?? string.Empty,
-                        });
-                    }
-                    break;
+        // -------------------------------------------------------------------
+        // Phase 2: menus (groups)
+        // -------------------------------------------------------------------
+        foreach (var row in rows.Where(r => r.ItemType == "menu"))
+        {
+            var grp = new MenuGroupModel
+            {
+                Group       = row.Label     ?? string.Empty,
+                Icon        = row.GroupIcon ?? row.Icon ?? string.Empty,
+                Route       = row.Route     ?? string.Empty,
+                IsFlat      = row.IsFlat    ?? false,
+                Description = row.Description,
+            };
+
+            groupById[row.Id] = grp;
+
+            if (row.ParentId.HasValue &&
+                categoryById.TryGetValue(row.ParentId.Value, out var parentCat))
+            {
+                parentCat.Groups.Add(grp);
+            }
+            else
+            {
+                // Orphan group: attach to an implicit unnamed category
+                var root = new MenuCategoryModel();
+                root.Groups.Add(grp);
+                categories.Add(root);
             }
         }
 
-        // ---------------------------------------------------------------------------
-        // Prune: remove groups with no items and no direct route, then empty categories
-        // ---------------------------------------------------------------------------
+        // -------------------------------------------------------------------
+        // Phase 3: submenus (items)
+        // -------------------------------------------------------------------
+        foreach (var row in rows.Where(r => r.ItemType == "submenu"))
+        {
+            if (row.ParentId.HasValue &&
+                groupById.TryGetValue(row.ParentId.Value, out var parentGrp))
+            {
+                parentGrp.Items.Add(new MenuItemModel
+                {
+                    Title       = row.Label ?? string.Empty,
+                    Icon        = row.Icon  ?? string.Empty,
+                    Route       = row.Route ?? string.Empty,
+                    Status      = row.Status,
+                    Description = row.Description,
+                });
+            }
+            else
+            {
+                // Orphan submenu: no valid parent group in this result set.
+                // Intentionally ignored; no client-side repair or reassignment.
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Phase 4: single-submenu collapsing
+        // When a group has exactly one submenu item whose Title matches the
+        // group's own label (case-insensitive), and the group has no Route of
+        // its own, the group and submenu represent the same logical destination.
+        // Promote the submenu's Route and Icon into the group and clear Items
+        // so the sidebar renders one flat link instead of an accordion with a
+        // single duplicate entry.
+        // -------------------------------------------------------------------
+        foreach (var cat in categories)
+        {
+            foreach (var grp in cat.Groups)
+            {
+                if (grp.Items.Count == 1 &&
+                    string.IsNullOrEmpty(grp.Route) &&
+                    string.Equals(grp.Group.Trim(), grp.Items[0].Title.Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    grp.Route  = grp.Items[0].Route;
+                    grp.Icon   = grp.Items[0].Icon;
+                    grp.IsFlat = true;
+                    grp.Items.Clear();
+                }
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // Prune: remove groups with no items and no direct route,
+        // then remove categories with no remaining groups.
+        // -------------------------------------------------------------------
         return categories
             .Select(c =>
             {
@@ -225,14 +371,19 @@ public sealed class NavigationApiServiceV2
 
     private sealed class MenuItemRow
     {
-        public int     Id        { get; set; }
-        public int?    ParentId  { get; set; }
-        public string? ItemType  { get; set; }
-        public string? Label     { get; set; }
-        public string? Icon      { get; set; }
-        public string? Route     { get; set; }
-        public int     SortOrder { get; set; }
-        public bool    IsHidden  { get; set; }
+        public int     Id          { get; set; }
+        public int?    ParentId    { get; set; }
+        public string? ItemType    { get; set; }
+        public string? Label       { get; set; }
+        public string? Icon        { get; set; }
+        public string? Route       { get; set; }
+        public int     SortOrder   { get; set; }
+        public bool    IsHidden    { get; set; }
+        public string? Category    { get; set; }
+        public string? GroupName   { get; set; }
+        public string? GroupIcon   { get; set; }
+        public bool?   IsFlat      { get; set; }
+        public string? Status      { get; set; }
+        public string? Description { get; set; }
     }
 }
-

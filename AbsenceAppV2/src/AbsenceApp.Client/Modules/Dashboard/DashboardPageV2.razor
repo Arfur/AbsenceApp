@@ -2,9 +2,9 @@
    File        : DashboardPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Dashboard
    Author      : Michael
-   Version     : 1.8.1
+   Version     : 1.9.0
    Created     : 2026-03-21
-   Updated     : 2026-04-04
+   Updated     : 2026-04-12
    ---------------------------------------------------------------------------
    Purpose     : Dashboard page at /v2/dashboard. Composes PageTemplateV2 (outer
                  chrome) with DashboardPageTemplate (inner grid layout). Stat
@@ -26,7 +26,9 @@
                           DashboardPageTemplate component slots.
      - 1.7.0  2026-03-28  Section 1A: Added /v2/dashboard/overview alias route
                           so post-login navigation target matches requirement.     - 1.8.0  2026-03-28  Fixed PageTitleText from generic "Dashboard" to      
-                          "Operational Overview" matching the sidebar menu label.   ---------------------------------------------------------------------------
+                          "Operational Overview" matching the sidebar menu label.
+     - 1.9.0  2026-04-12  Removed PageTitleText and ActionsContent: breadcrumb
+                          already shows the page title (E6 Issue 1c).   ---------------------------------------------------------------------------
    Notes       :
      - Phase 3 component. Static placeholder data only.
      - No DI registration required.
@@ -39,14 +41,7 @@
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Dashboard
 
-<PageTemplateV2 PageTitleText="Operational Overview">
-
-    @* =========================
-       SECTION: ACTIONS BAR
-       ========================= *@
-    <ActionsContent>
-        <span class="dsv2-page-action-hint">Overview as of today &mdash; placeholder data</span>
-    </ActionsContent>
+<PageTemplateV2>
 
     @* =========================
        SECTION: CONTENT REGION
@@ -171,7 +166,3 @@
     </ChildContent>
 
 </PageTemplateV2>
-
-@code {
-    // No runtime parameters needed — all content is static placeholder data.
-}
