@@ -3,9 +3,9 @@
  File        : AppDbContext.cs
  Namespace   : AbsenceApp.Data.Context
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : Unknown
- Updated     : 2026-04-05
+ Updated     : 2026-04-11
 -------------------------------------------------------------------------------
  Purpose     : Primary Entity Framework Core DbContext for the AbsenceApp API.
 
@@ -23,6 +23,11 @@
    - 1.2.0  2026-04-05  Added using AbsenceApp.Data.Configurations so the
                          ConfigureEntitlements() extension method resolves at
                          compile time. Closes pre-existing build error CS1061.
+   - 1.3.0  2026-04-11  E15 User Management: added DbSets for AppPage,
+                         RoleDefaultPagePermission, UserPageOverride, and
+                         UserPagePermission. Added ConfigureUserManagement()
+                         hook. Added IDENTITY exclusions for the four new
+                         entities in the ValueGeneratedNever loop.
 -------------------------------------------------------------------------------
  Notes       :
    - This file intentionally contains no business logic.
@@ -115,6 +120,14 @@ public class AppDbContext : DbContext
     public DbSet<AppNotification> AppNotifications => Set<AppNotification>();
 
     // =========================================================================
+    // E15 — User management + page-level permission system
+    // =========================================================================
+    public DbSet<AppPage>                   AppPages                   => Set<AppPage>();
+    public DbSet<RoleDefaultPagePermission> RoleDefaultPagePermissions => Set<RoleDefaultPagePermission>();
+    public DbSet<UserPageOverride>          UserPageOverrides          => Set<UserPageOverride>();
+    public DbSet<UserPagePermission>        UserPagePermissions        => Set<UserPagePermission>();
+
+    // =========================================================================
     // Model configuration
     // =========================================================================
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -132,6 +145,11 @@ public class AppDbContext : DbContext
         modelBuilder.ConfigureEntitlements();
 
         // ---------------------------------------------------------------------
+        // E15 — User management + page-level permission configuration
+        // ---------------------------------------------------------------------
+        modelBuilder.ConfigureUserManagement();
+
+        // ---------------------------------------------------------------------
         // Disable IDENTITY on all integer/long primary keys so the CSV import
         // pipeline can insert explicit ID values from the CSV files.
         // ---------------------------------------------------------------------
@@ -140,6 +158,13 @@ public class AppDbContext : DbContext
             // TablePageSetting uses SQL Server IDENTITY — its configuration
             // explicitly sets UseIdentityColumn() and ValueGeneratedOnAdd().
             if (entityType.ClrType == typeof(TablePageSetting)) continue;
+
+            // E15 entities use SQL Server IDENTITY — exempt from the blanket
+            // ValueGeneratedNever override used by the CSV import pipeline.
+            if (entityType.ClrType == typeof(AppPage))                   continue;
+            if (entityType.ClrType == typeof(RoleDefaultPagePermission)) continue;
+            if (entityType.ClrType == typeof(UserPageOverride))          continue;
+            if (entityType.ClrType == typeof(UserPagePermission))        continue;
 
             var pk = entityType.FindPrimaryKey();
             if (pk == null) continue;

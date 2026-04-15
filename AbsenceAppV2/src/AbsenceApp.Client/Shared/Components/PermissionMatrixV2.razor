@@ -1,0 +1,233 @@
+@* ===========================================================================
+   File        : PermissionMatrixV2.razor
+   Namespace   : AbsenceApp.Client.Shared.Components
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-11
+   Updated     : 2026-04-11
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable permission matrix component for the E15 User
+                 Management module. Renders a table of pages × 6 CRUD action
+                 columns (Read / Write / Create / Delete / Import / Export)
+                 with checkbox cells that bind two-way to a
+                 List<PagePermissionDto>.
+
+                 Matches the UserEdits.png design: module name in the first
+                 column, six action checkboxes per row with column headers,
+                 a "Grant All" / "Clear All" row of column-level toggles at
+                 the top, and per-row grant/clear buttons.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Caller is responsible for loading and saving the Permissions list.
+     - Permissions is a two-way bindable parameter so changes propagate back
+       to the parent (EditUserPageV2 / AddUserPageV2) automatically.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Core.DTOs
+
+<div class="pmv2">
+
+    <div class="pmv2__table-wrap">
+        <table class="pmv2__table">
+            <thead>
+                <tr class="pmv2__header-row">
+                    <th class="pmv2__th pmv2__th--module">Module</th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Read</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Read to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanRead), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Read from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanRead), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Write</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Write to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanWrite), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Write from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanWrite), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Create</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Create to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanCreate), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Create from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanCreate), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Delete</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Delete to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanDelete), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Delete from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanDelete), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Import</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Import to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanImport), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Import from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanImport), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--action">
+                        <div class="pmv2__col-header">
+                            <span>Export</span>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--on"
+                                    title="Grant Export to all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanExport), true)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__col-toggle pmv2__col-toggle--off"
+                                    title="Clear Export from all"
+                                    @onclick="() => SetColumn(nameof(PagePermissionDto.CanExport), false)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th class="pmv2__th pmv2__th--row-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Permissions)
+                {
+                    <tr class="pmv2__row @(row.HasOverride ? "pmv2__row--overridden" : "")">
+                        <td class="pmv2__td pmv2__td--module">
+                            <span class="pmv2__page-name">@row.PageName</span>
+                            @if (row.HasOverride)
+                            {
+                                <span class="pmv2__override-badge" title="Custom permission override active">custom</span>
+                            }
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanRead"
+                                   @onchange="e => row.CanRead = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanWrite"
+                                   @onchange="e => row.CanWrite = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanCreate"
+                                   @onchange="e => row.CanCreate = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanDelete"
+                                   @onchange="e => row.CanDelete = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanImport"
+                                   @onchange="e => row.CanImport = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--action">
+                            <input type="checkbox" class="pmv2__check" checked="@row.CanExport"
+                                   @onchange="e => row.CanExport = (bool)(e.Value ?? false)" />
+                        </td>
+                        <td class="pmv2__td pmv2__td--row-actions">
+                            <button type="button" class="pmv2__row-btn pmv2__row-btn--grant"
+                                    title="Grant all for @row.PageName"
+                                    @onclick="() => GrantRow(row)">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                            <button type="button" class="pmv2__row-btn pmv2__row-btn--clear"
+                                    title="Clear all for @row.PageName"
+                                    @onclick="() => ClearRow(row)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@code {
+    // =========================================================================
+    // Parameters
+    // =========================================================================
+
+    [Parameter, EditorRequired]
+    public List<PagePermissionDto> Permissions { get; set; } = [];
+
+    // =========================================================================
+    // Column toggle helpers
+    // =========================================================================
+
+    private void SetColumn(string prop, bool value)
+    {
+        foreach (var row in Permissions)
+        {
+            switch (prop)
+            {
+                case nameof(PagePermissionDto.CanRead):   row.CanRead   = value; break;
+                case nameof(PagePermissionDto.CanWrite):  row.CanWrite  = value; break;
+                case nameof(PagePermissionDto.CanCreate): row.CanCreate = value; break;
+                case nameof(PagePermissionDto.CanDelete): row.CanDelete = value; break;
+                case nameof(PagePermissionDto.CanImport): row.CanImport = value; break;
+                case nameof(PagePermissionDto.CanExport): row.CanExport = value; break;
+            }
+            if (value) row.HasOverride = true;
+        }
+    }
+
+    // =========================================================================
+    // Row toggle helpers
+    // =========================================================================
+
+    private static void GrantRow(PagePermissionDto row)
+    {
+        row.CanRead = row.CanWrite = row.CanCreate =
+        row.CanDelete = row.CanImport = row.CanExport = true;
+        row.HasOverride = true;
+    }
+
+    private static void ClearRow(PagePermissionDto row)
+    {
+        row.CanRead = row.CanWrite = row.CanCreate =
+        row.CanDelete = row.CanImport = row.CanExport = false;
+    }
+}

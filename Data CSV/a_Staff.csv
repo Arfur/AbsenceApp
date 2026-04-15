@@ -1,0 +1,28 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key,1023,
+StaffNumber,VARCHAR(20),School-issued staff number / payroll number,ST-00451,
+FirstName,VARCHAR(50),Legal first name,Michael,
+LastName,VARCHAR(50),Legal surname,Smith,
+PreferredName,VARCHAR(50),Display name / preferred name,Mike,
+Title,VARCHAR(20),Title such as Mr/Mrs/Miss/Dr,Mr,
+DateOfBirth,DATE,Staff date of birth,1985-06-12,
+Gender,VARCHAR(20),Gender identity,Male,
+WorkEmail,VARCHAR(100),School email address,m.smith@school.org,
+AltEmail,VARCHAR(100),Optional personal email,mike@gmail.com,
+PhoneHome,VARCHAR(20),Home phone number,01332 123456,
+PhoneMobile,VARCHAR(20),Mobile phone number,07700 900123,
+PhoneEmergency,VARCHAR(20),Emergency contact number,07700 900999,
+EmploymentType,VARCHAR(50),Full-time / Part-time / Supply / Contractor,Full-time,
+ContractType,VARCHAR(50),Permanent / Temporary / Fixed-term,Permanent,
+HireDate,DATE,Employment start date,2020-09-01,
+EndDate,DATE NULL,Employment end date (nullable),NULL,
+WorkLocation,VARCHAR(100),Site / campus / building,Main Campus,
+ReportingManagerId,INT NULL,Self-referencing FK to Staff.Id,1012,Staff(Id)
+JobTitleId,INT,FK to StaffJobTitles.Id,4,StaffJobTitles(Id)
+JobGroupId,INT,FK to StaffJobGroups.Id,2,StaffJobGroups(Id)
+DepartmentId,INT,FK to StaffDepartments.Id,7,StaffDepartments(Id)
+ProfilePhotoUrl,VARCHAR(255),URL to staff profile image,/images/staff/1023.jpg,
+AccountStatus,VARCHAR(20),Active / Suspended / Archived,Active,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+

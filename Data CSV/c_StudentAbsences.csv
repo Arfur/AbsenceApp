@@ -1,0 +1,15 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the absence record,1,
+StudentId,int,FK to the student who is absent,1,Students.Id
+AbsenceTypeId,int,FK to absence type (reason code),1,AbsenceTypes.Id
+Date,date,Date of the absence,2026-03-15,
+StartTime,time,Optional start time for partial absence,09:00:00,
+EndTime,time,Optional end time for partial absence,12:00:00,
+IsAuthorised,bit,Whether the absence is authorised by school staff,0,
+AuthorisedBy,nvarchar(100),Staff/user who authorised the absence,a.brown,Users.Id or Staff.Id
+AuthorisedAt,datetime,Timestamp when authorisation was recorded,2026-03-16 08:30:00,
+Reason,nvarchar(500),Free text reason provided by parent/staff,Illness,
+RecordedBy,nvarchar(100),Staff/user who recorded the absence,admin.user,Users.Id or Staff.Id
+Source,nvarchar(50),How absence was reported (phone,email,portal),portal,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:35:26.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:35:26.0000000,

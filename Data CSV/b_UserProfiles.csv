@@ -1,0 +1,12 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user profile,1,
+UserId,INT,Links profile to a user account,1,Users(Id)
+DisplayName,VARCHAR(150),Name shown in the UI,Michael Battle,
+ProfilePhotoUrl,VARCHAR(255),URL or path to profile image,/images/users/1.png,
+Bio,VARCHAR(500),Short user bio or description,NULL,
+Timezone,VARCHAR(50),User timezone preference,Europe/London,
+LanguageCode,VARCHAR(10),Preferred language code,en-GB,
+ThemePreference,VARCHAR(20),UI theme preference Light Dark System,Dark,
+AccentColor,VARCHAR(20),Optional UI accent colour,#3366FF,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-13 14:03:21,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-13 14:03:21,

@@ -1,0 +1,11 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff absence record,501,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+AbsenceTypeId,INT,FK to AbsenceTypes.Id,3,AbsenceTypes(Id)
+StartDate,DATE,Start date of absence,2024-01-12,
+EndDate,DATE,End date of absence,2024-01-14,
+Reason,VARCHAR(255),Reason for absence,Medical appointment,
+Notes,VARCHAR(500),Optional notes,Provided doctor's note,
+IsAuthorised,TINYINT(1),Whether absence is authorised,1,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-01-10 10:22:00,

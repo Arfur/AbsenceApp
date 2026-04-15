@@ -1,0 +1,9 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role change audit entry,8801,
+UserId,INT,User whose role was changed,42,Users(Id)
+OldRoleId,INT,Role before the change,2,Roles(Id)
+NewRoleId,INT,Role after the change,3,Roles(Id)
+ChangedBy,INT,Admin who performed the change,1,Users(Id)
+ChangeTime,DATETIME,Timestamp of the role change,2026-04-15 00:05:00,
+Reason,VARCHAR(255),Explanation for the change,Temporary elevation for reporting,
+Metadata,JSON,Additional structured data about the change,{"source":"admin-panel","ip":"192.168.1.44"},

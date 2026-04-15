@@ -1,0 +1,7 @@
+Field Name,Data Type,Description,Example Value,Links To
+FeatureId,INT,Primary key for the feature,1,
+Key,VARCHAR(150),Unique feature identifier used in code and permissions,ui.sidebar,
+Description,VARCHAR(255),What this feature controls,Controls visibility of the main application sidebar,
+IsActive,BOOLEAN,Whether the feature is currently enabled,1,
+CreatedAtUtc,DATETIME,Record creation timestamp,2026-04-05 21:45:43,
+UpdatedAtUtc,DATETIME,Record update timestamp,NULL,

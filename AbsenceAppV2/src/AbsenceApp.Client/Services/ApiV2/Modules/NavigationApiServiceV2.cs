@@ -3,9 +3,9 @@
  File        : NavigationApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 5.3.0
+ Version     : 5.4.0
  Created     : 2026-04-06
- Updated     : 2026-04-10
+ Updated     : 2026-04-17
 -------------------------------------------------------------------------------
  Purpose     : Client-side navigation service that executes
                dbo.fn_GetVisibleMenuItems(@RoleType) via EF Core SqlQueryRaw
@@ -73,6 +73,13 @@
                          the SQL projection to prevent future type-mismatch
                          errors. Read Description from the table directly
                          now that the column exists (was NULL placeholder).
+   - 5.4.0  2026-04-17  E17 Navigation Unification: injected PermissionServiceV2.
+                         After BuildCategories(), GetMenuCategoriesAsync now calls
+                         private FilterByPermissionsAsync() which removes submenu
+                         items and flat-group links where the current user does not
+                         have CanRead permission, then re-prunes empty groups and
+                         categories. Global Settings sidebar is exempt (superadmin
+                         only — no per-user permission filter applied).
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.
@@ -102,13 +109,16 @@ public sealed class NavigationApiServiceV2
 
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly AppStateService      _appState;
+    private readonly PermissionServiceV2  _permService;
 
     public NavigationApiServiceV2(
         IServiceScopeFactory scopeFactory,
-        AppStateService      appState)
+        AppStateService      appState,
+        PermissionServiceV2  permService)
     {
         _scopeFactory = scopeFactory;
         _appState     = appState;
+        _permService  = permService;
     }
 
     // ===========================================================================
@@ -165,6 +175,7 @@ public sealed class NavigationApiServiceV2
             // within each type; hierarchy is built parent-first).
             // -----------------------------------------------------------------------
             var categories = BuildCategories(rows);
+            await FilterByPermissionsAsync(categories, ct);
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
                 $"Categories built = {categories.Count}");
             return categories;
@@ -236,6 +247,69 @@ public sealed class NavigationApiServiceV2
                 $"ERROR {ex.GetType().Name}: {ex.Message}");
             throw;
         }
+    }
+
+    // =======================================================================
+    // FilterByPermissionsAsync
+    // Post-processes the built hierarchy: removes submenu items and flat-group
+    // links where the current user does not have CanRead permission, then
+    // re-prunes groups with no remaining visible items and empty categories.
+    //
+    // Only routes registered in AppPage are permission-checked. Items whose
+    // route is absent from the AppPage registry are always shown (they are not
+    // permission-controlled pages — e.g. utility links or redirects).
+    // =======================================================================
+
+    private async Task FilterByPermissionsAsync(
+        List<MenuCategoryModel> categories,
+        CancellationToken ct)
+    {
+        foreach (var cat in categories)
+        {
+            // -----------------------------------------------------------------
+            // Step 1: filter submenu items within each group
+            // -----------------------------------------------------------------
+            foreach (var grp in cat.Groups)
+            {
+                var kept = new List<MenuItemModel>();
+                foreach (var item in grp.Items)
+                {
+                    if (await _permService.CanViewAsync(item.Route, ct))
+                        kept.Add(item);
+                }
+                grp.Items = kept;
+            }
+
+            // -----------------------------------------------------------------
+            // Step 2: re-prune groups
+            //   • Flat / no-item groups with a Route: check the route itself.
+            //   • Accordion groups emptied by Step 1: remove.
+            // -----------------------------------------------------------------
+            var keptGroups = new List<MenuGroupModel>();
+            foreach (var grp in cat.Groups)
+            {
+                if (grp.Items.Count == 0)
+                {
+                    if (!string.IsNullOrEmpty(grp.Route))
+                    {
+                        // Flat link or single-collapsed group — check its route.
+                        if (await _permService.CanViewAsync(grp.Route, ct))
+                            keptGroups.Add(grp);
+                    }
+                    // else: accordion with no items left — drop it.
+                }
+                else
+                {
+                    keptGroups.Add(grp);
+                }
+            }
+            cat.Groups = keptGroups;
+        }
+
+        // -----------------------------------------------------------------
+        // Step 3: remove categories that became empty after group pruning
+        // -----------------------------------------------------------------
+        categories.RemoveAll(c => c.Groups.Count == 0);
     }
 
     // =======================================================================

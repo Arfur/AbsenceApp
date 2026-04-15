@@ -1,0 +1,9 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for assignment,88,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+ResponsibilityId,INT,FK to Responsibilities.Id,12,Responsibilities(Id)
+StartDate,DATE,Start date of assignment,2023-09-01,
+EndDate,DATE NULL,End date of assignment,NULL,
+Notes,VARCHAR(255),Optional notes,Head of Year 9,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

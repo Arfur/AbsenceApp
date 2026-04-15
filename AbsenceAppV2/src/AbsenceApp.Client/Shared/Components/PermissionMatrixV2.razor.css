@@ -1,0 +1,181 @@
+/*
+===============================================================================
+ File        : PermissionMatrixV2.razor.css
+ Component   : PermissionMatrixV2
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-04-11
+ Updated     : 2026-04-11
+-------------------------------------------------------------------------------
+ Purpose     : Scoped CSS for the PermissionMatrixV2 component.
+               Provides the permission table layout matching the UserEdits.png
+               design: compact action columns, module-name column, override
+               badge, and column-level grant/clear toggle buttons.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+===============================================================================
+*/
+
+/* ── Outer wrapper ──────────────────────────────────────────────────────── */
+.pmv2 {
+    width: 100%;
+}
+
+.pmv2__table-wrap {
+    overflow-x: auto;
+}
+
+/* ── Table ──────────────────────────────────────────────────────────────── */
+.pmv2__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+/* ── Header row ─────────────────────────────────────────────────────────── */
+.pmv2__header-row {
+    background: var(--dsv2-table-header-bg, #f1f3f5);
+}
+
+.pmv2__th {
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dsv2-muted, #6c757d);
+    border-bottom: 2px solid var(--dsv2-border, #dee2e6);
+    white-space: nowrap;
+    text-align: center;
+}
+
+.pmv2__th--module {
+    text-align: left;
+    min-width: 160px;
+}
+
+.pmv2__th--action {
+    width: 86px;
+}
+
+.pmv2__th--row-actions {
+    width: 72px;
+}
+
+/* ── Column header with toggle buttons ─────────────────────────────────── */
+.pmv2__col-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.pmv2__col-header span {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.pmv2__col-toggle {
+    border: none;
+    background: none;
+    padding: 2px 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.pmv2__col-toggle--on  { color: var(--dsv2-success, #198754); }
+.pmv2__col-toggle--off { color: var(--dsv2-danger,  #dc3545); }
+
+.pmv2__col-toggle:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.05));
+}
+
+/* ── Data rows ──────────────────────────────────────────────────────────── */
+.pmv2__row {
+    border-bottom: 1px solid var(--dsv2-border, #dee2e6);
+    transition: background 0.1s;
+}
+
+.pmv2__row:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.03));
+}
+
+.pmv2__row--overridden {
+    background: color-mix(in srgb, var(--dsv2-primary, #0d6efd) 5%, transparent);
+}
+
+.pmv2__td {
+    padding: 7px 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pmv2__td--module {
+    text-align: left;
+}
+
+/* ── Module name + badge ────────────────────────────────────────────────── */
+.pmv2__page-name {
+    font-weight: 500;
+    color: var(--dsv2-body-text, #212529);
+}
+
+.pmv2__override-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--dsv2-primary, #0d6efd) 15%, transparent);
+    color: var(--dsv2-primary, #0d6efd);
+    vertical-align: middle;
+}
+
+/* ── Checkboxes ─────────────────────────────────────────────────────────── */
+.pmv2__check {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--dsv2-primary, #0d6efd);
+}
+
+/* ── Row action buttons ─────────────────────────────────────────────────── */
+.pmv2__td--row-actions {
+    white-space: nowrap;
+}
+
+.pmv2__row-btn {
+    border: none;
+    background: none;
+    padding: 3px 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.pmv2__row-btn--grant { color: var(--dsv2-success, #198754); }
+.pmv2__row-btn--clear { color: var(--dsv2-danger,  #dc3545); }
+
+.pmv2__row-btn:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.06));
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────── */
+:global(.dsv2-dark) .pmv2__header-row,
+:global(.dark-mode)  .pmv2__header-row {
+    background: rgba(255,255,255,.05);
+}
+
+:global(.dsv2-dark) .pmv2__page-name,
+:global(.dark-mode)  .pmv2__page-name {
+    color: #e9ecef;
+}

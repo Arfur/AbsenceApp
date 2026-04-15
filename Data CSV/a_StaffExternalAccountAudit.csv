@@ -1,0 +1,8 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for audit entry,9201,
+StaffExternalAccountId,INT,FK to StaffExternalAccounts.Id,77,StaffExternalAccounts(Id)
+ChangedByUserId,INT,FK to Users.Id,12,Users(Id)
+ChangeType,VARCHAR(50),Created/Updated/Deleted,Created,
+OldValue,LONGTEXT,Previous JSON snapshot,NULL,
+NewValue,LONGTEXT,New JSON snapshot,{...},
+TimestampUtc,DATETIME,When the change occurred,2024-01-10 09:15:00,

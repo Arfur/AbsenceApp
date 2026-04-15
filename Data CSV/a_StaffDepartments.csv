@@ -1,0 +1,9 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for department,7,
+Name,VARCHAR(100),Department name,Science,
+Code,VARCHAR(20),Short code for department,SCI,
+Description,VARCHAR(255),Optional description,Science Faculty,
+HeadUserId,INT NULL,FK to Users.Id for department head,102,Users(Id)
+Status,VARCHAR(20),Active/Inactive,Active,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

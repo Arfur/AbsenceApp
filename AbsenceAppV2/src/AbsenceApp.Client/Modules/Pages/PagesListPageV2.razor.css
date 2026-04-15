@@ -1,0 +1,320 @@
+/*
+===============================================================================
+ File        : PagesListPageV2.razor.css
+ Component   : PagesListPageV2
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-04-11
+ Updated     : 2026-04-11
+-------------------------------------------------------------------------------
+ Purpose     : Scoped CSS for the Pages Registry list page (E16).
+               Provides toolbar, table, badge, pagination, inline delete
+               confirm, and action button styles consistent with the module
+               pages established in E15.
+===============================================================================
+*/
+
+/* ── Toolbar ────────────────────────────────────────────────────────────── */
+.plv2-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.plv2-show-entries {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.plv2-entries-select,
+.plv2-filter-select {
+    padding: 5px 8px;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 6px;
+    font-size: 0.83rem;
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    cursor: pointer;
+}
+
+.plv2-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.plv2-search {
+    position: relative;
+}
+
+.plv2-search__icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+.plv2-search-input {
+    padding: 6px 10px 6px 28px;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 6px;
+    font-size: 0.84rem;
+    width: 220px;
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    transition: border-color 0.15s;
+}
+
+.plv2-search-input:focus {
+    outline: none;
+    border-color: var(--dsv2-primary, #0d6efd);
+}
+
+/* ── Loading ────────────────────────────────────────────────────────────── */
+.plv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 40px;
+    justify-content: center;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.9rem;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Table ──────────────────────────────────────────────────────────────── */
+.plv2-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 8px;
+}
+
+.plv2-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.plv2-th {
+    background: var(--dsv2-table-header-bg, #f8f9fa);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dsv2-muted, #6c757d);
+    border-bottom: 2px solid var(--dsv2-border, #dee2e6);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.plv2-th--sortable {
+    cursor: pointer;
+}
+
+.plv2-th--sortable:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.04));
+}
+
+.plv2-th--actions {
+    text-align: center;
+    width: 90px;
+}
+
+.plv2-sort-icon {
+    margin-left: 4px;
+    font-size: 0.75rem;
+    color: var(--dsv2-primary, #0d6efd);
+}
+
+.plv2-row {
+    border-bottom: 1px solid var(--dsv2-border, #dee2e6);
+    transition: background 0.1s;
+}
+
+.plv2-row:last-child { border-bottom: none; }
+
+.plv2-row:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.025));
+}
+
+.plv2-row--confirm {
+    background: color-mix(in srgb, var(--dsv2-danger, #dc3545) 5%, transparent);
+}
+
+.plv2-td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    color: var(--dsv2-body-text, #212529);
+}
+
+.plv2-td--empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--dsv2-muted, #6c757d);
+    font-style: italic;
+}
+
+.plv2-td--name {
+    font-weight: 500;
+}
+
+.plv2-td--slug {
+    font-size: 0.82rem;
+    color: var(--dsv2-muted, #6c757d);
+    font-family: monospace;
+}
+
+.plv2-td--actions {
+    text-align: center;
+}
+
+.plv2-row-icon {
+    margin-right: 6px;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.9rem;
+}
+
+/* ── Badges ─────────────────────────────────────────────────────────────── */
+.plv2-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.plv2-badge--cat {
+    background: color-mix(in srgb, var(--dsv2-secondary, #6c757d) 14%, transparent);
+    color: var(--dsv2-secondary, #6c757d);
+}
+
+.plv2-badge--active {
+    background: color-mix(in srgb, var(--dsv2-success, #198754) 12%, transparent);
+    color: var(--dsv2-success, #198754);
+}
+
+.plv2-badge--inactive {
+    background: color-mix(in srgb, var(--dsv2-danger, #dc3545) 12%, transparent);
+    color: var(--dsv2-danger, #dc3545);
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+.plv2-action-btn {
+    border: none;
+    background: none;
+    padding: 5px 7px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.plv2-action-btn--edit {
+    color: var(--dsv2-primary, #0d6efd);
+}
+
+.plv2-action-btn--delete {
+    color: var(--dsv2-danger, #dc3545);
+}
+
+.plv2-action-btn--danger {
+    color: var(--dsv2-danger, #dc3545);
+}
+
+.plv2-action-btn--cancel {
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.plv2-action-btn:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.06));
+}
+
+/* ── Inline delete confirmation ─────────────────────────────────────────── */
+.plv2-delete-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.plv2-delete-confirm__text {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--dsv2-danger, #dc3545);
+    white-space: nowrap;
+}
+
+/* ── Pagination ──────────────────────────────────────────────────────────── */
+.plv2-pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.plv2-pager-info {
+    font-size: 0.82rem;
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.plv2-pager {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.plv2-page-btn {
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    min-width: 34px;
+    text-align: center;
+}
+
+.plv2-page-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.plv2-page-btn--active {
+    background: var(--dsv2-primary, #0d6efd);
+    color: #fff;
+    border-color: var(--dsv2-primary, #0d6efd);
+}
+
+.plv2-page-btn:hover:not(:disabled):not(.plv2-page-btn--active) {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.05));
+}
+
+.plv2-page-ellipsis {
+    padding: 0 5px;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.82rem;
+}

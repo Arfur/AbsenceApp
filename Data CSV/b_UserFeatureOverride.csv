@@ -1,0 +1,8 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user‑feature override,1,
+UserId,INT,User receiving the override,42,Users(Id)
+FeatureId,INT,Feature being overridden,3,Feature(FeatureId)
+IsAllowed,BOOLEAN,Whether the feature is explicitly allowed or denied,0,
+CreatedAtUtc,DATETIME,Timestamp when the override was created,2026-04-14 11:22:00,
+AssignedBy,INT,Admin who applied the override,1,Users(Id)
+Reason,VARCHAR(255),Optional explanation for the override,Temporary restriction due to safeguarding review.,

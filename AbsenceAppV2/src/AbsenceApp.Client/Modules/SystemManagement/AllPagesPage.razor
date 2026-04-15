@@ -1,0 +1,145 @@
+@* ===========================================================================
+   File        : AllPagesPage.razor
+   Namespace   : AbsenceApp.Client.Modules.SystemManagement
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-13
+   Updated     : 2026-04-13
+   ---------------------------------------------------------------------------
+   Purpose     : System Management → Pages → All Pages.
+                 Lists all registered application pages from the app_pages
+                 table via IPagesService.GetAllPagesAsync().
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-13  E31 — Initial creation.
+   ---------------------------------------------------------------------------
+   Notes     :
+     - Route: /v2/system/pages
+     - IPagesService is registered in DataServiceRegistration (E16).
+===========================================================================
+*@
+
+@page "/v2/system/pages"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.SystemManagement
+
+@using AbsenceApp.Client.Shared
+@using AbsenceApp.Core.Interfaces
+@using AbsenceApp.Core.DTOs
+
+@inject IPagesService PagesService
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="All Pages">
+
+    <ActionsContent>
+        <button type="button" class="phv2-btn phv2-btn--primary"
+                @onclick='() => Nav.NavigateTo("/v2/pages/new")'>
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Add Page
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+        <TablePageTemplateV2
+            PageTitle="All Pages"
+            TotalRows="_totalRows"
+            CurrentPage="_currentPage"
+            ShowEntries="_pageSize"
+            SearchValue="_search"
+            ActiveFilters="_chips"
+            OnSearchChanged="OnSearch"
+            OnShowEntriesChanged="OnShowEntries"
+            OnClearAllFilters="OnClearAll">
+
+            <TableHeader>
+                <th class="tpt-th">ID</th>
+                <th class="tpt-th">Name</th>
+                <th class="tpt-th">Route</th>
+                <th class="tpt-th">Category</th>
+                <th class="tpt-th">Sort Order</th>
+                <th class="tpt-th">Active</th>
+                <th class="tpt-th">Actions</th>
+            </TableHeader>
+
+            <TableBody>
+                @if (_isLoading)
+                {
+                    <tr><td colspan="7" class="tpt-td tpt-td--empty">Loading…</td></tr>
+                }
+                else if (_paged.Count == 0)
+                {
+                    <tr><td colspan="7" class="tpt-td tpt-td--empty">No pages found.</td></tr>
+                }
+                else
+                {
+                    @foreach (var p in _paged)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td">@p.Id</td>
+                            <td class="tpt-td">@p.Name</td>
+                            <td class="tpt-td">@p.Route</td>
+                            <td class="tpt-td">@p.CategoryKey</td>
+                            <td class="tpt-td">@p.SortOrder</td>
+                            <td class="tpt-td">@(p.IsActive ? "Yes" : "No")</td>
+                            <td class="tpt-td">
+                                <a href="@($"/v2/pages/{p.Id}")" class="dsv2-table__row-action">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            <Pagination>
+                @for (int pg = 1; pg <= _totalPages; pg++)
+                {
+                    var page = pg;
+                    <button class="tpt-page-btn @(page == _currentPage ? "tpt-page-btn--active" : "")"
+                            @onclick="() => GoToPage(page)">@(page)</button>
+                }
+            </Pagination>
+
+        </TablePageTemplateV2>
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    private IReadOnlyList<PageListItemDto> _all  = [];
+    private List<PageListItemDto>         _paged = [];
+    private bool   _isLoading   = true;
+    private int    _totalRows   = 0;
+    private int    _currentPage = 1;
+    private int    _pageSize    = 10;
+    private string _search      = string.Empty;
+    private readonly List<FilterChip> _chips = [];
+
+    private int _totalPages =>
+        _totalRows == 0 ? 1 : (int)Math.Ceiling(_totalRows / (double)_pageSize);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try   { _all = await PagesService.GetAllPagesAsync(); }
+        finally { _isLoading = false; }
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        var filtered = string.IsNullOrWhiteSpace(_search)
+            ? _all
+            : _all.Where(p =>
+                p.Name.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                p.Route.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                p.CategoryKey.Contains(_search, StringComparison.OrdinalIgnoreCase));
+
+        _totalRows = filtered.Count();
+        _paged     = filtered.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
+    }
+
+    private Task OnSearch(string v)   { _search = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+    private Task OnShowEntries(int v) { _pageSize = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+    private Task GoToPage(int p)      { _currentPage = p; ApplyFilter(); return Task.CompletedTask; }
+    private Task OnClearAll()         { _search = ""; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+}

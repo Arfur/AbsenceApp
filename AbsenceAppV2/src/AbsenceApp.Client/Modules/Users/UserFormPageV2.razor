@@ -1,0 +1,209 @@
+@* ===========================================================================
+   File        : UserFormPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Users
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-11
+   Updated     : 2026-04-11
+   ---------------------------------------------------------------------------
+   Purpose     : E15 User Management — Add / Edit User form page.
+                 Routes:
+                   /v2/users/new          — create new user
+                   /v2/users/{Id:long}/edit — edit existing user
+
+                 Renders personal details (First/Last Name, Username, Email,
+                 Phone, Password, Role) and the PermissionMatrixV2 component
+                 below the form. Delegates all state to UserFormViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+   ===========================================================================
+*@
+
+@page "/v2/users/new"
+@page "/v2/users/{Id:long}/edit"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Users
+
+@using AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Client.Shared.Components
+@inject UserFormViewModelV2 ViewModel
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="@(Id.HasValue ? "Edit User" : "Add User")">
+
+    <ActionsContent>
+        <button class="dsv2-btn dsv2-btn--primary"
+                disabled="@ViewModel.IsSaving"
+                @onclick="OnSave">
+            @(ViewModel.IsSaving ? "Saving…" : (Id.HasValue ? "Save Changes" : "Create User"))
+        </button>
+        <button class="dsv2-btn dsv2-btn--secondary"
+                disabled="@ViewModel.IsSaving"
+                @onclick="@(() => Nav.NavigateTo("/v2/users"))">
+            Cancel
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.IsLoading)
+        {
+            <div class="ufv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i>
+                Loading…
+            </div>
+        }
+        else
+        {
+            @if (ViewModel.Error is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+            @if (ViewModel.Success is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--success" role="status">@ViewModel.Success</div>
+            }
+
+            @* ─────────────────────────── Personal Details ────────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Personal Details</h2>
+                </header>
+
+                <div class="dsv2-form-section__body dsv2-grid-2col">
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="firstName">First Name <span class="ufv2-required">*</span></label>
+                        <input id="firstName" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.FirstName"
+                               placeholder="First name" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="lastName">Last Name <span class="ufv2-required">*</span></label>
+                        <input id="lastName" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.LastName"
+                               placeholder="Last name" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="username">Username <span class="ufv2-required">*</span></label>
+                        <input id="username" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.Username"
+                               placeholder="Unique username"
+                               autocomplete="username" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="email">Email <span class="ufv2-required">*</span></label>
+                        <input id="email" type="email" class="dsv2-form-input"
+                               @bind="@ViewModel.Email"
+                               placeholder="user@school.edu" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="phone">Phone Number</label>
+                        <input id="phone" type="tel" class="dsv2-form-input"
+                               @bind="@ViewModel.PhoneNumber"
+                               placeholder="+44 …" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="password">
+                            @(Id.HasValue ? "New Password (leave blank to keep current)" : "Password") <span class="ufv2-required">@(Id.HasValue ? "" : "*")</span>
+                        </label>
+                        <input id="password" type="password" class="dsv2-form-input"
+                               @bind="@ViewModel.Password"
+                               placeholder="@(Id.HasValue ? "Leave blank to keep current password" : "Enter password")"
+                               autocomplete="new-password" />
+                    </div>
+
+                </div>
+            </section>
+
+            @* ─────────────────────────── Account Settings ────────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Account Settings</h2>
+                </header>
+
+                <div class="dsv2-form-section__body dsv2-grid-2col">
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="roleType">Role <span class="ufv2-required">*</span></label>
+                        <select id="roleType" class="dsv2-form-input"
+                                value="@ViewModel.RoleTypeId"
+                                @onchange="@(e => ViewModel.RoleTypeId = long.Parse(e.Value?.ToString() ?? "0"))">
+                            <option value="0">— Select role —</option>
+                            @foreach (var role in ViewModel.RoleTypes)
+                            {
+                                <option value="@role.Id">@role.DisplayName</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if (Id.HasValue)
+                    {
+                        <div class="dsv2-form-field">
+                            <label class="dsv2-form-label" for="status">Status</label>
+                            <select id="status" class="dsv2-form-input"
+                                    value="@ViewModel.Status"
+                                    @onchange="@(e => ViewModel.Status = e.Value?.ToString() ?? "active")">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    }
+
+                </div>
+            </section>
+
+            @* ─────────────────────── Module Permissions ──────────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-key" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Module Permissions</h2>
+                </header>
+
+                <div class="dsv2-form-section__body">
+                    @if (ViewModel.Permissions.Count == 0)
+                    {
+                        <p class="ufv2-permissions-empty">No pages configured. Add pages to the app_pages table first.</p>
+                    }
+                    else
+                    {
+                        <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
+                    }
+                </div>
+            </section>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+
+    [Parameter] public long? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+            await ViewModel.InitEditAsync(Id.Value);
+        else
+            await ViewModel.InitNewAsync();
+    }
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok) Nav.NavigateTo("/v2/users");
+    }
+}

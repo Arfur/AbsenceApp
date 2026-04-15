@@ -2,9 +2,9 @@
    File        : HeaderV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : Michael
-   Version     : 2.2.0
+   Version     : 2.3.0
    Created     : 2026-03-21
-   Updated     : 2026-04-07
+   Updated     : 2026-04-12
    ---------------------------------------------------------------------------
    Purpose     : V2 top navigation header. Provides logo zone, sidebar toggle,
                  optional search slot, dark-mode toggle, message icon with
@@ -30,6 +30,14 @@
      - 2.2.0  2026-04-07  Debug instrumentation: added AppLog.Write to
                           OnInitialized, Dispose, ToggleUser, ToggleMsg,
                           ToggleNotif, CloseAll, and HandleLogout.
+     - 2.3.0  2026-04-12  E30: Messages dropdown uses avatar row layout with
+                          sender initials and cycling colours. Notifications
+                          dropdown uses icon row layout. User menu updated to
+                          match design reference: orange header showing
+                          username, items My Profile / Task / Message /
+                          Account Settings / Log Out. DEV debug role label
+                          removed. Dropdown z-index fixed (260) so dropdowns
+                          appear above the transparent overlay (240).
    ---------------------------------------------------------------------------
    Notes       :
      - Phase 3 component. Requires AppStateService.
@@ -129,12 +137,19 @@
                         <span class="dsv2-header__dd-hdr-count">@AppState.UnreadMessagesCount.ToString("D2")</span>
                         <span class="dsv2-header__dd-hdr-label">Messages</span>
                     </div>
-                    @foreach (var m in AppState.UnreadMessages)
+                    @foreach (var (m, mi) in AppState.UnreadMessages.Select((x, i) => (x, i)))
                     {
-                        <div class="dsv2-header__dd-item">
-                            <span class="dsv2-header__dd-item-title">@m.SenderName</span>
-                            <span class="dsv2-header__dd-item-preview">@m.Preview</span>
-                            <span class="dsv2-header__dd-item-time">@m.CreatedAt.ToString("HH:mm dd MMM")</span>
+                        <div class="dsv2-header__dd-item dsv2-header__dd-item--row">
+                            <span class="dsv2-header__dd-sender-avatar" style="background:@GetAvatarColor(mi)">
+                                @GetInitial(m.SenderName)
+                            </span>
+                            <div class="dsv2-header__dd-item-content">
+                                <div class="dsv2-header__dd-item-row1">
+                                    <span class="dsv2-header__dd-item-title">@m.SenderName</span>
+                                    <span class="dsv2-header__dd-item-time">@m.CreatedAt.ToString("HH:mm")</span>
+                                </div>
+                                <span class="dsv2-header__dd-item-preview">@m.Preview</span>
+                            </div>
                         </div>
                     }
                 </div>
@@ -161,11 +176,16 @@
                         <span class="dsv2-header__dd-hdr-count">@AppState.UnreadNotificationsCount.ToString("D2")</span>
                         <span class="dsv2-header__dd-hdr-label">Notifications</span>
                     </div>
-                    @foreach (var n in AppState.UnreadNotifications)
+                    @foreach (var (n, ni) in AppState.UnreadNotifications.Select((x, i) => (x, i)))
                     {
-                        <div class="dsv2-header__dd-item">
-                            <span class="dsv2-header__dd-item-title">@n.Title</span>
-                            <span class="dsv2-header__dd-item-time">@n.CreatedAt.ToString("HH:mm dd MMM")</span>
+                        <div class="dsv2-header__dd-item dsv2-header__dd-item--row">
+                            <span class="dsv2-header__dd-notif-icon" style="background:@GetAvatarColor(ni)">
+                                <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                            </span>
+                            <div class="dsv2-header__dd-item-content">
+                                <span class="dsv2-header__dd-item-title">@n.Title</span>
+                                <span class="dsv2-header__dd-item-time">@n.CreatedAt.ToString("HH:mm dd MMM")</span>
+                            </div>
                         </div>
                     }
                 </div>
@@ -191,20 +211,32 @@
             @if (_userOpen)
             {
                 <ul class="dsv2-header__dropdown dsv2-header__dropdown--user" role="menu">
-                    <li role="none" class="dsv2-header__dd-debug" aria-label="Role debug">
-                        @* DEV ONLY: Shows the exact role value resolved at login *@
-                        <span class="dsv2-header__dd-debug-label">Authenticated Role (from login): <strong>@AppState.UserRole</strong></span>
+                    <li role="none" class="dsv2-header__dd-user-hdr">
+                        <span class="dsv2-header__dd-user-hdr-name">@AppState.UserName</span>
+                        <span class="dsv2-header__dd-user-hdr-role">@AppState.UserRole</span>
                     </li>
                     <li role="none">
                         <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">
                             <i class="bi bi-person" aria-hidden="true"></i>
-                            Profile Details
+                            My Profile
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">
+                            <i class="bi bi-list-task" aria-hidden="true"></i>
+                            Task
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a class="dsv2-header__dd-link" href="/v2/messages" role="menuitem" @onclick="CloseAll">
+                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                            Message
                         </a>
                     </li>
                     <li role="none">
                         <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">
                             <i class="bi bi-gear" aria-hidden="true"></i>
-                            Settings
+                            Account Settings
                         </a>
                     </li>
                     <li class="dsv2-header__dd-divider" role="separator"></li>
@@ -295,6 +327,22 @@
         AppState.AuthLogout();
         Nav.NavigateTo("/login");
     }
+
+    // ── Avatar / icon colour helpers ────────────────────────────────────────────────────
+    private static readonly string[] _avatarColors =
+    {
+        "#20c997", // teal
+        "#f59e0b", // amber
+        "#3b82f6", // blue
+        "#ef4444", // red
+        "#8b5cf6"  // purple
+    };
+
+    private static string GetAvatarColor(int index) =>
+        _avatarColors[index % _avatarColors.Length];
+
+    private static string GetInitial(string name) =>
+        string.IsNullOrWhiteSpace(name) ? "?" : name[0].ToString().ToUpper();
 
     // ── Search ─────────────────────────────────────────────────────────────────────────────
     private string _searchValue = string.Empty;

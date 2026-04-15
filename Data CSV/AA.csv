@@ -1,0 +1,54 @@
+OLD_TABLE_NAME,DESCRIPTION,LINKED_TO,LINKING_FIELDS
+MenuItems,Defines sidebar menu and submenu items used by the UI.,NULL,NULL
+MenuItemsGlobalConfig,Global configuration for menu behaviour (not linked).,NULL,NULL
+Feature,Defines system/UI feature flags controlling behaviour.,RoleFeature,FeatureId
+RoleFeature,Maps Roles to FeatureFlags for permission control.,Roles Feature,RoleId FeatureId
+UserFeatureOverride,Allows users to override default feature behaviour.,Users Feature,UserId FeatureId
+
+AuditLog,Records system audit entries for user or system actions.,Users (optional),UserId (if present)
+LoginAudit,Tracks login attempts successes failures lockouts.,NULL,NULL
+StaffAbsenceAudit,Audit trail for staff absence changes.,StaffAbsences,StaffAbsenceId
+StaffDeviceAudit,Audit trail for staff device changes.,StaffDevices,StaffDeviceId
+StaffExternalAccountAudit,Audit trail for external account changes for staff.,StaffExternalAccounts,ExternalAccountId
+StudentAbsenceAudit,Audit trail for student absence changes.,StudentAbsences,StudentAbsenceId
+SystemEvents,Stores system level events warnings and operational logs.,NULL,NULL
+
+Staff,Core HR identity record for each staff member.,Departments JobTitles JobGroups Schools StaffLocations StaffPhases StaffResponsibilities StaffDevices StaffAbsences StaffExternalAccounts ClassMember,DepartmentId JobTitleId JobGroupId SchoolId LocationId
+Departments,Lookup table for staff departments.,Staff,DepartmentId
+JobTitles,Lookup table for staff job titles.,Staff,JobTitleId
+JobGroups,Lookup table for staff job groups.,Staff,JobGroupId
+Schools,Lookup table for school sites or campuses.,Staff,SchoolId
+StaffAbsences,Records staff absences sickness leave etc.,Staff,StaffId
+StaffDevices,Records devices assigned to staff.,Staff,StaffId
+StaffExternalAccounts,External linked accounts Google Microsoft etc.,Staff,StaffId
+
+Users,Login accounts for authorised system users.,Staff Roles,StaffId (if present)
+UserProfiles,Extended profile details linked to Users.,Users,UserId
+Roles,Defines system roles SuperAdmin Admin Teacher etc.,RoleTypes UserRole,RoleTypeId
+RoleTypes,Lookup for role categories Admin StaffAdmin Teacher.,Roles,RoleTypeId
+UserRole,Mapping table linking Users to Roles.,Users Roles,UserId RoleId
+
+Students,Core identity record for each student.,NULL,NULL
+StudentContacts,Stores parent guardian emergency contact details.,Students,StudentId
+StudentFlags,Structured flags for behaviour medical pastoral SEN attendance concerns.,Students,StudentId
+StudentMedical,Medical information linked to a student.,Students,StudentId
+StudentAbsences,Records student absences.,Students,StudentId
+
+AbsenceTypes,Lookup table defining categories of absence.,Attendance StudentAbsences,AbsenceTypeId
+Attendance,Individual attendance records for students.,Students AttendanceMarks AttendanceRegisters,StudentId MarkId RegisterId
+AttendanceMarks,Lookup table for attendance codes.,Attendance,MarkId
+AttendanceRegisters,Defines register sessions AM PM or period based.,Attendance,RegisterId
+
+Classes,Defines classes or teaching groups.,ClassMember ClassYearGroupAssignments,ClassId
+ClassMember,Links students to classes.,Classes Students,ClassId StudentId
+ClassYearGroupAssignments,Links classes to year groups.,Classes YearGroups,ClassId YearGroupId
+YearGroups,Lookup table for year groups.,ClassYearGroupAssignments,YearGroupId
+Phases,Lookup for school phases EYFS KS1 KS2.,NULL,NULL
+Houses,Lookup for school houses Red Blue etc.,Students (if used),HouseId (if present)
+Responsibilities,Lookup for staff responsibilities.,StaffResponsibilities,ResponsibilityId
+
+DeviceTypes,Lookup table defining categories of devices.,StaffDevices,DeviceTypeId
+ExternalSystems,Lookup table defining external systems.,StaffExternalAccounts,ExternalSystemId
+
+AccountVerificationEvents,Records events related to account verification.,Users,UserId (if present)
+RoleChangeAudit,Audit log of changes to user roles.,Users Roles,UserId RoleId (if used)

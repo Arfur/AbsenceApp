@@ -1,0 +1,14 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the audit entry,8001,
+StudentAbsenceId,int,FK to the absence record being audited,7001,StudentAbsences.Id
+StudentId,int,FK to the student whose absence was changed,123,Students.Id
+Action,nvarchar(50),Type of change (Created, Updated, Deleted),Updated,
+FieldName,nvarchar(200),Name of the field that changed,IsAuthorised,
+OldValue,nvarchar(max),Previous value before change,0,
+NewValue,nvarchar(max),New value after change,1,
+ChangedBy,nvarchar(100),User or staff who made the change,a.brown,Users.Id or Staff.Id
+ChangedAt,datetime,Timestamp when the change occurred,2026-03-16 08:30:00,
+Notes,nvarchar(max),Optional free text explaining the change,Authorised after parent call,
+Source,nvarchar(50),Optional origin of change (portal,phone,admin),portal,
+IpAddress,nvarchar(50),Optional IP address of the actor,NULL,
+CorrelationId,nvarchar(100),Optional id to link related audit entries,NULL,

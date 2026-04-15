@@ -3,9 +3,9 @@
  File        : User.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-15
- Updated     : 2026-03-15
+ Updated     : 2026-04-11
 -------------------------------------------------------------------------------
  Purpose     : EF Core entity for the users table (TABLE1).
                Central authentication and account record linking every person in the system
@@ -13,10 +13,15 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-15  Initial creation.
+   - 1.1.0  2026-04-11  E15 User Management: added FirstName and LastName
+                         columns. Name is retained for backward compatibility
+                         with existing queries (AuthService, etc.).
 -------------------------------------------------------------------------------
  Notes       :
    - No navigation properties; FK integrity is enforced at the database layer.
    - All required string properties use = default! to satisfy the nullable compiler.
+   - Passwords are stored as PBKDF2 hashes (format: "<iterations>:<salt>:<hash>")
+     for new users created via UserManagementService.
 ===============================================================================
 */
 namespace AbsenceApp.Data.Models;
@@ -26,9 +31,11 @@ namespace AbsenceApp.Data.Models;
 /// </summary>
 public class User
 {
-    public long Id { get; set; }
-    public string Name { get; set; } = default!;
-    public string Username { get; set; } = default!;
+    public long   Id        { get; set; }
+    public string Name      { get; set; } = default!;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName  { get; set; } = string.Empty;
+    public string Username  { get; set; } = default!;
     public string Email { get; set; } = default!;
     public DateTime? EmailVerifiedAt { get; set; }
     public string Password { get; set; } = default!;

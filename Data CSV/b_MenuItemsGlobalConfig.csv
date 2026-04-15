@@ -1,0 +1,17 @@
+Field Name,Data Type,Description,Example Value,Links To
+ItemType,VARCHAR(50),Type of menu item: category/menu/submenu,menu,
+Id,INT,Unique identifier for the menu item,101010,
+ParentId,INT,Parent menu item (NULL for top-level categories),101000,MenuItemsGlobalConfig(Id)
+Label,VARCHAR(150),Display text shown in the UI,Colours,
+Icon,VARCHAR(100),Bootstrap icon class,bi-palette2,
+IsHidden,BOOLEAN,Whether the item is hidden from the sidebar,0,
+Route,VARCHAR(255),Frontend route or URL,/global-settings/colours,
+SortOrder,INT,Ordering within the parent,101010,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-06 12:15:00.000,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-06 12:15:00.000,
+Category,VARCHAR(100),High-level grouping (e.g., DESIGN SYSTEM),DESIGN SYSTEM,
+GroupName,VARCHAR(150),UI grouping label for menus,Foundations,
+GroupIcon,VARCHAR(100),Icon for the group,bi-sliders,
+IsFlat,BOOLEAN,Whether the menu is flat (no nested structure),0,
+Status,VARCHAR(50),Status of the menu item (e.g., active),active,
+Description,VARCHAR(255),Human-readable explanation for tooltips/help text,Configure the colour palette used across the platform.,

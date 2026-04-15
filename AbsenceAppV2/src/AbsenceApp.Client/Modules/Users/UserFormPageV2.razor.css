@@ -1,0 +1,42 @@
+/*
+===============================================================================
+ File        : UserFormPageV2.razor.css
+ Component   : UserFormPageV2
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-04-11
+ Updated     : 2026-04-11
+-------------------------------------------------------------------------------
+ Purpose     : Scoped CSS for the User Add/Edit form page (E15).
+===============================================================================
+*/
+
+.ufv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 40px;
+    justify-content: center;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.9rem;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.ufv2-required {
+    color: var(--dsv2-danger, #dc3545);
+    margin-left: 2px;
+}
+
+.ufv2-permissions-empty {
+    font-size: 0.85rem;
+    color: var(--dsv2-muted, #6c757d);
+    font-style: italic;
+    padding: 10px 0;
+}

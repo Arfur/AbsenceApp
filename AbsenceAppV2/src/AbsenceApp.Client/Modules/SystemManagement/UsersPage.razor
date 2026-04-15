@@ -1,0 +1,147 @@
+@* ===========================================================================
+   File        : UsersPage.razor
+   Namespace   : AbsenceApp.Client.Modules.SystemManagement
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-13
+   Updated     : 2026-04-13
+   ---------------------------------------------------------------------------
+   Purpose     : System Management → User Management → Users.
+                 Lists all system user accounts with search, filter, and
+                 pagination. Uses TablePageTemplateV2 for the table shell and
+                 delegates data to IUserManagementService.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-13  E31 — Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/system/users
+     - IUserManagementService is registered in DataServiceRegistration (E15).
+===========================================================================
+*@
+
+@page "/v2/system/users"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.SystemManagement
+
+@using AbsenceApp.Client.Shared
+@using AbsenceApp.Core.Interfaces
+
+@inject IUserManagementService UserMgmt
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="Users">
+
+    <ActionsContent>
+        <button type="button" class="phv2-btn phv2-btn--primary"
+                @onclick='() => Nav.NavigateTo("/v2/users/new")'>
+            <i class="bi bi-person-plus" aria-hidden="true"></i>
+            Add User
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+        <TablePageTemplateV2
+            PageTitle="Users"
+            TotalRows="_totalRows"
+            CurrentPage="_currentPage"
+            ShowEntries="_pageSize"
+            SearchValue="_search"
+            ActiveFilters="_activeFilters"
+            OnSearchChanged="OnSearch"
+            OnShowEntriesChanged="OnShowEntries"
+            OnClearAllFilters="OnClearAll">
+
+            <TableHeader>
+                <th class="tpt-th">ID</th>
+                <th class="tpt-th">Full Name</th>
+                <th class="tpt-th">Username</th>
+                <th class="tpt-th">Email</th>
+                <th class="tpt-th">Role</th>
+                <th class="tpt-th">Status</th>
+                <th class="tpt-th">Created</th>
+                <th class="tpt-th">Actions</th>
+            </TableHeader>
+
+            <TableBody>
+                @if (_isLoading)
+                {
+                    <tr><td colspan="8" class="tpt-td tpt-td--empty">Loading…</td></tr>
+                }
+                else if (_paged.Count == 0)
+                {
+                    <tr><td colspan="8" class="tpt-td tpt-td--empty">No users found.</td></tr>
+                }
+                else
+                {
+                    @foreach (var u in _paged)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td">@u.Id</td>
+                            <td class="tpt-td">@u.FullName</td>
+                            <td class="tpt-td">@u.Username</td>
+                            <td class="tpt-td">@u.Email</td>
+                            <td class="tpt-td">@u.RoleTypeName</td>
+                            <td class="tpt-td">@u.Status</td>
+                            <td class="tpt-td">@u.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td class="tpt-td">
+                                <a href="@($"/v2/users/{u.Id}")" class="dsv2-table__row-action">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            <Pagination>
+                @for (int p = 1; p <= _totalPages; p++)
+                {
+                    var page = p;
+                    <button class="tpt-page-btn @(page == _currentPage ? "tpt-page-btn--active" : "")"
+                            @onclick="() => GoToPage(page)">@(page)</button>
+                }
+            </Pagination>
+
+        </TablePageTemplateV2>
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    private IReadOnlyList<AbsenceApp.Core.DTOs.UserListItemDto> _all = [];
+    private List<AbsenceApp.Core.DTOs.UserListItemDto>          _paged = [];
+    private bool   _isLoading   = true;
+    private int    _totalRows   = 0;
+    private int    _currentPage = 1;
+    private int    _pageSize    = 10;
+    private string _search      = string.Empty;
+    private List<FilterChip> _activeFilters = new();
+
+    private int _totalPages =>
+        _totalRows == 0 ? 1 : (int)Math.Ceiling(_totalRows / (double)_pageSize);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try   { _all = await UserMgmt.GetUsersAsync(); }
+        finally { _isLoading = false; }
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        var filtered = string.IsNullOrWhiteSpace(_search)
+            ? _all
+            : _all.Where(u =>
+                u.FullName.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                u.Username.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                u.Email.Contains(_search, StringComparison.OrdinalIgnoreCase));
+
+        _totalRows = filtered.Count();
+        _paged     = filtered.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
+    }
+
+    private Task OnSearch(string v)     { _search = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+    private Task OnShowEntries(int v)   { _pageSize = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+    private Task GoToPage(int p)        { _currentPage = p; ApplyFilter(); return Task.CompletedTask; }
+    private Task OnClearAll()           { _search = ""; _activeFilters.Clear(); _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+}

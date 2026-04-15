@@ -3,9 +3,9 @@
  File        : Program.cs
  Namespace   : AbsenceApp.Api
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-03-13
- Updated     : 2026-04-06
+ Updated     : 2026-04-12
 -------------------------------------------------------------------------------
  Purpose     : ASP.NET Core Minimal API startup.
 
@@ -29,6 +29,10 @@
    - 1.3.0  2026-04-06  Option A access control: registered IMenuResolver,
                          IFeaturePermissionResolver. Added GET /api/menu and
                          GET /api/features/allowed endpoints.
+   - 1.4.0  2026-04-12  Added startup diagnostic output to print the resolved
+                         connection string used by the API at runtime to
+                         validate environment overrides and configuration
+                         precedence during debugging.
 -------------------------------------------------------------------------------
  Notes       :
    - Endpoint definitions are intentionally grouped and ordered.
@@ -47,6 +51,11 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 // ===========================================================================
+// Diagnostic: print the resolved connection string used at runtime
+// ===========================================================================
+Console.WriteLine("### API USING DB: " + builder.Configuration.GetConnectionString("Default"));
+
+// ===========================================================================
 // Service registration
 // ===========================================================================
 builder.Services.AddEndpointsApiExplorer();
@@ -56,7 +65,7 @@ builder.Services.AddSwaggerGen();
 // Database / data layer
 // ---------------------------------------------------------------------------
 var connectionString = builder.Configuration.GetConnectionString("Default")
-    ?? "Server=(localdb)\\MSSQLLocalDB;Database=AbsenceAppDev;Trusted_Connection=True;";
+    ?? "Server=(localdb)\\MSSQLLocalDB;Database=AbsenceApp;Trusted_Connection=True;";
 
 builder.Services.AddDataLayer(connectionString);
 
@@ -94,9 +103,6 @@ entitlements.MapGet("/effective", async (
     IEntitlementsResolver resolver,
     CancellationToken ct) =>
 {
-    // -----------------------------------------------------------------------
-    // Extract authenticated user id (GUID)
-    // -----------------------------------------------------------------------
     var userIdRaw =
         user.FindFirstValue(ClaimTypes.NameIdentifier) ??
         user.FindFirstValue("sub") ??
@@ -105,9 +111,6 @@ entitlements.MapGet("/effective", async (
     if (string.IsNullOrWhiteSpace(userIdRaw) || !Guid.TryParse(userIdRaw, out var userId))
         return Results.Problem("Authenticated user id claim is missing or invalid.");
 
-    // -----------------------------------------------------------------------
-    // Extract role type (int)
-    // -----------------------------------------------------------------------
     var roleTypeRaw =
         user.FindFirstValue("roleType") ??
         user.FindFirstValue("RoleType");
@@ -115,9 +118,6 @@ entitlements.MapGet("/effective", async (
     if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
         return Results.Problem("Authenticated roleType claim is missing or invalid.");
 
-    // -----------------------------------------------------------------------
-    // Resolve effective entitlements
-    // -----------------------------------------------------------------------
     var allowedKeys = await resolver.GetEffectiveAllowedKeysAsync(userId, roleType, ct);
 
     return Results.Ok(new
@@ -139,9 +139,6 @@ menu.MapGet("/", async (
     IMenuResolver resolver,
     CancellationToken ct) =>
 {
-    // -----------------------------------------------------------------------
-    // Extract role type (int) from JWT
-    // -----------------------------------------------------------------------
     var roleTypeRaw =
         user.FindFirstValue("roleType") ??
         user.FindFirstValue("RoleType");
@@ -164,9 +161,6 @@ features.MapGet("/allowed", async (
     IFeaturePermissionResolver resolver,
     CancellationToken ct) =>
 {
-    // -----------------------------------------------------------------------
-    // Extract role type (int) from JWT
-    // -----------------------------------------------------------------------
     var roleTypeRaw =
         user.FindFirstValue("roleType") ??
         user.FindFirstValue("RoleType");

@@ -1,0 +1,276 @@
+@* ===========================================================================
+   File        : UsersListPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Users
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-11
+   Updated     : 2026-04-11
+   ---------------------------------------------------------------------------
+   Purpose     : E15 User Management — User List page.
+                 Displays all user accounts in a PageTable.png-style table
+                 with search, role/status filters, pagination, and Export/
+                 Add User action buttons.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/users
+   ===========================================================================
+*@
+
+@page "/v2/users"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Users
+
+@using AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.ViewModels.V2
+@inject UserListViewModelV2 ViewModel
+@inject AppStateService AppState
+@inject NavigationManager Nav
+@implements IDisposable
+
+<PageTemplateV2 PageTitleText="Users">
+
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+        <button type="button"
+                class="phv2-btn phv2-btn--add"
+                @onclick="@(() => Nav.NavigateTo("/v2/users/new"))">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+            Add User
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
+        @* ───────────────────────────────── Toolbar ─────────────────────── *@
+        <div class="ulv2-toolbar">
+            <div class="ulv2-show-entries">
+                Show
+                <select class="ulv2-entries-select"
+                        value="@ViewModel.PageSize"
+                        @onchange="@(e => ViewModel.SetPageSize(int.Parse(e.Value?.ToString() ?? "10")))">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+                entries
+            </div>
+            <div class="ulv2-filters">
+                <select class="ulv2-filter-select"
+                        value="@ViewModel.GetFilterValue("roleTypeName")"
+                        @onchange="@(e => ViewModel.SetFilter("roleTypeName", e.Value?.ToString() ?? ""))">
+                    <option value="">All Roles</option>
+                    @foreach (var r in _roleFilterOptions)
+                    {
+                        <option value="@r">@r</option>
+                    }
+                </select>
+                <select class="ulv2-filter-select"
+                        value="@ViewModel.GetFilterValue("status")"
+                        @onchange="@(e => ViewModel.SetFilter("status", e.Value?.ToString() ?? ""))">
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+            </div>
+            <div class="ulv2-search">
+                <i class="bi bi-search ulv2-search__icon" aria-hidden="true"></i>
+                <input type="search"
+                       class="ulv2-search-input"
+                       placeholder="Search users…"
+                       value="@ViewModel.SearchTerm"
+                       @oninput="@(e => ViewModel.SetSearch(e.Value?.ToString() ?? ""))" />
+            </div>
+        </div>
+
+        @* ───────────────────────────────── Table ───────────────────────── *@
+        @if (ViewModel.IsLoading)
+        {
+            <div class="ulv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i>
+                Loading users…
+            </div>
+        }
+        else
+        {
+            <div class="ulv2-table-wrap">
+                <table class="ulv2-table">
+                    <thead>
+                        <tr>
+                            @foreach (var col in VisibleColumns)
+                            {
+                                <th class="ulv2-th @(col.Sortable ? "ulv2-th--sortable" : "")"
+                                    style="@(col.Width is not null ? $"width:{col.Width}" : "")"
+                                    @onclick="@(col.Sortable ? () => ViewModel.SetSort(col.Key) : () => { })">
+                                    @col.Label
+                                    @if (col.Sortable && ViewModel.SortColumn == col.Key)
+                                    {
+                                        <i class="bi @(ViewModel.SortAscending ? "bi-sort-up" : "bi-sort-down") ulv2-sort-icon" aria-hidden="true"></i>
+                                    }
+                                </th>
+                            }
+                            <th class="ulv2-th ulv2-th--actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewModel.Items.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="@(VisibleColumns.Count + 1)" class="ulv2-td ulv2-td--empty">
+                                    No users found.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewModel.Items)
+                            {
+                                <tr class="ulv2-row">
+                                    @if (IsVisible("fullName"))     { <td class="ulv2-td ulv2-td--name">@item.FullName</td> }
+                                    @if (IsVisible("username"))     { <td class="ulv2-td">@item.Username</td> }
+                                    @if (IsVisible("email"))        { <td class="ulv2-td ulv2-td--email">@item.Email</td> }
+                                    @if (IsVisible("phoneNumber"))  { <td class="ulv2-td">@(item.PhoneNumber ?? "—")</td> }
+                                    @if (IsVisible("roleTypeName")) { <td class="ulv2-td"><span class="ulv2-badge ulv2-badge--role">@item.RoleTypeName</span></td> }
+                                    @if (IsVisible("status"))       { <td class="ulv2-td"><span class="ulv2-badge ulv2-badge--@item.Status.ToLower()">@item.Status</span></td> }
+                                    @if (IsVisible("createdAt"))    { <td class="ulv2-td">@item.CreatedAt.ToString("dd MMM yyyy")</td> }
+                                    <td class="ulv2-td ulv2-td--actions">
+                                        <button type="button"
+                                                class="ulv2-action-btn ulv2-action-btn--edit"
+                                                title="Edit @item.FullName"
+                                                @onclick="@(() => Nav.NavigateTo($"/v2/users/{item.Id}/edit"))">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @* ─────────────────────────────── Pagination ──────────────────────── *@
+            <div class="ulv2-pagination-bar">
+                <span class="ulv2-pager-info">
+                    Showing @(ViewModel.TotalCount == 0 ? 0 : (ViewModel.Page - 1) * ViewModel.PageSize + 1)–@Math.Min(ViewModel.Page * ViewModel.PageSize, ViewModel.TotalCount)
+                    of @ViewModel.TotalCount entries
+                </span>
+                <div class="ulv2-pager">
+                    @{
+                        var totalPages = (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize);
+                        var startPage  = Math.Max(1, ViewModel.Page - 4);
+                        var endPage    = Math.Min(totalPages, startPage + 9);
+                    }
+                    <button class="ulv2-page-btn"
+                            disabled="@(ViewModel.Page <= 1)"
+                            @onclick="@(() => ViewModel.SetPage(ViewModel.Page - 1))">
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    @if (startPage > 1)
+                    {
+                        <button class="ulv2-page-btn" @onclick="@(() => ViewModel.SetPage(1))">1</button>
+                        @if (startPage > 2) { <span class="ulv2-page-ellipsis">…</span> }
+                    }
+                    @for (var p = startPage; p <= endPage; p++)
+                    {
+                        var pg = p;
+                        <button class="ulv2-page-btn @(ViewModel.Page == pg ? "ulv2-page-btn--active" : "")"
+                                @onclick="@(() => ViewModel.SetPage(pg))">
+                            @pg
+                        </button>
+                    }
+                    @if (endPage < totalPages)
+                    {
+                        @if (endPage < totalPages - 1) { <span class="ulv2-page-ellipsis">…</span> }
+                        <button class="ulv2-page-btn" @onclick="@(() => ViewModel.SetPage(totalPages))">@totalPages</button>
+                    }
+                    <button class="ulv2-page-btn"
+                            disabled="@(ViewModel.Page >= totalPages)"
+                            @onclick="@(() => ViewModel.SetPage(ViewModel.Page + 1))">
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+
+    private bool _showExportMenu;
+
+    // Unique role values observed in the loaded data set
+    private List<string> _roleFilterOptions = [];
+
+    // =========================================================================
+    // Lifecycle
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.LoadAsync();
+        _roleFilterOptions = ViewModel.Items
+            .Select(u => u.RoleTypeName)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+    }
+
+    public void Dispose() { }
+
+    // =========================================================================
+    // Column helpers
+    // =========================================================================
+
+    private static IReadOnlyList<AbsenceApp.Client.Models.TableV2.TableColumnModel> VisibleColumns =>
+        UserListViewModelV2.Columns.Where(c => c.Visible).ToList();
+
+    private static bool IsVisible(string key) =>
+        UserListViewModelV2.Columns.FirstOrDefault(c => c.Key == key)?.Visible ?? false;
+
+    // =========================================================================
+    // Export menu
+    // =========================================================================
+
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
+}

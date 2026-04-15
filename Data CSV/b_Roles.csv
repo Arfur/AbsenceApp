@@ -1,0 +1,8 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role,3,
+Name,VARCHAR(100),Human‑readable role name,Teacher,
+Code,VARCHAR(50),Short unique code for the role,TEACH,
+RoleTypeId,INT,Category of role (Admin StaffAdmin Teacher etc.),2,RoleTypes(Id)
+Description,VARCHAR(255),Purpose or scope of the role,Standard teaching role,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-14 09:00:00,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-14 09:30:00,

@@ -1,0 +1,3 @@
+Field Name, Data Type, Description, Example Value, Links To
+StaffId, INT, The staff member assigned the responsibility, 1023, Staff(Id)
+ResponsibilityId, INT, The responsibility assigned to the staff member, 7, Responsibilities(Id)

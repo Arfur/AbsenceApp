@@ -1,0 +1,6 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key for the year group, 5,
+Name, VARCHAR(50), Full name of the year group, Year 5,
+Code, VARCHAR(10), Short code for the year group, Y5,
+Description, VARCHAR(255), Optional description of the year group, Standard Year 5 cohort,
+DisplayOrder, INT, Order to display year groups in UI/reports, 5,

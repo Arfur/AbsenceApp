@@ -1,0 +1,3 @@
+Field Name, Data Type, Description, Example Value, Links To
+StaffId, INT, The staff member assigned to the phase, 1023, Staff(Id)
+PhaseId, INT, The phase the staff member works in, 3, Phases(Id)

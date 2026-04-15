@@ -1,0 +1,9 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff-school assignment,12,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+SchoolId,INT,FK to Schools.Id,3,Schools(Id)
+StartDate,DATE,Date staff started at this school,2021-09-01,
+EndDate,DATE NULL,Date staff left this school,NULL,
+Notes,VARCHAR(255),Optional notes,Transferred from another site,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

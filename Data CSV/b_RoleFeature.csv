@@ -1,0 +1,7 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role‑feature permission,1,
+RoleId,INT,Role receiving the feature permission,3,Roles(Id)
+FeatureId,INT,Feature being granted to the role,2,Feature(FeatureId)
+IsAllowed,BOOLEAN,Whether the feature is enabled for this role,1,
+CreatedAtUtc,DATETIME,Timestamp when the permission was assigned,2026-04-05 21:54:36,
+AssignedBy,INT,Admin who assigned the permission,1,Users(Id)

@@ -1,0 +1,5 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT, Primary key, 7,
+Name, VARCHAR(100), Responsibility name, Safeguarding Lead,
+Code, VARCHAR(20), Short code, SG-LEAD,
+Description, VARCHAR(255), Optional description, Designated safeguarding lead,

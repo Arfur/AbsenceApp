@@ -1,0 +1,6 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT, Primary key, 3,
+Name, VARCHAR(100), Name of the absence type, Sick,
+Code, VARCHAR(20), Short code for reporting, SCK,
+Description, VARCHAR(255), Optional description, Sickness absence,
+IsPaid, BIT, Whether this absence type is paid, 1,

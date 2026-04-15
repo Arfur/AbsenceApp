@@ -26,3 +26,4 @@ dotnet build src\AbsenceApp.Client -f net8.0-windows10.0.19041.0 -c Debug 2>&1 |
 dotnet run --project src\AbsenceApp.Client -c Debug -f net8.0-windows10.0.19041.0
 
 
+The AI response, can you read all the lines and did it complete the tasks:

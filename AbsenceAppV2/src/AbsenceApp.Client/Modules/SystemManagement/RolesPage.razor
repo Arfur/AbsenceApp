@@ -1,0 +1,85 @@
+@* ===========================================================================
+   File        : RolesPage.razor
+   Namespace   : AbsenceApp.Client.Modules.SystemManagement
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-13
+   Updated     : 2026-04-13
+   ---------------------------------------------------------------------------
+   Purpose     : System Management → User Management → Roles.
+                 Placeholder list page for system role definitions.
+                 Full implementation in a future sprint.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-13  E31 — Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/system/roles
+===========================================================================
+*@
+
+@page "/v2/system/roles"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.SystemManagement
+
+@using AbsenceApp.Client.Shared
+
+<PageTemplateV2 PageTitleText="Roles">
+
+    <ChildContent>
+        <TablePageTemplateV2
+            PageTitle="Roles"
+            TotalRows="_roles.Count"
+            CurrentPage="1"
+            ShowEntries="10"
+            ActiveFilters="_chips"
+            OnClearAllFilters="() => Task.CompletedTask">
+
+            <TableHeader>
+                <th class="tpt-th">ID</th>
+                <th class="tpt-th">Role Name</th>
+                <th class="tpt-th">Display Name</th>
+                <th class="tpt-th">Users Assigned</th>
+                <th class="tpt-th">Description</th>
+                <th class="tpt-th">Actions</th>
+            </TableHeader>
+
+            <TableBody>
+                @if (_roles.Count == 0)
+                {
+                    <tr><td colspan="6" class="tpt-td tpt-td--empty">No roles found.</td></tr>
+                }
+                else
+                {
+                    @foreach (var r in _roles)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td">@r.Id</td>
+                            <td class="tpt-td">@r.Name</td>
+                            <td class="tpt-td">@r.DisplayName</td>
+                            <td class="tpt-td">@r.UserCount</td>
+                            <td class="tpt-td">@r.Description</td>
+                            <td class="tpt-td">
+                                <span class="dsv2-table__row-action">Edit</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            <Pagination>
+                <button class="tpt-page-btn tpt-page-btn--active">1</button>
+            </Pagination>
+
+        </TablePageTemplateV2>
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    // Placeholder data — replace with IUserManagementService.GetRoleTypesAsync() in a future sprint
+    private readonly List<RoleRowVm> _roles = [];
+    private readonly List<FilterChip> _chips = [];
+
+    private sealed record RoleRowVm(int Id, string Name, string DisplayName, int UserCount, string Description);
+}

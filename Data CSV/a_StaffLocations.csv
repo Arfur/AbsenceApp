@@ -1,0 +1,7 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key for location, 3, 
+Name, VARCHAR(100), Name of the location/site, Main Campus, 
+Code, VARCHAR(20), Short code for the location, MC, 
+Description, VARCHAR(255), Optional description of the location, Main school building, 
+CreatedAt, DATETIME, Record creation timestamp, 2024-01-10 09:15:00, 
+UpdatedAt, DATETIME, Last update timestamp, 2024-03-02 14:22:00, 

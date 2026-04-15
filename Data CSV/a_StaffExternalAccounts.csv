@@ -1,0 +1,8 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for external account record,77,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+ExternalSystemId,INT,FK to ExternalSystems.Id,5,ExternalSystems(Id)
+Username,VARCHAR(100),External system username,m.smith,
+AccountStatus,VARCHAR(20),Active/Disabled/Locked,Active,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

@@ -1,0 +1,6 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user‑role assignment,501,
+UserId,INT,User receiving the role,1,Users(Id)
+RoleId,INT,Role assigned to the user,3,Roles(Id)
+AssignedAt,DATETIME,Timestamp when the role was assigned,2026-04-14 09:32:00,
+AssignedBy,INT,Admin who assigned the role,1,Users(Id)

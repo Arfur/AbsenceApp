@@ -3,9 +3,9 @@
  File        : DataServiceRegistration.cs
  Namespace   : AbsenceApp.Data
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-03-13
- Updated     : 2026-04-05
+ Updated     : 2026-04-11
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers the complete data
                layer — DbContext, EF repositories, and EF-backed services —
@@ -35,6 +35,7 @@
    - 1.3.0  2026-04-05  Phase 3 Header Nav Identity: added IMessageService →
                          MessageService and INotificationService →
                          NotificationService registrations.
+   - 1.4.0  2026-04-11  E16 Pages Registry: added IPagesService → PagesService.
 -------------------------------------------------------------------------------
  Notes       :
    - Legacy in-memory services (IStudentService, IAbsenceService) are
@@ -106,6 +107,10 @@ public static class DataServiceRegistration
         services.AddScoped<ISubjectService, SubjectService>();
         services.AddScoped<IMessageService, MessageService>();
         services.AddScoped<INotificationService, NotificationService>();
+        // E15 — User Management service
+        services.AddScoped<IUserManagementService, UserManagementService>();
+        // E16 — Pages Registry service
+        services.AddScoped<IPagesService, PagesService>();
 
         // Full-view projection services (cross-table FK → name resolution)
         services.AddScoped<IStudentFullViewService, StudentFullViewService>();

@@ -1,0 +1,310 @@
+@* ===========================================================================
+   File        : PageFormPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Pages
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-11
+   Updated     : 2026-04-11
+   ---------------------------------------------------------------------------
+   Purpose     : E16 Pages Registry — Add / Edit Page metadata form.
+                 Routes:
+                   /v2/pages/new            — create new page entry
+                   /v2/pages/{Id:int}/edit  — edit existing page entry
+
+                 Renders four form sections:
+                   1. Page Metadata   — Name, Slug, Route
+                   2. Categorisation  — CategoryKey, MenuKey, IconKey, Description
+                   3. Capabilities    — SupportsRead/Write/Create/Delete/Import/Export
+                   4. Status          — IsActive toggle + SortOrder
+
+                 Delegates all state to PageFormViewModelV2.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-11  Initial creation (E16 Pages Registry).
+   ===========================================================================
+*@
+
+@page "/v2/pages/new"
+@page "/v2/pages/{Id:int}/edit"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Pages
+
+@using AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.ViewModels.V2
+@inject PageFormViewModelV2 ViewModel
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="@(Id.HasValue ? "Edit Page" : "Add Page")">
+
+    <ActionsContent>
+        <button class="dsv2-btn dsv2-btn--primary"
+                disabled="@ViewModel.IsSaving"
+                @onclick="OnSave">
+            @(ViewModel.IsSaving ? "Saving…" : (Id.HasValue ? "Save Changes" : "Create Page"))
+        </button>
+        <button class="dsv2-btn dsv2-btn--secondary"
+                disabled="@ViewModel.IsSaving"
+                @onclick="@(() => Nav.NavigateTo("/v2/pages"))">
+            Cancel
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.IsLoading)
+        {
+            <div class="pfv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i>
+                Loading…
+            </div>
+        }
+        else
+        {
+            @if (ViewModel.Error is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+            @if (ViewModel.Success is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--success" role="status">@ViewModel.Success</div>
+            }
+
+            @* ─────────────────────────── 1. Page Metadata ────────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Page Metadata</h2>
+                </header>
+
+                <div class="dsv2-form-section__body dsv2-grid-2col">
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="pageName">
+                            Name <span class="pfv2-required">*</span>
+                        </label>
+                        <input id="pageName" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.Name"
+                               placeholder="e.g. Students" />
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="pageSlug">
+                            Slug <span class="pfv2-required">*</span>
+                        </label>
+                        <div class="pfv2-slug-wrap">
+                            <span class="pfv2-slug-prefix" aria-hidden="true">/</span>
+                            <input id="pageSlug" type="text" class="dsv2-form-input pfv2-slug-input"
+                                   @bind="@ViewModel.Slug"
+                                   placeholder="students"
+                                   spellcheck="false" />
+                        </div>
+                        <p class="pfv2-hint">Lowercase, no spaces. Used as the unique short identifier.</p>
+                    </div>
+
+                    <div class="dsv2-form-field dsv2-grid-2col--span2">
+                        <label class="dsv2-form-label" for="pageRoute">
+                            Route <span class="pfv2-required">*</span>
+                        </label>
+                        <input id="pageRoute" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.Route"
+                               placeholder="/v2/students"
+                               spellcheck="false" />
+                        <p class="pfv2-hint">Full Blazor @@page path, e.g. <code>/v2/students</code>.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            @* ─────────────────────────── 2. Categorisation ───────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-tags" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Categorisation</h2>
+                </header>
+
+                <div class="dsv2-form-section__body dsv2-grid-2col">
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="categoryKey">
+                            Category <span class="pfv2-required">*</span>
+                        </label>
+                        <select id="categoryKey" class="dsv2-form-input"
+                                value="@ViewModel.CategoryKey"
+                                @onchange="@(e => ViewModel.CategoryKey = e.Value?.ToString() ?? "")">
+                            <option value="">— Select category —</option>
+                            @foreach (var cat in PageFormViewModelV2.CategoryOptions)
+                            {
+                                <option value="@cat">@cat</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="menuKey">
+                            Menu Key <span class="pfv2-required">*</span>
+                        </label>
+                        <input id="menuKey" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.MenuKey"
+                               placeholder="e.g. Staff" />
+                        <p class="pfv2-hint">Display name of the sidebar group this page belongs to.</p>
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="iconKey">Icon Key</label>
+                        <input id="iconKey" type="text" class="dsv2-form-input"
+                               @bind="@ViewModel.IconKey"
+                               placeholder="e.g. bi-person-badge"
+                               spellcheck="false" />
+                        <p class="pfv2-hint">Bootstrap Icons class, e.g. <code>bi-speedometer2</code>.</p>
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="description">Description</label>
+                        <textarea id="description" class="dsv2-form-input pfv2-textarea"
+                                  @bind="@ViewModel.Description"
+                                  placeholder="Optional description of this page's purpose."
+                                  rows="3"></textarea>
+                    </div>
+
+                </div>
+            </section>
+
+            @* ─────────────────────────── 3. Capabilities ─────────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-shield-check" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Permission Capabilities</h2>
+                </header>
+
+                <div class="dsv2-form-section__body">
+                    <p class="pfv2-caps-hint">
+                        Check the capabilities this page supports. These flags determine which
+                        permission columns are shown for this page in the user permission matrix.
+                    </p>
+                    <div class="pfv2-caps-grid">
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsRead" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                                Read
+                            </span>
+                        </label>
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsWrite" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                Write
+                            </span>
+                        </label>
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsCreate" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-plus-circle" aria-hidden="true"></i>
+                                Create
+                            </span>
+                        </label>
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsDelete" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                Delete
+                            </span>
+                        </label>
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsImport" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-upload" aria-hidden="true"></i>
+                                Import
+                            </span>
+                        </label>
+
+                        <label class="pfv2-cap-item">
+                            <input type="checkbox"
+                                   class="pfv2-cap-cb"
+                                   @bind="@ViewModel.SupportsExport" />
+                            <span class="pfv2-cap-label">
+                                <i class="bi bi-download" aria-hidden="true"></i>
+                                Export
+                            </span>
+                        </label>
+
+                    </div>
+                </div>
+            </section>
+
+            @* ─────────────────────────── 4. Status & Order ───────────────── *@
+            <section class="dsv2-form-section">
+                <header class="dsv2-form-section__header">
+                    <i class="bi bi-toggles" aria-hidden="true"></i>
+                    <h2 class="dsv2-form-section__title">Status &amp; Order</h2>
+                </header>
+
+                <div class="dsv2-form-section__body dsv2-grid-2col">
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label" for="sortOrder">Sort Order</label>
+                        <input id="sortOrder" type="number" class="dsv2-form-input"
+                               @bind="@ViewModel.SortOrder"
+                               min="0" max="9999"
+                               placeholder="0" />
+                        <p class="pfv2-hint">Lower numbers appear first in lists and the sidebar.</p>
+                    </div>
+
+                    <div class="dsv2-form-field">
+                        <label class="dsv2-form-label">Status</label>
+                        <label class="pfv2-toggle-wrap">
+                            <input type="checkbox"
+                                   class="pfv2-toggle-cb"
+                                   @bind="@ViewModel.IsActive" />
+                            <span class="pfv2-toggle-track">
+                                <span class="pfv2-toggle-knob"></span>
+                            </span>
+                            <span class="pfv2-toggle-label">
+                                @(ViewModel.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </label>
+                        <p class="pfv2-hint">Inactive pages are hidden from the permission matrix.</p>
+                    </div>
+
+                </div>
+            </section>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+
+    [Parameter] public int? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id.HasValue)
+            await ViewModel.InitEditAsync(Id.Value);
+        else
+            ViewModel.InitNew();
+    }
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok) Nav.NavigateTo("/v2/pages");
+    }
+}

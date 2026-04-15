@@ -1,0 +1,82 @@
+@* ===========================================================================
+   File        : PermissionsPage.razor
+   Namespace   : AbsenceApp.Client.Modules.SystemManagement
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-13
+   Updated     : 2026-04-13
+   ---------------------------------------------------------------------------
+   Purpose     : System Management → User Management → Permissions.
+                 Placeholder list page for granular role permission settings.
+                 Full implementation in a future sprint.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-13  E31 — Initial creation.
+   ---------------------------------------------------------------------------
+   Notes     :
+     - Route: /v2/system/permissions
+===========================================================================
+*@
+
+@page "/v2/system/permissions"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.SystemManagement
+
+@using AbsenceApp.Client.Shared
+
+<PageTemplateV2 PageTitleText="Permissions">
+
+    <ChildContent>
+        <TablePageTemplateV2
+            PageTitle="Permissions"
+            TotalRows="_rows.Count"
+            CurrentPage="1"
+            ShowEntries="10"
+            ActiveFilters="_chips"
+            OnClearAllFilters="() => Task.CompletedTask">
+
+            <TableHeader>
+                <th class="tpt-th">ID</th>
+                <th class="tpt-th">Permission Key</th>
+                <th class="tpt-th">Description</th>
+                <th class="tpt-th">Roles</th>
+                <th class="tpt-th">Actions</th>
+            </TableHeader>
+
+            <TableBody>
+                @if (_rows.Count == 0)
+                {
+                    <tr><td colspan="5" class="tpt-td tpt-td--empty">No permissions defined.</td></tr>
+                }
+                else
+                {
+                    @foreach (var r in _rows)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td">@r.Id</td>
+                            <td class="tpt-td">@r.Key</td>
+                            <td class="tpt-td">@r.Description</td>
+                            <td class="tpt-td">@r.Roles</td>
+                            <td class="tpt-td">
+                                <span class="dsv2-table__row-action">Edit</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
+
+            <Pagination>
+                <button class="tpt-page-btn tpt-page-btn--active">1</button>
+            </Pagination>
+
+        </TablePageTemplateV2>
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    private readonly List<PermRowVm>   _rows  = [];
+    private readonly List<FilterChip>  _chips = [];
+
+    private sealed record PermRowVm(int Id, string Key, string Description, string Roles);
+}

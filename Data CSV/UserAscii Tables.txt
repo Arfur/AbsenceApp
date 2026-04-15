@@ -1,0 +1,311 @@
+================================================================================
+=                               USERS & IDENTITY                               =
+================================================================================
+
+ Users
+ ├─ Id (PK)
+ ├─ Username
+ ├─ Email
+ ├─ PasswordHash
+ ├─ IsActive
+ └─ CreatedAtUtc
+
+ UserProfiles
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ FirstName
+ ├─ LastName
+ ├─ AvatarUrl
+ └─ PreferencesJson
+
+ Staff
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ StaffCode
+ ├─ FirstName
+ ├─ LastName
+ ├─ Email
+ └─ IsActive
+
+ AccountVerificationEvents
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ EventType
+ ├─ Token
+ ├─ IsSuccessful
+ ├─ IpAddress
+ ├─ UserAgent
+ ├─ CreatedAtUtc
+ └─ Metadata (JSON)
+
+ LoginAudit
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ Username
+ ├─ IsSuccessful
+ ├─ FailureReason
+ ├─ IpAddress
+ ├─ UserAgent
+ └─ CreatedAtUtc
+
+================================================================================
+=                                   ROLES                                      =
+================================================================================
+
+ Roles
+ ├─ Id (PK)
+ ├─ Name
+ ├─ Description
+ └─ IsSystemRole
+
+ RoleTypes
+ ├─ Id (PK)
+ ├─ Name
+ └─ Description
+
+ UserRole
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ └─ RoleId (FK → Roles.Id)
+
+ RoleChangeAudit
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ OldRoleId (FK → Roles.Id)
+ ├─ NewRoleId (FK → Roles.Id)
+ ├─ ChangedBy (FK → Users.Id)
+ ├─ ChangeTime
+ ├─ Reason
+ └─ Metadata (JSON)
+
+================================================================================
+=                               FEATURE PERMISSIONS                            =
+================================================================================
+
+ Feature
+ ├─ Id (PK)
+ ├─ Name
+ ├─ Description
+ └─ Category
+
+ RoleFeature
+ ├─ Id (PK)
+ ├─ RoleId (FK → Roles.Id)
+ ├─ FeatureId (FK → Feature.Id)
+ ├─ IsAllowed
+ ├─ CreatedAtUtc
+ └─ AssignedBy (FK → Users.Id)
+
+ UserFeatureOverride
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ FeatureId (FK → Feature.Id)
+ ├─ IsAllowed
+ ├─ CreatedAtUtc
+ └─ AssignedBy (FK → Users.Id)
+
+================================================================================
+=                               MENU PERMISSIONS                               =
+================================================================================
+
+ MenuItems
+ ├─ Id (PK)
+ ├─ ParentId (FK → MenuItems.Id)
+ ├─ ItemType (category/menu/submenu)
+ ├─ Label
+ ├─ Icon
+ ├─ IsHidden
+ ├─ Route
+ ├─ SortOrder
+ ├─ Category
+ ├─ GroupName
+ ├─ GroupIcon
+ ├─ IsFlat
+ ├─ Status
+ ├─ Description
+ ├─ CreatedAt
+ └─ UpdatedAt
+
+ MenuItemsGlobalConfig
+ ├─ Id (PK)
+ ├─ ParentId (FK → MenuItemsGlobalConfig.Id)
+ ├─ ItemType
+ ├─ Label
+ ├─ Icon
+ ├─ IsHidden
+ ├─ Route
+ ├─ SortOrder
+ ├─ Category
+ ├─ GroupName
+ ├─ GroupIcon
+ ├─ IsFlat
+ ├─ Status
+ ├─ Description
+ ├─ CreatedAt
+ └─ UpdatedAt
+
+ RoleMenuItem
+ ├─ Id (PK)
+ ├─ RoleId (FK → Roles.Id)
+ ├─ MenuItemId (FK → MenuItems.Id)
+ ├─ IsAllowed
+ ├─ CreatedAtUtc
+ └─ AssignedBy (FK → Users.Id)
+
+================================================================================
+=                                   AUDITING                                   =
+================================================================================
+
+ AuditLog
+ ├─ Id (PK)
+ ├─ UserId (FK → Users.Id)
+ ├─ Action
+ ├─ EntityType
+ ├─ EntityId
+ ├─ Details (JSON)
+ ├─ IpAddress
+ ├─ UserAgent
+ └─ CreatedAtUtc
+
+================================================================================
+=                               RELATIONSHIP MAP                               =
+================================================================================
+
+ Users 1───∞ UserProfiles
+ Users 1───∞ UserRole
+ Users 1───∞ LoginAudit
+ Users 1───∞ AuditLog
+ Users 1───∞ AccountVerificationEvents
+ Users 1───∞ RoleChangeAudit (ChangedBy)
+ Users 1───∞ RoleFeature (AssignedBy)
+ Users 1───∞ UserFeatureOverride (AssignedBy)
+ Users 1───1 Staff
+
+ Roles 1───∞ UserRole
+ Roles 1───∞ RoleFeature
+ Roles 1───∞ RoleChangeAudit (OldRoleId/NewRoleId)
+ Roles 1───∞ RoleMenuItem
+
+ Feature 1───∞ RoleFeature
+ Feature 1───∞ UserFeatureOverride
+
+ MenuItems 1───∞ MenuItems (self‑referencing hierarchy)
+ MenuItems 1───∞ RoleMenuItem
+
+ MenuItemsGlobalConfig 1───∞ MenuItemsGlobalConfig (self‑referencing hierarchy)
+
+================================================================================
+=                               HIGH‑LEVEL DOMAINS                             =
+================================================================================
+
+ USERS & IDENTITY
+   → Users, UserProfiles, Staff, AccountVerificationEvents, LoginAudit
+
+ RBAC
+   → Roles, RoleTypes, UserRole, RoleChangeAudit
+
+ FEATURE PERMISSIONS
+   → Feature, RoleFeature, UserFeatureOverride
+
+ MENU PERMISSIONS
+   → MenuItems, MenuItemsGlobalConfig, RoleMenuItem
+
+ AUDITING
+   → AuditLog
+
+================================================================================
+
+                           ┌──────────────────────┐
+                           │      RoleTypes       │
+                           │  Id (PK)             │
+                           └─────────┬────────────┘
+                                     │ 1-to-many
+                                     │ Roles.RoleTypeId
+                           ┌─────────▼────────────┐
+                           │        Roles         │
+                           │  Id (PK)             │
+                           └──┬───────────┬───────┘
+                              │           │
+     many-to-1                │           │ 1-to-many
+UserRole.RoleId               │           │ RoleFeature.RoleId
+                              │           │
+        ┌─────────────────────▼───┐   ┌──▼──────────────────────┐
+        │       UserRole          │   │      RoleFeature         │
+        │  Id (PK)                │   │  Id (PK)                 │
+        │  UserId → Users.Id      │   │  FeatureId → Feature.Id  │
+        └──────────┬──────────────┘   └───────────┬─────────────┘
+                   │                               │
+                   │                               │
+                   │ many-to-1                     │ many-to-1
+                   │ UserRole.UserId               │ UserFeatureOverride.FeatureId
+                   │                               │
+        ┌──────────▼──────────────┐   ┌───────────▼──────────────────┐
+        │         Users            │   │      UserFeatureOverride      │
+        │  Id (PK)                 │   │  Id (PK)                      │
+        │  StaffId → Staff.Id      │   │  UserId → Users.Id            │
+        └───────┬──────────┬──────┘   └───────────────────────────────┘
+                │          │
+                │          │ 1-to-1
+                │          │ UserProfiles.UserId
+                │          │
+                │   ┌──────▼──────────────┐
+                │   │    UserProfiles     │
+                │   │  Id (PK)            │
+                │   └─────────────────────┘
+                │
+                │ 1-to-many
+                │ AuditLog.UserId
+                │ LoginAudit.UserId
+                │ RoleChangeAudit.UserId
+                │ AccountVerificationEvents.UserId
+                │
+   ┌────────────▼──────────────┐
+   │         AuditLog           │
+   └────────────────────────────┘
+   ┌────────────▼──────────────┐
+   │        LoginAudit          │
+   └────────────────────────────┘
+   ┌────────────▼──────────────┐
+   │     RoleChangeAudit        │
+   └────────────────────────────┘
+   ┌────────────▼──────────────┐
+   │ AccountVerificationEvents  │
+   └────────────────────────────┘
+
+
+   ┌────────────────────────────┐
+   │          Feature           │
+   │  FeatureId (PK)            │
+   └───────────┬────────────────┘
+               │
+               │ 1-to-many
+               │ RoleFeature.FeatureId
+               │ UserFeatureOverride.FeatureId
+               │
+               └───────────────────────────────────────────────
+
+
+                           ┌──────────────────────┐
+                           │      MenuItems       │
+                           │  Id (PK)             │
+                           └─────────┬────────────┘
+                                     │ 1-to-many
+                                     │ RoleMenuItem.MenuItemId
+                           ┌─────────▼────────────┐
+                           │    RoleMenuItem       │
+                           │  Id (PK)              │
+                           │  RoleId → Roles.Id    │
+                           └───────────────────────┘
+
+
+   ┌────────────────────────────┐
+   │   MenuItemsGlobalConfig    │
+   │   (NO RELATIONSHIPS)       │
+   └────────────────────────────┘
+
+
+   ┌────────────────────────────┐
+   │           Staff            │
+   │  Id (PK)                   │
+   └────────────────────────────┘
+   (Users.StaffId → Staff.Id)

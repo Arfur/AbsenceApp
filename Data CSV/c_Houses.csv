@@ -1,0 +1,10 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the house record,1,
+Name,nvarchar(200),House display name,Coppice BLUE,
+Code,nvarchar(100),Short code or canonical identifier for the house,COPPICE_BLUE,
+Colour,nvarchar(50),House colour or colour name,Blue,
+HexColour,nvarchar(7),Optional hex value for UI theming,#0033CC,
+Description,nvarchar(max),Optional free‑text description,Sports‑focused house,
+SchoolId,int,FK to the school this house belongs to,1,Schools.Id
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:27:53.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:27:53.0000000,

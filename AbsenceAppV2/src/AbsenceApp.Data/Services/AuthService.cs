@@ -3,9 +3,9 @@
  File        : AuthService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-22
- Updated     : 2026-03-26
+ Updated     : 2026-04-11
 -------------------------------------------------------------------------------
  Purpose     : Provides authentication services for the AbsenceApp platform,
                including user login, registration, and logout operations.
@@ -21,17 +21,19 @@
  Changes     :
    - 1.0.0  2026-03-22  Initial implementation of login and registration logic
                          using AppDbContext (Phase 1).
+   - 1.1.0  2026-04-11  E15 User Management: replaced plain-text password
+                         comparison with UserManagementService.VerifyPassword()
+                         which supports PBKDF2-hashed passwords while retaining
+                         plain-text fallback for legacy dev accounts.
 -------------------------------------------------------------------------------
  Notes       :
-   - Passwords are currently stored and compared as plain text for development
-     purposes only. This MUST be replaced with a secure hashing algorithm
-     (e.g. BCrypt or PBKDF2) before any production deployment.
-   - All EF Core queries are executed sequentially and awaited to avoid
-     concurrency issues.
-   - AppDbContext MUST be registered as Scoped. AuthService MUST NOT be
-     registered as Singleton.
+   - New users created via UserManagementService have their password stored as
+     a PBKDF2-SHA256 hash. Legacy dev accounts with plain-text passwords still
+     authenticate correctly via the VerifyPassword fallback.
    - No server-side session state is maintained; authentication state is
      managed by the client application.
+   - AppDbContext MUST be registered as Scoped. AuthService MUST NOT be
+     registered as Singleton.
 ===============================================================================
 */
 
@@ -51,9 +53,8 @@ public class AuthService : IAuthService
 
     /// <summary>
     /// Validates username and password against the Users table.
-    /// NOTE: Passwords are currently stored and compared as plain text for
-    /// development purposes. In production, replace with a proper hashing
-    /// algorithm such as BCrypt or PBKDF2.
+    /// Supports both PBKDF2-hashed passwords (new users created via
+    /// UserManagementService) and legacy plain-text passwords (dev-only accounts).
     /// </summary>
     public async Task<AuthResultDto> LoginAsync(string username, string password)
     {
@@ -67,8 +68,9 @@ public class AuthService : IAuthService
         if (user is null)
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
 
-        // TODO: replace plain-text comparison with BCrypt.Verify or equivalent
-        if (user.Password != password)
+        // Verify using PBKDF2-aware comparison (falls back to plain-text for
+        // dev accounts whose passwords have not yet been re-hashed).
+        if (!UserManagementService.VerifyPassword(password, user.Password))
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
 
         var roleType = await _db.RoleTypes

@@ -1,0 +1,16 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the medical record,3001,
+StudentId,int,FK to the student this medical record belongs to,1,Students.Id
+ConditionName,nvarchar(200),Name of the medical condition,Asthma,
+Severity,nvarchar(50),Severity or risk level,Moderate,
+Medication,nvarchar(200),Medication required or instructions,Blue inhaler,
+Allergies,nvarchar(200),Known allergies,Peanut,
+Notes,nvarchar(max),Free text clinical notes and instructions,Uses inhaler during PE,
+StartDate,date,Date condition became active,2020-09-01,
+EndDate,date,Optional date condition resolved,NULL,
+IsActive,bit,Active indicator (true when within StartDate/EndDate and not cleared),1,
+LastUpdatedBy,nvarchar(100),Staff or user who last updated the record,j.smith,Users.Id or Staff.Id
+CreatedAt,datetime,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,datetime,Record last updated timestamp,2024-03-02 14:22:00,
+ClearedBy,nvarchar(100),Optional staff who cleared the record,NULL,Users.Id or Staff.Id
+ClearedAt,datetime,Optional timestamp when record was cleared,NULL,

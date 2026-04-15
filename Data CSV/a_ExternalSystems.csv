@@ -1,0 +1,5 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT, Primary key, 2,
+Name, VARCHAR(100), Name of the external system, Google Workspace,
+Code, VARCHAR(20), Short code, GOOGLE,
+Description, VARCHAR(255), Optional description, Google accounts for staff,

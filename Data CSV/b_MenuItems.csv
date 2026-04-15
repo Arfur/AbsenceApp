@@ -1,0 +1,17 @@
+Field Name,Data Type,Description,Example Value,Links To
+ItemType,VARCHAR(50),Type of menu item: category/menu/submenu,menu,
+Id,INT,Unique identifier for the menu item,201010,
+ParentId,INT,Parent menu item (NULL for top-level categories),201000,MenuItems(Id)
+Label,VARCHAR(150),Display text shown in the UI,All Students,
+Icon,VARCHAR(100),Bootstrap icon class,bi-people,
+IsHidden,BOOLEAN,Whether the item is hidden from the sidebar,0,
+Route,VARCHAR(255),Frontend route or URL (NULL for non-clickable items),/v2/students,
+SortOrder,INT,Ordering within the parent,201010,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-06 10:16:17.300,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-06 10:16:17.300,
+Category,VARCHAR(100),High-level grouping (e.g., PEOPLE, ACADEMICS),PEOPLE,
+GroupName,VARCHAR(150),UI grouping label for menus,Students,
+GroupIcon,VARCHAR(100),Icon for the group,bI-mortarboard,
+IsFlat,BOOLEAN,Whether the menu is flat (no nested structure),0,
+Status,VARCHAR(50),Status of the menu item (e.g., active),active,
+Description,VARCHAR(255),Human-readable explanation for tooltips/help text,Browse and search the full list of enrolled students.,

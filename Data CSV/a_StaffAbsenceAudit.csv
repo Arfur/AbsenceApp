@@ -1,0 +1,8 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for audit entry,9001,
+StaffAbsenceId,INT,FK to StaffAbsences.Id,501,StaffAbsences(Id)
+ChangedByUserId,INT,FK to Users.Id,12,Users(Id)
+ChangeType,VARCHAR(50),Created/Updated/Deleted,Updated,
+OldValue,LONGTEXT,Previous JSON snapshot,{...},
+NewValue,LONGTEXT,New JSON snapshot,{...},
+TimestampUtc,DATETIME,When the change occurred,2024-01-10 10:22:00,

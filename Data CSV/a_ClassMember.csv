@@ -1,0 +1,4 @@
+Field Name, Data Type, Description, Example Value, Links To
+ClassId, INT, The class the staff member belongs to, 12, Classes(Id)
+StaffId, INT, The staff member assigned to the class, 1023, Staff(Id)
+RoleInClass, VARCHAR(50), Staff role within the class, Teacher, 

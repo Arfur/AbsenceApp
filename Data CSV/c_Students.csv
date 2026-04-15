@@ -1,0 +1,20 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the student record,1,
+AdmissionNumber,nvarchar(50),School admission number or local identifier,2010,
+FirstName,nvarchar(200),Given name,Florence,
+MiddleNames,nvarchar(200),Middle names or additional given names,NULL,
+LastName,nvarchar(200),Family name/Written surname,Wilson,
+LegalFirstName,nvarchar(200),Legal first name (if different),Florence,
+LegalLastName,nvarchar(200),Legal last name (if different),Wilson,
+Gender,nvarchar(50),Recorded gender (free text/code),, 
+DateOfBirth,date,Date of birth (placeholder values may exist),0001-01-01,
+YearGroupId,int,FK to year group assignment,2,YearGroups.Id
+ClassId,int,FK to current class,2,Classes.Id
+HouseId,int,FK to pastoral house assignment,4,Houses.Id
+Username,nvarchar(200),Associated system username,NULL,
+Upn,nvarchar(200),Unique Pupil Number or external identifier,NULL,
+SchoolId,int,FK to school record,1,Schools.Id
+AdmissionDate,date,Date of admission (may be placeholder),0001-01-01,
+Status,nvarchar(50),Current enrolment status,active,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:31:26.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:31:26.0000000,

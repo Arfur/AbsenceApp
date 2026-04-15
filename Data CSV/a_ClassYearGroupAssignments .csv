@@ -1,0 +1,4 @@
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key, 12,
+ClassId, INT, The class that belongs to the year group, 7, Classes(Id)
+YearGroupId, INT, The year group assigned to the class, 5, YearGroups(Id)

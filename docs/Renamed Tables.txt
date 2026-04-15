@@ -1,0 +1,174 @@
++------------------------+----------------------------+--------------------------------------------------------------+------------------------+----------------------+
+| OLD_TABLE_NAME         | NEW_TABLE_NAME            | DESCRIPTION                                                   | LINKED_TO              | LINKING_FIELDS       |
++------------------------+----------------------------+--------------------------------------------------------------+------------------------+----------------------+
+| MenuItems              | ui_MenuItems              | Defines sidebar menu and submenu items used by the UI.        | NULL                   | NULL                 |
+| MenuItemsGlobalConfig  | ui_MenuItemsConfig        | Global configuration for menu behaviour (not linked).         | NULL                   | NULL                 |
+| Feature                | perm_FeatureFlags         | Defines system/UI feature flags controlling behaviour.        | RoleFeature            | FeatureId            |
+| RoleFeature            | perm_RoleFeatureMap       | Maps Roles to FeatureFlags for permission control.            | Roles, Feature         | RoleId, FeatureId    |
+| UserFeatureOverride    | perm_UserFeatureOverride  | Allows users to override default feature behaviour.           | Users                  | UserId               |
++------------------------+---------------------------+---------------------------------------------------------------+------------------------+----------------------+
+
+NOTE: These tables represent audit and system logging functionality.
+- Audit tables track user-driven changes (compliance, traceability).
+- SystemEventsLog tracks system-level events (errors, warnings, operations).
+- Only audit tables link back to their parent domain tables.
+- LoginAudit and SystemEventsLog are standalone by design.
+
++---------------------------+---------------------------+-------------------------------------------------------------+-----------------------+----------------------+
+| OLD_TABLE_NAME            | NEW_TABLE_NAME            | DESCRIPTION                                                 | LINKED_TO             | LINKING_FIELDS       |
++---------------------------+---------------------------+-------------------------------------------------------------+-----------------------+----------------------+
+| AuditLog                  | AuditLog                  | Records system audit entries for user/system actions.       | Users (optional)      | UserId (if present)  |
+| LoginAudit                | LoginAudit                | Tracks login attempts, successes, failures, lockouts.       | NULL                  | NULL                 |
+| StaffAbsenceAudit         | StaffAbsenceAudit         | Audit trail for staff absence changes.                      | StaffAbsences         | StaffAbsenceId       |
+| StaffAssignmentAudit      | StaffAssignmentAudit      | Audit trail for staff assignment changes.                   | StaffAssignments      | StaffAssignmentId    |
+| StaffDeviceAudit          | StaffDeviceAudit          | Audit trail for staff device changes.                       | StaffDevices          | StaffDeviceId        |
+| StaffExternalAccountAudit | StaffExternalAccountAudit | Audit trail for external account changes for staff.         | StaffExternalAccounts | ExternalAccountId    |
+| SystemEvents              | SystemEventsLog           | Stores system-level events, warnings, and operational logs. | NULL                  | NULL                 |
++---------------------------+---------------------------+-------------------------------------------------------------+-----------------------+----------------------+
+
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| TABLE_NAME            | NEW_TABLE_NAME        | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS       |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Staff                 | Staff                 | Core HR identity record for each staff member.                | StaffDepartments,            | DepartmentId,        |
+|                       |                       |                                                               | StaffJobTitles,              | JobTitleId,          |
+|                       |                       |                                                               | StaffJobGroups, StaffSchools | JobGroupId, SchoolId |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Departments           | StaffDepartments      | Lookup table for staff departments.                           | Staff                        | DepartmentId         |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| JobTitles             | StaffJobTitles        | Lookup table for staff job titles.                            | Staff                        | JobTitleId           |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| JobGroups             | StaffJobGroups        | Lookup table for staff job groups.                            | Staff                        | JobGroupId           |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Schools               | StaffSchools          | Lookup table for school sites or campuses.                    | Staff                        | SchoolId             |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StaffAbsences         | StaffAbsences         | Records staff absences (sickness, leave, etc.).               | Staff                        | StaffId              |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StaffAssignments      | StaffAssignments      | Records staff assignments (classes, duties, responsibilities).| Staff                        | StaffId              |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StaffDevices          | StaffDevices          | Records devices assigned to staff (laptops, tablets, etc.).   | Staff                        | StaffId              |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StaffExternalAccounts | StaffExternalAccounts | External linked accounts (Google, Microsoft, etc.).           | Staff                        | StaffId              |
++-----------------------+-----------------------+---------------------------------------------------------------+------------------------------+----------------------+
+
+NOTE: Group 2B (Users & Permissions Domain)
+
+This domain contains all authentication and authorisation tables.
+- Users represents login accounts (not staff identity).
+- UserProfiles extends Users with additional profile information.
+- Roles defines system-level permissions.
+- RoleTypes categorises roles (e.g., Admin, Teacher).
+- UserRole maps users to one or more roles.
+
+This domain is intentionally separate from the Staff domain.
+A staff member may or may not have a user account.
+A user account may or may not belong to a staff member.
+
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| TABLE_NAME               | NEW_TABLE_NAME     | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS       |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Users                    | Users              | Login accounts for authorised system users.                   | Staff (optional), Roles      | StaffId (if present) |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| UserProfiles             | UserProfiles       | Extended profile details linked to Users.                     | Users                        | UserId               |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Roles                    | Roles              | Defines system roles (SuperAdmin, Admin, Teacher, etc.).      | RoleTypes, UserRole          | RoleTypeId           |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| RoleTypes                | RoleTypes          | Lookup for role categories (Admin, StaffAdmin, Teacher).      | Roles                        | RoleTypeId           |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| UserRole                 | UserRole           | Mapping table linking Users to Roles.                         | Users, Roles                 | UserId, RoleId       |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+
+NOTE: Group 3 (Students Domain)
+
+This domain contains all tables directly related to student identity,
+contacts, flags, medical information, and absences.
+
+StudentAbsenceAudit is excluded here because it was already documented
+in the audit tables section.
+
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| TABLE_NAME               | NEW_TABLE_NAME     | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS       |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| Students                 | Students           | Core identity record for each student.                        | NULL                         | NULL                 |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StudentContacts          | StudentContacts    | Stores parent/guardian/emergency contact details.             | Students                     | StudentId            |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StudentFlags             | StudentFlags       | Structured flags/markers for behaviour, medical, pastoral,    | Students                     | StudentId            |
+|                          |                    | SEN, attendance concerns, etc.                                |                              |                      |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StudentMedical           | StudentMedical     | Medical information linked to a student.                      | Students                     | StudentId            |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+| StudentAbsences          | StudentAbsences    | Records student absences.                                     | Students                     | StudentId            |
++--------------------------+--------------------+---------------------------------------------------------------+------------------------------+----------------------+
+
+
+NOTE: GlobalConfig Table (Purpose and Future Review)
+
+The GlobalConfig table currently stores two system-level switches:
+- EnableGlobalSettings
+- EnableRoleBasedNavigation
+
+These switches act as master overrides for major system behaviour.
+They are not linked to any other tables and are only read by the application.
+
+EnableGlobalSettings:
+- Controls whether the Global Settings module is active.
+- Even though only Super-Admin users can access Global Settings, this flag can hide or disable the entire module at system level.
+
+EnableRoleBasedNavigation:
+- Controls whether role-based menu filtering and feature permissions are enforced.
+- If set to false, all users see all menus and features (permissions bypassed).
+- This is effectively a development/debugging switch and should never be disabled in production.
+
+Current Assessment:
+- The table adds an extra layer of complexity that may not be necessary.
+- Both settings duplicate logic already enforced by roles and permissions.
+- The table may be a legacy development feature rather than a required production component.
+
+Action:
+- Leave the table in place for now.
+- Reassess during the refactor/cleanup phase.
+- Consider removing or repurposing the table once the full system architecture is stabilised.
+
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| TABLE_NAME                    | NEW_TABLE_NAME                | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS            |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| Classes                       | Classes                       | Defines classes or teaching groups.                          | ClassMember,                 | ClassId                   |
+|                               |                               |                                                               | ClassYearGroupAssignments    |                           |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| ClassMember                   | ClassMember                   | Links students to classes.                                   | Classes, Students            | ClassId, StudentId        |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| ClassYearGroupAssignments     | ClassYearGroupAssignments     | Links classes to year groups.                                | Classes, YearGroups          | ClassId, YearGroupId      |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| YearGroups                    | YearGroups                    | Lookup table for year groups (Y1, Y2, Y3, etc.).             | ClassYearGroupAssignments    | YearGroupId               |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| Phases                        | Phases                        | Lookup for school phases (EYFS, KS1, KS2, etc.).             | NULL                         | NULL                      |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| Houses                        | Houses                        | Lookup for school houses (Red, Blue, etc.).                  | Students (if used)           | HouseId (if present)      |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| Responsibilities              | Responsibilities              | Lookup for staff responsibilities (e.g., Head of Year).      | StaffAssignments (if used)   | ResponsibilityId           |
++-------------------------------+-------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+
++--------------------------+--------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| TABLE_NAME               | NEW_TABLE_NAME           | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS            |
++--------------------------+--------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| DeviceTypes              | DeviceTypes              | Lookup table defining categories of devices (e.g., laptop,   | StaffDevices                 | DeviceTypeId (if present) |
+|                          |                          | tablet, phone).                                               |                              |                           |
++--------------------------+--------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| ExternalSystems          | ExternalSystems          | Lookup table defining external systems the MIS integrates     | StaffExternalAccounts        | ExternalSystemId          |
+|                          |                          | with (Google, Microsoft, etc.).                              |                              |                           |
++--------------------------+--------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+
++------------------------------+------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| TABLE_NAME                   | NEW_TABLE_NAME               | DESCRIPTION                                                   | LINKED_TO                    | LINKING_FIELDS            |
++------------------------------+------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| AccountVerificationEvents    | AccountVerificationEvents    | Records events related to account verification (e.g., email   | Users                        | UserId (if present)       |
+|                              |                              | verification, password reset flows).                          |                              |                           |
++------------------------------+------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+| RoleChangeAudit              | RoleChangeAudit              | Audit log of changes to user roles (who changed what and      | Users, Roles                 | UserId, RoleId (if used)  |
+|                              |                              | when).                                                        |                              |                           |
++------------------------------+------------------------------+---------------------------------------------------------------+------------------------------+---------------------------+
+
+SELECT COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'Staff'
+ORDER BY ORDINAL_POSITION;

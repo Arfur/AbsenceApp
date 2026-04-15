@@ -1,0 +1,335 @@
+@* ===========================================================================
+   File        : PagesListPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Pages
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-04-11
+   Updated     : 2026-04-11
+   ---------------------------------------------------------------------------
+   Purpose     : E16 Pages Registry — Pages List page.
+                 Displays all registered app pages in a PageTable.png-style
+                 table with search, category/status filters, pagination, and
+                 Export / Add Page action buttons. Edit opens PageFormPageV2.
+                 Delete uses an inline row confirmation prompt.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-04-11  Initial creation (E16 Pages Registry).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/pages
+   ===========================================================================
+*@
+
+@page "/v2/pages"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Pages
+
+@using AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Framework.PageTemplates
+@using AbsenceApp.Client.Services
+@using AbsenceApp.Client.ViewModels.V2
+@inject PagesListViewModelV2 ViewModel
+@inject NavigationManager Nav
+@implements IDisposable
+
+<PageTemplateV2 PageTitleText="Pages">
+
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+        <button type="button"
+                class="phv2-btn phv2-btn--add"
+                @onclick="@(() => Nav.NavigateTo("/v2/pages/new"))">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+            Add Page
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+        @if (_deleteError is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@_deleteError</div>
+        }
+
+        @* ───────────────────────────────── Toolbar ─────────────────────── *@
+        <div class="plv2-toolbar">
+            <div class="plv2-show-entries">
+                Show
+                <select class="plv2-entries-select"
+                        value="@ViewModel.PageSize"
+                        @onchange="@(e => ViewModel.SetPageSize(int.Parse(e.Value?.ToString() ?? "10")))">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+                entries
+            </div>
+            <div class="plv2-filters">
+                <select class="plv2-filter-select"
+                        value="@ViewModel.GetFilterValue("categoryKey")"
+                        @onchange="@(e => ViewModel.SetFilter("categoryKey", e.Value?.ToString() ?? ""))">
+                    <option value="">All Categories</option>
+                    @foreach (var cat in _categoryFilterOptions)
+                    {
+                        <option value="@cat">@cat</option>
+                    }
+                </select>
+                <select class="plv2-filter-select"
+                        value="@ViewModel.GetFilterValue("status")"
+                        @onchange="@(e => ViewModel.SetFilter("status", e.Value?.ToString() ?? ""))">
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="plv2-search">
+                <i class="bi bi-search plv2-search__icon" aria-hidden="true"></i>
+                <input type="search"
+                       class="plv2-search-input"
+                       placeholder="Search pages…"
+                       value="@ViewModel.SearchTerm"
+                       @oninput="@(e => ViewModel.SetSearch(e.Value?.ToString() ?? ""))" />
+            </div>
+        </div>
+
+        @* ───────────────────────────────── Table ───────────────────────── *@
+        @if (ViewModel.IsLoading)
+        {
+            <div class="plv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i>
+                Loading pages…
+            </div>
+        }
+        else
+        {
+            <div class="plv2-table-wrap">
+                <table class="plv2-table">
+                    <thead>
+                        <tr>
+                            <th class="plv2-th plv2-th--sortable"
+                                @onclick="@(() => ViewModel.SetSort("name"))">
+                                Page
+                                @if (ViewModel.SortColumn == "name")
+                                {
+                                    <i class="bi @(ViewModel.SortAscending ? "bi-sort-up" : "bi-sort-down") plv2-sort-icon" aria-hidden="true"></i>
+                                }
+                            </th>
+                            <th class="plv2-th plv2-th--sortable"
+                                @onclick="@(() => ViewModel.SetSort("slug"))">
+                                Page Slug
+                                @if (ViewModel.SortColumn == "slug")
+                                {
+                                    <i class="bi @(ViewModel.SortAscending ? "bi-sort-up" : "bi-sort-down") plv2-sort-icon" aria-hidden="true"></i>
+                                }
+                            </th>
+                            <th class="plv2-th plv2-th--sortable"
+                                style="width:130px"
+                                @onclick="@(() => ViewModel.SetSort("categoryKey"))">
+                                Category
+                                @if (ViewModel.SortColumn == "categoryKey")
+                                {
+                                    <i class="bi @(ViewModel.SortAscending ? "bi-sort-up" : "bi-sort-down") plv2-sort-icon" aria-hidden="true"></i>
+                                }
+                            </th>
+                            <th class="plv2-th" style="width:100px">Status</th>
+                            <th class="plv2-th plv2-th--actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewModel.Items.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="plv2-td plv2-td--empty">No pages found.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewModel.Items)
+                            {
+                                <tr class="plv2-row @(ViewModel.ConfirmDeleteId == item.Id ? "plv2-row--confirm" : "")">
+                                    <td class="plv2-td plv2-td--name">
+                                        @if (!string.IsNullOrWhiteSpace(item.IconKey))
+                                        {
+                                            <i class="bi @item.IconKey plv2-row-icon" aria-hidden="true"></i>
+                                        }
+                                        @item.Name
+                                    </td>
+                                    <td class="plv2-td plv2-td--slug">@item.Slug</td>
+                                    <td class="plv2-td">
+                                        <span class="plv2-badge plv2-badge--cat">@item.CategoryKey</span>
+                                    </td>
+                                    <td class="plv2-td">
+                                        <span class="plv2-badge plv2-badge--@(item.IsActive ? "active" : "inactive")">
+                                            @(item.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+                                    <td class="plv2-td plv2-td--actions">
+                                        @if (ViewModel.ConfirmDeleteId == item.Id)
+                                        {
+                                            <div class="plv2-delete-confirm">
+                                                <span class="plv2-delete-confirm__text">Delete?</span>
+                                                <button type="button"
+                                                        class="plv2-action-btn plv2-action-btn--danger"
+                                                        title="Confirm delete"
+                                                        @onclick="@(async () => await OnConfirmDelete(item.Id))">
+                                                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button"
+                                                        class="plv2-action-btn plv2-action-btn--cancel"
+                                                        title="Cancel delete"
+                                                        @onclick="@(() => ViewModel.CancelDelete())">
+                                                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <button type="button"
+                                                    class="plv2-action-btn plv2-action-btn--edit"
+                                                    title="Edit @item.Name"
+                                                    @onclick="@(() => Nav.NavigateTo($"/v2/pages/{item.Id}/edit"))">
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="plv2-action-btn plv2-action-btn--delete"
+                                                    title="Delete @item.Name"
+                                                    @onclick="@(() => ViewModel.SetDeleteConfirm(item.Id))">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @* ─────────────────────────────── Pagination ──────────────────────── *@
+            <div class="plv2-pagination-bar">
+                <span class="plv2-pager-info">
+                    Showing @(ViewModel.TotalCount == 0 ? 0 : (ViewModel.Page - 1) * ViewModel.PageSize + 1)–@Math.Min(ViewModel.Page * ViewModel.PageSize, ViewModel.TotalCount)
+                    of @ViewModel.TotalCount entries
+                </span>
+                <div class="plv2-pager">
+                    @{
+                        var totalPages = (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize);
+                        var startPage  = Math.Max(1, ViewModel.Page - 4);
+                        var endPage    = Math.Min(totalPages, startPage + 9);
+                    }
+                    <button class="plv2-page-btn"
+                            disabled="@(ViewModel.Page <= 1)"
+                            @onclick="@(() => ViewModel.SetPage(ViewModel.Page - 1))">
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    @if (startPage > 1)
+                    {
+                        <button class="plv2-page-btn" @onclick="@(() => ViewModel.SetPage(1))">1</button>
+                        @if (startPage > 2) { <span class="plv2-page-ellipsis">…</span> }
+                    }
+                    @for (var p = startPage; p <= endPage; p++)
+                    {
+                        var pg = p;
+                        <button class="plv2-page-btn @(ViewModel.Page == pg ? "plv2-page-btn--active" : "")"
+                                @onclick="@(() => ViewModel.SetPage(pg))">
+                            @pg
+                        </button>
+                    }
+                    @if (endPage < totalPages)
+                    {
+                        @if (endPage < totalPages - 1) { <span class="plv2-page-ellipsis">…</span> }
+                        <button class="plv2-page-btn" @onclick="@(() => ViewModel.SetPage(totalPages))">@totalPages</button>
+                    }
+                    <button class="plv2-page-btn"
+                            disabled="@(ViewModel.Page >= totalPages)"
+                            @onclick="@(() => ViewModel.SetPage(ViewModel.Page + 1))">
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+
+    private bool    _showExportMenu;
+    private string? _deleteError;
+
+    private List<string> _categoryFilterOptions = [];
+
+    // =========================================================================
+    // Lifecycle
+    // =========================================================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.LoadAsync();
+        _categoryFilterOptions = ViewModel.Items
+            .Select(p => p.CategoryKey)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+    }
+
+    public void Dispose() { }
+
+    // =========================================================================
+    // Delete
+    // =========================================================================
+
+    private async Task OnConfirmDelete(int id)
+    {
+        _deleteError = null;
+        var (ok, err) = await ViewModel.ConfirmDeleteAsync(id);
+        if (!ok) _deleteError = err;
+
+        // Refresh category options after deletion
+        _categoryFilterOptions = ViewModel.Items
+            .Select(p => p.CategoryKey)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+    }
+
+    // =========================================================================
+    // Export menu
+    // =========================================================================
+
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
+}

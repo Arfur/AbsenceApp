@@ -1,0 +1,10 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the audit entry,1001,
+UserId,INT,User who performed the action (NULL for system events),42,Users(Id)
+Action,VARCHAR(150),Name of the action performed,UserUpdatedProfile,
+EntityType,VARCHAR(100),Type of entity affected (e.g., User, Role, Feature),User,
+EntityId,INT,Identifier of the affected entity,42,
+Details,JSON,Structured details of the action,{"field":"Email","old":"a@b.com","new":"c@d.com"},
+IpAddress,VARCHAR(50),IP address of the actor,192.168.1.10,
+UserAgent,VARCHAR(255),Browser or client info,Chrome/123.0,
+CreatedAtUtc,DATETIME,Timestamp of the action,2026-04-14 23:58:00,

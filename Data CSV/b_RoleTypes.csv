@@ -1,0 +1,10 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role type,1,
+Name,VARCHAR(100),Internal code name for the role type,user,
+DisplayName,VARCHAR(150),Human readable name shown in UI,User,
+Description,VARCHAR(255),Explanation of the role type,Standard account with limited dashboard access,
+IsSystemRole,BOOLEAN,Whether this is a protected system role,0,
+IsDefault,BOOLEAN,Whether this is the default role for new users,1,
+Priority,INT,Ordering weight for role hierarchy,1,
+CreatedAt,DATETIME,Record creation timestamp,2025-07-28 17:47:13,
+UpdatedAt,DATETIME,Record update timestamp,2025-07-28 17:47:13,

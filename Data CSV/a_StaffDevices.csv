@@ -1,0 +1,10 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff device record,301,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+DeviceTypeId,INT,FK to DeviceTypes.Id,2,DeviceTypes(Id)
+SerialNumber,VARCHAR(100),Device serial number,ABC1234567,
+IssuedDate,DATE,Date device was issued,2023-01-15,
+ReturnedDate,DATE NULL,Date device was returned,NULL,
+Notes,VARCHAR(255),Optional notes,Replaced due to damage,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

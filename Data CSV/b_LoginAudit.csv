@@ -1,0 +1,9 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the login audit entry,5501,
+UserId,INT,User attempting to log in (NULL if unknown),42,Users(Id)
+Username,VARCHAR(150),Username or email used during login,l.turner,
+IsSuccessful,BOOLEAN,Whether the login attempt succeeded,1,
+FailureReason,VARCHAR(255),Reason for failure (NULL if successful),Invalid password,
+IpAddress,VARCHAR(50),IP address of the client,192.168.1.44,
+UserAgent,VARCHAR(255),Browser or client information,Chrome/123.0,
+CreatedAtUtc,DATETIME,Timestamp of the login attempt,2026-04-14 23:59:00,

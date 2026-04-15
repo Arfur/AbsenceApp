@@ -1,0 +1,282 @@
+/*
+===============================================================================
+ File        : UsersListPageV2.razor.css
+ Component   : UsersListPageV2
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-04-11
+ Updated     : 2026-04-11
+-------------------------------------------------------------------------------
+ Purpose     : Scoped CSS for the Users List page (E15 User Management).
+               Provides toolbar, table, badge, pagination, and action
+               button styles consistent with the existing module pages.
+===============================================================================
+*/
+
+/* ── Toolbar ────────────────────────────────────────────────────────────── */
+.ulv2-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.ulv2-show-entries {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.ulv2-entries-select,
+.ulv2-filter-select {
+    padding: 5px 8px;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 6px;
+    font-size: 0.83rem;
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    cursor: pointer;
+}
+
+.ulv2-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ulv2-search {
+    position: relative;
+}
+
+.ulv2-search__icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+.ulv2-search-input {
+    padding: 6px 10px 6px 28px;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 6px;
+    font-size: 0.84rem;
+    width: 220px;
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    transition: border-color 0.15s;
+}
+
+.ulv2-search-input:focus {
+    outline: none;
+    border-color: var(--dsv2-primary, #0d6efd);
+}
+
+/* ── Loading ────────────────────────────────────────────────────────────── */
+.ulv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 40px;
+    justify-content: center;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.9rem;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Table ──────────────────────────────────────────────────────────────── */
+.ulv2-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 8px;
+}
+
+.ulv2-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.ulv2-th {
+    background: var(--dsv2-table-header-bg, #f8f9fa);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dsv2-muted, #6c757d);
+    border-bottom: 2px solid var(--dsv2-border, #dee2e6);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.ulv2-th--sortable {
+    cursor: pointer;
+}
+
+.ulv2-th--sortable:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.04));
+}
+
+.ulv2-th--actions {
+    text-align: center;
+    width: 70px;
+}
+
+.ulv2-sort-icon {
+    margin-left: 4px;
+    font-size: 0.75rem;
+    color: var(--dsv2-primary, #0d6efd);
+}
+
+.ulv2-row {
+    border-bottom: 1px solid var(--dsv2-border, #dee2e6);
+    transition: background 0.1s;
+}
+
+.ulv2-row:last-child { border-bottom: none; }
+
+.ulv2-row:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.025));
+}
+
+.ulv2-td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    color: var(--dsv2-body-text, #212529);
+}
+
+.ulv2-td--empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--dsv2-muted, #6c757d);
+    font-style: italic;
+}
+
+.ulv2-td--name {
+    font-weight: 500;
+}
+
+.ulv2-td--email {
+    font-size: 0.82rem;
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.ulv2-td--actions {
+    text-align: center;
+}
+
+/* ── Status / Role badges ────────────────────────────────────────────────── */
+.ulv2-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ulv2-badge--role {
+    background: color-mix(in srgb, var(--dsv2-primary, #0d6efd) 12%, transparent);
+    color: var(--dsv2-primary, #0d6efd);
+}
+
+.ulv2-badge--active {
+    background: color-mix(in srgb, var(--dsv2-success, #198754) 12%, transparent);
+    color: var(--dsv2-success, #198754);
+}
+
+.ulv2-badge--inactive,
+.ulv2-badge--suspended {
+    background: color-mix(in srgb, var(--dsv2-danger, #dc3545) 12%, transparent);
+    color: var(--dsv2-danger, #dc3545);
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+.ulv2-action-btn {
+    border: none;
+    background: none;
+    padding: 5px 7px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ulv2-action-btn--edit {
+    color: var(--dsv2-primary, #0d6efd);
+}
+
+.ulv2-action-btn:hover {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.06));
+}
+
+/* ── Pagination ──────────────────────────────────────────────────────────── */
+.ulv2-pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ulv2-pager-info {
+    font-size: 0.82rem;
+    color: var(--dsv2-muted, #6c757d);
+}
+
+.ulv2-pager {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.ulv2-page-btn {
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    background: var(--dsv2-input-bg, #fff);
+    color: var(--dsv2-body-text, #212529);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    min-width: 34px;
+    text-align: center;
+}
+
+.ulv2-page-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.ulv2-page-btn--active {
+    background: var(--dsv2-primary, #0d6efd);
+    color: #fff;
+    border-color: var(--dsv2-primary, #0d6efd);
+}
+
+.ulv2-page-btn:hover:not(:disabled):not(.ulv2-page-btn--active) {
+    background: var(--dsv2-hover-bg, rgba(0,0,0,.05));
+}
+
+.ulv2-page-ellipsis {
+    padding: 0 5px;
+    color: var(--dsv2-muted, #6c757d);
+    font-size: 0.82rem;
+}

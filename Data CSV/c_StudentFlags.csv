@@ -1,0 +1,14 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the flag record,9001,
+StudentId,int,FK to the student this flag applies to,123,Students.Id
+FlagType,nvarchar(100),Categorical type of flag (Medical, Behaviour, Safeguarding),Medical,
+FlagValue,nvarchar(200),Short coded value or severity (e.g., Asthma, HighRisk),Asthma,
+StartDate,date,Date the flag becomes effective,2024-02-01,
+EndDate,date,Optional date the flag expires,NULL,
+IsActive,bit,Computed or stored active indicator (true when within Start/End and not cleared),1,
+Notes,nvarchar(max),Free text details and instructions,Requires inhaler during PE,
+CreatedAt,datetime,Record creation timestamp,2024-02-01 10:00:00,
+UpdatedAt,datetime,Record last updated timestamp,2024-03-01 12:30:00,
+CreatedBy,nvarchar(100),Optional user/staff who created the flag,j.smith,Users.Id or Staff.Id
+ClearedBy,nvarchar(100),Optional user/staff who cleared the flag,NULL,Users.Id or Staff.Id
+ClearedAt,datetime,Optional timestamp when flag was cleared,NULL,

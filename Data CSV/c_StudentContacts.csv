@@ -1,0 +1,15 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the contact record,1,
+StudentId,int,FK to the student this contact belongs to,1,Students.Id
+ContactName,nvarchar(200),Full name of the contact,Florence Wilson,
+Relationship,nvarchar(100),Relationship to the student,Self,
+PhoneMobile,nvarchar(50),Mobile phone number,NULL,
+PhoneHome,nvarchar(50),Home phone number,NULL,
+Email,nvarchar(200),Contact email address,florence.wilson@,
+Priority,int,Contact priority/order (1 = primary),1,
+LivesWithStudent,bit,Whether the contact lives with the student,NULL,
+HasParentalResponsibility,bit,Whether the contact has parental responsibility,0,
+SafeguardingFlag,bit,Flag for safeguarding concerns,NULL,
+Notes,nvarchar(max),Free text notes about the contact,NULL,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:33:09.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:33:09.0000000,

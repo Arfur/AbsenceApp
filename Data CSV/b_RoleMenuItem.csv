@@ -1,0 +1,7 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role‑menu permission,1,
+RoleId,INT,Role receiving access to the menu item,3,Roles(Id)
+MenuItemId,INT,Menu item being granted to the role,101000,MenuItems(Id)
+IsAllowed,BOOLEAN,Whether the menu item is visible for this role,1,
+CreatedAtUtc,DATETIME,Timestamp when the permission was assigned,2026-04-06 09:52:40,
+AssignedBy,INT,Admin who assigned the permission,1,Users(Id)

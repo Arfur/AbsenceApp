@@ -1,0 +1,6 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for job group,2,
+Name,VARCHAR(100),Group name,Teaching Staff,
+Description,VARCHAR(255),Optional description,All teaching roles,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,

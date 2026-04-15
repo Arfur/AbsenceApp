@@ -1,0 +1,10 @@
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the verification event,12001,
+UserId,INT,User associated with the verification event,42,Users(Id)
+EventType,VARCHAR(100),Type of verification event (EmailSent, EmailVerified, PasswordResetRequested, PasswordResetCompleted, MfaSetup, MfaVerified),EmailVerified,
+Token,VARCHAR(255),Verification or reset token used (hashed or raw depending on system),a8f9c1d2e3f4,
+IsSuccessful,BOOLEAN,Whether the verification action succeeded,1,
+IpAddress,VARCHAR(50),IP address where the event originated,192.168.1.44,
+UserAgent,VARCHAR(255),Browser or client information,Chrome/123.0,
+CreatedAtUtc,DATETIME,Timestamp of the verification event,2026-04-15 00:10:00,
+Metadata,JSON,Additional structured data for context,{"delivery":"email","method":"magic-link"},
