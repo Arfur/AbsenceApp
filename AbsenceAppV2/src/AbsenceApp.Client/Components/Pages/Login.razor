@@ -220,7 +220,7 @@
             AppState.SetUser(result.UserId, result.UserName, result.Role);
 
             AppLog.Write("Login.razor", "DoLogin",
-                $"AppState.SetUser done. IsAuthenticated={AppState.IsAuthenticated} — loading messages and notifications");
+                $"AppState.SetUser done. IsAuthenticated={AppState.IsAuthenticated} UserName='{AppState.UserName}' UserRole='{AppState.UserRole}' — loading messages and notifications");
             var messages      = await MessageService.GetUnreadMessagesAsync(result.UserId);
             var notifications = await NotificationService.GetUnreadNotificationsAsync(result.UserId);
 

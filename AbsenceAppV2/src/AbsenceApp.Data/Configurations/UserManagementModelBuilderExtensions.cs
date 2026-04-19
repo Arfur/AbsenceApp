@@ -119,8 +119,7 @@ public static class UserManagementModelBuilderExtensions
         {
             b.ToTable("app_pages");
             b.HasKey(e => e.Id);
-            b.Property(e => e.Id).ValueGeneratedOnAdd().UseIdentityColumn();
-            b.Property(e => e.Name).IsRequired().HasMaxLength(200);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.Slug).IsRequired().HasMaxLength(200).HasDefaultValue(string.Empty);
             b.Property(e => e.Route).IsRequired().HasMaxLength(500);
             b.Property(e => e.CategoryKey).IsRequired().HasMaxLength(100).HasDefaultValue(string.Empty);
@@ -134,8 +133,8 @@ public static class UserManagementModelBuilderExtensions
             b.Property(e => e.SupportsDelete).HasDefaultValue(false);
             b.Property(e => e.SupportsImport).HasDefaultValue(false);
             b.Property(e => e.SupportsExport).HasDefaultValue(false);
-            b.Property(e => e.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            b.Property(e => e.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
+            b.Property(e => e.CreatedAt).HasDefaultValueSql("UTC_TIMESTAMP(6)");
+            b.Property(e => e.UpdatedAt).HasDefaultValueSql("UTC_TIMESTAMP(6)");
             b.HasIndex(e => e.Route).IsUnique();
             b.HasIndex(e => e.Slug).IsUnique();
         });
@@ -170,7 +169,7 @@ public static class UserManagementModelBuilderExtensions
         {
             b.ToTable("role_default_page_permissions");
             b.HasKey(e => e.Id);
-            b.Property(e => e.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.RoleTypeName).IsRequired().HasMaxLength(100);
             b.Property(e => e.CanRead).HasDefaultValue(false);
             b.Property(e => e.CanWrite).HasDefaultValue(false);
@@ -190,7 +189,7 @@ public static class UserManagementModelBuilderExtensions
         {
             b.ToTable("user_page_overrides");
             b.HasKey(e => e.Id);
-            b.Property(e => e.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.OverrideType).IsRequired().HasMaxLength(10);
             b.HasIndex(e => new { e.UserId, e.PageId }).IsUnique();
             b.HasOne<AppPage>()
@@ -204,7 +203,7 @@ public static class UserManagementModelBuilderExtensions
         {
             b.ToTable("user_page_permissions");
             b.HasKey(e => e.Id);
-            b.Property(e => e.Id).ValueGeneratedOnAdd().UseIdentityColumn();
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.CanRead).HasDefaultValue(false);
             b.Property(e => e.CanWrite).HasDefaultValue(false);
             b.Property(e => e.CanCreate).HasDefaultValue(false);

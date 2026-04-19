@@ -69,7 +69,7 @@ public sealed class UserManagementService : IUserManagementService
     {
         var users = await _db.Users
             .AsNoTracking()
-            .OrderBy(u => u.LastName).ThenBy(u => u.FirstName)
+            .OrderBy(u => u.Username)
             .ToListAsync(ct);
 
         var roleIds   = users.Select(u => u.RoleTypeId).Distinct().ToList();
@@ -388,11 +388,15 @@ public sealed class UserManagementService : IUserManagementService
 
     /// <summary>
     /// Verifies a plain-text password against a stored hash produced by
-    /// <see cref="HashPassword"/> or falls back to plain-text comparison
-    /// for legacy accounts (development data).
+    /// <see cref="HashPassword"/>, a BCrypt hash (legacy seeded accounts),
+    /// or falls back to plain-text comparison for legacy accounts (development data).
     /// </summary>
     public static bool VerifyPassword(string plainText, string stored)
     {
+        // BCrypt format: starts with $2a$, $2b$, or $2y$
+        if (stored.StartsWith("$2", StringComparison.Ordinal))
+            return BCrypt.Net.BCrypt.Verify(plainText, stored);
+
         // PBKDF2 format: "<iterations>:<salt_b64>:<hash_b64>"
         var parts = stored.Split(':');
         if (parts.Length == 3
@@ -428,6 +432,8 @@ public sealed class UserManagementService : IUserManagementService
     {
         if (!string.IsNullOrWhiteSpace(u.FirstName) || !string.IsNullOrWhiteSpace(u.LastName))
             return $"{u.FirstName} {u.LastName}".Trim();
-        return u.Name;    // fallback to legacy combined Name field
+        if (!string.IsNullOrWhiteSpace(u.Name))
+            return u.Name;
+        return u.Username;    // fallback when no name data loaded from DB
     }
 }

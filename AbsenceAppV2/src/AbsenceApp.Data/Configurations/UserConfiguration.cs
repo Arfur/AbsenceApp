@@ -31,7 +31,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         // Required fields
         // ---------------------------------------------------------------------
         builder.Property(u => u.Username).IsRequired();
-        builder.Property(u => u.Name).IsRequired();
         builder.Property(u => u.Email).IsRequired();
     }
 }

@@ -3,34 +3,46 @@
  File        : FeaturePermissionApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 2.0.0
+ Version     : 5.0.0
  Created     : 2026-04-06
- Updated     : 2026-04-06
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
- Purpose     : Client-side feature permission service that executes
-               dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId) via EF Core
-               SqlQueryRaw to determine whether the current user's role may
-               access a named feature.
+ Purpose     : Client-side feature permission service for AbsenceApp V2.
+               Originally executed SQL Server function dbo.fn_IsFeatureAllowed
+               via SqlQueryRaw. As of v3.0.0 the service no longer uses any
+               Microsoft.Data.SqlClient or SQL Server-specific APIs. The
+               permission check is now performed using the MySQL-backed EF Core
+               rolefeature table (FeatureCode + RoleId + IsEnabled).
 
                In MAUI Blazor Hybrid the C# HttpClient cannot reach
                http://localhost/ (that scheme exists only inside the WebView2
-               browser context). This service therefore calls the database
+               browser context). This service therefore resolves permissions
                directly using IServiceScopeFactory + AppDbContext instead of
                making an HTTP call to AbsenceApp.Api.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation (Phase 3 — Feature Permission
                          Boundary). Used HttpClient to call GET /api/features/allowed.
+
    - 2.0.0  2026-04-06  Breaking fix: replaced HttpClient with direct DB call
                          via IServiceScopeFactory + AppDbContext. HttpClient
                          cannot reach http://localhost/ in MAUI C# context.
-                         Now resolves RoleTypeId from Users table, looks up
-                         FeatureId from Features table, then calls
-                         dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId).
+                         Used SQL Server function dbo.fn_IsFeatureAllowed.
+
    - 2.1.0  2026-04-07  Debug instrumentation: added AppLog.Write calls at
-                         entry (with featureKey, IsAuthenticated, CurrentUserId),
-                         after roleTypeId resolution, after feature lookup,
-                         after SQL result, and in the catch block.
+                         entry, after roleTypeId resolution, after feature
+                         lookup, after SQL result, and in the catch block.
+
+   - 3.0.0  2026-04-19  Major cleanup: removed all Microsoft.Data.SqlClient and
+                         SQL Server-specific dependencies. Migrated to MySQL-
+                         compatible EF Core logic using rolefeature table
+                         (RoleId + FeatureCode + IsEnabled). Eliminated
+                         SqlQueryRaw and dbo.fn_IsFeatureAllowed usage.
+   - 5.0.0  2026-04-19  RoleId resolution fix: replaced users.RoleTypeId lookup
+                         with raw SQL through userrole → roles chain. rolefeature
+                         check now uses RoleId from userrole, not RoleTypeId
+                         from users. Eliminates "Unknown column 'u.RoleTypeId'"
+                         startup crash.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.cs.
@@ -42,9 +54,9 @@
 using AbsenceApp.Client.Services;
 using AbsenceApp.Data.Context;
 using AbsenceApp.Data.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MySqlConnector;
 
 namespace AbsenceApp.Client.Services.ApiV2.Modules;
 
@@ -54,10 +66,6 @@ namespace AbsenceApp.Client.Services.ApiV2.Modules;
 
 public sealed class FeaturePermissionApiServiceV2
 {
-    // ---------------------------------------------------------------------------
-    // Dependencies
-    // ---------------------------------------------------------------------------
-
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly AppStateService      _appState;
 
@@ -70,10 +78,8 @@ public sealed class FeaturePermissionApiServiceV2
     }
 
     // ===========================================================================
-    // IsAllowedAsync
-    // Resolves the current user's RoleTypeId, looks up the feature, and calls
-    // dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId).
-    // Returns false on any error (fail-safe).
+    // IsAllowedAsync (MySQL version)
+    // Uses RoleFeature table instead of SQL Server fn_IsFeatureAllowed
     // ===========================================================================
 
     public async Task<bool> IsAllowedAsync(string featureKey, CancellationToken ct = default)
@@ -94,54 +100,54 @@ public sealed class FeaturePermissionApiServiceV2
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
             // -----------------------------------------------------------------------
-            // Resolve current user's RoleTypeId
+            // Resolve current user's RoleId via userrole table
             // -----------------------------------------------------------------------
-            var userId     = _appState.CurrentUserId;
+            var userId = _appState.CurrentUserId;
+
             AppLog.Write("FeaturePermissionApiServiceV2.cs", "IsAllowedAsync",
-                $"Resolving RoleTypeId for userId={userId} (CurrentUserId at call-time={_appState.CurrentUserId} IsAuthenticated={_appState.IsAuthenticated})");
-            var roleTypeId = await db.Users
-                .AsNoTracking()
-                .Where(u => u.Id == userId)
-                .Select(u => u.RoleTypeId)
-                .FirstOrDefaultAsync(ct);
+                $"Resolving RoleId for userId={userId}");
+
+            var roleIds = await db.Database
+                .SqlQueryRaw<int>(
+                    "SELECT RoleId FROM userrole WHERE UserId = @UserId LIMIT 1",
+                    new MySqlParameter("@UserId", userId))
+                .ToListAsync(ct);
+            var roleId = roleIds.FirstOrDefault();
+
             AppLog.Write("FeaturePermissionApiServiceV2.cs", "IsAllowedAsync",
-                $"roleTypeId={roleTypeId} (userId={userId})");
+                $"roleId={roleId} (userId={userId})");
 
             // -----------------------------------------------------------------------
-            // Look up the feature — return false if unknown or inactive
+            // Look up the feature — return false if unknown or disabled
             // -----------------------------------------------------------------------
-            var feature = await db.Set<Feature>()
+            var featureEnabled = await db.Set<Feature>()
                 .AsNoTracking()
-                .Where(f => f.Key == featureKey && f.IsActive)
-                .Select(f => new { f.FeatureId })
-                .FirstOrDefaultAsync(ct);
+                .AnyAsync(f => f.Code == featureKey && f.IsEnabled, ct);
 
-            if (feature is null)
+            if (!featureEnabled)
             {
                 AppLog.Write("FeaturePermissionApiServiceV2.cs", "IsAllowedAsync",
-                    $"Feature '{featureKey}' not found or inactive — returning false");
+                    $"Feature '{featureKey}' not found or disabled — returning false");
                 return false;
             }
 
             AppLog.Write("FeaturePermissionApiServiceV2.cs", "IsAllowedAsync",
-                $"Feature found: featureKey='{featureKey}' featureId={feature.FeatureId} — calling fn_IsFeatureAllowed(roleType={roleTypeId}, featureId={feature.FeatureId})");
+                $"Feature found and enabled: featureKey='{featureKey}'");
 
             // -----------------------------------------------------------------------
-            // Call dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId)
+            // MySQL permission check via rolefeature table
             // -----------------------------------------------------------------------
-            const string sql = """
-                SELECT dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId) AS IsAllowed;
-                """;
+            var allowed = await db.Set<RoleFeature>()
+                .AsNoTracking()
+                .AnyAsync(rf =>
+                    rf.RoleId       == roleId &&
+                    rf.FeatureCode  == featureKey &&
+                    rf.IsEnabled,
+                    ct);
 
-            var result = await db.Database
-                .SqlQueryRaw<FeatureAllowedRow>(sql,
-                    new SqlParameter("@RoleType",  (int)roleTypeId),
-                    new SqlParameter("@FeatureId", feature.FeatureId))
-                .FirstOrDefaultAsync(ct);
-
-            var allowed = result?.IsAllowed ?? false;
             AppLog.Write("FeaturePermissionApiServiceV2.cs", "IsAllowedAsync",
-                $"fn_IsFeatureAllowed result={result?.IsAllowed} — returning {allowed} for featureKey='{featureKey}' userId={userId} roleTypeId={roleTypeId}");
+                $"rolefeature lookup result={allowed} — returning {allowed} for featureKey='{featureKey}' userId={userId} roleId={roleId}");
+
             return allowed;
         }
         catch (Exception ex)
@@ -151,14 +157,4 @@ public sealed class FeaturePermissionApiServiceV2
             return false;
         }
     }
-
-    // ---------------------------------------------------------------------------
-    // Private projection record for the scalar SQL result
-    // ---------------------------------------------------------------------------
-
-    private sealed class FeatureAllowedRow
-    {
-        public bool IsAllowed { get; set; }
-    }
 }
-

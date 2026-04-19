@@ -34,7 +34,6 @@ public class TablePageSettingConfiguration : IEntityTypeConfiguration<TablePageS
         // ValueGeneratedNever() loop in AppDbContext.OnModelCreating, which
         // is why AppDbContext also excludes this entity type from that loop.
         builder.Property(x => x.Id)
-               .UseIdentityColumn()
                .ValueGeneratedOnAdd();
 
         builder.Property(x => x.PageName)    .IsRequired().HasMaxLength(100);

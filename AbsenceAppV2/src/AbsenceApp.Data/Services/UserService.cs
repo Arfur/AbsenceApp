@@ -14,7 +14,7 @@
  Description :
    Users represent staff members in the AbsenceApp system.  This service
    exposes only the read path consumed by the Staff UI page.
-   UserDto intentionally excludes PasswordHash; see UserMapper for details.
+   UserDto intentionally excludes Password; see UserMapper for details.
    All entity-to-DTO conversion is delegated to UserMapper.
 -------------------------------------------------------------------------------
  Changes     :

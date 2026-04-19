@@ -3,30 +3,37 @@
  File        : FeaturePermissionResolver.cs
  Namespace   : AbsenceApp.Api.Services.Navigation
  Author      : Michael
- Version     : 1.0.0
+ Version     : 3.0.0
  Created     : 2026-04-06
- Updated     : 2026-04-06
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
- Purpose     : Executes dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId) to
-               determine whether a given role may access a named feature.
+ Purpose     : Determines whether a given role may access a named feature.
 
-               The API endpoint accepts a feature key (string), looks up the
-               FeatureId from the features table, then calls the function.
-               Returns false if the feature key does not exist or is inactive.
+               The API endpoint accepts a feature code (string), verifies the
+               feature is enabled in the feature table, then queries the
+               rolefeature table directly via EF Core LINQ.
+               Returns false if the feature code does not exist or is disabled.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation (Phase 3 — Feature Permission
                          Boundary).
+   - 2.0.0  2026-04-19  MySQL migration: removed fn_IsFeatureAllowed SQL
+                         function call and MySqlConnector dependency. Replaced
+                         with pure EF Core LINQ query on RoleFeature table
+                         (RoleType + FeatureId + IsAllowed).
+   - 3.0.0  2026-04-19  Schema alignment: updated field names to match CSV.
+                         Feature.Key→Code, Feature.IsActive→IsEnabled,
+                         RoleFeature.RoleType→RoleId, RoleFeature.FeatureId→
+                         FeatureCode (string), RoleFeature.IsAllowed→IsEnabled.
+                         Table feature (was features), rolefeature (was role_features).
 -------------------------------------------------------------------------------
  Notes       :
-   - Raw SQL uses SqlParameter to prevent SQL injection.
    - Registered as Scoped in Program.cs.
 ===============================================================================
 */
 
 using AbsenceApp.Data.Context;
 using AbsenceApp.Data.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceApp.Api.Services.Navigation;
@@ -59,7 +66,7 @@ public sealed class FeaturePermissionResolver : IFeaturePermissionResolver
 
     // ===========================================================================
     // IsAllowedAsync
-    // Looks up the feature by key and calls fn_IsFeatureAllowed.
+    // Verifies the feature is enabled, then queries rolefeature via EF Core LINQ.
     // ===========================================================================
 
     public async Task<bool> IsAllowedAsync(
@@ -68,40 +75,24 @@ public sealed class FeaturePermissionResolver : IFeaturePermissionResolver
         CancellationToken ct = default)
     {
         // -----------------------------------------------------------------------
-        // Resolve feature ID — returns null if unknown or inactive
+        // Verify feature exists and is enabled
         // -----------------------------------------------------------------------
-        var feature = await _db.Set<Feature>()
+        var featureEnabled = await _db.Set<Feature>()
             .AsNoTracking()
-            .Where(f => f.Key == featureKey && f.IsActive)
-            .Select(f => new { f.FeatureId })
-            .FirstOrDefaultAsync(ct);
+            .AnyAsync(f => f.Code == featureKey && f.IsEnabled, ct);
 
-        if (feature is null)
+        if (!featureEnabled)
             return false;
 
         // -----------------------------------------------------------------------
-        // Call fn_IsFeatureAllowed(@RoleType, @FeatureId)
-        // The function returns a BIT (mapped to bool via SELECT wrapper).
+        // Query rolefeature table directly — no SQL function required
         // -----------------------------------------------------------------------
-        const string sql = """
-            SELECT dbo.fn_IsFeatureAllowed(@RoleType, @FeatureId) AS IsAllowed;
-            """;
-
-        var result = await _db.Database
-            .SqlQueryRaw<FeatureAllowedRow>(sql,
-                new SqlParameter("@RoleType",  roleType),
-                new SqlParameter("@FeatureId", feature.FeatureId))
-            .FirstOrDefaultAsync(ct);
-
-        return result?.IsAllowed ?? false;
-    }
-
-    // ---------------------------------------------------------------------------
-    // Private projection record for the scalar SQL result
-    // ---------------------------------------------------------------------------
-
-    private sealed class FeatureAllowedRow
-    {
-        public bool IsAllowed { get; set; }
+        return await _db.Set<RoleFeature>()
+            .AsNoTracking()
+            .AnyAsync(rf =>
+                rf.RoleId       == roleType &&
+                rf.FeatureCode  == featureKey &&
+                rf.IsEnabled,
+                ct);
     }
 }

@@ -3,9 +3,9 @@
  File        : PermissionServiceV2.cs
  Namespace   : AbsenceApp.Client.Services
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-04-11
- Updated     : 2026-04-17
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
  Purpose     : Client-side permission resolution service (E15).
                Provides per-page effective CRUD flags for the current user.
@@ -21,11 +21,10 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-11  Initial creation (E15 User Management).
-   - 1.1.0  2026-04-17  E17 Navigation Unification: added CanViewAsync(route)
-                         used by NavigationApiServiceV2 to filter sidebar items.
-                         Returns false only when the route is a registered, active
-                         AppPage AND the current user has CanRead = false.
-                         Empty and unregistered routes always return true.
+   - 1.2.0  2026-04-19  RoleId resolution fix: replaced db.Users.Join(db.RoleTypes,
+                         u => u.RoleTypeId, ...) with raw SQL through the
+                         userrole → roles → roletypes chain. Eliminates the
+                         "Unknown column 'u.RoleTypeId'" startup crash.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.cs.
@@ -40,6 +39,7 @@ using AbsenceApp.Core.DTOs;
 using AbsenceApp.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MySqlConnector;
 
 namespace AbsenceApp.Client.Services;
 
@@ -158,12 +158,18 @@ public sealed class PermissionServiceV2
             using var scope = _scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            // Resolve the user's RoleType.Name (string slug, not Id)
-            var roleTypeName = await db.Users
-                .AsNoTracking()
-                .Where(u => u.Id == userId)
-                .Join(db.RoleTypes, u => u.RoleTypeId, r => r.Id, (u, r) => r.Name)
-                .FirstOrDefaultAsync(ct) ?? string.Empty;
+            // Resolve the user's RoleType.Name via userrole → roles → roletypes.
+            // Raw SQL is used because the EF Role entity does not map RoleTypeId.
+            var roleTypeNames = await db.Database
+                .SqlQueryRaw<string>(
+                    "SELECT rt.Name " +
+                    "FROM userrole ur " +
+                    "INNER JOIN roles r  ON r.Id  = ur.RoleId " +
+                    "INNER JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
+                    "WHERE ur.UserId = @UserId LIMIT 1",
+                    new MySqlParameter("@UserId", userId))
+                .ToListAsync(ct);
+            var roleTypeName = roleTypeNames.FirstOrDefault() ?? string.Empty;
 
             AppLog.Write("PermissionServiceV2.cs", "LoadAsync", $"roleTypeName='{roleTypeName}'");
 

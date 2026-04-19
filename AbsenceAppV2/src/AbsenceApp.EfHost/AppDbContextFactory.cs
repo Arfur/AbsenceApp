@@ -45,10 +45,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
-        // Uses SQL Server LocalDB for local development migrations.
-        // Adjust the connection string for other environments.
-        optionsBuilder.UseSqlServer(
-            "Server=(localdb)\\mssqllocaldb;Database=AbsenceApp;Trusted_Connection=True;MultipleActiveResultSets=true");
+        optionsBuilder.UseMySql(
+            "Server=127.0.0.1;Port=3306;Database=absenceapp;User=root;Password=Calm1309!;CharSet=utf8mb4",
+            new MariaDbServerVersion(new Version(10, 4, 32)));
 
         return new AppDbContext(optionsBuilder.Options);
     }

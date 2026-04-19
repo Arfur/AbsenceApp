@@ -3,9 +3,9 @@
  File        : EntitlementsModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 1.0.0
+ Version     : 2.0.0
  Created     : 2026-04-05
- Updated     : 2026-04-05
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
  Purpose     : ModelBuilder extension that configures the three entitlement
                entities (Feature, RoleFeature, UserFeatureOverride) in the
@@ -19,10 +19,17 @@
    - 1.0.0  2026-04-05  Initial implementation. Closes the build error
                          introduced when AppDbContext.cs called the then-missing
                          ConfigureEntitlements() extension.
+   - 2.0.0  2026-04-19  Schema alignment: updated table names (feature,
+                         rolefeature, userfeatureoverride), updated PK names
+                         (Id), updated column names to match CSV schema.
+                         Removed FK navigation from RoleFeature→Feature and
+                         UserFeatureOverride→Feature (joins are by FeatureCode
+                         string, not by FK integer).
 -------------------------------------------------------------------------------
  Notes       :
-   - Table names are snake_case to match the Phase 2 schema conventions.
-   - The Feature.Key column has a unique index for fast entitlement lookup.
+   - Table names match the production MySQL schema from the CSV source of truth.
+   - FeatureCode in rolefeature/userfeatureoverride is a string code matching
+     feature.Code — there is no FK constraint enforced by EF.
 ===============================================================================
 */
 
@@ -40,7 +47,7 @@ public static class EntitlementsModelBuilderExtensions
     // ---------------------------------------------------------------------------
     // ConfigureEntitlements
     // Registers Feature, RoleFeature, and UserFeatureOverride entities and
-    // applies table mappings, keys, indexes, and FK constraints.
+    // applies table mappings, keys, indexes, and column constraints.
     // ---------------------------------------------------------------------------
 
     public static ModelBuilder ConfigureEntitlements(this ModelBuilder modelBuilder)
@@ -48,37 +55,31 @@ public static class EntitlementsModelBuilderExtensions
         // ── Feature ──────────────────────────────────────────────────────────
         modelBuilder.Entity<Feature>(b =>
         {
-            b.ToTable("features");
-            b.HasKey(e => e.FeatureId);
-            b.Property(e => e.FeatureId).ValueGeneratedOnAdd();
-            b.Property(e => e.Key).IsRequired().HasMaxLength(200);
-            b.Property(e => e.IsActive).HasDefaultValue(true);
-            b.HasIndex(e => e.Key).IsUnique();
+            b.ToTable("feature");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.Code).IsRequired().HasMaxLength(200);
+            b.Property(e => e.IsEnabled).HasDefaultValue(true);
+            b.HasIndex(e => e.Code).IsUnique();
         });
 
         // ── RoleFeature ───────────────────────────────────────────────────────
         modelBuilder.Entity<RoleFeature>(b =>
         {
-            b.ToTable("role_features");
-            b.HasKey(e => e.RoleFeatureId);
-            b.Property(e => e.RoleFeatureId).ValueGeneratedOnAdd();
-            b.Property(e => e.IsAllowed).HasDefaultValue(true);
-            b.HasOne(e => e.Feature)
-                .WithMany()
-                .HasForeignKey(e => e.FeatureId)
-                .OnDelete(DeleteBehavior.Cascade);
+            b.ToTable("rolefeature");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.FeatureCode).IsRequired().HasMaxLength(200);
+            b.Property(e => e.IsEnabled).HasDefaultValue(true);
         });
 
         // ── UserFeatureOverride ───────────────────────────────────────────────
         modelBuilder.Entity<UserFeatureOverride>(b =>
         {
-            b.ToTable("user_feature_overrides");
-            b.HasKey(e => e.UserFeatureOverrideId);
-            b.Property(e => e.UserFeatureOverrideId).ValueGeneratedOnAdd();
-            b.HasOne(e => e.Feature)
-                .WithMany()
-                .HasForeignKey(e => e.FeatureId)
-                .OnDelete(DeleteBehavior.Cascade);
+            b.ToTable("userfeatureoverride");
+            b.HasKey(e => e.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.FeatureCode).IsRequired().HasMaxLength(200);
         });
 
         return modelBuilder;

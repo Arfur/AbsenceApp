@@ -13,6 +13,16 @@ Can you read this, just acknowledge?
 Username: mbattle
 Password: Admin1234
 
+Username: mfarrar
+Password: Office1234
+
+Username: ewoods
+Password: Teacher1234
+
+phpMySQL password root/127.0.0.1 Calm1309!
+
+378ymC4CcWxcp5l 
+
 I am testing 'All Students' table.
 1. When I make the App Screen width too small to fit the Table horizontally, a 'Horizontal Scrollbar' should appear, which I have asked for at leat 6 times, but it is still no
 

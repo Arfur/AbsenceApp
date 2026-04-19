@@ -3,9 +3,9 @@
  File        : AuthService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-03-22
- Updated     : 2026-04-11
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
  Purpose     : Provides authentication services for the AbsenceApp platform,
                including user login, registration, and logout operations.
@@ -21,15 +21,20 @@
  Changes     :
    - 1.0.0  2026-03-22  Initial implementation of login and registration logic
                          using AppDbContext (Phase 1).
-   - 1.1.0  2026-04-11  E15 User Management: replaced plain-text password
-                         comparison with UserManagementService.VerifyPassword()
-                         which supports PBKDF2-hashed passwords while retaining
-                         plain-text fallback for legacy dev accounts.
+   - 1.2.0  2026-04-19  RoleId resolution fix: replaced _db.RoleTypes lookup
+                         via user.RoleTypeId with raw SQL through the
+                         userrole → roles → roletypes chain. Eliminates the
+                         "Unknown column 'u.RoleTypeId'" startup crash.
+   - 1.3.0  2026-04-19  Authentication fix: VerifyPassword now detects BCrypt
+                         hashes ($2a$/$2b$) from seeded accounts and verifies
+                         them via BCrypt.Net-Next. PBKDF2 and plain-text
+                         fallback paths retained for forward compatibility.
 -------------------------------------------------------------------------------
  Notes       :
-   - New users created via UserManagementService have their password stored as
-     a PBKDF2-SHA256 hash. Legacy dev accounts with plain-text passwords still
-     authenticate correctly via the VerifyPassword fallback.
+   - Seeded accounts have BCrypt ($2a$12$) hashed passwords.
+   - New users created via UserManagementService have PBKDF2-SHA256 hashes.
+   - Legacy dev accounts with plain-text passwords also authenticate via
+     the VerifyPassword fallback.
    - No server-side session state is maintained; authentication state is
      managed by the client application.
    - AppDbContext MUST be registered as Scoped. AuthService MUST NOT be
@@ -42,6 +47,7 @@ using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data.Context;
 using AbsenceApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace AbsenceApp.Data.Services;
 
@@ -73,16 +79,25 @@ public class AuthService : IAuthService
         if (!UserManagementService.VerifyPassword(password, user.Password))
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
 
-        var roleType = await _db.RoleTypes
-            .AsNoTracking()
-            .FirstOrDefaultAsync(r => r.Id == user.RoleTypeId);
+        // Resolve role display name via userrole → roles → roletypes
+        var roleDisplayNames = await _db.Database
+            .SqlQueryRaw<string>(
+                "SELECT rt.DisplayName " +
+                "FROM userrole ur " +
+                "INNER JOIN roles r  ON r.Id  = ur.RoleId " +
+                "INNER JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
+                "WHERE ur.UserId = @UserId LIMIT 1",
+                new MySqlParameter("@UserId", user.Id))
+            .ToListAsync();
+        var roleDisplayName = roleDisplayNames.FirstOrDefault()
+                              ?? (user.IsAdmin ? "Admin" : "Staff");
 
         return new AuthResultDto
         {
             Success  = true,
             UserId   = user.Id,
-            UserName = user.Name,
-            Role     = roleType?.DisplayName ?? (user.IsAdmin ? "Admin" : "Staff")
+            UserName = user.Username,
+            Role     = roleDisplayName
         };
     }
 

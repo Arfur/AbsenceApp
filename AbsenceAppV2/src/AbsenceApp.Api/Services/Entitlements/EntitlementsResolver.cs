@@ -3,11 +3,11 @@
  File        : EntitlementsResolver.cs
  Namespace   : AbsenceApp.Api.Services.Entitlements
  Author      : Michael
- Version     : 1.1.0
+ Version     : 2.0.0
  Created     : 2026-04-05
- Updated     : 2026-04-05
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
- Purpose     : Resolves the effective set of entitlement feature keys for a user.
+ Purpose     : Resolves the effective set of entitlement feature codes for a user.
 
                Entitlements are resolved deterministically using the following
                precedence rules:
@@ -27,6 +27,14 @@
                          resolve to the types registered in AppDbContext via
                          ConfigureEntitlements(). The prior namespace caused
                          an InvalidOperationException at runtime.
+   - 2.0.0  2026-04-19  Schema alignment: updated all field references to match
+                         CSV. Feature.IsActive→IsEnabled, Feature.Key→Code,
+                         RoleFeature.RoleType→RoleId, RoleFeature.FeatureId→
+                         FeatureCode, RoleFeature.IsAllowed→IsEnabled.
+                         UserFeatureOverride.FeatureId→FeatureCode,
+                         UserFeatureOverride.IsAllowed→IsEnabled.
+                         JOIN predicate changed from int FeatureId to string
+                         FeatureCode equals feature.Code.
 -------------------------------------------------------------------------------
  Notes       :
    - No fallback behaviour is implemented.
@@ -61,7 +69,7 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
     }
 
     // =========================================================================
-    // Resolve effective allowed entitlement keys for a user
+    // Resolve effective allowed entitlement codes for a user
     // =========================================================================
     public async Task<HashSet<string>> GetEffectiveAllowedKeysAsync(
         Guid userId,
@@ -74,16 +82,16 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
         var activeFeatures =
             _db.Set<Feature>()
                .AsNoTracking()
-               .Where(f => f.IsActive);
+               .Where(f => f.IsEnabled);
 
         // ---------------------------------------------------------------------
         // Role-based default entitlements
         // ---------------------------------------------------------------------
         var roleDefaults =
             from rf in _db.Set<RoleFeature>().AsNoTracking()
-            where rf.RoleType == roleType && rf.IsAllowed
-            join f in activeFeatures on rf.FeatureId equals f.FeatureId
-            select f.Key;
+            where rf.RoleId == roleType && rf.IsEnabled
+            join f in activeFeatures on rf.FeatureCode equals f.Code
+            select f.Code;
 
         // ---------------------------------------------------------------------
         // Per-user overrides (authoritative)
@@ -91,11 +99,11 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
         var userOverrides =
             from ufo in _db.Set<UserFeatureOverride>().AsNoTracking()
             where ufo.UserId == userId
-            join f in activeFeatures on ufo.FeatureId equals f.FeatureId
+            join f in activeFeatures on ufo.FeatureCode equals f.Code
             select new
             {
-                f.Key,
-                ufo.IsAllowed
+                f.Code,
+                ufo.IsEnabled
             };
 
         // ---------------------------------------------------------------------
@@ -103,17 +111,17 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
         // ---------------------------------------------------------------------
         var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var key in await roleDefaults.ToListAsync(ct))
+        foreach (var code in await roleDefaults.ToListAsync(ct))
         {
-            allowed.Add(key);
+            allowed.Add(code);
         }
 
         foreach (var ov in await userOverrides.ToListAsync(ct))
         {
-            if (ov.IsAllowed)
-                allowed.Add(ov.Key);
+            if (ov.IsEnabled)
+                allowed.Add(ov.Code);
             else
-                allowed.Remove(ov.Key);
+                allowed.Remove(ov.Code);
         }
 
         return allowed;

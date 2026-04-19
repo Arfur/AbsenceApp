@@ -21,7 +21,7 @@
    - 1.0.0  2026-03-14  Initial interface defined.
 -------------------------------------------------------------------------------
  Notes       :
-   - UserDto intentionally excludes PasswordHash; see UserMapper for details.
+   - UserDto intentionally excludes Password; see UserMapper for details.
    - GetByIdAsync returns null when the user does not exist.
 ===============================================================================
 */

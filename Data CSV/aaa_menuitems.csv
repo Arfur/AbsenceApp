@@ -1,0 +1,59 @@
+ItemType,Id,ParentId,Label,Icon,IsHidden,Route,SortOrder,CreatedAt,UpdatedAt,Category,GroupName,GroupIcon,IsFlat,Status,Description
+category,100000,,Main Sidebar,,0,,100000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,Main Sidebar,,,,,,
+menu,101000,100000,Dashboard,bi-speedometer2,0,,101000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,Main Sidebar,Dashboard,bi-speedometer2,0,, "Access high-level operational insights and key performance indicators."
+submenu,101010,101000,Operational Overview,bi-graph-up,0,/v2/dashboard/overview,101010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,Main Sidebar,Dashboard,bi-speedometer2,0,active,"View real-time metrics summarising whole-school performance."
+submenu,101020,101000,Attendance & Trends,bi-bar-chart-line,0,/v2/dashboard/trends,101020,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,Main Sidebar,Dashboard,bi-speedometer2,0,active,"Analyse attendance patterns and identify emerging trends."
+submenu,101030,101000,Safeguarding & Wellbeing,bi-shield-check,0,/v2/dashboard/safeguarding,101030,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,Main Sidebar,Dashboard,bi-speedometer2,0,active,"Monitor safeguarding alerts and wellbeing indicators across the school."
+
+category,200000,,PEOPLE,,0,,200000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,,,,,,
+menu,201000,200000,Students,bi-mortarboard,0,,201000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Students,bi-mortarboard,0,, "Manage student records, profiles, and enrolment details."
+submenu,201010,201000,All Students,bi-people,0,/v2/students,201010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Students,bi-mortarboard,0,active,"Browse and search the full list of enrolled students."
+submenu,201020,201000,Student Details,bi-person-lines-fill,0,/v2/students/details,201020,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Students,bi-mortarboard,0,active,"View and update detailed information for an individual student."
+submenu,201030,201000,Add Student,bi-person-plus,0,/v2/students/new,201030,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Students,bi-mortarboard,0,active,"Create a new student record and assign initial details."
+
+menu,202000,200000,Staff,bi-person-badge,0,,202000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Staff,bi-person-badge,0,, "Manage staff profiles, roles, and employment information."
+submenu,202010,202000,All Staff,bi-people-fill,0,/v2/staff,202010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Staff,bi-person-badge,0,active,"Browse and search the full list of staff members."
+submenu,202020,202000,Staff Details,bi-person-lines-fill,0,/v2/staff/details,202020,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Staff,bi-person-badge,0,active,"View and update detailed information for an individual staff member."
+submenu,202030,202000,Add Staff,bi-person-plus-fill,0,/v2/staff/new,202030,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Staff,bi-person-badge,0,active,"Create a new staff record and assign initial details."
+
+menu,203000,200000,Parents,bi-telephone-inbound,0,,203000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,PEOPLE,Parents,bi-telephone-inbound,0,, "Manage parent and guardian contact information."
+
+category,300000,,ACADEMICS,,0,,300000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ACADEMICS,,,,,,
+menu,301000,300000,Classes,bi-book-fill,0,,301000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ACADEMICS,Classes,bi-book-fill,0,, "Manage class groups, timetables, and academic structures."
+submenu,301010,301000,All Classes,bi-building,0,/v2/classes,301010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ACADEMICS,Classes,bi-book-fill,0,active,"Browse and search all class groups across the school."
+submenu,301020,301000,Class Details,bi-card-text,0,/v2/classes/details,301020,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ACADEMICS,Classes,bi-book-fill,0,active,"View and update information for a specific class group."
+submenu,301030,301000,Add Class,bi-plus-square,0,/v2/classes/new,301030,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ACADEMICS,Classes,bi-book-fill,0,active,"Create a new class group and assign staff and students."
+
+category,400000,,ATTENDANCE,,0,,400000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ATTENDANCE,,,,,,
+menu,401000,400000,Attendance,bi-calendar-check-fill,1,,401000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ATTENDANCE,Attendance,bi-calendar-check-fill,0,, "Access attendance registers and reporting tools."
+submenu,401010,401000,Attendance,bi-calendar-check-fill,0,/v2/attendance,401010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,ATTENDANCE,Attendance,bi-calendar-check-fill,0,active,"View and manage daily attendance records."
+
+category,500000,,CONFIGURATION,,0,,500000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,CONFIGURATION,,,,,,
+menu,501000,500000,Audit Log,bi-journal-check,1,,501000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,CONFIGURATION,Audit Log,bi-journal-check,0,, "Review system activity and track administrative actions."
+submenu,501010,501000,Audit Log,bi-journal-check,0,/v2/auditlog,501010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,CONFIGURATION,Audit Log,bi-journal-check,0,active,"View detailed logs of user actions and system events."
+
+category,600000,,SETTINGS,,0,,600000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,,,,,,
+menu,601000,600000,Table Settings,bi-table,1,,601000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Table Settings,bi-table,0,, "Configure table layouts, columns, and display preferences."
+submenu,601010,601000,Table Settings,bi-table,0,/v2/settings,601010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Table Settings,bi-table,0,active,"Customise table views and saved configurations."
+
+menu,602000,600000,Diagnostics,bi-activity,1,,602000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Diagnostics,bi-activity,0,, "Access system diagnostics and troubleshooting tools."
+submenu,602010,602000,Diagnostics,bi-activity,0,/v2/diagnostics,602010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Diagnostics,bi-activity,0,active,"View system health checks and diagnostic information."
+
+menu,603000,600000,Site,bi-diagram-3,1,,603000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Site,bi-diagram-3,0,, "Manage site-wide configuration and environment settings."
+submenu,603010,603000,Site,bi-diagram-3,0,/v2/site,603010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,SETTINGS,Site,bi-diagram-3,0,active,"Configure global site settings and operational parameters."
+
+category,700000,,DESIGN SYSTEM,,0,,700000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,DESIGN SYSTEM,,,,,,
+menu,701000,700000,Global Config,bi-grid-3x3-gap-fill,1,,701000,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,DESIGN SYSTEM,Global Config,bi-grid-3x3-gap-fill,0,, "Manage global design system settings and UI configuration."
+submenu,701010,701000,Global Config,bi-grid-3x3-gap-fill,0,/global-settings/colours,701010,2026-04-06 10:16:17.300,2026-04-06 10:16:17.300,DESIGN SYSTEM,Global Config,bi-grid-3x3-gap-fill,0,active,"Configure colour palettes and visual theme settings."
+
+category,800000,,SYSTEM MANAGEMENT,,0,,800000,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,,,,,"System administration, security, and page management."
+menu,801000,800000,User Management,bi-people-gear,0,,801000,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,User Management,bi-people-gear,0,, "Manage user accounts, roles, and access permissions."
+submenu,801010,801000,Users,bi-person,0,/v2/system/users,801010,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,User Management,bi-people-gear,0,active,"View and manage all user accounts."
+submenu,801020,801000,Roles,bi-shield-lock,0,/v2/system/roles,801020,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,User Management,bi-people-gear,0,active,"Define and manage system roles."
+submenu,801030,801000,Permissions,bi-key,0,/v2/system/permissions,801030,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,User Management,bi-people-gear,0,active,"Configure granular permissions for each role."
+submenu,801040,801000,Page Access,bi-diagram-3,0,/v2/system/page-access,801040,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,User Management,bi-people-gear,0,active,"Control which roles can access each page."
+
+menu,802000,800000,Pages,bi-files,0,,802000,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,Pages,bi-files,0,, "Manage application pages, layouts, and metadata."
+submenu,802010,802000,All Pages,bi-file-earmark,0,/v2/system/pages,802010,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,Pages,bi-files,0,active,"View and manage all registered application pages."
+submenu,802020,802000,Page Layouts,bi-columns-gap,0,/v2/system/pages/layouts,802020,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,Pages,bi-files,0,active,"Manage page layout templates."
+submenu,802030,802000,Page Metadata,bi-card-list,0,/v2/system/pages/metadata,802030,2026-04-13 00:59:34.513,2026-04-13 00:59:34.513,SYSTEM MANAGEMENT,Pages,bi-files,0,active,"Edit page metadata, titles, and descriptions."

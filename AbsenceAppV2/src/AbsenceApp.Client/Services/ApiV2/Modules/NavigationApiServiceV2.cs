@@ -3,9 +3,9 @@
  File        : NavigationApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 5.4.0
+ Version     : 5.6.0
  Created     : 2026-04-06
- Updated     : 2026-04-17
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
  Purpose     : Client-side navigation service that executes
                dbo.fn_GetVisibleMenuItems(@RoleType) via EF Core SqlQueryRaw
@@ -80,20 +80,26 @@
                          have CanRead permission, then re-prunes empty groups and
                          categories. Global Settings sidebar is exempt (superadmin
                          only — no per-user permission filter applied).
+   - 5.6.0  2026-04-19  RoleId resolution fix: removed users.RoleTypeId lookup.
+                         GetMenuCategoriesAsync now resolves the user's role by
+                         joining userrole directly inside the menu SQL query
+                         (INNER JOIN userrole ur ON ur.RoleId = rm.RoleId WHERE
+                         ur.UserId = @UserId). Eliminates the \"Unknown column
+                         'u.RoleTypeId'\" startup crash.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.
    - IServiceScopeFactory used to resolve Scoped AppDbContext from Singleton.
-   - SqlParameter prevents SQL injection on all parameterised queries.
+   - MySqlParameter prevents SQL injection on all parameterised queries.
 ===============================================================================
 */
 
 using AbsenceApp.Client.Models.V2;
 using AbsenceApp.Client.Services;
 using AbsenceApp.Data.Context;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MySqlConnector;
 
 namespace AbsenceApp.Client.Services.ApiV2.Modules;
 
@@ -123,8 +129,8 @@ public sealed class NavigationApiServiceV2
 
     // ===========================================================================
     // GetMenuCategoriesAsync
-    // Looks up the current user's RoleTypeId, executes the TVF, and builds
-    // the client-side menu tree.
+    // Resolves menu items for the current user via userrole JOIN — no
+    // users.RoleTypeId lookup required.
     // ===========================================================================
 
     public async Task<List<MenuCategoryModel>> GetMenuCategoriesAsync(
@@ -138,34 +144,32 @@ public sealed class NavigationApiServiceV2
             using var scope = _scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            // -----------------------------------------------------------------------
-            // Resolve current user's RoleTypeId
-            // -----------------------------------------------------------------------
             var userId = _appState.CurrentUserId;
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
                 $"CurrentUserId={userId}");
 
-            var roleTypeId = await db.Users
-                .AsNoTracking()
-                .Where(u => u.Id == userId)
-                .Select(u => u.RoleTypeId)
-                .FirstOrDefaultAsync(ct);
-            AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
-                $"RoleTypeId={roleTypeId}");
-
             // -----------------------------------------------------------------------
-            // Execute TVF — parameterised to prevent SQL injection
+            // Query menuitems joined to rolemenuitem AND userrole so the user's
+            // RoleId is resolved inside a single SQL statement.
+            // userrole.UserId  = users.Id  (bigint)
+            // userrole.RoleId  = rolemenuitem.RoleId (the role-level permission FK)
+            // MySqlParameter prevents SQL injection.
             // -----------------------------------------------------------------------
             const string sql = """
-                SELECT Id, ParentId, ItemType, Label, Icon, Route, SortOrder, IsHidden,
-                       Category, GroupName, GroupIcon, IsFlat, Status, Description
-                FROM   dbo.fn_GetVisibleMenuItems(@RoleType)
-                ORDER  BY SortOrder;
+                SELECT m.Id, m.ParentId, m.ItemType, m.Label, m.Icon, m.Route, m.SortOrder, m.IsHidden,
+                       m.Category, m.GroupName, m.GroupIcon, m.IsFlat, m.Status, m.Description
+                FROM   menuitems m
+                INNER JOIN rolemenuitem rm ON rm.MenuItemId = m.Id
+                INNER JOIN userrole     ur ON ur.RoleId     = rm.RoleId
+                WHERE  ur.UserId    = @UserId
+                  AND  m.IsHidden   = 0
+                  AND  rm.IsEnabled = 1
+                ORDER  BY m.SortOrder;
                 """;
 
             var rows = await db.Database
                 .SqlQueryRaw<MenuItemRow>(sql,
-                    new SqlParameter("@RoleType", (int)roleTypeId))
+                    new MySqlParameter("@UserId", userId))
                 .ToListAsync(ct);
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
                 $"Rows returned = {rows.Count}");
@@ -218,14 +222,14 @@ public sealed class NavigationApiServiceV2
             // -----------------------------------------------------------------------
             const string sql = """
                 SELECT Id, ParentId, ItemType, Label, Icon, Route, SortOrder,
-                       CAST(IsHidden AS BIT)  AS IsHidden,
-                       NULL                   AS Category,
-                       NULL                   AS GroupName,
-                       NULL                   AS GroupIcon,
-                       CAST(IsFlat  AS BIT)   AS IsFlat,
-                       NULL                   AS Status,
+                       IsHidden,
+                       NULL        AS Category,
+                       NULL        AS GroupName,
+                       NULL        AS GroupIcon,
+                       IsFlat,
+                       NULL        AS Status,
                        Description
-                FROM   dbo.MenuItemsGlobalConfig
+                FROM   menuitemsglobalconfig
                 WHERE  IsHidden = 0
                 ORDER  BY SortOrder;
                 """;

@@ -28,11 +28,13 @@ using Microsoft.Extensions.DependencyInjection;
 // ---------------------------------------------------------------------------
 var services = new ServiceCollection();
 
-// Use an InMemory database for local running; swap for SqlServer with a real
-// connection string when running against a provisioned database.
+const string connectionString =
+    "Server=127.0.0.1;Port=3306;Database=absenceapp;User=root;Password=Calm1309!;CharSet=utf8mb4";
+
 services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        "Server=(localdb)\\mssqllocaldb;Database=AbsenceApp;Trusted_Connection=True;MultipleActiveResultSets=true"));
+    options.UseMySql(
+        connectionString,
+        new MariaDbServerVersion(new Version(10, 4, 32))));
 
 var provider = services.BuildServiceProvider();
 

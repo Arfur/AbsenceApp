@@ -196,24 +196,34 @@
         <div class="dsv2-header__dd-wrap dsv2-header__user-wrap">
             <button class="dsv2-header__user-btn"
                     type="button"
-                    aria-label="User menu for @AppState.UserName"
+                    aria-label="User menu for @(AppState.UserName ?? "user")"
                     aria-expanded="@_userOpen"
                     aria-haspopup="menu"
                     @onclick="ToggleUser">
                 <span class="dsv2-header__user-avatar" aria-hidden="true">
-                    @(AppState.UserName.Length > 0 ? AppState.UserName[0].ToString().ToUpper() : "?")
+                    @(string.IsNullOrWhiteSpace(AppState.UserName)
+                        ? "?"
+                        : AppState.UserName[0].ToString().ToUpper())
                 </span>
                 <span class="dsv2-header__user-info">
-                    <span class="dsv2-header__user-name">@AppState.UserName</span>
-                    <span class="dsv2-header__user-role">@AppState.UserRole</span>
+                    <span class="dsv2-header__user-name">
+                        @(!string.IsNullOrWhiteSpace(AppState.UserName) ? AppState.UserName : "Unknown")
+                    </span>
+                    <span class="dsv2-header__user-role">
+                        @(!string.IsNullOrWhiteSpace(AppState.UserRole) ? AppState.UserRole : "Role not set")
+                    </span>
                 </span>
             </button>
             @if (_userOpen)
             {
                 <ul class="dsv2-header__dropdown dsv2-header__dropdown--user" role="menu">
                     <li role="none" class="dsv2-header__dd-user-hdr">
-                        <span class="dsv2-header__dd-user-hdr-name">@AppState.UserName</span>
-                        <span class="dsv2-header__dd-user-hdr-role">@AppState.UserRole</span>
+                        <span class="dsv2-header__dd-user-hdr-name">
+                            @(!string.IsNullOrWhiteSpace(AppState.UserName) ? AppState.UserName : "Unknown")
+                        </span>
+                        <span class="dsv2-header__dd-user-hdr-role">
+                            @(!string.IsNullOrWhiteSpace(AppState.UserRole) ? AppState.UserRole : "Role not set")
+                        </span>
                     </li>
                     <li role="none">
                         <a class="dsv2-header__dd-link" href="/v2/settings" role="menuitem" @onclick="CloseAll">

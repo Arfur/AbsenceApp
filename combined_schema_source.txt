@@ -1,0 +1,516 @@
+=== BEGIN FILE: a_YearGroups.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key for the year group, 5,
+Name, VARCHAR(50), Full name of the year group, Year 5,
+Code, VARCHAR(10), Short code for the year group, Y5,
+Description, VARCHAR(255), Optional description of the year group, Standard Year 5 cohort,
+DisplayOrder, INT, Order to display year groups in UI/reports, 5,
+=== END FILE: a_YearGroups.csv ===
+
+=== BEGIN FILE: a_StaffSchools.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff-school assignment,12,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+SchoolId,INT,FK to Schools.Id,3,Schools(Id)
+StartDate,DATE,Date staff started at this school,2021-09-01,
+EndDate,DATE NULL,Date staff left this school,NULL,
+Notes,VARCHAR(255),Optional notes,Transferred from another site,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffSchools.csv ===
+
+=== BEGIN FILE: a_StaffResponsibilities.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+StaffId, INT, The staff member assigned the responsibility, 1023, Staff(Id)
+ResponsibilityId, INT, The responsibility assigned to the staff member, 7, Responsibilities(Id)
+=== END FILE: a_StaffResponsibilities.csv ===
+
+=== BEGIN FILE: a_StaffPhases.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+StaffId, INT, The staff member assigned to the phase, 1023, Staff(Id)
+PhaseId, INT, The phase the staff member works in, 3, Phases(Id)
+=== END FILE: a_StaffPhases.csv ===
+
+=== BEGIN FILE: a_StaffLocations.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key for location, 3, 
+Name, VARCHAR(100), Name of the location/site, Main Campus, 
+Code, VARCHAR(20), Short code for the location, MC, 
+Description, VARCHAR(255), Optional description of the location, Main school building, 
+CreatedAt, DATETIME, Record creation timestamp, 2024-01-10 09:15:00, 
+UpdatedAt, DATETIME, Last update timestamp, 2024-03-02 14:22:00,
+=== END FILE: a_StaffLocations.csv ===
+
+=== BEGIN FILE: a_StaffJobTitles.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for job title,4,
+Name,VARCHAR(100),Job title name,Teacher,
+Description,VARCHAR(255),Optional description,Classroom Teacher,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffJobTitles.csv ===
+
+=== BEGIN FILE: a_StaffJobGroups.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for job group,2,
+Name,VARCHAR(100),Group name,Teaching Staff,
+Description,VARCHAR(255),Optional description,All teaching roles,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffJobGroups.csv ===
+
+=== BEGIN FILE: a_StaffExternalAccounts.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for external account record,77,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+ExternalSystemId,INT,FK to ExternalSystems.Id,5,ExternalSystems(Id)
+Username,VARCHAR(100),External system username,m.smith,
+AccountStatus,VARCHAR(20),Active/Disabled/Locked,Active,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffExternalAccounts.csv ===
+
+=== BEGIN FILE: a_StaffExternalAccountAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for audit entry,77,
+StaffExternalAccountId,INT,FK to StaffExternalAccounts.Id,77,StaffExternalAccounts(Id)
+ChangedByUserId,INT,FK to Users.Id,12,Users(Id)
+ChangeType,VARCHAR(50),Created/Updated/Deleted,Created,
+OldValue,LONGTEXT,Previous JSON snapshot,NULL,
+NewValue,LONGTEXT,New JSON snapshot,{...},
+TimestampUtc,DATETIME,When the change occurred,2024-01-10 09:15:00,
+=== END FILE: a_StaffExternalAccountAudit.csv ===
+
+=== BEGIN FILE: a_StaffDevices.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff device record,301,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+DeviceTypeId,INT,FK to DeviceTypes.Id,2,DeviceTypes(Id)
+SerialNumber,VARCHAR(100),Device serial number,ABC1234567,
+IssuedDate,DATE,Date device was issued,2023-01-15,
+ReturnedDate,DATE NULL,Date device was returned,NULL,
+Notes,VARCHAR(255),Optional notes,Replaced due to damage,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffDevices.csv ===
+
+=== BEGIN FILE: a_StaffDeviceAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for audit entry,9101,
+StaffDeviceId,INT,FK to StaffDevices.Id,301,StaffDevices(Id)
+ChangedByUserId,INT,FK to Users.Id,12,Users(Id)
+ChangeType,VARCHAR(50),Created/Updated/Deleted,Updated,
+OldValue,LONGTEXT,Previous JSON snapshot,{...},
+NewValue,LONGTEXT,New JSON snapshot,{...},
+TimestampUtc,DATETIME,When the change occurred,2024-03-02 14:22:00,
+=== END FILE: a_StaffDeviceAudit.csv ===
+
+=== BEGIN FILE: a_StaffDepartments.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for department,7,
+Name,VARCHAR(100),Department name,Science,
+Code,VARCHAR(20),Short code for department,SCI,
+Description,VARCHAR(255),Optional description,Science Faculty,
+HeadUserId,INT NULL,FK to Users.Id for department head,102,Users(Id)
+Status,VARCHAR(20),Active/Inactive,Active,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffDepartments.csv ===
+
+=== BEGIN FILE: a_StaffAssignments.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for assignment,88,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+ResponsibilityId,INT,FK to Responsibilities.Id,12,Responsibilities(Id)
+StartDate,DATE,Start date of assignment,2023-09-01,
+EndDate,DATE NULL,End date of assignment,NULL,
+Notes,VARCHAR(255),Optional notes,Head of Year 9,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-03-02 14:22:00,
+=== END FILE: a_StaffAssignments.csv ===
+
+=== BEGIN FILE: a_StaffAbsences.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for staff absence record,501,
+StaffId,INT,FK to Staff.Id,1023,Staff(Id)
+AbsenceTypeId,INT,FK to AbsenceTypes.Id,3,AbsenceTypes(Id)
+StartDate,DATE,Start date of absence,2024-01-12,
+EndDate,DATE,End date of absence,2024-01-14,
+Reason,VARCHAR(255),Reason for absence,Medical appointment,
+Notes,VARCHAR(500),Optional notes,Provided doctor's note,
+IsAuthorised,TINYINT(1),Whether absence is authorised,1,
+CreatedAt,DATETIME,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,DATETIME,Last update timestamp,2024-01-10 10:22:00,
+=== END FILE: a_StaffAbsences.csv ===
+
+=== BEGIN FILE: a_StaffAbsenceAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT AUTO_INCREMENT,Primary key for audit entry,9001,
+StaffAbsenceId,INT,FK to StaffAbsences.Id,501,StaffAbsences(Id)
+ChangedByUserId,INT,FK to Users.Id,12,Users(Id)
+ChangeType,VARCHAR(50),Created/Updated/Deleted,Updated,
+OldValue,LONGTEXT,Previous JSON snapshot,{...},
+NewValue,LONGTEXT,New JSON snapshot,{...},
+TimestampUtc,DATETIME,When the change occurred,2024-01-10 10:22:00,
+=== END FILE: a_StaffAbsenceAudit.csv ===
+
+=== BEGIN FILE: a_Staff.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key, 1023,
+StaffNumber, VARCHAR(20), School-issued staff number / payroll number, ST-00451,
+FirstName, VARCHAR(50), Legal first name, Michael,
+LastName, VARCHAR(50), Legal surname, Smith,
+PreferredName, VARCHAR(50), Display name / preferred name, Mike,
+Title, VARCHAR(20), Title such as Mr/Mrs/Miss/Dr, Mr,
+DateOfBirth, DATE, Staff date of birth, 1985-06-12,
+Gender, VARCHAR(20), Gender identity, Male,
+WorkEmail, VARCHAR(100), School email address, m.smith@school.org,
+AltEmail, VARCHAR(100), Optional personal email, mike@gmail.com,
+PhoneHome, VARCHAR(20), Home phone number, 01332 123456,
+PhoneMobile, VARCHAR(20), Mobile phone number, 07700 900123,
+PhoneEmergency, VARCHAR(20), Emergency contact number, 07700 900999,
+EmploymentType, VARCHAR(50), Full-time / Part-time / Supply / Contractor, Full-time,
+ContractType, VARCHAR(50), Permanent / Temporary / Fixed-term, Permanent,
+HireDate, DATE, Employment start date, 2020-09-01,
+EndDate, DATE NULL, Employment end date (nullable), NULL,
+WorkLocation, VARCHAR(100), Site / campus / building, Main Campus,
+ReportingManagerId, INT NULL, Self-referencing FK to Staff.Id, 1012, Staff(Id)
+JobTitleId, INT, FK to StaffJobTitles.Id, 4, StaffJobTitles(Id)
+JobGroupId, INT, FK to StaffJobGroups.Id, 2, StaffJobGroups(Id)
+DepartmentId, INT, FK to StaffDepartments.Id, 7, StaffDepartments(Id)
+ProfilePhotoUrl, VARCHAR(255), URL to staff profile image, /images/staff/1023.jpg,
+AccountStatus, VARCHAR(20), Active / Suspended / Archived, Active,
+CreatedAt, DATETIME, Record creation timestamp, 2024-01-10 09:15:00,
+UpdatedAt, DATETIME, Last update timestamp, 2024-03-02 14:22:00,
+=== END FILE: a_Staff.csv ===
+
+=== BEGIN FILE: a_Responsibilities.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT, Primary key, 7,
+Name, VARCHAR(100), Responsibility name, Safeguarding Lead,
+Code, VARCHAR(20), Short code, SG-LEAD,
+Description, VARCHAR(255), Optional description, Designated safeguarding lead,
+=== END FILE: a_Responsibilities.csv ===
+
+=== BEGIN FILE: a_ExternalSystems.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT, Primary key, 2,
+Name, VARCHAR(100), Name of the external system, Google Workspace,
+Code, VARCHAR(20), Short code, GOOGLE,
+Description, VARCHAR(255), Optional description, Google accounts for staff,
+=== END FILE: a_ExternalSystems.csv ===
+
+=== BEGIN FILE: a_ClassYearGroupAssignments .csv ===
+Field Name, Data Type, Description, Example Value, Links To
+Id, INT AUTO_INCREMENT, Primary key, 12,
+ClassId, INT, The class that belongs to the year group, 7, Classes(Id)
+YearGroupId, INT, The year group assigned to the class, 5, YearGroups(Id)
+=== END FILE: a_ClassYearGroupAssignments .csv ===
+
+=== BEGIN FILE: a_ClassMember.csv ===
+Field Name, Data Type, Description, Example Value, Links To
+ClassId, INT, The class the staff member belongs to, 12, Classes(Id)
+StaffId, INT, The staff member assigned to the class, 1023, Staff(Id)
+RoleInClass, VARCHAR(50), Staff role within the class, Teacher,
+=== END FILE: a_ClassMember.csv ===
+
+=== BEGIN FILE: b_Users.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user account,1,
+Username,VARCHAR(100),Unique login username,mbattle,
+Email,VARCHAR(255),User email address,mbattle@orchard.leics.sch.uk,
+EmailVerifiedAt,DATETIME,When the email was verified,NULL,
+PasswordHash,VARCHAR(255),Hashed password for authentication,$2a$10$abc...,
+StaffId,INT,Optional link to Staff record,1023,Staff(Id)
+Status,VARCHAR(50),Account status Active Disabled Locked,Active,
+IsAdmin,BOOLEAN,Legacy admin flag (should be replaced by roles),0,
+LastLoginAt,DATETIME,Last login timestamp,2026-04-14 09:00:00,
+LastLoginIp,VARCHAR(50),IP address of last login,192.168.1.10,
+LoginCount,INT,Number of successful logins,12,
+IsTwoFactorEnabled,BOOLEAN,Whether 2FA is enabled,1,
+TwoFactorSecret,VARCHAR(255),Secret key for 2FA,NULL,
+BackupCodes,VARCHAR(500),Backup codes for 2FA,NULL,
+RememberToken,VARCHAR(255),Token for persistent login,NULL,
+Timezone,VARCHAR(50),User timezone,UTC,
+LanguageCode,VARCHAR(10),Preferred language,en,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-14 08:00:00,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-14 09:00:00,
+=== END FILE: b_Users.csv ===
+
+=== BEGIN FILE: b_UserRole.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user‑role assignment,501,
+UserId,INT,User receiving the role,1,Users(Id)
+RoleId,INT,Role assigned to the user,3,Roles(Id)
+AssignedAt,DATETIME,Timestamp when the role was assigned,2026-04-14 09:32:00,
+AssignedBy,INT,Admin who assigned the role,1,Users(Id)
+=== END FILE: b_UserRole.csv ===
+
+=== BEGIN FILE: b_UserProfiles.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user profile,1,
+UserId,INT,Links profile to a user account,1,Users(Id)
+DisplayName,VARCHAR(150),Name shown in the UI,Michael Battle,
+ProfilePhotoUrl,VARCHAR(255),URL or path to profile image,/images/users/1.png,
+Bio,VARCHAR(500),Short user bio or description,NULL,
+Timezone,VARCHAR(50),User timezone preference,Europe/London,
+LanguageCode,VARCHAR(10),Preferred language code,en-GB,
+ThemePreference,VARCHAR(20),UI theme preference Light Dark System,Dark,
+AccentColor,VARCHAR(20),Optional UI accent colour,#3366FF,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-13 14:03:21,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-13 14:03:21,
+=== END FILE: b_UserProfiles.csv ===
+
+=== BEGIN FILE: b_UserFeatureOverride.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the user‑feature override,1,
+UserId,INT,User receiving the override,42,Users(Id)
+FeatureId,INT,Feature being overridden,3,Feature(FeatureId)
+IsAllowed,BOOLEAN,Whether the feature is explicitly allowed or denied,0,
+CreatedAtUtc,DATETIME,Timestamp when the override was created,2026-04-14 11:22:00,
+AssignedBy,INT,Admin who applied the override,1,Users(Id)
+Reason,VARCHAR(255),Optional explanation for the override,Temporary restriction due to safeguarding review.,
+=== END FILE: b_UserFeatureOverride.csv ===
+
+=== BEGIN FILE: b_RoleTypes.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role type,1,
+Name,VARCHAR(100),Internal code name for the role type,user,
+DisplayName,VARCHAR(150),Human readable name shown in UI,User,
+Description,VARCHAR(255),Explanation of the role type,Standard account with limited dashboard access,
+IsSystemRole,BOOLEAN,Whether this is a protected system role,0,
+IsDefault,BOOLEAN,Whether this is the default role for new users,1,
+Priority,INT,Ordering weight for role hierarchy,1,
+CreatedAt,DATETIME,Record creation timestamp,2025-07-28 17:47:13,
+UpdatedAt,DATETIME,Record update timestamp,2025-07-28 17:47:13,
+=== END FILE: b_RoleTypes.csv ===
+
+=== BEGIN FILE: b_Roles.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role,3,
+Name,VARCHAR(100),Human‑readable role name,Teacher,
+Code,VARCHAR(50),Short unique code for the role,TEACH,
+RoleTypeId,INT,Category of role (Admin StaffAdmin Teacher etc.),2,RoleTypes(Id)
+Description,VARCHAR(255),Purpose or scope of the role,Standard teaching role,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-14 09:00:00,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-14 09:30:00,
+=== END FILE: b_Roles.csv ===
+
+=== BEGIN FILE: b_RoleMenuItem.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role‑menu permission,1,
+RoleId,INT,Role receiving access to the menu item,3,Roles(Id)
+MenuItemId,INT,Menu item being granted to the role,101000,MenuItems(Id)
+IsAllowed,BOOLEAN,Whether the menu item is visible for this role,1,
+CreatedAtUtc,DATETIME,Timestamp when the permission was assigned,2026-04-06 09:52:40,
+AssignedBy,INT,Admin who assigned the permission,1,Users(Id)
+=== END FILE: b_RoleMenuItem.csv ===
+
+=== BEGIN FILE: b_RoleFeature.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role‑feature permission,1,
+RoleId,INT,Role receiving the feature permission,3,Roles(Id)
+FeatureId,INT,Feature being granted to the role,2,Feature(FeatureId)
+IsAllowed,BOOLEAN,Whether the feature is enabled for this role,1,
+CreatedAtUtc,DATETIME,Timestamp when the permission was assigned,2026-04-05 21:54:36,
+AssignedBy,INT,Admin who assigned the permission,1,Users(Id)
+=== END FILE: b_RoleFeature.csv ===
+
+=== BEGIN FILE: b_RoleChangeAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the role change audit entry,8801,
+UserId,INT,User whose role was changed,42,Users(Id)
+OldRoleId,INT,Role before the change,2,Roles(Id)
+NewRoleId,INT,Role after the change,3,Roles(Id)
+ChangedBy,INT,Admin who performed the change,1,Users(Id)
+ChangeTime,DATETIME,Timestamp of the role change,2026-04-15 00:05:00,
+Reason,VARCHAR(255),Explanation for the change,Temporary elevation for reporting,
+Metadata,JSON,Additional structured data about the change,{"source":"admin-panel","ip":"192.168.1.44"},
+=== END FILE: b_RoleChangeAudit.csv ===
+
+=== BEGIN FILE: b_MenuItemsGlobalConfig.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+ItemType,VARCHAR(50),Type of menu item: category/menu/submenu,menu,
+Id,INT,Unique identifier for the menu item,101000,
+ParentId,INT,Parent menu item (NULL for top-level categories),NULL,
+Label,VARCHAR(150),Display text shown in the UI,Global Settings,
+Icon,VARCHAR(100),Bootstrap icon class,bi-gear,
+IsHidden,BOOLEAN,Whether the item is hidden from the sidebar,0,
+Route,VARCHAR(255),Frontend route or URL,/global-settings,
+SortOrder,INT,Ordering within the parent,101000,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-06 12:00:00.000,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-06 12:00:00.000,
+Category,VARCHAR(100),High-level grouping (e.g., SYSTEM),SYSTEM,
+GroupName,VARCHAR(150),UI grouping label for menus,Administration,
+GroupIcon,VARCHAR(100),Icon for the group,bi-tools,
+IsFlat,BOOLEAN,Whether the menu is flat (no nested structure),0,
+Status,VARCHAR(50),Status of the menu item (e.g., active),active,
+Description,VARCHAR(255),Human-readable explanation for tooltips/help text,Configure global system settings.,
+=== END FILE: b_MenuItemsGlobalConfig.csv ===
+
+=== BEGIN FILE: b_MenuItems.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+ItemType,VARCHAR(50),Type of menu item: category/menu/submenu,menu,
+Id,INT,Unique identifier for the menu item,201010,
+ParentId,INT,Parent menu item (NULL for top-level categories),201000,MenuItems(Id)
+Label,VARCHAR(150),Display text shown in the UI,All Students,
+Icon,VARCHAR(100),Bootstrap icon class,bi-people,
+IsHidden,BOOLEAN,Whether the item is hidden from the sidebar,0,
+Route,VARCHAR(255),Frontend route or URL (NULL for non-clickable items),/v2/students,
+SortOrder,INT,Ordering within the parent,201010,
+CreatedAt,DATETIME,Record creation timestamp,2026-04-06 10:16:17.300,
+UpdatedAt,DATETIME,Record update timestamp,2026-04-06 10:16:17.300,
+Category,VARCHAR(100),High-level grouping (e.g., PEOPLE, ACADEMICS),PEOPLE,
+GroupName,VARCHAR(150),UI grouping label for menus,Students,
+GroupIcon,VARCHAR(100),Icon for the group,bI-mortarboard,
+IsFlat,BOOLEAN,Whether the menu is flat (no nested structure),0,
+Status,VARCHAR(50),Status of the menu item (e.g., active),active,
+Description,VARCHAR(255),Human-readable explanation for tooltips/help text,Browse and search the full list of enrolled students.,
+=== END FILE: b_MenuItems.csv ===
+
+=== BEGIN FILE: b_LoginAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,INT,Primary key for the login audit entry,5501,
+UserId,INT,User attempting to log in (NULL if unknown),42,Users(Id)
+Username,VARCHAR(150),Username or email used during login,l.turner,
+IsSuccessful,BOOLEAN,Whether the login attempt succeeded,1,
+FailureReason,VARCHAR(255),Reason for failure (NULL if successful),Invalid password,
+IpAddress,VARCHAR(50),IP address of the client,192.168.1.44,
+UserAgent,VARCHAR(255),Browser or client information,Chrome/123.0,
+CreatedAtUtc,DATETIME,Timestamp of the login attempt,2026-04-14 23:59:00,
+=== END FILE: b_LoginAudit.csv ===
+
+=== BEGIN FILE: b_Feature.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+FeatureId,INT,Primary key for the feature,1,
+Key,VARCHAR(150),Unique feature identifier used in code and permissions,ui.sidebar,
+Description,VARCHAR(255),What this feature controls,Controls visibility of the main application sidebar,
+IsActive,BOOLEAN,Whether the feature is currently enabled,1,
+CreatedAtUtc,DATETIME,Record creation timestamp,2026-04-05 21:45:43,
+UpdatedAtUtc,DATETIME,Record update timestamp,NULL,
+=== END FILE: b_Feature.csv ===
+
+=== BEGIN FILE: c_Houses.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the house record,1,
+Name,nvarchar(200),House display name,Coppice BLUE,
+Code,nvarchar(100),Short code or canonical identifier for the house,COPPICE_BLUE,
+Colour,nvarchar(50),House colour or colour name,Blue,
+HexColour,nvarchar(7),Optional hex value for UI theming,#0033CC,
+Description,nvarchar(max),Optional free‑text description,Sports‑focused house,
+SchoolId,int,FK to the school this house belongs to,1,Schools.Id
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:27:53.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:27:53.0000000,
+=== END FILE: c_Houses.csv ===
+
+=== BEGIN FILE: c_StudentAbsenceAudit.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the audit entry,8001,
+StudentAbsenceId,int,FK to the absence record being audited,7001,StudentAbsences.Id
+StudentId,int,FK to the student whose absence was changed,123,Students.Id
+Action,nvarchar(50),Type of change (Created, Updated, Deleted),Updated,
+FieldName,nvarchar(200),Name of the field that changed,IsAuthorised,
+OldValue,nvarchar(max),Previous value before change,0,
+NewValue,nvarchar(max),New value after change,1,
+ChangedBy,nvarchar(100),User or staff who made the change,a.brown,Users.Id or Staff.Id
+ChangedAt,datetime,Timestamp when the change occurred,2026-03-16 08:30:00,
+Notes,nvarchar(max),Optional free text explaining the change,Authorised after parent call,
+Source,nvarchar(50),Optional origin of change (portal,phone,admin),portal,
+IpAddress,nvarchar(50),Optional IP address of the actor,NULL,
+CorrelationId,nvarchar(100),Optional id to link related audit entries,NULL,
+=== END FILE: c_StudentAbsenceAudit.csv ===
+
+=== BEGIN FILE: c_StudentAbsences.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the absence record,1,
+StudentId,int,FK to the student who is absent,1,Students.Id
+AbsenceTypeId,int,FK to absence type (reason code),1,AbsenceTypes.Id
+Date,date,Date of the absence,2026-03-15,
+StartTime,time,Optional start time for partial absence,09:00:00,
+EndTime,time,Optional end time for partial absence,12:00:00,
+IsAuthorised,bit,Whether the absence is authorised by school staff,0,
+AuthorisedBy,nvarchar(100),Staff/user who authorised the absence,a.brown,Users.Id or Staff.Id
+AuthorisedAt,datetime,Timestamp when authorisation was recorded,2026-03-16 08:30:00,
+Reason,nvarchar(500),Free text reason provided by parent/staff,Illness,
+RecordedBy,nvarchar(100),Staff/user who recorded the absence,admin.user,Users.Id or Staff.Id
+Source,nvarchar(50),How absence was reported (phone,email,portal),portal,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:35:26.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:35:26.0000000,
+=== END FILE: c_StudentAbsences.csv ===
+
+=== BEGIN FILE: c_StudentContacts.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the contact record,1,
+StudentId,int,FK to the student this contact belongs to,1,Students.Id
+ContactName,nvarchar(200),Full name of the contact,Florence Wilson,
+Relationship,nvarchar(100),Relationship to the student,Self,
+PhoneMobile,nvarchar(50),Mobile phone number,NULL,
+PhoneHome,nvarchar(50),Home phone number,NULL,
+Email,nvarchar(200),Contact email address,florence.wilson@,
+Priority,int,Contact priority/order (1 = primary),1,
+LivesWithStudent,bit,Whether the contact lives with the student,NULL,
+HasParentalResponsibility,bit,Whether the contact has parental responsibility,0,
+SafeguardingFlag,bit,Flag for safeguarding concerns,NULL,
+Notes,nvarchar(max),Free text notes about the contact,NULL,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:33:09.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:33:09.0000000,
+=== END FILE: c_StudentContacts.csv ===
+
+=== BEGIN FILE: c_StudentFlags.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the flag record,9001,
+StudentId,int,FK to the student this flag applies to,123,Students.Id
+FlagType,nvarchar(100),Categorical type of flag (Medical, Behaviour, Safeguarding),Medical,
+FlagValue,nvarchar(200),Short coded value or severity (e.g., Asthma, HighRisk),Asthma,
+StartDate,date,Date the flag becomes effective,2024-02-01,
+EndDate,date,Optional date the flag expires,NULL,
+IsActive,bit,Computed or stored active indicator (true when within Start/End and not cleared),1,
+Notes,nvarchar(max),Free text details and instructions,Requires inhaler during PE,
+CreatedAt,datetime,Record creation timestamp,2024-02-01 10:00:00,
+UpdatedAt,datetime,Record last updated timestamp,2024-03-01 12:30:00,
+CreatedBy,nvarchar(100),Optional user/staff who created the flag,j.smith,Users.Id or Staff.Id
+ClearedBy,nvarchar(100),Optional user/staff who cleared the flag,NULL,Users.Id or Staff.Id
+ClearedAt,datetime,Optional timestamp when flag was cleared,NULL,
+=== END FILE: c_StudentFlags.csv ===
+
+=== BEGIN FILE: c_StudentMedical.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the medical record,3001,
+StudentId,int,FK to the student this medical record belongs to,1,Students.Id
+ConditionName,nvarchar(200),Name of the medical condition,Asthma,
+Severity,nvarchar(50),Severity or risk level,Moderate,
+Medication,nvarchar(200),Medication required or instructions,Blue inhaler,
+Allergies,nvarchar(200),Known allergies,Peanut,
+Notes,nvarchar(max),Free text clinical notes and instructions,Uses inhaler during PE,
+StartDate,date,Date condition became active,2020-09-01,
+EndDate,date,Optional date condition resolved,NULL,
+IsActive,bit,Active indicator (true when within StartDate/EndDate and not cleared),1,
+LastUpdatedBy,nvarchar(100),Staff or user who last updated the record,j.smith,Users.Id or Staff.Id
+CreatedAt,datetime,Record creation timestamp,2024-01-10 09:15:00,
+UpdatedAt,datetime,Record last updated timestamp,2024-03-02 14:22:00,
+ClearedBy,nvarchar(100),Optional staff who cleared the record,NULL,Users.Id or Staff.Id
+ClearedAt,datetime,Optional timestamp when record was cleared,NULL,
+=== END FILE: c_StudentMedical.csv ===
+
+=== BEGIN FILE: c_Students.csv ===
+Field Name,Data Type,Description,Example Value,Links To
+Id,int,Primary key for the student record,1,
+AdmissionNumber,nvarchar(50),School admission number or local identifier,2010,
+FirstName,nvarchar(200),Given name,Florence,
+MiddleNames,nvarchar(200),Middle names or additional given names,NULL,
+LastName,nvarchar(200),Family name/Written surname,Wilson,
+LegalFirstName,nvarchar(200),Legal first name (if different),Florence,
+LegalLastName,nvarchar(200),Legal last name (if different),Wilson,
+Gender,nvarchar(50),Recorded gender (free text/code),, 
+DateOfBirth,date,Date of birth (placeholder values may exist),0001-01-01,
+YearGroupId,int,FK to year group assignment,2,YearGroups.Id
+ClassId,int,FK to current class,2,Classes.Id
+HouseId,int,FK to pastoral house assignment,4,Houses.Id
+Username,nvarchar(200),Associated system username,NULL,
+Upn,nvarchar(200),Unique Pupil Number or external identifier,NULL,
+SchoolId,int,FK to school record,1,Schools.Id
+AdmissionDate,date,Date of admission (may be placeholder),0001-01-01,
+Status,nvarchar(50),Current enrolment status,active,
+CreatedAt,datetime,Record creation timestamp,2026-03-15 13:31:26.0000000,
+UpdatedAt,datetime,Record last updated timestamp,2026-03-15 13:31:26.0000000,
+=== END FILE: c_Students.csv ===

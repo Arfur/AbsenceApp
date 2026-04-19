@@ -49,6 +49,7 @@ using AbsenceApp.Data.Repositories;
 using AbsenceApp.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace AbsenceApp.Data;
 
@@ -64,7 +65,10 @@ public static class DataServiceRegistration
     {
         // DbContext — scoped lifetime (EF Core default)
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseMySql(
+                connectionString,
+                new MariaDbServerVersion(new Version(10, 4, 32)),
+                mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
 
         // EF Core repositories
         services.AddScoped<IUserRepository, UserRepository>();

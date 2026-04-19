@@ -3,21 +3,25 @@
  File        : MenuItemRow.cs
  Namespace   : AbsenceApp.Api.Services.Navigation
  Author      : Michael
- Version     : 1.0.0
+ Version     : 2.0.0
  Created     : 2026-04-06
- Updated     : 2026-04-06
+ Updated     : 2026-04-19
 -------------------------------------------------------------------------------
- Purpose     : Raw result row returned by dbo.fn_GetVisibleMenuItems(@RoleType).
-               Properties must match the column names of the TVF exactly.
+ Purpose     : Projection record for rows returned by the menuitems +
+               rolemenuitem JOIN query in MenuResolver.
+               Properties match the menuitems table columns exactly.
                Used exclusively by MenuResolver to map raw rows to the
                render-ready menu DTO tree before the API serialises the
                response.
 -------------------------------------------------------------------------------
  Changes     :
-   - 1.0.0  2026-04-06  Initial implementation. Column names reflect the
-                         menu structure (Category, Group, GroupIcon, Label,
-                         Href, ItemIcon, Status, SortOrder, IsFlat,
-                         Description). Must align with the live TVF schema.
+   - 1.0.0  2026-04-06  Initial implementation. Column names reflected the
+                         TVF output (Category, GroupName, Href, ItemIcon).
+   - 2.0.0  2026-04-19  MySQL migration: updated properties to match the actual
+                         menuitems table schema (Id, ParentId, ItemType, Route,
+                         Icon instead of Href, ItemIcon). Removed TVF reference.
+                         Note: MenuResolver uses its own private inner class
+                         MenuItemRow; this public class documents the schema.
 -------------------------------------------------------------------------------
  Notes       :
    - Do NOT add navigation properties; this is a projection-only record.
@@ -32,34 +36,42 @@ namespace AbsenceApp.Api.Services.Navigation;
 // ===========================================================================
 
 /// <summary>
-/// Represents one row returned by dbo.fn_GetVisibleMenuItems(@RoleType).
-/// Column names must match the TVF output exactly.
+/// Represents one row from the menuitems table, projected by MenuResolver.
+/// Column names must match the menuitems table output exactly.
 /// </summary>
 public sealed class MenuItemRow
 {
     // ---------------------------------------------------------------------------
-    // Category level
+    // Identity / hierarchy
     // ---------------------------------------------------------------------------
-    public string? Category    { get; set; }
+    public int     Id          { get; set; }
+    public int?    ParentId    { get; set; }
+    public string? ItemType    { get; set; }
 
     // ---------------------------------------------------------------------------
-    // Group level
-    // ---------------------------------------------------------------------------
-    public string? GroupName   { get; set; }
-    public string? GroupIcon   { get; set; }
-    public bool    IsFlat      { get; set; } = false;
-
-    // ---------------------------------------------------------------------------
-    // Item level
+    // Display
     // ---------------------------------------------------------------------------
     public string? Label       { get; set; }
-    public string? Href        { get; set; }
-    public string? ItemIcon    { get; set; }
-    public string? Status      { get; set; }
-    public string? Description { get; set; }
+    public string? Icon        { get; set; }
+    public string? Route       { get; set; }
 
     // ---------------------------------------------------------------------------
-    // Ordering
+    // Visibility / ordering
     // ---------------------------------------------------------------------------
+    public bool    IsHidden    { get; set; }
     public int     SortOrder   { get; set; }
+
+    // ---------------------------------------------------------------------------
+    // Denormalised group / category hints (may be null)
+    // ---------------------------------------------------------------------------
+    public string? Category    { get; set; }
+    public string? GroupName   { get; set; }
+    public string? GroupIcon   { get; set; }
+    public bool?   IsFlat      { get; set; }
+
+    // ---------------------------------------------------------------------------
+    // Metadata
+    // ---------------------------------------------------------------------------
+    public string? Status      { get; set; }
+    public string? Description { get; set; }
 }
