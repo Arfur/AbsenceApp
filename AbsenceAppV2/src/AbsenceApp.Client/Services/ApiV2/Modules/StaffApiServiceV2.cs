@@ -75,8 +75,8 @@ public sealed class StaffApiServiceV2 : ApiServiceBaseV2
 
     // -------------------------------------------------------------------------
     /// <summary>Returns absence records for a staff member.</summary>
-    public Task<ApiResponseV2<List<StaffAbsenceDto>>> GetAbsencesAsync(
+    public Task<ApiResponseV2<List<AbsenceDto>>> GetAbsencesAsync(
         long staffId,
         CancellationToken ct = default) =>
-        Client.GetAsync<List<StaffAbsenceDto>>($"{RoutePrefix}/{staffId}/absences", ct);
+        Client.GetAsync<List<AbsenceDto>>($"{RoutePrefix}/{staffId}/absences", ct);
 }

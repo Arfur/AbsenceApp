@@ -18,6 +18,8 @@
    - All required string properties use = default! to satisfy the nullable compiler.
 ===============================================================================
 */
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AbsenceApp.Data.Models;
 
 public class YearGroup
@@ -27,7 +29,7 @@ public class YearGroup
     public string Code { get; set; } = default!;
     public int NumericValue { get; set; }
     public long PhaseId { get; set; }
-    public long SchoolId { get; set; }
+    [NotMapped] public long SchoolId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

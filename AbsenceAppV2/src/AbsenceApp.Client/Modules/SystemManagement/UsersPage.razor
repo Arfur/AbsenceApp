@@ -2,21 +2,31 @@
    File        : UsersPage.razor
    Namespace   : AbsenceApp.Client.Modules.SystemManagement
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 2.0.0
    Created     : 2026-04-13
-   Updated     : 2026-04-13
+   Updated     : 2026-04-21
    ---------------------------------------------------------------------------
    Purpose     : System Management → User Management → Users.
-                 Lists all system user accounts with search, filter, and
-                 pagination. Uses TablePageTemplateV2 for the table shell and
-                 delegates data to IUserManagementService.
+                 Displays all user accounts using TablePageTemplateV2.
+                 Delegates all data, search, filter, sort, and pagination to
+                 UserListViewModelV2 (which uses UserManagementApiServiceV2
+                 with IServiceScopeFactory for proper per-call DB scoping).
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-04-13  E31 — Initial creation.
+     - 2.0.0  2026-04-21  Full rewrite. Root-cause fix for "Users disappear on
+                           re-navigation" (SearchValue was "_search" literal
+                           string, not @_search variable — saved to AppState,
+                           restored on next visit, filtered all rows away).
+                           Replaced IUserManagementService direct injection with
+                           UserListViewModelV2. Added Export + Add User buttons,
+                           icon actions (pencil + two-click delete confirm),
+                           role/status filter chips, sort buttons, skeleton rows,
+                           and sliding-window pagination.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/system/users
-     - IUserManagementService is registered in DataServiceRegistration (E15).
+     - Add User navigates to /v2/staff (Staff-linked-only user creation).
 ===========================================================================
 *@
 
@@ -24,68 +34,183 @@
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.SystemManagement
 
+@using AbsenceApp.Client.ViewModels.V2
 @using AbsenceApp.Client.Shared
-@using AbsenceApp.Core.Interfaces
+@using AbsenceApp.Client.Services
 
-@inject IUserManagementService UserMgmt
-@inject NavigationManager Nav
+@inject UserListViewModelV2 ViewModel
+@inject NavigationManager   Nav
+@inject AppStateService     AppState
+@implements IDisposable
 
 <PageTemplateV2 PageTitleText="Users">
 
     <ActionsContent>
-        <button type="button" class="phv2-btn phv2-btn--primary"
-                @onclick='() => Nav.NavigateTo("/v2/users/new")'>
-            <i class="bi bi-person-plus" aria-hidden="true"></i>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+        <button type="button"
+                class="phv2-btn phv2-btn--add"
+                title="User accounts must be created from a Staff record. Click to go to the Staff list, then select a staff member and click 'Create User Account'."
+                @onclick="@(() => Nav.NavigateTo("/v2/staff"))">
+            <i class="bi bi-plus-circle" aria-hidden="true"></i>
             Add User
         </button>
     </ActionsContent>
 
     <ChildContent>
+
+        @if (ViewModel.Error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+        }
+
         <TablePageTemplateV2
             PageTitle="Users"
-            TotalRows="_totalRows"
-            CurrentPage="_currentPage"
-            ShowEntries="_pageSize"
-            SearchValue="_search"
-            ActiveFilters="_activeFilters"
-            OnSearchChanged="OnSearch"
-            OnShowEntriesChanged="OnShowEntries"
-            OnClearAllFilters="OnClearAll">
+            TotalRows="@ViewModel.TotalCount"
+            CurrentPage="@ViewModel.Page"
+            ShowEntries="@ViewModel.PageSize"
+            SearchValue="@ViewModel.SearchTerm"
+            ActiveFilters="@_activeFilterChips"
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnRemoveFilter="@OnRemoveFilter"
+            OnClearAllFilters="@OnClearAllFilters">
+
+            <Filters>
+                <select class="tpt-filter-select"
+                        value="@_f["roleTypeName"]"
+                        @onchange="@(e => SetFilter("roleTypeName", "Role", e.Value?.ToString()))">
+                    <option value="">All Roles</option>
+                    @foreach (var r in _roleOptions)
+                    {
+                        <option value="@r">@r</option>
+                    }
+                </select>
+                <select class="tpt-filter-select"
+                        value="@_f["status"]"
+                        @onchange="@(e => SetFilter("status", "Status", e.Value?.ToString()))">
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+            </Filters>
 
             <TableHeader>
-                <th class="tpt-th">ID</th>
-                <th class="tpt-th">Full Name</th>
-                <th class="tpt-th">Username</th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("staffName")" @onclick="@(() => OnSort("staffName"))">
+                        Staff
+                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                    </button>
+                </th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("username")" @onclick="@(() => OnSort("username"))">
+                        Username
+                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                    </button>
+                </th>
                 <th class="tpt-th">Email</th>
-                <th class="tpt-th">Role</th>
-                <th class="tpt-th">Status</th>
-                <th class="tpt-th">Created</th>
-                <th class="tpt-th">Actions</th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("roleTypeName")" @onclick="@(() => OnSort("roleTypeName"))">
+                        Role
+                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                    </button>
+                </th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("status")" @onclick="@(() => OnSort("status"))">
+                        Status
+                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                    </button>
+                </th>
+                <th class="tpt-th tpt-th--actions">Actions</th>
             </TableHeader>
 
             <TableBody>
-                @if (_isLoading)
+                @if (ViewModel.IsLoading)
                 {
-                    <tr><td colspan="8" class="tpt-td tpt-td--empty">Loading…</td></tr>
+                    @for (var i = 0; i < ViewModel.PageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            @for (var c = 0; c < 6; c++)
+                            {
+                                <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            }
+                        </tr>
+                    }
                 }
-                else if (_paged.Count == 0)
+                else if (ViewModel.Items.Count == 0)
                 {
-                    <tr><td colspan="8" class="tpt-td tpt-td--empty">No users found.</td></tr>
+                    <tr>
+                        <td class="tpt-td tpt-td--empty" colspan="6">No users found.</td>
+                    </tr>
                 }
                 else
                 {
-                    @foreach (var u in _paged)
+                    @foreach (var item in ViewModel.Items)
                     {
                         <tr class="tpt-tr">
-                            <td class="tpt-td">@u.Id</td>
-                            <td class="tpt-td">@u.FullName</td>
-                            <td class="tpt-td">@u.Username</td>
-                            <td class="tpt-td">@u.Email</td>
-                            <td class="tpt-td">@u.RoleTypeName</td>
-                            <td class="tpt-td">@u.Status</td>
-                            <td class="tpt-td">@u.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td class="tpt-td">@item.StaffName</td>
+                            <td class="tpt-td">@item.Username</td>
+                            <td class="tpt-td">@item.Email</td>
                             <td class="tpt-td">
-                                <a href="@($"/v2/users/{u.Id}")" class="dsv2-table__row-action">Edit</a>
+                                <span class="tpt-badge">@item.RoleTypeName</span>
+                            </td>
+                            <td class="tpt-td">
+                                <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
+                            </td>
+                            <td class="tpt-td tpt-td--actions">
+                                <a href="/v2/users/@item.Id/edit"
+                                   class="tpt-action-icon tpt-action-edit"
+                                   title="Edit @item.Username">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                                @if (_confirmDeleteId == item.Id)
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete-confirm"
+                                            title="Confirm delete"
+                                            @onclick="@(() => ConfirmDeleteAsync(item.Id))">
+                                        <i class="bi bi-check-circle" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="tpt-action-icon tpt-action-cancel"
+                                            title="Cancel"
+                                            @onclick="@(() => _confirmDeleteId = null)">
+                                        <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete"
+                                            title="Delete @item.Username"
+                                            @onclick="@(() => _confirmDeleteId = item.Id)">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                    </button>
+                                }
                             </td>
                         </tr>
                     }
@@ -93,55 +218,175 @@
             </TableBody>
 
             <Pagination>
-                @for (int p = 1; p <= _totalPages; p++)
-                {
-                    var page = p;
-                    <button class="tpt-page-btn @(page == _currentPage ? "tpt-page-btn--active" : "")"
-                            @onclick="() => GoToPage(page)">@(page)</button>
+                @{
+                    var totalPages = ViewModel.PageSize > 0
+                        ? (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize)
+                        : 1;
+                    var page     = ViewModel.Page;
+                    var winStart = Math.Max(1, page - 4);
+                    var winEnd   = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
                 }
+                <button class="tpt-page-btn tpt-page-prev"
+                        disabled="@(page <= 1)"
+                        @onclick="@(() => ViewModel.SetPage(page - 1))">
+                    &#8592; Previous
+                </button>
+                @for (var p = winStart; p <= winEnd; p++)
+                {
+                    var pCopy = p;
+                    <button class="tpt-page-btn @(pCopy == page ? "tpt-active" : "")"
+                            @onclick="@(() => ViewModel.SetPage(pCopy))">
+                        @pCopy
+                    </button>
+                }
+                @if (winEnd < totalPages)
+                {
+                    <span class="tpt-page-ellipsis">...</span>
+                }
+                <button class="tpt-page-btn tpt-page-next"
+                        disabled="@(page >= totalPages)"
+                        @onclick="@(() => ViewModel.SetPage(page + 1))">
+                    Next &#8594;
+                </button>
             </Pagination>
 
         </TablePageTemplateV2>
+
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
-    private IReadOnlyList<AbsenceApp.Core.DTOs.UserListItemDto> _all = [];
-    private List<AbsenceApp.Core.DTOs.UserListItemDto>          _paged = [];
-    private bool   _isLoading   = true;
-    private int    _totalRows   = 0;
-    private int    _currentPage = 1;
-    private int    _pageSize    = 10;
-    private string _search      = string.Empty;
-    private List<FilterChip> _activeFilters = new();
 
-    private int _totalPages =>
-        _totalRows == 0 ? 1 : (int)Math.Ceiling(_totalRows / (double)_pageSize);
+    private bool  _showExportMenu;
+    private long? _confirmDeleteId;
+
+    private List<string> _roleOptions = [];
+
+    private readonly Dictionary<string, string> _f = new()
+    {
+        ["roleTypeName"] = "",
+        ["status"]       = "",
+    };
+
+    private List<FilterChip> _activeFilterChips = [];
+
+    private static readonly Dictionary<string, string> _keyToLabel = new()
+    {
+        ["roleTypeName"] = "Role",
+        ["status"]       = "Status",
+    };
+
+    private static readonly Dictionary<string, string> _labelToKey = new()
+    {
+        ["Role"]   = "roleTypeName",
+        ["Status"] = "status",
+    };
+
+    // =========================================================================
+    // Lifecycle
+    // =========================================================================
 
     protected override async Task OnInitializedAsync()
     {
-        _isLoading = true;
-        try   { _all = await UserMgmt.GetUsersAsync(); }
-        finally { _isLoading = false; }
-        ApplyFilter();
+        // Pre-clear any stale AppState for this route so the template's
+        // state-restoration cannot resurrect an old search value (e.g. the
+        // literal string "_search" saved by the previous v1.0.0 implementation).
+        AppState.SetTablePageState("v2/system/users", string.Empty, ViewModel.PageSize, []);
+        await ViewModel.LoadAsync();
+        RebuildRoleOptions();
     }
 
-    private void ApplyFilter()
+    public void Dispose() { }
+
+    // =========================================================================
+    // Search / show-entries
+    // =========================================================================
+
+    private Task OnSearchChanged(string term)
     {
-        var filtered = string.IsNullOrWhiteSpace(_search)
-            ? _all
-            : _all.Where(u =>
-                u.FullName.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
-                u.Username.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
-                u.Email.Contains(_search, StringComparison.OrdinalIgnoreCase));
-
-        _totalRows = filtered.Count();
-        _paged     = filtered.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
+        ViewModel.SetSearch(term);
+        return Task.CompletedTask;
     }
 
-    private Task OnSearch(string v)     { _search = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
-    private Task OnShowEntries(int v)   { _pageSize = v; _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
-    private Task GoToPage(int p)        { _currentPage = p; ApplyFilter(); return Task.CompletedTask; }
-    private Task OnClearAll()           { _search = ""; _activeFilters.Clear(); _currentPage = 1; ApplyFilter(); return Task.CompletedTask; }
+    private Task OnShowEntriesChanged(int size)
+    {
+        ViewModel.SetPageSize(size);
+        return Task.CompletedTask;
+    }
+
+    // =========================================================================
+    // Filter helpers
+    // =========================================================================
+
+    private void SetFilter(string key, string label, string? value)
+    {
+        _f[key] = value ?? string.Empty;
+        ViewModel.SetFilter(key, _f[key]);
+        RebuildChips();
+    }
+
+    private Task OnRemoveFilter(FilterChip chip)
+    {
+        var key = _labelToKey.GetValueOrDefault(chip.Name ?? "");
+        if (key is not null)
+        {
+            _f[key] = string.Empty;
+            ViewModel.SetFilter(key, string.Empty);
+        }
+        RebuildChips();
+        return Task.CompletedTask;
+    }
+
+    private Task OnClearAllFilters()
+    {
+        foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
+        ViewModel.SetFilter("roleTypeName", string.Empty);
+        ViewModel.SetFilter("status",       string.Empty);
+        _activeFilterChips = [];
+        return Task.CompletedTask;
+    }
+
+    private void RebuildChips() =>
+        _activeFilterChips = _f
+            .Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+            .Select(kv => new FilterChip(_keyToLabel[kv.Key], kv.Value))
+            .ToList();
+
+    private void RebuildRoleOptions() =>
+        _roleOptions = ViewModel.AllItems
+            .Select(u => u.RoleTypeName)
+            .Where(r => !string.IsNullOrWhiteSpace(r))
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+    // =========================================================================
+    // Sort
+    // =========================================================================
+
+    private void OnSort(string column) => ViewModel.SetSort(column);
+
+    private string SortClass(string column) =>
+        ViewModel.SortColumn != column ? "" :
+        ViewModel.SortAscending ? "asc" : "desc";
+
+    // =========================================================================
+    // Delete (two-click confirm)
+    // =========================================================================
+
+    private async Task ConfirmDeleteAsync(long userId)
+    {
+        _confirmDeleteId = null;
+        await ViewModel.DeleteUserAsync(userId);
+        RebuildRoleOptions();
+    }
+
+    // =========================================================================
+    // Export menu
+    // =========================================================================
+
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
 }

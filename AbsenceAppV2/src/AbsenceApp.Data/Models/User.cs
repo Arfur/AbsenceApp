@@ -62,6 +62,8 @@ public class User
     /// </summary>
     [NotMapped]
     public long RoleTypeId { get; set; }
+    /// <summary>FK → staff.Id. Mandatory — users may only be created from a Staff record.</summary>
+    public long? StaffId { get; set; }
     public string Status { get; set; } = default!;
     public bool IsAdmin { get; set; }
     /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>

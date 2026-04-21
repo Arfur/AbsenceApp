@@ -38,7 +38,7 @@ public sealed class StaffDetailViewModelV2
     // -------------------------------------------------------------------------
 
     public StaffFullViewDto? Item { get; private set; }
-    public List<StaffAbsenceDto> Absences { get; private set; } = [];
+    public List<AbsenceDto> Absences { get; private set; } = [];
     public bool IsLoading { get; private set; }
     public string? Error { get; private set; }
 

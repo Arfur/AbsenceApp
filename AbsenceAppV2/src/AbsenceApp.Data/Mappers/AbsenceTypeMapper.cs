@@ -7,19 +7,21 @@ public static class AbsenceTypeMapper
 {
     public static AbsenceTypeDto ToDto(AbsenceType e) => new()
     {
-        Id          = e.Id,
-        Name        = e.Name,
-        Code        = e.Code,
-        Description = e.Description,
-        IsPaid      = e.IsPaid
+        Id           = e.Id,
+        Code         = e.Code,
+        Name         = e.Name,
+        Category     = e.Category,
+        IsAuthorised = e.IsAuthorised,
+        CreatedAt    = e.CreatedAt
     };
 
     public static AbsenceType ToEntity(AbsenceTypeDto dto) => new()
     {
-        Id          = dto.Id,
-        Name        = dto.Name,
-        Code        = dto.Code,
-        Description = dto.Description,
-        IsPaid      = dto.IsPaid
+        Id           = dto.Id,
+        Code         = dto.Code,
+        Name         = dto.Name,
+        Category     = dto.Category,
+        IsAuthorised = dto.IsAuthorised,
+        CreatedAt    = dto.CreatedAt
     };
 }

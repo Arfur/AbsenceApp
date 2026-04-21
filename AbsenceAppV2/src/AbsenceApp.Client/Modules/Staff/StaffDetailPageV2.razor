@@ -30,7 +30,9 @@
 @namespace AbsenceApp.Client.Modules.Staff
 
 @using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Client.Services.ApiV2.Modules
 @inject StaffDetailViewModelV2 ViewModel
+@inject UserManagementApiServiceV2 UserMgmt
 @inject AppStateService AppState
 @inject NavigationManager Nav
 
@@ -43,6 +45,15 @@
                class="dsv2-btn dsv2-btn--secondary">
                 Edit
             </a>
+            @if (!_staffHasUser)
+            {
+                <button type="button"
+                        class="dsv2-btn dsv2-btn--primary"
+                        @onclick="@(() => Nav.NavigateTo($"/v2/users/{Id}/new"))">
+                    <i class="bi bi-person-plus" aria-hidden="true"></i>
+                    Create User Account
+                </button>
+            }
         }
     </ActionsContent>
 
@@ -164,11 +175,7 @@
                             <span class="dsv2-detail-value">@absence.StartDate.ToString("dd MMM yyyy")</span>
 
                             <span class="dsv2-detail-label">End Date</span>
-                            <span class="dsv2-detail-value">
-                                @(absence.EndDate.HasValue
-                                    ? absence.EndDate.Value.ToString("dd MMM yyyy")
-                                    : "Ongoing")
-                            </span>
+                            <span class="dsv2-detail-value">@absence.EndDate.ToString("dd MMM yyyy")</span>
                         }
                     </div>
                 </section>
@@ -182,6 +189,8 @@
 @code {
     [Parameter] public long Id { get; set; }
 
+    private bool   _staffHasUser;
+
     private string PageTitle =>
         ViewModel.Item is not null
             ? $"{ViewModel.Item.Title} {ViewModel.Item.FirstName} {ViewModel.Item.LastName}".Trim()
@@ -191,5 +200,6 @@
     {
         AppState.SetBreadcrumb("Staff", "Staff Member");
         await ViewModel.LoadAsync(Id);
+        _staffHasUser = await UserMgmt.StaffHasUserAsync(Id);
     }
 }

@@ -3,9 +3,9 @@
  File        : AppDbContext.cs
  Namespace   : AbsenceApp.Data.Context
  Author      : Michael
- Version     : 1.3.0
+ Version     : 2.0.0
  Created     : Unknown
- Updated     : 2026-04-11
+ Updated     : 2026-04-21
 -------------------------------------------------------------------------------
  Purpose     : Primary Entity Framework Core DbContext for the AbsenceApp API.
 
@@ -28,6 +28,11 @@
                          UserPagePermission. Added ConfigureUserManagement()
                          hook. Added IDENTITY exclusions for the four new
                          entities in the ValueGeneratedNever loop.
+   - 2.0.0  2026-04-21  Absence domain redesign: replaced StaffAbsences,
+                         StaffAbsenceAudit, StudentAbsences, StudentAbsenceAudit
+                         with unified Absences, AbsenceAudit, AbsenceStatuses.
+                         Added ValueGeneratedNever exemptions for the four new
+                         AUTO_INCREMENT absence tables.
 -------------------------------------------------------------------------------
  Notes       :
    - This file intentionally contains no business logic.
@@ -59,7 +64,8 @@ public class AppDbContext : DbContext
     public DbSet<JobGroup> JobGroups => Set<JobGroup>();
     public DbSet<RoleType> RoleTypes => Set<RoleType>();
     public DbSet<Responsibility> Responsibilities => Set<Responsibility>();
-    public DbSet<AbsenceType> AbsenceTypes => Set<AbsenceType>();
+    public DbSet<AbsenceType>   AbsenceTypes   => Set<AbsenceType>();
+    public DbSet<AbsenceStatus> AbsenceStatuses => Set<AbsenceStatus>();
     public DbSet<DeviceType> DeviceTypes => Set<DeviceType>();
     public DbSet<ExternalSystem> ExternalSystems => Set<ExternalSystem>();
     public DbSet<SystemEvent> SystemEvents => Set<SystemEvent>();
@@ -86,10 +92,9 @@ public class AppDbContext : DbContext
     public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
     public DbSet<ClassYearGroupAssignment> ClassYearGroupAssignments => Set<ClassYearGroupAssignment>();
     public DbSet<StaffAssignment> StaffAssignments => Set<StaffAssignment>();
-    public DbSet<StaffAbsence> StaffAbsences => Set<StaffAbsence>();
+    public DbSet<Absence> Absences => Set<Absence>();
     public DbSet<StaffDevice> StaffDevices => Set<StaffDevice>();
     public DbSet<StaffExternalAccount> StaffExternalAccounts => Set<StaffExternalAccount>();
-    public DbSet<StudentAbsence> StudentAbsences => Set<StudentAbsence>();
     public DbSet<StudentContact> StudentContacts => Set<StudentContact>();
     public DbSet<StudentMedical> StudentMedical => Set<StudentMedical>();
     public DbSet<StudentFlag> StudentFlags => Set<StudentFlag>();
@@ -103,10 +108,9 @@ public class AppDbContext : DbContext
     public DbSet<AccountVerificationEvent> AccountVerificationEvents => Set<AccountVerificationEvent>();
     public DbSet<RoleChangeAudit> RoleChangeAudit => Set<RoleChangeAudit>();
     public DbSet<StaffAssignmentAudit> StaffAssignmentAudit => Set<StaffAssignmentAudit>();
-    public DbSet<StaffAbsenceAudit> StaffAbsenceAudit => Set<StaffAbsenceAudit>();
     public DbSet<StaffDeviceAudit> StaffDeviceAudit => Set<StaffDeviceAudit>();
     public DbSet<StaffExternalAccountAudit> StaffExternalAccountAudit => Set<StaffExternalAccountAudit>();
-    public DbSet<StudentAbsenceAudit> StudentAbsenceAudit => Set<StudentAbsenceAudit>();
+    public DbSet<AbsenceAudit> AbsenceAudit => Set<AbsenceAudit>();
 
     // =========================================================================
     // Application configuration
@@ -166,6 +170,13 @@ public class AppDbContext : DbContext
             if (entityType.ClrType == typeof(UserPageOverride))          continue;
             if (entityType.ClrType == typeof(UserPagePermission))        continue;
 
+            // New Absence domain tables use AUTO_INCREMENT — exempt from the
+            // ValueGeneratedNever blanket so EF reads the generated Id back.
+            if (entityType.ClrType == typeof(AbsenceType))   continue;
+            if (entityType.ClrType == typeof(AbsenceStatus)) continue;
+            if (entityType.ClrType == typeof(Absence))       continue;
+            if (entityType.ClrType == typeof(AbsenceAudit))  continue;
+
             var pk = entityType.FindPrimaryKey();
             if (pk == null) continue;
 
@@ -214,12 +225,6 @@ public class AppDbContext : DbContext
             .HasForeignKey(sa => sa.DepartmentId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<StaffAbsenceAudit>()
-            .HasOne<Staff>()
-            .WithMany()
-            .HasForeignKey(a => a.StaffId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         modelBuilder.Entity<StaffAssignmentAudit>()
             .HasOne<Staff>()
             .WithMany()
@@ -238,10 +243,16 @@ public class AppDbContext : DbContext
             .HasForeignKey(a => a.StaffId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<StudentAbsenceAudit>()
-            .HasOne<Student>()
+        modelBuilder.Entity<AbsenceAudit>()
+            .HasOne(a => a.OldStatus)
             .WithMany()
-            .HasForeignKey(a => a.StudentId)
+            .HasForeignKey(a => a.OldStatusId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<AbsenceAudit>()
+            .HasOne(a => a.NewStatus)
+            .WithMany()
+            .HasForeignKey(a => a.NewStatusId)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<ClassYearGroupAssignment>()

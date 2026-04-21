@@ -3,28 +3,26 @@
  File        : AbsenceType.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.0.0
+ Version     : 2.0.0
  Created     : 2026-03-15
- Updated     : 2026-03-15
+ Updated     : 2026-04-21
 -------------------------------------------------------------------------------
- Purpose     : EF Core entity for the absence_types lookup table.
-               Stores named, coded absence categories with paid/unpaid flag.
+ Purpose     : EF Core entity for the AbsenceTypes lookup table.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-15  Initial creation.
--------------------------------------------------------------------------------
- Notes       :
-   - No navigation properties; FK integrity is enforced at the database layer.
-   - All required string properties use = default! to satisfy the nullable compiler.
+   - 2.0.0  2026-04-21  Absence domain redesign: replaced Description/IsPaid
+                        with Category/IsAuthorised.
 ===============================================================================
 */
 namespace AbsenceApp.Data.Models;
 
 public class AbsenceType
 {
-    public long Id { get; set; }
-    public string Name { get; set; } = default!;
-    public string Code { get; set; } = default!;
-    public string? Description { get; set; }
-    public bool IsPaid { get; set; }
+    public long     Id           { get; set; }
+    public string   Code         { get; set; } = string.Empty;
+    public string   Name         { get; set; } = string.Empty;
+    public string   Category     { get; set; } = string.Empty;
+    public bool     IsAuthorised { get; set; } = true;
+    public DateTime CreatedAt    { get; set; }
 }

@@ -22,19 +22,155 @@ namespace AbsenceApp.Data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceType", b =>
+            modelBuilder.Entity("AbsenceApp.Data.Models.Absence", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AbsenceTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("ApprovedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DurationDays")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("longtext");
+
+                    b.Property<long>("PersonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PersonType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<long?>("RecordedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReportedVia")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<long>("StatusId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AbsenceTypeId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Absences");
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceAudit", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AbsenceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ChangeType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("ChangedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("NewStatusId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("longtext");
+
+                    b.Property<long?>("OldStatusId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AbsenceId");
+
+                    b.HasIndex("NewStatusId");
+
+                    b.HasIndex("OldStatusId");
+
+                    b.ToTable("AbsenceAudit");
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceStatus", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsFinal")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsPaid")
+                    b.HasKey("Id");
+
+                    b.ToTable("AbsenceStatuses");
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsAuthorised")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
@@ -784,10 +920,7 @@ namespace AbsenceApp.Data.Migrations
             modelBuilder.Entity("AbsenceApp.Data.Models.Feature", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -808,7 +941,7 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -1122,10 +1255,7 @@ namespace AbsenceApp.Data.Migrations
             modelBuilder.Entity("AbsenceApp.Data.Models.RoleFeature", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AssignedAt")
                         .HasColumnType("datetime(6)");
@@ -1314,71 +1444,6 @@ namespace AbsenceApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Staff");
-                });
-
-            modelBuilder.Entity("AbsenceApp.Data.Models.StaffAbsence", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("AbsenceTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateOnly?>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("StaffId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StaffAbsences");
-                });
-
-            modelBuilder.Entity("AbsenceApp.Data.Models.StaffAbsenceAudit", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("ChangeTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("ChangedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("NewValues")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("OldValues")
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("StaffAbsenceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("StaffId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("StaffAbsenceAudit");
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffAssignment", b =>
@@ -1671,86 +1736,6 @@ namespace AbsenceApp.Data.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("AbsenceApp.Data.Models.StudentAbsence", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("AbsenceTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly?>("EndTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<bool>("IsAuthorised")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("RecordedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<TimeOnly?>("StartTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<long>("StudentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StudentAbsences");
-                });
-
-            modelBuilder.Entity("AbsenceApp.Data.Models.StudentAbsenceAudit", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("ChangedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FieldName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("NewValue")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("OldValue")
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("StudentAbsenceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("StudentId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentAbsenceAudit");
-                });
-
             modelBuilder.Entity("AbsenceApp.Data.Models.StudentContact", b =>
                 {
                     b.Property<long>("Id")
@@ -2004,10 +1989,7 @@ namespace AbsenceApp.Data.Migrations
             modelBuilder.Entity("AbsenceApp.Data.Models.UserFeatureOverride", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FeatureCode")
                         .IsRequired()
@@ -2230,6 +2212,50 @@ namespace AbsenceApp.Data.Migrations
                     b.ToTable("YearGroups");
                 });
 
+            modelBuilder.Entity("AbsenceApp.Data.Models.Absence", b =>
+                {
+                    b.HasOne("AbsenceApp.Data.Models.AbsenceType", "AbsenceType")
+                        .WithMany()
+                        .HasForeignKey("AbsenceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AbsenceApp.Data.Models.AbsenceStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AbsenceType");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceAudit", b =>
+                {
+                    b.HasOne("AbsenceApp.Data.Models.Absence", "Absence")
+                        .WithMany()
+                        .HasForeignKey("AbsenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AbsenceApp.Data.Models.AbsenceStatus", "NewStatus")
+                        .WithMany()
+                        .HasForeignKey("NewStatusId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("AbsenceApp.Data.Models.AbsenceStatus", "OldStatus")
+                        .WithMany()
+                        .HasForeignKey("OldStatusId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Absence");
+
+                    b.Navigation("NewStatus");
+
+                    b.Navigation("OldStatus");
+                });
+
             modelBuilder.Entity("AbsenceApp.Data.Models.AttendanceMark", b =>
                 {
                     b.HasOne("AbsenceApp.Data.Models.Student", null)
@@ -2273,17 +2299,6 @@ namespace AbsenceApp.Data.Migrations
                         .WithMany()
                         .HasForeignKey("PageId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-
-
-            modelBuilder.Entity("AbsenceApp.Data.Models.StaffAbsenceAudit", b =>
-                {
-                    b.HasOne("AbsenceApp.Data.Models.Staff", null)
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -2343,17 +2358,6 @@ namespace AbsenceApp.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
-
-            modelBuilder.Entity("AbsenceApp.Data.Models.StudentAbsenceAudit", b =>
-                {
-                    b.HasOne("AbsenceApp.Data.Models.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-
 
             modelBuilder.Entity("AbsenceApp.Data.Models.UserPageOverride", b =>
                 {

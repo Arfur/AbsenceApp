@@ -2,16 +2,21 @@
    File        : PermissionsPage.razor
    Namespace   : AbsenceApp.Client.Modules.SystemManagement
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 2.0.0
    Created     : 2026-04-13
-   Updated     : 2026-04-13
+   Updated     : 2026-04-21
    ---------------------------------------------------------------------------
    Purpose     : System Management → User Management → Permissions.
-                 Placeholder list page for granular role permission settings.
-                 Full implementation in a future sprint.
+                 Lists all feature flags from the feature table (with which
+                 role types have each feature enabled via rolefeature) using
+                 TablePageTemplateV2 for full visual consistency with the
+                 Students and Users list pages.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-04-13  E31 — Initial creation.
+     - 1.0.0  2026-04-13  E31 — Initial creation (placeholder).
+     - 1.1.0  2026-04-21  Wired up to UserManagementApiServiceV2.GetFeaturesAsync().
+     - 2.0.0  2026-04-21  Converted to TablePageTemplateV2. Added Export button,
+                           real search/pagination, icon actions.
    ---------------------------------------------------------------------------
    Notes     :
      - Route: /v2/system/permissions
@@ -22,43 +27,98 @@
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.SystemManagement
 
+@using AbsenceApp.Client.Services.ApiV2.Modules
 @using AbsenceApp.Client.Shared
+@using AbsenceApp.Core.DTOs
+
+@inject UserManagementApiServiceV2 UserMgmtSvc
 
 <PageTemplateV2 PageTitleText="Permissions">
 
+    <ActionsContent>
+        @if (_showExportMenu)
+        {
+            <div class="phv2-export-backdrop" @onclick="CloseExportMenu" aria-hidden="true"></div>
+        }
+        <div class="phv2-export-wrap">
+            <button type="button"
+                    class="phv2-btn phv2-btn--secondary"
+                    @onclick="ToggleExportMenu"
+                    aria-expanded="@_showExportMenu"
+                    aria-haspopup="true">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                Export
+                <i class="bi @(_showExportMenu ? "bi-chevron-up" : "bi-chevron-down") phv2-btn__chevron" aria-hidden="true"></i>
+            </button>
+            @if (_showExportMenu)
+            {
+                <div class="phv2-export-dd" role="menu">
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                        Export as PDF
+                    </button>
+                    <button type="button" class="phv2-export-item" role="menuitem">
+                        <i class="bi bi-file-earmark-excel" aria-hidden="true"></i>
+                        Export as Excel
+                    </button>
+                </div>
+            }
+        </div>
+    </ActionsContent>
+
     <ChildContent>
+
+        @if (_error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@_error</div>
+        }
+
         <TablePageTemplateV2
             PageTitle="Permissions"
-            TotalRows="_rows.Count"
-            CurrentPage="1"
-            ShowEntries="10"
-            ActiveFilters="_chips"
-            OnClearAllFilters="() => Task.CompletedTask">
+            TotalRows="@_totalFiltered"
+            CurrentPage="@_page"
+            ShowEntries="@_pageSize"
+            SearchValue="@_search"
+            ActiveFilters="@_chips"
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnClearAllFilters="@(() => Task.CompletedTask)">
 
             <TableHeader>
                 <th class="tpt-th">ID</th>
                 <th class="tpt-th">Permission Key</th>
                 <th class="tpt-th">Description</th>
                 <th class="tpt-th">Roles</th>
-                <th class="tpt-th">Actions</th>
+                <th class="tpt-th tpt-th--actions">Actions</th>
             </TableHeader>
 
             <TableBody>
-                @if (_rows.Count == 0)
+                @if (_loading)
+                {
+                    @for (var i = 0; i < _pageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            @for (var c = 0; c < 5; c++) { <td class="tpt-td"><span class="tpt-skeleton"></span></td> }
+                        </tr>
+                    }
+                }
+                else if (_pagedRows.Count == 0)
                 {
                     <tr><td colspan="5" class="tpt-td tpt-td--empty">No permissions defined.</td></tr>
                 }
                 else
                 {
-                    @foreach (var r in _rows)
+                    @foreach (var r in _pagedRows)
                     {
                         <tr class="tpt-tr">
                             <td class="tpt-td">@r.Id</td>
-                            <td class="tpt-td">@r.Key</td>
+                            <td class="tpt-td">@r.Code</td>
                             <td class="tpt-td">@r.Description</td>
                             <td class="tpt-td">@r.Roles</td>
-                            <td class="tpt-td">
-                                <span class="dsv2-table__row-action">Edit</span>
+                            <td class="tpt-td tpt-td--actions">
+                                <button class="tpt-action-icon tpt-action-edit" title="Edit @r.Code">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -66,17 +126,85 @@
             </TableBody>
 
             <Pagination>
-                <button class="tpt-page-btn tpt-page-btn--active">1</button>
+                @{
+                    var totalPages = _pageSize > 0 ? (int)Math.Ceiling((double)_totalFiltered / _pageSize) : 1;
+                    var pg       = _page;
+                    var winStart = Math.Max(1, pg - 4);
+                    var winEnd   = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
+                }
+                <button class="tpt-page-btn tpt-page-prev" disabled="@(_page <= 1)" @onclick="PrevPage">&#8592; Previous</button>
+                @for (var i = winStart; i <= winEnd; i++)
+                {
+                    var pCopy = i;
+                    <button class="tpt-page-btn @(pCopy == _page ? "tpt-active" : "")" @onclick="@(() => _page = pCopy)">@pCopy</button>
+                }
+                @if (winEnd < totalPages) { <span class="tpt-page-ellipsis">...</span> }
+                <button class="tpt-page-btn tpt-page-next" disabled="@(_page >= totalPages)" @onclick="NextPage">Next &#8594;</button>
             </Pagination>
 
         </TablePageTemplateV2>
+
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
-    private readonly List<PermRowVm>   _rows  = [];
-    private readonly List<FilterChip>  _chips = [];
+    private List<FeatureListItemDto> _rows  = [];
+    private List<FilterChip>         _chips = [];
+    private bool                     _loading;
+    private bool                     _showExportMenu;
+    private string?                  _error;
+    private string                   _search   = string.Empty;
+    private int                      _page     = 1;
+    private int                      _pageSize = 10;
 
-    private sealed record PermRowVm(int Id, string Key, string Description, string Roles);
+    private IEnumerable<FeatureListItemDto> FilteredRows =>
+        string.IsNullOrWhiteSpace(_search)
+            ? _rows
+            : _rows.Where(r =>
+                r.Code.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                r.Description.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+                r.Roles.Contains(_search, StringComparison.OrdinalIgnoreCase));
+
+    private int _totalFiltered => FilteredRows.Count();
+
+    private List<FeatureListItemDto> _pagedRows =>
+        FilteredRows.Skip((_page - 1) * _pageSize).Take(_pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        try
+        {
+            var result = await UserMgmtSvc.GetFeaturesAsync();
+            _rows = [.. result];
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    private Task OnSearchChanged(string term)
+    {
+        _search = term;
+        _page   = 1;
+        return Task.CompletedTask;
+    }
+
+    private Task OnShowEntriesChanged(int size)
+    {
+        _pageSize = size;
+        _page     = 1;
+        return Task.CompletedTask;
+    }
+
+    private void PrevPage() { if (_page > 1) _page--; }
+    private void NextPage()
+    {
+        var total = _pageSize > 0 ? (int)Math.Ceiling((double)_totalFiltered / _pageSize) : 1;
+        if (_page < total) _page++;
+    }
+
+    private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
+    private void CloseExportMenu()  => _showExportMenu = false;
 }

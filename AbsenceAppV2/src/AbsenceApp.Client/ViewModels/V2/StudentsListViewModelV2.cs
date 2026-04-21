@@ -53,6 +53,12 @@ public sealed class StudentsListViewModelV2
 
     private IReadOnlyList<StudentFullViewDto> _all = [];
 
+    /// <summary>
+    /// Exposes the full unfiltered dataset so the page can build distinct
+    /// filter-option lists from all students, not just the current page.
+    /// </summary>
+    public IReadOnlyList<StudentFullViewDto> AllItems => _all;
+
     // -------------------------------------------------------------------------
     // Data state
     // -------------------------------------------------------------------------

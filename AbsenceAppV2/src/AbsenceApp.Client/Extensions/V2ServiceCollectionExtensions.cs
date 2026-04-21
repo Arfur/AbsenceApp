@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.5.0
+ Version     : 1.6.0
  Created     : 2026-03-22
- Updated     : 2026-04-11
+ Updated     : 2026-04-21
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -29,6 +29,7 @@
                          through the API.
    - 1.4.0  2026-04-11  E15 additions: UserManagementApiServiceV2, ViewModels.
    - 1.5.0  2026-04-11  E16 Pages Registry: PagesApiServiceV2, ViewModels.
+   - 1.6.0  2026-04-21  Added UserProfileViewModelV2 registration.
 -------------------------------------------------------------------------------
  Notes       :
    - HttpClient is registered as a singleton for BrandingServiceV2 and
@@ -139,6 +140,7 @@ public static class V2ServiceCollectionExtensions
         // E15 — User Management ViewModels
         services.AddScoped<UserListViewModelV2>();
         services.AddScoped<UserFormViewModelV2>();
+        services.AddScoped<UserProfileViewModelV2>();
         // E16 — Pages Registry ViewModels
         services.AddScoped<PagesListViewModelV2>();
         services.AddScoped<PageFormViewModelV2>();

@@ -3,7 +3,7 @@
  All Phases — Fully Populated — Current Status Accurate
 ================================================================================
  Status values : Not Started | In Progress | Done
- Updated       : 2026-04-18
+ Updated       : 2026-04-21
 ================================================================================
 
 # 1. Project Overview
@@ -289,38 +289,38 @@
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 | TaskID | Description                                            | Table                 | Status      | Started    | Completed  |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
-| POP-26 | Create admin user account                              | users                 | Not Started | —          | —          |
-| POP-27 | Create test office staff user account                  | users                 | Not Started | —          | —          |
-| POP-28 | Create test teacher user account                       | users                 | Not Started | —          | —          |
+| POP-26 | Create admin user account                              | users                 | Not Started | 2026-04-19 | 2026-04-19 |
+| POP-27 | Create test office staff user account                  | users                 | Not Started | 2026-04-19 | 2026-04-19 |
+| POP-28 | Create test teacher user account                       | users                 | Not Started | 2026-04-19 | 2026-04-19 |
 | POP-29 | Create user profiles for all test users                | userprofiles          | Done        | 2026-04-19 | 2026-04-19 |
-| POP-30 | Assign roles to test users via userrole                | userrole              | Not Started | —          | —          |
+| POP-30 | Assign roles to test users via userrole                | userrole              | Not Started | 2026-04-19 | 2026-04-19 |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 
 ## Group 5 — Staff Domain
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 | TaskID | Description                                            | Table                 | Status      | Started    | Completed  |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
-| POP-31 | Create at least 3 test staff records                   | staff                 | Not Started | —          | —          |
-| POP-32 | Create test staff absence records                      | staffabsences         | Not Started | —          | —          |
-| POP-33 | Create test staff assignment records                   | staffassignments      | Not Started | —          | —          |
-| POP-34 | Create test staff device records                       | staffdevices          | Not Started | —          | —          |
-| POP-35 | Create test staff external account records             | staffexternalaccounts | Not Started | —          | —          |
-| POP-36 | Create test staff location records                     | stafflocations        | Not Started | —          | —          |
-| POP-37 | Assign responsibilities to test staff                  | staffresponsibilities | Not Started | —          | —          |
+| POP-31 | Create at least 3 test staff records                   | staff                 | Done        | 2026-04-21 | 2026-04-21 |
+| POP-32 | Create test staff absence records                      | staffabsences         | Done        | 2026-04-21 | 2026-04-21 |
+| POP-33 | Create test staff assignment records                   | staffassignments      | Done        | 2026-04-21 | 2026-04-21 |
+| POP-34 | Create test staff device records                       | staffdevices          | Done        | 2026-04-21 | 2026-04-21 |
+| POP-35 | Create test staff external account records             | staffexternalaccounts | Done        | 2026-04-21 | 2026-04-21 |
+| POP-36 | Create test staff location records                     | stafflocations        | Done        | 2026-04-21 | 2026-04-21 |
+| POP-37 | Assign responsibilities to test staff                  | staffresponsibilities | Done        | 2026-04-21 | 2026-04-21 |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 
 ## Group 6 — Academic & Students
 +--------+-----------------------------------------------------+--------------------------+-------------+------------+------------+
 | TaskID | Description                                         | Table                    | Status      | Started    | Completed  |
 +--------+-----------------------------------------------------+--------------------------+-------------+------------+------------+
-| POP-38 | Create at least 3 test classes                      | classes                  | Not Started | —          | —          |
-| POP-39 | Assign year groups to test classes                  | classyeargroupassignments| Not Started | —          | —          |
-| POP-40 | Create at least 5 test student records              | students                 | Not Started | —          | —          |
-| POP-41 | Assign students to classes                          | classmember              | Not Started | —          | —          |
-| POP-42 | Create student contact records (parent/guardian)    | studentcontacts          | Not Started | —          | —          |
-| POP-43 | Create student flag records (SEN, medical, pastoral)| studentflags             | Not Started | —          | —          |
-| POP-44 | Create student medical records                      | studentmedical           | Not Started | —          | —          |
-| POP-45 | Create test student absence records                 | studentabsences          | Not Started | —          | —          |
+| POP-38 | Create at least 3 test classes                      | classes                  | Done        | 2026-04-21 | 2026-04-21 |
+| POP-39 | Assign year groups to test classes                  | classyeargroupassignments| Done        | 2026-04-21 | 2026-04-21 |
+| POP-40 | Create at least 5 test student records              | students                 | Done        | 2026-04-21 | 2026-04-21 |
+| POP-41 | Assign students to classes                          | classmember              | Done        | 2026-04-21 | 2026-04-21 |
+| POP-42 | Create student contact records (parent/guardian)    | studentcontacts          | Done        | 2026-04-21 | 2026-04-21 |
+| POP-43 | Create student flag records (SEN, medical, pastoral)| studentflags             | Done        | 2026-04-21 | 2026-04-21 |
+| POP-44 | Create student medical records                      | studentmedical           | Done        | 2026-04-21 | 2026-04-21 |
+| POP-45 | Create test student absence records                 | studentabsences          | Done        | 2026-04-21 | 2026-04-21 |
 +--------+-----------------------------------------------------+--------------------------+-------------+------------+------------+
 
 ## Group 7 — Attendance
@@ -329,15 +329,15 @@
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 | POP-46 | Create test attendance registers                       | attendanceregisters   | Not Started | —          | —          |
 | POP-47 | Create test attendance marks                           | attendancemarks       | Not Started | —          | —          |
-| POP-48 | Create test attendance records                         | attendance            | Not Started | —          | —          |
+| POP-48 | Create test attendance records                         | attendance            | Done        | 2026-04-21 | 2026-04-21 |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 
 ## Group 8 — Notifications & Messages
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
 | TaskID | Description                                            | Table                 | Status      | Started    | Completed  |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
-| POP-49 | Create test app notification records                   | appnotifications      | Not Started | —          | —          |
-| POP-50 | Create test message records                            | messages              | Not Started | —          | —          |
+| POP-49 | Create test app notification records                   | appnotifications      | Done        | 2026-04-21 | 2026-04-21 |
+| POP-50 | Create test message records                            | messages              | Done        | 2026-04-21 | 2026-04-21 |
 +--------+--------------------------------------------------------+-----------------------+-------------+------------+------------+
   Note: Audit tables (auditlog, loginaudit, staffabsenceaudit, etc.) are auto-populated
   by the application and require no manual seeding.
@@ -378,3 +378,51 @@
 | VAL-01 | Full end-to-end validation (VAL-01 to VAL-11)         | Not Started | —       | —         |
 | PH2+   | All of Phase 2 through Phase 10 not yet started       | Not Started | —       | —         |
 +--------+-------------------------------------------------------+-------------+---------+-----------+
+
+================================================================================
+
+# 16. E15 — User Management Module
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+
+| TaskID | Description                                                                   | Status      | Started    | Completed  |
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+
+| E15-01 | Add StaffId (long?) FK to User entity                                         | Done        | 2026-04-21 | 2026-04-21 |
+| E15-02 | Update UserManagement DTOs — remove name/phone, add StaffId                   | Done        | 2026-04-21 | 2026-04-21 |
+| E15-03 | Update IUserManagementService — add Staff lookup methods                       | Done        | 2026-04-21 | 2026-04-21 |
+| E15-04 | Rewrite UserManagementService — Staff-linked CRUD enforcement                  | Done        | 2026-04-21 | 2026-04-21 |
+| E15-05 | Update UserManagementApiServiceV2 — add Staff lookup wrappers                  | Done        | 2026-04-21 | 2026-04-21 |
+| E15-06 | Update UserFormViewModelV2 — StaffId, LinkedStaff, SetError                    | Done        | 2026-04-21 | 2026-04-21 |
+| E15-07 | Update UserListViewModelV2 — AllItems, staffName column                        | Done        | 2026-04-21 | 2026-04-21 |
+| E15-08 | Rewrite UserFormPageV2.razor — routes, fields, remove stale blocks             | Done        | 2026-04-21 | 2026-04-21 |
+| E15-09 | Update UsersListPageV2.razor — remove Add User button, phone to staffName      | Done        | 2026-04-21 | 2026-04-21 |
+| E15-10 | Update StaffDetailPageV2.razor — add Create User Account button                | Done        | 2026-04-21 | 2026-04-21 |
+| E15-11 | Remove standalone and email-based user creation                                | Done        | 2026-04-21 | 2026-04-21 |
+| E15-12 | Enforce mandatory Staff-linked user creation via StaffId FK                    | Done        | 2026-04-21 | 2026-04-21 |
+| E15-13 | Prevent duplicate user accounts per Staff record                               | Done        | 2026-04-21 | 2026-04-21 |
+| E15-14 | Remove FirstName, LastName, PhoneNumber from DTOs and UI                       | Done        | 2026-04-21 | 2026-04-21 |
+| E15-15 | Remove stale duplicate @code block from UserFormPageV2.razor                   | Done        | 2026-04-21 | 2026-04-21 |
+| E15-16 | Fix all build errors from entity and DTO changes                               | Done        | 2026-04-21 | 2026-04-21 |
+| E15-17 | Final verification build — 0 CS errors confirmed                               | Done        | 2026-04-21 | 2026-04-21 |
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+
+
+================================================================================
+
+# 17. E15-BF — User Management Bug Fixes & Page Wiring
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+
+| TaskID | Description                                                                   | Status      | Started    | Completed  |
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+
+| BF-01  | Fix UserListViewModelV2 — reset filter/search/sort/page state in LoadAsync()   | Done        | 2026-04-21 | 2026-04-21 |
+| BF-02  | Fix UserManagementService.GetUsersAsync — broken raw string literal SQL        | Done        | 2026-04-21 | 2026-04-21 |
+|        | (role IN clause was emitted as literal text, not a SQL predicate)              |             |            |            |
+| BF-03  | Add RoleListItemDto, FeatureListItemDto, PageAccessRowDto to DTOs              | Done        | 2026-04-21 | 2026-04-21 |
+| BF-04  | Add GetAllRoleTypesAsync to IUserManagementService and UserManagementService    | Done        | 2026-04-21 | 2026-04-21 |
+| BF-05  | Add GetFeaturesAsync to IUserManagementService and UserManagementService        | Done        | 2026-04-21 | 2026-04-21 |
+| BF-06  | Add GetPageAccessAsync to IUserManagementService and UserManagementService      | Done        | 2026-04-21 | 2026-04-21 |
+| BF-07  | Add GetAllRoleTypesAsync wrapper to UserManagementApiServiceV2                  | Done        | 2026-04-21 | 2026-04-21 |
+| BF-08  | Add GetFeaturesAsync wrapper to UserManagementApiServiceV2                      | Done        | 2026-04-21 | 2026-04-21 |
+| BF-09  | Add GetPageAccessAsync wrapper to UserManagementApiServiceV2                    | Done        | 2026-04-21 | 2026-04-21 |
+| BF-10  | Wire RolesPage.razor to live DB via GetAllRoleTypesAsync                        | Done        | 2026-04-21 | 2026-04-21 |
+| BF-11  | Wire PermissionsPage.razor to live DB via GetFeaturesAsync                      | Done        | 2026-04-21 | 2026-04-21 |
+| BF-12  | Wire PageAccessPage.razor to live DB via GetPageAccessAsync                     | Done        | 2026-04-21 | 2026-04-21 |
+| BF-13  | Update headers on all 8 modified files (version, date, changes)                | Done        | 2026-04-21 | 2026-04-21 |
+| BF-14  | Final verification build — 0 CS errors confirmed                               | Done        | 2026-04-21 | 2026-04-21 |
++--------+-------------------------------------------------------------------------------+-------------+------------+------------+

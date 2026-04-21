@@ -10,7 +10,7 @@ Global Rules:
   3. Always append new entries to the "Changes" block when a file is updated.
   4. Always bump the Version number when a file is updated, even for a one-line change.
   5. Never delete or rewrite existing "Changes" entries.
-  6. Always provide a full drop-in file replacement when updating any file.
+
   7. Never reorder, rename, or refactor code unless explicitly instructed.
   8. Always use the correct header and section comment format for the file type.
   9. Never introduce assumptions (e.g., claim names, namespaces, DbContext names).

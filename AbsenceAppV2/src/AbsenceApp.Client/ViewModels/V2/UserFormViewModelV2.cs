@@ -48,15 +48,19 @@ public sealed class UserFormViewModelV2
     // Form fields
     // =========================================================================
 
-    public long    UserId       { get; set; }
-    public string  FirstName    { get; set; } = string.Empty;
-    public string  LastName     { get; set; } = string.Empty;
+    /// <summary>Mandatory. Set from the originating Staff record; immutable after creation.</summary>
+    public long    StaffId      { get; set; }
     public string  Username     { get; set; } = string.Empty;
     public string  Email        { get; set; } = string.Empty;
-    public string? PhoneNumber  { get; set; }
     public string  Password     { get; set; } = string.Empty;
     public long    RoleTypeId   { get; set; }
     public string  Status       { get; set; } = "active";
+
+    // =========================================================================
+    // Linked staff (read-only display)
+    // =========================================================================
+
+    public StaffSelectDto? LinkedStaff { get; private set; }
 
     // =========================================================================
     // Reference data
@@ -74,24 +78,37 @@ public sealed class UserFormViewModelV2
     // State
     // =========================================================================
 
+    public long   UserId   { get; private set; }
     public bool   IsLoading { get; private set; }
     public bool   IsSaving  { get; private set; }
     public string? Error    { get; private set; }
     public string? Success  { get; private set; }
 
+    /// <summary>Called by the page when the route is invalid before any async init.</summary>
+    public void SetError(string message) => Error = message;
+
     // =========================================================================
-    // Initialise for Add
+    // Initialise for Add (must be called with the originating StaffId)
     // =========================================================================
 
-    public async Task InitNewAsync(CancellationToken ct = default)
+    public async Task InitNewAsync(long staffId, CancellationToken ct = default)
     {
-        IsNew    = true;
+        IsNew     = true;
+        StaffId   = staffId;
         IsLoading = true;
-        Error    = null;
+        Error     = null;
         try
         {
             RoleTypes   = await _svc.GetRoleTypesAsync(ct);
-            Permissions = (await _svc.GetUserPermissionsAsync(0, ct)).ToList(); // all-false defaults
+            LinkedStaff = await _svc.GetStaffForUserCreateAsync(staffId, ct);
+            if (LinkedStaff is null)
+            {
+                Error = $"Staff record {staffId} not found.";
+                return;
+            }
+            // Pre-fill email from staff work email.
+            Email = LinkedStaff.WorkEmail;
+            Permissions = (await _svc.GetUserPermissionsAsync(0, ct)).ToList();
         }
         catch (Exception ex) { Error = ex.Message; }
         finally { IsLoading = false; }
@@ -117,15 +134,16 @@ public sealed class UserFormViewModelV2
                 return;
             }
 
-            UserId      = dto.Id;
-            FirstName   = dto.FirstName;
-            LastName    = dto.LastName;
-            Username    = dto.Username;
-            Email       = dto.Email;
-            PhoneNumber = dto.PhoneNumber;
-            RoleTypeId  = dto.RoleTypeId;
-            Status      = dto.Status;
-            Password    = string.Empty;   // never pre-fill password
+            UserId    = dto.Id;
+            StaffId   = dto.StaffId ?? 0;
+            Username  = dto.Username;
+            Email     = dto.Email;
+            RoleTypeId = dto.RoleTypeId;
+            Status    = dto.Status;
+            Password  = string.Empty;   // never pre-fill password
+
+            if (StaffId > 0)
+                LinkedStaff = await _svc.GetStaffForUserCreateAsync(StaffId, ct);
 
             Permissions = (await _svc.GetUserPermissionsAsync(userId, ct)).ToList();
         }
@@ -151,13 +169,11 @@ public sealed class UserFormViewModelV2
             {
                 var (ok, err, id) = await _svc.CreateUserAsync(new UserCreateDto
                 {
-                    FirstName   = FirstName.Trim(),
-                    LastName    = LastName.Trim(),
-                    Username    = Username.Trim(),
-                    Email       = Email.Trim(),
-                    PhoneNumber = PhoneNumber?.Trim(),
-                    Password    = Password,
-                    RoleTypeId  = RoleTypeId,
+                    StaffId    = StaffId,
+                    Username   = Username.Trim(),
+                    Email      = Email.Trim(),
+                    Password   = Password,
+                    RoleTypeId = RoleTypeId,
                 }, ct);
 
                 if (!ok) { Error = err ?? "Unknown error."; return false; }
@@ -168,11 +184,9 @@ public sealed class UserFormViewModelV2
                 var (ok, err) = await _svc.UpdateUserAsync(new UserUpdateDto
                 {
                     Id          = UserId,
-                    FirstName   = FirstName.Trim(),
-                    LastName    = LastName.Trim(),
+                    StaffId     = StaffId,    // passed through but NOT modified by service
                     Username    = Username.Trim(),
                     Email       = Email.Trim(),
-                    PhoneNumber = PhoneNumber?.Trim(),
                     NewPassword = string.IsNullOrWhiteSpace(Password) ? null : Password,
                     RoleTypeId  = RoleTypeId,
                     Status      = Status,

@@ -3,9 +3,9 @@
  File        : UserListViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.2.0
  Created     : 2026-04-11
- Updated     : 2026-04-11
+ Updated     : 2026-04-21
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for UsersListPageV2. Manages paged user data, search,
                sort, and filter state. Uses UserManagementApiServiceV2 (direct
@@ -14,6 +14,11 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+   - 1.1.0  2026-04-21  Fixed users disappearing on re-navigation: LoadAsync()
+                         now resets SearchTerm, _activeFilters, SortColumn,
+                         SortAscending, and Page before each DB reload so the
+                         Scoped ViewModel does not retain stale filter state.
+   - 1.2.0  2026-04-21  Added staffName sort case. Added DeleteUserAsync().
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in V2ServiceCollectionExtensions.cs.
@@ -43,6 +48,9 @@ public sealed class UserListViewModelV2
 
     private IReadOnlyList<UserListItemDto> _all = [];
 
+    /// <summary>Exposes the full unfiltered dataset for building dynamic filter options.</summary>
+    public IReadOnlyList<UserListItemDto> AllItems => _all;
+
     // =========================================================================
     // State
     // =========================================================================
@@ -65,10 +73,10 @@ public sealed class UserListViewModelV2
 
     public static List<TableColumnModel> Columns =>
     [
-        new() { Key = "fullName",      Label = "Full Name",  Visible = true,  Sortable = true,  Order = 0 },
-        new() { Key = "username",      Label = "Username",   Visible = true,  Sortable = true,  Order = 1 },
-        new() { Key = "email",         Label = "Email",      Visible = true,  Sortable = false, Order = 2 },
-        new() { Key = "phoneNumber",   Label = "Phone",      Visible = true,  Sortable = false, Order = 3, Width = "130px" },
+        new() { Key = "staffName",     Label = "Staff",      Visible = true,  Sortable = true,  Order = 0 },
+        new() { Key = "fullName",      Label = "Full Name",  Visible = true,  Sortable = true,  Order = 1 },
+        new() { Key = "username",      Label = "Username",   Visible = true,  Sortable = true,  Order = 2 },
+        new() { Key = "email",         Label = "Email",      Visible = true,  Sortable = false, Order = 3 },
         new() { Key = "roleTypeName",  Label = "Role",       Visible = true,  Sortable = true,  Order = 4, Width = "140px" },
         new() { Key = "status",        Label = "Status",     Visible = true,  Sortable = true,  Order = 5, Width = "100px" },
         new() { Key = "createdAt",     Label = "Created",    Visible = false, Sortable = true,  Order = 6, Width = "110px" },
@@ -80,6 +88,15 @@ public sealed class UserListViewModelV2
 
     public async Task LoadAsync(CancellationToken ct = default)
     {
+        // Reset all filter/search/sort/page state so every navigation starts fresh.
+        // Without this reset the Scoped ViewModel retains state from the previous
+        // visit and can silently hide all rows on second navigation.
+        SearchTerm     = string.Empty;
+        _activeFilters = new Dictionary<string, string>();
+        SortColumn     = string.Empty;
+        SortAscending  = true;
+        Page           = 1;
+
         IsLoading = true;
         Error     = null;
         try
@@ -178,6 +195,7 @@ public sealed class UserListViewModelV2
         // Sort
         q = SortColumn switch
         {
+            "staffName"    => SortAscending ? q.OrderBy(u => u.StaffName)    : q.OrderByDescending(u => u.StaffName),
             "fullName"     => SortAscending ? q.OrderBy(u => u.FullName)     : q.OrderByDescending(u => u.FullName),
             "username"     => SortAscending ? q.OrderBy(u => u.Username)     : q.OrderByDescending(u => u.Username),
             "roleTypeName" => SortAscending ? q.OrderBy(u => u.RoleTypeName) : q.OrderByDescending(u => u.RoleTypeName),
@@ -189,5 +207,23 @@ public sealed class UserListViewModelV2
         var list = q.ToList();
         TotalCount = list.Count;
         Items = list.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
+    }
+
+    // =========================================================================
+    // Delete
+    // =========================================================================
+
+    public async Task DeleteUserAsync(long userId, CancellationToken ct = default)
+    {
+        Error = null;
+        try
+        {
+            await _svc.DeleteUserAsync(userId, ct);
+            await LoadAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
     }
 }

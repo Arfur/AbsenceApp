@@ -5,18 +5,18 @@ namespace AbsenceApp.Core.ViewModels;
 
 public class AttendanceLogViewModel
 {
-    private readonly IStudentAbsenceService _service;
+    private readonly IAbsenceService _service;
 
-    public AttendanceLogViewModel(IStudentAbsenceService service) => _service = service;
+    public AttendanceLogViewModel(IAbsenceService service) => _service = service;
 
-    public IEnumerable<StudentAbsenceDto> Absences { get; private set; } = Enumerable.Empty<StudentAbsenceDto>();
+    public IEnumerable<AbsenceDto> Absences { get; private set; } = Enumerable.Empty<AbsenceDto>();
     public bool    IsLoading    { get; private set; }
     public string? ErrorMessage { get; private set; }
 
     public async Task LoadAsync(long studentId)
     {
         IsLoading = true; ErrorMessage = null;
-        try   { Absences = await _service.GetByStudentAsync(studentId); }
+        try   { Absences = await _service.GetByPersonAsync("Student", studentId); }
         catch (Exception ex) { ErrorMessage = ex.Message; }
         finally { IsLoading = false; }
     }

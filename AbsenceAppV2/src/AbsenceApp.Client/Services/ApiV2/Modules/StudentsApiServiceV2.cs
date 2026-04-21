@@ -75,10 +75,10 @@ public sealed class StudentsApiServiceV2 : ApiServiceBaseV2
 
     // -------------------------------------------------------------------------
     /// <summary>Returns absence history for a student.</summary>
-    public Task<ApiResponseV2<List<StudentAbsenceDto>>> GetAbsencesAsync(
+    public Task<ApiResponseV2<List<AbsenceDto>>> GetAbsencesAsync(
         long studentId,
         CancellationToken ct = default) =>
-        Client.GetAsync<List<StudentAbsenceDto>>($"{RoutePrefix}/{studentId}/absences", ct);
+        Client.GetAsync<List<AbsenceDto>>($"{RoutePrefix}/{studentId}/absences", ct);
 
     // -------------------------------------------------------------------------
     // Search / Filter

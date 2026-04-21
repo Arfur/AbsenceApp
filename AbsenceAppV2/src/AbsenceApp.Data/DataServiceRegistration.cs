@@ -3,9 +3,9 @@
  File        : DataServiceRegistration.cs
  Namespace   : AbsenceApp.Data
  Author      : Michael
- Version     : 1.4.0
+ Version     : 1.5.0
  Created     : 2026-03-13
- Updated     : 2026-04-11
+ Updated     : 2026-04-21
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers the complete data
                layer — DbContext, EF repositories, and EF-backed services —
@@ -36,6 +36,11 @@
                          MessageService and INotificationService →
                          NotificationService registrations.
    - 1.4.0  2026-04-11  E16 Pages Registry: added IPagesService → PagesService.
+   - 1.5.0  2026-04-21  Absence domain redesign: replaced IStaffAbsenceRepository,
+                         IStudentAbsenceRepository, IStaffAbsenceService,
+                         IStudentAbsenceService with IAbsenceRepository,
+                         IAbsenceStatusRepository, IAbsenceService,
+                         IAbsenceStatusService.
 -------------------------------------------------------------------------------
  Notes       :
    - Legacy in-memory services (IStudentService, IAbsenceService) are
@@ -78,15 +83,15 @@ public static class DataServiceRegistration
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<IStaffRepository, StaffRepository>();
-        services.AddScoped<IStaffAbsenceRepository, StaffAbsenceRepository>();
-        services.AddScoped<IStudentAbsenceRepository, StudentAbsenceRepository>();
+        services.AddScoped<IAbsenceRepository, AbsenceRepository>();
+        services.AddScoped<IAbsenceStatusRepository, AbsenceStatusRepository>();
+        services.AddScoped<IAbsenceTypeRepository, AbsenceTypeRepository>();
         services.AddScoped<IStudentContactRepository, StudentContactRepository>();
         services.AddScoped<IAttendanceRegisterRepository, AttendanceRegisterRepository>();
         services.AddScoped<IYearGroupRepository, YearGroupRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IJobTitleRepository, JobTitleRepository>();
         services.AddScoped<IHouseRepository, HouseRepository>();
-        services.AddScoped<IAbsenceTypeRepository, AbsenceTypeRepository>();
 
         // EF-backed services
         services.AddScoped<IClassService, ClassService>();
@@ -97,8 +102,9 @@ public static class DataServiceRegistration
         services.AddScoped<ITableSettingsService, TableSettingsService>();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IStaffService, StaffService>();
-        services.AddScoped<IStaffAbsenceService, StaffAbsenceService>();
-        services.AddScoped<IStudentAbsenceService, StudentAbsenceService>();
+        services.AddScoped<IAbsenceService, AbsenceService>();
+        services.AddScoped<IAbsenceStatusService, AbsenceStatusService>();
+        services.AddScoped<IAbsenceTypeService, AbsenceTypeService>();
         services.AddScoped<IStudentContactService, StudentContactService>();
         services.AddScoped<IAttendanceRegisterService, AttendanceRegisterService>();
         services.AddScoped<IYearGroupService, YearGroupService>();

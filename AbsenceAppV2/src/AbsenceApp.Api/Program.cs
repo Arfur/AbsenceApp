@@ -180,7 +180,67 @@ features.MapGet("/allowed", async (
 // ===========================================================================
 var classes = app.MapGroup("/api/classes").WithTags("Classes");
 
-/* unchanged code continues verbatim */
+// ===========================================================================
+// Absence lookup endpoints
+// ===========================================================================
+var absenceTypes = app.MapGroup("/api/absence-types").WithTags("Absences");
+
+absenceTypes.MapGet("/", async (IAbsenceTypeService svc, CancellationToken ct) =>
+    Results.Ok(await svc.GetAllAsync()))
+    .WithName("GetAbsenceTypes");
+
+var absenceStatuses = app.MapGroup("/api/absence-statuses").WithTags("Absences");
+
+absenceStatuses.MapGet("/", async (IAbsenceStatusService svc, CancellationToken ct) =>
+    Results.Ok(await svc.GetAllAsync()))
+    .WithName("GetAbsenceStatuses");
+
+// ===========================================================================
+// Absence endpoints
+// ===========================================================================
+var absences = app.MapGroup("/api/absences").WithTags("Absences");
+
+absences.MapGet("/staff/{staffId:long}", async (
+    long staffId,
+    IAbsenceService svc,
+    CancellationToken ct) =>
+    Results.Ok(await svc.GetByPersonAsync("Staff", staffId)))
+    .WithName("GetStaffAbsences");
+
+absences.MapGet("/students/{studentId:long}", async (
+    long studentId,
+    IAbsenceService svc,
+    CancellationToken ct) =>
+    Results.Ok(await svc.GetByPersonAsync("Student", studentId)))
+    .WithName("GetStudentAbsences");
+
+absences.MapGet("/{id:long}", async (
+    long id,
+    IAbsenceService svc,
+    CancellationToken ct) =>
+{
+    var result = await svc.GetByIdAsync(id);
+    return result is null ? Results.NotFound() : Results.Ok(result);
+}).WithName("GetAbsenceById");
+
+absences.MapPost("/", async (
+    CreateAbsenceDto body,
+    IAbsenceService svc,
+    CancellationToken ct) =>
+{
+    var created = await svc.CreateAsync(body);
+    return Results.Created($"/api/absences/{created.Id}", created);
+}).WithName("CreateAbsence");
+
+absences.MapPatch("/{id:long}/status", async (
+    long id,
+    UpdateAbsenceStatusDto body,
+    IAbsenceService svc,
+    CancellationToken ct) =>
+{
+    await svc.UpdateStatusAsync(id, body);
+    return Results.NoContent();
+}).WithName("UpdateAbsenceStatus");
 
 // ===========================================================================
 // Application start

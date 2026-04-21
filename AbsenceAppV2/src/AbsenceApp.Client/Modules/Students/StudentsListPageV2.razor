@@ -165,9 +165,8 @@
                         value="@_f["gender"]"
                         @onchange="@(e => SetFilter("gender", "Gender", e.Value?.ToString()))">
                     <option value="">Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                    @foreach (var v in _filterOptions["gender"])
+                    { <option value="@v">@v</option> }
                 </select>
 
                 <select class="tpt-filter-select"
@@ -215,10 +214,8 @@
                         value="@_f["status"]"
                         @onchange="@(e => SetFilter("status", "Status", e.Value?.ToString()))">
                     <option value="">Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    <option value="Suspended">Suspended</option>
-                    <option value="Left">Left</option>
+                    @foreach (var v in _filterOptions["status"])
+                    { <option value="@v">@v</option> }
                 </select>
             </Filters>
 
@@ -556,17 +553,19 @@
         ["status"]           = ""
     };
 
-    // Distinct option sets — populated from loaded data (add to as data grows)
+    // Distinct option sets — populated from the full dataset after load
     private readonly Dictionary<string, List<string>> _filterOptions = new()
     {
         ["admission_number"] = [],
         ["first_name"]       = [],
         ["last_name"]        = [],
+        ["gender"]           = [],
         ["date_of_birth"]    = [],
         ["year_group"]       = [],
         ["class_name"]       = [],
         ["house_name"]       = [],
-        ["admission_date"]   = []
+        ["admission_date"]   = [],
+        ["status"]           = []
     };
 
     private List<FilterChip> _activeFilterChips = [];
@@ -643,25 +642,29 @@
 
     private void RebuildFilterOptions()
     {
-        // Populate dropdowns with distinct values from the current page of data.
-        // In a full implementation these would come from the API; here we seed
-        // from loaded items so filters are immediately useful.
-        _filterOptions["admission_number"] = ViewModel.Items
+        // Always build from the full unfiltered dataset so every distinct value
+        // is available regardless of which page is currently displayed.
+        var all = ViewModel.AllItems;
+        _filterOptions["admission_number"] = all
             .Select(s => s.AdmissionNumber).Distinct().Order().ToList();
-        _filterOptions["first_name"] = ViewModel.Items
+        _filterOptions["first_name"] = all
             .Select(s => s.FirstName).Distinct().Order().ToList();
-        _filterOptions["last_name"] = ViewModel.Items
+        _filterOptions["last_name"] = all
             .Select(s => s.LastName).Distinct().Order().ToList();
-        _filterOptions["date_of_birth"] = ViewModel.Items
+        _filterOptions["gender"] = all
+            .Select(s => s.Gender).Distinct().Order().ToList();
+        _filterOptions["date_of_birth"] = all
             .Select(s => s.DateOfBirth.ToString("dd/MM/yyyy")).Distinct().Order().ToList();
-        _filterOptions["year_group"] = ViewModel.Items
+        _filterOptions["year_group"] = all
             .Select(s => s.YearGroupName).Distinct().Order().ToList();
-        _filterOptions["class_name"] = ViewModel.Items
+        _filterOptions["class_name"] = all
             .Select(s => s.ClassName).Distinct().Order().ToList();
-        _filterOptions["house_name"] = ViewModel.Items
+        _filterOptions["house_name"] = all
             .Select(s => s.HouseName ?? "").Where(v => v != "").Distinct().Order().ToList();
-        _filterOptions["admission_date"] = ViewModel.Items
+        _filterOptions["admission_date"] = all
             .Select(s => s.AdmissionDate.ToString("dd/MM/yyyy")).Distinct().Order().ToList();
+        _filterOptions["status"] = all
+            .Select(s => s.Status).Distinct().Order().ToList();
     }
 
     // -------------------------------------------------------------------------

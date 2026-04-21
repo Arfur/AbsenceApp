@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===============================================================================
  File        : CsvImportPipeline.cs
  Namespace   : AbsenceApp.Data.Seeding
@@ -64,7 +64,7 @@ public sealed class CsvImportPipeline
     /// </summary>
     public async Task RunAllAsync(string csvDirectory)
     {
-        // â”€â”€ Phase 1: standalone lookup tables (no FK dependencies) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Phase 1: standalone lookup tables (no FK dependencies) ────────────
         await ImportSchoolsAsync(csvDirectory);
         await ImportPhasesAsync(csvDirectory);
         await ImportJobTitlesAsync(csvDirectory);
@@ -76,19 +76,19 @@ public sealed class CsvImportPipeline
         await ImportExternalSystemsAsync(csvDirectory);
         await ImportSystemEventsAsync(csvDirectory);
 
-        // â”€â”€ Phase 2: school-scoped structure â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Phase 2: school-scoped structure ──────────────────────────────────
         await ImportYearGroupsAsync(csvDirectory);
         await ImportHousesAsync(csvDirectory);
         await ImportDepartmentsAsync(csvDirectory);
         await ImportClassesAsync(csvDirectory);
 
-        // â”€â”€ Phase 3: core people tables â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Phase 3: core people tables ───────────────────────────────────────
         await ImportUsersAsync(csvDirectory);
         await ImportUserProfilesAsync(csvDirectory);
         await ImportStaffAsync(csvDirectory);
         await ImportStudentsAsync(csvDirectory);
 
-        // â”€â”€ Phase 4: extension / link tables â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Phase 4: extension / link tables ─────────────────────────────────
         await ImportClassYearGroupAssignmentsAsync(csvDirectory);
         await ImportStaffAssignmentsAsync(csvDirectory);
         await ImportStaffAbsencesAsync(csvDirectory);
@@ -101,7 +101,7 @@ public sealed class CsvImportPipeline
         await ImportAttendanceRegistersAsync(csvDirectory);
         await ImportAttendanceMarksAsync(csvDirectory);
 
-        // â”€â”€ Phase 5: audit tables â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Phase 5: audit tables ─────────────────────────────────────────────
         await ImportLoginAuditAsync(csvDirectory);
         await ImportAccountVerificationEventsAsync(csvDirectory);
         await ImportRoleChangeAuditAsync(csvDirectory);
@@ -113,13 +113,13 @@ public sealed class CsvImportPipeline
     }
 
     // =========================================================================
-    // Phase 1 â€” lookup tables
+    // Phase 1 — lookup tables
     // =========================================================================
 
     // CSV columns: id, name, code, school_ref, created_at, updated_at
     // Entity column notes:
-    //   status     â†’ not in CSV; defaulted to "active"
-    //   description â†’ not in CSV; nullable â€” left null
+    //   status     → not in CSV; defaulted to "active"
+    //   description → not in CSV; nullable — left null
     private async Task ImportSchoolsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "schools.csv"));
@@ -138,9 +138,9 @@ public sealed class CsvImportPipeline
 
     // CSV columns: id, name, created_at, updated_at
     // Entity column notes:
-    //   code         â†’ not in CSV; set to name value
-    //   numeric_order â†’ not in CSV; defaulted to 0
-    //   school_id    â†’ not in CSV; defaulted to 1
+    //   code         → not in CSV; set to name value
+    //   numeric_order → not in CSV; defaulted to 0
+    //   school_id    → not in CSV; defaulted to 1
     private async Task ImportPhasesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "phases.csv"));
@@ -223,17 +223,17 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.Responsibilities, r => r.Id, entities);
     }
 
-    // CSV columns: id, name, code, description, is_paid
+    // CSV columns (new schema): id, code, name, category, is_authorised, created_at
     private async Task ImportAbsenceTypesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "absence_types.csv"));
         var entities = rows.Select(r => new AbsenceType
         {
-            Id          = ToLong(r, "id"),
-            Name        = Col(r, "name"),
-            Code        = Col(r, "code"),
-            Description = NullableCol(r, "description"),
-            IsPaid      = ToBool(r, "is_paid"),
+            Id           = ToLong(r, "id"),
+            Code         = Col(r, "code"),
+            Name         = Col(r, "name"),
+            Category     = Col(r, "category"),
+            IsAuthorised = ToBool(r, "is_authorised"),
         }).ToList();
         await UpsertAsync(_db.AbsenceTypes, at => at.Id, entities);
     }
@@ -287,15 +287,15 @@ public sealed class CsvImportPipeline
     }
 
     // =========================================================================
-    // Phase 2 â€” school-scoped structure
+    // Phase 2 — school-scoped structure
     // =========================================================================
 
     // CSV columns: id, name, created_at, updated_at
     // Entity column notes:
-    //   code         â†’ not in CSV; set to name value
-    //   numeric_value â†’ not in CSV; defaulted to 0
-    //   phase_id     â†’ not in CSV; defaulted to 1
-    //   school_id    â†’ not in CSV; defaulted to 1
+    //   code         → not in CSV; set to name value
+    //   numeric_value → not in CSV; defaulted to 0
+    //   phase_id     → not in CSV; defaulted to 1
+    //   school_id    → not in CSV; defaulted to 1
     private async Task ImportYearGroupsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "year_groups.csv"));
@@ -315,9 +315,9 @@ public sealed class CsvImportPipeline
 
     // CSV columns: id, name, created_at, updated_at
     // Entity column notes:
-    //   colour   â†’ not in CSV; defaulted to empty string
-    //   code     â†’ not in CSV; set to name value
-    //   school_id â†’ not in CSV; defaulted to 1
+    //   colour   → not in CSV; defaulted to empty string
+    //   code     → not in CSV; set to name value
+    //   school_id → not in CSV; defaulted to 1
     private async Task ImportHousesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "houses.csv"));
@@ -336,9 +336,9 @@ public sealed class CsvImportPipeline
 
     // CSV columns: id, name, code, created_at, updated_at
     // Entity column notes:
-    //   description â†’ not in CSV; nullable â€” left null
-    //   head_user_id â†’ not in CSV; nullable â€” left null
-    //   status      â†’ not in CSV; defaulted to "active"
+    //   description → not in CSV; nullable — left null
+    //   head_user_id → not in CSV; nullable — left null
+    //   status      → not in CSV; defaulted to "active"
     private async Task ImportDepartmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "departments.csv"));
@@ -358,8 +358,8 @@ public sealed class CsvImportPipeline
 
     // CSV columns: id, name, created_at, updated_at
     // Entity column notes:
-    //   code        â†’ not in CSV; set to name value
-    //   description â†’ not in CSV; nullable â€” left null
+    //   code        → not in CSV; set to name value
+    //   description → not in CSV; nullable — left null
     private async Task ImportClassesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "classes.csv"));
@@ -376,7 +376,7 @@ public sealed class CsvImportPipeline
     }
 
     // =========================================================================
-    // Phase 3 â€” core people tables
+    // Phase 3 — core people tables
     // =========================================================================
 
     // CSV columns: id, name, username, email, email_verified_at, password,
@@ -457,20 +457,20 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.UserProfiles, u => u.Id, entities);
     }
 
-    // CSV columns: id, first_name, last_name, job_title (textâ€”not an ID),
-    //              email, school_id (text ref codeâ€”not numeric), created_at, updated_at
+    // CSV columns: id, first_name, last_name, job_title (text—not an ID),
+    //              email, school_id (text ref code—not numeric), created_at, updated_at
     // Entity column notes:
-    //   staff_number      â†’ not in CSV; set to id string as placeholder
-    //   title             â†’ not in CSV; defaulted to empty string
-    //   date_of_birth     â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   employment_type   â†’ not in CSV; defaulted to "Unknown"
-    //   contract_type     â†’ not in CSV; defaulted to "Unknown"
-    //   hire_date         â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   work_location     â†’ not in CSV; defaulted to empty string
-    //   job_title_id      â†’ not in CSV (only text name present); defaulted to 1
-    //   job_group_id      â†’ not in CSV; defaulted to 1
-    //   department_id     â†’ not in CSV; defaulted to 1
-    //   account_status    â†’ not in CSV; defaulted to "active"
+    //   staff_number      → not in CSV; set to id string as placeholder
+    //   title             → not in CSV; defaulted to empty string
+    //   date_of_birth     → not in CSV; defaulted to DateOnly.MinValue
+    //   employment_type   → not in CSV; defaulted to "Unknown"
+    //   contract_type     → not in CSV; defaulted to "Unknown"
+    //   hire_date         → not in CSV; defaulted to DateOnly.MinValue
+    //   work_location     → not in CSV; defaulted to empty string
+    //   job_title_id      → not in CSV (only text name present); defaulted to 1
+    //   job_group_id      → not in CSV; defaulted to 1
+    //   department_id     → not in CSV; defaulted to 1
+    //   account_status    → not in CSV; defaulted to "active"
     private async Task ImportStaffAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff.csv"));
@@ -509,14 +509,14 @@ public sealed class CsvImportPipeline
     // CSV columns: id, admission_number, first_name, last_name, year_group_id,
     //              class_id, house_id, school_id, status, created_at, updated_at
     // Entity column notes:
-    //   middle_names    â†’ not in CSV; nullable â€” left null
-    //   legal_first_name â†’ not in CSV; mirrored from first_name
-    //   legal_last_name  â†’ not in CSV; mirrored from last_name
-    //   gender           â†’ not in CSV; defaulted to empty string
-    //   date_of_birth    â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   admission_date   â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   username         â†’ not in CSV; nullable â€” left null
-    //   upn              â†’ not in CSV; nullable â€” left null
+    //   middle_names    → not in CSV; nullable — left null
+    //   legal_first_name → not in CSV; mirrored from first_name
+    //   legal_last_name  → not in CSV; mirrored from last_name
+    //   gender           → not in CSV; defaulted to empty string
+    //   date_of_birth    → not in CSV; defaulted to DateOnly.MinValue
+    //   admission_date   → not in CSV; defaulted to DateOnly.MinValue
+    //   username         → not in CSV; nullable — left null
+    //   upn              → not in CSV; nullable — left null
     private async Task ImportStudentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "students.csv"));
@@ -546,13 +546,13 @@ public sealed class CsvImportPipeline
     }
 
     // =========================================================================
-    // Phase 4 â€” link / extension tables
+    // Phase 4 — link / extension tables
     // =========================================================================
 
     // CSV columns: id, name, code, description, school_id, created_at, updated_at
     // Note: the CSV does not contain class_id or year_group_id columns.
-    //   class_id     â†’ not in CSV; defaulted to 1
-    //   year_group_id â†’ not in CSV; defaulted to 1
+    //   class_id     → not in CSV; defaulted to 1
+    //   year_group_id → not in CSV; defaulted to 1
     private async Task ImportClassYearGroupAssignmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "class_year_group_assignments.csv"));
@@ -571,13 +571,13 @@ public sealed class CsvImportPipeline
     // CSV columns: id, staff_id, class_id, year_group_id, phase_id,
     //              created_at, updated_at
     // Entity column notes:
-    //   job_title_id    â†’ not in CSV; defaulted to 1
-    //   job_group_id    â†’ not in CSV; defaulted to 1
-    //   department_id   â†’ not in CSV; defaulted to 1
-    //   responsibility_id â†’ not in CSV; nullable â€” left null
-    //   start_date      â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   end_date        â†’ not in CSV; nullable â€” left null
-    //   days_of_week    â†’ not in CSV; nullable â€” left null
+    //   job_title_id    → not in CSV; defaulted to 1
+    //   job_group_id    → not in CSV; defaulted to 1
+    //   department_id   → not in CSV; defaulted to 1
+    //   responsibility_id → not in CSV; nullable — left null
+    //   start_date      → not in CSV; defaulted to DateOnly.MinValue
+    //   end_date        → not in CSV; nullable — left null
+    //   days_of_week    → not in CSV; nullable — left null
     private async Task ImportStaffAssignmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_assignments.csv"));
@@ -599,30 +599,14 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.StaffAssignments, sa => sa.Id, entities);
     }
 
-    // CSV columns: id, staff_id, absence_type_id, start_date, end_date,
-    //              notes, created_at, updated_at
-    private async Task ImportStaffAbsencesAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "staff_absences.csv"));
-        var entities = rows.Select(r => new StaffAbsence
-        {
-            Id            = ToLong(r, "id"),
-            StaffId       = ToLong(r, "staff_id"),
-            AbsenceTypeId = ToLong(r, "absence_type_id"),
-            StartDate     = ToDate(r, "start_date"),
-            EndDate       = NullableDate(r, "end_date"),
-            Notes         = NullableCol(r, "notes"),
-            CreatedAt     = ToDateTime(r, "created_at"),
-            UpdatedAt     = ToDateTime(r, "updated_at"),
-        }).ToList();
-        await UpsertAsync(_db.StaffAbsences, sa => sa.Id, entities);
-    }
+    // StaffAbsences table archived � import no longer applicable.
+    private Task ImportStaffAbsencesAsync(string dir) => Task.CompletedTask;
 
     // CSV columns: id, staff_id, device_type_id, serial_number, asset_tag,
     //              issued_date, return_date, condition, notes, created_at, updated_at
     // Entity column notes:
-    //   assigned_date â†’ mapped from issued_date
-    //   returned_date â†’ mapped from return_date
+    //   assigned_date → mapped from issued_date
+    //   returned_date → mapped from return_date
     private async Task ImportStaffDevicesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_devices.csv"));
@@ -664,39 +648,22 @@ public sealed class CsvImportPipeline
     // Note: the CSV represents a summary record; it does not match the StudentAbsence
     // entity structure.  Only id and student_id are directly mappable; all other
     // required entity fields are defaulted below.
-    //   absence_type_id â†’ not in CSV; defaulted to 1
-    //   date            â†’ not in CSV; defaulted to DateOnly.MinValue
-    //   recorded_by     â†’ not in CSV; defaulted to 1
-    private async Task ImportStudentAbsencesAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "student_absences.csv"));
-        var entities = rows.Select(r => new StudentAbsence
-        {
-            Id            = ToLong(r, "id"),
-            StudentId     = ToLong(r, "student_id"),
-            AbsenceTypeId = 1,
-            Date          = DateOnly.MinValue,
-            StartTime     = null,
-            EndTime       = null,
-            IsAuthorised  = false,
-            Notes         = null,
-            RecordedBy    = 1,
-            CreatedAt     = ToDateTime(r, "created_at"),
-            UpdatedAt     = ToDateTime(r, "updated_at"),
-        }).ToList();
-        await UpsertAsync(_db.StudentAbsences, sa => sa.Id, entities);
-    }
+    //   absence_type_id → not in CSV; defaulted to 1
+    //   date            → not in CSV; defaulted to DateOnly.MinValue
+    //   recorded_by     → not in CSV; defaulted to 1
+    // StudentAbsences table archived - import no longer applicable.
+    private Task ImportStudentAbsencesAsync(string dir) => Task.CompletedTask;
 
     // CSV columns: id, student_id, contact_name, relationship, email, phone,
     //              created_at, updated_at
     // Entity column notes:
-    //   phone_mobile             â†’ mapped from phone
-    //   phone_home               â†’ not in CSV; nullable â€” left null
-    //   priority                 â†’ not in CSV; defaulted to 1
-    //   lives_with_student       â†’ not in CSV; nullable â€” left null
-    //   has_parental_responsibility â†’ not in CSV; defaulted to false
-    //   safeguarding_flag        â†’ not in CSV; nullable â€” left null
-    //   notes                    â†’ not in CSV; nullable â€” left null
+    //   phone_mobile             → mapped from phone
+    //   phone_home               → not in CSV; nullable — left null
+    //   priority                 → not in CSV; defaulted to 1
+    //   lives_with_student       → not in CSV; nullable — left null
+    //   has_parental_responsibility → not in CSV; defaulted to false
+    //   safeguarding_flag        → not in CSV; nullable — left null
+    //   notes                    → not in CSV; nullable — left null
     private async Task ImportStudentContactsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "student_contacts.csv"));
@@ -723,7 +690,7 @@ public sealed class CsvImportPipeline
     // CSV columns: id, student_id, condition_name, severity, medication,
     //              care_plan_file, notes, created_at, updated_at
     // Entity column notes:
-    //   medication, care_plan_file, notes â†’ not on entity; ignored
+    //   medication, care_plan_file, notes → not on entity; ignored
     private async Task ImportStudentMedicalAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "student_medical.csv"));
@@ -804,7 +771,7 @@ public sealed class CsvImportPipeline
     }
 
     // =========================================================================
-    // Phase 5 â€” audit tables
+    // Phase 5 — audit tables
     // =========================================================================
 
     // CSV columns: id, user_id, login_time, ip_address, user_agent,
@@ -881,24 +848,8 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.StaffAssignmentAudit, saa => saa.Id, entities);
     }
 
-    // CSV columns: id, staff_absence_id, staff_id, action, changed_by,
-    //              change_time, old_values, new_values
-    private async Task ImportStaffAbsenceAuditAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "staff_absence_audit.csv"));
-        var entities = rows.Select(r => new StaffAbsenceAudit
-        {
-            Id             = ToLong(r, "id"),
-            StaffAbsenceId = ToLong(r, "staff_absence_id"),
-            StaffId        = ToLong(r, "staff_id"),
-            Action         = Col(r, "action"),
-            ChangedBy      = ToLong(r, "changed_by"),
-            ChangeTime     = ToDateTime(r, "change_time"),
-            OldValues      = NullableCol(r, "old_values"),
-            NewValues      = NullableCol(r, "new_values"),
-        }).ToList();
-        await UpsertAsync(_db.StaffAbsenceAudit, saa => saa.Id, entities);
-    }
+    // StaffAbsenceAudit table archived � import no longer applicable.
+    private Task ImportStaffAbsenceAuditAsync(string dir) => Task.CompletedTask;
 
     // CSV columns: id, staff_device_id, staff_id, action, changed_by,
     //              change_time, old_values, new_values
@@ -938,26 +889,8 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.StaffExternalAccountAudit, sea => sea.Id, entities);
     }
 
-    // CSV columns: id, student_absence_id, student_id, action, changed_by,
-    //              changed_at, field_name, old_value, new_value, notes
-    private async Task ImportStudentAbsenceAuditAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "student_absence_audit.csv"));
-        var entities = rows.Select(r => new StudentAbsenceAudit
-        {
-            Id               = ToLong(r, "id"),
-            StudentAbsenceId = ToLong(r, "student_absence_id"),
-            StudentId        = ToLong(r, "student_id"),
-            Action           = Col(r, "action"),
-            ChangedBy        = ToLong(r, "changed_by"),
-            ChangedAt        = ToDateTime(r, "changed_at"),
-            FieldName        = NullableCol(r, "field_name"),
-            OldValue         = NullableCol(r, "old_value"),
-            NewValue         = NullableCol(r, "new_value"),
-            Notes            = NullableCol(r, "notes"),
-        }).ToList();
-        await UpsertAsync(_db.StudentAbsenceAudit, saa => saa.Id, entities);
-    }
+    // StudentAbsenceAudit table archived � import no longer applicable.
+    private Task ImportStudentAbsenceAuditAsync(string dir) => Task.CompletedTask;
 
     // =========================================================================
     // Generic upsert
@@ -983,8 +916,8 @@ public sealed class CsvImportPipeline
         foreach (var entity in entities)
         {
             _db.Entry(entity).State = existingIds.Contains(idFn(entity))
-                ? EntityState.Modified  // â†’ SQL UPDATE
-                : EntityState.Added;    // â†’ SQL INSERT (explicit Id)
+                ? EntityState.Modified  // → SQL UPDATE
+                : EntityState.Added;    // → SQL INSERT (explicit Id)
         }
 
         await _db.SaveChangesAsync();
@@ -998,7 +931,7 @@ public sealed class CsvImportPipeline
     /// <summary>
     /// Reads all data rows from a CSV file.  Returns an empty list if the file
     /// does not exist or contains no data rows.
-    /// Each row is returned as a case-insensitive column-name â†’ value dictionary.
+    /// Each row is returned as a case-insensitive column-name → value dictionary.
     /// </summary>
     private static async Task<List<Dictionary<string, string>>> ReadCsvAsync(string path)
     {
@@ -1077,7 +1010,7 @@ public sealed class CsvImportPipeline
         return [.. fields];
     }
 
-    // â”€â”€ Type-safe value extractors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Type-safe value extractors ────────────────────────────────────────────
 
     private static string Col(IReadOnlyDictionary<string, string> row, string col) =>
         row.TryGetValue(col, out var v) ? v.Trim() : string.Empty;

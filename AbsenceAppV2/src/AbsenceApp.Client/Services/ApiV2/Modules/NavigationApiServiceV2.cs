@@ -162,7 +162,7 @@ public sealed class NavigationApiServiceV2
                 INNER JOIN rolemenuitem rm ON rm.MenuItemId = m.Id
                 INNER JOIN userrole     ur ON ur.RoleId     = rm.RoleId
                 WHERE  ur.UserId    = @UserId
-                  AND  m.IsHidden   = 0
+                  AND  (m.ItemType != 'submenu' OR m.IsHidden = 0)
                   AND  rm.IsEnabled = 1
                 ORDER  BY m.SortOrder;
                 """;

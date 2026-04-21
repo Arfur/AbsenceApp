@@ -1,12 +1,4 @@
-.\tray-01-start.bat --skipCollectors
-
-AI response. What should we get the AI to do next. Make sure there is no guessing, making assumptions or hallucinating. 
-
-
-AI response. Tell me the next safe step. Analyse only the code I have provided. Do not guess, do not assume, and do not hallucinate anything that is not explicitly in the file. If the task involves modifying code, remind me to test the app first before applying any changes.
-
-
-"All Finished"
+1Moretititanicpassword
 
 Can you read this, just acknowledge?
 

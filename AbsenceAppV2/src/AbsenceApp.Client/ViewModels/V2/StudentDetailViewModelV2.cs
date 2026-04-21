@@ -38,7 +38,7 @@ public sealed class StudentDetailViewModelV2
     // -------------------------------------------------------------------------
 
     public StudentFullViewDto? Item { get; private set; }
-    public List<StudentAbsenceDto> Absences { get; private set; } = [];
+    public List<AbsenceDto> Absences { get; private set; } = [];
     public bool IsLoading { get; private set; }
     public string? Error { get; private set; }
 

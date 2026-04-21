@@ -18,6 +18,8 @@
    - All required string properties use = default! to satisfy the nullable compiler.
 ===============================================================================
 */
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AbsenceApp.Data.Models;
 
 /// <summary>
@@ -29,7 +31,7 @@ public class Student
     public long Id { get; set; }
     public string AdmissionNumber { get; set; } = default!;
     public string FirstName { get; set; } = default!;
-    public string? MiddleNames { get; set; }
+    [Column("MiddleName")] public string? MiddleNames { get; set; }
     public string LastName { get; set; } = default!;
     public string LegalFirstName { get; set; } = default!;
     public string LegalLastName { get; set; } = default!;
