@@ -1,0 +1,134 @@
+﻿
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassFullViewMapper.cs(
+37,42): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassMapper.cs(37,34): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassMapper.cs(49,19): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\SubjectMapper.cs(26,36)
+: error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\SubjectMapper.cs(33,19)
+: error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Models\Attendance.cs(34,12): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(46,23): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(52,23): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(55,35): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(62,32): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(68,35): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(36,16): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(37,10): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(38,22): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(39,19): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(40,22): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+Build FAILED.
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassFullViewMapper.cs(
+37,42): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassMapper.cs(37,34): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\ClassMapper.cs(49,19): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\SubjectMapper.cs(26,36)
+: error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Mappers\SubjectMapper.cs(33,19)
+: error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Models\Attendance.cs(34,12): 
+error CS0246: The type or namespace name 'Class' could not be found (are you 
+missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(46,23): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(52,23): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(55,35): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(62,32): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\ClassRepository.cs
+(68,35): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(36,16): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(37,10): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(38,22): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(39,19): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Repositories\IClassRepository.c
+s(40,22): error CS0246: The type or namespace name 'Class' could not be found 
+(are you missing a using directive or an assembly reference?) 
+[C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\AbsenceApp.Data.csproj]
+    65 Warning(s)
+    16 Error(s)
+
+

@@ -34,7 +34,7 @@ public static class ClassFullViewMapper
     /// <summary>
     /// Projects a Class entity to a ClassFullViewDto, omitting system fields.
     /// </summary>
-    public static ClassFullViewDto ToDto(Class entity) => new()
+    public static ClassFullViewDto ToDto(TeachingGroup entity) => new()
     {
         Name        = entity.Name,
         Code        = entity.Code,

@@ -29,16 +29,17 @@ namespace AbsenceApp.Core.DTOs;
 
 public class UserDto
 {
-    // =========================================================================
-    // Properties — data fields transferred across layer boundaries
-    // =========================================================================
-
-    public int UserId { get; set; }
-    public string Username { get; set; } = string.Empty;
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string FullName => $"{FirstName} {LastName}".Trim();
-    public string? Email { get; set; }
-    public bool IsActive { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public int      UserId      { get; set; }
+    public string   Username    { get; set; } = string.Empty;
+    public string   Email       { get; set; } = string.Empty;
+    public string   Status      { get; set; } = string.Empty;
+    public bool     IsAdmin     { get; set; }
+    public int?     StaffId     { get; set; }
+    public string?  Timezone    { get; set; }
+    public string?  LanguageCode { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+    public int      LoginCount  { get; set; }
+    public bool     IsActive    => Status == "Active";
+    public DateTime CreatedAt   { get; set; }
+    public DateTime UpdatedAt   { get; set; }
 }

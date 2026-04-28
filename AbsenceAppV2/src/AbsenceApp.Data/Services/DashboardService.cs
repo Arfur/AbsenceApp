@@ -22,7 +22,7 @@ public class DashboardService : IDashboardService
         var unauthorisedToday = await _context.Absences.CountAsync(a =>
             a.PersonType == "Student" && a.StartDate <= today && a.EndDate >= today
             && !a.AbsenceType!.IsAuthorised);
-        var registersOpen     = await _context.AttendanceRegisters.CountAsync(r => r.Status == "Open");
+        var registersOpen     = 0; // attendance_registers table not in DB
 
         return new DashboardOverviewDto
         {
@@ -51,13 +51,13 @@ public class DashboardService : IDashboardService
 
         var studentIds = result.Select(r => r.StudentId).ToList();
         var students   = await _context.Students
-            .Where(s => studentIds.Contains(s.Id))
+            .Where(s => studentIds.Contains((long)s.Id))
             .ToDictionaryAsync(s => s.Id, s => s.FirstName + " " + s.LastName);
 
         return result.Select(r => new DashboardStudentActivityDto
         {
             StudentId    = r.StudentId,
-            FullName     = students.TryGetValue(r.StudentId, out var name) ? name : string.Empty,
+            FullName     = students.TryGetValue((int)r.StudentId, out var name) ? name : string.Empty,
             AbsenceCount = r.AbsenceCount,
             LastAbsence  = r.LastAbsence
         });
@@ -66,7 +66,7 @@ public class DashboardService : IDashboardService
     public async Task<IEnumerable<DashboardSafeguardingDto>> GetSafeguardingAsync()
     {
         var flaggedContacts = await _context.StudentContacts
-            .Where(c => c.SafeguardingFlag == true)
+            .Where(c => c.IsPrimary)
             .ToListAsync();
 
         var studentIds = flaggedContacts.Select(c => c.StudentId).Distinct().ToList();
@@ -78,8 +78,8 @@ public class DashboardService : IDashboardService
         {
             StudentId        = c.StudentId,
             FullName         = students.TryGetValue(c.StudentId, out var name) ? name : string.Empty,
-            SafeguardingFlag = c.SafeguardingFlag ?? false,
-            Notes            = c.Notes
+            SafeguardingFlag = false, // Field removed from model
+            Notes            = null    // Field removed from model
         });
     }
 }

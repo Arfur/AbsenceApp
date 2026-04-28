@@ -55,7 +55,7 @@ public static class EntitlementsModelBuilderExtensions
         // ── Feature ──────────────────────────────────────────────────────────
         modelBuilder.Entity<Feature>(b =>
         {
-            b.ToTable("feature");
+            b.ToTable("features");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.Code).IsRequired().HasMaxLength(200);
@@ -66,7 +66,7 @@ public static class EntitlementsModelBuilderExtensions
         // ── RoleFeature ───────────────────────────────────────────────────────
         modelBuilder.Entity<RoleFeature>(b =>
         {
-            b.ToTable("rolefeature");
+            b.ToTable("rolefeatures");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.FeatureCode).IsRequired().HasMaxLength(200);
@@ -76,7 +76,7 @@ public static class EntitlementsModelBuilderExtensions
         // ── UserFeatureOverride ───────────────────────────────────────────────
         modelBuilder.Entity<UserFeatureOverride>(b =>
         {
-            b.ToTable("userfeatureoverride");
+            b.ToTable("userfeatureoverrides");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.FeatureCode).IsRequired().HasMaxLength(200);

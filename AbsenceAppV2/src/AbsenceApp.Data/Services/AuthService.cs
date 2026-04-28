@@ -123,12 +123,10 @@ public class AuthService : IAuthService
         var now  = DateTime.UtcNow;
         var user = new User
         {
-            Name      = username,
             Username  = username,
             Email     = email,
             // TODO: replace plain-text with hashed password before production deployment
             Password  = password,
-            RoleTypeId = 2,   // default to Staff role
             Status    = "Active",
             IsAdmin   = false,
             CreatedAt = now,

@@ -22,18 +22,13 @@ namespace AbsenceApp.Data.Models;
 
 public class StudentContact
 {
-    public long Id { get; set; }
-    public long StudentId { get; set; }
+    public int Id { get; set; }
+    public int StudentId { get; set; }
     public string ContactName { get; set; } = default!;
     public string Relationship { get; set; } = default!;
-    public string? PhoneMobile { get; set; }
-    public string? PhoneHome { get; set; }
+    public string? Phone { get; set; }
     public string? Email { get; set; }
-    public int Priority { get; set; }
-    public bool? LivesWithStudent { get; set; }
-    public bool HasParentalResponsibility { get; set; }
-    public bool? SafeguardingFlag { get; set; }
-    public string? Notes { get; set; }
+    public bool IsPrimary { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

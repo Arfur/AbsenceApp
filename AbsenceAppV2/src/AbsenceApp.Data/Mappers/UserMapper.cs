@@ -41,13 +41,18 @@ public static class UserMapper
 
     public static UserDto ToDto(User entity) => new()
     {
-        UserId    = (int)entity.Id,
-        Username  = entity.Username,
-        FirstName = entity.Name,
-        LastName  = string.Empty,
-        Email     = entity.Email,
-        IsActive  = entity.Status == "Active",
-        CreatedAt = entity.CreatedAt,
+        UserId       = entity.Id,
+        Username     = entity.Username,
+        Email        = entity.Email,
+        Status       = entity.Status,
+        IsAdmin      = entity.IsAdmin,
+        StaffId      = entity.StaffId,
+        Timezone     = entity.Timezone,
+        LanguageCode = entity.LanguageCode,
+        LastLoginAt  = entity.LastLoginAt,
+        LoginCount   = entity.LoginCount,
+        CreatedAt    = entity.CreatedAt,
+        UpdatedAt    = entity.UpdatedAt,
     };
 
     // =========================================================================
@@ -56,12 +61,17 @@ public static class UserMapper
 
     public static User ToEntity(UserDto dto) => new()
     {
-        Id        = dto.UserId,
-        Name      = $"{dto.FirstName} {dto.LastName}".Trim(),
-        Username  = dto.Username,
-        Email     = dto.Email ?? string.Empty,
-        Status    = dto.IsActive ? "Active" : "Inactive",
-        CreatedAt = dto.CreatedAt,
-        UpdatedAt = dto.CreatedAt,
+        Id           = dto.UserId,
+        Username     = dto.Username,
+        Email        = dto.Email,
+        Status       = dto.Status,
+        IsAdmin      = dto.IsAdmin,
+        StaffId      = dto.StaffId,
+        Timezone     = dto.Timezone,
+        LanguageCode = dto.LanguageCode,
+        LastLoginAt  = dto.LastLoginAt,
+        LoginCount   = dto.LoginCount,
+        CreatedAt    = dto.CreatedAt,
+        UpdatedAt    = dto.UpdatedAt,
     };
 }

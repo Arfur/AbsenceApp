@@ -38,7 +38,7 @@ public sealed class StaffFormViewModelV2
     // -------------------------------------------------------------------------
 
     public bool IsNew { get; private set; } = true;
-    public long EditId { get; private set; }
+    public int EditId { get; private set; }
 
     // -------------------------------------------------------------------------
     // UI state
@@ -61,10 +61,11 @@ public sealed class StaffFormViewModelV2
     public string ContractType { get; set; } = "Permanent";
     public string WorkLocation { get; set; } = string.Empty;
     public DateOnly HireDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    public DateOnly DateOfBirth { get; set; } = DateOnly.FromDateTime(DateTime.Today.AddYears(-20));
     public string AccountStatus { get; set; } = "Active";
-    public long DepartmentId { get; set; }
-    public long JobTitleId { get; set; }
-    public long JobGroupId { get; set; }
+    public int DepartmentId { get; set; }
+    public int JobTitleId { get; set; }
+    public int JobGroupId { get; set; }
 
     // -------------------------------------------------------------------------
     // Initialise
@@ -80,7 +81,7 @@ public sealed class StaffFormViewModelV2
     public async Task LoadForEditAsync(long id, CancellationToken ct = default)
     {
         IsNew = false;
-        EditId = id;
+        EditId = (int)id;
         IsBusy = true;
         Error = null;
 
@@ -97,6 +98,7 @@ public sealed class StaffFormViewModelV2
             ContractType   = s.ContractType;
             WorkLocation   = s.WorkLocation;
             HireDate       = s.HireDate;
+            DateOfBirth    = s.DateOfBirth;
             AccountStatus  = s.AccountStatus;
             // DepartmentId, JobTitleId, JobGroupId: StaffFullViewDto exposes resolved
             // names (DepartmentName etc.) rather than raw IDs. Leave IDs as 0.
@@ -153,6 +155,7 @@ public sealed class StaffFormViewModelV2
         ContractType   = "Permanent";
         WorkLocation   = string.Empty;
         HireDate       = DateOnly.FromDateTime(DateTime.Today);
+        DateOfBirth    = DateOnly.FromDateTime(DateTime.Today.AddYears(-20));
         AccountStatus  = "Active";
         DepartmentId   = 0;
         JobTitleId     = 0;
@@ -175,6 +178,6 @@ public sealed class StaffFormViewModelV2
         DepartmentId   = DepartmentId,
         JobTitleId     = JobTitleId,
         JobGroupId     = JobGroupId,
-        DateOfBirth    = DateOnly.MinValue,
+        DateOfBirth    = DateOfBirth,
     };
 }

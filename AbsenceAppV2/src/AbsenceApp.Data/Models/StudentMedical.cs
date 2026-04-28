@@ -22,10 +22,14 @@ namespace AbsenceApp.Data.Models;
 
 public class StudentMedical
 {
-    public long Id { get; set; }
-    public long StudentId { get; set; }
-    public string ConditionName { get; set; } = default!;
-    public string? Severity { get; set; }
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public string MedicalCondition { get; set; } = default!;
+    public bool IsAllergic { get; set; }
+    public string? AllergyDetails { get; set; }
+    public string? Medication { get; set; }
+    public string? EmergencyActionPlan { get; set; }
+    public int RecordedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

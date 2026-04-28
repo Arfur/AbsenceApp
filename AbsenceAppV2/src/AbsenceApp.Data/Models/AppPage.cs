@@ -3,11 +3,11 @@
  File        : AppPage.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-04-11
- Updated     : 2026-04-11
+ Updated     : 2026-04-24
 -------------------------------------------------------------------------------
- Purpose     : EF Core entity for the app_pages table.
+ Purpose     : EF Core entity for the AppPages table.
                Represents a named, addressable page in the application that
                can be targeted by the permission system (E15) and managed
                through the Pages Registry admin UI (E16).
@@ -19,6 +19,10 @@
    - 1.1.0  2026-04-11  E16 Pages Registry: added Slug, CategoryKey, MenuKey,
                          IconKey, Description, the six Supports* capability
                          flags, and CreatedAt / UpdatedAt audit timestamps.
+   - 1.2.0  2026-04-24  EF mapping update: added explicit table mapping to
+                         PascalCase table name `AppPages` to align runtime EF
+                         mappings with the live database schema (no underscores).
+                         No behavioral changes to the entity properties.
 -------------------------------------------------------------------------------
  Notes       :
    - Seeded on first migration via UserManagementModelBuilderExtensions.
@@ -32,8 +36,13 @@
      this page; used by PermissionMatrixV2 for column filtering (E17+).
 ===============================================================================
 */
+
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AbsenceApp.Data.Models;
 
+[Table("AppPages")]
 public class AppPage
 {
     public int     Id           { get; set; }

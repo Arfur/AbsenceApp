@@ -1,0 +1,178 @@
+@page "/v2/attendance/staff"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Attendance
+
+@using AbsenceApp.Client.Shared
+@inject IAttendanceService AttendanceSvc
+@inject AppStateService AppState
+
+<PageTemplateV2 PageTitleText="Staff Attendance">
+
+    <ActionsContent>
+        <div class="phv2-export-wrap">
+            <button type="button" class="phv2-btn phv2-btn--secondary"
+                    @onclick="PrevMonth" disabled="@_loading">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+            </button>
+            <span class="atcal-month-label">@_viewMonth.ToString("MMMM yyyy")</span>
+            <button type="button" class="phv2-btn phv2-btn--secondary"
+                    @onclick="NextMonth" disabled="@_loading">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+        </div>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (_error is not null)
+        {
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@_error</div>
+        }
+
+        <div class="tpt-card atcal-wrapper">
+            <div class="tpt-table-wrapper">
+                <table class="tpt-table atcal-table">
+                    <thead>
+                        <tr class="tpt-thead-row">
+                            <th class="tpt-th atcal-name-col">Staff (User ID)</th>
+                            @foreach (var day in _days)
+                            {
+                                <th class="tpt-th atcal-day-col">
+                                    @day.ToString("ddd")[..1]@day.Day
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (_loading)
+                        {
+                            @for (var i = 0; i < 10; i++)
+                            {
+                                <tr class="tpt-tr tpt-tr--skeleton">
+                                    <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                                    @for (var d = 0; d < _days.Count; d++)
+                                    {
+                                        <td class="tpt-td atcal-mark-cell"><span class="tpt-skeleton atcal-skeleton-mark"></span></td>
+                                    }
+                                </tr>
+                            }
+                        }
+                        else if (_rows.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="@(_days.Count + 1)" class="tpt-td tpt-td--empty">
+                                    No attendance records for @_viewMonth.ToString("MMMM yyyy").
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var row in _rows)
+                            {
+                                <tr class="tpt-tr">
+                                    <td class="tpt-td atcal-name-col">User @row.UserId</td>
+                                    @foreach (var day in _days)
+                                    {
+                                        var mark = row.DayMarks.TryGetValue(day.Day, out var m) ? m : null;
+                                        <td class="tpt-td atcal-mark-cell" title="@(mark ?? "—")">
+                                            @if (mark == "Present")
+                                            {
+                                                <span class="atcal-mark atcal-mark--present" aria-label="Present">✓</span>
+                                            }
+                                            else if (mark == "Absent")
+                                            {
+                                                <span class="atcal-mark atcal-mark--absent" aria-label="Absent">✗</span>
+                                            }
+                                            else if (mark is not null)
+                                            {
+                                                <span class="atcal-mark atcal-mark--other" aria-label="@mark">@mark[..1]</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="atcal-mark atcal-mark--none" aria-hidden="true">·</span>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="atcal-legend">
+                <span class="atcal-mark atcal-mark--present">✓</span> Present &nbsp;
+                <span class="atcal-mark atcal-mark--absent">✗</span> Absent &nbsp;
+                <span class="atcal-mark atcal-mark--other">L</span> Late / Other &nbsp;
+                <span class="atcal-mark atcal-mark--none">·</span> No record
+            </div>
+        </div>
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    private record CalendarRow(int UserId, Dictionary<int, string> DayMarks);
+
+    private DateTime          _viewMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private List<DateTime>    _days      = [];
+    private List<CalendarRow> _rows      = [];
+    private bool              _loading   = true;
+    private string?           _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.SetBreadcrumb("Attendance", "Staff Attendance");
+        await LoadMonthAsync();
+    }
+
+    private async Task LoadMonthAsync()
+    {
+        _loading = true;
+        _error   = null;
+        StateHasChanged();
+        try
+        {
+            var daysInMonth = DateTime.DaysInMonth(_viewMonth.Year, _viewMonth.Month);
+            _days = Enumerable.Range(1, daysInMonth)
+                              .Select(d => new DateTime(_viewMonth.Year, _viewMonth.Month, d))
+                              .ToList();
+
+            var all = await AttendanceSvc.GetAllAsync();
+            var monthRecords = all
+                .Where(r => r.Timestamp.Year == _viewMonth.Year && r.Timestamp.Month == _viewMonth.Month)
+                .ToList();
+
+            _rows = monthRecords
+                .GroupBy(r => r.UserId)
+                .OrderBy(g => g.Key)
+                .Select(g => new CalendarRow(
+                    g.Key,
+                    g.GroupBy(r => r.Timestamp.Day)
+                     .ToDictionary(d => d.Key, d => d.OrderByDescending(r => r.Timestamp).First().Status)
+                ))
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task PrevMonth()
+    {
+        _viewMonth = _viewMonth.AddMonths(-1);
+        await LoadMonthAsync();
+    }
+
+    private async Task NextMonth()
+    {
+        _viewMonth = _viewMonth.AddMonths(1);
+        await LoadMonthAsync();
+    }
+}

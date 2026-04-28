@@ -70,7 +70,7 @@ public sealed class StudentsListViewModelV2
     public string SearchTerm { get; private set; } = string.Empty;
     public string SortColumn { get; private set; } = string.Empty;
     public bool SortAscending { get; private set; } = true;
-    public bool IsLoading { get; private set; }
+    public bool IsLoading { get; private set; } = true;
     public string? Error { get; private set; }
 
     // -------------------------------------------------------------------------
@@ -180,8 +180,8 @@ public sealed class StudentsListViewModelV2
                 s.AdmissionNumber.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                 s.FirstName.Contains(term, StringComparison.OrdinalIgnoreCase)       ||
                 s.LastName.Contains(term, StringComparison.OrdinalIgnoreCase)        ||
-                s.LegalFirstName.Contains(term, StringComparison.OrdinalIgnoreCase)  ||
-                s.LegalLastName.Contains(term, StringComparison.OrdinalIgnoreCase)   ||
+                (s.LegalFirstName ?? "").Contains(term, StringComparison.OrdinalIgnoreCase)  ||
+                (s.LegalLastName  ?? "").Contains(term, StringComparison.OrdinalIgnoreCase)   ||
                 s.YearGroupName.Contains(term, StringComparison.OrdinalIgnoreCase)   ||
                 s.ClassName.Contains(term, StringComparison.OrdinalIgnoreCase)       ||
                 (s.HouseName ?? "").Contains(term, StringComparison.OrdinalIgnoreCase));

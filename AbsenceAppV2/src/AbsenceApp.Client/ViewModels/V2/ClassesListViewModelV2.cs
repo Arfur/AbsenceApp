@@ -60,8 +60,17 @@ public sealed class ClassesListViewModelV2
     public string SearchTerm { get; private set; } = string.Empty;
     public string SortColumn { get; private set; } = string.Empty;
     public bool SortAscending { get; private set; } = true;
-    public bool IsLoading { get; private set; }
+    public bool IsLoading { get; private set; } = true;
     public string? Error { get; private set; }
+
+    // -------------------------------------------------------------------------
+    // Active filters
+    // -------------------------------------------------------------------------
+
+    private readonly Dictionary<string, string> _activeFilters = new();
+
+    /// <summary>Gets a snapshot of active filter key → value pairs.</summary>
+    public IReadOnlyDictionary<string, string> ActiveFilters => _activeFilters;
 
     // -------------------------------------------------------------------------
     // Column schema — static, shared across all renders
@@ -70,8 +79,20 @@ public sealed class ClassesListViewModelV2
     public static List<TableColumnModel> Columns =>
     [
         new() { Key = "name",        Label = "Class Name",  Visible = true, Sortable = true,  Order = 0 },
-        new() { Key = "description", Label = "Description", Visible = true, Sortable = false, Order = 1 },
+        new() { Key = "code",        Label = "Code",        Visible = true, Sortable = true,  Order = 1 },
+        new() { Key = "description", Label = "Description", Visible = true, Sortable = false, Order = 2 },
     ];
+
+    // -------------------------------------------------------------------------
+    // Filter options — populated from loaded data for dropdown binding
+    // -------------------------------------------------------------------------
+
+    public IReadOnlyList<string> GetNameOptions() =>
+        _all.Select(c => c.Name).Distinct().OrderBy(n => n).ToList();
+
+    public IReadOnlyList<string> GetCodeOptions() =>
+        _all.Select(c => c.Code).Where(c => !string.IsNullOrEmpty(c))
+            .Distinct().OrderBy(c => c).ToList();
 
     // -------------------------------------------------------------------------
     // Data loading
@@ -81,6 +102,7 @@ public sealed class ClassesListViewModelV2
     {
         IsLoading = true;
         Error = null;
+        _activeFilters.Clear();
         try
         {
             _all = (await _svc.GetAllAsync()).ToList();
@@ -127,6 +149,33 @@ public sealed class ClassesListViewModelV2
         return Task.CompletedTask;
     }
 
+    public Task SetFilterAsync(string key, string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            _activeFilters.Remove(key);
+        else
+            _activeFilters[key] = value;
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveFilterAsync(string key)
+    {
+        _activeFilters.Remove(key);
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
+    public Task ClearAllFiltersAsync()
+    {
+        _activeFilters.Clear();
+        Page = 1;
+        ApplyView();
+        return Task.CompletedTask;
+    }
+
     // -------------------------------------------------------------------------
     // In-memory view computation
     // -------------------------------------------------------------------------
@@ -135,12 +184,20 @@ public sealed class ClassesListViewModelV2
     {
         IEnumerable<ClassDto> query = _all;
 
-        // Search across Name and Description
+        // Apply active filters
+        if (_activeFilters.TryGetValue("name", out var nameF) && !string.IsNullOrEmpty(nameF))
+            query = query.Where(c => c.Name == nameF);
+
+        if (_activeFilters.TryGetValue("code", out var codeF) && !string.IsNullOrEmpty(codeF))
+            query = query.Where(c => c.Code == codeF);
+
+        // Search across Name, Code, and Description
         if (!string.IsNullOrWhiteSpace(SearchTerm))
         {
             var term = SearchTerm.Trim();
             query = query.Where(c =>
                 c.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                c.Code.Contains(term, StringComparison.OrdinalIgnoreCase) ||
                 (c.Description ?? "").Contains(term, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -148,6 +205,7 @@ public sealed class ClassesListViewModelV2
         query = SortColumn switch
         {
             "name" => SortAscending ? query.OrderBy(c => c.Name) : query.OrderByDescending(c => c.Name),
+            "code" => SortAscending ? query.OrderBy(c => c.Code) : query.OrderByDescending(c => c.Code),
             _      => query.OrderBy(c => c.Name)
         };
 

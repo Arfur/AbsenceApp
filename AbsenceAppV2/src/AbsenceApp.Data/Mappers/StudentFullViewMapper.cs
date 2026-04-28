@@ -54,6 +54,7 @@ public static class StudentFullViewMapper
         LastName        = entity.LastName,
         LegalFirstName  = entity.LegalFirstName,
         LegalLastName   = entity.LegalLastName,
+        PreferredName   = entity.PreferredName,
         Gender          = entity.Gender,
         DateOfBirth     = entity.DateOfBirth,
         YearGroupName   = yearGroupName,
@@ -62,6 +63,6 @@ public static class StudentFullViewMapper
         Username        = entity.Username,
         Upn             = entity.Upn,
         AdmissionDate   = entity.AdmissionDate,
-        Status          = entity.Status,
+        Status          = entity.Status ?? string.Empty,
     };
 }

@@ -36,7 +36,7 @@ public class StudentFullViewDto
     // -------------------------------------------------------------------------
     // Primary key — needed for navigation links (Detail / Edit)
     // -------------------------------------------------------------------------
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     // -------------------------------------------------------------------------
     // Identity
@@ -45,9 +45,10 @@ public class StudentFullViewDto
     public string FirstName       { get; set; } = string.Empty;
     public string? MiddleNames    { get; set; }
     public string LastName        { get; set; } = string.Empty;
-    public string LegalFirstName  { get; set; } = string.Empty;
-    public string LegalLastName   { get; set; } = string.Empty;
-    public string Gender          { get; set; } = string.Empty;
+    public string? LegalFirstName { get; set; }
+    public string? LegalLastName  { get; set; }
+    public string? PreferredName  { get; set; }
+    public string? Gender         { get; set; }
     public DateOnly DateOfBirth   { get; set; }
 
     // -------------------------------------------------------------------------

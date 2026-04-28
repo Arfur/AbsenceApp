@@ -3,9 +3,9 @@
  File        : UserManagementDtos.cs
  Namespace   : AbsenceApp.Core.DTOs
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-04-11
- Updated     : 2026-04-21
+ Updated     : 2026-04-25
 -------------------------------------------------------------------------------
  Purpose     : Data Transfer Objects for the E15 User Management module.
                Covers list display, create/update forms, page permission
@@ -23,10 +23,15 @@
    - 1.2.0  2026-04-21  Added RoleListItemDto (Roles page), FeatureListItemDto
                          (Permissions page), and PageAccessRowDto (Page Access
                          page) to support live data on the three list pages.
-   - 1.3.0  2026-04-21  Added full User Profile page DTOs: UserProfileHeaderDto,
+    - 1.3.0  2026-04-21  Added full User Profile page DTOs: UserProfileHeaderDto,
                          UserProfileDetailDto, StaffContactDto, StaffClassRowDto,
                          StaffDeviceRowDto, StaffExternalRowDto, StaffAbsenceRowDto,
                          LoginAuditRowDto, UserProfileSaveDto, ChangePasswordDto.
+    - 1.4.0  2026-04-25  Added unified UserProfileFullDetailDto for one-call
+                                 User Profile page loading. Combines account data,
+                                 userprofiles metadata, authoritative staff data,
+                                 staff-linked collections, permission matrix, role types,
+                                 and additional staff-related summary collections.
 -------------------------------------------------------------------------------
  Notes       :
    - No EF / DbContext references. Pure POCO DTOs for cross-layer contracts.
@@ -67,9 +72,9 @@ public sealed class AppPageDto
 
 public sealed class UserListItemDto
 {
-    public long   Id           { get; set; }
+    public int   Id           { get; set; }
     /// <summary>FK to staff.Id. Never null for valid users.</summary>
-    public long?  StaffId      { get; set; }
+    public int?  StaffId      { get; set; }
     public string StaffName    { get; set; } = default!;
     public string FullName     { get; set; } = default!;
     public string Username     { get; set; } = default!;
@@ -87,12 +92,12 @@ public sealed class UserListItemDto
 public sealed class UserCreateDto
 {
     /// <summary>Mandatory FK → staff.Id. User creation must originate from a Staff record.</summary>
-    public long    StaffId      { get; set; }
+    public int    StaffId      { get; set; }
     public string  Username     { get; set; } = default!;
     public string  Email        { get; set; } = default!;
     /// <summary>Plain-text password; hashed by the service layer before storage.</summary>
     public string  Password     { get; set; } = default!;
-    public long    RoleTypeId   { get; set; }
+    public int    RoleTypeId   { get; set; }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -101,14 +106,14 @@ public sealed class UserCreateDto
 
 public sealed class UserUpdateDto
 {
-    public long    Id           { get; set; }
+    public int    Id           { get; set; }
     /// <summary>Read-only after creation — StaffId MUST NOT be changed on update.</summary>
-    public long?   StaffId      { get; set; }
+    public int?   StaffId      { get; set; }
     public string  Username     { get; set; } = default!;
     public string  Email        { get; set; } = default!;
     /// <summary>If null or empty, the password is NOT changed.</summary>
     public string? NewPassword  { get; set; }
-    public long    RoleTypeId   { get; set; }
+    public int    RoleTypeId   { get; set; }
     public string  Status       { get; set; } = default!;
 }
 
@@ -119,7 +124,7 @@ public sealed class UserUpdateDto
 
 public sealed class StaffSelectDto
 {
-    public long   Id          { get; set; }
+    public int   Id          { get; set; }
     public string FullName    { get; set; } = default!;
     public string StaffNumber { get; set; } = default!;
     public string WorkEmail   { get; set; } = default!;
@@ -168,7 +173,7 @@ public sealed class EffectivePermissionDto
 
 public sealed class RoleTypeSelectDto
 {
-    public long   Id          { get; set; }
+    public int    Id          { get; set; }
     public string Name        { get; set; } = default!;
     public string DisplayName { get; set; } = default!;
 }
@@ -179,7 +184,7 @@ public sealed class RoleTypeSelectDto
 
 public sealed class RoleListItemDto
 {
-    public long   Id          { get; set; }
+    public int    Id          { get; set; }
     public string Name        { get; set; } = default!;
     public string DisplayName { get; set; } = default!;
     public string Description { get; set; } = string.Empty;
@@ -222,8 +227,8 @@ public sealed class PageAccessRowDto
 /// </summary>
 public sealed class UserProfileHeaderDto
 {
-    public long      UserId            { get; set; }
-    public long?     StaffId           { get; set; }
+    public int       UserId            { get; set; }
+    public int?      StaffId           { get; set; }
     public string    Username          { get; set; } = string.Empty;
     public string    FullName          { get; set; } = string.Empty;
     public string    Email             { get; set; } = string.Empty;
@@ -246,14 +251,109 @@ public sealed class UserProfileDetailDto
     public string   LastName        { get; set; } = string.Empty;
     public string?  PreferredName   { get; set; }
     public string   Title           { get; set; } = string.Empty;
-    public DateOnly DateOfBirth     { get; set; }
+    public DateTime DateOfBirth     { get; set; }
     public string?  Bio             { get; set; }
     public string?  Gender          { get; set; }
     public string   Timezone        { get; set; } = "UTC";
     public string   LanguageCode    { get; set; } = "en";
-    public long     DepartmentId    { get; set; }
-    public long     JobTitleId      { get; set; }
+    public int      DepartmentId    { get; set; }
+    public int      JobTitleId      { get; set; }
     public string?  ProfilePictureUrl { get; set; }
+}
+
+/// <summary>
+/// Unified DTO for the full User Profile page.
+/// Combines account-level data, UserProfile metadata, authoritative Staff
+/// data, and all staff-linked tab collections into a single payload.
+/// </summary>
+public sealed class UserProfileFullDetailDto
+{
+    // Account-level (Users)
+    public bool      UserExists          { get; set; }
+    public int       UserId              { get; set; }
+    public int?      StaffId             { get; set; }
+    public string    Username            { get; set; } = string.Empty;
+    public string    Email               { get; set; } = string.Empty;
+    public string    Status              { get; set; } = string.Empty;
+    public bool      IsAdmin             { get; set; }
+    public DateTime  UserCreatedAt       { get; set; }
+    public DateTime  UserUpdatedAt       { get; set; }
+
+    // Role / permissions
+    public int       RoleTypeId          { get; set; }
+    public string    RoleTypeName        { get; set; } = string.Empty;
+    public string    RoleDisplayName     { get; set; } = string.Empty;
+    public IReadOnlyList<RoleTypeSelectDto> RoleTypes { get; set; } = [];
+    public IReadOnlyList<PagePermissionDto> Permissions { get; set; } = [];
+
+    // Header/UI identity
+    public string    FullName            { get; set; } = string.Empty;
+    public DateTime? LastLoginAt         { get; set; }
+    public string?   ProfilePictureUrl   { get; set; }
+
+    // UserProfiles table (UI metadata)
+    public long      ProfileId           { get; set; }
+    public bool      ProfileExists       { get; set; }
+    public string    FirstName           { get; set; } = string.Empty;
+    public string    LastName            { get; set; } = string.Empty;
+    public string?   PreferredName       { get; set; }
+    public string    Title               { get; set; } = string.Empty;
+    public string?   Bio                 { get; set; }
+    public string?   Gender              { get; set; }
+    public string    Timezone            { get; set; } = "UTC";
+    public string    LanguageCode        { get; set; } = "en";
+    public int       DepartmentId        { get; set; }
+    public int       JobTitleId          { get; set; }
+    public int       SchoolId            { get; set; }
+    public DateTime? ProfileCreatedAt    { get; set; }
+    public DateTime? ProfileUpdatedAt    { get; set; }
+
+    // Authoritative Staff table fields
+    public string    StaffNumber         { get; set; } = string.Empty;
+    public string    StaffFirstName      { get; set; } = string.Empty;
+    public string    StaffLastName       { get; set; } = string.Empty;
+    public string?   StaffPreferredName  { get; set; }
+    public string    StaffTitle          { get; set; } = string.Empty;
+    public DateTime  DateOfBirth         { get; set; }
+    public string?   StaffGender         { get; set; }
+    public string    WorkEmail           { get; set; } = string.Empty;
+    public string?   AltEmail            { get; set; }
+    public string?   PhoneHome           { get; set; }
+    public string?   PhoneMobile         { get; set; }
+    public string?   PhoneEmergency      { get; set; }
+    public string    EmploymentType      { get; set; } = string.Empty;
+    public string    ContractType        { get; set; } = string.Empty;
+    public DateOnly? HireDate            { get; set; }
+    public DateOnly? EndDate             { get; set; }
+    public string    WorkLocation        { get; set; } = string.Empty;
+    public int?      ReportingManagerId  { get; set; }
+    public int       StaffJobTitleId     { get; set; }
+    public int       StaffJobGroupId     { get; set; }
+    public int       StaffDepartmentId   { get; set; }
+    public string?   StaffProfilePhotoUrl { get; set; }
+    public string    AccountStatus       { get; set; } = string.Empty;
+
+    // Flattened lookup display values
+    public string    DepartmentName      { get; set; } = string.Empty;
+
+    // Tab collections (single-call profile payload)
+    public StaffContactDto? Contact { get; set; }
+    public IReadOnlyList<StaffClassRowDto> Classes { get; set; } = [];
+    public IReadOnlyList<StaffDeviceRowDto> StaffDevices { get; set; } = [];
+    public IReadOnlyList<StaffExternalRowDto> StaffExternalAccounts { get; set; } = [];
+    public IReadOnlyList<StaffAbsenceRowDto> StaffAbsences { get; set; } = [];
+    public IReadOnlyList<LoginAuditRowDto> StaffLoginAudit { get; set; } = [];
+
+    // Requested staff-linked grouped collections
+    public IReadOnlyList<string> StaffLocations { get; set; } = [];
+    public IReadOnlyList<string> StaffPhases { get; set; } = [];
+    public IReadOnlyList<string> StaffQualifications { get; set; } = [];
+    public IReadOnlyList<string> StaffAttendance { get; set; } = [];
+    public IReadOnlyList<string> StaffMedical { get; set; } = [];
+    public IReadOnlyList<string> StaffContacts { get; set; } = [];
+    public IReadOnlyList<string> StaffEmployment { get; set; } = [];
+    public IReadOnlyList<string> OtherStaffRelatedTables { get; set; } = [];
+    public IReadOnlyList<string> OtherStaffRelatedAuditEntries { get; set; } = [];
 }
 
 /// <summary>
@@ -274,18 +374,18 @@ public sealed class StaffContactDto
 }
 
 /// <summary>
-/// One row for the Classes &amp; Year Groups tab (Tab 2).
+/// One row for the Assignments tab (Tab 2).
 /// </summary>
 public sealed class StaffClassRowDto
 {
-    public long     AssignmentId    { get; set; }
-    public string   ClassName       { get; set; } = string.Empty;
-    public string   JobTitle        { get; set; } = string.Empty;
-    public string   Department      { get; set; } = string.Empty;
-    public string?  Responsibility  { get; set; }
+    public int      AssignmentId    { get; set; }
+    public int      StaffId         { get; set; }
+    public int      LocationId      { get; set; }
     public DateOnly StartDate       { get; set; }
     public DateOnly? EndDate        { get; set; }
-    public string?  DaysOfWeek      { get; set; }
+    public string?  Notes           { get; set; }
+    public DateTime CreatedAt       { get; set; }
+    public DateTime UpdatedAt       { get; set; }
 }
 
 /// <summary>
@@ -347,23 +447,24 @@ public sealed class LoginAuditRowDto
 public sealed class UserProfileSaveDto
 {
     // User record
-    public long    UserId        { get; set; }
+    public int     UserId        { get; set; }
     public string  Username      { get; set; } = string.Empty;
     public string  Email         { get; set; } = string.Empty;
-    public long    RoleTypeId    { get; set; }
+    public int     RoleTypeId    { get; set; }
     public string  Status        { get; set; } = string.Empty;
+    public bool    IsAdmin       { get; set; }
     // UserProfile record (upserted)
     public string  FirstName     { get; set; } = string.Empty;
     public string  LastName      { get; set; } = string.Empty;
     public string? PreferredName { get; set; }
     public string  Title         { get; set; } = string.Empty;
-    public DateOnly DateOfBirth  { get; set; }
+    public DateTime DateOfBirth  { get; set; }
     public string? Bio           { get; set; }
     public string? Gender        { get; set; }
     public string  Timezone      { get; set; } = "UTC";
     public string  LanguageCode  { get; set; } = "en";
-    public long    DepartmentId  { get; set; }
-    public long    JobTitleId    { get; set; }
+    public int     DepartmentId  { get; set; }
+    public int     JobTitleId    { get; set; }
 }
 
 /// <summary>
@@ -371,7 +472,7 @@ public sealed class UserProfileSaveDto
 /// </summary>
 public sealed class ChangePasswordDto
 {
-    public long   UserId      { get; set; }
+    public int    UserId      { get; set; }
     public string OldPassword { get; set; } = string.Empty;
     public string NewPassword { get; set; } = string.Empty;
 }

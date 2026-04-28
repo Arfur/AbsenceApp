@@ -42,5 +42,5 @@ public sealed class RoleFeature
 
     public DateTime AssignedAt { get; set; }
 
-    public long? AssignedBy { get; set; }
+    public int AssignedBy { get; set; }
 }

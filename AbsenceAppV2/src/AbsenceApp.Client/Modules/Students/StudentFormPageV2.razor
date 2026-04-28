@@ -175,7 +175,8 @@
 
     private void OnDobChanged(ChangeEventArgs e)
     {
-        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var dob))
+        if (DateTime.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", null,
+            System.Globalization.DateTimeStyles.None, out var dob))
             ViewModel.DateOfBirth = dob;
     }
 }

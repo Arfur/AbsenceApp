@@ -3,32 +3,41 @@
  File        : UserPageOverride.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.2.0
  Created     : 2026-04-11
- Updated     : 2026-04-11
+ Updated     : 2026-04-24
 -------------------------------------------------------------------------------
- Purpose     : EF Core entity for the user_page_overrides table.
-               Records explicit Grant or Deny overrides for a given user × page
-               combination. Checked by PermissionServiceV2 before falling back
-               to RoleDefaultPagePermissions.
+ Purpose     : EF Core entity for the UserPageOverrides table.
+               Stores explicit Grant/Deny override entries per user+page.
+               Overrides are checked before role defaults and user-specific
+               permission rows.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-11  Initial creation (E15 User Management).
+   - 1.2.0  2026-04-24  EF mapping update: explicit table mapping to PascalCase
+                        `UserPageOverrides`. Added CreatedAt audit timestamp
+                        to match the database schema.
 -------------------------------------------------------------------------------
  Notes       :
-   - OverrideType: "Grant" or "Deny" (enforced by EF max-length + code).
-   - Unique constraint: (UserId, PageId) — one override row per user × page.
-   - ValueGeneratedOnAdd is set in configuration; exempt from the
-     ValueGeneratedNever loop via AppDbContext exclusion.
+   - OverrideType values: 'Grant' or 'Deny'.
+   - Unique constraint: (UserId, PageId).
+   - PageId FK references AppPages.Id with ON DELETE CASCADE.
 ===============================================================================
 */
+
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AbsenceApp.Data.Models;
 
+[Table("UserPageOverrides")]
 public class UserPageOverride
 {
     public int    Id           { get; set; }
     public long   UserId       { get; set; }
     public int    PageId       { get; set; }
-    /// <summary>"Grant" or "Deny"</summary>
-    public string OverrideType { get; set; } = default!;
+    public string OverrideType { get; set; } = default!; // 'Grant' or 'Deny'
+
+    // Audit timestamp to match DB schema
+    public DateTime CreatedAt  { get; set; }
 }

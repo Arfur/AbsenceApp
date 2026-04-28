@@ -22,12 +22,10 @@ namespace AbsenceApp.Data.Models;
 
 public class StaffExternalAccountAudit
 {
-    public long Id { get; set; }
-    public long StaffExternalAccountId { get; set; }
-    public long StaffId { get; set; }
+    public int Id { get; set; }
+    public int StaffExternalAccountId { get; set; }
+    public int StaffId { get; set; }
     public string Action { get; set; } = default!;
-    public long ChangedBy { get; set; }
-    public DateTime ChangeTime { get; set; }
-    public string? OldValues { get; set; }
-    public string? NewValues { get; set; }
+    public string? Details { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

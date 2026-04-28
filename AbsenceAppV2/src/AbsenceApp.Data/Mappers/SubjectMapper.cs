@@ -23,14 +23,14 @@ namespace AbsenceApp.Data.Mappers;
 
 public static class SubjectMapper
 {
-    public static SubjectDto ToDto(Class entity) => new()
+    public static SubjectDto ToDto(TeachingGroup entity) => new()
     {
         Id          = (int)entity.Id,
         Name        = entity.Name,
         Description = entity.Description,
     };
 
-    public static Class ToEntity(SubjectDto dto) => new()
+    public static TeachingGroup ToEntity(SubjectDto dto) => new()
     {
         Id          = dto.Id,
         Name        = dto.Name,

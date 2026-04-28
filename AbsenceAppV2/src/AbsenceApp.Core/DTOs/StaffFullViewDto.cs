@@ -36,7 +36,7 @@ public class StaffFullViewDto
     // -------------------------------------------------------------------------
     // Primary key — needed for navigation links (Detail / Edit)
     // -------------------------------------------------------------------------
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     // -------------------------------------------------------------------------
     // Identity

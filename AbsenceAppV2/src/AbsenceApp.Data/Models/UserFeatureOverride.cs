@@ -33,7 +33,7 @@ public sealed class UserFeatureOverride
 {
     public int Id { get; set; }
 
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 
     public string FeatureCode { get; set; } = string.Empty;
 
@@ -41,5 +41,5 @@ public sealed class UserFeatureOverride
 
     public DateTime OverriddenAt { get; set; }
 
-    public long? OverriddenBy { get; set; }
+    public int OverriddenBy { get; set; }
 }

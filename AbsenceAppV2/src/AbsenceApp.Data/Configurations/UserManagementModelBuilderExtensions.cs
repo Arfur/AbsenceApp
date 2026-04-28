@@ -3,9 +3,9 @@
  File        : UserManagementModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : 2026-04-11
- Updated     : 2026-04-19
+ Updated     : 2026-04-24
 -------------------------------------------------------------------------------
  Purpose     : ModelBuilder extension that configures the four E15 entities:
                AppPage, RoleDefaultPagePermission, UserPageOverride, and
@@ -30,9 +30,12 @@
                                  Users → "CONFIGURATION"; Pages → "CONFIGURATION".
                          FIX-09: Added dashboard sub-page AppPages (ids 10–12).
                          FIX-11: Added diagnostics/site AppPages (ids 13–14).
+   - 1.3.0  2026-04-24  Added detail/create AppPages for Students/Staff/Classes
+                         and System admin pages (ids 15–27), plus Super Admin
+                         RoleDefaultPagePermission seeds for these new pages.
 -------------------------------------------------------------------------------
  Notes     :
-   - app_pages is seeded with the canonical set of V2 application routes.
+   - apppages is seeded with the canonical set of V2 application routes.
    - HasData documents the intended seed state; migrations contain the actual
      SQL that drives the database to this state.
    - RoleDefaultPagePermission uses a lazy-evaluated string RoleTypeName (no
@@ -44,6 +47,7 @@
 ===============================================================================
 */
 
+using System;
 using AbsenceApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,7 +56,7 @@ namespace AbsenceApp.Data.Configurations;
 public static class UserManagementModelBuilderExtensions
 {
     // -------------------------------------------------------------------------
-    // Fixed seed timestamp â€” must be a compile-time constant for HasData().
+    // Fixed seed timestamp — must be a compile-time constant for HasData().
     // -------------------------------------------------------------------------
     private static readonly DateTime SeedDate =
         new(2026, 4, 11, 0, 0, 0, DateTimeKind.Utc);
@@ -107,6 +111,87 @@ public static class UserManagementModelBuilderExtensions
         // ── FIX-11: Settings sub-pages (ids 13–14) ──────────────────────────
         (13, "Diagnostics", "diagnostics", "/v2/diagnostics", "SETTINGS","Diagnostics","bi-activity", true, false, false, false, false, false, 75 ),
         (14, "Site",        "site",        "/v2/site",        "SETTINGS","Site",        "bi-globe",    true, false, false, false, false, false, 76 ),
+
+        // ── Students sub-pages (ids 15–16) ──────────────────────────────────
+        (15, "Student Details", "student-details", "/v2/students/details",
+             "PEOPLE", "Students", "bi-person-lines-fill",
+             true, true, false, false, false, false, 21 ),
+        (16, "New Student", "student-new", "/v2/students/new",
+             "PEOPLE", "Students", "bi-person-plus",
+             true, true, true, false, false, false, 22 ),
+
+        // ── Staff sub-pages (ids 17–18) ─────────────────────────────────────
+        (17, "Staff Details", "staff-details", "/v2/staff/details",
+             "PEOPLE", "Staff", "bi-person-lines-fill",
+             true, true, false, false, false, false, 31 ),
+        (18, "New Staff", "staff-new", "/v2/staff/new",
+             "PEOPLE", "Staff", "bi-person-plus",
+             true, true, true, false, false, false, 32 ),
+
+        // ── Classes sub-pages (ids 19–20) ───────────────────────────────────
+        (19, "Class Details", "class-details", "/v2/classes/details",
+             "ACADEMICS", "Classes", "bi-journal-text",
+             true, true, false, false, false, false, 41 ),
+        (20, "New Class", "class-new", "/v2/classes/new",
+             "ACADEMICS", "Classes", "bi-journal-plus",
+             true, true, true, false, false, false, 42 ),
+
+        // ── System admin pages (ids 21–27) ──────────────────────────────────
+        (21, "System Users", "system-users", "/v2/system/users",
+             "CONFIGURATION", "System", "bi-people",
+             true, true, true, true, false, false, 90 ),
+        (22, "System Roles", "system-roles", "/v2/system/roles",
+             "CONFIGURATION", "System", "bi-shield-lock",
+             true, true, true, true, false, false, 91 ),
+        (23, "System Permissions", "system-permissions", "/v2/system/permissions",
+             "CONFIGURATION", "System", "bi-key",
+             true, true, true, true, false, false, 92 ),
+        (24, "Page Access Matrix", "page-access", "/v2/system/page-access",
+             "CONFIGURATION", "System", "bi-table",
+             true, true, false, false, false, false, 93 ),
+        (25, "Pages Registry", "system-pages", "/v2/system/pages",
+             "CONFIGURATION", "System", "bi-file-earmark-text",
+             true, true, true, true, false, false, 94 ),
+        (26, "Page Layouts", "page-layouts", "/v2/system/pages/layouts",
+             "CONFIGURATION", "System", "bi-layout-text-window",
+             true, true, false, false, false, false, 95 ),
+        (27, "Page Metadata", "page-metadata", "/v2/system/pages/metadata",
+             "CONFIGURATION", "System", "bi-info-circle",
+             true, true, false, false, false, false, 96 ),
+    ];
+
+    // -------------------------------------------------------------------------
+    // Role default seed data — Super Admin defaults for new pages (15–27).
+    // Tuple layout: (Id, RoleTypeName, PageId, CanRead, CanWrite, CanCreate,
+    //                CanDelete, CanImport, CanExport)
+    //
+    // Id values assume existing rows 1–14 already exist in the live database.
+    // -------------------------------------------------------------------------
+    private static readonly (
+        int    Id,
+        string RoleTypeName,
+        int    PageId,
+        bool   CanRead,
+        bool   CanWrite,
+        bool   CanCreate,
+        bool   CanDelete,
+        bool   CanImport,
+        bool   CanExport
+    )[] DefaultRoleDefaults =
+    [
+        (15, "super_admin", 15, true, true, false, false, false, false), // Student Details
+        (16, "super_admin", 16, true, true, true,  false, false, false), // New Student
+        (17, "super_admin", 17, true, true, false, false, false, false), // Staff Details
+        (18, "super_admin", 18, true, true, true,  false, false, false), // New Staff
+        (19, "super_admin", 19, true, true, false, false, false, false), // Class Details
+        (20, "super_admin", 20, true, true, true,  false, false, false), // New Class
+        (21, "super_admin", 21, true, true, true,  true,  false, false), // System Users
+        (22, "super_admin", 22, true, true, true,  true,  false, false), // System Roles
+        (23, "super_admin", 23, true, true, true,  true,  false, false), // System Permissions
+        (24, "super_admin", 24, true, true, false, false, false, false), // Page Access Matrix
+        (25, "super_admin", 25, true, true, true,  true,  false, false), // Pages Registry
+        (26, "super_admin", 26, true, true, false, false, false, false), // Page Layouts
+        (27, "super_admin", 27, true, true, false, false, false, false), // Page Metadata
     ];
 
     // -------------------------------------------------------------------------
@@ -114,10 +199,10 @@ public static class UserManagementModelBuilderExtensions
     // -------------------------------------------------------------------------
     public static ModelBuilder ConfigureUserManagement(this ModelBuilder modelBuilder)
     {
-        // â”€â”€ AppPage â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── AppPage ───────────────────────────────────────────────────────────
         modelBuilder.Entity<AppPage>(b =>
         {
-            b.ToTable("app_pages");
+            b.ToTable("apppages");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.Slug).IsRequired().HasMaxLength(200).HasDefaultValue(string.Empty);
@@ -164,10 +249,10 @@ public static class UserManagementModelBuilderExtensions
             });
         }
 
-        // â”€â”€ RoleDefaultPagePermission â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── RoleDefaultPagePermission ────────────────────────────────────────
         modelBuilder.Entity<RoleDefaultPagePermission>(b =>
         {
-            b.ToTable("role_default_page_permissions");
+            b.ToTable("roledefaultpagepermissions");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.RoleTypeName).IsRequired().HasMaxLength(100);
@@ -184,10 +269,27 @@ public static class UserManagementModelBuilderExtensions
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // â”€â”€ UserPageOverride â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Seed role defaults for new pages (15–27)
+        foreach (var r in DefaultRoleDefaults)
+        {
+            modelBuilder.Entity<RoleDefaultPagePermission>().HasData(new RoleDefaultPagePermission
+            {
+                Id         = r.Id,
+                RoleTypeName = r.RoleTypeName,
+                PageId     = r.PageId,
+                CanRead    = r.CanRead,
+                CanWrite   = r.CanWrite,
+                CanCreate  = r.CanCreate,
+                CanDelete  = r.CanDelete,
+                CanImport  = r.CanImport,
+                CanExport  = r.CanExport,
+            });
+        }
+
+        // ── UserPageOverride ─────────────────────────────────────────────────
         modelBuilder.Entity<UserPageOverride>(b =>
         {
-            b.ToTable("user_page_overrides");
+            b.ToTable("userpageoverrides");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.OverrideType).IsRequired().HasMaxLength(10);
@@ -198,10 +300,10 @@ public static class UserManagementModelBuilderExtensions
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // â”€â”€ UserPagePermission â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── UserPagePermission ───────────────────────────────────────────────
         modelBuilder.Entity<UserPagePermission>(b =>
         {
-            b.ToTable("user_page_permissions");
+            b.ToTable("userpagepermissions");
             b.HasKey(e => e.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(e => e.CanRead).HasDefaultValue(false);

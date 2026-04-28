@@ -6,8 +6,8 @@ namespace AbsenceApp.Data.Repositories;
 
 public interface IDepartmentRepository
 {
-    Task<IEnumerable<Department>> GetAllAsync();
-    Task<Department?>             GetByIdAsync(long id);
+    Task<IEnumerable<StaffDepartment>> GetAllAsync();
+    Task<StaffDepartment?>             GetByIdAsync(long id);
 }
 
 public class DepartmentRepository : IDepartmentRepository
@@ -15,9 +15,9 @@ public class DepartmentRepository : IDepartmentRepository
     private readonly AppDbContext _context;
     public DepartmentRepository(AppDbContext context) => _context = context;
 
-    public async Task<IEnumerable<Department>> GetAllAsync() =>
-        await _context.Departments.ToListAsync();
+    public async Task<IEnumerable<StaffDepartment>> GetAllAsync() =>
+        await _context.StaffDepartments.ToListAsync();
 
-    public async Task<Department?> GetByIdAsync(long id) =>
-        await _context.Departments.FindAsync(id);
+    public async Task<StaffDepartment?> GetByIdAsync(long id) =>
+        await _context.StaffDepartments.FindAsync((int)id);
 }

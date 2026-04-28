@@ -28,23 +28,24 @@ namespace AbsenceApp.Data.Models;
 /// </summary>
 public class Student
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string AdmissionNumber { get; set; } = default!;
     public string FirstName { get; set; } = default!;
     [Column("MiddleName")] public string? MiddleNames { get; set; }
     public string LastName { get; set; } = default!;
-    public string LegalFirstName { get; set; } = default!;
-    public string LegalLastName { get; set; } = default!;
-    public string Gender { get; set; } = default!;
+    public string? LegalFirstName { get; set; }
+    public string? LegalLastName { get; set; }
+    public string? PreferredName { get; set; }
+    public string? Gender { get; set; }
     public DateOnly DateOfBirth { get; set; }
-    public long YearGroupId { get; set; }
-    public long ClassId { get; set; }
-    public long? HouseId { get; set; }
+    public int YearGroupId { get; set; }
+    public int? ClassId { get; set; }
+    public int? HouseId { get; set; }
     public string? Username { get; set; }
     public string? Upn { get; set; }
-    public long SchoolId { get; set; }
+    public int? SchoolId { get; set; }
     public DateOnly AdmissionDate { get; set; }
-    public string Status { get; set; } = default!;
+    public string? Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

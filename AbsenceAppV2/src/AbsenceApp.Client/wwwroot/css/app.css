@@ -836,3 +836,18 @@ input[type="password"]::-ms-clear { display: none; }
 .dark .db-action-btn { background: var(--chrome-bg); }
 .dark .donut-hole    { background: var(--chrome-bg); }
 .dark .db-table tbody tr:nth-child(even) td { background: rgba(255,255,255,.03); }
+
+/* ── Attendance Calendar (atcal) ────────────────────────────────────────── */
+.atcal-wrapper { overflow: hidden; }
+.atcal-table { width: max-content; min-width: 100%; }
+.atcal-name-col { min-width: 150px; position: sticky; left: 0; background: #1e3a5f; z-index: 2; }
+.atcal-day-col { min-width: 38px; width: 38px; text-align: center; font-size: .7rem; padding: .4rem .2rem; }
+.atcal-mark-cell { text-align: center; padding: .3rem .15rem; border-right: 1px solid #e8edf3; }
+.atcal-mark { display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; }
+.atcal-mark--present { background: #dcfce7; color: #166534; }
+.atcal-mark--absent  { background: #fee2e2; color: #991b1b; }
+.atcal-mark--other   { background: #fef9c3; color: #92400e; }
+.atcal-mark--none    { color: #cbd5e1; }
+.atcal-skeleton-mark { width: 22px; height: 22px; border-radius: 50%; display: inline-block; }
+.atcal-legend { padding: .75rem 1rem; font-size: .8125rem; color: #64748b; border-top: 1px solid var(--border, #e2e8f0); display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.atcal-month-label { font-size: .9375rem; font-weight: 600; color: var(--text, #1e293b); padding: 0 .75rem; min-width: 140px; text-align: center; }

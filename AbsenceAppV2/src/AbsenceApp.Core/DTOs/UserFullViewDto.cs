@@ -34,14 +34,11 @@ public class UserFullViewDto
     // -------------------------------------------------------------------------
     // Identity
     // -------------------------------------------------------------------------
-    public string  Name           { get; set; } = string.Empty;
     public string  Username       { get; set; } = string.Empty;
     public string  Email          { get; set; } = string.Empty;
     public DateTime? EmailVerifiedAt { get; set; }
     public string  Status         { get; set; } = string.Empty;
     public bool    IsAdmin        { get; set; }
-    public string? ProfilePhotoPath { get; set; }
-    public string? PhoneNumber    { get; set; }
 
     // -------------------------------------------------------------------------
     // Login activity
@@ -56,17 +53,9 @@ public class UserFullViewDto
     public string? DepartmentName { get; set; }
 
     // -------------------------------------------------------------------------
-    // Profile
+    // Preferences
     // -------------------------------------------------------------------------
-    public string? Designation    { get; set; }
     public bool    IsTwoFactorEnabled { get; set; }
     public string? Timezone       { get; set; }
     public string? LanguageCode   { get; set; }
-    public string? Bio            { get; set; }
-    public DateOnly? DateOfBirth  { get; set; }
-    public string? Gender         { get; set; }
-    public string? Address        { get; set; }
-    public string? City           { get; set; }
-    public string? Country        { get; set; }
-    public string? PostalCode     { get; set; }
 }

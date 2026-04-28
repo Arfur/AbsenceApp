@@ -43,40 +43,40 @@ public class ClassRepository : IClassRepository
     // IQueryable accessor — enables composable, SQL-pushed filtering
     // =========================================================================
 
-    public IQueryable<Class> Query() => _context.Classes.AsQueryable();
+    public IQueryable<TeachingGroup> Query() => _context.TeachingGroups.AsQueryable();
 
     // =========================================================================
     // Query operations — async read methods
     // =========================================================================
 
-    public async Task<Class?> FindByIdAsync(long id) =>
-        await _context.Classes.FindAsync(id);
+    public async Task<TeachingGroup?> FindByIdAsync(long id) =>
+        await _context.TeachingGroups.FindAsync(id);
 
-    public async Task<IEnumerable<Class>> ListAsync() =>
-        await _context.Classes.ToListAsync();
+    public async Task<IEnumerable<TeachingGroup>> ListAsync() =>
+        await _context.TeachingGroups.ToListAsync();
 
     // =========================================================================
     // Mutation operations — async write methods
     // =========================================================================
 
-    public async Task AddAsync(Class entity)
+    public async Task AddAsync(TeachingGroup entity)
     {
-        await _context.Classes.AddAsync(entity);
+        await _context.TeachingGroups.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Class entity)
+    public async Task UpdateAsync(TeachingGroup entity)
     {
-        _context.Classes.Update(entity);
+        _context.TeachingGroups.Update(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(long id)
     {
-        var entity = await _context.Classes.FindAsync(id);
+        var entity = await _context.TeachingGroups.FindAsync(id);
         if (entity is not null)
         {
-            _context.Classes.Remove(entity);
+            _context.TeachingGroups.Remove(entity);
             await _context.SaveChangesAsync();
         }
     }

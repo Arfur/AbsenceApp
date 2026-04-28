@@ -113,12 +113,59 @@
         {
           "group": "Attendance",
           "icon": "bi-calendar-check-fill",
+          "items": [
+            {
+              "label": "All Attendance",
+              "href": "/v2/attendance",
+              "icon": "bi-calendar-check-fill"
+            },
+            {
+              "label": "Staff Attendance",
+              "href": "/v2/attendance/staff",
+              "icon": "bi-person-check-fill"
+            },
+            {
+              "label": "Student Attendance",
+              "href": "/v2/attendance/student",
+              "icon": "bi-mortarboard-fill"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "SYSTEM MANAGEMENT",
+      "groups": [
+        {
+          "group": "User Accounts",
+          "icon": "bi-person-gear",
           "flat": true,
           "items": [
             {
-              "label": "Attendance",
-              "href": "/v2/attendance",
-              "icon": "bi-calendar-check-fill"
+              "label": "User Accounts",
+              "href": "/v2/users",
+              "icon": "bi-person-gear"
+            }
+          ]
+        },
+        {
+          "group": "Roles & Permissions",
+          "icon": "bi-shield-lock",
+          "items": [
+            {
+              "label": "Roles",
+              "href": "/v2/system/roles",
+              "icon": "bi-shield-lock"
+            },
+            {
+              "label": "Permissions",
+              "href": "/v2/system/permissions",
+              "icon": "bi-key"
+            },
+            {
+              "label": "Page Access",
+              "href": "/v2/system/page-access",
+              "icon": "bi-lock"
             }
           ]
         }

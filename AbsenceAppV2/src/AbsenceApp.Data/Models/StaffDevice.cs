@@ -22,12 +22,13 @@ namespace AbsenceApp.Data.Models;
 
 public class StaffDevice
 {
-    public long Id { get; set; }
-    public long StaffId { get; set; }
-    public long DeviceTypeId { get; set; }
-    public string SerialNumber { get; set; } = default!;
+    public int Id { get; set; }
+    public int StaffId { get; set; }
+    public string DeviceType { get; set; } = default!;
+    public string DeviceIdentifier { get; set; } = default!;
     public DateOnly AssignedDate { get; set; }
     public DateOnly? ReturnedDate { get; set; }
+    public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

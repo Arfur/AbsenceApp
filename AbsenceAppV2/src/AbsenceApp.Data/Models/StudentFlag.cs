@@ -22,13 +22,13 @@ namespace AbsenceApp.Data.Models;
 
 public class StudentFlag
 {
-    public long Id { get; set; }
-    public long StudentId { get; set; }
-    public string FlagType { get; set; } = default!;
-    public string? FlagValue { get; set; }
-    public DateOnly StartDate { get; set; }
-    public DateOnly? EndDate { get; set; }
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public string FlagCode { get; set; } = default!;
+    public bool IsActive { get; set; }
     public string? Notes { get; set; }
+    public DateTime AssignedAt { get; set; }
+    public int AssignedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

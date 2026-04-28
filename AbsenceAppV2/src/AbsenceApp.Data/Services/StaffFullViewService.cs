@@ -57,7 +57,7 @@ public class StaffFullViewService : IStaffFullViewService
             .AsNoTracking()
             .ToDictionaryAsync(g => g.Id, g => g.Name);
 
-        var departments = await _db.Departments
+        var departments = await _db.StaffDepartments
             .AsNoTracking()
             .ToDictionaryAsync(d => d.Id, d => d.Name);
 
@@ -75,9 +75,9 @@ public class StaffFullViewService : IStaffFullViewService
         return allStaff
             .Select(s => StaffFullViewMapper.ToDto(
                 s,
-                jobTitleName:   jobTitles.GetValueOrDefault(s.JobTitleId, "(unknown)"),
+                jobTitleName:   jobTitles.GetValueOrDefault(s.JobTitleId) ?? "(unknown)",
                 jobGroupName:   jobGroups.GetValueOrDefault(s.JobGroupId, "(unknown)"),
-                departmentName: departments.GetValueOrDefault(s.DepartmentId, "(unknown)"),
+                departmentName: departments.GetValueOrDefault((int)s.DepartmentId, "(unknown)"),
                 managerName:    s.ReportingManagerId.HasValue
                                     ? staffNames.GetValueOrDefault(s.ReportingManagerId.Value)
                                     : null))

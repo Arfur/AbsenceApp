@@ -5,7 +5,7 @@ namespace AbsenceApp.Data.Mappers;
 
 public static class DepartmentMapper
 {
-    public static DepartmentDto ToDto(Department e) => new()
+    public static DepartmentDto ToDto(StaffDepartment e) => new()
     {
         Id          = e.Id,
         Name        = e.Name,
@@ -17,12 +17,12 @@ public static class DepartmentMapper
         UpdatedAt   = e.UpdatedAt
     };
 
-    public static Department ToEntity(DepartmentDto dto) => new()
+    public static StaffDepartment ToEntity(DepartmentDto dto) => new()
     {
         Id          = dto.Id,
         Name        = dto.Name,
         Code        = dto.Code,
-        Description = dto.Description,
+        Description = dto.Description ?? string.Empty,
         HeadUserId  = dto.HeadUserId,
         Status      = dto.Status,
         CreatedAt   = dto.CreatedAt,

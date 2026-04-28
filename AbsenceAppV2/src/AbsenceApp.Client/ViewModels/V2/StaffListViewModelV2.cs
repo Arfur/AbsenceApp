@@ -60,7 +60,7 @@ public sealed class StaffListViewModelV2
     public string SearchTerm { get; private set; } = string.Empty;
     public string SortColumn { get; private set; } = string.Empty;
     public bool SortAscending { get; private set; } = true;
-    public bool IsLoading { get; private set; }
+    public bool IsLoading { get; private set; } = true;
     public string? Error { get; private set; }
 
     // -------------------------------------------------------------------------

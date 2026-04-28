@@ -2,7 +2,7 @@ namespace AbsenceApp.Core.DTOs;
 
 public class StaffDto
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string StaffNumber { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -18,9 +18,9 @@ public class StaffDto
     public DateOnly HireDate { get; set; }
     public DateOnly? EndDate { get; set; }
     public string WorkLocation { get; set; } = string.Empty;
-    public long JobTitleId { get; set; }
-    public long JobGroupId { get; set; }
-    public long DepartmentId { get; set; }
+    public int JobTitleId { get; set; }
+    public int JobGroupId { get; set; }
+    public int DepartmentId { get; set; }
     public string? ProfilePhotoUrl { get; set; }
     public string AccountStatus { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

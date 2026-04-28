@@ -22,7 +22,7 @@ namespace AbsenceApp.Data.Models;
 
 public class School
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string SchoolRef { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string Code { get; set; } = default!;

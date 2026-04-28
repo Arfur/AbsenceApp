@@ -360,8 +360,8 @@
 }
 
 .tpt-table {
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: 0.875rem;
 }
@@ -380,9 +380,22 @@
     font-weight: 600;
     color: #ffffff;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     border-bottom: 2px solid rgba(255, 255, 255, 0.12);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     user-select: none;
+    width: 120px;
+}
+
+/* Narrow columns — add class tpt-th--sm to <th> for compact fixed-width columns */
+.tpt-thead-row ::deep th.tpt-th--sm {
+    width: 80px;
+}
+
+/* Actions column — fixed narrow width */
+.tpt-thead-row ::deep th.tpt-th--actions {
+    width: 90px;
 }
 
 /*
@@ -452,6 +465,8 @@
     color: var(--text, #334155);
     vertical-align: middle;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tpt-table ::deep tbody tr:last-child td {

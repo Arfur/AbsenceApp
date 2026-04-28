@@ -16,7 +16,7 @@ phpMySQL password root/127.0.0.1 Calm1309!
 378ymC4CcWxcp5l 
 
 I am testing 'All Students' table.
-1. When I make the App Screen width too small to fit the Table horizontally, a 'Horizontal Scrollbar' should appear, which I have asked for at leat 6 times, but it is still no
+1. When I make the App Screen width too small to fit the Table horizontally, a 'Horizontal Scrollbar' should appear, which I have asked for at leat 6 times, but it is still no Halluc
 
 
 build
@@ -29,3 +29,10 @@ dotnet run --project src\AbsenceApp.Client -c Debug -f net8.0-windows10.0.19041.
 
 
 The AI response, can you read all the lines and did it complete the tasks:
+
+The AI response is tool big to upload in 1 block, so I will upload in multiple block. Do not make any comments until I upload the final block. Just let me know if you can read all the lines in each block. 
+
+
+mbattle Gemini Key: AIzaSyA4-JRigfirrcQM4SepuYkadGzb0pvaGWI
+
+Michael Gemini Key: AIzaSyD94ZfCszMd5bd53pfexPY1PQ-iaIX_3WE

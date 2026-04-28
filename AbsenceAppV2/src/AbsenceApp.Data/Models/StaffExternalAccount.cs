@@ -22,12 +22,14 @@ namespace AbsenceApp.Data.Models;
 
 public class StaffExternalAccount
 {
-    public long Id { get; set; }
-    public long StaffId { get; set; }
-    public long ExternalSystemId { get; set; }
-    public string AccountUsername { get; set; } = default!;
-    public string AccountEmail { get; set; } = default!;
+    public int Id { get; set; }
+    public int StaffId { get; set; }
+    public int ExternalSystemId { get; set; }
+    public string ExternalUsername { get; set; } = default!;
+    public string? ExternalUserId { get; set; }
+    public string AccountType { get; set; } = "user";
     public string Status { get; set; } = default!;
+    public DateTime? LastSyncAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

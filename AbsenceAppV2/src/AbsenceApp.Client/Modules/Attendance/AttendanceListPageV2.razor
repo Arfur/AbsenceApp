@@ -30,7 +30,7 @@
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Attendance
 
-@using AbsenceApp.Client.Models.TableV2
+@using AbsenceApp.Client.Shared
 @using AbsenceApp.Client.ViewModels.V2
 @inject AttendanceListViewModelV2 ViewModel
 @inject AppStateService AppState
@@ -73,79 +73,188 @@
 
         @if (ViewModel.Error is not null)
         {
-            <div class="dsv2-alert dsv2-alert--danger" role="alert">
-                @ViewModel.Error
-            </div>
+            <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
         }
 
-        <TableV2 TItem="AbsenceApp.Core.DTOs.AttendanceDto"
-                 Columns="AttendanceListViewModelV2.Columns"
-                 Items="ViewModel.Items"
-                 TotalCount="ViewModel.TotalCount"
-                 IsLoading="ViewModel.IsLoading"
-                 CurrentPage="ViewModel.Page"
-                 PageSize="ViewModel.PageSize"
-                 SortColumn="ViewModel.SortColumn"
-                 SortAscending="ViewModel.SortAscending"
-                 SearchPlaceholder="Search attendance…"
-                 AriaLabel="Attendance table"
-                 OnSearchChanged="OnSearch"
-                 OnSortChanged="OnSort"
-                 OnPageChanged="OnPageChanged"
-                 OnPageSizeChanged="OnPageSizeChanged">
+        <TablePageTemplateV2
+            PageTitle="Attendance"
+            TotalRows="@ViewModel.TotalCount"
+            CurrentPage="@ViewModel.Page"
+            ShowEntries="@ViewModel.PageSize"
+            SearchValue="@ViewModel.SearchTerm"
+            ActiveFilters="@_chips"
+            OnShowEntriesChanged="@OnShowEntriesChanged"
+            OnSearchChanged="@OnSearchChanged"
+            OnClearAllFilters="@(() => Task.CompletedTask)">
 
-            <RowTemplate Context="record">
-                <td class="dsv2-table__td">@record.AttendanceId</td>
-                <td class="dsv2-table__td">@record.UserId</td>
-                <td class="dsv2-table__td">
-                    @(record.ClassId.HasValue ? record.ClassId.Value.ToString() : "—")
-                </td>
-                <td class="dsv2-table__td">@record.Status</td>
-                <td class="dsv2-table__td">@record.Timestamp.ToString("dd MMM yyyy HH:mm")</td>
-                <td class="dsv2-table__td">@record.RecordedBy</td>
-            </RowTemplate>
+            <TableHeader>
+                <th class="tpt-th tpt-th--sm">
+                    <button class="tpt-sort-btn @SortClass("attendanceId")"
+                            @onclick="@(() => OnSort("attendanceId"))">
+                        ID
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th tpt-th--sm">
+                    <button class="tpt-sort-btn @SortClass("userId")"
+                            @onclick="@(() => OnSort("userId"))">
+                        User ID
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th tpt-th--sm">
+                    <button class="tpt-sort-btn @SortClass("classId")"
+                            @onclick="@(() => OnSort("classId"))">
+                        Class ID
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th tpt-th--sm">
+                    <button class="tpt-sort-btn @SortClass("status")"
+                            @onclick="@(() => OnSort("status"))">
+                        Status
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("timestamp")"
+                            @onclick="@(() => OnSort("timestamp"))">
+                        Timestamp
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th">Recorded By</th>
+                <th class="tpt-th tpt-th--actions">Actions</th>
+            </TableHeader>
 
-            <RowActionsContent Context="record">
-                @if (record.ClassId.HasValue)
+            <TableBody>
+                @if (ViewModel.IsLoading)
                 {
-                    <a href="@($"/v2/attendance/{record.ClassId.Value}")"
-                       class="dsv2-table__row-action">
-                        View Register
-                    </a>
-
-                    <a href="@($"/v2/attendance/{record.ClassId.Value}/mark")"
-                       class="dsv2-table__row-action">
-                        Mark
-                    </a>
+                    @for (var i = 0; i < ViewModel.PageSize; i++)
+                    {
+                        <tr class="tpt-tr tpt-tr--skeleton">
+                            @for (var c = 0; c < 7; c++) { <td class="tpt-td"><span class="tpt-skeleton"></span></td> }
+                        </tr>
+                    }
                 }
-            </RowActionsContent>
+                else if (ViewModel.Items.Count == 0)
+                {
+                    <tr><td colspan="7" class="tpt-td tpt-td--empty">No attendance records found.</td></tr>
+                }
+                else
+                {
+                    @foreach (var record in ViewModel.Items)
+                    {
+                        <tr class="tpt-tr">
+                            <td class="tpt-td tpt-sno">@record.AttendanceId</td>
+                            <td class="tpt-td">@record.UserId</td>
+                            <td class="tpt-td">@(record.ClassId.HasValue ? record.ClassId.Value.ToString() : "—")</td>
+                            <td class="tpt-td">
+                                <span class="tpt-badge @(record.Status == "Present" ? "tpt-badge-active" : record.Status == "Absent" ? "tpt-badge-inactive" : "tpt-badge-pending")">
+                                    @record.Status
+                                </span>
+                            </td>
+                            <td class="tpt-td">@record.Timestamp.ToString("dd MMM yyyy HH:mm")</td>
+                            <td class="tpt-td">@record.RecordedBy</td>
+                            <td class="tpt-td tpt-td--actions">
+                                <div class="tpt-actions">
+                                    @if (record.ClassId.HasValue)
+                                    {
+                                        <button class="tpt-action-icon tpt-action-view" title="View Register"
+                                                @onclick="@(() => Nav.NavigateTo($"/v2/attendance/{record.ClassId.Value}"))">
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="tpt-action-icon tpt-action-edit" title="Mark Attendance"
+                                                @onclick="@(() => Nav.NavigateTo($"/v2/attendance/{record.ClassId.Value}/mark"))">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </TableBody>
 
-        </TableV2>
+            <Pagination>
+                @{
+                    var totalPages = ViewModel.PageSize > 0
+                        ? (int)Math.Ceiling((double)ViewModel.TotalCount / ViewModel.PageSize) : 1;
+                    var pg       = ViewModel.Page;
+                    var winStart = Math.Max(1, pg - 4);
+                    var winEnd   = Math.Min(totalPages, winStart + 9);
+                    if (winEnd - winStart < 9) winStart = Math.Max(1, winEnd - 9);
+                }
+                <button class="tpt-page-btn tpt-page-prev" disabled="@(ViewModel.Page <= 1)"
+                        @onclick="PrevPage">&#8592; Previous</button>
+                @for (var i = winStart; i <= winEnd; i++)
+                {
+                    var pCopy = i;
+                    <button class="tpt-page-btn @(pCopy == ViewModel.Page ? "tpt-active" : "")"
+                            @onclick="@(() => GoToPage(pCopy))">@pCopy</button>
+                }
+                @if (winEnd < totalPages) { <span class="tpt-page-ellipsis">...</span> }
+                <button class="tpt-page-btn tpt-page-next" disabled="@(ViewModel.Page >= totalPages)"
+                        @onclick="NextPage">Next &#8594;</button>
+            </Pagination>
+
+        </TablePageTemplateV2>
 
     </ChildContent>
 
 </PageTemplateV2>
 
 @code {
+    private List<FilterChip> _chips = [];
+    private bool _showExportMenu;
+
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Attendance", "Log Attendance");
         await ViewModel.LoadAsync();
     }
 
-    private async Task OnSearch(string term) =>
+    private async Task OnSearchChanged(string term) =>
         await ViewModel.SearchAsync(term);
 
-    private async Task OnSort((string Column, bool Ascending) args) =>
-        await ViewModel.SortAsync(args.Column, args.Ascending);
-
-    private async Task OnPageChanged(int page) =>
-        await ViewModel.GoToPageAsync(page);
-
-    private async Task OnPageSizeChanged(int size) =>
+    private async Task OnShowEntriesChanged(int size) =>
         await ViewModel.ChangePageSizeAsync(size);
 
-    private bool _showExportMenu;
+    private async Task OnSort(string column)
+    {
+        var asc = ViewModel.SortColumn == column ? !ViewModel.SortAscending : true;
+        await ViewModel.SortAsync(column, asc);
+    }
+
+    private string SortClass(string column) =>
+        ViewModel.SortColumn == column
+            ? (ViewModel.SortAscending ? "asc" : "desc")
+            : string.Empty;
+
+    private async Task GoToPage(int page) =>
+        await ViewModel.GoToPageAsync(page);
+
+    private async Task PrevPage() =>
+        await ViewModel.GoToPageAsync(ViewModel.Page - 1);
+
+    private async Task NextPage() =>
+        await ViewModel.GoToPageAsync(ViewModel.Page + 1);
+
     private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
     private void CloseExportMenu()  => _showExportMenu = false;
 }

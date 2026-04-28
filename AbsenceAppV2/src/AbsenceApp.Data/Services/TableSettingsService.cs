@@ -66,15 +66,13 @@ public class TableSettingsService : ITableSettingsService
     {
         ["students"]             = typeof(Student),
         ["staff"]                = typeof(Staff),
-        ["classes"]              = typeof(Class),
+        ["classes"]              = typeof(TeachingGroup),
         ["year_groups"]          = typeof(YearGroup),
-        ["departments"]          = typeof(Department),
+        ["departments"]          = typeof(StaffDepartment),
         ["houses"]               = typeof(House),
         ["devices"]              = typeof(StaffDevice),
         ["external_accounts"]    = typeof(StaffExternalAccount),
         ["absence_types"]        = typeof(AbsenceType),
-        ["attendance_registers"] = typeof(AttendanceRegister),
-        ["attendance_marks"]     = typeof(AttendanceMark),
         ["safeguarding_flags"]   = typeof(StudentFlag),
         ["medical_records"]      = typeof(StudentMedical),
     };
@@ -184,98 +182,22 @@ public class TableSettingsService : ITableSettingsService
     //    Fields saved in the DB but absent from the schema are dropped.
     // =========================================================================
 
-    public async Task<IReadOnlyList<TablePageSettingDto>> GetSettingsAsync(string pageName)
-    {
-        try
-        {
-            var schemaFields = GetSchemaFields(pageName);
-            if (schemaFields.Count == 0) return [];
-
-            var saved = await _db.TablePageSettings
-                .Where(x => x.PageName == pageName)
-                .ToDictionaryAsync(x => x.FieldName);
-
-            var result = schemaFields
-                .Select(sf => saved.TryGetValue(sf.FieldName, out var row) ? ToDto(row) : sf)
-                .ToList();
-
-            return result.AsReadOnly();
-        }
-        catch
-        {
-            // DB unavailable — return schema-driven defaults so the page still renders.
-            return GetSchemaFields(pageName);
-        }
-    }
+    public Task<IReadOnlyList<TablePageSettingDto>> GetSettingsAsync(string pageName)
+        => Task.FromResult(GetSchemaFields(pageName));
 
     // =========================================================================
     // SaveSettingsAsync — upsert one row per (pageName, fieldName) pair
     // =========================================================================
 
-    public async Task SaveSettingsAsync(string pageName, IEnumerable<TablePageSettingDto> settings)
-    {
-        var settingsList = settings.ToList();
-        var incomingFieldNames = settingsList.Select(s => s.FieldName).ToHashSet();
-
-        var existing = await _db.TablePageSettings
-            .Where(x => x.PageName == pageName)
-            .ToListAsync();
-
-        // Remove orphaned rows (fields no longer in the schema) so the DB stays clean.
-        var orphaned = existing.Where(r => !incomingFieldNames.Contains(r.FieldName)).ToList();
-        if (orphaned.Count > 0)
-            _db.TablePageSettings.RemoveRange(orphaned);
-
-        foreach (var dto in settingsList)
-        {
-            var row = existing.FirstOrDefault(r => r.FieldName == dto.FieldName);
-            if (row is null)
-            {
-                row = new TablePageSetting { PageName = pageName, FieldName = dto.FieldName };
-                _db.TablePageSettings.Add(row);
-            }
-
-            row.DisplayLabel = dto.DisplayLabel;
-            row.IsVisible    = dto.IsVisible;
-            row.IsSortable   = dto.IsSortable;
-            row.IsFilterable = dto.IsFilterable;
-            row.IsSearchable = dto.IsSearchable;
-            row.DisplayOrder = dto.DisplayOrder;
-        }
-
-        await _db.SaveChangesAsync();
-    }
+    public Task SaveSettingsAsync(string pageName, IEnumerable<TablePageSettingDto> settings)
+        => Task.CompletedTask;
 
     // =========================================================================
     // ResetToDefaultsAsync — delete saved rows; next load returns schema defaults
     // =========================================================================
 
-    public async Task ResetToDefaultsAsync(string pageName)
-    {
-        var rows = await _db.TablePageSettings
-            .Where(x => x.PageName == pageName)
-            .ToListAsync();
-
-        _db.TablePageSettings.RemoveRange(rows);
-        await _db.SaveChangesAsync();
-    }
-
-    // =========================================================================
-    // Private helpers
-    // =========================================================================
-
-    private static TablePageSettingDto ToDto(TablePageSetting row) => new()
-    {
-        Id           = row.Id,
-        PageName     = row.PageName,
-        FieldName    = row.FieldName,
-        DisplayLabel = row.DisplayLabel,
-        IsVisible    = row.IsVisible,
-        IsSortable   = row.IsSortable,
-        IsFilterable = row.IsFilterable,
-        IsSearchable = row.IsSearchable,
-        DisplayOrder = row.DisplayOrder,
-    };
+    public Task ResetToDefaultsAsync(string pageName)
+        => Task.CompletedTask;
 
     // -------------------------------------------------------------------------
     // GetSchemaFields — derives the canonical field list from EF Core metadata.
@@ -386,12 +308,10 @@ public class TableSettingsService : ITableSettingsService
     //   • Lists EF entity types that have no Table Settings mapping.
     // =========================================================================
 
-    public async Task<TableSettingsDiagnosticReport> GetDiagnosticsAsync()
+    public Task<TableSettingsDiagnosticReport> GetDiagnosticsAsync()
     {
-        var allSaved   = await _db.TablePageSettings.ToListAsync();
-        var savedByPage = allSaved
-            .GroupBy(x => x.PageName)
-            .ToDictionary(g => g.Key, g => g.ToList());
+        // No DB storage (table_page_settings table does not exist) — treat all saved sets as empty.
+        var savedByPage = new Dictionary<string, HashSet<string>>();
 
         var pageDiagnostics = new List<PageTableSettingsDiagnosticDto>();
 
@@ -414,8 +334,7 @@ public class TableSettingsService : ITableSettingsService
                 .Select(p => ToSnakeCase(p.Name))
                 .ToHashSet();
 
-            var savedRows     = savedByPage.TryGetValue(pageKey, out var rows) ? rows : [];
-            var savedFieldSet = savedRows.Select(r => r.FieldName).ToHashSet();
+            var savedFieldSet = savedByPage.TryGetValue(pageKey, out var saved) ? saved : [];
 
             var unsaved  = schemaFieldSet.Except(savedFieldSet).OrderBy(x => x).ToList();
             var orphaned = savedFieldSet.Except(schemaFieldSet).OrderBy(x => x).ToList();
@@ -433,34 +352,25 @@ public class TableSettingsService : ITableSettingsService
             });
         }
 
-        // Page keys in DB that have no mapping in PageEntityMap or FullViewFieldMap
-        var knownKeys         = PageEntityMap.Keys.Concat(FullViewFieldMap.Keys).ToHashSet();
-        var orphanedDbPageKeys = allSaved
-            .Select(x => x.PageName).Distinct()
-            .Where(p => !knownKeys.Contains(p))
-            .OrderBy(x => x).ToList();
+        var orphanedDbPageKeys  = new List<string>();
 
-        // EF entities with no Table Settings page mapping
-        var mappedTypeNames    = PageEntityMap.Values.Select(t => t.Name).ToHashSet();
+        var mappedTypeNames     = PageEntityMap.Values.Select(t => t.Name).ToHashSet();
         var unmappedEntityTypes = _db.Model.GetEntityTypes()
             .Select(e => e.ClrType.Name)
             .Where(name => !mappedTypeNames.Contains(name))
             .OrderBy(x => x).ToList();
 
         var overallStatus =
-            orphanedDbPageKeys.Count > 0 || pageDiagnostics.Any(p => p.Status == "Error")
-                ? "Error"
-                : pageDiagnostics.Any(p => p.Status == "Warning")
-                    ? "Warning"
-                    : "OK";
+            pageDiagnostics.Any(p => p.Status == "Error") ? "Error" :
+            pageDiagnostics.Any(p => p.Status == "Warning") ? "Warning" : "OK";
 
-        return new TableSettingsDiagnosticReport
+        return Task.FromResult(new TableSettingsDiagnosticReport
         {
             Pages               = pageDiagnostics.AsReadOnly(),
             OrphanedDbPageKeys  = orphanedDbPageKeys.AsReadOnly(),
             UnmappedEntityTypes = unmappedEntityTypes.AsReadOnly(),
             GeneratedAt         = DateTime.UtcNow,
             OverallStatus       = overallStatus,
-        };
+        });
     }
 }

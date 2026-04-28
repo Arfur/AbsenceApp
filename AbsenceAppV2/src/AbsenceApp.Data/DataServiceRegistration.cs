@@ -87,7 +87,6 @@ public static class DataServiceRegistration
         services.AddScoped<IAbsenceStatusRepository, AbsenceStatusRepository>();
         services.AddScoped<IAbsenceTypeRepository, AbsenceTypeRepository>();
         services.AddScoped<IStudentContactRepository, StudentContactRepository>();
-        services.AddScoped<IAttendanceRegisterRepository, AttendanceRegisterRepository>();
         services.AddScoped<IYearGroupRepository, YearGroupRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IJobTitleRepository, JobTitleRepository>();
@@ -106,7 +105,6 @@ public static class DataServiceRegistration
         services.AddScoped<IAbsenceStatusService, AbsenceStatusService>();
         services.AddScoped<IAbsenceTypeService, AbsenceTypeService>();
         services.AddScoped<IStudentContactService, StudentContactService>();
-        services.AddScoped<IAttendanceRegisterService, AttendanceRegisterService>();
         services.AddScoped<IYearGroupService, YearGroupService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
         services.AddScoped<IJobTitleService, JobTitleService>();

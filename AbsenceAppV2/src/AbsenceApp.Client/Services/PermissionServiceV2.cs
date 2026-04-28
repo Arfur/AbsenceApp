@@ -1,37 +1,57 @@
-/*
-===============================================================================
- File        : PermissionServiceV2.cs
- Namespace   : AbsenceApp.Client.Services
- Author      : Michael
- Version     : 1.2.0
- Created     : 2026-04-11
- Updated     : 2026-04-19
--------------------------------------------------------------------------------
- Purpose     : Client-side permission resolution service (E15).
-               Provides per-page effective CRUD flags for the current user.
+/*  
+===============================================================================  
+ File        : PermissionServiceV2.cs  
+ Namespace   : AbsenceApp.Client.Services  
+ Author      : Michael  
+ Version     : 1.4.1  
+ Created     : 2026-04-11  
+ Updated     : 2026-04-24  
+-------------------------------------------------------------------------------  
+ Purpose     : Client-side permission resolution service (E15).  
+               Provides per-page effective CRUD flags for the current user.  
 
-               Resolution order (highest priority first):
-               1. UserPagePermission row — if a row exists for (UserId, PageId),
-                  its flags are returned directly.
-               2. RoleDefaultPagePermission row — fallback if no user override.
-               3. All-false/deny — if neither exists, access is denied.
+               Resolution order (highest priority first):  
+               1. UserPagePermission row — if a row exists for (UserId, PageId),  
+                  its flags are returned directly.  
+               2. RoleDefaultPagePermission row — fallback if no user override.  
+               3. All-false/deny — if neither exists, access is denied.  
 
-               Results are cached per session. Call ResetAsync() on logout or
-               role change to force a fresh load.
--------------------------------------------------------------------------------
- Changes     :
-   - 1.0.0  2026-04-11  Initial creation (E15 User Management).
-   - 1.2.0  2026-04-19  RoleId resolution fix: replaced db.Users.Join(db.RoleTypes,
-                         u => u.RoleTypeId, ...) with raw SQL through the
-                         userrole → roles → roletypes chain. Eliminates the
-                         "Unknown column 'u.RoleTypeId'" startup crash.
--------------------------------------------------------------------------------
- Notes       :
-   - Registered as Singleton in V2ServiceCollectionExtensions.cs.
-   - IServiceScopeFactory is used to resolve the Scoped AppDbContext from
-     a Singleton service — same pattern as NavigationApiServiceV2.
-   - Returns all-false EffectivePermissionDto on any error (fail-safe).
-===============================================================================
+               Results are cached per session. Call ResetAsync() on logout or  
+               role change to force a fresh load.  
+-------------------------------------------------------------------------------  
+ Changes     :  
+   - 1.0.0  2026-04-11  Initial creation (E15 User Management).  
+   - 1.2.0  2026-04-19  RoleId resolution fix: replaced db.Users.Join(db.RoleTypes,  
+                         u => u.RoleTypeId, ...) with raw SQL through the  
+                         userrole → roles → roletypes chain. Eliminates the  
+                         "Unknown column 'u.RoleTypeId'" startup crash.  
+   - 1.3.0  2026-04-24  Task C fix: removed fail-open behaviour.  
+                         (1) Added _loadFailed flag — set on DB exception, cleared  
+                             by ResetAsync() so next login retries the load.  
+                         (2) LoadAsync catch no longer sets _cache=[]; sets  
+                             _loadFailed=true and leaves _cache=null instead.  
+                         (3) GetAsync and CanViewAsync check _loadFailed and  
+                             return Deny / false immediately.  
+                         (4) CanViewAsync final fall-through changed from true  
+                             to false — unknown routes now deny by default.  
+   - 1.4.0  2026-04-24  Phase 0 (E15 migration): introduced TEMPORARY fail-open  
+                         behaviour while E15 tables are being implemented, plus  
+                         additional AppLog.Write diagnostics in GetAsync and  
+                         CanViewAsync when _loadFailed=true. This version is  
+                         explicitly for development/testing and will be reverted  
+                         to fail-closed once the E15 schema is complete.  
+   - 1.4.1  2026-04-24  Added post-load verification log in LoadAsync to confirm  
+                         AppPages, RoleDefaultPagePermissions, UserPagePermissions,  
+                         and UserPageOverrides row counts after cache build.  
+-------------------------------------------------------------------------------  
+ Notes       :  
+   - Registered as Singleton in V2ServiceCollectionExtensions.cs.  
+   - IServiceScopeFactory is used to resolve the Scoped AppDbContext from  
+     a Singleton service — same pattern as NavigationApiServiceV2.  
+   - In 1.4.0, _loadFailed=true triggers TEMPORARY fail-open behaviour so the  
+     menu sidebar remains visible during E15 rollout. This is a development  
+     mode only and must be reverted to fail-closed in a later version.  
+===============================================================================  
 */
 
 using AbsenceApp.Client.Shared;
@@ -67,14 +87,18 @@ public sealed class PermissionServiceV2
     // key = pageRoute (lower-case)
     private Dictionary<string, EffectivePermissionDto>? _cache;
 
+    /// <summary>
+    /// Set to true when LoadAsync encounters a DB error. Remains set until
+    /// ResetAsync() is called (e.g. on logout) so the next authenticated request
+    /// retries the load. While true, all permission checks return deny in
+    /// production, but 1.4.0 temporarily fails open for development.
+    /// </summary>
+    private bool _loadFailed;
+
     // =========================================================================
     // Public API
     // =========================================================================
 
-    /// <summary>
-    /// Returns effective CRUD flags for the given page route for the current
-    /// authenticated user. Returns all-false on any error.
-    /// </summary>
     public async Task<EffectivePermissionDto> GetAsync(string pageRoute, CancellationToken ct = default)
     {
         var key = pageRoute.ToLowerInvariant();
@@ -83,10 +107,38 @@ public sealed class PermissionServiceV2
         try
         {
             if (_cache is null)
+            {
+                AppLog.Write("PermissionServiceV2.cs", "GetAsync",
+                    $"_cache is null → invoking LoadAsync for route='{pageRoute}'");
                 await LoadAsync(ct);
+            }
+
+            if (_loadFailed)
+            {
+                AppLog.Write("PermissionServiceV2.cs", "GetAsync",
+                    $"_loadFailed=true → TEMP FAIL-OPEN → returning ALLOW for route='{pageRoute}'");
+
+                return new EffectivePermissionDto
+                {
+                    PageRoute = pageRoute,
+                    CanRead   = true,
+                    CanWrite  = true,
+                    CanCreate = true,
+                    CanDelete = true,
+                    CanImport = true,
+                    CanExport = true
+                };
+            }
 
             if (_cache!.TryGetValue(key, out var hit))
+            {
+                AppLog.Write("PermissionServiceV2.cs", "GetAsync",
+                    $"Cache HIT for route='{pageRoute}' (key='{key}') → CanRead={hit.CanRead}");
                 return hit;
+            }
+
+            AppLog.Write("PermissionServiceV2.cs", "GetAsync",
+                $"Cache MISS for route='{pageRoute}' (key='{key}') → returning Deny()");
         }
         finally
         {
@@ -96,16 +148,14 @@ public sealed class PermissionServiceV2
         return Deny(pageRoute);
     }
 
-    /// <summary>
-    /// Returns false only when <paramref name="route"/> is a registered AppPage
-    /// AND the current user has CanRead = false.  Returns true for empty/null
-    /// routes and for routes not in the AppPage registry (unregistered routes
-    /// are always visible — they are not permission-controlled).
-    /// </summary>
     public async Task<bool> CanViewAsync(string route, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(route))
+        {
+            AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
+                "route is null/empty/whitespace → returning true");
             return true;
+        }
 
         var key = route.ToLowerInvariant();
 
@@ -113,30 +163,44 @@ public sealed class PermissionServiceV2
         try
         {
             if (_cache is null)
+            {
+                AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
+                    $"_cache is null → invoking LoadAsync for route='{route}'");
                 await LoadAsync(ct);
+            }
+
+            if (_loadFailed)
+            {
+                AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
+                    $"_loadFailed=true → TEMP FAIL-OPEN → returning true for route='{route}'");
+                return true;
+            }
 
             if (_cache!.TryGetValue(key, out var perm))
+            {
+                AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
+                    $"Cache HIT for route='{route}' (key='{key}') → CanRead={perm.CanRead}");
                 return perm.CanRead;
+            }
         }
         finally
         {
             _lock.Release();
         }
 
-        // Route is not in the AppPage registry — always visible.
-        return true;
+        AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
+            $"Route '{route}' (key='{key}') not found in cache → returning false (deny by default)");
+        return false;
     }
 
-    /// <summary>
-    /// Clears the in-memory cache. Call on logout or after permission edits.
-    /// </summary>
     public async Task ResetAsync(CancellationToken ct = default)
     {
         await _lock.WaitAsync(ct);
         try
         {
-            _cache = null;
-            AppLog.Write("PermissionServiceV2.cs", "ResetAsync", "Permission cache cleared.");
+            _cache      = null;
+            _loadFailed = false;
+            AppLog.Write("PermissionServiceV2.cs", "ResetAsync", "Permission cache cleared; _loadFailed reset to false.");
         }
         finally
         {
@@ -158,8 +222,6 @@ public sealed class PermissionServiceV2
             using var scope = _scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            // Resolve the user's RoleType.Name via userrole → roles → roletypes.
-            // Raw SQL is used because the EF Role entity does not map RoleTypeId.
             var roleTypeNames = await db.Database
                 .SqlQueryRaw<string>(
                     "SELECT rt.Name " +
@@ -173,29 +235,34 @@ public sealed class PermissionServiceV2
 
             AppLog.Write("PermissionServiceV2.cs", "LoadAsync", $"roleTypeName='{roleTypeName}'");
 
-            // Load all active pages
             var pages = await db.AppPages
                 .AsNoTracking()
                 .Where(p => p.IsActive)
                 .ToListAsync(ct);
 
-            // Load user-specific overrides
+            AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                $"Loaded {pages.Count} active AppPage record(s) from app_pages.");
+
             var userPerms = await db.UserPagePermissions
                 .AsNoTracking()
                 .Where(p => p.UserId == userId)
                 .ToListAsync(ct);
 
+            AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                $"Loaded {userPerms.Count} UserPagePermission record(s) for userId={userId}.");
+
             var userPermMap = userPerms.ToDictionary(p => p.PageId);
 
-            // Load role defaults
             var roleDefaults = await db.RoleDefaultPagePermissions
                 .AsNoTracking()
                 .Where(r => r.RoleTypeName == roleTypeName)
                 .ToListAsync(ct);
 
+            AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                $"Loaded {roleDefaults.Count} RoleDefaultPagePermission record(s) for roleTypeName='{roleTypeName}'.");
+
             var roleDefaultMap = roleDefaults.ToDictionary(r => r.PageId);
 
-            // Resolve effective permissions
             var cache = new Dictionary<string, EffectivePermissionDto>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var page in pages)
@@ -204,7 +271,6 @@ public sealed class PermissionServiceV2
 
                 if (userPermMap.TryGetValue(page.Id, out var up))
                 {
-                    // Priority 1: user-specific permission row
                     dto = new EffectivePermissionDto
                     {
                         PageRoute = page.Route,
@@ -215,10 +281,14 @@ public sealed class PermissionServiceV2
                         CanImport = up.CanImport,
                         CanExport = up.CanExport,
                     };
+
+                    AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                        $"Effective permissions (USER OVERRIDE) for pageId={page.Id}, route='{page.Route}' → " +
+                        $"R={dto.CanRead}, W={dto.CanWrite}, C={dto.CanCreate}, D={dto.CanDelete}, " +
+                        $"I={dto.CanImport}, E={dto.CanExport}");
                 }
                 else if (roleDefaultMap.TryGetValue(page.Id, out var rd))
                 {
-                    // Priority 2: role default
                     dto = new EffectivePermissionDto
                     {
                         PageRoute = page.Route,
@@ -229,25 +299,45 @@ public sealed class PermissionServiceV2
                         CanImport = rd.CanImport,
                         CanExport = rd.CanExport,
                     };
+
+                    AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                        $"Effective permissions (ROLE DEFAULT) for pageId={page.Id}, route='{page.Route}' → " +
+                        $"R={dto.CanRead}, W={dto.CanWrite}, C={dto.CanCreate}, D={dto.CanDelete}, " +
+                        $"I={dto.CanImport}, E={dto.CanExport}");
                 }
                 else
                 {
-                    // Priority 3: deny all
                     dto = Deny(page.Route);
+
+                    AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                        $"Effective permissions (DENY ALL) for pageId={page.Id}, route='{page.Route}' → " +
+                        "no user override and no role default found.");
                 }
 
                 cache[page.Route.ToLowerInvariant()] = dto;
             }
 
-            _cache = cache;
+            _cache      = cache;
+            _loadFailed = false;
+
             AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
-                $"Cache loaded — {cache.Count} page(s) resolved for userId={userId}");
+                $"Cache loaded — {cache.Count} page(s) resolved for userId={userId}; _loadFailed=false.");
+
+            // -----------------------------------------------------------------
+            // NEW IN 1.4.1 — Post-load verification log
+            // -----------------------------------------------------------------
+            AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
+                $"Post-load verification → AppPages={pages.Count}, RoleDefaults={roleDefaults.Count}, " +
+                $"UserPerms={userPerms.Count}, Overrides={(await db.UserPageOverrides.CountAsync(ct))}");
         }
         catch (Exception ex)
         {
             AppLog.Write("PermissionServiceV2.cs", "LoadAsync",
-                $"ERROR {ex.GetType().Name}: {ex.Message} — using empty cache");
-            _cache = [];
+                $"LOAD FAILED — {ex.GetType().Name}: {ex.Message}. " +
+                "In 1.4.0, _loadFailed=true will trigger TEMP FAIL-OPEN behaviour " +
+                "so the menu sidebar remains visible during E15 rollout.");
+            _loadFailed = true;
+            _cache      = null;
         }
     }
 

@@ -22,11 +22,11 @@ namespace AbsenceApp.Data.Models;
 
 public class StaffAssignmentAudit
 {
-    public long Id { get; set; }
-    public long StaffAssignmentId { get; set; }
-    public long StaffId { get; set; }
+    public int Id { get; set; }
+    public int StaffAssignmentId { get; set; }
+    public int StaffId { get; set; }
     public string Action { get; set; } = default!;
-    public long ChangedBy { get; set; }
+    public int ChangedBy { get; set; }
     public DateTime ChangeTime { get; set; }
     public string? OldValues { get; set; }
     public string? NewValues { get; set; }

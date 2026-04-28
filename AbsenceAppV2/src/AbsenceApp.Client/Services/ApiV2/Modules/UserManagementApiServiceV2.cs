@@ -3,9 +3,9 @@
  File        : UserManagementApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : 2026-04-11
- Updated     : 2026-04-21
+ Updated     : 2026-04-25
 -------------------------------------------------------------------------------
  Purpose     : Client-side User Management API service. Provides full user
                CRUD, role/page reference data, per-user permission matrix
@@ -24,6 +24,8 @@
                          GetStaffAbsencesAsync, GetUserLoginAuditAsync,
                          SaveUserProfileAsync, ChangePasswordAsync,
                          UpdateProfilePhotoAsync.
+    - 1.3.0  2026-04-25  Updated GetUserProfileDetailAsync to return unified
+                                 UserProfileFullDetailDto (one-call full profile load).
 ===============================================================================
 */
 
@@ -65,7 +67,7 @@ public sealed class UserManagementApiServiceV2
         }
     }
 
-    public async Task<UserUpdateDto?> GetUserForEditAsync(long userId, CancellationToken ct = default)
+    public async Task<UserUpdateDto?> GetUserForEditAsync(int userId, CancellationToken ct = default)
     {
         try
         {
@@ -115,7 +117,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<(bool Success, string? Error)> DeleteUserAsync(
-        long userId, CancellationToken ct = default)
+        int userId, CancellationToken ct = default)
     {
         try
         {
@@ -223,7 +225,7 @@ public sealed class UserManagementApiServiceV2
     // =========================================================================
 
     public async Task<StaffSelectDto?> GetStaffForUserCreateAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -238,7 +240,7 @@ public sealed class UserManagementApiServiceV2
         }
     }
 
-    public async Task<bool> StaffHasUserAsync(long staffId, CancellationToken ct = default)
+    public async Task<bool> StaffHasUserAsync(int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -250,6 +252,21 @@ public sealed class UserManagementApiServiceV2
         {
             AppLog.Write("UserManagementApiServiceV2.cs", "StaffHasUserAsync", $"ERROR {ex.Message}");
             return false;
+        }
+    }
+
+    public async Task<IReadOnlyList<StaffSelectDto>> GetStaffWithoutUsersAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var svc = scope.ServiceProvider.GetRequiredService<IUserManagementService>();
+            return await svc.GetStaffWithoutUsersAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetStaffWithoutUsersAsync", $"ERROR {ex.Message}");
+            return [];
         }
     }
 
@@ -307,7 +324,7 @@ public sealed class UserManagementApiServiceV2
     // =========================================================================
 
     public async Task<UserProfileHeaderDto?> GetUserProfileHeaderAsync(
-        long userId, CancellationToken ct = default)
+        int userId, CancellationToken ct = default)
     {
         try
         {
@@ -322,8 +339,8 @@ public sealed class UserManagementApiServiceV2
         }
     }
 
-    public async Task<UserProfileDetailDto> GetUserProfileDetailAsync(
-        long userId, CancellationToken ct = default)
+    public async Task<UserProfileFullDetailDto> GetUserProfileDetailAsync(
+        int userId, CancellationToken ct = default)
     {
         try
         {
@@ -334,12 +351,16 @@ public sealed class UserManagementApiServiceV2
         catch (Exception ex)
         {
             AppLog.Write("UserManagementApiServiceV2.cs", "GetUserProfileDetailAsync", $"ERROR {ex.Message}");
-            return new UserProfileDetailDto();
+            return new UserProfileFullDetailDto
+            {
+                UserExists = false,
+                UserId     = userId,
+            };
         }
     }
 
     public async Task<StaffContactDto?> GetStaffContactAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -355,7 +376,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -371,7 +392,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<IReadOnlyList<StaffDeviceRowDto>> GetStaffDevicesAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -387,7 +408,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<IReadOnlyList<StaffExternalRowDto>> GetStaffExternalAccountsAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -403,7 +424,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<IReadOnlyList<StaffAbsenceRowDto>> GetStaffAbsencesAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         try
         {
@@ -419,7 +440,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<IReadOnlyList<LoginAuditRowDto>> GetUserLoginAuditAsync(
-        long userId, CancellationToken ct = default)
+        int userId, CancellationToken ct = default)
     {
         try
         {
@@ -469,7 +490,7 @@ public sealed class UserManagementApiServiceV2
     }
 
     public async Task<(bool Success, string? Error)> UpdateProfilePhotoAsync(
-        long userId, string photoUrl, CancellationToken ct = default)
+        int userId, string photoUrl, CancellationToken ct = default)
     {
         try
         {

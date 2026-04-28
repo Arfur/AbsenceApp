@@ -18,17 +18,14 @@
    - All required string properties use = default! to satisfy the nullable compiler.
 ===============================================================================
 */
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace AbsenceApp.Data.Models;
 
 public class House
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; } = default!;
-    [NotMapped] public string Colour { get; set; } = default!;
     public string Code { get; set; } = default!;
-    [NotMapped] public long SchoolId { get; set; }
+    public string? Description { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

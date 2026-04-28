@@ -22,9 +22,9 @@ namespace AbsenceApp.Data.Models;
 
 public class JobTitle
 {
-    public long Id { get; set; }
-    public string Title { get; set; } = default!;
-    public string Code { get; set; } = default!;
+    public int Id { get; set; }
+    public string? Title { get; set; }
+    public string? Code { get; set; }
     public string? Description { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

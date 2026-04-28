@@ -2,9 +2,9 @@
    File        : UsersPage.razor
    Namespace   : AbsenceApp.Client.Modules.SystemManagement
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.3.0
    Created     : 2026-04-13
-   Updated     : 2026-04-21
+   Updated     : 2026-04-25
    ---------------------------------------------------------------------------
    Purpose     : System Management → User Management → Users.
                  Displays all user accounts using TablePageTemplateV2.
@@ -23,12 +23,35 @@
                            icon actions (pencil + two-click delete confirm),
                            role/status filter chips, sort buttons, skeleton rows,
                            and sliding-window pagination.
+     - 2.1.0  2026-04-22  Routing correction — removed invalid "/edit" suffix
+                           from Edit User link. Updated action link from
+                           "/v2/users/{Id}/edit" to "/v2/users/{Id}" to restore
+                           correct navigation into UserFormPageV2 and fix
+                           "User not found", missing banner/header, and
+                           ViewModel null-state issues.
+     - 2.2.0  2026-04-23  Corrected routing regression introduced in 2.1.0.
+                           Restored the proper Edit User link:
+                           "/v2/users/{Id}/edit". The previous update pointed
+                           to "/v2/users/{Id}", a route that does not exist,
+                           causing navigation to fall back to the root component
+                           and resulting in "User not found", missing header,
+                           and blank tabs. This update restores correct
+                           navigation into UserFormPageV2.
+     - 2.3.0  2026-04-25  Reconciled Users list and System Management routing.
+                           Standardised Edit action to point to the canonical
+                           system route "/v2/system/users/{Id}" used by the
+                           SystemManagement module. This resolves a routing
+                           mismatch where some list pages navigated to
+                           "/v2/users/{Id}/edit" or "/v2/users/{Id}" causing
+                           the UserFormPageV2 to receive no Id and display
+                           "User not found". Updated notes and restored
+                           deterministic navigation across modules.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/system/users
-     - Add User navigates to /v2/staff (Staff-linked-only user creation).
-===========================================================================
-*@
+     - Edit User navigates to /v2/system/users/{Id}.
+     - Add User navigates to /v2/users/new (Staff-linked-only user creation).
+=========================================================================== *@
 
 @page "/v2/system/users"
 @layout MainLayoutV2
@@ -76,8 +99,8 @@
         </div>
         <button type="button"
                 class="phv2-btn phv2-btn--add"
-                title="User accounts must be created from a Staff record. Click to go to the Staff list, then select a staff member and click 'Create User Account'."
-                @onclick="@(() => Nav.NavigateTo("/v2/staff"))">
+                title="Create a new user account linked to a staff member."
+                @onclick="@(() => Nav.NavigateTo("/v2/users/new"))">
             <i class="bi bi-plus-circle" aria-hidden="true"></i>
             Add User
         </button>
@@ -185,7 +208,7 @@
                                 <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
                             </td>
                             <td class="tpt-td tpt-td--actions">
-                                <a href="/v2/users/@item.Id/edit"
+                                <a href="/v2/system/users/@item.Id"
                                    class="tpt-action-icon tpt-action-edit"
                                    title="Edit @item.Username">
                                     <i class="bi bi-pencil" aria-hidden="true"></i>

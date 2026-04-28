@@ -98,14 +98,11 @@ public sealed class CsvImportPipeline
         await ImportStudentContactsAsync(csvDirectory);
         await ImportStudentMedicalAsync(csvDirectory);
         await ImportStudentFlagsAsync(csvDirectory);
-        await ImportAttendanceRegistersAsync(csvDirectory);
-        await ImportAttendanceMarksAsync(csvDirectory);
 
         // ── Phase 5: audit tables ─────────────────────────────────────────────
         await ImportLoginAuditAsync(csvDirectory);
         await ImportAccountVerificationEventsAsync(csvDirectory);
         await ImportRoleChangeAuditAsync(csvDirectory);
-        await ImportStaffAssignmentAuditAsync(csvDirectory);
         await ImportStaffAbsenceAuditAsync(csvDirectory);
         await ImportStaffDeviceAuditAsync(csvDirectory);
         await ImportStaffExternalAccountAuditAsync(csvDirectory);
@@ -125,7 +122,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "schools.csv"));
         var entities = rows.Select(r => new School
         {
-            Id        = ToLong(r, "id"),
+            Id        = ToInt(r, "id"),
             Name      = Col(r, "name"),
             Code      = Col(r, "code"),
             SchoolRef = Col(r, "school_ref"),
@@ -146,7 +143,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "phases.csv"));
         var entities = rows.Select(r => new Phase
         {
-            Id           = ToLong(r, "id"),
+            Id           = ToInt(r, "id"),
             Name         = Col(r, "name"),
             Code         = Col(r, "name"),
             NumericOrder = 0,
@@ -163,7 +160,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "job_titles.csv"));
         var entities = rows.Select(r => new JobTitle
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Title       = Col(r, "title"),
             Code        = Col(r, "code"),
             Description = NullableCol(r, "description"),
@@ -179,7 +176,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "job_groups.csv"));
         var entities = rows.Select(r => new JobGroup
         {
-            Id             = ToLong(r, "id"),
+            Id             = ToInt(r, "id"),
             Name           = Col(r, "name"),
             Description    = NullableCol(r, "description"),
             TypicalMembers = NullableCol(r, "typical_members"),
@@ -196,7 +193,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "role_types.csv"));
         var entities = rows.Select(r => new RoleType
         {
-            Id           = ToLong(r, "id"),
+            Id           = ToInt(r, "id"),
             Name         = Col(r, "name"),
             DisplayName  = Col(r, "display_name"),
             Description  = NullableCol(r, "description"),
@@ -213,14 +210,14 @@ public sealed class CsvImportPipeline
     private async Task ImportResponsibilitiesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "responsibilities.csv"));
-        var entities = rows.Select(r => new Responsibility
+        var entities = rows.Select(r => new ResponsibilityType
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Name        = Col(r, "name"),
             Code        = Col(r, "code"),
             Description = NullableCol(r, "description"),
         }).ToList();
-        await UpsertAsync(_db.Responsibilities, r => r.Id, entities);
+        await UpsertAsync(_db.ResponsibilityTypes, r => r.Id, entities);
     }
 
     // CSV columns (new schema): id, code, name, category, is_authorised, created_at
@@ -229,7 +226,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "absence_types.csv"));
         var entities = rows.Select(r => new AbsenceType
         {
-            Id           = ToLong(r, "id"),
+            Id           = ToInt(r, "id"),
             Code         = Col(r, "code"),
             Name         = Col(r, "name"),
             Category     = Col(r, "category"),
@@ -244,7 +241,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "device_types.csv"));
         var entities = rows.Select(r => new DeviceType
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Name        = Col(r, "name"),
             Code        = Col(r, "code"),
             Description = NullableCol(r, "description"),
@@ -260,12 +257,10 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "external_systems.csv"));
         var entities = rows.Select(r => new ExternalSystem
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Name        = Col(r, "name"),
             Code        = Col(r, "code"),
             Description = NullableCol(r, "description"),
-            CreatedAt   = ToDateTime(r, "created_at"),
-            UpdatedAt   = ToDateTime(r, "updated_at"),
         }).ToList();
         await UpsertAsync(_db.ExternalSystems, e => e.Id, entities);
     }
@@ -276,7 +271,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "system_events.csv"));
         var entities = rows.Select(r => new SystemEvent
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             EventType   = Col(r, "event_type"),
             EventTime   = ToDateTime(r, "event_time"),
             TriggeredBy = Col(r, "triggered_by"),
@@ -301,12 +296,12 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "year_groups.csv"));
         var entities = rows.Select(r => new YearGroup
         {
-            Id           = ToLong(r, "id"),
+            Id           = ToInt(r, "id"),
             Name         = Col(r, "name"),
             Code         = Col(r, "name"),
-            NumericValue = 0,
+            NumericValue = null,
             PhaseId      = 1,
-            SchoolId     = 1,
+            DisplayOrder = 0,
             CreatedAt    = ToDateTime(r, "created_at"),
             UpdatedAt    = ToDateTime(r, "updated_at"),
         }).ToList();
@@ -323,11 +318,9 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "houses.csv"));
         var entities = rows.Select(r => new House
         {
-            Id        = ToLong(r, "id"),
+            Id        = ToInt(r, "id"),
             Name      = Col(r, "name"),
-            Colour    = "",
             Code      = Col(r, "name"),
-            SchoolId  = 1,
             CreatedAt = ToDateTime(r, "created_at"),
             UpdatedAt = ToDateTime(r, "updated_at"),
         }).ToList();
@@ -342,18 +335,18 @@ public sealed class CsvImportPipeline
     private async Task ImportDepartmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "departments.csv"));
-        var entities = rows.Select(r => new Department
+        var entities = rows.Select(r => new StaffDepartment
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Name        = Col(r, "name"),
             Code        = Col(r, "code"),
-            Description = NullableCol(r, "description"),
+            Description = NullableCol(r, "description") ?? string.Empty,
             HeadUserId  = null,
             Status      = "active",
             CreatedAt   = ToDateTime(r, "created_at"),
             UpdatedAt   = ToDateTime(r, "updated_at"),
         }).ToList();
-        await UpsertAsync(_db.Departments, d => d.Id, entities);
+        await UpsertAsync(_db.StaffDepartments, d => d.Id, entities);
     }
 
     // CSV columns: id, name, created_at, updated_at
@@ -363,16 +356,16 @@ public sealed class CsvImportPipeline
     private async Task ImportClassesAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "classes.csv"));
-        var entities = rows.Select(r => new Class
+        var entities = rows.Select(r => new TeachingGroup
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             Name        = Col(r, "name"),
             Code        = Col(r, "name"),
             Description = null,
             CreatedAt   = ToDateTime(r, "created_at"),
             UpdatedAt   = ToDateTime(r, "updated_at"),
         }).ToList();
-        await UpsertAsync(_db.Classes, c => c.Id, entities);
+        await UpsertAsync(_db.TeachingGroups, c => c.Id, entities);
     }
 
     // =========================================================================
@@ -392,37 +385,24 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "users.csv"));
         var entities = rows.Select(r => new User
         {
-            Id                 = ToLong(r, "id"),
-            Name               = Col(r, "name"),
+            Id                 = ToInt(r, "id"),
             Username           = Col(r, "username"),
             Email              = Col(r, "email"),
             EmailVerifiedAt    = NullableDateTime(r, "email_verified_at"),
             Password           = Col(r, "password"),
-            RoleTypeId         = ToLong(r, "role_type_id"),
             Status             = Col(r, "status"),
             IsAdmin            = ToBool(r, "is_admin"),
-            ProfilePhotoPath   = NullableCol(r, "profile_photo_path"),
-            PhoneNumber        = NullableCol(r, "phone_number"),
             LastLoginAt        = NullableDateTime(r, "last_login_at"),
             LastLoginIp        = NullableCol(r, "last_login_ip"),
             RememberToken      = NullableCol(r, "remember_token"),
             CreatedAt          = ToDateTime(r, "created_at"),
             UpdatedAt          = ToDateTime(r, "updated_at"),
-            DepartmentId       = NullableLong(r, "department_id"),
-            Designation        = NullableCol(r, "designation"),
             LoginCount         = ToInt(r, "login_count"),
             IsTwoFactorEnabled = ToBool(r, "is_two_factor_enabled"),
             TwoFactorSecret    = NullableCol(r, "two_factor_secret"),
             BackupCodes        = NullableCol(r, "backup_codes"),
             Timezone           = NullableCol(r, "timezone"),
             LanguageCode       = NullableCol(r, "language_code"),
-            Bio                = NullableCol(r, "bio"),
-            DateOfBirth        = NullableDate(r, "date_of_birth"),
-            Gender             = NullableCol(r, "gender"),
-            Address            = NullableCol(r, "address"),
-            City               = NullableCol(r, "city"),
-            Country            = NullableCol(r, "country"),
-            PostalCode         = NullableCol(r, "postal_code"),
         }).ToList();
         await UpsertAsync(_db.Users, u => u.Id, entities);
     }
@@ -433,24 +413,17 @@ public sealed class CsvImportPipeline
     //              created_at, updated_at
     private async Task ImportUserProfilesAsync(string dir)
     {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "user_profiles.csv"));
+        var rows = await ReadCsvAsync(Path.Combine(dir, "userprofiles.csv"));
         var entities = rows.Select(r => new UserProfile
         {
-            Id                = ToLong(r, "id"),
-            UserId            = ToLong(r, "user_id"),
-            FirstName         = Col(r, "first_name"),
-            LastName          = Col(r, "last_name"),
-            PreferredName     = NullableCol(r, "preferred_name"),
-            Title             = Col(r, "title"),
-            DateOfBirth       = ToDate(r, "date_of_birth"),
+            Id                = ToInt(r, "id"),
+            UserId            = ToInt(r, "user_id"),
+            DisplayName       = Col(r, "first_name") + " " + Col(r, "last_name"),
+            ThemePreference   = "default",
             ProfilePictureUrl = NullableCol(r, "profile_picture_url"),
             Bio               = NullableCol(r, "bio"),
-            Gender            = NullableCol(r, "gender"),
             Timezone          = Col(r, "timezone"),
             LanguageCode      = Col(r, "language_code"),
-            DepartmentId      = ToLong(r, "department_id"),
-            JobTitleId        = ToLong(r, "job_title_id"),
-            SchoolId          = ToLong(r, "school_id"),
             CreatedAt         = ToDateTime(r, "created_at"),
             UpdatedAt         = ToDateTime(r, "updated_at"),
         }).ToList();
@@ -476,7 +449,7 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff.csv"));
         var entities = rows.Select(r => new Staff
         {
-            Id               = ToLong(r, "id"),
+            Id               = ToInt(r, "id"),
             FirstName        = Col(r, "first_name"),
             LastName         = Col(r, "last_name"),
             WorkEmail        = Col(r, "email"),
@@ -522,22 +495,22 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "students.csv"));
         var entities = rows.Select(r => new Student
         {
-            Id              = ToLong(r, "id"),
+            Id              = ToInt(r, "id"),
             AdmissionNumber = Col(r, "admission_number"),
             FirstName       = Col(r, "first_name"),
             LastName        = Col(r, "last_name"),
             MiddleNames     = null,
-            LegalFirstName  = Col(r, "first_name"),
-            LegalLastName   = Col(r, "last_name"),
-            Gender          = "",
+            LegalFirstName  = NullableCol(r, "first_name"),
+            LegalLastName   = NullableCol(r, "last_name"),
+            Gender          = null,
             DateOfBirth     = DateOnly.MinValue,
             AdmissionDate   = DateOnly.MinValue,
-            YearGroupId     = ToLong(r, "year_group_id"),
-            ClassId         = ToLong(r, "class_id"),
-            HouseId         = NullableLong(r, "house_id"),
+            YearGroupId     = ToInt(r, "year_group_id"),
+            ClassId         = NullableInt(r, "class_id"),
+            HouseId         = NullableInt(r, "house_id"),
             Username        = null,
             Upn             = null,
-            SchoolId        = NullableLong(r, "school_id") ?? 1,
+            SchoolId        = NullableInt(r, "school_id"),
             Status          = Col(r, "status"),
             CreatedAt       = ToDateTime(r, "created_at"),
             UpdatedAt       = ToDateTime(r, "updated_at"),
@@ -556,16 +529,15 @@ public sealed class CsvImportPipeline
     private async Task ImportClassYearGroupAssignmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "class_year_group_assignments.csv"));
-        var entities = rows.Select(r => new ClassYearGroupAssignment
+        var entities = rows.Select(r => new ClassYearGroup
         {
-            Id          = ToLong(r, "id"),
+            Id          = ToInt(r, "id"),
             ClassId     = 1,
             YearGroupId = 1,
-            SchoolId    = ToLong(r, "school_id"),
             CreatedAt   = ToDateTime(r, "created_at"),
             UpdatedAt   = ToDateTime(r, "updated_at"),
         }).ToList();
-        await UpsertAsync(_db.ClassYearGroupAssignments, c => c.Id, entities);
+        await UpsertAsync(_db.ClassYearGroups, c => c.Id, entities);
     }
 
     // CSV columns: id, staff_id, class_id, year_group_id, phase_id,
@@ -581,22 +553,18 @@ public sealed class CsvImportPipeline
     private async Task ImportStaffAssignmentsAsync(string dir)
     {
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_assignments.csv"));
-        var entities = rows.Select(r => new StaffAssignment
+        var entities = rows.Select(r => new StaffDuty
         {
-            Id               = ToLong(r, "id"),
-            StaffId          = ToLong(r, "staff_id"),
-            ClassId          = NullableLong(r, "class_id"),
-            JobTitleId       = 1,
-            JobGroupId       = 1,
-            DepartmentId     = 1,
-            ResponsibilityId = null,
-            StartDate        = DateOnly.MinValue,
-            EndDate          = null,
-            DaysOfWeek       = null,
-            CreatedAt        = ToDateTime(r, "created_at"),
-            UpdatedAt        = ToDateTime(r, "updated_at"),
+            Id          = ToInt(r, "id"),
+            StaffId     = ToInt(r, "staff_id"),
+            LocationId  = 1,
+            StartDate   = DateOnly.MinValue,
+            EndDate     = null,
+            Notes       = null,
+            CreatedAt   = ToDateTime(r, "created_at"),
+            UpdatedAt   = ToDateTime(r, "updated_at"),
         }).ToList();
-        await UpsertAsync(_db.StaffAssignments, sa => sa.Id, entities);
+        await UpsertAsync(_db.StaffDuties, sa => sa.Id, entities);
     }
 
     // StaffAbsences table archived � import no longer applicable.
@@ -612,14 +580,14 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_devices.csv"));
         var entities = rows.Select(r => new StaffDevice
         {
-            Id           = ToLong(r, "id"),
-            StaffId      = ToLong(r, "staff_id"),
-            DeviceTypeId = ToLong(r, "device_type_id"),
-            SerialNumber = Col(r, "serial_number"),
-            AssignedDate = ToDate(r, "issued_date"),
-            ReturnedDate = NullableDate(r, "return_date"),
-            CreatedAt    = ToDateTime(r, "created_at"),
-            UpdatedAt    = ToDateTime(r, "updated_at"),
+            Id             = ToInt(r, "id"),
+            StaffId        = ToInt(r, "staff_id"),
+            DeviceType     = NullableCol(r, "device_type") ?? "Unknown",
+            DeviceIdentifier = NullableCol(r, "serial_number") ?? string.Empty,
+            AssignedDate   = ToDate(r, "issued_date"),
+            ReturnedDate   = NullableDate(r, "return_date"),
+            CreatedAt      = ToDateTime(r, "created_at"),
+            UpdatedAt      = ToDateTime(r, "updated_at"),
         }).ToList();
         await UpsertAsync(_db.StaffDevices, sd => sd.Id, entities);
     }
@@ -631,11 +599,11 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_external_accounts.csv"));
         var entities = rows.Select(r => new StaffExternalAccount
         {
-            Id               = ToLong(r, "id"),
-            StaffId          = ToLong(r, "staff_id"),
-            ExternalSystemId = ToLong(r, "external_system_id"),
-            AccountUsername  = Col(r, "account_username"),
-            AccountEmail     = Col(r, "account_email"),
+            Id               = ToInt(r, "id"),
+            StaffId          = ToInt(r, "staff_id"),
+            ExternalSystemId = ToInt(r, "external_system_id"),
+            ExternalUsername = NullableCol(r, "account_username") ?? string.Empty,
+            AccountType      = "user",
             Status           = Col(r, "status"),
             CreatedAt        = ToDateTime(r, "created_at"),
             UpdatedAt        = ToDateTime(r, "updated_at"),
@@ -669,20 +637,15 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "student_contacts.csv"));
         var entities = rows.Select(r => new StudentContact
         {
-            Id                       = ToLong(r, "id"),
-            StudentId                = ToLong(r, "student_id"),
-            ContactName              = Col(r, "contact_name"),
-            Relationship             = Col(r, "relationship"),
-            Email                    = NullableCol(r, "email"),
-            PhoneMobile              = NullableCol(r, "phone"),
-            PhoneHome                = null,
-            Priority                 = 1,
-            LivesWithStudent         = null,
-            HasParentalResponsibility = false,
-            SafeguardingFlag         = null,
-            Notes                    = null,
-            CreatedAt                = ToDateTime(r, "created_at"),
-            UpdatedAt                = ToDateTime(r, "updated_at"),
+            Id           = ToInt(r, "id"),
+            StudentId    = ToInt(r, "student_id"),
+            ContactName  = Col(r, "contact_name"),
+            Relationship = Col(r, "relationship"),
+            Email        = NullableCol(r, "email"),
+            Phone        = NullableCol(r, "phone"),
+            IsPrimary    = false,
+            CreatedAt    = ToDateTime(r, "created_at"),
+            UpdatedAt    = ToDateTime(r, "updated_at"),
         }).ToList();
         await UpsertAsync(_db.StudentContacts, sc => sc.Id, entities);
     }
@@ -696,12 +659,13 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "student_medical.csv"));
         var entities = rows.Select(r => new StudentMedical
         {
-            Id            = ToLong(r, "id"),
-            StudentId     = ToLong(r, "student_id"),
-            ConditionName = Col(r, "condition_name"),
-            Severity      = NullableCol(r, "severity"),
-            CreatedAt     = ToDateTime(r, "created_at"),
-            UpdatedAt     = ToDateTime(r, "updated_at"),
+            Id               = ToInt(r, "id"),
+            StudentId        = ToInt(r, "student_id"),
+            MedicalCondition = Col(r, "condition_name"),
+            IsAllergic       = false,
+            RecordedBy       = 1,
+            CreatedAt        = ToDateTime(r, "created_at"),
+            UpdatedAt        = ToDateTime(r, "updated_at"),
         }).ToList();
         await UpsertAsync(_db.StudentMedical, sm => sm.Id, entities);
     }
@@ -713,61 +677,17 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "student_flags.csv"));
         var entities = rows.Select(r => new StudentFlag
         {
-            Id        = ToLong(r, "id"),
-            StudentId = ToLong(r, "student_id"),
-            FlagType  = Col(r, "flag_type"),
-            FlagValue = NullableCol(r, "flag_value"),
-            StartDate = ToDate(r, "start_date"),
-            EndDate   = NullableDate(r, "end_date"),
-            Notes     = NullableCol(r, "notes"),
-            CreatedAt = ToDateTime(r, "created_at"),
-            UpdatedAt = ToDateTime(r, "updated_at"),
+            Id         = ToInt(r, "id"),
+            StudentId  = ToInt(r, "student_id"),
+            FlagCode   = Col(r, "flag_type"),
+            IsActive   = true,
+            AssignedAt = ToDateTime(r, "start_date"),
+            AssignedBy = 1,
+            Notes      = NullableCol(r, "notes"),
+            CreatedAt  = ToDateTime(r, "created_at"),
+            UpdatedAt  = ToDateTime(r, "updated_at"),
         }).ToList();
         await UpsertAsync(_db.StudentFlags, sf => sf.Id, entities);
-    }
-
-    // CSV columns: id, class_id, date, session, opened_by, closed_by,
-    //              status, created_at, updated_at
-    // (Source CSV is currently empty; importer is ready for future data.)
-    private async Task ImportAttendanceRegistersAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "attendance_registers.csv"));
-        var entities = rows.Select(r => new AttendanceRegister
-        {
-            Id        = ToLong(r, "id"),
-            ClassId   = ToLong(r, "class_id"),
-            Date      = ToDate(r, "date"),
-            Session   = Col(r, "session"),
-            OpenedBy  = ToLong(r, "opened_by"),
-            ClosedBy  = NullableLong(r, "closed_by"),
-            Status    = Col(r, "status"),
-            CreatedAt = ToDateTime(r, "created_at"),
-            UpdatedAt = ToDateTime(r, "updated_at"),
-        }).ToList();
-        await UpsertAsync(_db.AttendanceRegisters, ar => ar.Id, entities);
-    }
-
-    // CSV columns: id, attendance_register_id, student_id, mark_code,
-    //              is_late, minutes_late, notes, recorded_by,
-    //              created_at, updated_at
-    // (Source CSV is currently empty; importer is ready for future data.)
-    private async Task ImportAttendanceMarksAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "attendance_marks.csv"));
-        var entities = rows.Select(r => new AttendanceMark
-        {
-            Id                   = ToLong(r, "id"),
-            AttendanceRegisterId = ToLong(r, "attendance_register_id"),
-            StudentId            = ToLong(r, "student_id"),
-            MarkCode             = Col(r, "mark_code"),
-            IsLate               = NullableBool(r, "is_late"),
-            MinutesLate          = NullableInt(r, "minutes_late"),
-            Notes                = NullableCol(r, "notes"),
-            RecordedBy           = ToLong(r, "recorded_by"),
-            CreatedAt            = ToDateTime(r, "created_at"),
-            UpdatedAt            = ToDateTime(r, "updated_at"),
-        }).ToList();
-        await UpsertAsync(_db.AttendanceMarks, am => am.Id, entities);
     }
 
     // =========================================================================
@@ -781,13 +701,12 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "login_audit.csv"));
         var entities = rows.Select(r => new LoginAudit
         {
-            Id        = ToLong(r, "id"),
-            UserId    = ToLong(r, "user_id"),
+            Id        = ToInt(r, "id"),
+            UserId    = ToInt(r, "user_id"),
             LoginTime = ToDateTime(r, "login_time"),
-            IpAddress = Col(r, "ip_address"),
-            UserAgent = Col(r, "user_agent"),
+            IpAddress = NullableCol(r, "ip_address"),
+            UserAgent = NullableCol(r, "user_agent"),
             Success   = ToBool(r, "success"),
-            CreatedAt = ToDateTime(r, "created_at"),
         }).ToList();
         await UpsertAsync(_db.LoginAudit, la => la.Id, entities);
     }
@@ -799,8 +718,8 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "account_verification_events.csv"));
         var entities = rows.Select(r => new AccountVerificationEvent
         {
-            Id        = ToLong(r, "id"),
-            UserId    = ToLong(r, "user_id"),
+            Id        = ToInt(r, "id"),
+            UserId    = ToInt(r, "user_id"),
             EventType = Col(r, "event_type"),
             EventTime = ToDateTime(r, "event_time"),
             IpAddress = Col(r, "ip_address"),
@@ -817,35 +736,15 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "role_change_audit.csv"));
         var entities = rows.Select(r => new RoleChangeAudit
         {
-            Id         = ToLong(r, "id"),
-            UserId     = ToLong(r, "user_id"),
-            OldRoleId  = ToLong(r, "old_role_id"),
-            NewRoleId  = ToLong(r, "new_role_id"),
-            ChangedBy  = ToLong(r, "changed_by"),
-            ChangeTime = ToDateTime(r, "change_time"),
-            Reason     = NullableCol(r, "reason"),
-            Metadata   = NullableCol(r, "metadata"),
+            Id         = ToInt(r, "id"),
+            UserId     = ToInt(r, "user_id"),
+            OldRoleId  = NullableInt(r, "old_role_id"),
+            NewRoleId  = NullableInt(r, "new_role_id"),
+            ChangedBy  = ToInt(r, "changed_by"),
+            ChangedAt  = ToDateTime(r, "change_time"),
+            ChangeReason = NullableCol(r, "reason"),
         }).ToList();
         await UpsertAsync(_db.RoleChangeAudit, rca => rca.Id, entities);
-    }
-
-    // CSV columns: id, staff_assignment_id, staff_id, action, changed_by,
-    //              change_time, old_values, new_values
-    private async Task ImportStaffAssignmentAuditAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "staff_assignment_audit.csv"));
-        var entities = rows.Select(r => new StaffAssignmentAudit
-        {
-            Id                = ToLong(r, "id"),
-            StaffAssignmentId = ToLong(r, "staff_assignment_id"),
-            StaffId           = ToLong(r, "staff_id"),
-            Action            = Col(r, "action"),
-            ChangedBy         = ToLong(r, "changed_by"),
-            ChangeTime        = ToDateTime(r, "change_time"),
-            OldValues         = NullableCol(r, "old_values"),
-            NewValues         = NullableCol(r, "new_values"),
-        }).ToList();
-        await UpsertAsync(_db.StaffAssignmentAudit, saa => saa.Id, entities);
     }
 
     // StaffAbsenceAudit table archived � import no longer applicable.
@@ -858,14 +757,11 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_device_audit.csv"));
         var entities = rows.Select(r => new StaffDeviceAudit
         {
-            Id            = ToLong(r, "id"),
-            StaffDeviceId = ToLong(r, "staff_device_id"),
-            StaffId       = ToLong(r, "staff_id"),
+            Id            = ToInt(r, "id"),
+            StaffDeviceId = ToInt(r, "staff_device_id"),
+            StaffId       = ToInt(r, "staff_id"),
             Action        = Col(r, "action"),
-            ChangedBy     = ToLong(r, "changed_by"),
-            ChangeTime    = ToDateTime(r, "change_time"),
-            OldValues     = NullableCol(r, "old_values"),
-            NewValues     = NullableCol(r, "new_values"),
+            CreatedAt     = ToDateTime(r, "change_time"),
         }).ToList();
         await UpsertAsync(_db.StaffDeviceAudit, sda => sda.Id, entities);
     }
@@ -877,14 +773,11 @@ public sealed class CsvImportPipeline
         var rows = await ReadCsvAsync(Path.Combine(dir, "staff_external_account_audit.csv"));
         var entities = rows.Select(r => new StaffExternalAccountAudit
         {
-            Id                     = ToLong(r, "id"),
-            StaffExternalAccountId = ToLong(r, "staff_external_account_id"),
-            StaffId                = ToLong(r, "staff_id"),
+            Id                     = ToInt(r, "id"),
+            StaffExternalAccountId = ToInt(r, "staff_external_account_id"),
+            StaffId                = ToInt(r, "staff_id"),
             Action                 = Col(r, "action"),
-            ChangedBy              = ToLong(r, "changed_by"),
-            ChangeTime             = ToDateTime(r, "change_time"),
-            OldValues              = NullableCol(r, "old_values"),
-            NewValues              = NullableCol(r, "new_values"),
+            CreatedAt              = ToDateTime(r, "change_time"),
         }).ToList();
         await UpsertAsync(_db.StaffExternalAccountAudit, sea => sea.Id, entities);
     }
@@ -897,10 +790,32 @@ public sealed class CsvImportPipeline
     // =========================================================================
 
     /// <summary>
-    /// Upserts a batch of entities using their Id.
-    /// - Rows whose Id already exists in the database are updated (all columns).
-    /// - Rows whose Id is not yet in the database are inserted.
-    /// The idExpr is an Expression so EF Core can translate the SELECT to SQL.
+    /// Upserts a batch of entities using their int Id.
+    /// </summary>
+    private async Task UpsertAsync<T>(
+        DbSet<T> set,
+        Expression<Func<T, int>> idExpr,
+        IReadOnlyList<T> entities)
+        where T : class
+    {
+        if (entities.Count == 0) return;
+
+        var idFn        = idExpr.Compile();
+        var existingIds = (await set.Select(idExpr).ToListAsync()).ToHashSet();
+
+        foreach (var entity in entities)
+        {
+            _db.Entry(entity).State = existingIds.Contains(idFn(entity))
+                ? EntityState.Modified
+                : EntityState.Added;
+        }
+
+        await _db.SaveChangesAsync();
+        _db.ChangeTracker.Clear();
+    }
+
+    /// <summary>
+    /// Upserts a batch of entities using their long Id (for legacy long-keyed entities).
     /// </summary>
     private async Task UpsertAsync<T>(
         DbSet<T> set,
@@ -916,8 +831,8 @@ public sealed class CsvImportPipeline
         foreach (var entity in entities)
         {
             _db.Entry(entity).State = existingIds.Contains(idFn(entity))
-                ? EntityState.Modified  // → SQL UPDATE
-                : EntityState.Added;    // → SQL INSERT (explicit Id)
+                ? EntityState.Modified
+                : EntityState.Added;
         }
 
         await _db.SaveChangesAsync();
@@ -1084,3 +999,4 @@ public sealed class CsvImportPipeline
             ? v : (DateOnly?)null;
     }
 }
+

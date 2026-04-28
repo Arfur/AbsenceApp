@@ -49,7 +49,7 @@
             {
                 <button type="button"
                         class="dsv2-btn dsv2-btn--primary"
-                        @onclick="@(() => Nav.NavigateTo($"/v2/users/{Id}/new"))">
+                        @onclick="@(() => Nav.NavigateTo($"/v2/users/new?staffId={Id}"))">
                     <i class="bi bi-person-plus" aria-hidden="true"></i>
                     Create User Account
                 </button>
@@ -200,6 +200,6 @@
     {
         AppState.SetBreadcrumb("Staff", "Staff Member");
         await ViewModel.LoadAsync(Id);
-        _staffHasUser = await UserMgmt.StaffHasUserAsync(Id);
+        _staffHasUser = await UserMgmt.StaffHasUserAsync((int)Id);
     }
 }

@@ -1,11 +1,11 @@
-/*
+﻿/*
 ===============================================================================
  File        : UserManagementService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.8.0
  Created     : 2026-04-11
- Updated     : 2026-04-21
+ Updated     : 2026-04-25
 -------------------------------------------------------------------------------
  Purpose     : E15 User Management service. Implements IUserManagementService
                for full user CRUD, role/page reference data, and per-user
@@ -21,7 +21,7 @@
    - 1.1.0  2026-04-11  E16 Pages Registry: updated GetPagesAsync() to project
                          new AppPage fields (Slug, CategoryKey, MenuKey, IconKey,
                          Description, SupportsXxx) into AppPageDto.
-   - 1.2.0  2026-04-21  Fixed GetUsersAsync() — replaced broken raw string
+   - 1.2.0  2026-04-21  Fixed GetUsersAsync() â€” replaced broken raw string
                          literal SQL (IN clause was emitted as literal text)
                          with correct string concatenation. Added three new
                          methods: GetAllRoleTypesAsync() (Roles page),
@@ -32,6 +32,34 @@
                          UserProfiles, and LoginAudit child rows before
                          removing the user record to avoid FK constraint
                          violations.
+   - 1.4.0  2026-04-21  Added 11 User Profile page methods. Removed dead
+                         BuildFullName() private method. Fixed UserRoleIdRow
+                         value type (int â†’ long). Added IsAdmin field to
+                         UserProfileSaveDto and SaveUserProfileAsync.
+   - 1.5.0  2026-04-22  Session 6: Added GetStaffWithoutUsersAsync() â€” returns
+                         all Staff rows where no User account has a matching
+                         StaffId FK, ordered by LastName then FirstName.
+                         (Header update missed in Session 6; corrected here.)
+   - 1.6.0  2026-04-24  Session 7 Task E: re-validated all profile loading
+                         queries. Confirmed _db.UserProfiles â†’ userprofiles
+                         (via [Table] attribute), _db.LoginAudit â†’ correct
+                         column mapping (via [Column] attributes in v1.2.0),
+                         _db.AppPages / _db.UserPagePermissions /
+                         _db.RoleDefaultPagePermissions â†’ correct table names
+                         via EF config. No code changes required; header
+                         version incremented as evidence of validation pass.
+   - 1.7.0  2026-04-25  Session 9 final fix: DateOfBirth does not exist on the
+                         userprofiles table -- it belongs to Staff. Updated
+                         GetUserProfileDetailAsync to load DateOfBirth from
+                         Staff (via User.StaffId) instead of from UserProfile.
+                         Removed profile.DateOfBirth assignment in
+                         SaveUserProfileAsync.
+    - 1.8.0  2026-04-25  Added unified one-call profile detail endpoint payload.
+                                 GetUserProfileDetailAsync now returns
+                                 UserProfileFullDetailDto combining users, userprofiles,
+                                 staff, permissions, role types, and staff-linked tab
+                                 collections (contacts, classes, devices, external,
+                                 absences, login audit) plus staff-related summaries.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DataServiceRegistration.cs.
@@ -96,7 +124,7 @@ public sealed class UserManagementService : IUserManagementService
                 .Where(s => staffIds.Contains(s.Id))
                 .ToDictionaryAsync(s => s.Id,
                     s => $"{s.FirstName} {s.LastName}".Trim(), ct)
-            : new Dictionary<long, string>();
+            : new Dictionary<int, string>();
 
         // Role display-name lookup via raw SQL (userrole table has no DbSet).
         // Returns rows: UserId, DisplayName
@@ -135,11 +163,19 @@ public sealed class UserManagementService : IUserManagementService
     // Private projection type for role SQL query.
     private sealed class UserRoleRow
     {
-        public long   UserId      { get; set; }
+        public int    UserId      { get; set; }
         public string DisplayName { get; set; } = string.Empty;
     }
 
-    public async Task<UserUpdateDto?> GetUserForEditAsync(long userId, CancellationToken ct = default)
+    private sealed class UserRoleFullRow
+    {
+        public int    UserId      { get; set; }
+        public int    RoleId      { get; set; }
+        public string RoleName    { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+    }
+
+    public async Task<UserUpdateDto?> GetUserForEditAsync(int userId, CancellationToken ct = default)
     {
         var u = await _db.Users
             .AsNoTracking()
@@ -153,7 +189,7 @@ public sealed class UserManagementService : IUserManagementService
                 "SELECT RoleId AS Value FROM userrole WHERE UserId = {0} LIMIT 1",
                 userId)
             .ToListAsync(ct);
-        var roleId = roleRows.Count > 0 ? (long)roleRows[0].Value : 0L;
+        var roleId = roleRows.Count > 0 ? (int)roleRows[0].Value : 0;
 
         return new UserUpdateDto
         {
@@ -171,28 +207,28 @@ public sealed class UserManagementService : IUserManagementService
 
     public async Task<long> CreateUserAsync(UserCreateDto dto, CancellationToken ct = default)
     {
-        // ── Mandatory field checks ────────────────────────────────────────────
+        // Mandatory field checks 
         if (dto.StaffId <= 0)                    throw new ArgumentException("StaffId is required. Users can only be created from a Staff record.");
         if (string.IsNullOrWhiteSpace(dto.Username))  throw new ArgumentException("Username is required.");
         if (string.IsNullOrWhiteSpace(dto.Email))     throw new ArgumentException("Email is required.");
         if (string.IsNullOrWhiteSpace(dto.Password))  throw new ArgumentException("Password is required.");
 
-        // ── Validate StaffId exists ───────────────────────────────────────────
+        // Validate StaffId exists 
         var staffExists = await _db.Staff.AnyAsync(s => s.Id == dto.StaffId, ct);
         if (!staffExists)
             throw new InvalidOperationException($"Staff record {dto.StaffId} does not exist.");
 
-        // ── Prevent duplicate user for same StaffId ───────────────────────────
+        // Prevent duplicate user for same StaffId 
         var staffAlreadyHasUser = await _db.Users.AnyAsync(u => u.StaffId == dto.StaffId, ct);
         if (staffAlreadyHasUser)
             throw new InvalidOperationException($"A user account already exists for Staff #{dto.StaffId}.");
 
-        // ── Prevent duplicate username ────────────────────────────────────────
+        // Prevent duplicate username 
         var duplicate = await _db.Users.AnyAsync(u => u.Username == dto.Username, ct);
         if (duplicate)
             throw new InvalidOperationException($"Username '{dto.Username}' is already taken.");
 
-        // ── Insert user (auto_increment PK) ───────────────────────────────────
+        // Insert user (auto_increment PK) 
         var user = new User
         {
             StaffId   = dto.StaffId,
@@ -214,7 +250,7 @@ public sealed class UserManagementService : IUserManagementService
         _db.Users.Add(user);
         await _db.SaveChangesAsync(ct);
 
-        // ── Insert UserRole row via raw SQL (userrole table has no DbSet) ─────
+        // Insert UserRole row via raw SQL (userrole table has no DbSet) 
         if (dto.RoleTypeId > 0)
         {
             await _db.Database.ExecuteSqlRawAsync(
@@ -231,7 +267,7 @@ public sealed class UserManagementService : IUserManagementService
         var user = await _db.Users.FindAsync([dto.Id], ct)
                    ?? throw new KeyNotFoundException($"User {dto.Id} not found.");
 
-        // StaffId is IMMUTABLE after creation — never update it.
+        // StaffId is IMMUTABLE after creation never update it.
         user.Username  = dto.Username.Trim();
         user.Email     = dto.Email.Trim();
         user.Status    = dto.Status;
@@ -263,13 +299,13 @@ public sealed class UserManagementService : IUserManagementService
         await _db.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteUserAsync(long userId, CancellationToken ct = default)
+    public async Task DeleteUserAsync(int userId, CancellationToken ct = default)
     {
         var user = await _db.Users.FindAsync([userId], ct)
                    ?? throw new KeyNotFoundException($"User {userId} not found.");
 
         // Delete child records to avoid FK constraint violations.
-        // userrole has no EF DbSet — use raw SQL.
+        // userrole has no EF DbSet â€” use raw SQL.
         await _db.Database.ExecuteSqlRawAsync(
             "DELETE FROM userrole WHERE UserId = {0}", userId);
 
@@ -299,7 +335,7 @@ public sealed class UserManagementService : IUserManagementService
     // =========================================================================
 
     public async Task<StaffSelectDto?> GetStaffForUserCreateAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         var s = await _db.Staff
             .AsNoTracking()
@@ -317,8 +353,34 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     public async Task<bool> StaffHasUserAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
         => await _db.Users.AnyAsync(u => u.StaffId == staffId, ct);
+
+    public async Task<IReadOnlyList<StaffSelectDto>> GetStaffWithoutUsersAsync(
+        CancellationToken ct = default)
+    {
+        var linkedIds = await _db.Users
+            .AsNoTracking()
+            .Where(u => u.StaffId.HasValue)
+            .Select(u => u.StaffId!.Value)
+            .ToListAsync(ct);
+
+        var linkedSet = new HashSet<int>(linkedIds);
+
+        return await _db.Staff
+            .AsNoTracking()
+            .Where(s => !linkedSet.Contains(s.Id))
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .Select(s => new StaffSelectDto
+            {
+                Id          = s.Id,
+                FullName    = (s.FirstName + " " + s.LastName).Trim(),
+                StaffNumber = s.StaffNumber,
+                WorkEmail   = s.WorkEmail,
+            })
+            .ToListAsync(ct);
+    }
 
     // =========================================================================
     // Reference data
@@ -433,7 +495,7 @@ public sealed class UserManagementService : IUserManagementService
             {
                 if (!anySet)
                 {
-                    // All flags cleared — remove the override row.
+                    // All flags cleared â€” remove the override row.
                     _db.UserPagePermissions.Remove(row);
                 }
                 else
@@ -448,7 +510,7 @@ public sealed class UserManagementService : IUserManagementService
             }
             else if (anySet)
             {
-                // New override row for this user × page.
+                // New override row for this user Ã— page.
                 _db.UserPagePermissions.Add(new UserPagePermission
                 {
                     UserId    = userId,
@@ -513,7 +575,7 @@ public sealed class UserManagementService : IUserManagementService
             .ThenBy(r => r.Id)
             .ToListAsync(ct);
 
-        // Count users per role type via raw SQL (userrole → roles → roletypes).
+        // Count users per role type via raw SQL (userrole â†’ roles â†’ roletypes).
         var countRows = await _db.Database
             .SqlQueryRaw<RoleUserCountRow>(
                 "SELECT r.RoleTypeId, COUNT(DISTINCT ur.UserId) AS UserCount " +
@@ -546,17 +608,17 @@ public sealed class UserManagementService : IUserManagementService
 
     public async Task<IReadOnlyList<FeatureListItemDto>> GetFeaturesAsync(CancellationToken ct = default)
     {
-        // feature and rolefeature have no EF DbSets — use raw SQL.
+        // feature and rolefeature have no EF DbSets â€” use raw SQL.
         var featureRows = await _db.Database
             .SqlQueryRaw<FeatureRow>(
                 "SELECT Id, Code, COALESCE(Description, '') AS Description " +
-                "FROM feature ORDER BY Id")
+                "FROM features ORDER BY Id")
             .ToListAsync(ct);
 
         var roleFeatureRows = await _db.Database
             .SqlQueryRaw<FeatureRoleRow>(
                 "SELECT rf.FeatureCode, rt.DisplayName " +
-                "FROM rolefeature rf " +
+                "FROM rolefeatures rf " +
                 "JOIN roles r ON r.Id = rf.RoleId " +
                 "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
                 "WHERE rf.IsEnabled = 1")
@@ -621,7 +683,7 @@ public sealed class UserManagementService : IUserManagementService
             PageName = p.Name,
             Route    = p.Route,
             Category = p.CategoryKey,
-            Roles    = roleMap.TryGetValue(p.Id, out var r) ? r : "—",
+            Roles    = roleMap.TryGetValue(p.Id, out var r) ? r : "â€”",
         }).ToList();
     }
 
@@ -688,24 +750,11 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     // =========================================================================
-    // Private helpers
-    // =========================================================================
-
-    private static string BuildFullName(User u)
-    {
-        if (!string.IsNullOrWhiteSpace(u.FirstName) || !string.IsNullOrWhiteSpace(u.LastName))
-            return $"{u.FirstName} {u.LastName}".Trim();
-        if (!string.IsNullOrWhiteSpace(u.Name))
-            return u.Name;
-        return u.Username;    // fallback when no name data loaded from DB
-    }
-
-    // =========================================================================
     // User Profile page methods (v1.4.0)
     // =========================================================================
 
     public async Task<UserProfileHeaderDto?> GetUserProfileHeaderAsync(
-        long userId, CancellationToken ct = default)
+        int userId, CancellationToken ct = default)
     {
         var user = await _db.Users
             .AsNoTracking()
@@ -767,39 +816,279 @@ public sealed class UserManagementService : IUserManagementService
         };
     }
 
-    public async Task<UserProfileDetailDto> GetUserProfileDetailAsync(
-        long userId, CancellationToken ct = default)
+    public async Task<UserProfileFullDetailDto> GetUserProfileDetailAsync(
+        int userId, CancellationToken ct = default)
     {
+        var user = await _db.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == userId, ct);
+
+        if (user is null)
+        {
+            return new UserProfileFullDetailDto
+            {
+                UserExists = false,
+                UserId     = userId,
+            };
+        }
+
         var profile = await _db.UserProfiles
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.UserId == userId, ct);
 
-        if (profile is null)
+        var staff = user.StaffId.HasValue
+            ? await _db.Staff
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == user.StaffId.Value, ct)
+            : null;
+
+        // >>> INSERT THIS BLOCK HERE <<<
+        StaffDepartment? staffDepartment = null;
+
+        if (staff?.DepartmentId != null)
+            {
+            staffDepartment = await _db.StaffDepartments
+            .AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Id == staff.DepartmentId, ct);
+            }
+        // >>> END INSERT <<<
+
+        // Role display/name/id via raw SQL (userrole has no DbSet).
+        var roleRows = await _db.Database
+            .SqlQueryRaw<UserRoleFullRow>(
+                "SELECT ur.UserId, ur.RoleId, rt.Name AS RoleName, rt.DisplayName " +
+                "FROM userrole ur " +
+                "JOIN roles r ON r.Id = ur.RoleId " +
+                "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
+                "WHERE ur.UserId = {0} LIMIT 1",
+                userId)
+            .ToListAsync(ct);
+        var role = roleRows.Count > 0 ? roleRows[0] : null;
+
+        var lastLogin = await _db.LoginAudit
+            .AsNoTracking()
+            .Where(a => a.UserId == userId && a.Success)
+            .OrderByDescending(a => a.LoginTime)
+            .Select(a => (DateTime?)a.LoginTime)
+            .FirstOrDefaultAsync(ct);
+
+        var roleTypes = await GetRoleTypesAsync(ct);
+        var permissions = await GetUserPermissionsAsync(userId, ct);
+
+        var contact = user.StaffId.HasValue
+            ? await GetStaffContactAsync(user.StaffId.Value, ct)
+            : null;
+
+        var classes = user.StaffId.HasValue
+            ? await GetStaffClassAssignmentsAsync(user.StaffId.Value, ct)
+            : [];
+
+        var devices = user.StaffId.HasValue
+            ? await GetStaffDevicesAsync(user.StaffId.Value, ct)
+            : [];
+
+        var external = user.StaffId.HasValue
+            ? await GetStaffExternalAccountsAsync(user.StaffId.Value, ct)
+            : [];
+
+        var absences = user.StaffId.HasValue
+            ? await GetStaffAbsencesAsync(user.StaffId.Value, ct)
+            : [];
+
+        var loginAudit = await GetUserLoginAuditAsync(userId, ct);
+
+        var otherStaffRelatedAuditEntries = new List<string>();
+        if (user.StaffId.HasValue)
         {
-            return new UserProfileDetailDto { ProfileExists = false };
+            var staffId = user.StaffId.Value;
+
+            // staffassignmentaudit table does not exist in DB — skip
+
+            var deviceAudit = await _db.StaffDeviceAudit
+                .AsNoTracking()
+                .Where(a => a.StaffId == staffId)
+                .OrderByDescending(a => a.Id) // ChangeTime removed
+                .Take(10)
+                .ToListAsync(ct);
+            otherStaffRelatedAuditEntries.AddRange(
+                deviceAudit.Select(a => $"staff_device_audit:{a.Action}"));
+
+            var externalAudit = await _db.StaffExternalAccountAudit
+                .AsNoTracking()
+                .Where(a => a.StaffId == staffId)
+                .OrderByDescending(a => a.Id) // ChangeTime removed
+                .Take(10)
+                .ToListAsync(ct);
+            otherStaffRelatedAuditEntries.AddRange(
+                externalAudit.Select(a => $"staff_external_account_audit:{a.Action}"));
         }
 
-        return new UserProfileDetailDto
+        var staffContacts = contact is null
+            ? new List<string>()
+            : new List<string>
+            {
+                contact.WorkEmail,
+                contact.AltEmail ?? string.Empty,
+                contact.PhoneHome ?? string.Empty,
+                contact.PhoneMobile ?? string.Empty,
+                contact.PhoneEmergency ?? string.Empty,
+                contact.WorkLocation,
+            }.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct().ToList();
+
+        var staffEmployment = contact is null
+            ? new List<string>()
+            : new List<string>
+            {
+                contact.EmploymentType,
+                contact.ContractType,
+                contact.HireDate.ToString("yyyy-MM-dd"),
+                contact.EndDate?.ToString("yyyy-MM-dd") ?? string.Empty,
+            }.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct().ToList();
+
+        if (profile is null)
         {
-            ProfileId         = profile.Id,
-            ProfileExists     = true,
-            FirstName         = profile.FirstName ?? string.Empty,
-            LastName          = profile.LastName  ?? string.Empty,
-            PreferredName     = profile.PreferredName,
-            Title             = profile.Title     ?? string.Empty,
-            DateOfBirth       = profile.DateOfBirth,
-            Bio               = profile.Bio,
-            Gender            = profile.Gender,
-            Timezone          = profile.Timezone      ?? "UTC",
-            LanguageCode      = profile.LanguageCode  ?? "en",
-            DepartmentId      = profile.DepartmentId,
-            JobTitleId        = profile.JobTitleId,
-            ProfilePictureUrl = profile.ProfilePictureUrl,
+            return new UserProfileFullDetailDto
+            {
+                UserExists              = true,
+                UserId                  = user.Id,
+                StaffId                 = user.StaffId,
+                Username                = user.Username,
+                Email                   = user.Email,
+                Status                  = user.Status,
+                IsAdmin                 = user.IsAdmin,
+                UserCreatedAt           = user.CreatedAt,
+                UserUpdatedAt           = user.UpdatedAt,
+                RoleTypeId              = role?.RoleId ?? 0,
+                RoleTypeName            = role?.RoleName ?? string.Empty,
+                RoleDisplayName         = role?.DisplayName ?? string.Empty,
+                RoleTypes               = roleTypes,
+                Permissions             = permissions,
+                FullName                = staff is not null
+                                            ? $"{staff.FirstName} {staff.LastName}".Trim()
+                                            : user.Username,
+                LastLoginAt             = lastLogin,
+                ProfilePictureUrl       = null,
+                ProfileExists           = false,
+                StaffNumber             = staff?.StaffNumber ?? string.Empty,
+                StaffFirstName          = staff?.FirstName ?? string.Empty,
+                StaffLastName           = staff?.LastName ?? string.Empty,
+                StaffPreferredName      = staff?.PreferredName,
+                StaffTitle              = staff?.Title ?? string.Empty,
+                DateOfBirth             = staff?.DateOfBirth.ToDateTime(TimeOnly.MinValue) ?? default,
+                StaffGender             = staff?.Gender,
+                WorkEmail               = staff?.WorkEmail ?? string.Empty,
+                AltEmail                = staff?.AltEmail,
+                PhoneHome               = staff?.PhoneHome,
+                PhoneMobile             = staff?.PhoneMobile,
+                PhoneEmergency          = staff?.PhoneEmergency,
+                EmploymentType          = staff?.EmploymentType ?? string.Empty,
+                ContractType            = staff?.ContractType ?? string.Empty,
+                HireDate                = staff?.HireDate,
+                EndDate                 = staff?.EndDate,
+                WorkLocation            = staff?.WorkLocation ?? string.Empty,
+                ReportingManagerId      = staff?.ReportingManagerId,
+                StaffJobTitleId         = staff?.JobTitleId ?? 0,
+                StaffJobGroupId         = staff?.JobGroupId ?? 0,
+                StaffDepartmentId       = staff?.DepartmentId ?? 0,
+                StaffProfilePhotoUrl    = staff?.ProfilePhotoUrl,
+                AccountStatus           = staff?.AccountStatus ?? string.Empty,
+                DepartmentName          = staffDepartment?.Name ?? string.Empty,
+                Contact                 = contact,
+                Classes                 = classes,
+                StaffDevices            = devices,
+                StaffExternalAccounts   = external,
+                StaffAbsences           = absences,
+                StaffLoginAudit         = loginAudit,
+                StaffLocations          = staff is not null && !string.IsNullOrWhiteSpace(staff.WorkLocation) ? new[] { staff.WorkLocation } : [],
+                StaffPhases             = [],
+                StaffQualifications     = [],
+                StaffAttendance         = [],
+                StaffMedical            = [],
+                StaffContacts           = staffContacts,
+                StaffEmployment         = staffEmployment,
+                OtherStaffRelatedTables = new[] { "staff_assignment_audit", "staff_device_audit", "staff_external_account_audit" },
+                OtherStaffRelatedAuditEntries = otherStaffRelatedAuditEntries,
+            };
+        }
+
+        return new UserProfileFullDetailDto
+        {
+            UserExists              = true,
+            UserId                  = user.Id,
+            StaffId                 = user.StaffId,
+            Username                = user.Username,
+            Email                   = user.Email,
+            Status                  = user.Status,
+            IsAdmin                 = user.IsAdmin,
+            UserCreatedAt           = user.CreatedAt,
+            UserUpdatedAt           = user.UpdatedAt,
+            RoleTypeId              = role?.RoleId ?? 0,
+            RoleTypeName            = role?.RoleName ?? string.Empty,
+            RoleDisplayName         = role?.DisplayName ?? string.Empty,
+            RoleTypes               = roleTypes,
+            Permissions             = permissions,
+            FullName                = staff is not null
+                                        ? $"{staff.FirstName} {staff.LastName}".Trim()
+                                        : user.Username,
+            LastLoginAt             = lastLogin,
+            ProfilePictureUrl       = profile.ProfilePictureUrl,
+
+            ProfileId               = profile.Id,
+            ProfileExists           = true,
+            // Removed UserProfile fields: FirstName, LastName, PreferredName, Title, Bio, Gender, JobTitleId, SchoolId
+            Timezone                = profile.Timezone      ?? "UTC",
+            LanguageCode            = profile.LanguageCode  ?? "en",
+            DepartmentId            = staff?.DepartmentId ?? 0,
+            ProfileCreatedAt        = profile.CreatedAt,
+            ProfileUpdatedAt        = profile.UpdatedAt,
+
+            StaffNumber             = staff?.StaffNumber ?? string.Empty,
+            StaffFirstName          = staff?.FirstName ?? string.Empty,
+            StaffLastName           = staff?.LastName ?? string.Empty,
+            StaffPreferredName      = staff?.PreferredName,
+            StaffTitle              = staff?.Title ?? string.Empty,
+            DateOfBirth             = staff == null ? default : staff.DateOfBirth.ToDateTime(TimeOnly.MinValue),
+            StaffGender             = staff?.Gender,
+            WorkEmail               = staff?.WorkEmail ?? string.Empty,
+            AltEmail                = staff?.AltEmail,
+            PhoneHome               = staff?.PhoneHome,
+            PhoneMobile             = staff?.PhoneMobile,
+            PhoneEmergency          = staff?.PhoneEmergency,
+            EmploymentType          = staff?.EmploymentType ?? string.Empty,
+            ContractType            = staff?.ContractType ?? string.Empty,
+            HireDate                = staff?.HireDate,
+            EndDate                 = staff?.EndDate,
+            WorkLocation            = staff?.WorkLocation ?? string.Empty,
+            ReportingManagerId      = staff?.ReportingManagerId,
+            StaffJobTitleId         = staff?.JobTitleId ?? 0,
+            StaffJobGroupId         = staff?.JobGroupId ?? 0,
+            StaffDepartmentId       = staff?.DepartmentId ?? 0,
+            StaffProfilePhotoUrl    = staff?.ProfilePhotoUrl,
+            AccountStatus           = staff?.AccountStatus ?? string.Empty,
+
+            DepartmentName          = staffDepartment?.Name ?? string.Empty,
+
+            Contact                 = contact,
+            Classes                 = classes,
+            StaffDevices            = devices,
+            StaffExternalAccounts   = external,
+            StaffAbsences           = absences,
+            StaffLoginAudit         = loginAudit,
+
+            StaffLocations          = staff is not null && !string.IsNullOrWhiteSpace(staff.WorkLocation) ? new[] { staff.WorkLocation } : [],
+            StaffPhases             = [],
+            StaffQualifications     = [],
+            StaffAttendance         = [],
+            StaffMedical            = [],
+            StaffContacts           = staffContacts,
+            StaffEmployment         = staffEmployment,
+            OtherStaffRelatedTables = new[] { "staff_assignment_audit", "staff_device_audit", "staff_external_account_audit" },
+            OtherStaffRelatedAuditEntries = otherStaffRelatedAuditEntries,
         };
     }
 
     public async Task<StaffContactDto?> GetStaffContactAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         var s = await _db.Staff
             .AsNoTracking()
@@ -823,9 +1112,9 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     public async Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
-        var assignments = await _db.StaffAssignments
+        var assignments = await _db.StaffDuties
             .AsNoTracking()
             .Where(a => a.StaffId == staffId)
             .OrderByDescending(a => a.StartDate)
@@ -833,40 +1122,21 @@ public sealed class UserManagementService : IUserManagementService
 
         if (assignments.Count == 0) return [];
 
-        // Build lookup dictionaries.
-        var classIds = assignments.Where(a => a.ClassId.HasValue).Select(a => a.ClassId!.Value).Distinct().ToList();
-        var jtIds    = assignments.Select(a => a.JobTitleId).Distinct().ToList();
-        var deptIds  = assignments.Select(a => a.DepartmentId).Distinct().ToList();
-
-        var classMap = classIds.Count > 0
-            ? await _db.Classes.AsNoTracking().Where(c => classIds.Contains(c.Id))
-                  .ToDictionaryAsync(c => c.Id, c => c.Name, ct)
-            : new Dictionary<long, string>();
-
-        var jtMap = jtIds.Count > 0
-            ? await _db.JobTitles.AsNoTracking().Where(j => jtIds.Contains(j.Id))
-                  .ToDictionaryAsync(j => j.Id, j => j.Title, ct)
-            : new Dictionary<long, string>();
-
-        var deptMap = deptIds.Count > 0
-            ? await _db.Departments.AsNoTracking().Where(d => deptIds.Contains(d.Id))
-                  .ToDictionaryAsync(d => d.Id, d => d.Name, ct)
-            : new Dictionary<long, string>();
-
         return assignments.Select(a => new StaffClassRowDto
         {
-            AssignmentId   = a.Id,
-            ClassName      = a.ClassId.HasValue && classMap.TryGetValue(a.ClassId.Value, out var cn) ? cn : "—",
-            JobTitle       = jtMap.TryGetValue(a.JobTitleId, out var jt) ? jt : string.Empty,
-            Department     = deptMap.TryGetValue(a.DepartmentId, out var dn) ? dn : string.Empty,
-            StartDate      = a.StartDate,
-            EndDate        = a.EndDate,
-            DaysOfWeek     = a.DaysOfWeek,
+            AssignmentId = a.Id,
+            StaffId      = a.StaffId,
+            LocationId   = a.LocationId,
+            StartDate    = a.StartDate,
+            EndDate      = a.EndDate,
+            Notes        = a.Notes,
+            CreatedAt    = a.CreatedAt,
+            UpdatedAt    = a.UpdatedAt,
         }).ToList();
     }
 
     public async Task<IReadOnlyList<StaffDeviceRowDto>> GetStaffDevicesAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         var devices = await _db.StaffDevices
             .AsNoTracking()
@@ -876,23 +1146,18 @@ public sealed class UserManagementService : IUserManagementService
 
         if (devices.Count == 0) return [];
 
-        var typeIds = devices.Select(d => d.DeviceTypeId).Distinct().ToList();
-        var typeMap = await _db.DeviceTypes.AsNoTracking()
-            .Where(t => typeIds.Contains(t.Id))
-            .ToDictionaryAsync(t => t.Id, t => t.Name, ct);
-
         return devices.Select(d => new StaffDeviceRowDto
         {
             Id            = d.Id,
-            DeviceType    = typeMap.TryGetValue(d.DeviceTypeId, out var tn) ? tn : string.Empty,
-            SerialNumber  = d.SerialNumber,
+            DeviceType    = d.DeviceType,
+            SerialNumber  = d.DeviceIdentifier,
             AssignedDate  = d.AssignedDate,
             ReturnedDate  = d.ReturnedDate,
         }).ToList();
     }
 
     public async Task<IReadOnlyList<StaffExternalRowDto>> GetStaffExternalAccountsAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         var accounts = await _db.StaffExternalAccounts
             .AsNoTracking()
@@ -914,15 +1179,15 @@ public sealed class UserManagementService : IUserManagementService
                 Id              = a.Id,
                 SystemName      = sys?.Name ?? string.Empty,
                 SystemCode      = sys?.Code ?? string.Empty,
-                AccountUsername = a.AccountUsername,
-                AccountEmail    = a.AccountEmail,
+                AccountUsername = a.ExternalUsername,
+                AccountEmail    = string.Empty,
                 Status          = a.Status,
             };
         }).ToList();
     }
 
     public async Task<IReadOnlyList<StaffAbsenceRowDto>> GetStaffAbsencesAsync(
-        long staffId, CancellationToken ct = default)
+        int staffId, CancellationToken ct = default)
     {
         return await _db.Absences
             .AsNoTracking()
@@ -946,7 +1211,7 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     public async Task<IReadOnlyList<LoginAuditRowDto>> GetUserLoginAuditAsync(
-        long userId, CancellationToken ct = default)
+        int userId, CancellationToken ct = default)
     {
         return await _db.LoginAudit
             .AsNoTracking()
@@ -957,8 +1222,8 @@ public sealed class UserManagementService : IUserManagementService
             {
                 Id        = a.Id,
                 LoginTime = a.LoginTime,
-                IpAddress = a.IpAddress,
-                UserAgent = a.UserAgent,
+                IpAddress = a.IpAddress ?? string.Empty,
+                UserAgent = a.UserAgent ?? string.Empty,
                 Success   = a.Success,
             })
             .ToListAsync(ct);
@@ -974,6 +1239,7 @@ public sealed class UserManagementService : IUserManagementService
         user.Username  = dto.Username.Trim();
         user.Email     = dto.Email.Trim();
         user.Status    = dto.Status;
+        user.IsAdmin   = dto.IsAdmin;
         user.UpdatedAt = DateTime.UtcNow;
 
         // Update role via raw SQL.
@@ -1004,25 +1270,18 @@ public sealed class UserManagementService : IUserManagementService
         {
             profile = new UserProfile
             {
-                UserId    = dto.UserId,
-                CreatedAt = DateTime.UtcNow,
-                SchoolId  = 1,   // default school; can be parameterised later
+                UserId          = dto.UserId,
+                DisplayName     = string.Empty,
+                ThemePreference = "default",
+                CreatedAt       = DateTime.UtcNow,
             };
             _db.UserProfiles.Add(profile);
         }
 
-        profile.FirstName     = dto.FirstName;
-        profile.LastName      = dto.LastName;
-        profile.PreferredName = dto.PreferredName;
-        profile.Title         = dto.Title;
-        profile.DateOfBirth   = dto.DateOfBirth;
-        profile.Bio           = dto.Bio;
-        profile.Gender        = dto.Gender;
-        profile.Timezone      = dto.Timezone;
-        profile.LanguageCode  = dto.LanguageCode;
-        profile.DepartmentId  = dto.DepartmentId;
-        profile.JobTitleId    = dto.JobTitleId;
-        profile.UpdatedAt     = DateTime.UtcNow;
+        profile.Bio          = dto.Bio;
+        profile.Timezone     = dto.Timezone;
+        profile.LanguageCode = dto.LanguageCode;
+        profile.UpdatedAt    = DateTime.UtcNow;
 
         await _db.SaveChangesAsync(ct);
     }
@@ -1043,7 +1302,7 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     public async Task UpdateProfilePhotoAsync(
-        long userId, string photoUrl, CancellationToken ct = default)
+        int userId, string photoUrl, CancellationToken ct = default)
     {
         var profile = await _db.UserProfiles
             .FirstOrDefaultAsync(p => p.UserId == userId, ct);
@@ -1054,12 +1313,10 @@ public sealed class UserManagementService : IUserManagementService
             {
                 UserId            = userId,
                 ProfilePictureUrl = photoUrl,
-                FirstName         = string.Empty,
-                LastName          = string.Empty,
-                Title             = string.Empty,
+                DisplayName       = string.Empty,
+                ThemePreference   = "default",
                 Timezone          = "UTC",
                 LanguageCode      = "en",
-                SchoolId          = 1,
                 CreatedAt         = DateTime.UtcNow,
                 UpdatedAt         = DateTime.UtcNow,
             });

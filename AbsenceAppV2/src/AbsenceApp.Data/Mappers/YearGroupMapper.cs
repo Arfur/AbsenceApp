@@ -12,7 +12,8 @@ public static class YearGroupMapper
         Code         = e.Code,
         NumericValue = e.NumericValue,
         PhaseId      = e.PhaseId,
-        SchoolId     = e.SchoolId,
+        Description  = e.Description,
+        DisplayOrder = e.DisplayOrder,
         CreatedAt    = e.CreatedAt,
         UpdatedAt    = e.UpdatedAt
     };
@@ -24,7 +25,8 @@ public static class YearGroupMapper
         Code         = dto.Code,
         NumericValue = dto.NumericValue,
         PhaseId      = dto.PhaseId,
-        SchoolId     = dto.SchoolId,
+        Description  = dto.Description,
+        DisplayOrder = dto.DisplayOrder,
         CreatedAt    = dto.CreatedAt,
         UpdatedAt    = dto.UpdatedAt
     };

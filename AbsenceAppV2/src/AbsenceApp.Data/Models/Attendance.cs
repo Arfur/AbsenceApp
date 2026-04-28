@@ -31,6 +31,6 @@ public class Attendance
     public DateTime Timestamp { get; set; }
     public int RecordedBy { get; set; }
     public User User { get; set; } = default!;
-    public Class? Class { get; set; }
+    public TeachingGroup? Class { get; set; }
     public User Recorder { get; set; } = default!;
 }

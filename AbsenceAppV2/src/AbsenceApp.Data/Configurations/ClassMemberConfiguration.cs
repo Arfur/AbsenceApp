@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AbsenceApp.Data.Configurations;
 
-// Legacy stub — ClassMember entity is retained only for backward compatibility.
-public class ClassMemberConfiguration : IEntityTypeConfiguration<ClassMember>
+// Legacy stub — ClassMembers entity is retained only for backward compatibility.
+public class ClassMemberConfiguration : IEntityTypeConfiguration<ClassMembers>
 {
-    public void Configure(EntityTypeBuilder<ClassMember> builder)
+    public void Configure(EntityTypeBuilder<ClassMembers> builder)
     {
         builder.HasKey(cm => new { cm.ClassId, cm.UserId });
     }

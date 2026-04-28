@@ -44,7 +44,7 @@ public class ClassFullViewService : IClassFullViewService
 
     public async Task<IReadOnlyList<ClassFullViewDto>> GetAllAsync()
     {
-        var classes = await _db.Classes
+        var classes = await _db.TeachingGroups
             .AsNoTracking()
             .ToListAsync();
 

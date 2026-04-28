@@ -34,10 +34,11 @@ public static class ClassMapper
     // Entity to DTO
     // ===============================================================================
 
-    public static ClassDto ToDto(Class entity) => new()
+    public static ClassDto ToDto(TeachingGroup entity) => new()
     {
-        Id          = (int)entity.Id,
+        Id          = entity.Id,
         Name        = entity.Name,
+        Code        = entity.Code,
         Description = entity.Description,
     };
 
@@ -45,10 +46,11 @@ public static class ClassMapper
     // DTO to entity
     // ===============================================================================
 
-    public static Class ToEntity(ClassDto dto) => new()
+    public static TeachingGroup ToEntity(ClassDto dto) => new()
     {
         Id          = dto.Id,
         Name        = dto.Name,
+        Code        = dto.Code,
         Description = dto.Description,
     };
 }

@@ -52,7 +52,7 @@ public class StudentFullViewService : IStudentFullViewService
             .AsNoTracking()
             .ToDictionaryAsync(y => y.Id, y => y.Name);
 
-        var classes = await _db.Classes
+        var classes = await _db.TeachingGroups
             .AsNoTracking()
             .ToDictionaryAsync(c => c.Id, c => c.Name);
 
@@ -67,10 +67,10 @@ public class StudentFullViewService : IStudentFullViewService
         return students
             .Select(s => StudentFullViewMapper.ToDto(
                 s,
-                yearGroupName: yearGroups.GetValueOrDefault(s.YearGroupId, "(unknown)"),
-                className:     classes.GetValueOrDefault(s.ClassId, "(unknown)"),
+                yearGroupName: yearGroups.TryGetValue(s.YearGroupId, out var yg) ? yg ?? "(unknown)" : "(unknown)",
+                className:     s.ClassId.HasValue    ? (classes.TryGetValue(s.ClassId.Value,     out var cn) ? cn ?? "(unknown)" : "(unknown)") : "(unknown)",
                 houseName:     s.HouseId.HasValue
-                                   ? houses.GetValueOrDefault(s.HouseId.Value)
+                                   ? (houses.TryGetValue(s.HouseId.Value, out var hn) ? hn : null)
                                    : null))
             .ToList()
             .AsReadOnly();

@@ -42,72 +42,24 @@ namespace AbsenceApp.Data.Models;
 /// </summary>
 public class User
 {
-    public long   Id        { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string Name      { get; set; } = default!;
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string FirstName { get; set; } = string.Empty;
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string LastName  { get; set; } = string.Empty;
-    public string Username  { get; set; } = default!;
+    public int Id { get; set; }
+    public string Username { get; set; } = default!;
     public string Email { get; set; } = default!;
     public DateTime? EmailVerifiedAt { get; set; }
     public string Password { get; set; } = default!;
-    /// <summary>
-    /// Not mapped to DB — role assignment is via the userrole table.
-    /// Retained as a C# property for ViewModel/DTO compatibility only.
-    /// </summary>
-    [NotMapped]
-    public long RoleTypeId { get; set; }
-    /// <summary>FK → staff.Id. Mandatory — users may only be created from a Staff record.</summary>
-    public long? StaffId { get; set; }
+    /// <summary>FK → staff.Id.</summary>
+    public int? StaffId { get; set; }
     public string Status { get; set; } = default!;
     public bool IsAdmin { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? ProfilePhotoPath { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? PhoneNumber { get; set; }
     public DateTime? LastLoginAt { get; set; }
     public string? LastLoginIp { get; set; }
     public string? RememberToken { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public long? DepartmentId { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? Designation { get; set; }
     public int LoginCount { get; set; }
     public bool IsTwoFactorEnabled { get; set; }
     public string? TwoFactorSecret { get; set; }
     public string? BackupCodes { get; set; }
     public string? Timezone { get; set; }
     public string? LanguageCode { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? Bio { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public DateOnly? DateOfBirth { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? Gender { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? Address { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? City { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? Country { get; set; }
-    /// <summary>Not in users table — retained for ViewModel compatibility only.</summary>
-    [NotMapped]
-    public string? PostalCode { get; set; }
 }

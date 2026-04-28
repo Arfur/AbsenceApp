@@ -2,35 +2,32 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 3.0.0
+   Version     : 4.4.0
    Created     : 2026-04-11
-   Updated     : 2026-04-21
+   Updated     : 2026-04-22
    ---------------------------------------------------------------------------
    Purpose     : E15 User Management — Add / Edit User — full profile page.
                  Routes:
-                   /v2/users/{StaffId:long}/new   — create user linked to staff
+                   /v2/users/new                  — create user (staff picker)
+                   /v2/users/{StaffId:long}/new   — create user (pre-selected)
                    /v2/users/{Id:long}/edit        — edit / view full profile
 
-                 Layout (Edit mode):
-                   • Profile header strip: photo thumbnail, name, role, status
-                     badge, admin pill, last-login, account age, header actions.
-                   • Two-column body:
-                       Left  — large circular photo, Upload Photo button,
-                               Change Password section.
-                       Right — 8-tab interface:
-                                 0  Basic User Info (User + UserProfile fields)
-                                 1  Contacts (Staff employment / contact)
-                                 2  Classes & Year Groups (StaffAssignments)
-                                 3  Devices (StaffDevices)
-                                 4  External Systems (StaffExternalAccounts)
-                                 5  Medical Records (placeholder)
-                                 6  Absence Records (Absences)
-                                 7  Login Audit (LoginAudit)
-                   • Tab 0 has Save Changes + Module Permissions matrix.
-
-                 Layout (Add mode):
-                   • Simplified: linked-staff banner, single-column form,
-                     account fields + permissions matrix + Create User.
+                 Layout (both modes):
+                   • Full-width dark navy banner: circular photo (left) +
+                     identity block or staff selector (right).
+                     Photo upload button appears in banner in edit mode only.
+                   • Add mode: staff selector in banner; Account Details form +
+                     Module Permissions below (disabled until staff selected).
+                   • Edit mode: full-width 8-tab interface below banner:
+                       0  Basic Info (User + UserProfile + Module Permissions
+                                      + Change Password)
+                       1  Contacts (Staff employment / contact)
+                       2  Classes & Year Groups (StaffAssignments)
+                       3  Devices (StaffDevices)
+                       4  External Systems (StaffExternalAccounts)
+                       5  Medical Records (placeholder)
+                       6  Absence Records (Absences)
+                       7  Login Audit (LoginAudit)
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-04-11  Initial creation (E15 User Management).
@@ -38,20 +35,31 @@
      - 2.1.0  2026-04-21  Fixed UTF-8 encoding corruption in rendered UI text.
      - 3.0.0  2026-04-21  Full redesign: UserProfileViewModelV2, profile header,
                            8-tab interface, photo upload, change password panel.
+     - 3.1.0  2026-04-21  Code-audit cleanup (redundant usings, dead CSS class).
+     - 3.2.0  2026-04-22  Added /v2/users/new route with staff selector dropdown;
+                           ?staffId= query-string pre-selection support.
+     - 4.0.0  2026-04-22  Full layout teardown: dark navy profile banner replaces
+                           header strip and two-column body; photo upload moved
+                           into banner (edit mode); change password moved into
+                           Tab 0; two-column layout removed.
+     - 4.1.0  2026-04-22  Phase 3 (Behaviour): Added RemovePhoto button in banner;
+                           added OnRemovePhoto handler calling ViewModel.RemovePhotoAsync.
+     - 4.2.0  2026-04-22  Phase 5.2A (Form Tab Layouts): Replaced dsv2-form-* classes with
+                           upv2-field/label/input throughout Tab 0; added upv2-dividers
+                           between sections; converted Contacts tab KV grid to form-style
+                           layout with upv2-value read-only boxes.
    ===========================================================================
 *@
 
+@page "/v2/users/new"
 @page "/v2/users/{StaffId:long}/new"
-@page "/v2/users/{Id:long}/edit"
+@page "/v2/system/users/{Id:long}"
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Users
 
 @using AbsenceApp.Client.Framework.Layout
-@using AbsenceApp.Client.Framework.PageTemplates
-@using AbsenceApp.Client.Services
 @using AbsenceApp.Client.ViewModels.V2
 @using AbsenceApp.Client.Shared.Components
-@using Microsoft.AspNetCore.Components.Forms
 @inject UserProfileViewModelV2 ViewModel
 @inject NavigationManager Nav
 
@@ -60,26 +68,26 @@
     <ActionsContent>
         @if (ViewModel.IsNew)
         {
-            <button class="dsv2-btn dsv2-btn--primary"
-                    disabled="@ViewModel.IsSaving"
+            <button class="phv2-btn phv2-btn--primary"
+                    disabled="@(ViewModel.IsSaving || ViewModel.LinkedStaff is null)"
                     @onclick="OnCreate">
                 @(ViewModel.IsSaving ? "Creating..." : "Create User")
             </button>
-            <button class="dsv2-btn dsv2-btn--secondary"
+            <button class="phv2-btn phv2-btn--secondary"
                     disabled="@ViewModel.IsSaving"
-                    @onclick="@(() => Nav.NavigateTo("/v2/users"))">
+                    @onclick="@(() => Nav.NavigateTo("/v2/system/users"))">
                 Cancel
             </button>
         }
         else
         {
-            <button class="dsv2-btn dsv2-btn--primary"
+            <button class="phv2-btn phv2-btn--primary"
                     disabled="@ViewModel.IsSaving"
                     @onclick="OnSaveProfile">
                 @(ViewModel.IsSaving ? "Saving..." : "Save Changes")
             </button>
-            <button class="dsv2-btn dsv2-btn--secondary"
-                    @onclick="@(() => Nav.NavigateTo("/v2/users"))">
+            <button class="phv2-btn phv2-btn--secondary"
+                    @onclick="@(() => Nav.NavigateTo("/v2/system/users"))">
                 Back to Users
             </button>
         }
@@ -105,26 +113,131 @@
                 <div class="dsv2-alert dsv2-alert--success" role="status">@ViewModel.Success</div>
             }
 
-            @* ─────────────────────────── ADD USER MODE ──────────────────────────── *@
-            @if (ViewModel.IsNew)
-            {
-                @* Linked staff banner *@
-                @if (ViewModel.LinkedStaff is not null)
-                {
-                    <div class="dsv2-info-banner">
-                        <i class="bi bi-person-badge" aria-hidden="true"></i>
-                        <span>
-                            Linked staff: <strong>@ViewModel.LinkedStaff.FullName</strong>
-                            &nbsp;&middot;&nbsp; #@ViewModel.LinkedStaff.StaffNumber
+            @* ────────────────────────── PROFILE BANNER ─────────────────────────── *@
+            <div class="upv2-banner">
+
+                @* Left: identity / add-mode content *@
+                <div class="upv2-banner-identity">
+
+                    @if (ViewModel.IsNew)
+                    {
+                        <h2 class="upv2-banner-name">New User Account</h2>
+
+                        @if (ViewModel.StaffWithoutAccounts.Count > 0 && ViewModel.LinkedStaff is null)
+                        {
+                            <div class="upv2-banner-field">
+                                <label class="upv2-banner-label" for="nu-staff">Select Staff Member</label>
+                                <select id="nu-staff" class="upv2-banner-select" @onchange="OnStaffSelected">
+                                    <option value="0">&mdash; Select staff member &mdash;</option>
+                                    @foreach (var staff in ViewModel.StaffWithoutAccounts)
+                                    {
+                                        <option value="@staff.Id">@staff.FullName (@staff.StaffNumber)</option>
+                                    }
+                                </select>
+                                <p class="upv2-field-hint">Only staff without an existing user account are listed.</p>
+                            </div>
+                        }
+                        else if (ViewModel.StaffWithoutAccounts.Count == 0 && ViewModel.LinkedStaff is null)
+                        {
+                            <p class="upv2-banner-hint">All staff members already have user accounts.</p>
+                        }
+
+                        @if (ViewModel.LinkedStaff is not null)
+                        {
+                            <div class="upv2-banner-meta">
+                                <span class="upv2-banner-username">@ViewModel.LinkedStaff.FullName</span>
+                                <span class="upv2-badge upv2-badge--role">#@ViewModel.LinkedStaff.StaffNumber</span>
+                            </div>
                             @if (!string.IsNullOrEmpty(ViewModel.LinkedStaff.WorkEmail))
                             {
-                                <span>&nbsp;&middot;&nbsp; @ViewModel.LinkedStaff.WorkEmail</span>
+                                <div class="upv2-banner-detail">
+                                    <i class="bi bi-envelope" aria-hidden="true"></i>
+                                    @ViewModel.LinkedStaff.WorkEmail
+                                </div>
                             }
-                        </span>
-                    </div>
-                }
+                        }
+                    }
+                    else
+                    {
+                        <h2 class="upv2-banner-name">@ViewModel.HeaderFullName</h2>
+                        <div class="upv2-banner-meta">
+                            <span class="upv2-banner-username">@@@ViewModel.Username</span>
+                            @if (!string.IsNullOrEmpty(ViewModel.HeaderRoleName))
+                            {
+                                <span class="upv2-badge upv2-badge--role">@ViewModel.HeaderRoleName</span>
+                            }
+                            <span class="upv2-badge upv2-badge--status-@ViewModel.HeaderStatus.ToLower()">
+                                @ViewModel.HeaderStatus
+                            </span>
+                            @if (ViewModel.HeaderIsAdmin)
+                            {
+                                <span class="upv2-badge upv2-badge--admin">Admin</span>
+                            }
+                        </div>
+                        <div class="upv2-banner-detail">
+                            <span><i class="bi bi-envelope" aria-hidden="true"></i> @ViewModel.HeaderEmail</span>
+                            <span class="upv2-banner-sep">&middot;</span>
+                            <span>
+                                <i class="bi bi-clock-history" aria-hidden="true"></i>
+                                Last login: @(ViewModel.HeaderLastLogin.HasValue
+                                    ? ViewModel.HeaderLastLogin.Value.ToString("dd MMM yyyy HH:mm")
+                                    : "Never")
+                            </span>
+                            <span class="upv2-banner-sep">&middot;</span>
+                            <span>
+                                <i class="bi bi-calendar3" aria-hidden="true"></i>
+                                Joined: @ViewModel.HeaderCreatedAt.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+                    }
 
-                @* Account details *@
+                </div>
+
+                @* Right: circular photo (right-aligned) *@
+                <div class="upv2-banner-photo">
+                    @if (ViewModel.PhotoDataUri is not null)
+                    {
+                        <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
+                    }
+                    else
+                    {
+                        <div class="upv2-banner-avatar upv2-banner-avatar--placeholder">
+                            <i class="bi bi-person-fill" aria-hidden="true"></i>
+                        </div>
+                    }
+
+                    @if (!ViewModel.IsNew)
+                    {
+                        @if (ViewModel.PhotoError is not null)
+                        {
+                            <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
+                        }
+                        <label class="upv2-banner-upload @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
+                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
+                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
+                            <i class="bi bi-camera" aria-hidden="true"></i>
+                            @(ViewModel.IsUploadingPhoto ? "Uploading..." : "Upload Photo")
+                        </label>
+                        @if (ViewModel.PhotoDataUri is not null)
+                        {
+                            <button class="upv2-banner-upload"
+                                    style="color:#fca5a5;border-color:rgba(252,165,165,.3)"
+                                    disabled="@ViewModel.IsUploadingPhoto"
+                                    @onclick="OnRemovePhoto">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                Remove
+                            </button>
+                        }
+                    }
+                </div>
+
+            </div>
+            @* ── end banner ── *@
+
+            @* ──────────────────────── ADD USER FORM ─────────────────────── *@
+            @if (ViewModel.IsNew)
+            {
+                <fieldset disabled="@(ViewModel.LinkedStaff is null)">
                 <section class="dsv2-form-section">
                     <header class="dsv2-form-section__header">
                         <i class="bi bi-person-lock" aria-hidden="true"></i>
@@ -154,7 +267,7 @@
                             <label class="dsv2-form-label" for="nu-role">Role <span class="upv2-req">*</span></label>
                             <select id="nu-role" class="dsv2-form-input"
                                     value="@ViewModel.RoleTypeId"
-                                    @onchange="@(e => ViewModel.RoleTypeId = long.Parse(e.Value?.ToString() ?? "0"))">
+                                    @onchange="@(e => ViewModel.RoleTypeId = int.Parse(e.Value?.ToString() ?? "0"))">
                                 <option value="0">&mdash; Select role &mdash;</option>
                                 @foreach (var role in ViewModel.RoleTypes)
                                 {
@@ -183,125 +296,12 @@
                         }
                     </div>
                 </section>
+                </fieldset>
             }
 
-            @* ─────────────────────────── EDIT / PROFILE MODE ───────────────────── *@
+            @* ──────────────────────── EDIT USER TABS ──────────────────── *@
             else
             {
-                @* ── Profile Header Strip ─────────────────────────────────────────── *@
-                <div class="upv2-header-strip">
-                    <div class="upv2-header-thumb">
-                        @if (ViewModel.PhotoDataUri is not null)
-                        {
-                            <img class="upv2-header-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
-                        }
-                        else
-                        {
-                            <div class="upv2-header-avatar upv2-header-avatar--default">
-                                <i class="bi bi-person-fill" aria-hidden="true"></i>
-                            </div>
-                        }
-                    </div>
-                    <div class="upv2-header-info">
-                        <h2 class="upv2-header-name">@ViewModel.HeaderFullName</h2>
-                        <div class="upv2-header-meta">
-                            <span class="upv2-header-username">@@@ViewModel.Username</span>
-                            @if (!string.IsNullOrEmpty(ViewModel.HeaderRoleName))
-                            {
-                                <span class="upv2-badge upv2-badge--role">@ViewModel.HeaderRoleName</span>
-                            }
-                            <span class="upv2-badge upv2-badge--status upv2-badge--status-@ViewModel.HeaderStatus.ToLower()">
-                                @ViewModel.HeaderStatus
-                            </span>
-                            @if (ViewModel.HeaderIsAdmin)
-                            {
-                                <span class="upv2-badge upv2-badge--admin">Admin</span>
-                            }
-                        </div>
-                        <div class="upv2-header-dates">
-                            <span>
-                                <i class="bi bi-clock-history" aria-hidden="true"></i>
-                                Last login: @(ViewModel.HeaderLastLogin.HasValue
-                                    ? ViewModel.HeaderLastLogin.Value.ToString("dd MMM yyyy HH:mm")
-                                    : "Never")
-                            </span>
-                            <span class="upv2-header-dates-sep">&middot;</span>
-                            <span>
-                                <i class="bi bi-calendar3" aria-hidden="true"></i>
-                                Joined: @ViewModel.HeaderCreatedAt.ToString("dd MMM yyyy")
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                @* ── Two-column body ──────────────────────────────────────────────── *@
-                <div class="upv2-body">
-
-                    @* Left panel: photo + change password *@
-                    <aside class="upv2-left-panel">
-
-                        @* Profile photo card *@
-                        <div class="upv2-photo-card">
-                            <div class="upv2-photo-wrap">
-                                @if (ViewModel.PhotoDataUri is not null)
-                                {
-                                    <img class="upv2-photo-circle" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
-                                }
-                                else
-                                {
-                                    <div class="upv2-photo-circle upv2-photo-circle--placeholder">
-                                        <i class="bi bi-person-fill" aria-hidden="true"></i>
-                                    </div>
-                                }
-                            </div>
-                            @if (ViewModel.PhotoError is not null)
-                            {
-                                <div class="upv2-photo-error">@ViewModel.PhotoError</div>
-                            }
-                            <label class="upv2-upload-label @(ViewModel.IsUploadingPhoto ? "upv2-upload-label--busy" : "")">
-                                <InputFile OnChange="OnPhotoChanged" accept="image/*" class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
-                                <i class="bi bi-camera" aria-hidden="true"></i>
-                                @(ViewModel.IsUploadingPhoto ? "Uploading..." : "Upload Photo")
-                            </label>
-                        </div>
-
-                        @* Change password card *@
-                        <div class="upv2-pw-card">
-                            <h3 class="upv2-card-title">
-                                <i class="bi bi-lock" aria-hidden="true"></i> Change Password
-                            </h3>
-                            @if (ViewModel.PwError is not null)
-                            {
-                                <div class="upv2-pw-msg upv2-pw-msg--error">@ViewModel.PwError</div>
-                            }
-                            @if (ViewModel.PwSuccess is not null)
-                            {
-                                <div class="upv2-pw-msg upv2-pw-msg--success">@ViewModel.PwSuccess</div>
-                            }
-                            <div class="upv2-pw-fields">
-                                <div class="dsv2-form-field">
-                                    <label class="dsv2-form-label" for="pw-old">Current Password</label>
-                                    <input id="pw-old" type="password" class="dsv2-form-input"
-                                           @bind="ViewModel.OldPassword" autocomplete="current-password"
-                                           placeholder="Current password" />
-                                </div>
-                                <div class="dsv2-form-field">
-                                    <label class="dsv2-form-label" for="pw-new">New Password</label>
-                                    <input id="pw-new" type="password" class="dsv2-form-input"
-                                           @bind="ViewModel.NewPassword" autocomplete="new-password"
-                                           placeholder="Minimum 8 characters" />
-                                </div>
-                                <button class="dsv2-btn dsv2-btn--secondary upv2-pw-btn"
-                                        disabled="@ViewModel.IsChangingPw"
-                                        @onclick="OnChangePw">
-                                    @(ViewModel.IsChangingPw ? "Saving..." : "Change Password")
-                                </button>
-                            </div>
-                        </div>
-
-                    </aside>
-
-                    @* Right panel: 8-tab interface *@
                     <div class="upv2-right-panel">
 
                         @* Tab navigation bar *@
@@ -322,49 +322,50 @@
                             <div class="upv2-tab-pane" role="tabpanel">
 
                                 <div class="upv2-section-title">Account Management</div>
-                                <div class="dsv2-grid-2col upv2-form-grid">
+                                <div class="upv2-divider"></div>
+                                <div class="upv2-form-grid">
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-username">Username <span class="upv2-req">*</span></label>
-                                        <input id="eu-username" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-username">Username <span class="upv2-req">*</span></label>
+                                        <input id="eu-username" type="text" class="upv2-input"
                                                @bind="ViewModel.Username" autocomplete="username" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-email">Email <span class="upv2-req">*</span></label>
-                                        <input id="eu-email" type="email" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-email">Email <span class="upv2-req">*</span></label>
+                                        <input id="eu-email" type="email" class="upv2-input"
                                                @bind="ViewModel.Email" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-fname">First Name</label>
-                                        <input id="eu-fname" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-fname">First Name</label>
+                                        <input id="eu-fname" type="text" class="upv2-input"
                                                @bind="ViewModel.FirstName" placeholder="First name" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-lname">Last Name</label>
-                                        <input id="eu-lname" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-lname">Last Name</label>
+                                        <input id="eu-lname" type="text" class="upv2-input"
                                                @bind="ViewModel.LastName" placeholder="Last name" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-nickname">Nickname / Preferred Name</label>
-                                        <input id="eu-nickname" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-nickname">Nickname / Preferred Name</label>
+                                        <input id="eu-nickname" type="text" class="upv2-input"
                                                @bind="ViewModel.PreferredName" placeholder="Preferred name" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-title">Title</label>
-                                        <input id="eu-title" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-title">Title</label>
+                                        <input id="eu-title" type="text" class="upv2-input"
                                                @bind="ViewModel.Title" placeholder="e.g. Mr, Mrs, Dr" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-role">Role <span class="upv2-req">*</span></label>
-                                        <select id="eu-role" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-role">Role <span class="upv2-req">*</span></label>
+                                        <select id="eu-role" class="upv2-input"
                                                 value="@ViewModel.RoleTypeId"
-                                                @onchange="@(e => ViewModel.RoleTypeId = long.Parse(e.Value?.ToString() ?? "0"))">
+                                                @onchange="@(e => ViewModel.RoleTypeId = int.Parse(e.Value?.ToString() ?? "0"))">
                                             <option value="0">&mdash; Select role &mdash;</option>
                                             @foreach (var role in ViewModel.RoleTypes)
                                             {
@@ -373,9 +374,9 @@
                                         </select>
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-status">Status</label>
-                                        <select id="eu-status" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-status">Status</label>
+                                        <select id="eu-status" class="upv2-input"
                                                 value="@ViewModel.Status"
                                                 @onchange="@(e => ViewModel.Status = e.Value?.ToString() ?? "active")">
                                             <option value="active">Active</option>
@@ -384,21 +385,30 @@
                                         </select>
                                     </div>
 
+                                    <div class="upv2-field" style="grid-column: 1 / -1;">
+                                        <label class="upv2-label" for="eu-admin">Admin Account</label>
+                                        <label style="display:flex;align-items:center;gap:.5rem;font-size:.875rem;cursor:pointer">
+                                            <input id="eu-admin" type="checkbox" @bind="ViewModel.IsAdmin" />
+                                            Grant full administrator privileges
+                                        </label>
+                                    </div>
+
                                 </div>
 
                                 <div class="upv2-section-title upv2-section-title--mt">Profile Details</div>
-                                <div class="dsv2-grid-2col upv2-form-grid">
+                                <div class="upv2-divider"></div>
+                                <div class="upv2-form-grid">
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-dob">Date of Birth</label>
-                                        <input id="eu-dob" type="date" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-dob">Date of Birth</label>
+                                        <input id="eu-dob" type="date" class="upv2-input"
                                                value="@ViewModel.DateOfBirth.ToString("yyyy-MM-dd")"
-                                               @onchange="@(e => { if (DateOnly.TryParse(e.Value?.ToString(), out var d)) ViewModel.DateOfBirth = d; })" />
+                                               @onchange="@(e => { if (DateTime.TryParse(e.Value?.ToString(), out var d)) ViewModel.DateOfBirth = d; })" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-gender">Gender</label>
-                                        <select id="eu-gender" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-gender">Gender</label>
+                                        <select id="eu-gender" class="upv2-input"
                                                 value="@ViewModel.Gender"
                                                 @onchange="@(e => ViewModel.Gender = e.Value?.ToString())">
                                             <option value="">&mdash; Not specified &mdash;</option>
@@ -409,43 +419,76 @@
                                         </select>
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-tz">Timezone</label>
-                                        <input id="eu-tz" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-tz">Timezone</label>
+                                        <input id="eu-tz" type="text" class="upv2-input"
                                                @bind="ViewModel.Timezone" placeholder="e.g. Europe/London" />
                                     </div>
 
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-lang">Language Code</label>
-                                        <input id="eu-lang" type="text" class="dsv2-form-input"
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="eu-lang">Language Code</label>
+                                        <input id="eu-lang" type="text" class="upv2-input"
                                                @bind="ViewModel.LanguageCode" placeholder="e.g. en" maxlength="10" />
                                     </div>
 
                                 </div>
 
                                 <div class="upv2-section-title upv2-section-title--mt">About the User</div>
-                                <div class="upv2-form-grid">
-                                    <div class="dsv2-form-field">
-                                        <label class="dsv2-form-label" for="eu-bio">Biographical Info</label>
-                                        <textarea id="eu-bio" class="dsv2-form-input upv2-textarea"
-                                                  @bind="ViewModel.Bio" rows="4"
-                                                  placeholder="Short biography or notes about this user..."></textarea>
-                                    </div>
+                                <div class="upv2-divider"></div>
+                                <div class="upv2-field">
+                                    <label class="upv2-label" for="eu-bio">Biographical Info</label>
+                                    <textarea id="eu-bio" class="upv2-input upv2-textarea"
+                                              @bind="ViewModel.Bio" rows="4"
+                                              placeholder="Short biography or notes about this user..."></textarea>
                                 </div>
 
                                 @* Module permissions *@
                                 <div class="upv2-section-title upv2-section-title--mt">
                                     <i class="bi bi-key" aria-hidden="true"></i> Module Permissions
                                 </div>
+                                <div class="upv2-divider"></div>
+                                @if (ViewModel.Permissions.Count == 0)
+                                {
+                                    <p class="upv2-empty-msg">No pages configured.</p>
+                                }
+                                else
+                                {
+                                    <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
+                                }
+
+                                @* Change password *@
+                                <div class="upv2-section-title upv2-section-title--mt">
+                                    <i class="bi bi-lock" aria-hidden="true"></i> Change Password
+                                </div>
+                                <div class="upv2-divider"></div>
+                                @if (ViewModel.PwError is not null)
+                                {
+                                    <div class="upv2-pw-msg upv2-pw-msg--error">@ViewModel.PwError</div>
+                                }
+                                @if (ViewModel.PwSuccess is not null)
+                                {
+                                    <div class="upv2-pw-msg upv2-pw-msg--success">@ViewModel.PwSuccess</div>
+                                }
                                 <div class="upv2-form-grid">
-                                    @if (ViewModel.Permissions.Count == 0)
-                                    {
-                                        <p class="upv2-empty-msg">No pages configured.</p>
-                                    }
-                                    else
-                                    {
-                                        <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
-                                    }
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="pw-old">Current Password</label>
+                                        <input id="pw-old" type="password" class="upv2-input"
+                                               @bind="ViewModel.OldPassword" autocomplete="current-password"
+                                               placeholder="Current password" />
+                                    </div>
+                                    <div class="upv2-field">
+                                        <label class="upv2-label" for="pw-new">New Password</label>
+                                        <input id="pw-new" type="password" class="upv2-input"
+                                               @bind="ViewModel.NewPassword" autocomplete="new-password"
+                                               placeholder="Minimum 8 characters" />
+                                    </div>
+                                </div>
+                                <div class="upv2-pw-action">
+                                    <button class="dsv2-btn dsv2-btn--secondary"
+                                            disabled="@ViewModel.IsChangingPw"
+                                            @onclick="OnChangePw">
+                                        @(ViewModel.IsChangingPw ? "Saving..." : "Change Password")
+                                    </button>
                                 </div>
 
                             </div>
@@ -465,30 +508,52 @@
                                 {
                                     var c = ViewModel.Contact;
                                     <div class="upv2-section-title">Contact Information</div>
-                                    <div class="upv2-kv-grid">
-                                        <span class="upv2-kv-label">Work Email</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.WorkEmail) ? "—" : c.WorkEmail)</span>
-                                        <span class="upv2-kv-label">Alt Email</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.AltEmail) ? "—" : c.AltEmail)</span>
-                                        <span class="upv2-kv-label">Mobile Phone</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.PhoneMobile) ? "—" : c.PhoneMobile)</span>
-                                        <span class="upv2-kv-label">Home Phone</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.PhoneHome) ? "—" : c.PhoneHome)</span>
-                                        <span class="upv2-kv-label">Emergency Phone</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.PhoneEmergency) ? "—" : c.PhoneEmergency)</span>
-                                        <span class="upv2-kv-label">Work Location</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.WorkLocation) ? "—" : c.WorkLocation)</span>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-form-grid">
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Work Email</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.WorkEmail) ? "—" : c.WorkEmail)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Alt Email</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.AltEmail) ? "—" : c.AltEmail)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Mobile Phone</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.PhoneMobile) ? "—" : c.PhoneMobile)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Home Phone</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.PhoneHome) ? "—" : c.PhoneHome)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Emergency Phone</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.PhoneEmergency) ? "—" : c.PhoneEmergency)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Work Location</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.WorkLocation) ? "—" : c.WorkLocation)</div>
+                                        </div>
                                     </div>
                                     <div class="upv2-section-title upv2-section-title--mt">Employment</div>
-                                    <div class="upv2-kv-grid">
-                                        <span class="upv2-kv-label">Employment Type</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.EmploymentType) ? "—" : c.EmploymentType)</span>
-                                        <span class="upv2-kv-label">Contract Type</span>
-                                        <span class="upv2-kv-value">@(string.IsNullOrEmpty(c.ContractType) ? "—" : c.ContractType)</span>
-                                        <span class="upv2-kv-label">Hire Date</span>
-                                        <span class="upv2-kv-value">@c.HireDate.ToString("dd MMM yyyy")</span>
-                                        <span class="upv2-kv-label">End Date</span>
-                                        <span class="upv2-kv-value">@(c.EndDate.HasValue ? c.EndDate.Value.ToString("dd MMM yyyy") : "Current")</span>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-form-grid">
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Employment Type</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.EmploymentType) ? "—" : c.EmploymentType)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Contract Type</div>
+                                            <div class="upv2-value">@(string.IsNullOrEmpty(c.ContractType) ? "—" : c.ContractType)</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">Hire Date</div>
+                                            <div class="upv2-value">@c.HireDate.ToString("dd MMM yyyy")</div>
+                                        </div>
+                                        <div class="upv2-field">
+                                            <div class="upv2-label">End Date</div>
+                                            <div class="upv2-value">@(c.EndDate.HasValue ? c.EndDate.Value.ToString("dd MMM yyyy") : "Current")</div>
+                                        </div>
                                     </div>
                                 }
                             </div>
@@ -507,31 +572,30 @@
                                 else
                                 {
                                     <div class="upv2-section-title">Class &amp; Role Assignments</div>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-table-container">
                                     <table class="upv2-table">
                                         <thead>
                                             <tr>
-                                                <th>Class</th>
-                                                <th>Job Title</th>
-                                                <th>Department</th>
-                                                <th>Days</th>
+                                                <th>Location</th>
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
+                                                <th>Notes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var row in ViewModel.Classes)
                                             {
                                                 <tr>
-                                                    <td>@(string.IsNullOrEmpty(row.ClassName) ? "—" : row.ClassName)</td>
-                                                    <td>@row.JobTitle</td>
-                                                    <td>@row.Department</td>
-                                                    <td>@(row.DaysOfWeek ?? "All")</td>
+                                                    <td>@row.LocationId</td>
                                                     <td>@row.StartDate.ToString("dd MMM yyyy")</td>
                                                     <td>@(row.EndDate.HasValue ? row.EndDate.Value.ToString("dd MMM yyyy") : "Current")</td>
+                                                    <td>@(row.Notes ?? string.Empty)</td>
                                                 </tr>
                                             }
                                         </tbody>
                                     </table>
+                                    </div>
                                 }
                             </div>
                         }
@@ -598,6 +662,8 @@
                                 else
                                 {
                                     <div class="upv2-section-title">Linked External Accounts</div>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-table-container">
                                     <table class="upv2-table">
                                         <thead>
                                             <tr>
@@ -617,7 +683,7 @@
                                                     <td>@row.AccountUsername</td>
                                                     <td>@row.AccountEmail</td>
                                                     <td>
-                                                        <span class="upv2-pill @(row.Status == "active" ? "upv2-pill--green" : "upv2-pill--grey")">
+                                                        <span class="upv2-status @(row.Status == "active" ? "upv2-status--active" : "upv2-status--inactive")">
                                                             @row.Status
                                                         </span>
                                                     </td>
@@ -625,6 +691,7 @@
                                             }
                                         </tbody>
                                     </table>
+                                    </div>
                                 }
                             </div>
                         }
@@ -656,6 +723,8 @@
                                     <div class="upv2-section-title">
                                         Absence History (@ViewModel.Absences.Count records)
                                     </div>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-table-container">
                                     <table class="upv2-table">
                                         <thead>
                                             <tr>
@@ -683,6 +752,7 @@
                                             }
                                         </tbody>
                                     </table>
+                                    </div>
                                 }
                             </div>
                         }
@@ -702,6 +772,8 @@
                                     <div class="upv2-section-title">
                                         Login History (last @ViewModel.LoginAudit.Count entries)
                                     </div>
+                                    <div class="upv2-divider"></div>
+                                    <div class="upv2-table-container">
                                     <table class="upv2-table">
                                         <thead>
                                             <tr>
@@ -720,11 +792,11 @@
                                                     <td>
                                                         @if (row.Success)
                                                         {
-                                                            <span class="upv2-pill upv2-pill--green">Success</span>
+                                                            <span class="upv2-status upv2-status--active">Success</span>
                                                         }
                                                         else
                                                         {
-                                                            <span class="upv2-pill upv2-pill--red">Failed</span>
+                                                            <span class="upv2-status upv2-status--inactive">Failed</span>
                                                         }
                                                     </td>
                                                     <td class="upv2-ua">@row.UserAgent</td>
@@ -732,12 +804,12 @@
                                             }
                                         </tbody>
                                     </table>
+                                    </div>
                                 }
                             </div>
                         }
 
                     </div>
-                </div>
             }
         }
 
@@ -748,7 +820,10 @@
 @code {
 
     [Parameter] public long? Id      { get; set; }   // edit route
-    [Parameter] public long? StaffId { get; set; }   // new route
+    [Parameter] public long? StaffId { get; set; }   // /v2/users/{StaffId:long}/new route
+
+    [SupplyParameterFromQuery(Name = "staffId")]
+    public long? QueryStaffId { get; set; }          // /v2/users/new?staffId=… pre-selection
 
     private string PageTitle => ViewModel.IsNew
         ? "Add User Account"
@@ -758,10 +833,18 @@
     {
         if (Id.HasValue)
             await ViewModel.InitEditAsync(Id.Value);
-        else if (StaffId.HasValue)
-            await ViewModel.InitNewAsync(StaffId.Value);
         else
-            ViewModel.SetError("Invalid route: StaffId is required to create a user.");
+        {
+            // Both /v2/users/new (with optional ?staffId=) and /v2/users/{StaffId}/new.
+            var preselectedId = StaffId ?? QueryStaffId ?? 0L;
+            await ViewModel.InitNewAsync((int)preselectedId);
+        }
+    }
+
+    private async Task OnStaffSelected(ChangeEventArgs e)
+    {
+        var id = long.TryParse(e.Value?.ToString(), out var parsed) ? parsed : 0L;
+        await ViewModel.SelectLinkedStaffAsync((int)id);
     }
 
     private async Task OnCreate()
@@ -784,6 +867,11 @@
     private async Task OnPhotoChanged(InputFileChangeEventArgs e)
     {
         await ViewModel.UploadPhotoAsync(e.File);
+    }
+
+    private async Task OnRemovePhoto()
+    {
+        await ViewModel.RemovePhotoAsync();
     }
 
     private RenderFragment RenderTabBtn(int index, string icon, string label) =>

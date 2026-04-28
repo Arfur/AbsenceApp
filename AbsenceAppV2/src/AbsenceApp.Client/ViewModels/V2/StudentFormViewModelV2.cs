@@ -38,7 +38,7 @@ public sealed class StudentFormViewModelV2
     // -------------------------------------------------------------------------
 
     public bool IsNew { get; private set; } = true;
-    public long EditId { get; private set; }
+    public int EditId { get; private set; }
 
     // -------------------------------------------------------------------------
     // UI state
@@ -59,9 +59,9 @@ public sealed class StudentFormViewModelV2
     public string LegalFirstName { get; set; } = string.Empty;
     public string LegalLastName { get; set; } = string.Empty;
     public string Gender { get; set; } = string.Empty;
-    public DateOnly DateOfBirth { get; set; } = DateOnly.FromDateTime(DateTime.Today.AddYears(-10));
-    public long YearGroupId { get; set; }
-    public long ClassId { get; set; }
+    public DateTime DateOfBirth { get; set; } = DateTime.Today.AddYears(-10);
+    public int YearGroupId { get; set; }
+    public int ClassId { get; set; }
     public string Status { get; set; } = "Active";
 
     // -------------------------------------------------------------------------
@@ -78,7 +78,7 @@ public sealed class StudentFormViewModelV2
     public async Task LoadForEditAsync(long id, CancellationToken ct = default)
     {
         IsNew = false;
-        EditId = id;
+        EditId = (int)id;
         IsBusy = true;
         Error = null;
 
@@ -89,7 +89,7 @@ public sealed class StudentFormViewModelV2
             AdmissionNumber = s.AdmissionNumber;
             FirstName       = s.FirstName;
             LastName        = s.LastName;
-            Gender          = s.Gender;
+            Gender          = s.Gender ?? string.Empty;
             Status          = s.Status;
         }
         else
@@ -142,7 +142,7 @@ public sealed class StudentFormViewModelV2
         LegalFirstName  = string.Empty;
         LegalLastName   = string.Empty;
         Gender          = string.Empty;
-        DateOfBirth     = DateOnly.FromDateTime(DateTime.Today.AddYears(-10));
+        DateOfBirth     = DateTime.Today.AddYears(-10);
         YearGroupId     = 0;
         ClassId         = 0;
         Status          = "Active";
@@ -158,7 +158,7 @@ public sealed class StudentFormViewModelV2
         LegalFirstName  = LegalFirstName,
         LegalLastName   = LegalLastName,
         Gender          = Gender,
-        DateOfBirth     = DateOfBirth,
+        DateOfBirth     = DateOnly.FromDateTime(DateOfBirth),
         YearGroupId     = YearGroupId,
         ClassId         = ClassId,
         Status          = Status,

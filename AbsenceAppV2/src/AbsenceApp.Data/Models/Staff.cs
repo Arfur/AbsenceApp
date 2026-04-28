@@ -23,7 +23,7 @@ namespace AbsenceApp.Data.Models;
 
 public class Staff
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string StaffNumber { get; set; } = default!;
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
@@ -41,10 +41,10 @@ public class Staff
     public DateOnly HireDate { get; set; }
     public DateOnly? EndDate { get; set; }
     public string WorkLocation { get; set; } = default!;
-    public long? ReportingManagerId { get; set; }
-    public long JobTitleId { get; set; }
-    public long JobGroupId { get; set; }
-    public long DepartmentId { get; set; }
+    public int? ReportingManagerId { get; set; }
+    public int JobTitleId { get; set; }
+    public int JobGroupId { get; set; }
+    public int DepartmentId { get; set; }
     public string? ProfilePhotoUrl { get; set; }
     public string AccountStatus { get; set; } = default!;
     public DateTime CreatedAt { get; set; }

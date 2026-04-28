@@ -3,9 +3,9 @@
  File        : IUserManagementService.cs
  Namespace   : AbsenceApp.Core.Interfaces
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : 2026-04-11
- Updated     : 2026-04-21
+ Updated     : 2026-04-25
 -------------------------------------------------------------------------------
  Purpose     : Service contract for the E15 User Management module.
                Covers user CRUD, role listing, page listing, per-user
@@ -24,6 +24,9 @@
                          GetStaffExternalAccountsAsync, GetStaffAbsencesAsync,
                          GetUserLoginAuditAsync, SaveUserProfileAsync,
                          ChangePasswordAsync, UpdateProfilePhotoAsync.
+  - 1.3.0  2026-04-25  Updated GetUserProfileDetailAsync to return unified
+                 UserProfileFullDetailDto for one-call full profile
+                 loading.
 -------------------------------------------------------------------------------
  Notes       :
    - Implemented by UserManagementService in AbsenceApp.Data.Services.
@@ -39,15 +42,16 @@ public interface IUserManagementService
     // ── User CRUD ─────────────────────────────────────────────────────────────
 
     Task<IReadOnlyList<UserListItemDto>> GetUsersAsync(CancellationToken ct = default);
-    Task<UserUpdateDto?>                 GetUserForEditAsync(long userId, CancellationToken ct = default);
+    Task<UserUpdateDto?>                 GetUserForEditAsync(int userId, CancellationToken ct = default);
     Task<long>                           CreateUserAsync(UserCreateDto dto, CancellationToken ct = default);
     Task                                 UpdateUserAsync(UserUpdateDto dto, CancellationToken ct = default);
-    Task                                 DeleteUserAsync(long userId, CancellationToken ct = default);
+    Task                                 DeleteUserAsync(int userId, CancellationToken ct = default);
 
     // ── Staff-linked helpers ──────────────────────────────────────────────────
 
-    Task<StaffSelectDto?> GetStaffForUserCreateAsync(long staffId, CancellationToken ct = default);
-    Task<bool>            StaffHasUserAsync(long staffId, CancellationToken ct = default);
+    Task<StaffSelectDto?> GetStaffForUserCreateAsync(int staffId, CancellationToken ct = default);
+    Task<bool>            StaffHasUserAsync(int staffId, CancellationToken ct = default);
+    Task<IReadOnlyList<StaffSelectDto>> GetStaffWithoutUsersAsync(CancellationToken ct = default);
 
     // ── Reference data ───────────────────────────────────────────────────────
 
@@ -66,28 +70,28 @@ public interface IUserManagementService
     // ── User Profile page ─────────────────────────────────────────────────────
 
     /// <summary>Returns the header strip data (name, role, status, photo, last-login) for a user.</summary>
-    Task<UserProfileHeaderDto?> GetUserProfileHeaderAsync(long userId, CancellationToken ct = default);
+    Task<UserProfileHeaderDto?> GetUserProfileHeaderAsync(int userId, CancellationToken ct = default);
 
-    /// <summary>Returns the extended profile fields (user_profiles row) for a user. Returns a blank DTO if no row exists yet.</summary>
-    Task<UserProfileDetailDto> GetUserProfileDetailAsync(long userId, CancellationToken ct = default);
+    /// <summary>Returns the unified full profile payload (users + userprofiles + staff + staff-linked collections) for a user.</summary>
+    Task<UserProfileFullDetailDto> GetUserProfileDetailAsync(int userId, CancellationToken ct = default);
 
     /// <summary>Returns the Staff employment and contact fields for the given staffId.</summary>
-    Task<StaffContactDto?> GetStaffContactAsync(long staffId, CancellationToken ct = default);
+    Task<StaffContactDto?> GetStaffContactAsync(int staffId, CancellationToken ct = default);
 
     /// <summary>Returns all StaffAssignment rows for the staff member, joined with class/job-title/department names.</summary>
-    Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(long staffId, CancellationToken ct = default);
+    Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(int staffId, CancellationToken ct = default);
 
     /// <summary>Returns all StaffDevice rows for the staff member, joined with device type name.</summary>
-    Task<IReadOnlyList<StaffDeviceRowDto>> GetStaffDevicesAsync(long staffId, CancellationToken ct = default);
+    Task<IReadOnlyList<StaffDeviceRowDto>> GetStaffDevicesAsync(int staffId, CancellationToken ct = default);
 
     /// <summary>Returns all StaffExternalAccount rows for the staff member, joined with external system name.</summary>
-    Task<IReadOnlyList<StaffExternalRowDto>> GetStaffExternalAccountsAsync(long staffId, CancellationToken ct = default);
+    Task<IReadOnlyList<StaffExternalRowDto>> GetStaffExternalAccountsAsync(int staffId, CancellationToken ct = default);
 
     /// <summary>Returns Absence rows where PersonType="Staff" and PersonId=staffId, ordered by StartDate desc.</summary>
-    Task<IReadOnlyList<StaffAbsenceRowDto>> GetStaffAbsencesAsync(long staffId, CancellationToken ct = default);
+    Task<IReadOnlyList<StaffAbsenceRowDto>> GetStaffAbsencesAsync(int staffId, CancellationToken ct = default);
 
     /// <summary>Returns LoginAudit rows for the given userId, ordered by LoginTime desc (max 200 rows).</summary>
-    Task<IReadOnlyList<LoginAuditRowDto>> GetUserLoginAuditAsync(long userId, CancellationToken ct = default);
+    Task<IReadOnlyList<LoginAuditRowDto>> GetUserLoginAuditAsync(int userId, CancellationToken ct = default);
 
     /// <summary>Saves both the User and UserProfile records from a profile form save.</summary>
     Task SaveUserProfileAsync(UserProfileSaveDto dto, CancellationToken ct = default);
@@ -96,5 +100,5 @@ public interface IUserManagementService
     Task ChangePasswordAsync(ChangePasswordDto dto, CancellationToken ct = default);
 
     /// <summary>Updates UserProfile.ProfilePictureUrl for the given userId (upserts the row if absent).</summary>
-    Task UpdateProfilePhotoAsync(long userId, string photoUrl, CancellationToken ct = default);
+    Task UpdateProfilePhotoAsync(int userId, string photoUrl, CancellationToken ct = default);
 }

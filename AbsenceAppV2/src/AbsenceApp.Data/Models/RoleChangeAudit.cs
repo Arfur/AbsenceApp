@@ -22,12 +22,11 @@ namespace AbsenceApp.Data.Models;
 
 public class RoleChangeAudit
 {
-    public long Id { get; set; }
-    public long UserId { get; set; }
-    public long OldRoleId { get; set; }
-    public long NewRoleId { get; set; }
-    public long ChangedBy { get; set; }
-    public DateTime ChangeTime { get; set; }
-    public string? Reason { get; set; }
-    public string? Metadata { get; set; }
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public int? OldRoleId { get; set; }
+    public int? NewRoleId { get; set; }
+    public int ChangedBy { get; set; }
+    public string? ChangeReason { get; set; }
+    public DateTime ChangedAt { get; set; }
 }

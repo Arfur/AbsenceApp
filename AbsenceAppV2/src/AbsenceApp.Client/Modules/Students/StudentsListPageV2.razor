@@ -652,7 +652,7 @@
         _filterOptions["last_name"] = all
             .Select(s => s.LastName).Distinct().Order().ToList();
         _filterOptions["gender"] = all
-            .Select(s => s.Gender).Distinct().Order().ToList();
+            .Select(s => s.Gender ?? "").Where(v => v != "").Distinct().Order().ToList();
         _filterOptions["date_of_birth"] = all
             .Select(s => s.DateOfBirth.ToString("dd/MM/yyyy")).Distinct().Order().ToList();
         _filterOptions["year_group"] = all

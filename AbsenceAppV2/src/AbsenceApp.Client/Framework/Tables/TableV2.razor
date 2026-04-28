@@ -437,8 +437,33 @@
             ? $"dsv2-table__th dsv2-table__th--{col.Align} dsv2-table__th--mobile-hidden"
             : $"dsv2-table__th dsv2-table__th--{col.Align}";
 
-    private static string ThStyle(TableColumnModel col) =>
-        col.Width is not null ? $"width:{col.Width};min-width:{col.Width}" : string.Empty;
+    private static string ThStyle(TableColumnModel col)
+    {
+        var w = col.Width ?? ResolveColumnWidth(col);
+        return w is not null ? $"width:{w}" : string.Empty;
+    }
+
+    /// <summary>
+    /// Returns a CSS width string based on WidthHint, then DataType, then null (browser distributes).
+    /// </summary>
+    private static string? ResolveColumnWidth(TableColumnModel col) =>
+        col.WidthHint switch
+        {
+            "narrow"  => "80px",
+            "wide"    => "20%",
+            "actions" => "120px",
+            null => col.DataType switch
+            {
+                "bool"     => "80px",
+                "badge"    => "90px",
+                "number"   => "80px",
+                "date"     => "110px",
+                "datetime" => "140px",
+                "actions"  => "120px",
+                _          => null   // "string" / default: let table fill remaining space
+            },
+            _ => null
+        };
 
     private string SortBtnClass(string colKey) =>
         SortColumn == colKey

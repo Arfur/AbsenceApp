@@ -39,8 +39,17 @@ public sealed class TableColumnModel
     /// <summary>Whether the column is currently shown.</summary>
     public bool Visible { get; set; } = true;
 
-    /// <summary>Optional fixed or min-width (CSS value, e.g. "8rem").</summary>
+    /// <summary>Optional fixed or min-width (CSS value, e.g. "8rem"). Overrides WidthHint.</summary>
     public string? Width { get; set; }
+
+    /// <summary>
+    /// Width category hint used when Width is not set.
+    /// "narrow" = 80px (codes, enums, booleans, IDs).
+    /// "wide"   = 20%  (emails, descriptions, long varchar).
+    /// "actions" = 120px (reserved for action columns).
+    /// Omit (null) for medium fields — the table distributes remaining space.
+    /// </summary>
+    public string? WidthHint { get; set; }
 
     /// <summary>Text alignment: "left" | "center" | "right". Default: "left".</summary>
     public string Align { get; set; } = "left";

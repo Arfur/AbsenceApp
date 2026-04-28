@@ -341,7 +341,7 @@ namespace AbsenceApp.Data.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("app_pages", (string)null);
+                    b.ToTable("apppages", (string)null);
 
                     b.HasData(
                         new
@@ -622,6 +622,266 @@ namespace AbsenceApp.Data.Migrations
                             SupportsImport = false,
                             SupportsRead = true,
                             SupportsWrite = false,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryKey = "PEOPLE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-person-lines-fill",
+                            IsActive = true,
+                            MenuKey = "Students",
+                            Name = "Student Details",
+                            Route = "/v2/students/details",
+                            Slug = "student-details",
+                            SortOrder = 21,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryKey = "PEOPLE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-person-plus",
+                            IsActive = true,
+                            MenuKey = "Students",
+                            Name = "New Student",
+                            Route = "/v2/students/new",
+                            Slug = "student-new",
+                            SortOrder = 22,
+                            SupportsCreate = true,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CategoryKey = "PEOPLE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-person-lines-fill",
+                            IsActive = true,
+                            MenuKey = "Staff",
+                            Name = "Staff Details",
+                            Route = "/v2/staff/details",
+                            Slug = "staff-details",
+                            SortOrder = 31,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CategoryKey = "PEOPLE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-person-plus",
+                            IsActive = true,
+                            MenuKey = "Staff",
+                            Name = "New Staff",
+                            Route = "/v2/staff/new",
+                            Slug = "staff-new",
+                            SortOrder = 32,
+                            SupportsCreate = true,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CategoryKey = "ACADEMICS",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-journal-text",
+                            IsActive = true,
+                            MenuKey = "Classes",
+                            Name = "Class Details",
+                            Route = "/v2/classes/details",
+                            Slug = "class-details",
+                            SortOrder = 41,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CategoryKey = "ACADEMICS",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-journal-plus",
+                            IsActive = true,
+                            MenuKey = "Classes",
+                            Name = "New Class",
+                            Route = "/v2/classes/new",
+                            Slug = "class-new",
+                            SortOrder = 42,
+                            SupportsCreate = true,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-people",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "System Users",
+                            Route = "/v2/system/users",
+                            Slug = "system-users",
+                            SortOrder = 90,
+                            SupportsCreate = true,
+                            SupportsDelete = true,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-shield-lock",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "System Roles",
+                            Route = "/v2/system/roles",
+                            Slug = "system-roles",
+                            SortOrder = 91,
+                            SupportsCreate = true,
+                            SupportsDelete = true,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-key",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "System Permissions",
+                            Route = "/v2/system/permissions",
+                            Slug = "system-permissions",
+                            SortOrder = 92,
+                            SupportsCreate = true,
+                            SupportsDelete = true,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-table",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "Page Access Matrix",
+                            Route = "/v2/system/page-access",
+                            Slug = "page-access",
+                            SortOrder = 93,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-file-earmark-text",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "Pages Registry",
+                            Route = "/v2/system/pages",
+                            Slug = "system-pages",
+                            SortOrder = 94,
+                            SupportsCreate = true,
+                            SupportsDelete = true,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-layout-text-window",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "Page Layouts",
+                            Route = "/v2/system/pages/layouts",
+                            Slug = "page-layouts",
+                            SortOrder = 95,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryKey = "CONFIGURATION",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-info-circle",
+                            IsActive = true,
+                            MenuKey = "System",
+                            Name = "Page Metadata",
+                            Route = "/v2/system/pages/metadata",
+                            Slug = "page-metadata",
+                            SortOrder = 96,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
                             UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -961,19 +1221,12 @@ namespace AbsenceApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Colour")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<long>("SchoolId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -1046,13 +1299,16 @@ namespace AbsenceApp.Data.Migrations
 
                     b.Property<string>("IpAddress")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("LoginIp");
 
                     b.Property<DateTime>("LoginTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("LoginAt");
 
                     b.Property<bool>("Success")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("WasSuccessful");
 
                     b.Property<string>("UserAgent")
                         .IsRequired()
@@ -1234,6 +1490,9 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("PageId")
                         .HasColumnType("int");
 
@@ -1249,7 +1508,178 @@ namespace AbsenceApp.Data.Migrations
                     b.HasIndex("RoleTypeName", "PageId")
                         .IsUnique();
 
-                    b.ToTable("role_default_page_permissions", (string)null);
+                    b.ToTable("roledefaultpagepermissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 15,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 15,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CanCreate = true,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 16,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 17,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CanCreate = true,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 18,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 19,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CanCreate = true,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 20,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CanCreate = true,
+                            CanDelete = true,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 21,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CanCreate = true,
+                            CanDelete = true,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 22,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CanCreate = true,
+                            CanDelete = true,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 23,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 24,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CanCreate = true,
+                            CanDelete = true,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 25,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 26,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 27,
+                            RoleTypeName = "super_admin"
+                        });
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.RoleFeature", b =>
@@ -1371,8 +1801,8 @@ namespace AbsenceApp.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("DepartmentId")
                         .HasColumnType("bigint");
@@ -1681,8 +2111,8 @@ namespace AbsenceApp.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -1708,7 +2138,8 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleNames")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("MiddleName");
 
                     b.Property<long>("SchoolId")
                         .HasColumnType("bigint");
@@ -1964,6 +2395,9 @@ namespace AbsenceApp.Data.Migrations
                     b.Property<string>("RememberToken")
                         .HasColumnType("longtext");
 
+                    b.Property<long?>("StaffId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -2021,6 +2455,9 @@ namespace AbsenceApp.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("OverrideType")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -2039,7 +2476,7 @@ namespace AbsenceApp.Data.Migrations
                     b.HasIndex("UserId", "PageId")
                         .IsUnique();
 
-                    b.ToTable("user_page_overrides", (string)null);
+                    b.ToTable("userpageoverrides", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.UserPagePermission", b =>
@@ -2080,6 +2517,9 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("PageId")
                         .HasColumnType("int");
 
@@ -2093,7 +2533,7 @@ namespace AbsenceApp.Data.Migrations
                     b.HasIndex("UserId", "PageId")
                         .IsUnique();
 
-                    b.ToTable("user_page_permissions", (string)null);
+                    b.ToTable("userpagepermissions", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.UserProfile", b =>
@@ -2102,12 +2542,13 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Bio")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateOnly>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<long>("DepartmentId")
@@ -2115,38 +2556,46 @@ namespace AbsenceApp.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<long>("JobTitleId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("PreferredName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<long>("SchoolId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Timezone")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -2156,7 +2605,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserProfiles");
+                    b.ToTable("userprofiles", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.UserRole", b =>
@@ -2199,9 +2648,6 @@ namespace AbsenceApp.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<long>("PhaseId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SchoolId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -2404,3 +2850,4 @@ namespace AbsenceApp.Data.Migrations
         }
     }
 }
+

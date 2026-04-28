@@ -49,11 +49,11 @@ public sealed class UserFormViewModelV2
     // =========================================================================
 
     /// <summary>Mandatory. Set from the originating Staff record; immutable after creation.</summary>
-    public long    StaffId      { get; set; }
+    public int     StaffId      { get; set; }
     public string  Username     { get; set; } = string.Empty;
     public string  Email        { get; set; } = string.Empty;
     public string  Password     { get; set; } = string.Empty;
-    public long    RoleTypeId   { get; set; }
+    public int     RoleTypeId   { get; set; }
     public string  Status       { get; set; } = "active";
 
     // =========================================================================
@@ -78,7 +78,7 @@ public sealed class UserFormViewModelV2
     // State
     // =========================================================================
 
-    public long   UserId   { get; private set; }
+    public int    UserId   { get; private set; }
     public bool   IsLoading { get; private set; }
     public bool   IsSaving  { get; private set; }
     public string? Error    { get; private set; }
@@ -91,7 +91,7 @@ public sealed class UserFormViewModelV2
     // Initialise for Add (must be called with the originating StaffId)
     // =========================================================================
 
-    public async Task InitNewAsync(long staffId, CancellationToken ct = default)
+    public async Task InitNewAsync(int staffId, CancellationToken ct = default)
     {
         IsNew     = true;
         StaffId   = staffId;
@@ -127,7 +127,7 @@ public sealed class UserFormViewModelV2
         {
             RoleTypes = await _svc.GetRoleTypesAsync(ct);
 
-            var dto = await _svc.GetUserForEditAsync(userId, ct);
+            var dto = await _svc.GetUserForEditAsync((int)userId, ct);
             if (dto is null)
             {
                 Error = "User not found.";

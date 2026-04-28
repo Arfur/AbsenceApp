@@ -3,9 +3,9 @@
  File        : UserProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
- Created     : 2026-04-21
- Updated     : 2026-04-21
+ Version     : 1.2.0
+   Created     : 2026-04-21
+     Updated     : 2026-04-25
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for the full User Profile / Add User page
                (UserFormPageV2.razor). Handles both Add User and Edit User
@@ -25,6 +25,12 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-21  Initial creation.
+   - 1.1.0  2026-04-22  Session 6: Added StaffWithoutAccounts, SelectLinkedStaffAsync.
+                         Session 7 Phase 3: Added RemovePhotoAsync.
+    - 1.2.0  2026-04-25  Edit-mode profile loading now uses one unified DTO and
+                                 one API call: UserProfileFullDetailDto from
+                                 GetUserProfileDetailAsync. All tab sections are
+                                 populated from this single payload.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in V2ServiceCollectionExtensions.cs.
@@ -57,8 +63,8 @@ public sealed class UserProfileViewModelV2
     // =========================================================================
 
     public bool IsNew    { get; private set; } = true;
-    public long UserId   { get; private set; }
-    public long StaffId  { get; private set; }
+    public int  UserId   { get; private set; }
+    public int  StaffId  { get; private set; }
 
     // =========================================================================
     // Active tab (0–7)
@@ -112,7 +118,7 @@ public sealed class UserProfileViewModelV2
 
     public string Username   { get; set; } = string.Empty;
     public string Email      { get; set; } = string.Empty;
-    public long   RoleTypeId { get; set; }
+    public int   RoleTypeId { get; set; }
     public string Status     { get; set; } = "active";
     public bool   IsAdmin    { get; set; }
     public DateTime UserCreatedAt { get; private set; }
@@ -125,13 +131,14 @@ public sealed class UserProfileViewModelV2
     public string  LastName      { get; set; } = string.Empty;
     public string? PreferredName { get; set; }
     public string  Title         { get; set; } = string.Empty;
-    public DateOnly DateOfBirth  { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    public DateTime DateOfBirth { get; set; } = DateTime.Today;
+
     public string?  Bio          { get; set; }
     public string?  Gender       { get; set; }
     public string   Timezone     { get; set; } = "UTC";
     public string   LanguageCode { get; set; } = "en";
-    public long     DepartmentId { get; set; }
-    public long     JobTitleId   { get; set; }
+    public int     DepartmentId { get; set; }
+    public int     JobTitleId   { get; set; }
 
     // =========================================================================
     // Add User — password (create mode only)
@@ -193,6 +200,12 @@ public sealed class UserProfileViewModelV2
     public List<PagePermissionDto>          Permissions { get; private set; } = [];
 
     // =========================================================================
+    // Add-User staff list (populated when no staff is pre-selected)
+    // =========================================================================
+
+    public IReadOnlyList<StaffSelectDto> StaffWithoutAccounts { get; private set; } = [];
+
+    // =========================================================================
     // Add-User linked staff
     // =========================================================================
 
@@ -213,7 +226,7 @@ public sealed class UserProfileViewModelV2
     // Initialise — Add User
     // =========================================================================
 
-    public async Task InitNewAsync(long staffId, CancellationToken ct = default)
+    public async Task InitNewAsync(int staffId, CancellationToken ct = default)
     {
         IsNew    = true;
         StaffId  = staffId;
@@ -222,122 +235,123 @@ public sealed class UserProfileViewModelV2
         try
         {
             RoleTypes   = await _svc.GetRoleTypesAsync(ct);
-            LinkedStaff = await _svc.GetStaffForUserCreateAsync(staffId, ct);
-            if (LinkedStaff is null)
-            {
-                Error = $"Staff record {staffId} not found.";
-                return;
-            }
-
-            // Pre-fill from staff.
-            Email       = LinkedStaff.WorkEmail;
-            FirstName   = string.Empty;
-            LastName    = string.Empty;
-            HeaderFullName = LinkedStaff.FullName;
-
             Permissions = (await _svc.GetUserPermissionsAsync(0, ct)).ToList();
+
+            if (staffId > 0)
+            {
+                // Pre-selected staff (navigated from StaffDetailPage).
+                LinkedStaff = await _svc.GetStaffForUserCreateAsync(staffId, ct);
+                if (LinkedStaff is null)
+                {
+                    Error = $"Staff record {staffId} not found.";
+                    return;
+                }
+                Email          = LinkedStaff.WorkEmail;
+                HeaderFullName = LinkedStaff.FullName;
+            }
+            else
+            {
+                // No pre-selection — load the staff-without-accounts dropdown.
+                StaffWithoutAccounts = await _svc.GetStaffWithoutUsersAsync(ct);
+            }
         }
         catch (Exception ex) { Error = ex.Message; }
         finally { IsLoading = false; }
     }
 
     // =========================================================================
-    // Initialise — Edit User (loads all tabs in parallel)
+    // Select linked staff from dropdown (Add User mode, no pre-selection)
+    // =========================================================================
+
+    public async Task SelectLinkedStaffAsync(int staffId, CancellationToken ct = default)
+    {
+        if (staffId <= 0)
+        {
+            LinkedStaff = null;
+            StaffId     = 0;
+            Email       = string.Empty;
+            return;
+        }
+
+        Error = null;
+        try
+        {
+            StaffId     = staffId;
+            LinkedStaff = await _svc.GetStaffForUserCreateAsync(staffId, ct);
+            if (LinkedStaff is not null)
+                Email = LinkedStaff.WorkEmail;
+        }
+        catch (Exception ex) { Error = ex.Message; }
+    }
+
+    // =========================================================================
+    // Initialise — Edit User (single unified API call)
     // =========================================================================
 
     public async Task InitEditAsync(long userId, CancellationToken ct = default)
     {
         IsNew     = false;
-        UserId    = userId;
+        UserId    = (int)userId;
         IsLoading = true;
         Error     = null;
         try
         {
-            // Load reference data and header in parallel.
-            var roleTypesTask = _svc.GetRoleTypesAsync(ct);
-            var headerTask    = _svc.GetUserProfileHeaderAsync(userId, ct);
-            var detailTask    = _svc.GetUserProfileDetailAsync(userId, ct);
-            var permsTask     = _svc.GetUserPermissionsAsync(userId, ct);
+            var full = await _svc.GetUserProfileDetailAsync(UserId, ct);
 
-            await Task.WhenAll(roleTypesTask, headerTask, detailTask, permsTask);
-
-            RoleTypes   = await roleTypesTask;
-            var header  = await headerTask;
-            var detail  = await detailTask;
-            Permissions = (await permsTask).ToList();
-
-            if (header is null)
+            if (!full.UserExists)
             {
                 Error = "User not found.";
                 return;
             }
 
+            RoleTypes   = full.RoleTypes;
+            Permissions = full.Permissions.ToList();
+
             // Populate header.
-            StaffId           = header.StaffId ?? 0;
-            HeaderFullName    = header.FullName;
-            HeaderEmail       = header.Email;
-            HeaderRoleName    = header.RoleName;
-            HeaderStatus      = header.Status;
-            HeaderIsAdmin     = header.IsAdmin;
-            HeaderLastLogin   = header.LastLoginAt;
-            HeaderCreatedAt   = header.CreatedAt;
-            PhotoStoredPath   = header.ProfilePictureUrl;
+            StaffId           = full.StaffId ?? 0;
+            HeaderFullName    = full.FullName;
+            HeaderEmail       = full.Email;
+            HeaderRoleName    = full.RoleDisplayName;
+            HeaderStatus      = full.Status;
+            HeaderIsAdmin     = full.IsAdmin;
+            HeaderLastLogin   = full.LastLoginAt;
+            HeaderCreatedAt   = full.UserCreatedAt;
+            PhotoStoredPath   = full.ProfilePictureUrl;
 
             // Load stored photo bytes.
             if (!string.IsNullOrWhiteSpace(PhotoStoredPath) && File.Exists(PhotoStoredPath))
                 PhotoBytes = await File.ReadAllBytesAsync(PhotoStoredPath, ct);
 
             // Populate Basic User Info fields.
-            Username     = header.Username;
-            Email        = header.Email;
-            Status       = header.Status;
-            IsAdmin      = header.IsAdmin;
-            UserCreatedAt = header.CreatedAt;
-
-            // Role — find matching RoleTypeId by DisplayName
-            var matchRole = RoleTypes.FirstOrDefault(r => r.DisplayName == header.RoleName
-                                                       || r.Name        == header.RoleName);
-            if (matchRole is not null) RoleTypeId = matchRole.Id;
+            Username      = full.Username;
+            Email         = full.Email;
+            Status        = full.Status;
+            IsAdmin       = full.IsAdmin;
+            UserCreatedAt = full.UserCreatedAt;
+            RoleTypeId    = full.RoleTypeId;
 
             // Populate UserProfile fields.
-            if (detail.ProfileExists)
+            if (full.ProfileExists)
             {
-                FirstName     = detail.FirstName;
-                LastName      = detail.LastName;
-                PreferredName = detail.PreferredName;
-                Title         = detail.Title;
-                DateOfBirth   = detail.DateOfBirth;
-                Bio           = detail.Bio;
-                Gender        = detail.Gender;
-                Timezone      = detail.Timezone;
-                LanguageCode  = detail.LanguageCode;
-                DepartmentId  = detail.DepartmentId;
-                JobTitleId    = detail.JobTitleId;
+                FirstName     = full.FirstName;
+                LastName      = full.LastName;
+                PreferredName = full.PreferredName;
+                Title         = full.Title;
+                Bio           = full.Bio;
+                Gender        = full.Gender;
+                Timezone      = full.Timezone;
+                LanguageCode  = full.LanguageCode;
+                DepartmentId  = full.DepartmentId;
+                JobTitleId    = full.JobTitleId;
             }
 
-            // Load tab data (Staff-linked tabs).
-            if (StaffId > 0)
-            {
-                var contactTask   = _svc.GetStaffContactAsync(StaffId, ct);
-                var classTask     = _svc.GetStaffClassAssignmentsAsync(StaffId, ct);
-                var deviceTask    = _svc.GetStaffDevicesAsync(StaffId, ct);
-                var externalTask  = _svc.GetStaffExternalAccountsAsync(StaffId, ct);
-                var absenceTask   = _svc.GetStaffAbsencesAsync(StaffId, ct);
-                var auditTask     = _svc.GetUserLoginAuditAsync(userId, ct);
-
-                await Task.WhenAll(contactTask, classTask, deviceTask, externalTask, absenceTask, auditTask);
-
-                Contact          = await contactTask;
-                Classes          = await classTask;
-                Devices          = await deviceTask;
-                ExternalAccounts = await externalTask;
-                Absences         = await absenceTask;
-                LoginAudit       = await auditTask;
-            }
-            else
-            {
-                LoginAudit = await _svc.GetUserLoginAuditAsync(userId, ct);
-            }
+            DateOfBirth     = full.DateOfBirth;
+            Contact         = full.Contact;
+            Classes         = full.Classes;
+            Devices         = full.StaffDevices;
+            ExternalAccounts = full.StaffExternalAccounts;
+            Absences        = full.StaffAbsences;
+            LoginAudit      = full.StaffLoginAudit;
         }
         catch (Exception ex) { Error = ex.Message; }
         finally { IsLoading = false; }
@@ -394,6 +408,7 @@ public sealed class UserProfileViewModelV2
                 Email         = Email.Trim(),
                 RoleTypeId    = RoleTypeId,
                 Status        = Status,
+                IsAdmin       = IsAdmin,
                 FirstName     = FirstName,
                 LastName      = LastName,
                 PreferredName = PreferredName,
@@ -521,6 +536,37 @@ public sealed class UserProfileViewModelV2
             {
                 var (ok, err) = await _svc.UpdateProfilePhotoAsync(UserId, path, ct);
                 if (!ok) PhotoError = $"Photo saved locally but DB update failed: {err}";
+            }
+        }
+        catch (Exception ex) { PhotoError = ex.Message; }
+        finally { IsUploadingPhoto = false; }
+    }
+
+    // =========================================================================
+    // Photo removal
+    // =========================================================================
+
+    public async Task RemovePhotoAsync(CancellationToken ct = default)
+    {
+        PhotoError       = null;
+        IsUploadingPhoto = true;
+        try
+        {
+            // Delete local file if it exists.
+            if (!string.IsNullOrWhiteSpace(PhotoStoredPath) && File.Exists(PhotoStoredPath))
+            {
+                try { File.Delete(PhotoStoredPath); } catch { /* best-effort */ }
+            }
+
+            // Clear in-memory state.
+            PhotoBytes      = null;
+            PhotoStoredPath = null;
+
+            // Clear path in DB.
+            if (UserId > 0)
+            {
+                var (ok, err) = await _svc.UpdateProfilePhotoAsync(UserId, string.Empty, ct);
+                if (!ok) PhotoError = $"Photo removed locally but DB update failed: {err}";
             }
         }
         catch (Exception ex) { PhotoError = ex.Message; }

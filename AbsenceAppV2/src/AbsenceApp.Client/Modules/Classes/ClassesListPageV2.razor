@@ -92,25 +92,52 @@
             CurrentPage="@ViewModel.Page"
             ShowEntries="@ViewModel.PageSize"
             SearchValue="@ViewModel.SearchTerm"
-            ActiveFilters="@_emptyChips"
+            ActiveFilters="@_activeFilterChips"
 
             OnShowEntriesChanged="@OnShowEntriesChanged"
             OnSearchChanged="@OnSearchChanged"
-            OnRemoveFilter="@(_ => Task.CompletedTask)"
-            OnClearAllFilters="@(() => Task.CompletedTask)">
+            OnRemoveFilter="@OnRemoveFilter"
+            OnClearAllFilters="@OnClearAllFilters">
 
-            <ActionButtons>
-            </ActionButtons>
+            <Filters>
+                <select class="tpt-filter-select"
+                        value="@GetFilter("name")"
+                        @onchange="@(e => SetFilter("name", "Class Name", e.Value?.ToString()))">
+                    <option value="">Class Name</option>
+                    @foreach (var v in ViewModel.GetNameOptions())
+                    {
+                        <option value="@v">@v</option>
+                    }
+                </select>
+                <select class="tpt-filter-select"
+                        value="@GetFilter("code")"
+                        @onchange="@(e => SetFilter("code", "Code", e.Value?.ToString()))">
+                    <option value="">Code</option>
+                    @foreach (var v in ViewModel.GetCodeOptions())
+                    {
+                        <option value="@v">@v</option>
+                    }
+                </select>
+            </Filters>
 
             @* =========================================================
-               TABLE HEADER — hardcoded (classes.json fields don't
-               match ClassDto: Id, Name, Description)
+               TABLE HEADER
                ========================================================= *@
             <TableHeader>
                 <th class="tpt-th">
                     <button class="tpt-sort-btn @SortClass("name")"
                             @onclick="@(() => OnSort("name"))">
                         Class Name
+                        <span class="tpt-sort-icons">
+                            <span class="tpt-sort-up">▲</span>
+                            <span class="tpt-sort-dn">▼</span>
+                        </span>
+                    </button>
+                </th>
+                <th class="tpt-th">
+                    <button class="tpt-sort-btn @SortClass("code")"
+                            @onclick="@(() => OnSort("code"))">
+                        Code
                         <span class="tpt-sort-icons">
                             <span class="tpt-sort-up">▲</span>
                             <span class="tpt-sort-dn">▼</span>
@@ -133,13 +160,14 @@
                             <td class="tpt-td"><span class="tpt-skeleton"></span></td>
                             <td class="tpt-td"><span class="tpt-skeleton"></span></td>
                             <td class="tpt-td"><span class="tpt-skeleton"></span></td>
+                            <td class="tpt-td"><span class="tpt-skeleton"></span></td>
                         </tr>
                     }
                 }
                 else if (ViewModel.Items.Count == 0)
                 {
                     <tr>
-                        <td class="tpt-td tpt-td--empty" colspan="3">No classes found.</td>
+                        <td class="tpt-td tpt-td--empty" colspan="4">No classes found.</td>
                     </tr>
                 }
                 else
@@ -148,6 +176,7 @@
                     {
                         <tr class="tpt-tr">
                             <td class="tpt-td">@cls.Name</td>
+                            <td class="tpt-td">@(cls.Code ?? "—")</td>
                             <td class="tpt-td">@(cls.Description ?? "—")</td>
                             <td class="tpt-td tpt-td--actions">
                                 <a href="@($"/v2/classes/{cls.Id}")"
@@ -213,8 +242,55 @@
 
 @code {
 
-    private static readonly List<FilterChip> _emptyChips = [];
+    // ─── Filter state ────────────────────────────────────────────────────────
+    private readonly Dictionary<string, string> _f = new()
+    {
+        ["name"] = string.Empty,
+        ["code"] = string.Empty,
+    };
 
+    private List<FilterChip> _activeFilterChips = [];
+
+    private static readonly Dictionary<string, string> _keyToLabel = new()
+    {
+        ["name"] = "Class Name",
+        ["code"] = "Code",
+    };
+
+    private static readonly Dictionary<string, string> _labelToKey =
+        _keyToLabel.ToDictionary(kv => kv.Value, kv => kv.Key);
+
+    private string GetFilter(string key) => _f.GetValueOrDefault(key, string.Empty);
+
+    private async Task SetFilter(string key, string label, string? value)
+    {
+        _f[key] = value ?? string.Empty;
+        RebuildChips();
+        await ViewModel.SetFilterAsync(key, value ?? string.Empty);
+    }
+
+    private async Task OnRemoveFilter(FilterChip chip)
+    {
+        var key = _labelToKey.GetValueOrDefault(chip.Name ?? "");
+        if (key is not null) _f[key] = string.Empty;
+        RebuildChips();
+        if (key is not null) await ViewModel.RemoveFilterAsync(key);
+    }
+
+    private async Task OnClearAllFilters()
+    {
+        foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
+        _activeFilterChips = [];
+        await ViewModel.ClearAllFiltersAsync();
+    }
+
+    private void RebuildChips() =>
+        _activeFilterChips = _f
+            .Where(kv => !string.IsNullOrWhiteSpace(kv.Value))
+            .Select(kv => new FilterChip(_keyToLabel[kv.Key], kv.Value))
+            .ToList();
+
+    // ─── Lifecycle ───────────────────────────────────────────────────────────
     protected override async Task OnInitializedAsync()
     {
         AppState.SetBreadcrumb("Classes", "All Classes");

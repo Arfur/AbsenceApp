@@ -33,10 +33,10 @@ public interface IClassRepository
     // Interface methods — async CRUD contract for Class entities
     // =========================================================================
 
-    IQueryable<Class> Query();
-    Task<Class?> FindByIdAsync(long id);
-    Task<IEnumerable<Class>> ListAsync();
-    Task AddAsync(Class entity);
-    Task UpdateAsync(Class entity);
+    IQueryable<TeachingGroup> Query();
+    Task<TeachingGroup?> FindByIdAsync(long id);
+    Task<IEnumerable<TeachingGroup>> ListAsync();
+    Task AddAsync(TeachingGroup entity);
+    Task UpdateAsync(TeachingGroup entity);
     Task DeleteAsync(long id);
 }

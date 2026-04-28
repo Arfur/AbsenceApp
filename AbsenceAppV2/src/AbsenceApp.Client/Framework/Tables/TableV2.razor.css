@@ -80,6 +80,7 @@
 
 .dsv2-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: var(--ds-font-size-sm);
     color: var(--ds-color-neutral-80);
@@ -106,6 +107,8 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     vertical-align: middle;
 }
 
@@ -115,9 +118,11 @@
 
 .dsv2-table__th--checkbox,
 .dsv2-table__th--actions {
-    width: 2.75rem;
     text-align: center;
 }
+
+.dsv2-table__th--checkbox { width: 2.75rem; }
+.dsv2-table__th--actions  { width: 120px; }
 
 /* ── Sort button ─────────────────────────────────────────────────────────── */
 
@@ -184,6 +189,9 @@
     padding: var(--ds-table-cell-padding-y) var(--ds-table-cell-padding-x);
     vertical-align: middle;
     color: var(--ds-color-neutral-80);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .dsv2-table__td--left   { text-align: left; }
@@ -193,8 +201,12 @@
 .dsv2-table__td--checkbox,
 .dsv2-table__td--actions {
     text-align: center;
-    width: 2.75rem;
+    overflow: visible;
+    white-space: normal;
 }
+
+.dsv2-table__td--checkbox { width: 2.75rem; }
+.dsv2-table__td--actions  { width: 120px; }
 
 /* ── Checkbox ────────────────────────────────────────────────────────────── */
 
