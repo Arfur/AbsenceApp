@@ -3,9 +3,9 @@
  File        : UserProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
    Created     : 2026-04-21
-     Updated     : 2026-04-25
+     Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for the full User Profile / Add User page
                (UserFormPageV2.razor). Handles both Add User and Edit User
@@ -31,6 +31,12 @@
                                  one API call: UserProfileFullDetailDto from
                                  GetUserProfileDetailAsync. All tab sections are
                                  populated from this single payload.
+    - 1.3.0  2026-05-04  Amendment B/C: Added UsersWithAccounts property;
+                         changed InitNewAsync signature to long? preselectedStaffId;
+                         InitEditAsync now loads UsersWithAccounts via
+                         GetUsersForSelectAsync; added RefreshDropdownsAsync().
+                         Amendment A: HeaderLastLogin already exists and is set
+                         in InitEditAsync — now surfaced in banner far-right section.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in V2ServiceCollectionExtensions.cs.
@@ -206,6 +212,12 @@ public sealed class UserProfileViewModelV2
     public IReadOnlyList<StaffSelectDto> StaffWithoutAccounts { get; private set; } = [];
 
     // =========================================================================
+    // Edit-User — users with accounts (for banner navigation dropdown)
+    // =========================================================================
+
+    public IReadOnlyList<UserSelectDto> UsersWithAccounts { get; private set; } = [];
+
+    // =========================================================================
     // Add-User linked staff
     // =========================================================================
 
@@ -226,10 +238,10 @@ public sealed class UserProfileViewModelV2
     // Initialise — Add User
     // =========================================================================
 
-    public async Task InitNewAsync(int staffId, CancellationToken ct = default)
+    public async Task InitNewAsync(long? preselectedStaffId = null, CancellationToken ct = default)
     {
         IsNew    = true;
-        StaffId  = staffId;
+        StaffId  = (int)(preselectedStaffId ?? 0L);
         IsLoading = true;
         Error    = null;
         try
@@ -237,13 +249,13 @@ public sealed class UserProfileViewModelV2
             RoleTypes   = await _svc.GetRoleTypesAsync(ct);
             Permissions = (await _svc.GetUserPermissionsAsync(0, ct)).ToList();
 
-            if (staffId > 0)
+            if (preselectedStaffId.HasValue && preselectedStaffId.Value > 0)
             {
                 // Pre-selected staff (navigated from StaffDetailPage).
-                LinkedStaff = await _svc.GetStaffForUserCreateAsync(staffId, ct);
+                LinkedStaff = await _svc.GetStaffForUserCreateAsync((int)preselectedStaffId.Value, ct);
                 if (LinkedStaff is null)
                 {
-                    Error = $"Staff record {staffId} not found.";
+                    Error = $"Staff record {preselectedStaffId.Value} not found.";
                     return;
                 }
                 Email          = LinkedStaff.WorkEmail;
@@ -307,6 +319,9 @@ public sealed class UserProfileViewModelV2
             RoleTypes   = full.RoleTypes;
             Permissions = full.Permissions.ToList();
 
+            // Load users-with-accounts for Edit Mode navigation dropdown.
+            UsersWithAccounts = await _svc.GetUsersForSelectAsync(ct);
+
             // Populate header.
             StaffId           = full.StaffId ?? 0;
             HeaderFullName    = full.FullName;
@@ -355,6 +370,20 @@ public sealed class UserProfileViewModelV2
         }
         catch (Exception ex) { Error = ex.Message; }
         finally { IsLoading = false; }
+    }
+
+    // =========================================================================
+    // Refresh both dropdown lists (called after CreateUserAsync succeeds)
+    // =========================================================================
+
+    public async Task RefreshDropdownsAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            StaffWithoutAccounts = await _svc.GetStaffWithoutUsersAsync(ct);
+            UsersWithAccounts    = await _svc.GetUsersForSelectAsync(ct);
+        }
+        catch (Exception ex) { Error = ex.Message; }
     }
 
     // =========================================================================

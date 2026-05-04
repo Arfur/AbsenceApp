@@ -3,9 +3,9 @@
  File        : UserManagementApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-04-11
- Updated     : 2026-04-25
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : Client-side User Management API service. Provides full user
                CRUD, role/page reference data, per-user permission matrix
@@ -26,6 +26,9 @@
                          UpdateProfilePhotoAsync.
     - 1.3.0  2026-04-25  Updated GetUserProfileDetailAsync to return unified
                                  UserProfileFullDetailDto (one-call full profile load).
+    - 1.4.0  2026-05-04  Added GetUsersForSelectAsync() wrapper — returns all users
+                         with accounts as IReadOnlyList<UserSelectDto>, used for the
+                         Edit Mode user-navigation dropdown (Amendment C).
 ===============================================================================
 */
 
@@ -266,6 +269,21 @@ public sealed class UserManagementApiServiceV2
         catch (Exception ex)
         {
             AppLog.Write("UserManagementApiServiceV2.cs", "GetStaffWithoutUsersAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<UserSelectDto>> GetUsersForSelectAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var svc = scope.ServiceProvider.GetRequiredService<IUserManagementService>();
+            return await svc.GetUsersForSelectAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUsersForSelectAsync", $"ERROR {ex.Message}");
             return [];
         }
     }

@@ -3,9 +3,9 @@
  File        : IUserManagementService.cs
  Namespace   : AbsenceApp.Core.Interfaces
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-04-11
- Updated     : 2026-04-25
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : Service contract for the E15 User Management module.
                Covers user CRUD, role listing, page listing, per-user
@@ -27,6 +27,9 @@
   - 1.3.0  2026-04-25  Updated GetUserProfileDetailAsync to return unified
                  UserProfileFullDetailDto for one-call full profile
                  loading.
+  - 1.4.0  2026-05-04  Added GetUsersForSelectAsync() — returns all users with
+                 accounts as lightweight UserSelectDto list, used for the
+                 Edit Mode user-navigation dropdown.
 -------------------------------------------------------------------------------
  Notes       :
    - Implemented by UserManagementService in AbsenceApp.Data.Services.
@@ -52,6 +55,7 @@ public interface IUserManagementService
     Task<StaffSelectDto?> GetStaffForUserCreateAsync(int staffId, CancellationToken ct = default);
     Task<bool>            StaffHasUserAsync(int staffId, CancellationToken ct = default);
     Task<IReadOnlyList<StaffSelectDto>> GetStaffWithoutUsersAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<UserSelectDto>> GetUsersForSelectAsync(CancellationToken ct = default);
 
     // ── Reference data ───────────────────────────────────────────────────────
 

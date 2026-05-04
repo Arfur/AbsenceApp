@@ -3,7 +3,7 @@
  File        : UserManagementService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.9.0
+ Version     : 2.0.0
  Created     : 2026-04-11
  Updated     : 2026-05-04
 -------------------------------------------------------------------------------
@@ -64,6 +64,10 @@
                          in GetStaffAbsencesAsync LINQ Where clause. Absence.PersonId
                          is long after Phase 2 type alignment; long == ulong was
                          ambiguous (CS0034). staffId is int; (long)staffId matches.
+   - 2.0.0  2026-05-04  Added GetUsersForSelectAsync() — loads all users, joins Staff
+                         table for FullName, returns IReadOnlyList<UserSelectDto>
+                         ordered by FullName. Used for the Edit Mode user-navigation
+                         dropdown in UserFormPageV2 (Amendment C).
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DataServiceRegistration.cs.
@@ -384,6 +388,46 @@ public sealed class UserManagementService : IUserManagementService
                 WorkEmail   = s.WorkEmail,
             })
             .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<UserSelectDto>> GetUsersForSelectAsync(
+        CancellationToken ct = default)
+    {
+        // Load all user rows with their StaffId and Username.
+        var userRows = await _db.Users
+            .AsNoTracking()
+            .Select(u => new { u.Id, u.StaffId, u.Username })
+            .ToListAsync(ct);
+
+        // Collect distinct StaffIds that are present.
+        var staffIds = userRows
+            .Where(u => u.StaffId.HasValue)
+            .Select(u => u.StaffId!.Value)
+            .Distinct()
+            .ToList();
+
+        // Build a name map from Staff table.
+        var nameMap = staffIds.Count > 0
+            ? await _db.Staff
+                .AsNoTracking()
+                .Where(s => staffIds.Contains(s.Id))
+                .ToDictionaryAsync(
+                    s => s.Id,
+                    s => (s.FirstName + " " + s.LastName).Trim(),
+                    ct)
+            : new Dictionary<int, string>();
+
+        return userRows
+            .Select(u => new UserSelectDto
+            {
+                Id       = u.Id,
+                FullName = u.StaffId.HasValue && nameMap.TryGetValue(u.StaffId.Value, out var n)
+                               ? n
+                               : u.Username,
+                Username = u.Username,
+            })
+            .OrderBy(u => u.FullName)
+            .ToList();
     }
 
     // =========================================================================

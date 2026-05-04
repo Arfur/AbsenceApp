@@ -3,9 +3,9 @@
  File        : UserManagementDtos.cs
  Namespace   : AbsenceApp.Core.DTOs
  Author      : Michael
- Version     : 1.4.0
+ Version     : 1.5.0
  Created     : 2026-04-11
- Updated     : 2026-04-25
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : Data Transfer Objects for the E15 User Management module.
                Covers list display, create/update forms, page permission
@@ -32,6 +32,9 @@
                                  userprofiles metadata, authoritative staff data,
                                  staff-linked collections, permission matrix, role types,
                                  and additional staff-related summary collections.
+   - 1.5.0  2026-05-04  Added UserSelectDto — lightweight user descriptor (Id,
+                         FullName, Username) for the Edit Mode user-navigation
+                         dropdown in UserFormPageV2.
 -------------------------------------------------------------------------------
  Notes       :
    - No EF / DbContext references. Pure POCO DTOs for cross-layer contracts.
@@ -128,6 +131,18 @@ public sealed class StaffSelectDto
     public string FullName    { get; set; } = default!;
     public string StaffNumber { get; set; } = default!;
     public string WorkEmail   { get; set; } = default!;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UserSelectDto — lightweight user descriptor for the Edit Mode navigation
+// dropdown (UsersWithAccounts list in UserFormPageV2).
+// ─────────────────────────────────────────────────────────────────────────────
+
+public sealed class UserSelectDto
+{
+    public long   Id       { get; set; }
+    public string FullName { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -2,9 +2,9 @@
    File        : UserFormPageV2.razor.css
    Component   : UserFormPageV2 (Blazor CSS isolation)
    Author      : Michael
-    Version     : 3.4.0
+    Version     : 3.5.0
    Created     : 2026-04-11
-    Updated     : 2026-04-25
+    Updated     : 2026-05-04
    ---------------------------------------------------------------------------
    Purpose     : Scoped styles for the User Profile / Add User page (v4.0.0).
                  Class namespace: upv2-*
@@ -158,30 +158,54 @@
     line-height: 1.2;
 }
 
-.upv2-banner-meta {
+/* ── Banner identity — label:value rows ── */
+.upv2-banner-kv-row {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .45rem;
-}
-
-.upv2-banner-username {
-    font-size: .85rem;
-    color: rgba(255,255,255,.7);
-    font-family: monospace;
-}
-
-.upv2-banner-detail {
-    display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: .5rem;
-    font-size: .8rem;
-    color: rgba(255,255,255,.65);
+    font-size: .83rem;
 }
 
-.upv2-banner-sep {
-    color: rgba(255,255,255,.3);
+.upv2-banner-kv-label {
+    color: rgba(255,255,255,.6);
+    font-weight: 600;
+    min-width: 3.5rem;
+}
+
+.upv2-banner-kv-value {
+    color: rgba(255,255,255,.9);
+}
+
+/* ── Far-right last-login block ── */
+.upv2-banner-lastlogin {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .3rem;
+}
+
+/* ── User name dropdown inside banner ── */
+.upv2-banner-user-select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,.4);
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    padding: 0 .25rem;
+    appearance: auto;
+    max-width: 100%;
+}
+
+.upv2-banner-user-select option {
+    background: #1e3a5f;
+    color: #ffffff;
+    font-size: .9rem;
+    font-weight: 400;
 }
 
 .upv2-banner-field {

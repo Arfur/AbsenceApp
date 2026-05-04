@@ -1,20 +1,38 @@
+---
+doc_type: prd
+project_name: "AbsenceApp"
+module: "V2"
+version: "1.1.0"
+file_name: "AbsenceApp_PRD.md"
+created_date: "2026-04-16"
+updated_date: "2026-04-30"
+authority: "Michael"
+scope: "Master product requirements, architecture, schema, coding standards, design reference"
+ai_contract:
+  read_rules: "Agents may read the PRD for requirements, acceptance criteria, and design constraints."
+  write_rules: "Agents MUST NOT modify this PRD directly. Suggested changes must be proposed as PRD change requests and recorded in the appropriate governance workflow. Agents may reference PRD content when producing implementation artifacts."
+---
 ================================================================================
  File        : AbsenceApp_PRD.md
  Author      : Michael
  Version     : 1.0.0
  Created     : 2026-04-16
- Updated     : 2026-04-16
+ Updated     : 2026-04-30
 --------------------------------------------------------------------------------
  Purpose     :
-   Master product requirements, architecture, schema, coding standards, and 
-   design reference for AbsenceApp V2.
+   Master product requirements, architecture, schema, coding standards, and
+   design reference for AbsenceApp V2. This document is the authoritative
+   requirements source and must be consulted before starting implementation.
 --------------------------------------------------------------------------------
  Changes     :
-   - 1.0.0 (2026-04-16) Initial creation from all docs in C:\DevAbsence1\docs\
+   - 1.0.0 (2026-04-16) Initial creation from docs in C:\DevAbsence1\docs\
+   - 1.1.0 (2026-04-30) Added PRD YAML front-matter and clarified acceptance criteria.
 --------------------------------------------------------------------------------
  Notes       :
    - This file defines the authoritative requirements for AbsenceApp V2.
-   - It must be loaded before any project work begins.
+   - Load this PRD before any project work begins.
+   - Record major decisions and acceptance criteria here; use phase changelogs
+     for completed work entries.
 ================================================================================
 
 ## 1. Executive Summary
