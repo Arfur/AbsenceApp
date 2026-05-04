@@ -2,7 +2,7 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 5.0.0
+   Version     : 6.1.0
    Created     : 2026-04-11
    Updated     : 2026-05-04
    ---------------------------------------------------------------------------
@@ -19,8 +19,7 @@
                    � Add mode: staff selector in banner; Account Details form +
                      Module Permissions below (disabled until staff selected).
                    � Edit mode: full-width 8-tab interface below banner:
-                       0  Basic Info (User + UserProfile + Module Permissions
-                                      + Change Password)
+                       0  Basic Info (User + UserProfile + Change Password)
                        1  Contacts (Staff employment / contact)
                        2  Classes & Year Groups (StaffAssignments)
                        3  Devices (StaffDevices)
@@ -28,6 +27,7 @@
                        5  Medical Records (placeholder)
                        6  Absence Records (Absences)
                        7  Login Audit (LoginAudit)
+                       8  Permissions (edit mode only)
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-04-11  Initial creation (E15 User Management).
@@ -67,6 +67,31 @@
                            - Tabs 1�7: @if (IsNew) "create account first" placeholder.
                            - Removed old upv2-banner-meta and upv2-banner-detail blocks.
                            - Added OnUserSelectChanged handler.
+     - 6.0.0  2026-05-04  Issues A-M fixes:
+                           - Issue A: Added _loadedId field + OnParametersSetAsync to
+                             reload when navigating between users via banner dropdown.
+                           - Issue B: Module Permissions moved from Tab 0 (edit mode) to
+                             new Tab 8 (edit mode only). Tab bar conditionally renders Tab 8.
+                           - Issue D: Edit-mode photo circle restructured: now a <label>
+                             containing InputFile so click on the circle opens file picker.
+                             Add-mode photo area remains a static placeholder.
+                           - Issue E: Success message moved from ChildContent to ActionsContent
+                             (edit branch), rendered as upv2-save-success inline span.
+                           - Issue F: Last Login span classes changed from upv2-banner-kv-label
+                             /upv2-banner-kv-value to upv2-banner-lastlogin-label/value.
+                           - Issue H: Edit mode identity uses <div> instead of <h2> and has
+                             upv2-banner-mode-hint span. Add mode staff select also gets hint.
+                           - Issue I: Tabs 2-7 now have @if (ViewModel.IsNew) guard so they
+                             show a placeholder in add mode instead of empty edit-mode content.
+     - 6.1.0  2026-05-04  Issues N1-N4 fixes:
+                           - Issue N2: Add-mode photo block replaced with same clickable
+                             label+InputFile as Edit mode (photo upload in Add mode).
+                           - Issue N3: Add-mode LinkedStaff null branch: <h2> replaced with
+                             <div> containing mode-hint; kv-rows added after staff select block.
+                             Add-mode LinkedStaff not-null: <h2> changed to <div>.
+                           - Issue N4: Last-login block wrapped in @if (!ViewModel.IsNew).
+                           - Issue N1: OnParametersSetAsync gets else-if branch to handle
+                             Edit→Add navigation (clear _loadedId, call InitNewAsync).
    ===========================================================================
 *@
 
@@ -101,6 +126,12 @@
         }
         else
         {
+            @if (ViewModel.Success is not null)
+            {
+                <span class="upv2-save-success">
+                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i>@ViewModel.Success
+                </span>
+            }
             <button class="phv2-btn phv2-btn--primary"
                     disabled="@ViewModel.IsSaving"
                     @onclick="OnSaveProfile">
@@ -128,47 +159,71 @@
             {
                 <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
             }
-            @if (ViewModel.Success is not null)
-            {
-                <div class="dsv2-alert dsv2-alert--success" role="status">@ViewModel.Success</div>
-            }
 
             @* -------------------------- PROFILE BANNER --------------------------- *@
             <div class="upv2-banner">
 
                 @* Left: circular photo *@
                 <div class="upv2-banner-photo">
-                    @if (ViewModel.PhotoDataUri is not null)
-                    {
-                        <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
-                    }
-                    else
-                    {
-                        <div class="upv2-banner-avatar upv2-banner-avatar--placeholder">
-                            <i class="bi bi-person-fill" aria-hidden="true"></i>
-                        </div>
-                    }
-
                     @if (!ViewModel.IsNew)
                     {
+                        @* Edit mode: circle is a clickable upload label *@
+                        <label class="upv2-banner-avatar-label @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
+                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
+                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
+                            @if (ViewModel.PhotoDataUri is not null)
+                            {
+                                <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
+                            }
+                            else
+                            {
+                                <div class="upv2-banner-avatar upv2-banner-avatar--placeholder upv2-banner-avatar--has-upload">
+                                    <i class="bi bi-camera" aria-hidden="true"></i>
+                                    <span class="upv2-banner-avatar-upload-text">Upload Photo</span>
+                                </div>
+                            }
+                        </label>
                         @if (ViewModel.PhotoError is not null)
                         {
                             <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
                         }
-                        <label class="upv2-banner-upload @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
-                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
-                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
-                            <i class="bi bi-camera" aria-hidden="true"></i>
-                            @(ViewModel.IsUploadingPhoto ? "Uploading..." : "Upload Photo")
-                        </label>
                         @if (ViewModel.PhotoDataUri is not null)
                         {
-                            <button class="upv2-banner-upload"
-                                    style="color:#fca5a5;border-color:rgba(252,165,165,.3)"
+                            <button class="upv2-banner-remove-photo"
                                     disabled="@ViewModel.IsUploadingPhoto"
                                     @onclick="OnRemovePhoto">
-                                <i class="bi bi-trash" aria-hidden="true"></i>
-                                Remove
+                                <i class="bi bi-trash" aria-hidden="true"></i> Remove
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        @* Add mode: same clickable avatar label as Edit mode (Issue N2) *@
+                        <label class="upv2-banner-avatar-label @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
+                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
+                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
+                            @if (ViewModel.PhotoDataUri is not null)
+                            {
+                                <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
+                            }
+                            else
+                            {
+                                <div class="upv2-banner-avatar upv2-banner-avatar--placeholder upv2-banner-avatar--has-upload">
+                                    <i class="bi bi-camera" aria-hidden="true"></i>
+                                    <span class="upv2-banner-avatar-upload-text">Upload Photo</span>
+                                </div>
+                            }
+                        </label>
+                        @if (ViewModel.PhotoError is not null)
+                        {
+                            <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
+                        }
+                        @if (ViewModel.PhotoDataUri is not null)
+                        {
+                            <button class="upv2-banner-remove-photo"
+                                    disabled="@ViewModel.IsUploadingPhoto"
+                                    @onclick="OnRemovePhoto">
+                                <i class="bi bi-trash" aria-hidden="true"></i> Remove
                             </button>
                         }
                     }
@@ -181,7 +236,7 @@
                     {
                         @if (ViewModel.LinkedStaff is null)
                         {
-                            <h2 class="upv2-banner-name">New User Account</h2>
+                            <div class="upv2-banner-name">New User Account <span class="upv2-banner-mode-hint">(Select New Staff name)</span></div>
 
                             @if (ViewModel.StaffWithoutAccounts.Count > 0)
                             {
@@ -201,11 +256,23 @@
                             {
                                 <p class="upv2-banner-hint">All staff members already have user accounts.</p>
                             }
+                            <div class="upv2-banner-kv-row">
+                                <span class="upv2-banner-kv-label">Role:</span>
+                                <span class="upv2-banner-kv-value">&mdash;</span>
+                            </div>
+                            <div class="upv2-banner-kv-row">
+                                <span class="upv2-banner-kv-label">Email:</span>
+                                <span class="upv2-banner-kv-value">&mdash;</span>
+                            </div>
+                            <div class="upv2-banner-kv-row">
+                                <span class="upv2-banner-kv-label">Status:</span>
+                                <span class="upv2-banner-kv-value">&mdash;</span>
+                            </div>
                         }
                         else
                         {
                             @* Staff selected � show kv-rows (UserS3.png style) *@
-                            <h2 class="upv2-banner-name">@ViewModel.LinkedStaff.FullName</h2>
+                            <div class="upv2-banner-name">@ViewModel.LinkedStaff.FullName</div>
                             <div class="upv2-banner-kv-row">
                                 <span class="upv2-banner-kv-label">Role:</span>
                                 <span class="upv2-banner-kv-value">
@@ -227,7 +294,7 @@
                     else
                     {
                         @* Edit Mode � user-navigation dropdown + kv-rows (UserS3.png style) *@
-                        <h2 class="upv2-banner-name">
+                        <div class="upv2-banner-name">
                             <select class="upv2-banner-user-select"
                                     value="@ViewModel.UserId"
                                     @onchange="OnUserSelectChanged">
@@ -236,7 +303,8 @@
                                     <option value="@u.Id">@u.FullName</option>
                                 }
                             </select>
-                        </h2>
+                            <span class="upv2-banner-mode-hint">(Select User name)</span>
+                        </div>
                         <div class="upv2-banner-kv-row">
                             <span class="upv2-banner-kv-label">Role:</span>
                             <span class="upv2-banner-kv-value">@ViewModel.HeaderRoleName</span>
@@ -254,14 +322,17 @@
                 </div>
 
                 @* Far right: last login (Amendment A � both modes) *@
-                <div class="upv2-banner-lastlogin">
-                    <span class="upv2-banner-kv-label">Last Login</span>
-                    <span class="upv2-banner-kv-value">
+                @if (!ViewModel.IsNew)
+                {
+                    <div class="upv2-banner-lastlogin">
+                    <span class="upv2-banner-lastlogin-label">Last Login</span>
+                    <span class="upv2-banner-lastlogin-value">
                         @(ViewModel.HeaderLastLogin.HasValue
                             ? ViewModel.HeaderLastLogin.Value.ToString("dd MMM yyyy HH:mm")
                             : "�")
                     </span>
-                </div>
+                    </div>
+                }
 
             </div>
             @* -- end banner -- *@
@@ -279,6 +350,10 @@
                     @RenderTabBtn(5, "bi-heart-pulse",   "Medical")
                     @RenderTabBtn(6, "bi-calendar-x",    "Absences")
                     @RenderTabBtn(7, "bi-shield-check",  "Login Audit")
+                    @if (!ViewModel.IsNew)
+                    {
+                        @RenderTabBtn(8, "bi-key", "Permissions")
+                    }
                 </div>
 
                 @* -- Tab 0: Basic Info ----------------------------- *@
@@ -475,20 +550,6 @@
                                               placeholder="Short biography or notes about this user..."></textarea>
                                 </div>
 
-                                @* Module permissions *@
-                                <div class="upv2-section-title upv2-section-title--mt">
-                                    <i class="bi bi-key" aria-hidden="true"></i> Module Permissions
-                                </div>
-                                <div class="upv2-divider"></div>
-                                @if (ViewModel.Permissions.Count == 0)
-                                {
-                                    <p class="upv2-empty-msg">No pages configured.</p>
-                                }
-                                else
-                                {
-                                    <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
-                                }
-
                                 @* Change password *@
                                 <div class="upv2-section-title upv2-section-title--mt">
                                     <i class="bi bi-lock" aria-hidden="true"></i> Change Password
@@ -605,40 +666,47 @@
                 @if (ViewModel.ActiveTab == 2)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
-                                @if (ViewModel.Classes.Count == 0)
+                                @if (ViewModel.IsNew)
                                 {
-                                    <div class="upv2-no-data">
-                                        <i class="bi bi-info-circle"></i> No class assignments found for this staff member.
-                                    </div>
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
                                 }
                                 else
                                 {
-                                    <div class="upv2-section-title">Class &amp; Role Assignments</div>
-                                    <div class="upv2-divider"></div>
-                                    <div class="upv2-table-container">
-                                    <table class="upv2-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Location</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Notes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var row in ViewModel.Classes)
-                                            {
+                                    @if (ViewModel.Classes.Count == 0)
+                                    {
+                                        <div class="upv2-no-data">
+                                            <i class="bi bi-info-circle"></i> No class assignments found for this staff member.
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="upv2-section-title">Class &amp; Role Assignments</div>
+                                        <div class="upv2-divider"></div>
+                                        <div class="upv2-table-container">
+                                        <table class="upv2-table">
+                                            <thead>
                                                 <tr>
-                                                    <td>@row.LocationId</td>
-                                                    <td>@row.StartDate.ToString("dd MMM yyyy")</td>
-                                                    <td>@(row.EndDate.HasValue ? row.EndDate.Value.ToString("dd MMM yyyy") : "Current")</td>
-                                                    <td>@(row.Notes ?? string.Empty)</td>
+                                                    <th>Location</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Notes</th>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                }
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var row in ViewModel.Classes)
+                                                {
+                                                    <tr>
+                                                        <td>@row.LocationId</td>
+                                                        <td>@row.StartDate.ToString("dd MMM yyyy")</td>
+                                                        <td>@(row.EndDate.HasValue ? row.EndDate.Value.ToString("dd MMM yyyy") : "Current")</td>
+                                                        <td>@(row.Notes ?? string.Empty)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    }
+                                } @* end else IsNew Tab 2 *@
                             </div>
                         }
 
@@ -646,6 +714,12 @@
                 @if (ViewModel.ActiveTab == 3)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.IsNew)
+                                {
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
+                                }
+                                else
+                                {
                                 @if (ViewModel.Devices.Count == 0)
                                 {
                                     <div class="upv2-no-data">
@@ -688,6 +762,7 @@
                                         </tbody>
                                     </table>
                                 }
+                                } @* end else IsNew Tab 3 *@
                             </div>
                         }
 
@@ -695,6 +770,12 @@
                 @if (ViewModel.ActiveTab == 4)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.IsNew)
+                                {
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
+                                }
+                                else
+                                {
                                 @if (ViewModel.ExternalAccounts.Count == 0)
                                 {
                                     <div class="upv2-no-data">
@@ -735,6 +816,7 @@
                                     </table>
                                     </div>
                                 }
+                                } @* end else IsNew Tab 4 *@
                             </div>
                         }
 
@@ -742,11 +824,18 @@
                 @if (ViewModel.ActiveTab == 5)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.IsNew)
+                                {
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
+                                }
+                                else
+                                {
                                 <div class="upv2-no-data upv2-no-data--center">
                                     <i class="bi bi-heart-pulse fs-1" aria-hidden="true"></i>
                                     <p>Medical records for staff are not currently tracked in this system.</p>
                                     <p class="upv2-no-data-sub">Student medical records are managed under Student Profiles.</p>
                                 </div>
+                                } @* end else IsNew Tab 5 *@
                             </div>
                         }
 
@@ -754,6 +843,12 @@
                 @if (ViewModel.ActiveTab == 6)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.IsNew)
+                                {
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
+                                }
+                                else
+                                {
                                 @if (ViewModel.Absences.Count == 0)
                                 {
                                     <div class="upv2-no-data">
@@ -796,6 +891,7 @@
                                     </table>
                                     </div>
                                 }
+                                } @* end else IsNew Tab 6 *@
                             </div>
                         }
 
@@ -803,6 +899,12 @@
                 @if (ViewModel.ActiveTab == 7)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.IsNew)
+                                {
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to view this section.</div>
+                                }
+                                else
+                                {
                                 @if (ViewModel.LoginAudit.Count == 0)
                                 {
                                     <div class="upv2-no-data">
@@ -848,6 +950,22 @@
                                     </table>
                                     </div>
                                 }
+                                } @* end else IsNew Tab 7 *@
+                            </div>
+                        }
+
+                        @* -- Tab 8: Permissions (Edit Mode only) ---------- *@
+                        @if (ViewModel.ActiveTab == 8)
+                        {
+                            <div class="upv2-tab-pane" role="tabpanel">
+                                @if (ViewModel.Permissions.Count == 0)
+                                {
+                                    <p class="upv2-empty-msg">No pages configured.</p>
+                                }
+                                else
+                                {
+                                    <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
+                                }
                             </div>
                         }
 
@@ -866,6 +984,9 @@
     [SupplyParameterFromQuery(Name = "staffId")]
     public long? QueryStaffId { get; set; }          // /v2/users/new?staffId=� pre-selection
 
+    // Tracks which user was last loaded so OnParametersSetAsync can detect navigation.
+    private long? _loadedId;
+
     private string PageTitle => ViewModel.IsNew
         ? "Add User Account"
         : (string.IsNullOrEmpty(ViewModel.HeaderFullName) ? "User Profile" : ViewModel.HeaderFullName);
@@ -873,12 +994,34 @@
     protected override async Task OnInitializedAsync()
     {
         if (Id.HasValue)
+        {
+            _loadedId = Id;
             await ViewModel.InitEditAsync(Id.Value);
+        }
         else
         {
             // Both /v2/users/new (with optional ?staffId=) and /v2/users/{StaffId}/new.
             var preselectedId = StaffId ?? QueryStaffId;
             await ViewModel.InitNewAsync(preselectedId);
+        }
+    }
+
+    // Fires when the user navigates to a different Id via the banner dropdown.
+    // OnInitializedAsync only runs once per component lifetime; this handles re-use.
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id.HasValue && Id != _loadedId)
+        {
+            _loadedId = Id;
+            await ViewModel.InitEditAsync(Id.Value);
+            StateHasChanged();
+        }
+        else if (!Id.HasValue && _loadedId.HasValue)
+        {
+            _loadedId = null;
+            var preselectedId = StaffId ?? QueryStaffId;
+            await ViewModel.InitNewAsync(preselectedId);
+            StateHasChanged();
         }
     }
 

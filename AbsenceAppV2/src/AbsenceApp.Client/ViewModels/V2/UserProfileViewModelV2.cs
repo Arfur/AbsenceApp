@@ -3,7 +3,7 @@
  File        : UserProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.5.0
    Created     : 2026-04-21
      Updated     : 2026-05-04
 -------------------------------------------------------------------------------
@@ -31,6 +31,10 @@
                                  one API call: UserProfileFullDetailDto from
                                  GetUserProfileDetailAsync. All tab sections are
                                  populated from this single payload.
+    - 1.4.0  2026-05-04  Issues A–M fix: Clear Success on InitNewAsync/InitEditAsync
+                         to prevent stale message on navigation.
+    - 1.5.0  2026-05-04  Issue N1: Reset all stale edit-mode state in InitNewAsync
+                         so navigating from Edit→Add yields a clean form.
     - 1.3.0  2026-05-04  Amendment B/C: Added UsersWithAccounts property;
                          changed InitNewAsync signature to long? preselectedStaffId;
                          InitEditAsync now loads UsersWithAccounts via
@@ -44,7 +48,7 @@
      FileSystem.AppDataDirectory/user_photos/user_{id}.ext on save.
    - The ProfilePictureUrl in the DB stores the local file path.
    - Tabs: 0=Basic Info, 1=Contacts, 2=Classes, 3=Devices,
-           4=External, 5=Medical, 6=Absences, 7=Login Audit
+           4=External, 5=Medical, 6=Absences, 7=Login Audit, 8=Permissions (edit only)
 ===============================================================================
 */
 
@@ -244,6 +248,58 @@ public sealed class UserProfileViewModelV2
         StaffId  = (int)(preselectedStaffId ?? 0L);
         IsLoading = true;
         Error    = null;
+        Success  = null;
+
+        // Reset all stale edit-mode state (Issue N1)
+        UserId          = 0;
+        HeaderFullName  = string.Empty;
+        HeaderEmail     = string.Empty;
+        HeaderRoleName  = string.Empty;
+        HeaderStatus    = string.Empty;
+        HeaderIsAdmin   = false;
+        HeaderLastLogin = null;
+        HeaderCreatedAt = default;
+        UserCreatedAt   = default;
+
+        Username       = string.Empty;
+        Email          = string.Empty;
+        Password       = string.Empty;
+        RoleTypeId     = 0;
+        Status         = "active";
+        IsAdmin        = false;
+        FirstName      = string.Empty;
+        LastName       = string.Empty;
+        PreferredName  = null;
+        Title          = string.Empty;
+        DateOfBirth    = DateTime.Today;
+        Bio            = null;
+        Gender         = null;
+        Timezone       = "UTC";
+        LanguageCode   = "en";
+        DepartmentId   = 0;
+        JobTitleId     = 0;
+
+        OldPassword    = string.Empty;
+        NewPassword    = string.Empty;
+        PwError        = null;
+        PwSuccess      = null;
+
+        PhotoBytes        = null;
+        PhotoStoredPath   = null;
+        PhotoError        = null;
+
+        Contact           = null;
+        Classes           = [];
+        Devices           = [];
+        ExternalAccounts  = [];
+        Absences          = [];
+        LoginAudit        = [];
+
+        LinkedStaff       = null;
+        UsersWithAccounts = [];
+
+        ActiveTab = 0;
+
         try
         {
             RoleTypes   = await _svc.GetRoleTypesAsync(ct);
@@ -306,6 +362,7 @@ public sealed class UserProfileViewModelV2
         UserId    = (int)userId;
         IsLoading = true;
         Error     = null;
+        Success   = null;
         try
         {
             var full = await _svc.GetUserProfileDetailAsync(UserId, ct);
