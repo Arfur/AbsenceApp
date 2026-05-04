@@ -2,9 +2,9 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 4.4.0
+   Version     : 4.5.0
    Created     : 2026-04-11
-   Updated     : 2026-04-22
+   Updated     : 2026-05-04
    ---------------------------------------------------------------------------
    Purpose     : E15 User Management — Add / Edit User — full profile page.
                  Routes:
@@ -48,6 +48,10 @@
                            upv2-field/label/input throughout Tab 0; added upv2-dividers
                            between sections; converted Contacts tab KV grid to form-style
                            layout with upv2-value read-only boxes.
+     - 4.5.0  2026-05-04  Moved upv2-banner-photo div before upv2-banner-identity div
+                           inside upv2-banner so the profile image renders on the LEFT
+                           and the identity text block renders on the RIGHT, matching
+                           the intended CSS layout (upv2-banner-photo = left column).
    ===========================================================================
 *@
 
@@ -116,7 +120,45 @@
             @* ────────────────────────── PROFILE BANNER ─────────────────────────── *@
             <div class="upv2-banner">
 
-                @* Left: identity / add-mode content *@
+                @* Left: circular photo *@
+                <div class="upv2-banner-photo">
+                    @if (ViewModel.PhotoDataUri is not null)
+                    {
+                        <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
+                    }
+                    else
+                    {
+                        <div class="upv2-banner-avatar upv2-banner-avatar--placeholder">
+                            <i class="bi bi-person-fill" aria-hidden="true"></i>
+                        </div>
+                    }
+
+                    @if (!ViewModel.IsNew)
+                    {
+                        @if (ViewModel.PhotoError is not null)
+                        {
+                            <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
+                        }
+                        <label class="upv2-banner-upload @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
+                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
+                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
+                            <i class="bi bi-camera" aria-hidden="true"></i>
+                            @(ViewModel.IsUploadingPhoto ? "Uploading..." : "Upload Photo")
+                        </label>
+                        @if (ViewModel.PhotoDataUri is not null)
+                        {
+                            <button class="upv2-banner-upload"
+                                    style="color:#fca5a5;border-color:rgba(252,165,165,.3)"
+                                    disabled="@ViewModel.IsUploadingPhoto"
+                                    @onclick="OnRemovePhoto">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                Remove
+                            </button>
+                        }
+                    }
+                </div>
+
+                @* Right: identity / add-mode content *@
                 <div class="upv2-banner-identity">
 
                     @if (ViewModel.IsNew)
@@ -191,44 +233,6 @@
                         </div>
                     }
 
-                </div>
-
-                @* Right: circular photo (right-aligned) *@
-                <div class="upv2-banner-photo">
-                    @if (ViewModel.PhotoDataUri is not null)
-                    {
-                        <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
-                    }
-                    else
-                    {
-                        <div class="upv2-banner-avatar upv2-banner-avatar--placeholder">
-                            <i class="bi bi-person-fill" aria-hidden="true"></i>
-                        </div>
-                    }
-
-                    @if (!ViewModel.IsNew)
-                    {
-                        @if (ViewModel.PhotoError is not null)
-                        {
-                            <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
-                        }
-                        <label class="upv2-banner-upload @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
-                            <InputFile OnChange="OnPhotoChanged" accept="image/*"
-                                       class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
-                            <i class="bi bi-camera" aria-hidden="true"></i>
-                            @(ViewModel.IsUploadingPhoto ? "Uploading..." : "Upload Photo")
-                        </label>
-                        @if (ViewModel.PhotoDataUri is not null)
-                        {
-                            <button class="upv2-banner-upload"
-                                    style="color:#fca5a5;border-color:rgba(252,165,165,.3)"
-                                    disabled="@ViewModel.IsUploadingPhoto"
-                                    @onclick="OnRemovePhoto">
-                                <i class="bi bi-trash" aria-hidden="true"></i>
-                                Remove
-                            </button>
-                        }
-                    }
                 </div>
 
             </div>

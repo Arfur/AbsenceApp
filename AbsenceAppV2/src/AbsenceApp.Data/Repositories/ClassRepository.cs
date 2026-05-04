@@ -3,9 +3,9 @@
  File        : ClassRepository.cs
  Namespace   : AbsenceApp.Data.Repositories
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-13
- Updated     : 2026-03-13
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : EF Core implementation of IClassRepository.
                Persists and retrieves Class entities via AppDbContext.
@@ -17,6 +17,10 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-13  Initial implementation.
+   - 1.1.0  2026-05-04  Fix Plan #2 Step 5: replaced all 7 occurrences of
+                         _context.TeachingGroups with _context.Classes. The
+                         DbSet<TeachingGroup> is named Classes in AppDbContext;
+                         the repository was referencing a non-existent property.
 -------------------------------------------------------------------------------
  Notes       :
    - DeleteAsync is a no-op when the entity is not found.
@@ -43,17 +47,17 @@ public class ClassRepository : IClassRepository
     // IQueryable accessor — enables composable, SQL-pushed filtering
     // =========================================================================
 
-    public IQueryable<TeachingGroup> Query() => _context.TeachingGroups.AsQueryable();
+    public IQueryable<TeachingGroup> Query() => _context.Classes.AsQueryable();
 
     // =========================================================================
     // Query operations — async read methods
     // =========================================================================
 
     public async Task<TeachingGroup?> FindByIdAsync(long id) =>
-        await _context.TeachingGroups.FindAsync(id);
+        await _context.Classes.FindAsync(id);
 
     public async Task<IEnumerable<TeachingGroup>> ListAsync() =>
-        await _context.TeachingGroups.ToListAsync();
+        await _context.Classes.ToListAsync();
 
     // =========================================================================
     // Mutation operations — async write methods
@@ -61,22 +65,22 @@ public class ClassRepository : IClassRepository
 
     public async Task AddAsync(TeachingGroup entity)
     {
-        await _context.TeachingGroups.AddAsync(entity);
+        await _context.Classes.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(TeachingGroup entity)
     {
-        _context.TeachingGroups.Update(entity);
+        _context.Classes.Update(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(long id)
     {
-        var entity = await _context.TeachingGroups.FindAsync(id);
+        var entity = await _context.Classes.FindAsync(id);
         if (entity is not null)
         {
-            _context.TeachingGroups.Remove(entity);
+            _context.Classes.Remove(entity);
             await _context.SaveChangesAsync();
         }
     }

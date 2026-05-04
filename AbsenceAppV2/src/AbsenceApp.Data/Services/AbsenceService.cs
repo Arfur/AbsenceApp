@@ -1,3 +1,30 @@
+/*
+===============================================================================
+ File        : AbsenceService.cs
+ Namespace   : AbsenceApp.Data.Services
+ Author      : Michael
+ Version     : 1.1.0
+ Created     : 2026-05-04
+ Updated     : 2026-05-04
+-------------------------------------------------------------------------------
+ Purpose     : Application service implementing IAbsenceService. Handles
+               CRUD operations and status transitions for Absence records.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-05-04  Initial header added (Phase 3.11). Fixed
+                         UpdateStatusAsync logic bug: guard was placed AFTER
+                         the assignment it guarded, making the guard always true
+                         and preventing SaveChangesAsync from ever being called.
+                         Moved guard before assignment; removed erroneous
+                         (ulong) and (ulong?) casts now that Absence model
+                         uses long.
+   - 1.1.0  2026-05-04  Fix Plan #2 Step 4: removed three (ulong) casts from
+                         GetByPersonAsync, GetByIdAsync, and UpdateStatusAsync
+                         calls to _repo.GetByPersonAsync / _repo.GetByIdAsync.
+                         IAbsenceRepository parameters are now long (Step 3);
+                         the casts produced ulong arguments and caused CS1503.
+===============================================================================
+*/
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data.Mappers;
@@ -46,10 +73,10 @@ public class AbsenceService : IAbsenceService
         var entity = await _repo.GetByIdAsync(absenceId)
                      ?? throw new KeyNotFoundException($"Absence {absenceId} not found.");
 
+        if (dto.NewStatusId == entity.StatusId) return;
+
         entity.StatusId  = dto.NewStatusId;
         entity.UpdatedAt = DateTime.UtcNow;
-
-        if (dto.NewStatusId == entity.StatusId) return;
 
         // Approval metadata
         var newStatus = await _statusRepo.GetByIdAsync(dto.NewStatusId);

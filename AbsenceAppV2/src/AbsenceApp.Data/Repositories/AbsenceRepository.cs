@@ -1,3 +1,23 @@
+/*
+===============================================================================
+ File        : AbsenceRepository.cs
+ Namespace   : AbsenceApp.Data.Repositories
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-05-04
+ Updated     : 2026-05-04
+-------------------------------------------------------------------------------
+ Purpose     : EF Core implementation of IAbsenceRepository.
+               Persists and retrieves Absence entities via AppDbContext.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-05-04  Fix Plan #2 Step 3: added file header. Changed
+                         IAbsenceRepository and AbsenceRepository parameter
+                         types from ulong to long in GetByPersonAsync and
+                         GetByIdAsync to match Absence.PersonId / Absence.Id
+                         (both long after Phase 2 type alignment).
+===============================================================================
+*/
 using AbsenceApp.Data.Context;
 using AbsenceApp.Data.Models;
 using Microsoft.EntityFrameworkCore;

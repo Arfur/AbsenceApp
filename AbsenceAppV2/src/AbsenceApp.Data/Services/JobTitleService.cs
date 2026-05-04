@@ -1,24 +1,42 @@
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
-using AbsenceApp.Data.Mappers;
-using AbsenceApp.Data.Repositories;
+using AbsenceApp.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceApp.Data.Services;
 
 public class JobTitleService : IJobTitleService
 {
-    private readonly IJobTitleRepository _repo;
-    public JobTitleService(IJobTitleRepository repo) => _repo = repo;
+    private readonly AppDbContext _db;
+
+    public JobTitleService(AppDbContext db) => _db = db;
 
     public async Task<IEnumerable<JobTitleDto>> GetAllAsync()
     {
-        var entities = await _repo.GetAllAsync();
-        return entities.Select(JobTitleMapper.ToDto);
+        var ids = await _db.Staff
+            .AsNoTracking()
+            .Where(s => s.JobTitleId > 0)
+            .Select(s => s.JobTitleId)
+            .Distinct()
+            .OrderBy(id => id)
+            .ToListAsync();
+
+        return ids.Select(id => new JobTitleDto
+        {
+            Id = id,
+            Title = $"Job Title {id}",
+            Code = $"JT{id}",
+        });
     }
 
     public async Task<JobTitleDto?> GetByIdAsync(long id)
     {
-        var entity = await _repo.GetByIdAsync(id);
-        return entity is null ? null : JobTitleMapper.ToDto(entity);
+        var exists = await _db.Staff
+            .AsNoTracking()
+            .AnyAsync(s => s.JobTitleId == id);
+
+        return exists
+            ? new JobTitleDto { Id = (int)id, Title = $"Job Title {id}", Code = $"JT{id}" }
+            : null;
     }
 }

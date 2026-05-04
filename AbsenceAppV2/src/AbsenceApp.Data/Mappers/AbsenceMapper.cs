@@ -1,3 +1,22 @@
+/*
+===============================================================================
+ File        : AbsenceMapper.cs
+ Namespace   : AbsenceApp.Data.Mappers
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-05-04
+ Updated     : 2026-05-04
+-------------------------------------------------------------------------------
+ Purpose     : Static mapper between Absence model and AbsenceDto / CreateAbsenceDto.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-05-04  Initial header added (Phase 3.10). Removed redundant
+                         (long) casts in ToDto now that Absence model uses long.
+                         Changed ToEntity parameter from ulong to long and
+                         removed (ulong) casts from PersonId, AbsenceTypeId,
+                         RecordedBy assignments.
+===============================================================================
+*/
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Data.Models;
 

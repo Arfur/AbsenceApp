@@ -23,34 +23,33 @@
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data.Context;
-using AbsenceApp.Data.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceApp.Data.Services;
 
-// =========================================================================
-// ClassFullViewService — projects classes to full-view DTOs (no FK joins)
-// =========================================================================
-
 public class ClassFullViewService : IClassFullViewService
 {
-    private readonly AppDbContext _db;
+  private readonly AppDbContext _db;
 
-    public ClassFullViewService(AppDbContext db) => _db = db;
+  public ClassFullViewService(AppDbContext db) => _db = db;
 
-    // =========================================================================
-    // GetAllAsync — load all classes and project to ClassFullViewDto
-    // =========================================================================
+  public async Task<IReadOnlyList<ClassFullViewDto>> GetAllAsync()
+  {
+    var classIds = await _db.ClassYearGroups
+      .AsNoTracking()
+      .Select(c => (int)c.ClassId)
+      .Distinct()
+      .OrderBy(id => id)
+      .ToListAsync();
 
-    public async Task<IReadOnlyList<ClassFullViewDto>> GetAllAsync()
-    {
-        var classes = await _db.TeachingGroups
-            .AsNoTracking()
-            .ToListAsync();
-
-        return classes
-            .Select(ClassFullViewMapper.ToDto)
-            .ToList()
-            .AsReadOnly();
-    }
+    return classIds
+      .Select(id => new ClassFullViewDto
+      {
+        Name = $"Class {id}",
+        Code = $"C{id}",
+        Description = null,
+      })
+      .ToList()
+      .AsReadOnly();
+  }
 }

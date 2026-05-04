@@ -18,48 +18,51 @@
 
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
-using AbsenceApp.Data.Mappers;
-using AbsenceApp.Data.Repositories;
+using AbsenceApp.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceApp.Data.Services;
 
 public class SubjectService : ISubjectService
 {
-    private readonly IClassRepository _repository;
+  private readonly AppDbContext _db;
 
-    public SubjectService(IClassRepository repository) => _repository = repository;
+  public SubjectService(AppDbContext db) => _db = db;
 
-    public async Task<IEnumerable<SubjectDto>> GetAllAsync()
-    {
-        var entities = await _repository.ListAsync();
-        return entities.Select(SubjectMapper.ToDto);
-    }
+  public async Task<IEnumerable<SubjectDto>> GetAllAsync()
+  {
+    return await _db.YearGroups
+      .AsNoTracking()
+      .OrderBy(y => y.Id)
+      .Select(y => new SubjectDto
+      {
+        Id = y.Id,
+        Name = y.Name,
+        Description = y.Description,
+      })
+      .ToListAsync();
+  }
 
-    public async Task<SubjectDto?> GetByIdAsync(int id)
-    {
-        var entity = await _repository.FindByIdAsync(id);
-        return entity is null ? null : SubjectMapper.ToDto(entity);
-    }
+  public async Task<SubjectDto?> GetByIdAsync(int id)
+  {
+    return await _db.YearGroups
+      .AsNoTracking()
+      .Where(y => y.Id == id)
+      .Select(y => new SubjectDto
+      {
+        Id = y.Id,
+        Name = y.Name,
+        Description = y.Description,
+      })
+      .FirstOrDefaultAsync();
+  }
 
-    public async Task<SubjectDto> CreateAsync(SubjectDto dto)
-    {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            throw new ArgumentException("Name is required.", nameof(dto));
+  public Task<SubjectDto> CreateAsync(SubjectDto dto)
+    => throw new NotSupportedException("Create is not supported: dedicated subject entity is not present in this schema.");
 
-        var entity = SubjectMapper.ToEntity(dto);
-        entity.Id = 0;
-        await _repository.AddAsync(entity);
-        return SubjectMapper.ToDto(entity);
-    }
+  public Task UpdateAsync(SubjectDto dto)
+    => throw new NotSupportedException("Update is not supported: dedicated subject entity is not present in this schema.");
 
-    public async Task UpdateAsync(SubjectDto dto)
-    {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            throw new ArgumentException("Name is required.", nameof(dto));
-
-        var entity = SubjectMapper.ToEntity(dto);
-        await _repository.UpdateAsync(entity);
-    }
-
-    public async Task DeleteAsync(int id) => await _repository.DeleteAsync(id);
+  public Task DeleteAsync(int id)
+    => throw new NotSupportedException("Delete is not supported: dedicated subject entity is not present in this schema.");
 }

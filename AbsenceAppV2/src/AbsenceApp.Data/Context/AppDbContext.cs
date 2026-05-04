@@ -3,9 +3,9 @@
  File        : AppDbContext.cs
  Namespace   : AbsenceApp.Data.Context
  Author      : Michael
- Version     : 2.1.0
+ Version     : 2.3.0
  Created     : Unknown
- Updated     : 2026-04-28
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : Primary Entity Framework Core DbContext for the AbsenceApp API.
 
@@ -33,14 +33,26 @@
    - 2.0.1  2026-04-24  E15 alignment: confirmed PascalCase table usage and
                          DbSet exposure for all E15 entities. Ensured
                          ValueGeneratedNever exemptions remain correct.
-   - 2.0.2  2026-04-25  Removed incorrect UserProfile table override to restore
-                         [Table("user_profiles")] attribute behaviour.
-   - 2.0.3  2026-04-25  Added StaffDepartment entity support and explicit table
-                         mapping under Phase 3.
+    - 2.0.2  2026-04-25  Removed incorrect UserProfile table override to restore
+                                 attribute-driven UserProfile mapping behaviour.
+    - 2.0.3  2026-04-25  Interim StaffDepartment support (later removed during
+                                 deleted-entity cleanup).
    - 2.1.0  2026-04-28  Full explicit table mapping for all entities across
                          Phases 1–6 and E15. Removed duplicate OnModelCreating
                          block, corrected structural braces, and finalised
                          deterministic schema mapping.
+   - 2.2.0  2026-05-04  Phase 1 fixes: renamed DbSet<Class> to DbSet<TeachingGroup>;
+                         renamed DbSet<ClassMember> to DbSet<ClassMembers>;
+                         renamed Entity<ClassMember>().ToTable to Entity<ClassMembers>();
+                         renamed Entity<Class>() block to Entity<TeachingGroup>().
+                         Phase 2 fixes: removed all HasColumnType("bigint unsigned")
+                         overrides from AbsenceType, AbsenceStatus, Absence, and
+                         AbsenceAudit entity blocks. EF default long→bigint mapping
+                         is correct; explicit unsigned overrides caused type mismatches.
+   - 2.3.0  2026-05-04  Fix Plan #2 Step 2: added DbSet<JobTitle> JobTitles and
+                         DbSet<StaffDepartment> StaffDepartments. Both model types
+                         exist; repositories (JobTitleRepository, DepartmentRepository)
+                         reference these DbSet names which were missing from the context.
 -------------------------------------------------------------------------------
  Notes       :
    - This file intentionally contains no business logic.
@@ -63,248 +75,365 @@ public class AppDbContext : DbContext
     }
 
     // =========================================================================
-    // DbSets (unchanged)
+    // DbSets - Phase 1 Lookup / reference tables
     // =========================================================================
-    public DbSet<School> Schools => Set<School>();
-    public DbSet<JobTitle> JobTitles => Set<JobTitle>();
-    public DbSet<JobGroup> JobGroups => Set<JobGroup>();
-    public DbSet<RoleType> RoleTypes => Set<RoleType>();
-    public DbSet<ResponsibilityType> ResponsibilityTypes => Set<ResponsibilityType>();
-    public DbSet<AbsenceType> AbsenceTypes => Set<AbsenceType>();
-    public DbSet<AbsenceStatus> AbsenceStatuses => Set<AbsenceStatus>();
-    public DbSet<DeviceType> DeviceTypes => Set<DeviceType>();
-    public DbSet<ExternalSystem> ExternalSystems => Set<ExternalSystem>();
-    public DbSet<SystemEvent> SystemEvents => Set<SystemEvent>();
-    public DbSet<TeachingGroup> TeachingGroups => Set<TeachingGroup>();
-    public DbSet<Attendance> Attendance => Set<Attendance>();
-    public DbSet<AuditLog> AuditLog => Set<AuditLog>();
-    public DbSet<Feature> Feature => Set<Feature>();
-    public DbSet<GlobalConfig> GlobalConfig => Set<GlobalConfig>();
-
-    public DbSet<Phase> Phases => Set<Phase>();
-    public DbSet<YearGroup> YearGroups => Set<YearGroup>();
-    public DbSet<House> Houses => Set<House>();
-
-    public DbSet<User> Users => Set<User>();
-    public DbSet<StaffDepartment> StaffDepartments => Set<StaffDepartment>();
-    public DbSet<Staff> Staff => Set<Staff>();
-    public DbSet<Student> Students => Set<Student>();
-
-    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
-    public DbSet<ClassYearGroup> ClassYearGroups => Set<ClassYearGroup>();
-    public DbSet<StaffDuty> StaffDuties => Set<StaffDuty>();
-    public DbSet<Absence> Absences => Set<Absence>();
-    public DbSet<StaffDevice> StaffDevices => Set<StaffDevice>();
-    public DbSet<StaffExternalAccount> StaffExternalAccounts => Set<StaffExternalAccount>();
-    public DbSet<StudentContact> StudentContacts => Set<StudentContact>();
-    public DbSet<StudentMedical> StudentMedical => Set<StudentMedical>();
-    public DbSet<StudentFlag> StudentFlags => Set<StudentFlag>();
-    public DbSet<StaffAttendance> StaffAttendance => Set<StaffAttendance>();
-    public DbSet<StaffContact> StaffContacts => Set<StaffContact>();
-    public DbSet<StaffWorkLocation> StaffWorkLocations => Set<StaffWorkLocation>();
-    public DbSet<StaffQualification> StaffQualifications => Set<StaffQualification>();
-    public DbSet<StaffResponsibility> StaffResponsibilities => Set<StaffResponsibility>();
-    public DbSet<StaffWorkingPattern> StaffWorkingPatterns => Set<StaffWorkingPattern>();
-    public DbSet<ClassMembers> ClassMembers => Set<ClassMembers>();
-
-    public DbSet<LoginAudit> LoginAudit => Set<LoginAudit>();
-    public DbSet<AccountVerificationEvent> AccountVerificationEvents => Set<AccountVerificationEvent>();
-    public DbSet<RoleChangeAudit> RoleChangeAudit => Set<RoleChangeAudit>();
-    public DbSet<StaffDeviceAudit> StaffDeviceAudit => Set<StaffDeviceAudit>();
-    public DbSet<StaffExternalAccountAudit> StaffExternalAccountAudit => Set<StaffExternalAccountAudit>();
-    public DbSet<AbsenceAudit> AbsenceAudit => Set<AbsenceAudit>();
-
-    public DbSet<Message> Messages => Set<Message>();
-    public DbSet<AppNotification> AppNotifications => Set<AppNotification>();
-
-    public DbSet<AppPage> AppPages => Set<AppPage>();
-    public DbSet<RoleDefaultPagePermission> RoleDefaultPagePermissions => Set<RoleDefaultPagePermission>();
-    public DbSet<UserPageOverride> UserPageOverrides => Set<UserPageOverride>();
-    public DbSet<UserPagePermission> UserPagePermissions => Set<UserPagePermission>();
-    public DbSet<RoleFeature> RoleFeature => Set<RoleFeature>();
-    public DbSet<RoleMenuItem> RoleMenuItem => Set<RoleMenuItem>();
-    public DbSet<MenuItem> MenuItems => Set<MenuItem>();
-    public DbSet<MenuItemsGlobalConfig> MenuItemsGlobalConfig => Set<MenuItemsGlobalConfig>();
-    public DbSet<UserFeatureOverride> UserFeatureOverride => Set<UserFeatureOverride>();
-    public DbSet<UserRole> UserRole => Set<UserRole>();
-
-
-// =========================================================================
-// Model configuration
-// =========================================================================
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
-
-    // ---------------------------------------------------------------------
-    // Apply IEntityTypeConfiguration<T> mappings from this assembly
-    // ---------------------------------------------------------------------
-    modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
-    // ---------------------------------------------------------------------
-    // Phase 2 — Entitlement entity configuration
-    // ---------------------------------------------------------------------
-    modelBuilder.ConfigureEntitlements();
-
-    // ---------------------------------------------------------------------
-    // E15 — User management + page-level permission configuration
-    // ---------------------------------------------------------------------
-    modelBuilder.ConfigureUserManagement();
+    public DbSet<School> Schools { get; set; }
+    public DbSet<RoleType> RoleTypes { get; set; }
+    public DbSet<ResponsibilityType> ResponsibilityTypes { get; set; }
+    public DbSet<AbsenceType> AbsenceTypes { get; set; }
+    public DbSet<AbsenceStatus> AbsenceStatuses { get; set; }
+    public DbSet<DeviceType> DeviceTypes { get; set; }
+    public DbSet<ExternalSystem> ExternalSystems { get; set; }
+    public DbSet<SystemEvent> SystemEvents { get; set; }
+    public DbSet<Attendance> Attendance { get; set; }
+    public DbSet<AuditLog> AuditLog { get; set; }
+    public DbSet<GlobalConfig> GlobalConfig { get; set; }
+    public DbSet<Phase> Phases { get; set; }
 
     // =========================================================================
-    // Phase 1 — Lookup / reference tables
+    // DbSets - Phase 2 School-scoped structure
     // =========================================================================
-    modelBuilder.Entity<School>().ToTable("schools");
-    modelBuilder.Entity<JobTitle>().ToTable("staffjobtitles");
-    modelBuilder.Entity<JobGroup>().ToTable("staffjobgroups");
-    modelBuilder.Entity<RoleType>().ToTable("roletypes");
-    modelBuilder.Entity<ResponsibilityType>().ToTable("responsibilitytypes");
-    modelBuilder.Entity<AbsenceType>().ToTable("absencetypes");
-    modelBuilder.Entity<AbsenceStatus>().ToTable("absencestatuses");
-    modelBuilder.Entity<DeviceType>().ToTable("devicetypes");
-    modelBuilder.Entity<ExternalSystem>().ToTable("externalsystems");
-    modelBuilder.Entity<SystemEvent>().ToTable("systemevents");
-    modelBuilder.Entity<TeachingGroup>().ToTable("teachinggroups");
-    modelBuilder.Entity<Attendance>().ToTable("attendance");
-    modelBuilder.Entity<AuditLog>().ToTable("auditlog");
-    modelBuilder.Entity<GlobalConfig>().ToTable("globalconfigs");
+    public DbSet<YearGroup> YearGroups { get; set; }
+    public DbSet<House> Houses { get; set; }
 
     // =========================================================================
-    // Phase 2 — School-scoped structure
+    // DbSets - Phase 3 Core people tables
     // =========================================================================
-    modelBuilder.Entity<Phase>().ToTable("staffphases");
-    modelBuilder.Entity<YearGroup>().ToTable("yeargroups");
-    modelBuilder.Entity<House>().ToTable("houses");
+    public DbSet<User> Users { get; set; }
+    public DbSet<Staff> Staff { get; set; }
+    public DbSet<Student> Students { get; set; }
 
     // =========================================================================
-    // Phase 3 — Core people tables
+    // DbSets - Phase 4 Extension / link tables
     // =========================================================================
-    modelBuilder.Entity<User>().ToTable("users");
-    modelBuilder.Entity<StaffDepartment>().ToTable("staffdepartments");
-    modelBuilder.Entity<Staff>().ToTable("staff");
-    modelBuilder.Entity<Student>().ToTable("students");
+    public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<ClassYearGroup> ClassYearGroups { get; set; }
+    public DbSet<Absence> Absences { get; set; }
+    public DbSet<StaffDevice> StaffDevices { get; set; }
+    public DbSet<StaffExternalAccount> StaffExternalAccounts { get; set; }
+    public DbSet<StudentContact> StudentContacts { get; set; }
+    public DbSet<StudentMedical> StudentMedical { get; set; }
+    public DbSet<StudentFlag> StudentFlags { get; set; }
+    public DbSet<StaffAttendance> StaffAttendance { get; set; }
+    public DbSet<StaffContact> StaffContacts { get; set; }
+    public DbSet<StaffWorkLocation> StaffWorkLocations { get; set; }
+    public DbSet<StaffQualification> StaffQualifications { get; set; }
+    public DbSet<StaffResponsibility> StaffResponsibilities { get; set; }
+    public DbSet<StaffWorkingPattern> StaffWorkingPatterns { get; set; }
+    public DbSet<ClassMembers> ClassMembers { get; set; }
+    public DbSet<StaffPhase> StaffPhases { get; set; }
 
     // =========================================================================
-    // Phase 4 — Extension / link tables
+    // DbSets - Phase 5 Audit tables
     // =========================================================================
-    modelBuilder.Entity<UserProfile>().ToTable("userprofiles");
-    modelBuilder.Entity<ClassYearGroup>().ToTable("classyeargroups");
-    modelBuilder.Entity<StaffDuty>().ToTable("staffduties");
-    modelBuilder.Entity<Absence>().ToTable("absences");
-    modelBuilder.Entity<StaffDevice>().ToTable("staffdevices");
-    modelBuilder.Entity<StaffExternalAccount>().ToTable("staffexternalaccounts");
-    modelBuilder.Entity<StudentContact>().ToTable("studentcontacts");
-    modelBuilder.Entity<StudentMedical>().ToTable("studentmedicals");
-    modelBuilder.Entity<StudentFlag>().ToTable("studentflags");
-    modelBuilder.Entity<StaffAttendance>().ToTable("staffattendances");
-    modelBuilder.Entity<StaffContact>().ToTable("staffcontacts");
-    modelBuilder.Entity<StaffWorkLocation>().ToTable("staffworklocations");
-    modelBuilder.Entity<StaffQualification>().ToTable("staffqualifications");
-    modelBuilder.Entity<StaffResponsibility>().ToTable("staffresponsibilities");
-    modelBuilder.Entity<StaffWorkingPattern>().ToTable("staffworkingpatterns");
-    modelBuilder.Entity<ClassMembers>().ToTable("classmembers");
+    public DbSet<LoginAudit> LoginAudit { get; set; }
+    public DbSet<AccountVerificationEvent> AccountVerificationEvents { get; set; }
+    public DbSet<RoleChangeAudit> RoleChangeAudit { get; set; }
+    public DbSet<StaffDeviceAudit> StaffDeviceAudit { get; set; }
+    public DbSet<StaffExternalAccountAudit> StaffExternalAccountAudit { get; set; }
+    public DbSet<AbsenceAudit> AbsenceAudit { get; set; }
 
     // =========================================================================
-    // Phase 5 — Audit tables
+    // DbSets - Phase 6 Messaging + notifications
     // =========================================================================
-    modelBuilder.Entity<LoginAudit>().ToTable("loginaudits");
-    modelBuilder.Entity<AccountVerificationEvent>().ToTable("accountverificationevents");
-    modelBuilder.Entity<RoleChangeAudit>().ToTable("rolechangeaudits");
-    modelBuilder.Entity<StaffDeviceAudit>().ToTable("staffdeviceaudits");
-    modelBuilder.Entity<StaffExternalAccountAudit>().ToTable("staffexternalaccountaudits");
-    modelBuilder.Entity<AbsenceAudit>().ToTable("absenceaudits");
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<AppNotification> AppNotifications { get; set; }
 
     // =========================================================================
-    // Phase 6 — Messaging + notifications
+    // DbSets - E15 User management + permissions
     // =========================================================================
-    modelBuilder.Entity<Message>().ToTable("messages");
-    modelBuilder.Entity<AppNotification>().ToTable("appnotifications");
+    public DbSet<AppPage> AppPages { get; set; }
+    public DbSet<RoleDefaultPagePermission> RoleDefaultPagePermissions { get; set; }
+    public DbSet<UserPageOverride> UserPageOverrides { get; set; }
+    public DbSet<UserPagePermission> UserPagePermissions { get; set; }
+    public DbSet<RoleFeature> RoleFeature { get; set; }
+    public DbSet<RoleMenuItem> RoleMenuItem { get; set; }
+    public DbSet<MenuItem> MenuItems { get; set; }
+    public DbSet<MenuItemsGlobalConfig> MenuItemsGlobalConfig { get; set; }
+    public DbSet<UserFeatureOverride> UserFeatureOverride { get; set; }
+    public DbSet<UserRole> UserRole { get; set; }
 
     // =========================================================================
-    // E15 — User management + permissions
+    // DbSets - Additional Academic / Staff entities you added
     // =========================================================================
-    modelBuilder.Entity<AppPage>().ToTable("apppages");
-    modelBuilder.Entity<RoleDefaultPagePermission>().ToTable("roledefaultpagepermissions");
-    modelBuilder.Entity<UserPageOverride>().ToTable("userpageoverrides");
-    modelBuilder.Entity<UserPagePermission>().ToTable("userpagepermissions");
-    modelBuilder.Entity<RoleFeature>().ToTable("rolefeatures");
-    modelBuilder.Entity<RoleMenuItem>().ToTable("rolemenuitems");
-    modelBuilder.Entity<MenuItem>().ToTable("menuitems");
-    modelBuilder.Entity<MenuItemsGlobalConfig>().ToTable("menuitemglobalconfigs");
-    modelBuilder.Entity<UserFeatureOverride>().ToTable("userfeatureoverrides");
-    modelBuilder.Entity<UserRole>().ToTable("userrole");
+    public DbSet<TeachingGroup> Classes { get; set; }
+    public DbSet<StaffAssignment> StaffAssignments { get; set; }
+    public DbSet<StaffAttribute> StaffAttributes { get; set; }
+    public DbSet<StaffAttributeType> StaffAttributeTypes { get; set; }
+    public DbSet<JobTitle> JobTitles { get; set; }
+    public DbSet<StaffDepartment> StaffDepartments { get; set; }
 
-    // ---------------------------------------------------------------------
-    // Prevent EF from inferring shadow Department FK on StaffAssignment
-    // ---------------------------------------------------------------------
-    modelBuilder.Entity<StaffDuty>().Ignore("DepartmentId");
-    modelBuilder.Entity<StaffDuty>().Ignore("Department");
-
-    // ---------------------------------------------------------------------
-    // Disable IDENTITY on all integer/long primary keys so the CSV import
-    // pipeline can insert explicit ID values from the CSV files.
-    // ---------------------------------------------------------------------
-    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+    // =========================================================================
+    // Model configuration
+    // =========================================================================
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // E15 entities use SQL Server IDENTITY — exempt from the blanket
-        // ValueGeneratedNever override used by the CSV import pipeline.
-        if (entityType.ClrType == typeof(AppPage))                   continue;
-        if (entityType.ClrType == typeof(RoleDefaultPagePermission)) continue;
-        if (entityType.ClrType == typeof(UserPageOverride))          continue;
-        if (entityType.ClrType == typeof(UserPagePermission))        continue;
+        base.OnModelCreating(modelBuilder);
 
-        // New Absence domain tables use AUTO_INCREMENT — exempt from the
-        // ValueGeneratedNever blanket so EF reads the generated Id back.
-        if (entityType.ClrType == typeof(AbsenceType))   continue;
-        if (entityType.ClrType == typeof(AbsenceStatus)) continue;
-        if (entityType.ClrType == typeof(Absence))       continue;
-        if (entityType.ClrType == typeof(AbsenceAudit))  continue;
+        // ---------------------------------------------------------------------
+        // Apply IEntityTypeConfiguration<T> mappings from this assembly
+        // ---------------------------------------------------------------------
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        var pk = entityType.FindPrimaryKey();
-        if (pk == null) continue;
+        // ---------------------------------------------------------------------
+        // Phase 2 — Entitlement entity configuration
+        // ---------------------------------------------------------------------
+        modelBuilder.ConfigureEntitlements();
 
-        foreach (var prop in pk.Properties)
+        // ---------------------------------------------------------------------
+        // E15 — User management + page-level permission configuration
+        // ---------------------------------------------------------------------
+        modelBuilder.ConfigureUserManagement();
+
+        // =========================================================================
+        // Phase 1 — Lookup / reference tables
+        // =========================================================================
+        modelBuilder.Entity<School>().ToTable("schools");
+        modelBuilder.Entity<RoleType>().ToTable("roletypes");
+        modelBuilder.Entity<ResponsibilityType>().ToTable("responsibilitytypes");
+        modelBuilder.Entity<AbsenceType>(entity =>
         {
-            if (prop.ClrType == typeof(long) || prop.ClrType == typeof(int))
+            entity.ToTable("absencetypes");
+            entity.HasKey(a => a.Id);
+        });
+        modelBuilder.Entity<AbsenceStatus>(entity =>
+        {
+            entity.ToTable("absencestatuses");
+            entity.HasKey(a => a.Id);
+        });
+        modelBuilder.Entity<DeviceType>().ToTable("devicetypes");
+        modelBuilder.Entity<ExternalSystem>().ToTable("externalsystems");
+        modelBuilder.Entity<SystemEvent>().ToTable("systemevents");
+        modelBuilder.Entity<Attendance>().ToTable("attendance");
+        modelBuilder.Entity<AuditLog>().ToTable("auditlog");
+        modelBuilder.Entity<GlobalConfig>().ToTable("globalconfigs");
+        modelBuilder.Entity<Phase>().ToTable("phases");
+
+        // =========================================================================
+        // Phase 2 — School-scoped structure
+        // =========================================================================
+        modelBuilder.Entity<YearGroup>().ToTable("yeargroups");
+        modelBuilder.Entity<House>().ToTable("houses");
+
+        // =========================================================================
+        // Phase 3 — Core people tables
+        // =========================================================================
+        modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<User>()
+            .Property(u => u.Id)
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<Staff>().ToTable("staff");
+        modelBuilder.Entity<Student>().ToTable("students");
+
+        // =========================================================================
+        // Phase 4 — Extension / link tables
+        // =========================================================================
+        modelBuilder.Entity<UserProfile>().ToTable("userprofiles");
+        modelBuilder.Entity<UserProfile>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<ClassYearGroup>().ToTable("classyeargroups");
+        modelBuilder.Entity<Absence>(entity =>
+        {
+            entity.ToTable("absences");
+            entity.HasKey(a => a.Id);
+        });
+        modelBuilder.Entity<StaffDevice>().ToTable("staffdevices");
+        modelBuilder.Entity<StudentContact>().ToTable("studentcontacts");
+        modelBuilder.Entity<StudentMedical>().ToTable("studentmedicals");
+        modelBuilder.Entity<StudentFlag>().ToTable("studentflags");
+        modelBuilder.Entity<StaffAttendance>().ToTable("staffattendances");
+        modelBuilder.Entity<StaffContact>().ToTable("staffcontacts");
+        modelBuilder.Entity<StaffWorkLocation>().ToTable("staffworklocations");
+        modelBuilder.Entity<StaffQualification>().ToTable("staffqualifications");
+        modelBuilder.Entity<StaffResponsibility>().ToTable("staffresponsibilities");
+        modelBuilder.Entity<StaffWorkingPattern>().ToTable("staffworkingpatterns");
+        modelBuilder.Entity<ClassMembers>().ToTable("classmembers");
+
+        // =========================================================================
+        // Phase 5 — Audit tables
+        // =========================================================================
+        modelBuilder.Entity<LoginAudit>().ToTable("loginaudits");
+        modelBuilder.Entity<LoginAudit>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<AccountVerificationEvent>(entity =>
+        {
+            entity.ToTable("accountverificationevents");
+            entity.HasKey(a => a.Id);
+
+            entity.Property(a => a.Id)
+                .HasColumnType("bigint")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            entity.Property(a => a.UserId)
+                .HasColumnType("bigint")
+                .IsRequired();
+        });
+        modelBuilder.Entity<RoleChangeAudit>().ToTable("rolechangeaudits");
+        modelBuilder.Entity<StaffDeviceAudit>().ToTable("staffdeviceaudits");
+        modelBuilder.Entity<StaffExternalAccountAudit>().ToTable("staffexternalaccountsaudits");
+        modelBuilder.Entity<AbsenceAudit>(entity =>
+        {
+            entity.ToTable("absenceaudits");
+            entity.HasKey(a => a.Id);
+        });
+
+        // =========================================================================
+        // Phase 6 — Messaging + notifications
+        // =========================================================================
+        modelBuilder.Entity<Message>().ToTable("messages");
+        modelBuilder.Entity<Message>()
+            .Property(m => m.Id)
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<AppNotification>().ToTable("appnotifications");
+        modelBuilder.Entity<AppNotification>()
+            .Property(n => n.Id)
+            .ValueGeneratedOnAdd();
+
+        // =========================================================================
+        // E15 — User management + permissions
+        // =========================================================================
+        modelBuilder.Entity<AppPage>().ToTable("apppages");
+        modelBuilder.Entity<RoleDefaultPagePermission>().ToTable("roledefaultpagepermissions");
+        modelBuilder.Entity<UserPageOverride>().ToTable("userpageoverrides");
+        modelBuilder.Entity<UserPagePermission>().ToTable("userpagepermissions");
+        modelBuilder.Entity<RoleFeature>().ToTable("rolefeatures");
+        modelBuilder.Entity<RoleMenuItem>().ToTable("rolemenuitems");
+        modelBuilder.Entity<MenuItem>().ToTable("menuitems");
+        modelBuilder.Entity<MenuItemsGlobalConfig>().ToTable("menuitemglobalconfigs");
+        modelBuilder.Entity<UserFeatureOverride>().ToTable("userfeatureoverrides");
+        modelBuilder.Entity<UserRole>().ToTable("userrole");
+
+        // =========================================================================
+        // DbSets - Additional Academic / Staff entities you added
+        // =========================================================================
+        modelBuilder.Entity<TeachingGroup>(entity =>
+        {
+            entity.ToTable("classes");
+            entity.HasKey(c => c.Id);
+            entity.Property(c => c.Id)
+                .HasColumnType("int")
+                .IsRequired();
+        });
+        modelBuilder.Entity<StaffAssignment>(entity =>
+        {
+            entity.ToTable("staffassignments");
+            entity.HasKey(a => a.Id);
+            entity.Property(a => a.Id)
+                .HasColumnType("int")
+                .IsRequired();
+            entity.Property(a => a.StaffId)
+                .HasColumnType("int")
+                .IsRequired();
+            entity.Property(a => a.LocationId)
+                .HasColumnType("int")
+                .IsRequired();
+        });
+        modelBuilder.Entity<StaffAttribute>(entity =>
+        {
+            entity.ToTable("staffattributes");
+            entity.HasKey(a => a.Id);
+            entity.Property(a => a.Id)
+                .HasColumnType("int")
+                .IsRequired();
+            entity.Property(a => a.AttributeTypeId)
+                .HasColumnType("int unsigned")
+                .IsRequired();
+        });
+        modelBuilder.Entity<StaffAttributeType>(entity =>
+        {
+            entity.ToTable("staffattributetypes");
+            entity.HasKey(a => a.Id);
+            entity.Property(a => a.Id)
+                .HasColumnType("int unsigned")
+                .IsRequired();
+        });
+        modelBuilder.Entity<StaffPhase>(entity =>
+        {
+            entity.ToTable("staffphases");
+            entity.HasKey(s => s.Id);
+            entity.Property(s => s.Id)
+                .HasColumnType("int")
+                .IsRequired();
+        });
+
+        // ---------------------------------------------------------------------
+        // Disable IDENTITY on all integer/long primary keys so the CSV import
+        // pipeline can insert explicit ID values from the CSV files.
+        // ---------------------------------------------------------------------
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            // E15 entities use SQL Server IDENTITY — exempt from the blanket
+            // ValueGeneratedNever override used by the CSV import pipeline.
+            if (entityType.ClrType == typeof(AppPage))                   continue;
+            if (entityType.ClrType == typeof(RoleDefaultPagePermission)) continue;
+            if (entityType.ClrType == typeof(UserPageOverride))          continue;
+            if (entityType.ClrType == typeof(UserPagePermission))        continue;
+
+            // Runtime-created entities use AUTO_INCREMENT — exempt from the
+            // ValueGeneratedNever blanket so EF reads generated keys back.
+            if (entityType.ClrType == typeof(User))                     continue;
+            if (entityType.ClrType == typeof(UserProfile))              continue;
+            if (entityType.ClrType == typeof(LoginAudit))               continue;
+            if (entityType.ClrType == typeof(AccountVerificationEvent)) continue;
+            if (entityType.ClrType == typeof(Message))                  continue;
+            if (entityType.ClrType == typeof(AppNotification))          continue;
+            if (entityType.ClrType == typeof(Role))                     continue;
+
+            // New Absence domain tables use AUTO_INCREMENT — exempt from the
+            // ValueGeneratedNever blanket so EF reads the generated Id back.
+            if (entityType.ClrType == typeof(AbsenceType))   continue;
+            if (entityType.ClrType == typeof(AbsenceStatus)) continue;
+            if (entityType.ClrType == typeof(Absence))       continue;
+            if (entityType.ClrType == typeof(AbsenceAudit))  continue;
+
+            var pk = entityType.FindPrimaryKey();
+            if (pk == null) continue;
+
+            foreach (var prop in pk.Properties)
             {
-                modelBuilder.Entity(entityType.ClrType)
-                    .Property(prop.Name)
-                    .ValueGeneratedNever();
+                if (prop.ClrType == typeof(long) || prop.ClrType == typeof(int))
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(prop.Name)
+                        .ValueGeneratedNever();
+                }
             }
         }
-    }
 
-    // ---------------------------------------------------------------------
-    // SQL Server cascade-path overrides
-    // ---------------------------------------------------------------------
-    modelBuilder.Entity<Student>()
-        .HasOne<School>()
-        .WithMany()
-        .HasForeignKey(s => s.SchoolId)
-        .OnDelete(DeleteBehavior.NoAction);
+        // ---------------------------------------------------------------------
+        // SQL Server cascade-path overrides
+        // ---------------------------------------------------------------------
+        modelBuilder.Entity<Student>()
+            .HasOne<School>()
+            .WithMany()
+            .HasForeignKey(s => s.SchoolId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-    modelBuilder.Entity<StaffDeviceAudit>()
-        .HasOne<Staff>()
-        .WithMany()
-        .HasForeignKey(a => a.StaffId)
-        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<StaffDeviceAudit>()
+            .HasOne<Staff>()
+            .WithMany()
+            .HasForeignKey(a => a.StaffId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-    modelBuilder.Entity<StaffExternalAccountAudit>()
-        .HasOne<Staff>()
-        .WithMany()
-        .HasForeignKey(a => a.StaffId)
-        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<StaffExternalAccountAudit>()
+            .HasOne<Staff>()
+            .WithMany()
+            .HasForeignKey(a => a.StaffId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-    modelBuilder.Entity<AbsenceAudit>()
-        .HasOne(a => a.OldStatus)
-        .WithMany()
-        .HasForeignKey(a => a.OldStatusId)
-        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<AbsenceAudit>()
+            .HasOne(a => a.OldStatus)
+            .WithMany()
+            .HasForeignKey(a => a.OldStatusId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-    modelBuilder.Entity<AbsenceAudit>()
-        .HasOne(a => a.NewStatus)
-        .WithMany()
-        .HasForeignKey(a => a.NewStatusId)
-        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<AbsenceAudit>()
+            .HasOne(a => a.NewStatus)
+            .WithMany()
+            .HasForeignKey(a => a.NewStatusId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

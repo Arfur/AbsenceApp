@@ -8,9 +8,9 @@
  Updated     : 2026-03-17
 -------------------------------------------------------------------------------
  Purpose     : Fetches all staff and resolves FK IDs to human-readable names
-               by loading JobTitle, JobGroup, Department, and Staff (for the
-               reporting manager self-join) lookup tables into in-memory
-               dictionaries, then projecting via StaffFullViewMapper.
+               using scalar IDs already present on Staff plus a Staff self-join
+               for reporting manager display names, then projecting via
+               StaffFullViewMapper.
                Returns StaffFullViewDto for use by Table Settings display.
 -------------------------------------------------------------------------------
  Changes     :
@@ -49,18 +49,6 @@ public class StaffFullViewService : IStaffFullViewService
 
     public async Task<IReadOnlyList<StaffFullViewDto>> GetAllAsync()
     {
-        var jobTitles = await _db.JobTitles
-            .AsNoTracking()
-            .ToDictionaryAsync(j => j.Id, j => j.Title);
-
-        var jobGroups = await _db.JobGroups
-            .AsNoTracking()
-            .ToDictionaryAsync(g => g.Id, g => g.Name);
-
-        var departments = await _db.StaffDepartments
-            .AsNoTracking()
-            .ToDictionaryAsync(d => d.Id, d => d.Name);
-
         // Self-join: load a name lookup for all staff to resolve ReportingManagerId.
         var staffNames = await _db.Staff
             .AsNoTracking()
@@ -75,9 +63,9 @@ public class StaffFullViewService : IStaffFullViewService
         return allStaff
             .Select(s => StaffFullViewMapper.ToDto(
                 s,
-                jobTitleName:   jobTitles.GetValueOrDefault(s.JobTitleId) ?? "(unknown)",
-                jobGroupName:   jobGroups.GetValueOrDefault(s.JobGroupId, "(unknown)"),
-                departmentName: departments.GetValueOrDefault((int)s.DepartmentId, "(unknown)"),
+                jobTitleName:   s.JobTitleId > 0 ? $"Job Title #{s.JobTitleId}" : string.Empty,
+                jobGroupName:   s.JobGroupId > 0 ? $"Job Group #{s.JobGroupId}" : string.Empty,
+                departmentName: s.DepartmentId > 0 ? $"Department #{s.DepartmentId}" : string.Empty,
                 managerName:    s.ReportingManagerId.HasValue
                                     ? staffNames.GetValueOrDefault(s.ReportingManagerId.Value)
                                     : null))

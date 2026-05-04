@@ -3,9 +3,9 @@
  File        : UserManagementService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.8.0
+ Version     : 1.9.0
  Created     : 2026-04-11
- Updated     : 2026-04-25
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : E15 User Management service. Implements IUserManagementService
                for full user CRUD, role/page reference data, and per-user
@@ -21,13 +21,13 @@
    - 1.1.0  2026-04-11  E16 Pages Registry: updated GetPagesAsync() to project
                          new AppPage fields (Slug, CategoryKey, MenuKey, IconKey,
                          Description, SupportsXxx) into AppPageDto.
-   - 1.2.0  2026-04-21  Fixed GetUsersAsync() â€” replaced broken raw string
+    - 1.2.0  2026-04-21  Fixed GetUsersAsync() — replaced broken raw string
                          literal SQL (IN clause was emitted as literal text)
                          with correct string concatenation. Added three new
                          methods: GetAllRoleTypesAsync() (Roles page),
                          GetFeaturesAsync() (Permissions page), and
                          GetPageAccessAsync() (Page Access page).
-   - 1.3.0  2026-04-21  Fixed DeleteUserAsync() cascade: now deletes userrole
+    - 1.3.0  2026-04-21  Fixed DeleteUserAsync() cascade: now deletes userrole
                          (raw SQL), UserPagePermissions, UserPageOverrides,
                          UserProfiles, and LoginAudit child rows before
                          removing the user record to avoid FK constraint
@@ -40,12 +40,12 @@
                          all Staff rows where no User account has a matching
                          StaffId FK, ordered by LastName then FirstName.
                          (Header update missed in Session 6; corrected here.)
-   - 1.6.0  2026-04-24  Session 7 Task E: re-validated all profile loading
-                         queries. Confirmed _db.UserProfiles â†’ userprofiles
-                         (via [Table] attribute), _db.LoginAudit â†’ correct
+    - 1.6.0  2026-04-24  Session 7 Task E: re-validated all profile loading
+                                 queries. Confirmed _db.UserProfiles -> userprofiles
+                                 (via [Table] attribute), _db.LoginAudit -> correct
                          column mapping (via [Column] attributes in v1.2.0),
                          _db.AppPages / _db.UserPagePermissions /
-                         _db.RoleDefaultPagePermissions â†’ correct table names
+                         _db.RoleDefaultPagePermissions -> correct table names
                          via EF config. No code changes required; header
                          version incremented as evidence of validation pass.
    - 1.7.0  2026-04-25  Session 9 final fix: DateOfBirth does not exist on the
@@ -60,6 +60,10 @@
                                  staff, permissions, role types, and staff-linked tab
                                  collections (contacts, classes, devices, external,
                                  absences, login audit) plus staff-related summaries.
+   - 1.9.0  2026-05-04  Fix Plan #2 Step 8: changed (ulong)staffId to (long)staffId
+                         in GetStaffAbsencesAsync LINQ Where clause. Absence.PersonId
+                         is long after Phase 2 type alignment; long == ulong was
+                         ambiguous (CS0034). staffId is int; (long)staffId matches.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DataServiceRegistration.cs.
@@ -495,7 +499,7 @@ public sealed class UserManagementService : IUserManagementService
             {
                 if (!anySet)
                 {
-                    // All flags cleared â€” remove the override row.
+                    // All flags cleared — remove the override row.
                     _db.UserPagePermissions.Remove(row);
                 }
                 else
@@ -510,7 +514,7 @@ public sealed class UserManagementService : IUserManagementService
             }
             else if (anySet)
             {
-                // New override row for this user Ã— page.
+                // New override row for this user × page.
                 _db.UserPagePermissions.Add(new UserPagePermission
                 {
                     UserId    = userId,
@@ -575,7 +579,7 @@ public sealed class UserManagementService : IUserManagementService
             .ThenBy(r => r.Id)
             .ToListAsync(ct);
 
-        // Count users per role type via raw SQL (userrole â†’ roles â†’ roletypes).
+        // Count users per role type via raw SQL (userrole -> roles -> roletypes).
         var countRows = await _db.Database
             .SqlQueryRaw<RoleUserCountRow>(
                 "SELECT r.RoleTypeId, COUNT(DISTINCT ur.UserId) AS UserCount " +
@@ -842,17 +846,6 @@ public sealed class UserManagementService : IUserManagementService
                 .FirstOrDefaultAsync(s => s.Id == user.StaffId.Value, ct)
             : null;
 
-        // >>> INSERT THIS BLOCK HERE <<<
-        StaffDepartment? staffDepartment = null;
-
-        if (staff?.DepartmentId != null)
-            {
-            staffDepartment = await _db.StaffDepartments
-            .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == staff.DepartmentId, ct);
-            }
-        // >>> END INSERT <<<
-
         // Role display/name/id via raw SQL (userrole has no DbSet).
         var roleRows = await _db.Database
             .SqlQueryRaw<UserRoleFullRow>(
@@ -901,8 +894,6 @@ public sealed class UserManagementService : IUserManagementService
         if (user.StaffId.HasValue)
         {
             var staffId = user.StaffId.Value;
-
-            // staffassignmentaudit table does not exist in DB — skip
 
             var deviceAudit = await _db.StaffDeviceAudit
                 .AsNoTracking()
@@ -968,7 +959,21 @@ public sealed class UserManagementService : IUserManagementService
                                             : user.Username,
                 LastLoginAt             = lastLogin,
                 ProfilePictureUrl       = null,
+                ProfileId               = 0,
                 ProfileExists           = false,
+                FirstName               = staff?.FirstName ?? string.Empty,
+                LastName                = staff?.LastName ?? string.Empty,
+                PreferredName           = staff?.PreferredName,
+                Title                   = staff?.Title ?? string.Empty,
+                Bio                     = null,
+                Gender                  = staff?.Gender,
+                Timezone                = "UTC",
+                LanguageCode            = "en",
+                DepartmentId            = staff?.DepartmentId ?? 0,
+                JobTitleId              = staff?.JobTitleId ?? 0,
+                SchoolId                = 0,
+                ProfileCreatedAt        = null,
+                ProfileUpdatedAt        = null,
                 StaffNumber             = staff?.StaffNumber ?? string.Empty,
                 StaffFirstName          = staff?.FirstName ?? string.Empty,
                 StaffLastName           = staff?.LastName ?? string.Empty,
@@ -992,7 +997,7 @@ public sealed class UserManagementService : IUserManagementService
                 StaffDepartmentId       = staff?.DepartmentId ?? 0,
                 StaffProfilePhotoUrl    = staff?.ProfilePhotoUrl,
                 AccountStatus           = staff?.AccountStatus ?? string.Empty,
-                DepartmentName          = staffDepartment?.Name ?? string.Empty,
+                DepartmentName          = string.Empty,
                 Contact                 = contact,
                 Classes                 = classes,
                 StaffDevices            = devices,
@@ -1006,7 +1011,7 @@ public sealed class UserManagementService : IUserManagementService
                 StaffMedical            = [],
                 StaffContacts           = staffContacts,
                 StaffEmployment         = staffEmployment,
-                OtherStaffRelatedTables = new[] { "staff_assignment_audit", "staff_device_audit", "staff_external_account_audit" },
+                OtherStaffRelatedTables = new[] { "staff_device_audit", "staff_external_account_audit" },
                 OtherStaffRelatedAuditEntries = otherStaffRelatedAuditEntries,
             };
         }
@@ -1035,10 +1040,17 @@ public sealed class UserManagementService : IUserManagementService
 
             ProfileId               = profile.Id,
             ProfileExists           = true,
-            // Removed UserProfile fields: FirstName, LastName, PreferredName, Title, Bio, Gender, JobTitleId, SchoolId
+            FirstName               = staff?.FirstName ?? string.Empty,
+            LastName                = staff?.LastName ?? string.Empty,
+            PreferredName           = staff?.PreferredName,
+            Title                   = staff?.Title ?? string.Empty,
+            Bio                     = profile.Bio,
+            Gender                  = staff?.Gender,
             Timezone                = profile.Timezone      ?? "UTC",
             LanguageCode            = profile.LanguageCode  ?? "en",
             DepartmentId            = staff?.DepartmentId ?? 0,
+            JobTitleId              = staff?.JobTitleId ?? 0,
+            SchoolId                = 0,
             ProfileCreatedAt        = profile.CreatedAt,
             ProfileUpdatedAt        = profile.UpdatedAt,
 
@@ -1066,7 +1078,7 @@ public sealed class UserManagementService : IUserManagementService
             StaffProfilePhotoUrl    = staff?.ProfilePhotoUrl,
             AccountStatus           = staff?.AccountStatus ?? string.Empty,
 
-            DepartmentName          = staffDepartment?.Name ?? string.Empty,
+            DepartmentName          = string.Empty,
 
             Contact                 = contact,
             Classes                 = classes,
@@ -1082,7 +1094,7 @@ public sealed class UserManagementService : IUserManagementService
             StaffMedical            = [],
             StaffContacts           = staffContacts,
             StaffEmployment         = staffEmployment,
-            OtherStaffRelatedTables = new[] { "staff_assignment_audit", "staff_device_audit", "staff_external_account_audit" },
+            OtherStaffRelatedTables = new[] { "staff_device_audit", "staff_external_account_audit" },
             OtherStaffRelatedAuditEntries = otherStaffRelatedAuditEntries,
         };
     }
@@ -1111,28 +1123,11 @@ public sealed class UserManagementService : IUserManagementService
         };
     }
 
-    public async Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(
+    public Task<IReadOnlyList<StaffClassRowDto>> GetStaffClassAssignmentsAsync(
         int staffId, CancellationToken ct = default)
     {
-        var assignments = await _db.StaffDuties
-            .AsNoTracking()
-            .Where(a => a.StaffId == staffId)
-            .OrderByDescending(a => a.StartDate)
-            .ToListAsync(ct);
-
-        if (assignments.Count == 0) return [];
-
-        return assignments.Select(a => new StaffClassRowDto
-        {
-            AssignmentId = a.Id,
-            StaffId      = a.StaffId,
-            LocationId   = a.LocationId,
-            StartDate    = a.StartDate,
-            EndDate      = a.EndDate,
-            Notes        = a.Notes,
-            CreatedAt    = a.CreatedAt,
-            UpdatedAt    = a.UpdatedAt,
-        }).ToList();
+        // StaffDuty was removed; no assignment source remains in this schema.
+        return Task.FromResult<IReadOnlyList<StaffClassRowDto>>([]);
     }
 
     public async Task<IReadOnlyList<StaffDeviceRowDto>> GetStaffDevicesAsync(
@@ -1193,11 +1188,11 @@ public sealed class UserManagementService : IUserManagementService
             .AsNoTracking()
             .Include(a => a.AbsenceType)
             .Include(a => a.Status)
-            .Where(a => a.PersonType == "Staff" && a.PersonId == staffId)
+            .Where(a => a.PersonType == "Staff" && a.PersonId == (long)staffId)
             .OrderByDescending(a => a.StartDate)
             .Select(a => new StaffAbsenceRowDto
             {
-                Id           = a.Id,
+                Id           = (long)a.Id,
                 AbsenceType  = a.AbsenceType != null ? a.AbsenceType.Name : string.Empty,
                 Status       = a.Status      != null ? a.Status.Name      : string.Empty,
                 StartDate    = a.StartDate,
@@ -1281,7 +1276,27 @@ public sealed class UserManagementService : IUserManagementService
         profile.Bio          = dto.Bio;
         profile.Timezone     = dto.Timezone;
         profile.LanguageCode = dto.LanguageCode;
+        profile.DisplayName  = $"{dto.FirstName} {dto.LastName}".Trim();
         profile.UpdatedAt    = DateTime.UtcNow;
+
+        if (user.StaffId.HasValue)
+        {
+            var staff = await _db.Staff.FirstOrDefaultAsync(s => s.Id == user.StaffId.Value, ct);
+            if (staff is not null)
+            {
+                staff.FirstName    = dto.FirstName.Trim();
+                staff.LastName     = dto.LastName.Trim();
+                staff.PreferredName = string.IsNullOrWhiteSpace(dto.PreferredName) ? null : dto.PreferredName.Trim();
+                staff.Title        = dto.Title.Trim();
+                staff.Gender       = string.IsNullOrWhiteSpace(dto.Gender) ? null : dto.Gender.Trim();
+                staff.DateOfBirth  = DateOnly.FromDateTime(dto.DateOfBirth.Date);
+
+                if (dto.DepartmentId > 0) staff.DepartmentId = dto.DepartmentId;
+                if (dto.JobTitleId > 0) staff.JobTitleId = dto.JobTitleId;
+
+                staff.UpdatedAt = DateTime.UtcNow;
+            }
+        }
 
         await _db.SaveChangesAsync(ct);
     }

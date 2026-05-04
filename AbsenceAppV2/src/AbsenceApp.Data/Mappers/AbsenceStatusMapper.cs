@@ -7,7 +7,7 @@ public static class AbsenceStatusMapper
 {
     public static AbsenceStatusDto ToDto(AbsenceStatus e) => new()
     {
-        Id        = e.Id,
+        Id        = (long)e.Id,
         Code      = e.Code,
         Name      = e.Name,
         IsFinal   = e.IsFinal,

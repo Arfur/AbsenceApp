@@ -72,12 +72,38 @@ public class AuthService : IAuthService
             .FirstOrDefaultAsync(u => u.Username == username);
 
         if (user is null)
+        {
+            // Record failed audit (unknown user)
+            _db.LoginAudit.Add(new LoginAudit
+            {
+                UserId        = null,
+                LoginTime     = DateTime.UtcNow,
+                IpAddress     = null,
+                UserAgent     = null,
+                Success       = false,
+                FailureReason = "Unknown username",
+            });
+            await _db.SaveChangesAsync();
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
+        }
 
         // Verify using PBKDF2-aware comparison (falls back to plain-text for
         // dev accounts whose passwords have not yet been re-hashed).
         if (!UserManagementService.VerifyPassword(password, user.Password))
+        {
+            // Record failed audit (bad password)
+            _db.LoginAudit.Add(new LoginAudit
+            {
+                UserId        = user.Id,
+                LoginTime     = DateTime.UtcNow,
+                IpAddress     = null,
+                UserAgent     = null,
+                Success       = false,
+                FailureReason = "Invalid password",
+            });
+            await _db.SaveChangesAsync();
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
+        }
 
         // Resolve role display name via userrole → roles → roletypes
         var roleDisplayNames = await _db.Database
@@ -91,6 +117,17 @@ public class AuthService : IAuthService
             .ToListAsync();
         var roleDisplayName = roleDisplayNames.FirstOrDefault()
                               ?? (user.IsAdmin ? "Admin" : "Staff");
+
+        // Record successful audit before navigating.
+        _db.LoginAudit.Add(new LoginAudit
+        {
+            UserId    = user.Id,
+            LoginTime = DateTime.UtcNow,
+            IpAddress = null,
+            UserAgent = null,
+            Success   = true,
+        });
+        await _db.SaveChangesAsync();
 
         return new AuthResultDto
         {

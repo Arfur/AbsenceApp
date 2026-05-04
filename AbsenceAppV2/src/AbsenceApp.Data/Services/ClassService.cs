@@ -22,56 +22,52 @@
 
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
-using AbsenceApp.Data.Mappers;
-using AbsenceApp.Data.Repositories;
+using AbsenceApp.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceApp.Data.Services;
 
 public class ClassService : IClassService
 {
-    // =========================================================================
-    // Dependencies -- constructor-injected repository
-    // =========================================================================
+  private readonly AppDbContext _db;
 
-    private readonly IClassRepository _repository;
+  public ClassService(AppDbContext db) => _db = db;
 
-    public ClassService(IClassRepository repository) => _repository = repository;
+  public async Task<IEnumerable<ClassDto>> GetAllAsync()
+  {
+    var classIds = await _db.ClassYearGroups
+      .AsNoTracking()
+      .Select(c => (int)c.ClassId)
+      .Distinct()
+      .OrderBy(id => id)
+      .ToListAsync();
 
-    // =========================================================================
-    // IClassService implementation
-    // =========================================================================
-
-    public async Task<IEnumerable<ClassDto>> GetAllAsync()
+    return classIds.Select(id => new ClassDto
     {
-        var entities = await _repository.ListAsync();
-        return entities.Select(ClassMapper.ToDto);
-    }
+      Id = id,
+      Name = $"Class {id}",
+      Code = $"C{id}",
+      Description = null,
+    });
+  }
 
-    public async Task<ClassDto?> GetByIdAsync(int id)
-    {
-        var entity = await _repository.FindByIdAsync(id);
-        return entity is null ? null : ClassMapper.ToDto(entity);
-    }
+  public async Task<ClassDto?> GetByIdAsync(int id)
+  {
+    var exists = await _db.ClassYearGroups
+      .AsNoTracking()
+      .AnyAsync(c => c.ClassId == id);
 
-    public async Task<ClassDto> CreateAsync(ClassDto dto)
-    {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            throw new ArgumentException("Name is required.", nameof(dto));
+    return exists
+      ? new ClassDto { Id = id, Name = $"Class {id}", Code = $"C{id}" }
+      : null;
+  }
 
-        var entity = ClassMapper.ToEntity(dto);
-        entity.Id = 0;
-        await _repository.AddAsync(entity);
-        return ClassMapper.ToDto(entity);
-    }
+  public Task<ClassDto> CreateAsync(ClassDto dto)
+    => throw new NotSupportedException("Create is not supported: legacy class entity was removed from this schema.");
 
-    public async Task UpdateAsync(ClassDto dto)
-    {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            throw new ArgumentException("Name is required.", nameof(dto));
+  public Task UpdateAsync(ClassDto dto)
+    => throw new NotSupportedException("Update is not supported: legacy class entity was removed from this schema.");
 
-        var entity = ClassMapper.ToEntity(dto);
-        await _repository.UpdateAsync(entity);
-    }
-
-    public async Task DeleteAsync(int id) => await _repository.DeleteAsync(id);
+  public Task DeleteAsync(int id)
+    => throw new NotSupportedException("Delete is not supported: legacy class entity was removed from this schema.");
 }

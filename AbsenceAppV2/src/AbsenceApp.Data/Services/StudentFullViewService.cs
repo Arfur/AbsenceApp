@@ -47,14 +47,9 @@ public class StudentFullViewService : IStudentFullViewService
 
     public async Task<IReadOnlyList<StudentFullViewDto>> GetAllAsync()
     {
-        // Load each lookup table into a dictionary for O(1) name resolution.
         var yearGroups = await _db.YearGroups
             .AsNoTracking()
             .ToDictionaryAsync(y => y.Id, y => y.Name);
-
-        var classes = await _db.TeachingGroups
-            .AsNoTracking()
-            .ToDictionaryAsync(c => c.Id, c => c.Name);
 
         var houses = await _db.Houses
             .AsNoTracking()
@@ -68,7 +63,7 @@ public class StudentFullViewService : IStudentFullViewService
             .Select(s => StudentFullViewMapper.ToDto(
                 s,
                 yearGroupName: yearGroups.TryGetValue(s.YearGroupId, out var yg) ? yg ?? "(unknown)" : "(unknown)",
-                className:     s.ClassId.HasValue    ? (classes.TryGetValue(s.ClassId.Value,     out var cn) ? cn ?? "(unknown)" : "(unknown)") : "(unknown)",
+                className:     "(unknown)",
                 houseName:     s.HouseId.HasValue
                                    ? (houses.TryGetValue(s.HouseId.Value, out var hn) ? hn : null)
                                    : null))

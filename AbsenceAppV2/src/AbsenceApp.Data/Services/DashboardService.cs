@@ -1,3 +1,24 @@
+/*
+===============================================================================
+ File        : DashboardService.cs
+ Namespace   : AbsenceApp.Data.Services
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-05-04
+ Updated     : 2026-05-04
+-------------------------------------------------------------------------------
+ Purpose     : Application service implementing IDashboardService.
+               Provides aggregated overview and activity data for the dashboard.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-05-04  Fix Plan #2 Step 7: added file header. Fixed
+                         studentIds.Contains((ulong)s.Id) →
+                         studentIds.Contains((long)s.Id). studentIds is
+                         List<long> (projected from Absence.PersonId which is
+                         long); Student.Id is int; (long)s.Id produces long,
+                         matching the Contains parameter type.
+===============================================================================
+*/
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
 using AbsenceApp.Data.Context;
@@ -56,7 +77,7 @@ public class DashboardService : IDashboardService
 
         return result.Select(r => new DashboardStudentActivityDto
         {
-            StudentId    = r.StudentId,
+            StudentId    = (long)r.StudentId,
             FullName     = students.TryGetValue((int)r.StudentId, out var name) ? name : string.Empty,
             AbsenceCount = r.AbsenceCount,
             LastAbsence  = r.LastAbsence

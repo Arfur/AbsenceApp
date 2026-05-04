@@ -3,9 +3,9 @@
  File        : LoginAudit.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.0
  Created     : 2026-03-15
- Updated     : 2026-04-24
+ Updated     : 2026-05-04
 -------------------------------------------------------------------------------
  Purpose     : EF Core entity for the LoginAudit table.
                Records every authentication attempt with IP address and outcome.
@@ -22,6 +22,10 @@
                          [Column] attributes present and correct. No code
                          change required; header version incremented as
                          evidence of the mandatory validation pass.
+   - 1.3.0  2026-05-04  Fix Plan #2 Step 1: changed UserId from int to int?
+                         to allow null assignment for unknown-user login
+                         audit records (AuthService assigns UserId = null
+                         when the login attempt uses an unknown username).
 -------------------------------------------------------------------------------
  Notes       :
    - No navigation properties; FK integrity is enforced at the database layer.
@@ -36,7 +40,7 @@ namespace AbsenceApp.Data.Models;
 public class LoginAudit
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     [Column("LoginAt")]
     public DateTime LoginTime { get; set; }
