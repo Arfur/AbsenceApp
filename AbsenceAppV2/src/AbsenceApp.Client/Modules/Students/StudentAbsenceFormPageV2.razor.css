@@ -1,0 +1,80 @@
+/* =============================================================================
+   File        : StudentAbsenceFormPageV2.razor.css
+   Namespace   : AbsenceApp.Client.Modules.Students
+   Version     : 1.0.0
+   Created     : 2026-05-05
+   Updated     : 2026-05-05
+   Purpose     : Scoped styles for StudentAbsenceFormPageV2.
+                 CSS prefix: safv2-*
+   Changes     :
+     - 1.0.0  2026-05-05  Initial creation.
+============================================================================= */
+
+.safv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    color: var(--dsv2-text-muted, #6c757d);
+}
+
+.safv2-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.safv2-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.safv2-btn--primary  { background: var(--dsv2-primary, #0d6efd); color: #fff; border-color: var(--dsv2-primary, #0d6efd); }
+.safv2-btn--secondary{ background: transparent; color: var(--dsv2-text, #212529); border-color: var(--dsv2-border, #dee2e6); }
+
+.safv2-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #198754;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.safv2-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+}
+
+.safv2-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.safv2-field--wide { grid-column: 1 / -1; }
+
+.safv2-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dsv2-text-muted, #6c757d);
+}
+
+.safv2-input,
+.safv2-select,
+.safv2-textarea {
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--dsv2-text, #212529);
+    background: var(--dsv2-input-bg, #fff);
+    width: 100%;
+}
+
+.safv2-textarea { resize: vertical; }

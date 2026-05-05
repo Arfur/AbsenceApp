@@ -8,4 +8,6 @@ public interface IAbsenceService
     Task<AbsenceDto?>             GetByIdAsync(long id);
     Task<AbsenceDto>              CreateAsync(CreateAbsenceDto dto);
     Task                          UpdateStatusAsync(long absenceId, UpdateAbsenceStatusDto dto);
+    Task                          UpdateAsync(long id, UpdateAbsenceDto dto);
+    Task                          DeleteAsync(long id);
 }

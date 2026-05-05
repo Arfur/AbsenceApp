@@ -32,4 +32,7 @@ public interface IStudentFullViewService
 {
     /// <summary>Returns all students as flattened full-view projections.</summary>
     Task<IReadOnlyList<StudentFullViewDto>> GetAllAsync();
+
+    /// <summary>Returns a single student as a flattened full-view projection by ID.</summary>
+    Task<StudentFullViewDto?> GetByIdAsync(int id, CancellationToken ct = default);
 }

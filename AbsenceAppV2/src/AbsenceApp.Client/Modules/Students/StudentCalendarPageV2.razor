@@ -1,0 +1,139 @@
+@* ===========================================================================
+   File        : StudentCalendarPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Students
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-05
+   Updated     : 2026-05-05
+   ---------------------------------------------------------------------------
+   Purpose     : Annual attendance calendar for a student. Displays A (Absent)
+                 or P (Present) marks for each day in the selected month based
+                 on the student's absence date ranges.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-05  Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Route: /v2/students/{StudentId:int}/calendar
+     - CSS prefix: scpv2-*
+   ===========================================================================
+*@
+
+@page "/v2/students/{StudentId:int}/calendar"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Students
+
+@using AbsenceApp.Client.ViewModels.V2
+@inject StudentCalendarViewModelV2 ViewModel
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        <button class="scpv2-btn scpv2-btn--secondary"
+                @onclick="@(() => Nav.NavigateTo($"/v2/students/{StudentId}"))">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Profile
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.IsLoading)
+        {
+            <div class="scpv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i> Loading…
+            </div>
+        }
+        else
+        {
+            @if (ViewModel.Error is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+
+            @if (ViewModel.Student is not null)
+            {
+                @* Student summary strip *@
+                <div class="scpv2-student-strip">
+                    <span class="scpv2-student-name">@ViewModel.Student.FullName</span>
+                    <span class="scpv2-student-meta">@ViewModel.Student.YearGroupName &bull; @ViewModel.Student.ClassName</span>
+                    <span class="scpv2-student-meta">Absences: @ViewModel.Absences.Count total record(s)</span>
+                </div>
+
+                @* Month navigation *@
+                <div class="scpv2-nav">
+                    <button class="scpv2-btn scpv2-btn--icon" @onclick="OnPrev" title="Previous month">
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <span class="scpv2-month-label">@ViewModel.MonthLabel</span>
+                    <button class="scpv2-btn scpv2-btn--icon" @onclick="OnNext" title="Next month">
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                    </button>
+                    <button class="scpv2-btn scpv2-btn--secondary scpv2-today-btn" @onclick="OnToday">
+                        Today
+                    </button>
+                </div>
+
+                @* Calendar grid *@
+                <div class="scpv2-calendar">
+                    @* Day-of-week headers *@
+                    @foreach (var dow in new[] { "Mon","Tue","Wed","Thu","Fri","Sat","Sun" })
+                    {
+                        <div class="scpv2-cal-header">@dow</div>
+                    }
+
+                    @* Empty cells before first day *@
+                    @{
+                        var firstDay   = new DateTime(ViewModel.Year, ViewModel.Month, 1);
+                        var dow0       = ((int)firstDay.DayOfWeek + 6) % 7; // Mon=0
+                        for (var blank = 0; blank < dow0; blank++)
+                        {
+                            <div class="scpv2-cal-cell scpv2-cal-cell--empty"></div>
+                        }
+                    }
+
+                    @* Day cells *@
+                    @foreach (var (date, isAbsent) in ViewModel.CalendarDays)
+                    {
+                        var isWeekend = date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+                        var isToday   = date == DateOnly.FromDateTime(DateTime.Today);
+                        <div class="scpv2-cal-cell @(isAbsent ? "scpv2-cal-cell--absent" : "scpv2-cal-cell--present") @(isWeekend ? "scpv2-cal-cell--weekend" : "") @(isToday ? "scpv2-cal-cell--today" : "")">
+                            <span class="scpv2-cal-day">@date.Day</span>
+                            @if (!isWeekend)
+                            {
+                                <span class="scpv2-cal-mark">@(isAbsent ? "A" : "P")</span>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @* Legend *@
+                <div class="scpv2-legend">
+                    <span class="scpv2-legend-item scpv2-legend-item--absent">A = Absent</span>
+                    <span class="scpv2-legend-item scpv2-legend-item--present">P = Present</span>
+                    <span class="scpv2-legend-item scpv2-legend-item--weekend">Weekend</span>
+                </div>
+            }
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    [Parameter] public int StudentId { get; set; }
+
+    private string PageTitle => ViewModel.Student is not null
+        ? $"{ViewModel.Student.FullName} — Calendar"
+        : "Student Calendar";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await ViewModel.InitAsync(StudentId);
+        StateHasChanged();
+    }
+
+    private void OnPrev()  { ViewModel.PreviousMonth(); }
+    private void OnNext()  { ViewModel.NextMonth(); }
+    private void OnToday() { ViewModel.GoToToday(); }
+}

@@ -1,0 +1,158 @@
+@* ===========================================================================
+   File        : StudentAbsenceFormPageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Students
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-05
+   Updated     : 2026-05-05
+   ---------------------------------------------------------------------------
+   Purpose     : Create / Edit form for a student absence record.
+                 - Route /v2/students/{StudentId:int}/absences/new   → create
+                 - Route /v2/students/{StudentId:int}/absences/{AbsenceId:long}/edit → edit
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-05  Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - CSS prefix: safv2-*
+   ===========================================================================
+*@
+
+@page "/v2/students/{StudentId:int}/absences/new"
+@page "/v2/students/{StudentId:int}/absences/{AbsenceId:long}/edit"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Students
+
+@using AbsenceApp.Client.ViewModels.V2
+@inject StudentAbsenceFormViewModelV2 ViewModel
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @if (ViewModel.Success is not null)
+        {
+            <span class="safv2-success">
+                <i class="bi bi-check-circle-fill" aria-hidden="true"></i> @ViewModel.Success
+            </span>
+        }
+        <button class="safv2-btn safv2-btn--primary"
+                disabled="@(ViewModel.IsSaving || ViewModel.IsLoading)"
+                @onclick="OnSave">
+            @(ViewModel.IsSaving ? "Saving…" : (ViewModel.IsNew ? "Create Absence" : "Save Changes"))
+        </button>
+        <button class="safv2-btn safv2-btn--secondary"
+                disabled="@ViewModel.IsSaving"
+                @onclick="@(() => Nav.NavigateTo($"/v2/students/{StudentId}"))">
+            Cancel
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.IsLoading)
+        {
+            <div class="safv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i> Loading...
+            </div>
+        }
+        else
+        {
+            @if (ViewModel.Error is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+
+            <div class="safv2-form">
+
+                @* Absence Type *@
+                <div class="safv2-field">
+                    <label class="safv2-label" for="safv2-type">Absence Type</label>
+                    <select id="safv2-type" class="safv2-select"
+                            @bind="ViewModel.AbsenceTypeId">
+                        <option value="0">— Select type —</option>
+                        @foreach (var t in ViewModel.AbsenceTypes)
+                        {
+                            <option value="@t.Id">@t.Name</option>
+                        }
+                    </select>
+                </div>
+
+                @* Status (edit mode only) *@
+                @if (!ViewModel.IsNew)
+                {
+                    <div class="safv2-field">
+                        <label class="safv2-label" for="safv2-status">Status</label>
+                        <select id="safv2-status" class="safv2-select"
+                                @bind="ViewModel.StatusId">
+                            <option value="0">— Select status —</option>
+                            @foreach (var s in ViewModel.AbsenceStatuses)
+                            {
+                                <option value="@s.Id">@s.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+
+                @* Start Date *@
+                <div class="safv2-field">
+                    <label class="safv2-label" for="safv2-start">Start Date</label>
+                    <input id="safv2-start" type="date" class="safv2-input"
+                           value="@ViewModel.StartDate.ToString("yyyy-MM-dd")"
+                           @onchange="@(e => ViewModel.StartDate = DateOnly.Parse(e.Value!.ToString()!))" />
+                </div>
+
+                @* End Date *@
+                <div class="safv2-field">
+                    <label class="safv2-label" for="safv2-end">End Date</label>
+                    <input id="safv2-end" type="date" class="safv2-input"
+                           value="@ViewModel.EndDate.ToString("yyyy-MM-dd")"
+                           @onchange="@(e => ViewModel.EndDate = DateOnly.Parse(e.Value!.ToString()!))" />
+                </div>
+
+                @* Reported Via *@
+                <div class="safv2-field">
+                    <label class="safv2-label" for="safv2-via">Reported Via</label>
+                    <select id="safv2-via" class="safv2-select" @bind="ViewModel.ReportedVia">
+                        <option value="Manual">Manual</option>
+                        <option value="Email">Email</option>
+                        <option value="Phone">Phone</option>
+                        <option value="MIS">MIS</option>
+                    </select>
+                </div>
+
+                @* Notes *@
+                <div class="safv2-field safv2-field--wide">
+                    <label class="safv2-label" for="safv2-notes">Notes</label>
+                    <textarea id="safv2-notes" class="safv2-textarea" rows="3"
+                              @bind="ViewModel.Notes" placeholder="Optional notes…"></textarea>
+                </div>
+
+            </div>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    [Parameter] public int  StudentId  { get; set; }
+    [Parameter] public long AbsenceId  { get; set; }
+
+    private string PageTitle => ViewModel.IsNew ? "New Absence" : "Edit Absence";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (AbsenceId == 0)
+            await ViewModel.InitNewAsync(StudentId);
+        else
+            await ViewModel.InitEditAsync(StudentId, AbsenceId);
+    }
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok)
+            Nav.NavigateTo($"/v2/students/{StudentId}");
+    }
+}

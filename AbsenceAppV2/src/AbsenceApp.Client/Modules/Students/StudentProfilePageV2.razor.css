@@ -1,0 +1,238 @@
+/* =============================================================================
+   File        : StudentProfilePageV2.razor.css
+   Namespace   : AbsenceApp.Client.Modules.Students
+   Version     : 1.0.0
+   Created     : 2026-05-05
+   Updated     : 2026-05-05
+   Purpose     : Scoped styles for StudentProfilePageV2.
+                 CSS prefix: spv2-*
+   Changes     :
+     - 1.0.0  2026-05-05  Initial creation.
+============================================================================= */
+
+/* ── Loading ─────────────────────────────────────────────────────────────── */
+
+.spv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    color: var(--dsv2-text-muted, #6c757d);
+    font-size: 0.95rem;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.spv2-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.spv2-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.spv2-btn--primary  { background: var(--dsv2-primary, #0d6efd); color: #fff; border-color: var(--dsv2-primary, #0d6efd); }
+.spv2-btn--secondary{ background: transparent; color: var(--dsv2-text, #212529); border-color: var(--dsv2-border, #dee2e6); }
+.spv2-btn--icon     { padding: 0.3rem 0.5rem; background: transparent; border-color: var(--dsv2-border, #dee2e6); }
+.spv2-btn--danger   { color: #dc3545; border-color: #dc3545; }
+
+/* ── Banner ──────────────────────────────────────────────────────────────── */
+
+.spv2-banner {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    background: #1e2d40;
+    border-radius: 0.5rem;
+    margin-bottom: 1.25rem;
+    color: #fff;
+}
+
+.spv2-banner-photo  { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+.spv2-banner-identity { flex: 1; }
+
+.spv2-banner-avatar-label { cursor: pointer; display: block; }
+.spv2-banner-upload--busy { opacity: 0.6; pointer-events: none; }
+
+.spv2-file-input { display: none; }
+
+.spv2-banner-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.spv2-banner-avatar--placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: rgba(255,255,255,0.7);
+    border: 2px dashed rgba(255,255,255,0.3);
+}
+
+.spv2-banner-remove-photo {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.spv2-banner-photo-error {
+    color: #f8d7da;
+    font-size: 0.75rem;
+    max-width: 90px;
+    text-align: center;
+}
+
+.spv2-banner-name {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.spv2-banner-kv-row {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.2rem;
+}
+
+.spv2-banner-kv-label { color: rgba(255,255,255,0.7); min-width: 100px; }
+.spv2-banner-kv-value { color: #fff; font-weight: 500; }
+
+/* ── Badges ──────────────────────────────────────────────────────────────── */
+
+.spv2-badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.spv2-badge--active    { background: #198754; color: #fff; }
+.spv2-badge--inactive  { background: #6c757d; color: #fff; }
+.spv2-badge--suspended { background: #dc3545; color: #fff; }
+
+/* ── Tab Bar ─────────────────────────────────────────────────────────────── */
+
+.spv2-tab-bar {
+    display: flex;
+    gap: 0.2rem;
+    border-bottom: 2px solid var(--dsv2-border, #dee2e6);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.spv2-tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--dsv2-text-muted, #6c757d);
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -2px;
+}
+
+.spv2-tab:hover     { color: var(--dsv2-text, #212529); }
+.spv2-tab--active   { color: var(--dsv2-primary, #0d6efd); border-bottom-color: var(--dsv2-primary, #0d6efd); font-weight: 600; }
+
+/* ── Tab Content ─────────────────────────────────────────────────────────── */
+
+.spv2-tab-content { padding: 0.5rem 0; }
+
+/* ── Fields grid ─────────────────────────────────────────────────────────── */
+
+.spv2-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.75rem;
+}
+
+.spv2-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.spv2-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dsv2-text-muted, #6c757d);
+}
+
+.spv2-value {
+    font-size: 0.9rem;
+    color: var(--dsv2-text, #212529);
+    padding: 0.4rem 0.6rem;
+    background: var(--dsv2-surface, #f8f9fa);
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 0.3rem;
+    min-height: 2rem;
+}
+
+/* ── Cards (contacts / medical) ──────────────────────────────────────────── */
+
+.spv2-card {
+    padding: 1rem;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+
+.spv2-empty {
+    color: var(--dsv2-text-muted, #6c757d);
+    font-size: 0.9rem;
+    padding: 1.5rem 0;
+}
+
+/* ── Absence table ───────────────────────────────────────────────────────── */
+
+.spv2-absence-toolbar { margin-bottom: 0.75rem; }
+
+.spv2-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.spv2-table th,
+.spv2-table td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--dsv2-border, #dee2e6);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.spv2-table thead th {
+    font-weight: 600;
+    background: var(--dsv2-surface, #f8f9fa);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.spv2-absence-actions { white-space: nowrap; }

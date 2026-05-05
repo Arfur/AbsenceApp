@@ -3,9 +3,9 @@
  File        : StudentFullViewService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-17
- Updated     : 2026-03-17
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : Fetches all students and resolves FK IDs to human-readable names
                by loading YearGroup, Class, and House lookup tables into
@@ -14,6 +14,7 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-17  Initial creation.
+   - 1.1.0  2026-05-05  Student Absence Management: added GetByIdAsync(int id).
 -------------------------------------------------------------------------------
  Notes       :
    - Takes AppDbContext directly (not IStudentRepository) to enable cross-table
@@ -69,5 +70,39 @@ public class StudentFullViewService : IStudentFullViewService
                                    : null))
             .ToList()
             .AsReadOnly();
+    }
+
+    // =========================================================================
+    // GetByIdAsync — load single student + lookup tables, project to DTO
+    // =========================================================================
+
+    public async Task<StudentFullViewDto?> GetByIdAsync(int id, CancellationToken ct = default)
+    {
+        var student = await _db.Students
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Id == id, ct);
+
+        if (student is null) return null;
+
+        var yearGroupName = await _db.YearGroups
+            .AsNoTracking()
+            .Where(y => y.Id == student.YearGroupId)
+            .Select(y => y.Name)
+            .FirstOrDefaultAsync(ct) ?? "(unknown)";
+
+        string? houseName = null;
+        if (student.HouseId.HasValue)
+        {
+            houseName = await _db.Houses
+                .AsNoTracking()
+                .Where(h => h.Id == student.HouseId.Value)
+                .Select(h => h.Name)
+                .FirstOrDefaultAsync(ct);
+        }
+
+        return StudentFullViewMapper.ToDto(student,
+            yearGroupName: yearGroupName,
+            className:     "(unknown)",
+            houseName:     houseName);
     }
 }

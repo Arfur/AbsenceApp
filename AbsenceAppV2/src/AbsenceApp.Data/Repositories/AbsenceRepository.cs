@@ -16,6 +16,8 @@
                          types from ulong to long in GetByPersonAsync and
                          GetByIdAsync to match Absence.PersonId / Absence.Id
                          (both long after Phase 2 type alignment).
+   - 1.1.0  2026-05-05  Student Absence Management: added DeleteAsync(long id)
+                         and UpdateAsync(Absence entity) to interface and class.
 ===============================================================================
 */
 using AbsenceApp.Data.Context;
@@ -29,6 +31,8 @@ public interface IAbsenceRepository
     Task<IEnumerable<Absence>> GetByPersonAsync(string personType, long personId);
     Task<Absence?>             GetByIdAsync(long id);
     Task<Absence>              AddAsync(Absence entity);
+    Task                       UpdateAsync(Absence entity);
+    Task                       DeleteAsync(long id);
     Task                       SaveChangesAsync();
 }
 
@@ -56,6 +60,20 @@ public class AbsenceRepository : IAbsenceRepository
         _context.Absences.Add(entity);
         await _context.SaveChangesAsync();
         return entity;
+    }
+
+    public async Task UpdateAsync(Absence entity)
+    {
+        _context.Absences.Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        var entity = await _context.Absences.FindAsync(id);
+        if (entity is null) return;
+        _context.Absences.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync() =>

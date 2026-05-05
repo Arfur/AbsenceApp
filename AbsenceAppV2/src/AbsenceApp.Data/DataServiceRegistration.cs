@@ -3,9 +3,9 @@
  File        : DataServiceRegistration.cs
  Namespace   : AbsenceApp.Data
  Author      : Michael
- Version     : 1.5.0
+ Version     : 1.6.0
  Created     : 2026-03-13
- Updated     : 2026-04-21
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers the complete data
                layer — DbContext, EF repositories, and EF-backed services —
@@ -41,6 +41,8 @@
                          IStudentAbsenceService with IAbsenceRepository,
                          IAbsenceStatusRepository, IAbsenceService,
                          IAbsenceStatusService.
+   - 1.6.0  2026-05-05  Student Absence Management: registered
+                         IStudentMedicalRepository and IStudentFlagRepository.
 -------------------------------------------------------------------------------
  Notes       :
    - Legacy in-memory services (IStudentService, IAbsenceService) are
@@ -87,6 +89,8 @@ public static class DataServiceRegistration
         services.AddScoped<IAbsenceStatusRepository, AbsenceStatusRepository>();
         services.AddScoped<IAbsenceTypeRepository, AbsenceTypeRepository>();
         services.AddScoped<IStudentContactRepository, StudentContactRepository>();
+        services.AddScoped<IStudentMedicalRepository, StudentMedicalRepository>();
+        services.AddScoped<IStudentFlagRepository, StudentFlagRepository>();
         services.AddScoped<IYearGroupRepository, YearGroupRepository>();
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IJobTitleRepository, JobTitleRepository>();

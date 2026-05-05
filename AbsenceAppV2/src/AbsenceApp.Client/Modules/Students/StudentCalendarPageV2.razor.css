@@ -1,0 +1,127 @@
+/* =============================================================================
+   File        : StudentCalendarPageV2.razor.css
+   Namespace   : AbsenceApp.Client.Modules.Students
+   Version     : 1.0.0
+   Created     : 2026-05-05
+   Updated     : 2026-05-05
+   Purpose     : Scoped styles for StudentCalendarPageV2.
+                 CSS prefix: scpv2-*
+   Changes     :
+     - 1.0.0  2026-05-05  Initial creation.
+============================================================================= */
+
+.scpv2-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    color: var(--dsv2-text-muted, #6c757d);
+}
+
+.scpv2-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 0.35rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    background: transparent;
+    color: var(--dsv2-text, #212529);
+}
+
+.scpv2-btn--secondary { border-color: var(--dsv2-border, #dee2e6); }
+.scpv2-btn--icon      { padding: 0.3rem 0.55rem; }
+
+/* ── Student strip ────────────────────────────────────────────────────────── */
+
+.scpv2-student-strip {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--dsv2-surface, #f8f9fa);
+    border: 1px solid var(--dsv2-border, #dee2e6);
+    border-radius: 0.4rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.scpv2-student-name { font-weight: 600; font-size: 1rem; }
+.scpv2-student-meta { color: var(--dsv2-text-muted, #6c757d); font-size: 0.875rem; }
+
+/* ── Month navigation ─────────────────────────────────────────────────────── */
+
+.scpv2-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.scpv2-month-label { font-size: 1.1rem; font-weight: 600; min-width: 160px; text-align: center; }
+.scpv2-today-btn   { margin-left: 0.5rem; }
+
+/* ── Calendar grid ────────────────────────────────────────────────────────── */
+
+.scpv2-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 1rem;
+}
+
+.scpv2-cal-header {
+    padding: 0.4rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--dsv2-text-muted, #6c757d);
+}
+
+.scpv2-cal-cell {
+    min-height: 56px;
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+}
+
+.scpv2-cal-cell--empty   { background: transparent; }
+.scpv2-cal-cell--present { background: #d1e7dd; }
+.scpv2-cal-cell--absent  { background: #f8d7da; }
+.scpv2-cal-cell--weekend { background: #f0f0f0; opacity: 0.7; }
+.scpv2-cal-cell--today   { outline: 2px solid var(--dsv2-primary, #0d6efd); }
+
+.scpv2-cal-day  { font-size: 0.8rem; font-weight: 600; color: var(--dsv2-text, #212529); }
+.scpv2-cal-mark { font-size: 0.75rem; font-weight: 700; }
+
+.scpv2-cal-cell--absent  .scpv2-cal-mark { color: #842029; }
+.scpv2-cal-cell--present .scpv2-cal-mark { color: #0f5132; }
+
+/* ── Legend ───────────────────────────────────────────────────────────────── */
+
+.scpv2-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.scpv2-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+}
+
+.scpv2-legend-item--absent  { background: #f8d7da; color: #842029; }
+.scpv2-legend-item--present { background: #d1e7dd; color: #0f5132; }
+.scpv2-legend-item--weekend { background: #f0f0f0; color: var(--dsv2-text-muted, #6c757d); }

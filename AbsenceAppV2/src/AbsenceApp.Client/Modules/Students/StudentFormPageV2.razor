@@ -17,15 +17,17 @@
                           Updated namespace and layout. Preserved all bindings,
                           validation, and ViewModel logic.
      - (bumped)  2026-04-04  Phase 3 Stabilisation Issue 2: changed @layout from BaseLayoutV2 to MainLayoutV2 so all module pages use the canonical V2 shell layout with correct fixed-header padding.
+     - 1.2.0  2026-05-05  Student Absence Management: removed /v2/students/{Id:long}/edit
+                           route. Student editing is no longer supported via this form.
+                           Only /v2/students/new (add) route remains.
    ---------------------------------------------------------------------------
    Notes       :
-     - Routes: /v2/students/new (add), /v2/students/{Id:long}/edit (edit)
+     - Route: /v2/students/new (add only — edit route removed)
      - Register StudentFormViewModelV2 as Scoped in Phase 10.
    ===========================================================================
 *@
 
 @page "/v2/students/new"
-@page "/v2/students/{Id:long}/edit"
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Students
 

@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.6.0
+ Version     : 1.7.0
  Created     : 2026-03-22
- Updated     : 2026-04-21
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -30,6 +30,9 @@
    - 1.4.0  2026-04-11  E15 additions: UserManagementApiServiceV2, ViewModels.
    - 1.5.0  2026-04-11  E16 Pages Registry: PagesApiServiceV2, ViewModels.
    - 1.6.0  2026-04-21  Added UserProfileViewModelV2 registration.
+   - 1.7.0  2026-05-05  Student Absence Management: added StudentProfileApiServiceV2,
+                         StudentProfileViewModelV2, StudentAbsenceFormViewModelV2,
+                         StudentCalendarViewModelV2. Removed StudentDetailViewModelV2.
 -------------------------------------------------------------------------------
  Notes       :
    - HttpClient is registered as a singleton for BrandingServiceV2 and
@@ -112,6 +115,8 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<UserManagementApiServiceV2>();
         // E16 — Pages Registry API service (direct DB via IServiceScopeFactory)
         services.AddScoped<PagesApiServiceV2>();
+        // Student Absence Management API service (direct DB via IServiceScopeFactory)
+        services.AddScoped<StudentProfileApiServiceV2>();
 
         // -----------------------------------------------------------------
         // V2 Table settings — Singleton: shared local-file store
@@ -122,8 +127,10 @@ public static class V2ServiceCollectionExtensions
         // V2 ViewModels — Scoped to align with Scoped EF Core services
         // -----------------------------------------------------------------
         services.AddScoped<StudentsListViewModelV2>();
-        services.AddScoped<StudentDetailViewModelV2>();
         services.AddScoped<StudentFormViewModelV2>();
+        services.AddScoped<StudentProfileViewModelV2>();
+        services.AddScoped<StudentAbsenceFormViewModelV2>();
+        services.AddScoped<StudentCalendarViewModelV2>();
         services.AddScoped<StaffListViewModelV2>();
         services.AddScoped<StaffDetailViewModelV2>();
         services.AddScoped<StaffFormViewModelV2>();

@@ -3,9 +3,9 @@
  File        : AbsenceService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-05-04
- Updated     : 2026-05-04
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : Application service implementing IAbsenceService. Handles
                CRUD operations and status transitions for Absence records.
@@ -23,6 +23,8 @@
                          calls to _repo.GetByPersonAsync / _repo.GetByIdAsync.
                          IAbsenceRepository parameters are now long (Step 3);
                          the casts produced ulong arguments and caused CS1503.
+   - 1.2.0  2026-05-05  Student Absence Management: added UpdateAsync and
+                         DeleteAsync implementations.
 ===============================================================================
 */
 using AbsenceApp.Core.DTOs;
@@ -87,5 +89,29 @@ public class AbsenceService : IAbsenceService
         }
 
         await _repo.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(long id, UpdateAbsenceDto dto)
+    {
+        var entity = await _repo.GetByIdAsync(id)
+                     ?? throw new KeyNotFoundException($"Absence {id} not found.");
+
+        entity.AbsenceTypeId = dto.AbsenceTypeId;
+        entity.StatusId      = dto.StatusId;
+        entity.StartDate     = dto.StartDate;
+        entity.EndDate       = dto.EndDate;
+        entity.ReportedVia   = dto.ReportedVia;
+        entity.Notes         = dto.Notes;
+        entity.ApprovedBy    = dto.ApprovedBy;
+        entity.UpdatedAt     = DateTime.UtcNow;
+        entity.DurationDays  = (int)(dto.EndDate.ToDateTime(TimeOnly.MinValue) -
+                                     dto.StartDate.ToDateTime(TimeOnly.MinValue)).TotalDays + 1;
+
+        await _repo.UpdateAsync(entity);
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        await _repo.DeleteAsync(id);
     }
 }

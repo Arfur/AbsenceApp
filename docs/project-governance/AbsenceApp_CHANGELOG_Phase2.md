@@ -893,3 +893,74 @@ Applied Issues N1–N4 fixes to the User Profile page. All changes are confined to
 ### Verification
 - Build: 0 errors, 0 warnings (verified post-change)
 - Environments applied: dev
+
+
+---
+
+## Session — Student Absence Management (2026-05-05)
+
+### Summary
+Implemented the full 8-phase Student Absence Management plan. Adds view-only
+student profile page, full absence CRUD, attendance calendar, new repositories
+for medical/flag data, updated data layer, and a SQL migration script for
+navigation items.
+
+### Phases Applied
+
+| Phase | Description |
+|-------|-------------|
+| 1 | Data layer: new repositories (StudentMedical, StudentFlag), new DTOs (StudentMedicalDto, StudentFlagDto, UpdateAbsenceDto), GetByIdAsync on IStudentFullViewService, DeleteAsync+UpdateAsync on IAbsenceService chain |
+| 2 | API service: StudentProfileApiServiceV2 (IServiceScopeFactory pattern) |
+| 3 | ViewModels: StudentProfileViewModelV2, StudentAbsenceFormViewModelV2, StudentCalendarViewModelV2 |
+| 4 | DI: V2ServiceCollectionExtensions updated — added 4 new registrations, removed StudentDetailViewModelV2 |
+| 5 | Razor pages: StudentProfilePageV2 (7 tabs), StudentAbsenceFormPageV2, StudentCalendarPageV2; deleted StudentDetailPageV2; StudentFormPageV2 edit route removed |
+| 6 | SQL: scripts/E37_StudentNavigationItems.sql |
+| 7 | Changelog (this entry) |
+| 8 | Build: 0 errors, 0 warnings |
+
+### New Files Created
+
+| File | Version | Notes |
+|------|---------|-------|
+| src/AbsenceApp.Core/DTOs/StudentProfileDtos.cs | v1.0.0 | StudentMedicalDto, StudentFlagDto, UpdateAbsenceDto |
+| src/AbsenceApp.Data/Repositories/StudentMedicalRepository.cs | v1.0.0 | IStudentMedicalRepository + implementation |
+| src/AbsenceApp.Data/Repositories/StudentFlagRepository.cs | v1.0.0 | IStudentFlagRepository + implementation |
+| src/AbsenceApp.Client/Services/ApiV2/Modules/StudentProfileApiServiceV2.cs | v1.0.0 | IServiceScopeFactory pattern |
+| src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs | v1.0.0 | View-only profile + absence CRUD + avatar upload |
+| src/AbsenceApp.Client/ViewModels/V2/StudentAbsenceFormViewModelV2.cs | v1.0.0 | Create/edit absence form |
+| src/AbsenceApp.Client/ViewModels/V2/StudentCalendarViewModelV2.cs | v1.0.0 | Monthly A/P calendar |
+| src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor | v1.0.0 | 7-tab profile page (CSS prefix: spv2-*) |
+| src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor.css | v1.0.0 | Scoped styles |
+| src/AbsenceApp.Client/Modules/Students/StudentAbsenceFormPageV2.razor | v1.0.0 | Absence create/edit (CSS prefix: safv2-*) |
+| src/AbsenceApp.Client/Modules/Students/StudentAbsenceFormPageV2.razor.css | v1.0.0 | Scoped styles |
+| src/AbsenceApp.Client/Modules/Students/StudentCalendarPageV2.razor | v1.0.0 | Monthly calendar (CSS prefix: scpv2-*) |
+| src/AbsenceApp.Client/Modules/Students/StudentCalendarPageV2.razor.css | v1.0.0 | Scoped styles |
+| scripts/E37_StudentNavigationItems.sql | v1.0.0 | menuitems, rolemenuitem, app_pages, menuitemglobalconfigs |
+
+### Modified Files
+
+| File | Before | After |
+|------|--------|-------|
+| src/AbsenceApp.Core/Interfaces/IStudentFullViewService.cs | v1.0.0 | **v1.1.0** |
+| src/AbsenceApp.Core/Interfaces/IAbsenceService.cs | no version | added DeleteAsync, UpdateAsync |
+| src/AbsenceApp.Data/Services/StudentFullViewService.cs | v1.0.0 | **v1.1.0** |
+| src/AbsenceApp.Data/Repositories/AbsenceRepository.cs | v1.0.0 | **v1.1.0** |
+| src/AbsenceApp.Data/Services/AbsenceService.cs | v1.1.0 | **v1.2.0** |
+| src/AbsenceApp.Data/DataServiceRegistration.cs | v1.5.0 | **v1.6.0** |
+| src/AbsenceApp.Client/Extensions/V2ServiceCollectionExtensions.cs | v1.6.0 | **v1.7.0** |
+| src/AbsenceApp.Client/Modules/Students/StudentFormPageV2.razor | v1.1.1 | **v1.2.0** |
+
+### Deleted Files
+
+- src/AbsenceApp.Client/Modules/Students/StudentDetailPageV2.razor
+- src/AbsenceApp.Client/Modules/Students/StudentDetailPageV2.razor.css
+
+### Rollout Notes
+- Run scripts/E37_StudentNavigationItems.sql against absenceapp database
+- No EF Core migrations required (new repositories use existing DbSets)
+- Build: standard dotnet build --no-restore from AbsenceAppV2
+- Backout plan: revert all listed files, restore StudentDetailPageV2 from git
+
+### Verification
+- Build: verified 0 errors, 0 warnings
+- Environments applied: dev
