@@ -1,10 +1,10 @@
-@* ===========================================================================
+﻿@* ===========================================================================
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 6.1.0
+   Version     : 6.2.0
    Created     : 2026-04-11
-   Updated     : 2026-05-04
+   Updated     : 2026-05-05
    ---------------------------------------------------------------------------
    Purpose     : E15 User Management � Add / Edit User � full profile page.
                  Routes:
@@ -91,7 +91,16 @@
                              Add-mode LinkedStaff not-null: <h2> changed to <div>.
                            - Issue N4: Last-login block wrapped in @if (!ViewModel.IsNew).
                            - Issue N1: OnParametersSetAsync gets else-if branch to handle
-                             Edit→Add navigation (clear _loadedId, call InitNewAsync).
+                             Edit->Add navigation (clear _loadedId, call InitNewAsync).
+     - 6.2.0  2026-05-05  Fixes B+C — Unified banner identity block:
+                           - B: Replaced dual-branch identity block (LinkedStaff==null /
+                             LinkedStaff!=null split) with a single unified <div> containing
+                             one <select> that switches Add/Edit mode via @if (ViewModel.IsNew).
+                             Removed upv2-banner-field, upv2-banner-label, upv2-field-hint,
+                             upv2-banner-select wrappers; unified Role/Email/Status kv-rows
+                             using ternary expressions for both modes.
+                           - C: Removed @if (!ViewModel.IsNew) wrapper from Last Login block;
+                             now always rendered; fallback value uses "&mdash;" HTML entity.
    ===========================================================================
 *@
 
@@ -229,72 +238,24 @@
                     }
                 </div>
 
-                @* Center: identity / add-mode content *@
+                @* Center: identity block (unified - Add and Edit Mode) *@
                 <div class="upv2-banner-identity">
 
-                    @if (ViewModel.IsNew)
-                    {
-                        @if (ViewModel.LinkedStaff is null)
+                    <div class="upv2-banner-name">
+                        @if (ViewModel.IsNew)
                         {
-                            <div class="upv2-banner-name">New User Account <span class="upv2-banner-mode-hint">(Select New Staff name)</span></div>
-
-                            @if (ViewModel.StaffWithoutAccounts.Count > 0)
-                            {
-                                <div class="upv2-banner-field">
-                                    <label class="upv2-banner-label" for="nu-staff">Select Staff Member</label>
-                                    <select id="nu-staff" class="upv2-banner-select" @onchange="OnStaffSelected">
-                                        <option value="0">&mdash; Select staff member &mdash;</option>
-                                        @foreach (var staff in ViewModel.StaffWithoutAccounts)
-                                        {
-                                            <option value="@staff.Id">@staff.FullName (@staff.StaffNumber)</option>
-                                        }
-                                    </select>
-                                    <p class="upv2-field-hint">Only staff without an existing user account are listed.</p>
-                                </div>
-                            }
-                            else
-                            {
-                                <p class="upv2-banner-hint">All staff members already have user accounts.</p>
-                            }
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Role:</span>
-                                <span class="upv2-banner-kv-value">&mdash;</span>
-                            </div>
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Email:</span>
-                                <span class="upv2-banner-kv-value">&mdash;</span>
-                            </div>
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Status:</span>
-                                <span class="upv2-banner-kv-value">&mdash;</span>
-                            </div>
+                            <select class="upv2-banner-user-select"
+                                    value="@(ViewModel.LinkedStaff?.Id ?? 0)"
+                                    @onchange="OnStaffSelected">
+                                <option value="0">&mdash; Select staff member &mdash;</option>
+                                @foreach (var staff in ViewModel.StaffWithoutAccounts)
+                                {
+                                    <option value="@staff.Id">@staff.FullName (@staff.StaffNumber)</option>
+                                }
+                            </select>
                         }
                         else
                         {
-                            @* Staff selected � show kv-rows (UserS3.png style) *@
-                            <div class="upv2-banner-name">@ViewModel.LinkedStaff.FullName</div>
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Role:</span>
-                                <span class="upv2-banner-kv-value">
-                                    @(ViewModel.RoleTypes.FirstOrDefault(r => r.Id == ViewModel.RoleTypeId)?.DisplayName ?? "�")
-                                </span>
-                            </div>
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Email:</span>
-                                <span class="upv2-banner-kv-value">
-                                    @(string.IsNullOrEmpty(ViewModel.LinkedStaff.WorkEmail) ? "�" : ViewModel.LinkedStaff.WorkEmail)
-                                </span>
-                            </div>
-                            <div class="upv2-banner-kv-row">
-                                <span class="upv2-banner-kv-label">Status:</span>
-                                <span class="upv2-badge upv2-badge--status-active">Active</span>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        @* Edit Mode � user-navigation dropdown + kv-rows (UserS3.png style) *@
-                        <div class="upv2-banner-name">
                             <select class="upv2-banner-user-select"
                                     value="@ViewModel.UserId"
                                     @onchange="OnUserSelectChanged">
@@ -303,36 +264,59 @@
                                     <option value="@u.Id">@u.FullName</option>
                                 }
                             </select>
-                            <span class="upv2-banner-mode-hint">(Select User name)</span>
-                        </div>
-                        <div class="upv2-banner-kv-row">
-                            <span class="upv2-banner-kv-label">Role:</span>
-                            <span class="upv2-banner-kv-value">@ViewModel.HeaderRoleName</span>
-                        </div>
-                        <div class="upv2-banner-kv-row">
-                            <span class="upv2-banner-kv-label">Email:</span>
-                            <span class="upv2-banner-kv-value">@ViewModel.HeaderEmail</span>
-                        </div>
-                        <div class="upv2-banner-kv-row">
-                            <span class="upv2-banner-kv-label">Status:</span>
+                        }
+                        <span class="upv2-banner-mode-hint">
+                            @(ViewModel.IsNew ? "(Select new staff name)" : "(Select User name)")
+                        </span>
+                    </div>
+
+                    <div class="upv2-banner-kv-row">
+                        <span class="upv2-banner-kv-label">Role:</span>
+                        <span class="upv2-banner-kv-value">
+                            @(ViewModel.IsNew
+                                ? (ViewModel.LinkedStaff is null
+                                    ? "-"
+                                    : ViewModel.RoleTypes.FirstOrDefault(r => r.Id == ViewModel.RoleTypeId)?.DisplayName ?? "-")
+                                : ViewModel.HeaderRoleName)
+                        </span>
+                    </div>
+
+                    <div class="upv2-banner-kv-row">
+                        <span class="upv2-banner-kv-label">Email:</span>
+                        <span class="upv2-banner-kv-value">
+                            @(ViewModel.IsNew
+                                ? (ViewModel.LinkedStaff?.WorkEmail ?? "-")
+                                : ViewModel.HeaderEmail)
+                        </span>
+                    </div>
+
+                    <div class="upv2-banner-kv-row">
+                        <span class="upv2-banner-kv-label">Status:</span>
+                        @if (ViewModel.IsNew && ViewModel.LinkedStaff is null)
+                        {
+                            <span class="upv2-banner-kv-value">&mdash;</span>
+                        }
+                        else if (ViewModel.IsNew)
+                        {
+                            <span class="upv2-badge upv2-badge--status-active">Active</span>
+                        }
+                        else
+                        {
                             <span class="upv2-badge upv2-badge--status-@ViewModel.HeaderStatus.ToLower()">@ViewModel.HeaderStatus</span>
-                        </div>
-                    }
+                        }
+                    </div>
 
                 </div>
 
-                @* Far right: last login (Amendment A � both modes) *@
-                @if (!ViewModel.IsNew)
-                {
-                    <div class="upv2-banner-lastlogin">
+                @* Far right: last login (always rendered; ternary outputs "&mdash;" in Add Mode) *@
+                <div class="upv2-banner-lastlogin">
                     <span class="upv2-banner-lastlogin-label">Last Login</span>
                     <span class="upv2-banner-lastlogin-value">
                         @(ViewModel.HeaderLastLogin.HasValue
                             ? ViewModel.HeaderLastLogin.Value.ToString("dd MMM yyyy HH:mm")
-                            : "�")
+                            : "-")
                     </span>
-                    </div>
-                }
+                </div>
 
             </div>
             @* -- end banner -- *@

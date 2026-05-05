@@ -2,12 +2,17 @@
    File        : UserFormPageV2.razor.css
    Component   : UserFormPageV2 (Blazor CSS isolation)
    Author      : Michael
-    Version     : 3.7.0
+    Version     : 3.8.0
    Created     : 2026-04-11
-    Updated     : 2026-05-04
+    Updated     : 2026-05-05
    ---------------------------------------------------------------------------
    Purpose     : Scoped styles for the User Profile / Add User page (v4.0.0).
                  Class namespace: upv2-*
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 3.8.0  2026-05-05  Fix A1 — Added overflow: hidden to .upv2-banner-avatar-label
+                           so the InputFile inside does not bleed beyond the circular
+                           clipping boundary.
    ===========================================================================
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -147,6 +152,7 @@
     border-radius: 50%;
     width: 110px;
     height: 110px;
+    overflow: hidden;
     cursor: pointer;
 }
 

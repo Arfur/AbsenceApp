@@ -2,14 +2,28 @@
    File        : app.css
    Project     : AbsenceApp.Client
    Author      : Michael
-   Version     : 2.0.1
+   Version     : 2.1.0
    Created     : 2026-03-13
-   Updated     : 2026-03-28
+   Updated     : 2026-05-05
    Purpose     : Full application design system — light/dark theme, layout shell,
                  sidebar, header, footer, auth pages, content cards, stat cards.
    Changes     :
                  - 2026-03-28: Removed legacy .sidebar-user* rules to prevent unintended styling in V2.
+                 - 2026-05-05: Fix A2 — Added non-isolated .upv2-file-input rule (Blazor InputFile
+                               does not propagate the scoped [b-xxxxx] attribute to its inner
+                               <input type="file">, so the rule in razor.css never matches).
 ============================================================================= */
+
+/* ── Blazor isolation workaround: InputFile scoped rule cannot be isolated ── */
+.upv2-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
 
 /* ── CSS variables ─────────────────────────────────────────────────────── */
 :root {

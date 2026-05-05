@@ -1,9 +1,16 @@
 -- =============================================================================
 -- E37 Student Navigation Items — Database Seed Script
 -- File    : E37_StudentNavigationItems.sql
--- Version : 1.0.0
+-- Version : 1.1.0
 -- Created : 2026-05-05
 -- Updated : 2026-05-05
+-- -----------------------------------------------------------------------------
+-- Changes :
+--   v1.1.0  2026-05-05  Fix rolemenuitem INSERT to supply explicit Id values
+--                       (900001-900009); table has no default. Merge into one
+--                       statement. Fix app_pages -> AppPages (correct table name).
+--                       Delete Section D (menuitemglobalconfigs does not apply
+--                       to PEOPLE/ATTENDANCE navigation items).
 -- -----------------------------------------------------------------------------
 -- Purpose : Adds navigation and permission rows for the three new Student
 --           Absence Management pages:
@@ -15,8 +22,7 @@
 --   A. menuitems        — INSERT IGNORE three submenu rows (201040–201060)
 --   B. rolemenuitem     — INSERT IGNORE for RoleId 1 (super_admin),
 --                         2 (admin), and 3 (user / standard)
---   C. app_pages        — INSERT IGNORE pages 15–17
---   D. menuitemglobalconfigs — INSERT IGNORE config rows for 201040–201060
+--   C. AppPages         — INSERT IGNORE pages 15–17
 --
 -- Idempotent : All statements use INSERT IGNORE.
 --              Safe to re-run against a database that already has these rows.
@@ -77,26 +83,17 @@ VALUES
 --   3 = user/standard (read-only operational access)
 -- ===========================================================================
 
--- super_admin (RoleId=1)
-INSERT IGNORE INTO rolemenuitem (RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
+INSERT IGNORE INTO rolemenuitem (Id, RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
 VALUES
-    (1, 201040, 1, NOW(), 1),
-    (1, 201050, 1, NOW(), 1),
-    (1, 201060, 1, NOW(), 1);
-
--- admin (RoleId=2)
-INSERT IGNORE INTO rolemenuitem (RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
-VALUES
-    (2, 201040, 1, NOW(), 1),
-    (2, 201050, 1, NOW(), 1),
-    (2, 201060, 1, NOW(), 1);
-
--- user/standard (RoleId=3)
-INSERT IGNORE INTO rolemenuitem (RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
-VALUES
-    (3, 201040, 1, NOW(), 1),
-    (3, 201050, 1, NOW(), 1),
-    (3, 201060, 1, NOW(), 1);
+    (900001, 1, 201040, 1, NOW(), 1),
+    (900002, 1, 201050, 1, NOW(), 1),
+    (900003, 1, 201060, 1, NOW(), 1),
+    (900004, 2, 201040, 1, NOW(), 1),
+    (900005, 2, 201050, 1, NOW(), 1),
+    (900006, 2, 201060, 1, NOW(), 1),
+    (900007, 3, 201040, 1, NOW(), 1),
+    (900008, 3, 201050, 1, NOW(), 1),
+    (900009, 3, 201060, 1, NOW(), 1);
 
 -- ===========================================================================
 -- SECTION C — app_pages
@@ -109,7 +106,7 @@ VALUES
 --          CreatedAt, UpdatedAt
 -- ===========================================================================
 
-INSERT IGNORE INTO app_pages
+INSERT IGNORE INTO AppPages
     (Id, Name, Slug, Route, CategoryKey, MenuKey, IconKey,
      IsActive, SortOrder,
      SupportsRead, SupportsWrite, SupportsCreate, SupportsDelete, SupportsImport, SupportsExport,
@@ -135,20 +132,6 @@ VALUES
      1, 23,
      1, 0, 0, 0, 0, 0,
      '2026-05-05 00:00:00', '2026-05-05 00:00:00');
-
--- ===========================================================================
--- SECTION D — menuitemglobalconfigs
--- ---------------------------------------------------------------------------
--- Registers config entries so the global settings sidebar can reference
--- the new menu items if required.
--- Columns: Id, Key, Value
--- ===========================================================================
-
-INSERT IGNORE INTO menuitemglobalconfigs (Id, `Key`, `Value`)
-VALUES
-    (201040, 'menuitem.201040.enabled', '1'),
-    (201050, 'menuitem.201050.enabled', '1'),
-    (201060, 'menuitem.201060.enabled', '1');
 
 -- =============================================================================
 -- END OF SCRIPT
