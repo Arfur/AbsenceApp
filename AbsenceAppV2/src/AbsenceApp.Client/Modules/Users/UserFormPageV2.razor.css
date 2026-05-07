@@ -2,14 +2,24 @@
    File        : UserFormPageV2.razor.css
    Component   : UserFormPageV2 (Blazor CSS isolation)
    Author      : Michael
-    Version     : 3.8.0
+    Version     : 4.0.0
    Created     : 2026-04-11
-    Updated     : 2026-05-05
+    Updated     : 2026-05-06
    ---------------------------------------------------------------------------
    Purpose     : Scoped styles for the User Profile / Add User page (v4.0.0).
                  Class namespace: upv2-*
    ---------------------------------------------------------------------------
    Changes     :
+     - 4.0.0  2026-05-06  Issue 2: banner and tab bar sticky. Added
+                           position:sticky/top:0/z-index:20 to .upv2-banner.
+                           Changed .upv2-right-panel overflow:hidden to
+                           overflow:clip (preserves border-radius clip without
+                           blocking sticky descendants). Added
+                           position:sticky/top:calc(110px + 3rem)/z-index:19
+                           to .upv2-tab-bar.
+     - 3.9.0  2026-05-06  Layout unification — added .upv2-create-first-notice
+                           info banner and .upv2-tab-btn--disabled disabled-tab
+                           visual state for Add Mode tab bar.
      - 3.8.0  2026-05-05  Fix A1 — Added overflow: hidden to .upv2-banner-avatar-label
                            so the InputFile inside does not bleed beyond the circular
                            clipping boundary.
@@ -84,6 +94,9 @@
     background: var(--ds-color-accent, #2563eb) !important;
     border-radius: var(--ds-radius-lg, .75rem);
     margin-bottom: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
 }
 
 /* ── Left: photo column ── */
@@ -421,7 +434,7 @@
     background: var(--ds-surface, #fff);
     border: 1px solid var(--ds-border, #e5e7eb);
     border-radius: var(--ds-radius-lg, .75rem);
-    overflow: hidden;
+    overflow: clip;
     box-shadow: 0 1px 3px rgba(0,0,0,.05);
 }
 
@@ -431,6 +444,9 @@
     border-bottom: 1px solid var(--ds-border, #e5e7eb);
     background: var(--ds-bg-subtle, #f9fafb);
     scrollbar-width: none;
+    position: sticky;
+    top: calc(110px + 3rem);
+    z-index: 19;
 }
 
 .upv2-tab-bar::-webkit-scrollbar { display: none; }
@@ -462,6 +478,25 @@
     border-bottom-color: var(--ds-primary, #2563eb);
     background: var(--ds-surface, #fff);
     font-weight: 600;
+}
+
+.upv2-tab-btn--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.upv2-create-first-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    padding: .75rem 1rem;
+    margin: .75rem 1.5rem 0;
+    background: var(--ds-info-bg, #eff6ff);
+    border: 1px solid var(--ds-info-border, #bfdbfe);
+    border-radius: .5rem;
+    color: var(--ds-info-text, #1e40af);
+    font-size: .82rem;
+    line-height: 1.45;
 }
 
 .upv2-tab-pane {

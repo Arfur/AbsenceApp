@@ -1,11 +1,13 @@
 -- =============================================================================
 -- E37 Student Navigation Items — Database Seed Script
 -- File    : E37_StudentNavigationItems.sql
--- Version : 1.1.0
+-- Version : 1.2.0
 -- Created : 2026-05-05
 -- Updated : 2026-05-05
 -- -----------------------------------------------------------------------------
 -- Changes :
+--   v1.2.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems.
+--                       Updated INSERT statement and all comments.
 --   v1.1.0  2026-05-05  Fix rolemenuitem INSERT to supply explicit Id values
 --                       (900001-900009); table has no default. Merge into one
 --                       statement. Fix app_pages -> AppPages (correct table name).
@@ -20,7 +22,7 @@
 --
 -- Sections:
 --   A. menuitems        — INSERT IGNORE three submenu rows (201040–201060)
---   B. rolemenuitem     — INSERT IGNORE for RoleId 1 (super_admin),
+--   B. rolemenuitems     — INSERT IGNORE for RoleId 1 (super_admin),
 --                         2 (admin), and 3 (user / standard)
 --   C. AppPages         — INSERT IGNORE pages 15–17
 --
@@ -65,14 +67,14 @@ VALUES
      60, 0, 0, 'active', 'View student attendance calendar', NOW(), NOW());
 
 -- ===========================================================================
--- SECTION B — rolemenuitem
+-- SECTION B — rolemenuitems
 -- ---------------------------------------------------------------------------
 -- Grants visibility of the three new menu items to:
 --   RoleId 1 = super_admin
 --   RoleId 2 = admin
 --   RoleId 3 = user (standard)
 --
--- NOTE: The rolemenuitem table requires (Id, RoleId, MenuItemId, IsEnabled,
+-- NOTE: The rolemenuitems table requires (Id, RoleId, MenuItemId, IsEnabled,
 --       AssignedAt, AssignedBy). Id values are chosen to be safely above the
 --       existing max. Adjust if your sequence differs.
 --       AssignedBy=1 (system/super-admin user) — update if needed.
@@ -83,7 +85,7 @@ VALUES
 --   3 = user/standard (read-only operational access)
 -- ===========================================================================
 
-INSERT IGNORE INTO rolemenuitem (Id, RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
+INSERT IGNORE INTO rolemenuitems (Id, RoleId, MenuItemId, IsEnabled, AssignedAt, AssignedBy)
 VALUES
     (900001, 1, 201040, 1, NOW(), 1),
     (900002, 1, 201050, 1, NOW(), 1),

@@ -3,9 +3,9 @@
  File        : NavigationApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 5.6.0
+ Version     : 5.7.0
  Created     : 2026-04-06
- Updated     : 2026-04-19
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : Client-side navigation service that executes
                dbo.fn_GetVisibleMenuItems(@RoleType) via EF Core SqlQueryRaw
@@ -84,8 +84,10 @@
                          GetMenuCategoriesAsync now resolves the user's role by
                          joining userrole directly inside the menu SQL query
                          (INNER JOIN userrole ur ON ur.RoleId = rm.RoleId WHERE
-                         ur.UserId = @UserId). Eliminates the \"Unknown column
-                         'u.RoleTypeId'\" startup crash.
+                         ur.UserId = @UserId). Eliminates the "Unknown column
+                         'u.RoleTypeId'" startup crash.
+   - 5.7.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems. Updated
+                         SQL JOIN and inline comments.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.
@@ -149,17 +151,17 @@ public sealed class NavigationApiServiceV2
                 $"CurrentUserId={userId}");
 
             // -----------------------------------------------------------------------
-            // Query menuitems joined to rolemenuitem AND userrole so the user's
+            // Query menuitems joined to rolemenuitems AND userrole so the user's
             // RoleId is resolved inside a single SQL statement.
             // userrole.UserId  = users.Id  (bigint)
-            // userrole.RoleId  = rolemenuitem.RoleId (the role-level permission FK)
+            // userrole.RoleId  = rolemenuitems.RoleId (the role-level permission FK)
             // MySqlParameter prevents SQL injection.
             // -----------------------------------------------------------------------
             const string sql = """
                 SELECT m.Id, m.ParentId, m.ItemType, m.Label, m.Icon, m.Route, m.SortOrder, m.IsHidden,
                        m.Category, m.GroupName, m.GroupIcon, m.IsFlat, m.Status, m.Description
                 FROM   menuitems m
-                INNER JOIN rolemenuitem rm ON rm.MenuItemId = m.Id
+                INNER JOIN rolemenuitems rm ON rm.MenuItemId = m.Id
                 INNER JOIN userrole     ur ON ur.RoleId     = rm.RoleId
                 WHERE  ur.UserId    = @UserId
                   AND  (m.ItemType != 'submenu' OR m.IsHidden = 0)

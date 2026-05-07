@@ -3,9 +3,9 @@
  File        : AppDbContext.cs
  Namespace   : AbsenceApp.Data.Context
  Author      : Michael
- Version     : 2.3.0
+ Version     : 2.4.0
  Created     : Unknown
- Updated     : 2026-05-04
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : Primary Entity Framework Core DbContext for the AbsenceApp API.
 
@@ -49,6 +49,10 @@
                          overrides from AbsenceType, AbsenceStatus, Absence, and
                          AbsenceAudit entity blocks. EF default long→bigint mapping
                          is correct; explicit unsigned overrides caused type mismatches.
+   - 2.4.0  2026-05-05  Schema lock: removed DbSets and ToTable mappings for
+                         deleted tables (systemevents, attendance, globalconfigs).
+                         Table rolemenuitem was renamed to rolemenuitems — code
+                         already mapped to rolemenuitems; no change needed here.
    - 2.3.0  2026-05-04  Fix Plan #2 Step 2: added DbSet<JobTitle> JobTitles and
                          DbSet<StaffDepartment> StaffDepartments. Both model types
                          exist; repositories (JobTitleRepository, DepartmentRepository)
@@ -84,10 +88,7 @@ public class AppDbContext : DbContext
     public DbSet<AbsenceStatus> AbsenceStatuses { get; set; }
     public DbSet<DeviceType> DeviceTypes { get; set; }
     public DbSet<ExternalSystem> ExternalSystems { get; set; }
-    public DbSet<SystemEvent> SystemEvents { get; set; }
-    public DbSet<Attendance> Attendance { get; set; }
     public DbSet<AuditLog> AuditLog { get; set; }
-    public DbSet<GlobalConfig> GlobalConfig { get; set; }
     public DbSet<Phase> Phases { get; set; }
 
     // =========================================================================
@@ -203,10 +204,7 @@ public class AppDbContext : DbContext
         });
         modelBuilder.Entity<DeviceType>().ToTable("devicetypes");
         modelBuilder.Entity<ExternalSystem>().ToTable("externalsystems");
-        modelBuilder.Entity<SystemEvent>().ToTable("systemevents");
-        modelBuilder.Entity<Attendance>().ToTable("attendance");
         modelBuilder.Entity<AuditLog>().ToTable("auditlog");
-        modelBuilder.Entity<GlobalConfig>().ToTable("globalconfigs");
         modelBuilder.Entity<Phase>().ToTable("phases");
 
         // =========================================================================

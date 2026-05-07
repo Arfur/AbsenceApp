@@ -3,9 +3,9 @@
  File        : CsvImportPipeline.cs
  Namespace   : AbsenceApp.Data.Seeding
  Author      : Michael
- Version     : 1.1.0
+ Version     : 1.2.0
  Created     : 2026-03-15
- Updated     : 2026-05-04
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
  Purpose     : Deterministic CSV-to-EF import pipeline for all 40 SQL tables.
                Reads CSV files from a directory and upserts rows via AppDbContext
@@ -21,6 +21,9 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-15  Initial creation.
+   - 1.2.0  2026-05-05  Removed ImportSystemEventsAsync call and method.
+                         systemevents table deleted from schema; DbSet removed
+                         from AppDbContext v2.4.0.
    - 1.1.0  2026-05-04  Fix Plan #2 Step 6: removed (ulong) cast from
                          AbsenceType seed row: Id = (ulong)ToInt(...) →
                          Id = ToInt(...). ToInt returns int; AbsenceType.Id
@@ -76,7 +79,6 @@ public sealed class CsvImportPipeline
         await ImportAbsenceTypesAsync(csvDirectory);
         await ImportDeviceTypesAsync(csvDirectory);
         await ImportExternalSystemsAsync(csvDirectory);
-        await ImportSystemEventsAsync(csvDirectory);
 
         // ── Phase 2: school-scoped structure ──────────────────────────────────
         await ImportYearGroupsAsync(csvDirectory);
@@ -230,22 +232,6 @@ public sealed class CsvImportPipeline
             Description = NullableCol(r, "description"),
         }).ToList();
         await UpsertAsync(_db.ExternalSystems, e => e.Id, entities);
-    }
-
-    // CSV columns: id, event_type, event_time, triggered_by, description, metadata
-    private async Task ImportSystemEventsAsync(string dir)
-    {
-        var rows = await ReadCsvAsync(Path.Combine(dir, "system_events.csv"));
-        var entities = rows.Select(r => new SystemEvent
-        {
-            Id          = ToInt(r, "id"),
-            EventType   = Col(r, "event_type"),
-            EventTime   = ToDateTime(r, "event_time"),
-            TriggeredBy = Col(r, "triggered_by"),
-            Description = NullableCol(r, "description"),
-            Metadata    = NullableCol(r, "metadata"),
-        }).ToList();
-        await UpsertAsync(_db.SystemEvents, e => e.Id, entities);
     }
 
     // =========================================================================

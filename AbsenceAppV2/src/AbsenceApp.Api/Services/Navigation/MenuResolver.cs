@@ -3,11 +3,11 @@
  File        : MenuResolver.cs
  Namespace   : AbsenceApp.Api.Services.Navigation
  Author      : Michael
- Version     : 2.0.0
+ Version     : 2.1.0
  Created     : 2026-04-06
- Updated     : 2026-04-19
+ Updated     : 2026-05-05
 -------------------------------------------------------------------------------
- Purpose     : Queries the menuitems table (filtered by role via rolemenuitem
+ Purpose     : Queries the menuitems table (filtered by role via rolemenuitems
                JOIN) and assembles the flat rows into a fully nested
                MenuResponseDto using a 3-pass ParentId-based tree build.
 
@@ -16,15 +16,17 @@
                  2. Keep groups only if they have at least one item.
                  3. Keep categories only if they have at least one group.
 
-               No permission logic is applied here. The rolemenuitem JOIN
+               No permission logic is applied here. The rolemenuitems JOIN
                already filters by RoleId — this class is responsible only
                for tree assembly.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation (Phase 1 — API Menu Boundary).
+   - 2.1.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems. Updated
+                         SQL JOIN and all comments.
    - 2.0.0  2026-04-19  MySQL migration: removed fn_GetVisibleMenuItems TVF
                          call and MySqlConnector dependency. Replaced with
-                         direct menuitems JOIN rolemenuitem SQL query.
+                         direct menuitems JOIN rolemenuitems SQL query.
                          Rewrote GetMenuAsync tree building from denormalised
                          (TVF row) approach to 3-pass hierarchical (ParentId)
                          approach matching the client-side BuildCategories
@@ -74,14 +76,14 @@ public sealed class MenuResolver : IMenuResolver
     public async Task<MenuResponseDto> GetMenuAsync(int roleType, CancellationToken ct = default)
     {
         // -----------------------------------------------------------------------
-        // Query menuitems joined to rolemenuitem for role-filtered visibility.
+        // Query menuitems joined to rolemenuitems for role-filtered visibility.
         // MySqlParameter prevents SQL injection.
         // -----------------------------------------------------------------------
         const string sql = """
             SELECT m.Id, m.ParentId, m.ItemType, m.Label, m.Icon, m.Route, m.SortOrder, m.IsHidden,
                    m.Category, m.GroupName, m.GroupIcon, m.IsFlat, m.Status, m.Description
             FROM   menuitems m
-            INNER JOIN rolemenuitem rm ON rm.MenuItemId = m.Id
+            INNER JOIN rolemenuitems rm ON rm.MenuItemId = m.Id
             WHERE  rm.RoleId    = @RoleType
               AND  m.IsHidden   = 0
               AND  rm.IsEnabled = 1

@@ -3,9 +3,9 @@
  File        : UserProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.5.0
+ Version     : 1.7.0
    Created     : 2026-04-21
-     Updated     : 2026-05-04
+     Updated     : 2026-05-06
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for the full User Profile / Add User page
                (UserFormPageV2.razor). Handles both Add User and Edit User
@@ -31,6 +31,13 @@
                                  one API call: UserProfileFullDetailDto from
                                  GetUserProfileDetailAsync. All tab sections are
                                  populated from this single payload.
+   - 1.7.0  2026-05-06  InitEditAsync: clear PhotoBytes, PhotoStoredPath, and
+                         PhotoError at the top of the try block before loading
+                         new user data. Prevents stale banner image when
+                         switching between users.
+   - 1.6.0  2026-05-06  SetTab guarded: in Add Mode only Tab 0 can be
+                         activated (prevents navigation to tabs that require
+                         a saved account).
     - 1.4.0  2026-05-04  Issues A–M fix: Clear Success on InitNewAsync/InitEditAsync
                          to prevent stale message on navigation.
     - 1.5.0  2026-05-04  Issue N1: Reset all stale edit-mode state in InitNewAsync
@@ -82,7 +89,7 @@ public sealed class UserProfileViewModelV2
 
     public int  ActiveTab    { get; private set; } = 0;
 
-    public void SetTab(int index) => ActiveTab = index;
+    public void SetTab(int index) { if (!IsNew || index == 0) ActiveTab = index; }
 
     // =========================================================================
     // Profile Header (edit mode)
@@ -365,6 +372,9 @@ public sealed class UserProfileViewModelV2
         Success   = null;
         try
         {
+            PhotoBytes      = null;
+            PhotoStoredPath = null;
+            PhotoError      = null;
             var full = await _svc.GetUserProfileDetailAsync(UserId, ct);
 
             if (!full.UserExists)

@@ -2,9 +2,9 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 6.2.0
+   Version     : 6.3.0
    Created     : 2026-04-11
-   Updated     : 2026-05-05
+   Updated     : 2026-05-06
    ---------------------------------------------------------------------------
    Purpose     : E15 User Management � Add / Edit User � full profile page.
                  Routes:
@@ -92,6 +92,19 @@
                            - Issue N4: Last-login block wrapped in @if (!ViewModel.IsNew).
                            - Issue N1: OnParametersSetAsync gets else-if branch to handle
                              Edit->Add navigation (clear _loadedId, call InitNewAsync).
+     - 6.3.0  2026-05-06  Layout unification (Add/Edit tab parity):
+                           - Removed inline Module Permissions section from Tab 0
+                             Add Mode. Permissions matrix now lives exclusively
+                             in the dedicated Permissions tab (Tab 8).
+                           - Tab 8 (Permissions) now always rendered in tab bar
+                             for both Add and Edit modes (was Edit-only).
+                           - Added upv2-create-first-notice banner above tab bar
+                             in Add Mode to guide users to complete Basic Info
+                             before using other tabs.
+                           - RenderTabBtn updated with optional bool disabled
+                             parameter; tabs 1-8 are disabled in Add Mode.
+                           - Tab 8 panel shows "Save account first" placeholder
+                             in Add Mode instead of the permission matrix.
      - 6.2.0  2026-05-05  Fixes B+C — Unified banner identity block:
                            - B: Replaced dual-branch identity block (LinkedStaff==null /
                              LinkedStaff!=null split) with a single unified <div> containing
@@ -324,20 +337,26 @@
             @* ------------------------ TAB PANEL (both modes) ------------------------ *@
             <div class="upv2-right-panel">
 
+                @* Create-first notice: shown in Add Mode above the tab bar *@
+                @if (ViewModel.IsNew)
+                {
+                    <div class="upv2-create-first-notice">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        Complete Basic Info and click Create User. All other tabs become available after the account is created.
+                    </div>
+                }
+
                 @* Tab navigation bar *@
                 <div class="upv2-tab-bar" role="tablist">
                     @RenderTabBtn(0, "bi-person",        "Basic Info")
-                    @RenderTabBtn(1, "bi-telephone",     "Contacts")
-                    @RenderTabBtn(2, "bi-diagram-3",     "Classes")
-                    @RenderTabBtn(3, "bi-laptop",        "Devices")
-                    @RenderTabBtn(4, "bi-plug",          "External")
-                    @RenderTabBtn(5, "bi-heart-pulse",   "Medical")
-                    @RenderTabBtn(6, "bi-calendar-x",    "Absences")
-                    @RenderTabBtn(7, "bi-shield-check",  "Login Audit")
-                    @if (!ViewModel.IsNew)
-                    {
-                        @RenderTabBtn(8, "bi-key", "Permissions")
-                    }
+                    @RenderTabBtn(1, "bi-telephone",     "Contacts",   ViewModel.IsNew)
+                    @RenderTabBtn(2, "bi-diagram-3",     "Classes",    ViewModel.IsNew)
+                    @RenderTabBtn(3, "bi-laptop",        "Devices",    ViewModel.IsNew)
+                    @RenderTabBtn(4, "bi-plug",          "External",   ViewModel.IsNew)
+                    @RenderTabBtn(5, "bi-heart-pulse",   "Medical",    ViewModel.IsNew)
+                    @RenderTabBtn(6, "bi-calendar-x",    "Absences",   ViewModel.IsNew)
+                    @RenderTabBtn(7, "bi-shield-check",  "Login Audit",ViewModel.IsNew)
+                    @RenderTabBtn(8, "bi-key",           "Permissions",ViewModel.IsNew)
                 </div>
 
                 @* -- Tab 0: Basic Info ----------------------------- *@
@@ -387,24 +406,6 @@
                             </select>
                         </div>
 
-                    </div>
-                </section>
-
-                @* Module permissions *@
-                <section class="dsv2-form-section">
-                    <header class="dsv2-form-section__header">
-                        <i class="bi bi-key" aria-hidden="true"></i>
-                        <h2 class="dsv2-form-section__title">Module Permissions</h2>
-                    </header>
-                    <div class="dsv2-form-section__body">
-                        @if (ViewModel.Permissions.Count == 0)
-                        {
-                            <p class="upv2-empty-msg">No pages configured. Add pages to the app_pages table first.</p>
-                        }
-                        else
-                        {
-                            <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
-                        }
                     </div>
                 </section>
                 </fieldset>
@@ -938,17 +939,24 @@
                             </div>
                         }
 
-                        @* -- Tab 8: Permissions (Edit Mode only) ---------- *@
+                        @* -- Tab 8: Permissions -------------------------------- *@
                         @if (ViewModel.ActiveTab == 8)
                         {
                             <div class="upv2-tab-pane" role="tabpanel">
-                                @if (ViewModel.Permissions.Count == 0)
+                                @if (ViewModel.IsNew)
                                 {
-                                    <p class="upv2-empty-msg">No pages configured.</p>
+                                    <div class="upv2-no-data"><i class="bi bi-info-circle"></i> Save the account first to manage permissions.</div>
                                 }
                                 else
                                 {
-                                    <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
+                                    @if (ViewModel.Permissions.Count == 0)
+                                    {
+                                        <p class="upv2-empty-msg">No pages configured.</p>
+                                    }
+                                    else
+                                    {
+                                        <PermissionMatrixV2 Permissions="@ViewModel.Permissions" />
+                                    }
                                 }
                             </div>
                         }
@@ -1051,10 +1059,11 @@
         await ViewModel.RemovePhotoAsync();
     }
 
-    private RenderFragment RenderTabBtn(int index, string icon, string label) =>
+    private RenderFragment RenderTabBtn(int index, string icon, string label, bool disabled = false) =>
         @<button role="tab"
                  aria-selected="@(ViewModel.ActiveTab == index)"
-                 class="upv2-tab-btn @(ViewModel.ActiveTab == index ? "upv2-tab-btn--active" : "")"
+                 class="upv2-tab-btn @(ViewModel.ActiveTab == index ? "upv2-tab-btn--active" : "") @(disabled ? "upv2-tab-btn--disabled" : "")"
+                 disabled="@disabled"
                  @onclick="@(() => ViewModel.SetTab(index))">
             <i class="bi @icon" aria-hidden="true"></i>
             <span>@label</span>
