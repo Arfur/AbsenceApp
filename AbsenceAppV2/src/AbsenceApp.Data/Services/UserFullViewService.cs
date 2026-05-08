@@ -54,10 +54,6 @@ public class UserFullViewService : IUserFullViewService
 
     public async Task<IReadOnlyList<UserFullViewDto>> GetAllAsync()
     {
-        var roleTypes = await _db.RoleTypes
-            .AsNoTracking()
-            .ToDictionaryAsync(r => r.Id, r => r.DisplayName);
-
         // NOTE:
         // Users table does NOT contain DepartmentId.
         // Staff.DepartmentId is authoritative but NOT used here.

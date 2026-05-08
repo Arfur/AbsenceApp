@@ -289,7 +289,7 @@
                             @(ViewModel.IsNew
                                 ? (ViewModel.LinkedStaff is null
                                     ? "-"
-                                    : ViewModel.RoleTypes.FirstOrDefault(r => r.Id == ViewModel.RoleTypeId)?.DisplayName ?? "-")
+                                    : ViewModel.RoleTypes.FirstOrDefault(r => r.Id == ViewModel.RoleId)?.DisplayName ?? "-")
                                 : ViewModel.HeaderRoleName)
                         </span>
                     </div>
@@ -396,8 +396,8 @@
                         <div class="dsv2-form-field">
                             <label class="dsv2-form-label" for="nu-role">Role <span class="upv2-req">*</span></label>
                             <select id="nu-role" class="dsv2-form-input"
-                                    value="@ViewModel.RoleTypeId"
-                                    @onchange="@(e => ViewModel.RoleTypeId = int.Parse(e.Value?.ToString() ?? "0"))">
+                                    value="@ViewModel.RoleId"
+                                    @onchange="@(e => ViewModel.RoleId = int.Parse(e.Value?.ToString() ?? "0"))">
                                 <option value="0">&mdash; Select role &mdash;</option>
                                 @foreach (var role in ViewModel.RoleTypes)
                                 {
@@ -457,8 +457,8 @@
                                     <div class="upv2-field">
                                         <label class="upv2-label" for="eu-role">Role <span class="upv2-req">*</span></label>
                                         <select id="eu-role" class="upv2-input"
-                                                value="@ViewModel.RoleTypeId"
-                                                @onchange="@(e => ViewModel.RoleTypeId = int.Parse(e.Value?.ToString() ?? "0"))">
+                                                value="@ViewModel.RoleId"
+                                                @onchange="@(e => ViewModel.RoleId = int.Parse(e.Value?.ToString() ?? "0"))">
                                             <option value="0">&mdash; Select role &mdash;</option>
                                             @foreach (var role in ViewModel.RoleTypes)
                                             {

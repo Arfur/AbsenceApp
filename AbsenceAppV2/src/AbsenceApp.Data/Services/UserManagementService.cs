@@ -140,10 +140,9 @@ public sealed class UserManagementService : IUserManagementService
         var roleRows = userIds.Count > 0
             ? await _db.Database
                 .SqlQueryRaw<UserRoleRow>(
-                    "SELECT ur.UserId, rt.DisplayName " +
+                    "SELECT ur.UserId, r.Name AS DisplayName " +
                     "FROM userrole ur " +
                     "JOIN roles r ON r.Id = ur.RoleId " +
-                    "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
                     "WHERE ur.UserId IN (" + string.Join(",", userIds) + ")")
                 .ToListAsync(ct)
             : new List<UserRoleRow>();
@@ -162,7 +161,7 @@ public sealed class UserManagementService : IUserManagementService
                                ? fn : u.Username,
             Username     = u.Username,
             Email        = u.Email,
-            RoleTypeName = userRoleMap.TryGetValue(u.Id, out var rn) ? rn : string.Empty,
+            RoleName     = userRoleMap.TryGetValue(u.Id, out var rn) ? rn : string.Empty,
             Status       = u.Status,
             CreatedAt    = u.CreatedAt,
         }).ToList();
@@ -205,7 +204,7 @@ public sealed class UserManagementService : IUserManagementService
             StaffId     = u.StaffId,
             Username    = u.Username,
             Email       = u.Email,
-            RoleTypeId  = roleId,
+            RoleId      = roleId,
             Status      = u.Status,
             NewPassword = null,
         };
@@ -259,11 +258,11 @@ public sealed class UserManagementService : IUserManagementService
         await _db.SaveChangesAsync(ct);
 
         // Insert UserRole row via raw SQL (userrole table has no DbSet) 
-        if (dto.RoleTypeId > 0)
+        if (dto.RoleId > 0)
         {
             await _db.Database.ExecuteSqlRawAsync(
                 "INSERT INTO userrole (UserId, RoleId, AssignedAt, AssignedBy) VALUES ({0}, {1}, {2}, {0})",
-                user.Id, dto.RoleTypeId, DateTime.UtcNow);
+                user.Id, dto.RoleId, DateTime.UtcNow);
         }
 
         await tx.CommitAsync(ct);
@@ -285,7 +284,7 @@ public sealed class UserManagementService : IUserManagementService
             user.Password = HashPassword(dto.NewPassword);
 
         // Update role via raw SQL.
-        if (dto.RoleTypeId > 0)
+        if (dto.RoleId > 0)
         {
             var existsCount = await _db.Database
                 .SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM userrole WHERE UserId = {0}", dto.Id)
@@ -294,13 +293,13 @@ public sealed class UserManagementService : IUserManagementService
             {
                 await _db.Database.ExecuteSqlRawAsync(
                     "INSERT INTO userrole (UserId, RoleId, AssignedAt, AssignedBy) VALUES ({0}, {1}, {2}, {0})",
-                    dto.Id, dto.RoleTypeId, DateTime.UtcNow);
+                    dto.Id, dto.RoleId, DateTime.UtcNow);
             }
             else
             {
                 await _db.Database.ExecuteSqlRawAsync(
                     "UPDATE userrole SET RoleId = {0} WHERE UserId = {1}",
-                    dto.RoleTypeId, dto.Id);
+                    dto.RoleId, dto.Id);
             }
         }
 
@@ -436,21 +435,14 @@ public sealed class UserManagementService : IUserManagementService
 
     public async Task<IReadOnlyList<RoleTypeSelectDto>> GetRoleTypesAsync(CancellationToken ct = default)
     {
-        // E15 spec: only these five roles are available for user assignment.
-        var allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "super_admin", "admin", "staff_admin", "teacher", "office_staff",
-        };
-
         return await _db.RoleTypes
             .AsNoTracking()
-            .Where(r => allowed.Contains(r.Name))
             .OrderBy(r => r.Priority)
             .Select(r => new RoleTypeSelectDto
             {
                 Id          = r.Id,
                 Name        = r.Name,
-                DisplayName = r.DisplayName,
+                DisplayName = r.Name,
             })
             .ToListAsync(ct);
     }
@@ -577,7 +569,7 @@ public sealed class UserManagementService : IUserManagementService
     }
 
     public async Task<IReadOnlyList<PagePermissionDto>> GetRoleDefaultsAsync(
-        string roleTypeName, CancellationToken ct = default)
+        string roleCode, CancellationToken ct = default)
     {
         var pages = await _db.AppPages
             .AsNoTracking()
@@ -587,7 +579,7 @@ public sealed class UserManagementService : IUserManagementService
 
         var defaults = await _db.RoleDefaultPagePermissions
             .AsNoTracking()
-            .Where(r => r.RoleTypeName == roleTypeName)
+            .Where(r => r.RoleTypeName == roleCode)
             .ToListAsync(ct);
 
         var defaultMap = defaults.ToDictionary(d => d.PageId);
@@ -623,16 +615,16 @@ public sealed class UserManagementService : IUserManagementService
             .ThenBy(r => r.Id)
             .ToListAsync(ct);
 
-        // Count users per role type via raw SQL (userrole -> roles -> roletypes).
+        // Count users per role (roles table is now canonical; no roletypes join needed).
         var countRows = await _db.Database
             .SqlQueryRaw<RoleUserCountRow>(
-                "SELECT r.RoleTypeId, COUNT(DISTINCT ur.UserId) AS UserCount " +
+                "SELECT r.Id, COUNT(DISTINCT ur.UserId) AS UserCount " +
                 "FROM roles r " +
                 "LEFT JOIN userrole ur ON ur.RoleId = r.Id " +
-                "GROUP BY r.RoleTypeId")
+                "GROUP BY r.Id")
             .ToListAsync(ct);
 
-        var countMap = countRows.ToDictionary(r => r.RoleTypeId, r => r.UserCount);
+        var countMap = countRows.ToDictionary(r => r.Id, r => r.UserCount);
 
         return roleTypes.Select(rt => new RoleListItemDto
         {
@@ -646,8 +638,8 @@ public sealed class UserManagementService : IUserManagementService
 
     private sealed class RoleUserCountRow
     {
-        public long RoleTypeId { get; set; }
-        public int  UserCount  { get; set; }
+        public long Id        { get; set; }
+        public int  UserCount { get; set; }
     }
 
     // =========================================================================
@@ -665,10 +657,9 @@ public sealed class UserManagementService : IUserManagementService
 
         var roleFeatureRows = await _db.Database
             .SqlQueryRaw<FeatureRoleRow>(
-                "SELECT rf.FeatureCode, rt.DisplayName " +
+                "SELECT rf.FeatureCode, r.Name AS DisplayName " +
                 "FROM rolefeatures rf " +
                 "JOIN roles r ON r.Id = rf.RoleId " +
-                "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
                 "WHERE rf.IsEnabled = 1")
             .ToListAsync(ct);
 
@@ -824,10 +815,9 @@ public sealed class UserManagementService : IUserManagementService
         // Role display name via raw SQL (userrole has no DbSet).
         var roleRows = await _db.Database
             .SqlQueryRaw<UserRoleRow>(
-                "SELECT ur.UserId, rt.DisplayName " +
+                "SELECT ur.UserId, r.Name AS DisplayName " +
                 "FROM userrole ur " +
                 "JOIN roles r ON r.Id = ur.RoleId " +
-                "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
                 "WHERE ur.UserId = {0} LIMIT 1",
                 userId)
             .ToListAsync(ct);
@@ -893,10 +883,9 @@ public sealed class UserManagementService : IUserManagementService
         // Role display/name/id via raw SQL (userrole has no DbSet).
         var roleRows = await _db.Database
             .SqlQueryRaw<UserRoleFullRow>(
-                "SELECT ur.UserId, ur.RoleId, rt.Name AS RoleName, rt.DisplayName " +
+                "SELECT ur.UserId, ur.RoleId, r.Name AS RoleName, r.Name AS DisplayName " +
                 "FROM userrole ur " +
                 "JOIN roles r ON r.Id = ur.RoleId " +
-                "JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
                 "WHERE ur.UserId = {0} LIMIT 1",
                 userId)
             .ToListAsync(ct);
@@ -993,8 +982,8 @@ public sealed class UserManagementService : IUserManagementService
                 IsAdmin                 = user.IsAdmin,
                 UserCreatedAt           = user.CreatedAt,
                 UserUpdatedAt           = user.UpdatedAt,
-                RoleTypeId              = role?.RoleId ?? 0,
-                RoleTypeName            = role?.RoleName ?? string.Empty,
+                RoleId                  = role?.RoleId ?? 0,
+                RoleName                = role?.RoleName ?? string.Empty,
                 RoleDisplayName         = role?.DisplayName ?? string.Empty,
                 RoleTypes               = roleTypes,
                 Permissions             = permissions,
@@ -1071,8 +1060,8 @@ public sealed class UserManagementService : IUserManagementService
             IsAdmin                 = user.IsAdmin,
             UserCreatedAt           = user.CreatedAt,
             UserUpdatedAt           = user.UpdatedAt,
-            RoleTypeId              = role?.RoleId ?? 0,
-            RoleTypeName            = role?.RoleName ?? string.Empty,
+            RoleId                  = role?.RoleId ?? 0,
+            RoleName                = role?.RoleName ?? string.Empty,
             RoleDisplayName         = role?.DisplayName ?? string.Empty,
             RoleTypes               = roleTypes,
             Permissions             = permissions,
@@ -1282,7 +1271,7 @@ public sealed class UserManagementService : IUserManagementService
         user.UpdatedAt = DateTime.UtcNow;
 
         // Update role via raw SQL.
-        if (dto.RoleTypeId > 0)
+        if (dto.RoleId > 0)
         {
             var existsCount = await _db.Database
                 .SqlQueryRaw<int>("SELECT COUNT(*) AS Value FROM userrole WHERE UserId = {0}", dto.UserId)
@@ -1291,13 +1280,13 @@ public sealed class UserManagementService : IUserManagementService
             {
                 await _db.Database.ExecuteSqlRawAsync(
                     "INSERT INTO userrole (UserId, RoleId, AssignedAt, AssignedBy) VALUES ({0}, {1}, {2}, {0})",
-                    dto.UserId, dto.RoleTypeId, DateTime.UtcNow);
+                    dto.UserId, dto.RoleId, DateTime.UtcNow);
             }
             else
             {
                 await _db.Database.ExecuteSqlRawAsync(
                     "UPDATE userrole SET RoleId = {0} WHERE UserId = {1}",
-                    dto.RoleTypeId, dto.UserId);
+                    dto.RoleId, dto.UserId);
             }
         }
 

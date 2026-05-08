@@ -105,13 +105,12 @@ public class AuthService : IAuthService
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
         }
 
-        // Resolve role display name via userrole → roles → roletypes
+        // Resolve role display name via userrole → roles (roletypes merged into roles)
         var roleDisplayNames = await _db.Database
             .SqlQueryRaw<string>(
-                "SELECT rt.DisplayName " +
+                "SELECT r.Name " +
                 "FROM userrole ur " +
-                "INNER JOIN roles r  ON r.Id  = ur.RoleId " +
-                "INNER JOIN roletypes rt ON rt.Id = r.RoleTypeId " +
+                "INNER JOIN roles r ON r.Id = ur.RoleId " +
                 "WHERE ur.UserId = @UserId LIMIT 1",
                 new MySqlParameter("@UserId", user.Id))
             .ToListAsync();

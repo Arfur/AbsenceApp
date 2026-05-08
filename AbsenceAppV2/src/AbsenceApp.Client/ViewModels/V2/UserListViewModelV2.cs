@@ -10,7 +10,8 @@
  Purpose     : ViewModel for UsersListPageV2. Manages paged user data, search,
                sort, and filter state. Uses UserManagementApiServiceV2 (direct
                DB via IServiceScopeFactory) — required because HTTP calls are
-               unreachable from native C# in MAUI Blazor Hybrid.
+               unreachable from native C# in MAUI 
+                Hybrid.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-11  Initial creation (E15 User Management).
@@ -77,7 +78,7 @@ public sealed class UserListViewModelV2
         new() { Key = "fullName",      Label = "Full Name",  Visible = true,  Sortable = true,  Order = 1 },
         new() { Key = "username",      Label = "Username",   Visible = true,  Sortable = true,  Order = 2 },
         new() { Key = "email",         Label = "Email",      Visible = true,  Sortable = false, Order = 3 },
-        new() { Key = "roleTypeName",  Label = "Role",       Visible = true,  Sortable = true,  Order = 4, Width = "140px" },
+        new() { Key = "roleName",      Label = "Role",       Visible = true,  Sortable = true,  Order = 4, Width = "140px" },
         new() { Key = "status",        Label = "Status",     Visible = true,  Sortable = true,  Order = 5, Width = "100px" },
         new() { Key = "createdAt",     Label = "Created",    Visible = false, Sortable = true,  Order = 6, Width = "110px" },
     ];
@@ -186,7 +187,7 @@ public sealed class UserListViewModelV2
         {
             q = field switch
             {
-                "roleTypeName" => q.Where(u => u.RoleTypeName == value),
+                "roleName" => q.Where(u => u.RoleName == value),
                 "status"       => q.Where(u => u.Status == value),
                 _              => q,
             };
@@ -198,7 +199,7 @@ public sealed class UserListViewModelV2
             "staffName"    => SortAscending ? q.OrderBy(u => u.StaffName)    : q.OrderByDescending(u => u.StaffName),
             "fullName"     => SortAscending ? q.OrderBy(u => u.FullName)     : q.OrderByDescending(u => u.FullName),
             "username"     => SortAscending ? q.OrderBy(u => u.Username)     : q.OrderByDescending(u => u.Username),
-            "roleTypeName" => SortAscending ? q.OrderBy(u => u.RoleTypeName) : q.OrderByDescending(u => u.RoleTypeName),
+            "roleName"     => SortAscending ? q.OrderBy(u => u.RoleName)     : q.OrderByDescending(u => u.RoleName),
             "status"       => SortAscending ? q.OrderBy(u => u.Status)       : q.OrderByDescending(u => u.Status),
             "createdAt"    => SortAscending ? q.OrderBy(u => u.CreatedAt)    : q.OrderByDescending(u => u.CreatedAt),
             _              => q.OrderBy(u => u.FullName),

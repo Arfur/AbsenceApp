@@ -69,7 +69,7 @@ public interface IUserManagementService
 
     Task<IReadOnlyList<PagePermissionDto>> GetUserPermissionsAsync(long userId, CancellationToken ct = default);
     Task SaveUserPermissionsAsync(long userId, IEnumerable<PagePermissionDto> permissions, CancellationToken ct = default);
-    Task<IReadOnlyList<PagePermissionDto>> GetRoleDefaultsAsync(string roleTypeName, CancellationToken ct = default);
+    Task<IReadOnlyList<PagePermissionDto>> GetRoleDefaultsAsync(string roleCode, CancellationToken ct = default);
 
     // ── User Profile page ─────────────────────────────────────────────────────
 

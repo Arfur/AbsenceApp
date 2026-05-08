@@ -80,7 +80,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Absences");
+                    b.ToTable("Absences", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceAudit", b =>
@@ -121,7 +121,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("OldStatusId");
 
-                    b.ToTable("AbsenceAudit");
+                    b.ToTable("AbsenceAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceStatus", b =>
@@ -148,7 +148,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbsenceStatuses");
+                    b.ToTable("AbsenceStatuses", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AbsenceType", b =>
@@ -179,7 +179,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbsenceTypes");
+                    b.ToTable("AbsenceTypes", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AccountVerificationEvent", b =>
@@ -209,7 +209,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccountVerificationEvents");
+                    b.ToTable("AccountVerificationEvents", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AppNotification", b =>
@@ -236,7 +236,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppNotifications");
+                    b.ToTable("AppNotifications", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AppPage", b =>
@@ -909,7 +909,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("AttendanceId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendance", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AttendanceMark", b =>
@@ -949,7 +949,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("AttendanceMarks");
+                    b.ToTable("AttendanceMarks", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AttendanceRegister", b =>
@@ -985,7 +985,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AttendanceRegisters");
+                    b.ToTable("AttendanceRegisters", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AuditLog", b =>
@@ -1005,7 +1005,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("AuditId");
 
-                    b.ToTable("AuditLog");
+                    b.ToTable("AuditLog", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Class", b =>
@@ -1032,7 +1032,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.ClassMember", b =>
@@ -1059,7 +1059,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("ClassMember");
+                    b.ToTable("ClassMember", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.ClassYearGroupAssignment", b =>
@@ -1086,7 +1086,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("SchoolId");
 
-                    b.ToTable("ClassYearGroupAssignments");
+                    b.ToTable("ClassYearGroupAssignments", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Department", b =>
@@ -1120,7 +1120,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.DeviceType", b =>
@@ -1147,7 +1147,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeviceTypes");
+                    b.ToTable("DeviceTypes", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.ExternalSystem", b =>
@@ -1174,7 +1174,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExternalSystems");
+                    b.ToTable("ExternalSystems", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Feature", b =>
@@ -1233,7 +1233,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Houses");
+                    b.ToTable("Houses", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.JobGroup", b =>
@@ -1259,7 +1259,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobGroups");
+                    b.ToTable("JobGroups", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.JobTitle", b =>
@@ -1286,7 +1286,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitles", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.LoginAudit", b =>
@@ -1319,7 +1319,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LoginAudit");
+                    b.ToTable("LoginAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Message", b =>
@@ -1350,7 +1350,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Phase", b =>
@@ -1383,7 +1383,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Phases");
+                    b.ToTable("Phases", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Responsibility", b =>
@@ -1404,7 +1404,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responsibilities");
+                    b.ToTable("Responsibilities", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Role", b =>
@@ -1418,7 +1418,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.RoleChangeAudit", b =>
@@ -1449,7 +1449,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleChangeAudit");
+                    b.ToTable("RoleChangeAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.RoleDefaultPagePermission", b =>
@@ -1744,7 +1744,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleTypes");
+                    b.ToTable("RoleTypes", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.School", b =>
@@ -1779,7 +1779,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Schools");
+                    b.ToTable("Schools", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Staff", b =>
@@ -1873,7 +1873,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Staff");
+                    b.ToTable("Staff", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffAssignment", b =>
@@ -1922,7 +1922,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("StaffAssignments");
+                    b.ToTable("StaffAssignments", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffAssignmentAudit", b =>
@@ -1956,7 +1956,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("StaffAssignmentAudit");
+                    b.ToTable("StaffAssignmentAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffDevice", b =>
@@ -1988,7 +1988,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaffDevices");
+                    b.ToTable("StaffDevices", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffDeviceAudit", b =>
@@ -2022,7 +2022,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("StaffDeviceAudit");
+                    b.ToTable("StaffDeviceAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffExternalAccount", b =>
@@ -2056,7 +2056,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaffExternalAccounts");
+                    b.ToTable("StaffExternalAccounts", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffExternalAccountAudit", b =>
@@ -2090,7 +2090,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("StaffExternalAccountAudit");
+                    b.ToTable("StaffExternalAccountAudit", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Student", b =>
@@ -2164,7 +2164,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("SchoolId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StudentContact", b =>
@@ -2215,7 +2215,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentContacts");
+                    b.ToTable("StudentContacts", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StudentFlag", b =>
@@ -2250,7 +2250,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentFlags");
+                    b.ToTable("StudentFlags", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StudentMedical", b =>
@@ -2276,7 +2276,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StudentMedical");
+                    b.ToTable("StudentMedical", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.SystemEvent", b =>
@@ -2303,7 +2303,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemEvents");
+                    b.ToTable("SystemEvents", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.TablePageSetting", b =>
@@ -2625,7 +2625,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.YearGroup", b =>
@@ -2655,7 +2655,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("YearGroups");
+                    b.ToTable("YearGroups", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.Absence", b =>
@@ -2850,4 +2850,3 @@ namespace AbsenceApp.Data.Migrations
         }
     }
 }
-

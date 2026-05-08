@@ -41,7 +41,7 @@ using Microsoft.UI.Xaml;
 using System.Runtime.InteropServices;
 using WinRT.Interop;
 
-namespace AbsenceApp.Client.WinUI;
+namespace AbsenceApp.Client;
 
 /// <summary>
 /// Creates and manages a Windows notification-area (system tray) icon.

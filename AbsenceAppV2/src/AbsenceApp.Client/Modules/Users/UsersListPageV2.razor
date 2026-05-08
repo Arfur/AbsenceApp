@@ -108,8 +108,8 @@
 
             <Filters>
                 <select class="tpt-filter-select"
-                        value="@_f["roleTypeName"]"
-                        @onchange="@(e => SetFilter("roleTypeName", "Role", e.Value?.ToString()))">
+                        value="@_f["roleName"]"
+                        @onchange="@(e => SetFilter("roleName", "Role", e.Value?.ToString()))">
                     <option value="">All Roles</option>
                     @foreach (var r in _roleOptions)
                     {
@@ -147,7 +147,7 @@
                 </th>
                 <th class="tpt-th">Email</th>
                 <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("roleTypeName")" @onclick="@(() => OnSort("roleTypeName"))">
+                    <button class="tpt-sort-btn @SortClass("roleName")" @onclick="@(() => OnSort("roleName"))">
                         Role
                         <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
                     </button>
@@ -190,7 +190,7 @@
                             <td class="tpt-td">@item.Username</td>
                             <td class="tpt-td">@item.Email</td>
                             <td class="tpt-td">
-                                <span class="tpt-badge">@item.RoleTypeName</span>
+                                <span class="tpt-badge">@item.RoleName</span>
                             </td>
                             <td class="tpt-td">
                                 <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
@@ -277,7 +277,7 @@
 
     private readonly Dictionary<string, string> _f = new()
     {
-        ["roleTypeName"] = "",
+        ["roleName"] = "",
         ["status"]       = "",
     };
 
@@ -285,13 +285,13 @@
 
     private static readonly Dictionary<string, string> _keyToLabel = new()
     {
-        ["roleTypeName"] = "Role",
+        ["roleName"] = "Role",
         ["status"]       = "Status",
     };
 
     private static readonly Dictionary<string, string> _labelToKey = new()
     {
-        ["Role"]   = "roleTypeName",
+        ["Role"]   = "roleName",
         ["Status"] = "status",
     };
 
@@ -349,7 +349,7 @@
     private Task OnClearAllFilters()
     {
         foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
-        ViewModel.SetFilter("roleTypeName", string.Empty);
+        ViewModel.SetFilter("roleName", string.Empty);
         ViewModel.SetFilter("status",       string.Empty);
         _activeFilterChips = [];
         return Task.CompletedTask;
@@ -363,7 +363,7 @@
 
     private void RebuildRoleOptions() =>
         _roleOptions = ViewModel.AllItems
-            .Select(u => u.RoleTypeName)
+            .Select(u => u.RoleName)
             .Where(r => !string.IsNullOrWhiteSpace(r))
             .Distinct()
             .OrderBy(x => x)

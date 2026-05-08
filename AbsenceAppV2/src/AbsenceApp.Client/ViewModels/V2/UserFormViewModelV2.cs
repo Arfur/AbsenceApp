@@ -53,7 +53,7 @@ public sealed class UserFormViewModelV2
     public string  Username     { get; set; } = string.Empty;
     public string  Email        { get; set; } = string.Empty;
     public string  Password     { get; set; } = string.Empty;
-    public int     RoleTypeId   { get; set; }
+    public int     RoleId       { get; set; }
     public string  Status       { get; set; } = "active";
 
     // =========================================================================
@@ -138,7 +138,7 @@ public sealed class UserFormViewModelV2
             StaffId   = dto.StaffId ?? 0;
             Username  = dto.Username;
             Email     = dto.Email;
-            RoleTypeId = dto.RoleTypeId;
+            RoleId     = dto.RoleId;
             Status    = dto.Status;
             Password  = string.Empty;   // never pre-fill password
 
@@ -173,7 +173,7 @@ public sealed class UserFormViewModelV2
                     Username   = Username.Trim(),
                     Email      = Email.Trim(),
                     Password   = Password,
-                    RoleTypeId = RoleTypeId,
+                    RoleId     = RoleId,
                 }, ct);
 
                 if (!ok) { Error = err ?? "Unknown error."; return false; }
@@ -188,7 +188,7 @@ public sealed class UserFormViewModelV2
                     Username    = Username.Trim(),
                     Email       = Email.Trim(),
                     NewPassword = string.IsNullOrWhiteSpace(Password) ? null : Password,
-                    RoleTypeId  = RoleTypeId,
+                    RoleId      = RoleId,
                     Status      = Status,
                 }, ct);
 

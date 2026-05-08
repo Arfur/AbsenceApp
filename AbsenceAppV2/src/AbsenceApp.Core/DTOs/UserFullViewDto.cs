@@ -49,7 +49,7 @@ public class UserFullViewDto
     // -------------------------------------------------------------------------
     // Resolved lookups (replacing FK IDs)
     // -------------------------------------------------------------------------
-    public string  RoleTypeName   { get; set; } = string.Empty;
+    public string  RoleName       { get; set; } = string.Empty;
     public string? DepartmentName { get; set; }
 
     // -------------------------------------------------------------------------

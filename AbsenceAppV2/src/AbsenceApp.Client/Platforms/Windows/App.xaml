@@ -8,24 +8,28 @@
     <!--
     ===========================================================================
      File        : App.xaml
-     Namespace   : AbsenceApp.Client.WinUI
+     Namespace   : AbsenceApp.Client
      Platform    : Windows (WinUI 3)
      Author      : Michael
-     Version     : 1.0.0
+     Version     : 1.0.2
      Created     : 2026-03-13
-     Updated     : 2026-03-13
+     Updated     : 2026-05-08
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     Purpose     : WinUI 3 application XAML definition.
-                   Root element for the Windows platform application.
+     Purpose     : Windows-specific XAML root for the MAUI application.
+                   This file defines the WinUI 3 application shell that hosts
+                   the MAUI app via MauiWinUIApplication.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Notes       :
-       - No resources or startup logic belong in this file; all bootstrap
-         code lives in App.xaml.cs (WinUI) and MauiProgram.cs.
-       - The MauiWinUIApplication base class bridges WinUI 3 and the MAUI
-         application lifecycle automatically.
+       - No resources or startup logic belong in this file.
+       - All bootstrap logic lives in:
+           • Platforms/Windows/App.xaml.cs (WinUI host)
+           • MauiProgram.cs (MAUI DI + Blazor setup)
+       - The MauiWinUIApplication base class bridges WinUI 3 and MAUI.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Changes     :
        - 1.0.0  2026-03-13  Initial implementation.
+       - 1.0.1  2026-05-08  Namespace corrected to AbsenceApp.Client to align
+                            with MAUI partial-class requirements.
     ===========================================================================
     -->
 

@@ -190,7 +190,7 @@ public class AppDbContext : DbContext
         // Phase 1 — Lookup / reference tables
         // =========================================================================
         modelBuilder.Entity<School>().ToTable("schools");
-        modelBuilder.Entity<RoleType>().ToTable("roletypes");
+        modelBuilder.Entity<RoleType>().ToTable("roles");
         modelBuilder.Entity<ResponsibilityType>().ToTable("responsibilitytypes");
         modelBuilder.Entity<AbsenceType>(entity =>
         {

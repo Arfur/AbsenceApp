@@ -3,9 +3,9 @@
  File        : MenuResolver.cs
  Namespace   : AbsenceApp.Api.Services.Navigation
  Author      : Michael
- Version     : 2.1.0
+ Version     : 3.0.0
  Created     : 2026-04-06
- Updated     : 2026-05-05
+ Updated     : 2026-05-07
 -------------------------------------------------------------------------------
  Purpose     : Queries the menuitems table (filtered by role via rolemenuitems
                JOIN) and assembles the flat rows into a fully nested
@@ -22,8 +22,7 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation (Phase 1 — API Menu Boundary).
-   - 2.1.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems. Updated
-                         SQL JOIN and all comments.
+
    - 2.0.0  2026-04-19  MySQL migration: removed fn_GetVisibleMenuItems TVF
                          call and MySqlConnector dependency. Replaced with
                          direct menuitems JOIN rolemenuitems SQL query.
@@ -31,8 +30,16 @@
                          (TVF row) approach to 3-pass hierarchical (ParentId)
                          approach matching the client-side BuildCategories
                          pattern. Updated MenuItemRow to reflect the actual
-                         menuitems table schema (Id, ParentId, ItemType, Route,
-                         Icon instead of Href, ItemIcon).
+                         menuitems table schema.
+
+   - 2.1.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems. Updated
+                         SQL JOIN and all comments.
+
+   - 3.0.0  2026-05-07  Role schema consolidation: GetMenuAsync now accepts
+                         string roleCode instead of int roleType. Resolver now
+                         resolves RoleId via roles table (Role.Code → Role.Id)
+                         before executing the rolemenuitems JOIN. Updated SQL
+                         parameter and interface accordingly.
 -------------------------------------------------------------------------------
  Notes       :
    - MySqlParameter prevents SQL injection on all parameterised queries.
@@ -53,7 +60,7 @@ namespace AbsenceApp.Api.Services.Navigation;
 
 public interface IMenuResolver
 {
-    Task<MenuResponseDto> GetMenuAsync(int roleType, CancellationToken ct = default);
+    Task<MenuResponseDto> GetMenuAsync(string roleCode, CancellationToken ct = default);
 }
 
 // ===========================================================================
@@ -73,8 +80,16 @@ public sealed class MenuResolver : IMenuResolver
         _db = db;
     }
 
-    public async Task<MenuResponseDto> GetMenuAsync(int roleType, CancellationToken ct = default)
+    public async Task<MenuResponseDto> GetMenuAsync(string roleCode, CancellationToken ct = default)
     {
+        // -----------------------------------------------------------------------
+        // Resolve RoleId from Role.Code
+        // -----------------------------------------------------------------------
+        var roleId = await _db.Roles
+            .Where(r => r.Code == roleCode)
+            .Select(r => r.Id)
+            .FirstOrDefaultAsync(ct);
+
         // -----------------------------------------------------------------------
         // Query menuitems joined to rolemenuitems for role-filtered visibility.
         // MySqlParameter prevents SQL injection.
@@ -84,7 +99,7 @@ public sealed class MenuResolver : IMenuResolver
                    m.Category, m.GroupName, m.GroupIcon, m.IsFlat, m.Status, m.Description
             FROM   menuitems m
             INNER JOIN rolemenuitems rm ON rm.MenuItemId = m.Id
-            WHERE  rm.RoleId    = @RoleType
+            WHERE  rm.RoleId    = @RoleId
               AND  m.IsHidden   = 0
               AND  rm.IsEnabled = 1
             ORDER  BY m.SortOrder;
@@ -92,7 +107,7 @@ public sealed class MenuResolver : IMenuResolver
 
         var rows = await _db.Database
             .SqlQueryRaw<MenuItemRow>(sql,
-                new MySqlParameter("@RoleType", roleType))
+                new MySqlParameter("@RoleId", roleId))
             .ToListAsync(ct);
 
         // -----------------------------------------------------------------------

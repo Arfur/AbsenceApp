@@ -2,9 +2,9 @@
    File        : UsersPage.razor
    Namespace   : AbsenceApp.Client.Modules.SystemManagement
    Author      : Michael
-   Version     : 2.3.0
+   Version     : 2.4.0
    Created     : 2026-04-13
-   Updated     : 2026-04-25
+   Updated     : 2026-05-07
    ---------------------------------------------------------------------------
    Purpose     : System Management → User Management → Users.
                  Displays all user accounts using TablePageTemplateV2.
@@ -15,37 +15,13 @@
    Changes     :
      - 1.0.0  2026-04-13  E31 — Initial creation.
      - 2.0.0  2026-04-21  Full rewrite. Root-cause fix for "Users disappear on
-                           re-navigation" (SearchValue was "_search" literal
-                           string, not @_search variable — saved to AppState,
-                           restored on next visit, filtered all rows away).
-                           Replaced IUserManagementService direct injection with
-                           UserListViewModelV2. Added Export + Add User buttons,
-                           icon actions (pencil + two-click delete confirm),
-                           role/status filter chips, sort buttons, skeleton rows,
-                           and sliding-window pagination.
-     - 2.1.0  2026-04-22  Routing correction — removed invalid "/edit" suffix
-                           from Edit User link. Updated action link from
-                           "/v2/users/{Id}/edit" to "/v2/users/{Id}" to restore
-                           correct navigation into UserFormPageV2 and fix
-                           "User not found", missing banner/header, and
-                           ViewModel null-state issues.
-     - 2.2.0  2026-04-23  Corrected routing regression introduced in 2.1.0.
-                           Restored the proper Edit User link:
-                           "/v2/users/{Id}/edit". The previous update pointed
-                           to "/v2/users/{Id}", a route that does not exist,
-                           causing navigation to fall back to the root component
-                           and resulting in "User not found", missing header,
-                           and blank tabs. This update restores correct
-                           navigation into UserFormPageV2.
-     - 2.3.0  2026-04-25  Reconciled Users list and System Management routing.
-                           Standardised Edit action to point to the canonical
-                           system route "/v2/system/users/{Id}" used by the
-                           SystemManagement module. This resolves a routing
-                           mismatch where some list pages navigated to
-                           "/v2/users/{Id}/edit" or "/v2/users/{Id}" causing
-                           the UserFormPageV2 to receive no Id and display
-                           "User not found". Updated notes and restored
-                           deterministic navigation across modules.
+                           re-navigation".
+     - 2.1.0  2026-04-22  Routing correction.
+     - 2.2.0  2026-04-23  Restored correct Edit User route.
+     - 2.3.0  2026-04-25  Standardised System Management routing.
+     - 2.4.0  2026-05-07  RoleTypeName → RoleName migration. Updated filters,
+                           sorting, chip labels, and ClearAllFilters to use
+                           the new RoleName field from UserListItemDto.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/system/users
@@ -127,8 +103,8 @@
 
             <Filters>
                 <select class="tpt-filter-select"
-                        value="@_f["roleTypeName"]"
-                        @onchange="@(e => SetFilter("roleTypeName", "Role", e.Value?.ToString()))">
+                        value="@_f["roleName"]"
+                        @onchange="@(e => SetFilter("roleName", "Role", e.Value?.ToString()))">
                     <option value="">All Roles</option>
                     @foreach (var r in _roleOptions)
                     {
@@ -160,7 +136,7 @@
                 </th>
                 <th class="tpt-th">Email</th>
                 <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("roleTypeName")" @onclick="@(() => OnSort("roleTypeName"))">
+                    <button class="tpt-sort-btn @SortClass("roleName")" @onclick="@(() => OnSort("roleName"))">
                         Role
                         <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
                     </button>
@@ -202,7 +178,7 @@
                             <td class="tpt-td">@item.Username</td>
                             <td class="tpt-td">@item.Email</td>
                             <td class="tpt-td">
-                                <span class="tpt-badge">@item.RoleTypeName</span>
+                                <span class="tpt-badge">@item.RoleName</span>
                             </td>
                             <td class="tpt-td">
                                 <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
@@ -289,21 +265,21 @@
 
     private readonly Dictionary<string, string> _f = new()
     {
-        ["roleTypeName"] = "",
-        ["status"]       = "",
+        ["roleName"] = "",
+        ["status"]   = "",
     };
 
     private List<FilterChip> _activeFilterChips = [];
 
     private static readonly Dictionary<string, string> _keyToLabel = new()
     {
-        ["roleTypeName"] = "Role",
-        ["status"]       = "Status",
+        ["roleName"] = "Role",
+        ["status"]   = "Status",
     };
 
     private static readonly Dictionary<string, string> _labelToKey = new()
     {
-        ["Role"]   = "roleTypeName",
+        ["Role"]   = "roleName",
         ["Status"] = "status",
     };
 
@@ -313,9 +289,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Pre-clear any stale AppState for this route so the template's
-        // state-restoration cannot resurrect an old search value (e.g. the
-        // literal string "_search" saved by the previous v1.0.0 implementation).
         AppState.SetTablePageState("v2/system/users", string.Empty, ViewModel.PageSize, []);
         await ViewModel.LoadAsync();
         RebuildRoleOptions();
@@ -365,8 +338,8 @@
     private Task OnClearAllFilters()
     {
         foreach (var key in _f.Keys.ToList()) _f[key] = string.Empty;
-        ViewModel.SetFilter("roleTypeName", string.Empty);
-        ViewModel.SetFilter("status",       string.Empty);
+        ViewModel.SetFilter("roleName", string.Empty);
+        ViewModel.SetFilter("status",   string.Empty);
         _activeFilterChips = [];
         return Task.CompletedTask;
     }
@@ -379,7 +352,7 @@
 
     private void RebuildRoleOptions() =>
         _roleOptions = ViewModel.AllItems
-            .Select(u => u.RoleTypeName)
+            .Select(u => u.RoleName)
             .Where(r => !string.IsNullOrWhiteSpace(r))
             .Distinct()
             .OrderBy(x => x)

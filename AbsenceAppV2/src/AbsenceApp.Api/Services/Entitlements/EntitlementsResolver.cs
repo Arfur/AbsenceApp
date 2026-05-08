@@ -3,9 +3,9 @@
  File        : EntitlementsResolver.cs
  Namespace   : AbsenceApp.Api.Services.Entitlements
  Author      : Michael
- Version     : 2.0.0
+ Version     : 3.0.0
  Created     : 2026-04-05
- Updated     : 2026-04-19
+ Updated     : 2026-05-07
 -------------------------------------------------------------------------------
  Purpose     : Resolves the effective set of entitlement feature codes for a user.
 
@@ -35,6 +35,12 @@
                          UserFeatureOverride.IsAllowed→IsEnabled.
                          JOIN predicate changed from int FeatureId to string
                          FeatureCode equals feature.Code.
+   - 3.0.0  2026-05-07  Role schema consolidation: replaced legacy int roleType
+                         parameter with string roleCode. Role-based entitlement
+                         resolution now joins RoleFeature→Role and filters by
+                         Role.Code (e.g., 'SUPERADMIN', 'ADMIN', 'USER').
+                         Updated LINQ pipeline and interface signature to use
+                         code-based lookup consistent with the new roles table.
 -------------------------------------------------------------------------------
  Notes       :
    - No fallback behaviour is implemented.
@@ -52,7 +58,7 @@ public interface IEntitlementsResolver
 {
     Task<HashSet<string>> GetEffectiveAllowedKeysAsync(
         Guid userId,
-        int roleType,
+        int rolecode,
         CancellationToken ct = default);
 }
 
@@ -73,7 +79,7 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
     // =========================================================================
     public async Task<HashSet<string>> GetEffectiveAllowedKeysAsync(
         Guid userId,
-        int roleType,
+        int rolecode,
         CancellationToken ct = default)
     {
         // ---------------------------------------------------------------------
@@ -89,7 +95,9 @@ public sealed class EntitlementsResolver : IEntitlementsResolver
         // ---------------------------------------------------------------------
         var roleDefaults =
             from rf in _db.Set<RoleFeature>().AsNoTracking()
-            where rf.RoleId == roleType && rf.IsEnabled
+            join r in _db.Set<Role>().AsNoTracking()
+                on rf.RoleId equals r.Id
+            where r.Code == roleCode && rf.IsEnabled
             join f in activeFeatures on rf.FeatureCode equals f.Code
             select f.Code;
 

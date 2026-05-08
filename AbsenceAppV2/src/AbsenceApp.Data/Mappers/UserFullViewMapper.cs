@@ -52,7 +52,7 @@ public static class UserFullViewMapper
         IsAdmin            = entity.IsAdmin,
         LastLoginAt        = entity.LastLoginAt,
         LoginCount         = entity.LoginCount,
-        RoleTypeName       = roleTypeName,
+        RoleName           = roleTypeName,
         DepartmentName     = departmentName,
         IsTwoFactorEnabled = entity.IsTwoFactorEnabled,
         Timezone           = entity.Timezone,

@@ -3,9 +3,9 @@
  File        : FeaturePermissionResolver.cs
  Namespace   : AbsenceApp.Api.Services.Navigation
  Author      : Michael
- Version     : 4.0.0
+ Version     : 5.0.0
  Created     : 2026-04-06
- Updated     : 2026-04-28
+ Updated     : 2026-05-07
 -------------------------------------------------------------------------------
  Purpose     : Determines whether a given role may access a named feature.
 
@@ -33,10 +33,17 @@
                          `feature` → `features`. Entity class remains `Feature`.
                          Updated documentation and comments to reflect the new
                          table name. No behavioural changes.
+
+   - 5.0.0  2026-05-07  Role schema consolidation: replaced legacy int roleType
+                         parameter with string roleCode. Feature permission
+                         resolution now joins RoleFeature→Role and filters by
+                         Role.Code (e.g., 'SUPERADMIN', 'ADMIN', 'USER').
+                         Updated interface and implementation to align with
+                         Program.cs and the new Role.Code-based permission model.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Scoped in Program.cs.
-   - Entity class `Feature` is now mapped to table `features` via EF Core.
+   - Entity class `Feature` is mapped to table `features` via EF Core.
 ===============================================================================
 */
 
@@ -52,7 +59,7 @@ namespace AbsenceApp.Api.Services.Navigation;
 
 public interface IFeaturePermissionResolver
 {
-    Task<bool> IsAllowedAsync(int roleType, string featureKey, CancellationToken ct = default);
+    Task<bool> IsAllowedAsync(string roleCode, string featureKey, CancellationToken ct = default);
 }
 
 // ===========================================================================
@@ -78,7 +85,7 @@ public sealed class FeaturePermissionResolver : IFeaturePermissionResolver
     // ===========================================================================
 
     public async Task<bool> IsAllowedAsync(
-        int roleType,
+        string roleCode,
         string featureKey,
         CancellationToken ct = default)
     {
@@ -93,14 +100,16 @@ public sealed class FeaturePermissionResolver : IFeaturePermissionResolver
             return false;
 
         // -----------------------------------------------------------------------
-        // Query rolefeature table directly — no SQL function required
+        // Query rolefeature table joined to roles table using Role.Code
         // -----------------------------------------------------------------------
-        return await _db.Set<RoleFeature>()
-            .AsNoTracking()
-            .AnyAsync(rf =>
-                rf.RoleId      == roleType &&
-                rf.FeatureCode == featureKey &&
-                rf.IsEnabled,
-                ct);
+        return await (
+            from rf in _db.Set<RoleFeature>().AsNoTracking()
+            join r in _db.Set<Role>().AsNoTracking()
+                on rf.RoleId equals r.Id
+            where r.Code == roleCode
+               && rf.FeatureCode == featureKey
+               && rf.IsEnabled
+            select rf
+        ).AnyAsync(ct);
     }
 }

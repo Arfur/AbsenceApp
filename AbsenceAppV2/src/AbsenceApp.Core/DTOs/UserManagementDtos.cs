@@ -83,7 +83,7 @@ public sealed class UserListItemDto
     public string Username     { get; set; } = default!;
     public string Email        { get; set; } = default!;
     public string? PhoneNumber { get; set; }
-    public string RoleTypeName { get; set; } = default!;
+    public string RoleName { get; set; } = default!;
     public string Status       { get; set; } = default!;
     public DateTime CreatedAt  { get; set; }
 }
@@ -100,7 +100,7 @@ public sealed class UserCreateDto
     public string  Email        { get; set; } = default!;
     /// <summary>Plain-text password; hashed by the service layer before storage.</summary>
     public string  Password     { get; set; } = default!;
-    public int    RoleTypeId   { get; set; }
+    public int    RoleId   { get; set; }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ public sealed class UserUpdateDto
     public string  Email        { get; set; } = default!;
     /// <summary>If null or empty, the password is NOT changed.</summary>
     public string? NewPassword  { get; set; }
-    public int    RoleTypeId   { get; set; }
+    public int    RoleId       { get; set; }
     public string  Status       { get; set; } = default!;
 }
 
@@ -295,8 +295,8 @@ public sealed class UserProfileFullDetailDto
     public DateTime  UserUpdatedAt       { get; set; }
 
     // Role / permissions
-    public int       RoleTypeId          { get; set; }
-    public string    RoleTypeName        { get; set; } = string.Empty;
+    public int       RoleId              { get; set; }
+    public string    RoleName            { get; set; } = string.Empty;
     public string    RoleDisplayName     { get; set; } = string.Empty;
     public IReadOnlyList<RoleTypeSelectDto> RoleTypes { get; set; } = [];
     public IReadOnlyList<PagePermissionDto> Permissions { get; set; } = [];
@@ -465,7 +465,7 @@ public sealed class UserProfileSaveDto
     public int     UserId        { get; set; }
     public string  Username      { get; set; } = string.Empty;
     public string  Email         { get; set; } = string.Empty;
-    public int     RoleTypeId    { get; set; }
+    public int     RoleId        { get; set; }
     public string  Status        { get; set; } = string.Empty;
     public bool    IsAdmin       { get; set; }
     // UserProfile record (upserted)

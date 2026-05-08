@@ -135,7 +135,7 @@ public sealed class UserProfileViewModelV2
 
     public string Username   { get; set; } = string.Empty;
     public string Email      { get; set; } = string.Empty;
-    public int   RoleTypeId { get; set; }
+    public int   RoleId { get; set; }
     public string Status     { get; set; } = "active";
     public bool   IsAdmin    { get; set; }
     public DateTime UserCreatedAt { get; private set; }
@@ -271,7 +271,7 @@ public sealed class UserProfileViewModelV2
         Username       = string.Empty;
         Email          = string.Empty;
         Password       = string.Empty;
-        RoleTypeId     = 0;
+        RoleId         = 0;
         Status         = "active";
         IsAdmin        = false;
         FirstName      = string.Empty;
@@ -410,7 +410,7 @@ public sealed class UserProfileViewModelV2
             Status        = full.Status;
             IsAdmin       = full.IsAdmin;
             UserCreatedAt = full.UserCreatedAt;
-            RoleTypeId    = full.RoleTypeId;
+            RoleId        = full.RoleId;
 
             // Populate UserProfile fields.
             if (full.ProfileExists)
@@ -470,7 +470,7 @@ public sealed class UserProfileViewModelV2
                 Username   = Username.Trim(),
                 Email      = Email.Trim(),
                 Password   = Password,
-                RoleTypeId = RoleTypeId,
+                RoleId     = RoleId,
             }, ct);
 
             if (!ok) { Error = err ?? "Unknown error."; return (false, 0); }
@@ -502,7 +502,7 @@ public sealed class UserProfileViewModelV2
                 UserId        = UserId,
                 Username      = Username.Trim(),
                 Email         = Email.Trim(),
-                RoleTypeId    = RoleTypeId,
+                RoleId        = RoleId,
                 Status        = Status,
                 IsAdmin       = IsAdmin,
                 FirstName     = FirstName,
@@ -528,7 +528,7 @@ public sealed class UserProfileViewModelV2
             HeaderEmail    = Email;
             HeaderStatus   = Status;
             HeaderFullName = $"{FirstName} {LastName}".Trim();
-            var matchRole  = RoleTypes.FirstOrDefault(r => r.Id == RoleTypeId);
+            var matchRole  = RoleTypes.FirstOrDefault(r => r.Id == RoleId);
             if (matchRole is not null) HeaderRoleName = matchRole.DisplayName;
 
             Success = "Profile saved successfully.";

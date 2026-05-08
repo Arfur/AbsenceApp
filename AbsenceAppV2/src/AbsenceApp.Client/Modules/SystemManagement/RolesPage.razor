@@ -2,14 +2,14 @@
    File        : RolesPage.razor
    Namespace   : AbsenceApp.Client.Modules.SystemManagement
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 3.0.0
    Created     : 2026-04-13
-   Updated     : 2026-04-21
+   Updated     : 2026-05-07
    ---------------------------------------------------------------------------
    Purpose     : System Management → User Management → Roles.
-                 Lists all role types from the roletypes table (with user
-                 count per role type) using TablePageTemplateV2 for full
-                 visual consistency with the Students and Users list pages.
+                 Displays all roles from the roles table (with user count per
+                 role) using TablePageTemplateV2 for full visual consistency
+                 with the Students and Users list pages.
                  Supports in-component search and sliding-window pagination.
    ---------------------------------------------------------------------------
    Changes     :
@@ -17,11 +17,14 @@
      - 1.1.0  2026-04-21  Wired up to UserManagementApiServiceV2.GetAllRoleTypesAsync().
      - 2.0.0  2026-04-21  Converted to TablePageTemplateV2. Added Export button,
                            real search/pagination, icon actions.
+     - 3.0.0  2026-05-07  Schema consolidation: replaced legacy roletypes table
+                           with roles table. Updated header terminology and
+                           documentation to reflect RoleListItemDto and the
+                           new Role.Code-based role model.
    ---------------------------------------------------------------------------
    Notes       :
      - Route: /v2/system/roles
-===========================================================================
-*@
+=========================================================================== *@
 
 @page "/v2/system/roles"
 @layout MainLayoutV2
@@ -141,7 +144,11 @@
                     var pCopy = i;
                     <button class="tpt-page-btn @(pCopy == _page ? "tpt-active" : "")" @onclick="@(() => _page = pCopy)">@pCopy</button>
                 }
-                @if (winEnd < totalPages) { <span class="tpt-page-ellipsis">...</span> }
+                @if (winEnd < totalPages)
+                {
+                    <span class="tpt-page-ellipsis">...</span>
+                }
+
                 <button class="tpt-page-btn tpt-page-next" disabled="@(_page >= totalPages)" @onclick="NextPage">Next &#8594;</button>
             </Pagination>
 

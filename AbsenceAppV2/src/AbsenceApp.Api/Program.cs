@@ -111,14 +111,14 @@ entitlements.MapGet("/effective", async (
     if (string.IsNullOrWhiteSpace(userIdRaw) || !Guid.TryParse(userIdRaw, out var userId))
         return Results.Problem("Authenticated user id claim is missing or invalid.");
 
-    var roleTypeRaw =
-        user.FindFirstValue("roleType") ??
-        user.FindFirstValue("RoleType");
+    var roleCode =
+        user.FindFirstValue("roleCode") ??
+        user.FindFirstValue("RoleCode");
 
-    if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
-        return Results.Problem("Authenticated roleType claim is missing or invalid.");
+    if (string.IsNullOrWhiteSpace(roleCode))
+        return Results.Problem("Authenticated roleCode claim is missing or invalid.");
 
-    var allowedKeys = await resolver.GetEffectiveAllowedKeysAsync(userId, roleType, ct);
+    var allowedKeys = await resolver.GetEffectiveAllowedKeysAsync(userId, roleCode, ct);
 
     return Results.Ok(new
     {
@@ -139,14 +139,14 @@ menu.MapGet("/", async (
     IMenuResolver resolver,
     CancellationToken ct) =>
 {
-    var roleTypeRaw =
-        user.FindFirstValue("roleType") ??
-        user.FindFirstValue("RoleType");
+    var roleCode =
+        user.FindFirstValue("roleCode") ??
+        user.FindFirstValue("RoleCode");
 
-    if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
-        return Results.Problem("Authenticated roleType claim is missing or invalid.");
+    if (string.IsNullOrWhiteSpace(roleCode))
+        return Results.Problem("Authenticated roleCode claim is missing or invalid.");
 
-    var result = await resolver.GetMenuAsync(roleType, ct);
+    var result = await resolver.GetMenuAsync(roleCode, ct);
     return Results.Ok(result);
 }).WithName("GetMenu");
 
@@ -161,17 +161,17 @@ features.MapGet("/allowed", async (
     IFeaturePermissionResolver resolver,
     CancellationToken ct) =>
 {
-    var roleTypeRaw =
-        user.FindFirstValue("roleType") ??
-        user.FindFirstValue("RoleType");
+    var roleCode =
+        user.FindFirstValue("roleCode") ??
+        user.FindFirstValue("RoleCode");
 
-    if (string.IsNullOrWhiteSpace(roleTypeRaw) || !int.TryParse(roleTypeRaw, out var roleType))
-        return Results.Problem("Authenticated roleType claim is missing or invalid.");
+    if (string.IsNullOrWhiteSpace(roleCode))
+        return Results.Problem("Authenticated roleCode claim is missing or invalid.");
 
     if (string.IsNullOrWhiteSpace(key))
         return Results.BadRequest("Feature key is required.");
 
-    var allowed = await resolver.IsAllowedAsync(roleType, key, ct);
+    var allowed = await resolver.IsAllowedAsync(roleCode, key, ct);
     return Results.Ok(new { key, allowed });
 }).WithName("IsFeatureAllowed");
 

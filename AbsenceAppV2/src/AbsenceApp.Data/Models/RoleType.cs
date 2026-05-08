@@ -18,13 +18,17 @@
    - All required string properties use = default! to satisfy the nullable compiler.
 ===============================================================================
 */
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AbsenceApp.Data.Models;
 
 public class RoleType
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;
-    public string DisplayName { get; set; } = default!;
+    public string Code { get; set; } = default!;
+    /// <summary>Alias for Name — roles.DisplayName column was removed; display name is now roles.Name.</summary>
+    [NotMapped] public string DisplayName => Name;
     public string? Description { get; set; }
     public bool IsSystemRole { get; set; }
     public bool IsDefault { get; set; }

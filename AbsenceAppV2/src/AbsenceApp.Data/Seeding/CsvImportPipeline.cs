@@ -155,7 +155,7 @@ public sealed class CsvImportPipeline
         await UpsertAsync(_db.Phases, p => p.Id, entities);
     }
 
-    // CSV columns: id, name, display_name, description, is_system_role, is_default,
+    // CSV columns: id, name, code, description, is_system_role, is_default,
     //              priority, created_at, updated_at
     private async Task ImportRoleTypesAsync(string dir)
     {
@@ -164,7 +164,7 @@ public sealed class CsvImportPipeline
         {
             Id           = ToInt(r, "id"),
             Name         = Col(r, "name"),
-            DisplayName  = Col(r, "display_name"),
+            Code         = Col(r, "code"),
             Description  = NullableCol(r, "description"),
             IsSystemRole = ToBool(r, "is_system_role"),
             IsDefault    = ToBool(r, "is_default"),
