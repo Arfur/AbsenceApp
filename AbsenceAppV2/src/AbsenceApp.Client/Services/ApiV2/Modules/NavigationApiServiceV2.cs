@@ -3,9 +3,9 @@
  File        : NavigationApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 5.7.0
+ Version     : 5.8.0
  Created     : 2026-04-06
- Updated     : 2026-05-05
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : Client-side navigation service that executes
                dbo.fn_GetVisibleMenuItems(@RoleType) via EF Core SqlQueryRaw
@@ -88,6 +88,9 @@
                          'u.RoleTypeId'" startup crash.
    - 5.7.0  2026-05-05  Schema rename: rolemenuitem → rolemenuitems. Updated
                          SQL JOIN and inline comments.
+   - 5.8.0  2026-05-10  Added runtime filter to suppress legacy student/staff
+                         detail placeholder routes when stale DB menu data is
+                         still present.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.
@@ -111,6 +114,14 @@ namespace AbsenceApp.Client.Services.ApiV2.Modules;
 
 public sealed class NavigationApiServiceV2
 {
+    private static readonly HashSet<string> HiddenLegacyRoutes =
+    [
+        "/v2/students/detail",
+        "/v2/students/details",
+        "/v2/staff/detail",
+        "/v2/staff/details",
+    ];
+
     // ---------------------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------------------
@@ -173,6 +184,9 @@ public sealed class NavigationApiServiceV2
                 .SqlQueryRaw<MenuItemRow>(sql,
                     new MySqlParameter("@UserId", userId))
                 .ToListAsync(ct);
+            rows = rows
+                .Where(r => string.IsNullOrWhiteSpace(r.Route) || !HiddenLegacyRoutes.Contains(r.Route))
+                .ToList();
             AppLog.Write("NavigationApiServiceV2.cs", "GetMenuCategoriesAsync",
                 $"Rows returned = {rows.Count}");
 

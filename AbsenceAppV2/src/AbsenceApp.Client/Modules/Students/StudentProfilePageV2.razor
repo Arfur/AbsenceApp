@@ -2,11 +2,12 @@
    File        : StudentProfilePageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Students
    Author      : Michael
-   Version     : 2.0.0
+    Version     : 2.2.0
    Created     : 2026-05-05
-   Updated     : 2026-05-05
+   Updated     : 2026-05-10
    ---------------------------------------------------------------------------
-   Purpose     : Combined view / edit / add student profile page.
+   Purpose     : Combined view / edit / add student profile page using the
+                 shared V2 profile banner and tab-strip components.
                  View mode shows all tabs read-only.
                  Edit mode (Tab 0) allows editing all basic fields.
                  Add mode (/v2/students/new) initialises a blank form.
@@ -14,11 +15,16 @@
    Changes     :
      - 1.0.0  2026-05-05  Initial creation (view-only).
      - 2.0.0  2026-05-05  Phase 4: combined view+edit+add mode.
+     - 2.1.0  2026-05-10  Replaced inline profile chrome with shared
+                           ProfileBannerV2 and ProfileTabsV2 components.
+         - 2.2.0  2026-05-10  Updated runtime tabs to Basic Info/Contacts/Devices/
+                                                     External/Medical/Absences and aligned primary
+                                                     save action label to "Save Changes".
    ---------------------------------------------------------------------------
    Notes       :
      - Routes: /v2/students/{Id:int}  +  /v2/students/new
-     - Tabs: 0=Profile, 1=Contacts, 2=Medical, 3=Flags,
-             4=Additional, 5=Notes, 6=Absences
+     - Tabs: 0=Basic Info, 1=Contacts, 2=Devices, 3=External,
+         4=Medical, 5=Absences
      - CSS prefix: spv2-*
    ===========================================================================
 *@
@@ -28,7 +34,9 @@
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Students
 
+@using AbsenceApp.Client.Shared.Components
 @using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Core.DTOs
 @inject StudentProfileViewModelV2 ViewModel
 @inject NavigationManager Nav
 
@@ -40,7 +48,7 @@
             <button class="spv2-btn spv2-btn--primary"
                     disabled="@ViewModel.IsSaving"
                     @onclick="OnSave">
-                <i class="bi bi-check-lg" aria-hidden="true"></i> @(ViewModel.IsSaving ? "Saving…" : "Save Student")
+                <i class="bi bi-check-lg" aria-hidden="true"></i> @(ViewModel.IsSaving ? "Saving…" : "Save Changes")
             </button>
             @if (!ViewModel.IsNew)
             {
@@ -89,76 +97,38 @@
                 <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.SaveError</div>
             }
 
-            @* ─── PROFILE BANNER ───────────────────────────────────────────── *@
-            <div class="spv2-banner">
-
-                @* Left — avatar with upload *@
-                <div class="spv2-banner-photo">
-                    <label class="spv2-banner-avatar-label @(ViewModel.IsUploadingPhoto ? "spv2-banner-upload--busy" : "")">
-                        <InputFile OnChange="OnPhotoChanged" accept="image/*"
-                                   class="spv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
-                        @if (ViewModel.PhotoDataUri is not null)
-                        {
-                            <img class="spv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Student photo" />
-                        }
-                        else
-                        {
-                            <div class="spv2-banner-avatar spv2-banner-avatar--placeholder">
-                                <i class="bi bi-person-circle" aria-hidden="true"></i>
-                            </div>
-                        }
-                    </label>
-                    @if (ViewModel.PhotoError is not null)
-                    {
-                        <div class="spv2-banner-photo-error">@ViewModel.PhotoError</div>
-                    }
-                    @if (ViewModel.PhotoDataUri is not null)
-                    {
-                        <button class="spv2-banner-remove-photo" @onclick="OnRemovePhoto">
-                            <i class="bi bi-trash" aria-hidden="true"></i> Remove
-                        </button>
-                    }
-                </div>
-
-                @* Right — identity block *@
-                <div class="spv2-banner-identity">
-                    <div class="spv2-banner-name">@ViewModel.HeaderFullName</div>
-                    <div class="spv2-banner-kv-row">
-                        <span class="spv2-banner-kv-label">Admission No:</span>
-                        <span class="spv2-banner-kv-value">@ViewModel.HeaderAdmissionNumber</span>
-                    </div>
-                    <div class="spv2-banner-kv-row">
-                        <span class="spv2-banner-kv-label">Year Group:</span>
-                        <span class="spv2-banner-kv-value">@ViewModel.HeaderYearGroup</span>
-                    </div>
-                    <div class="spv2-banner-kv-row">
-                        <span class="spv2-banner-kv-label">Class:</span>
-                        <span class="spv2-banner-kv-value">@ViewModel.HeaderClass</span>
-                    </div>
-                    <div class="spv2-banner-kv-row">
-                        <span class="spv2-banner-kv-label">Status:</span>
-                        <span class="spv2-badge spv2-badge--@ViewModel.HeaderStatus.ToLower()">
-                            @ViewModel.HeaderStatus
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <ProfileBannerV2 EntityDisplayName="@ViewModel.HeaderFullName"
+                             AvatarAltText="Student photo"
+                             PhotoDataUri="@ViewModel.PhotoDataUri"
+                             PhotoError="@ViewModel.PhotoError"
+                             UploadPlaceholderText="Upload Photo"
+                             IsUploadingPhoto="@ViewModel.IsUploadingPhoto"
+                             ShowRemovePhoto="@(ViewModel.PhotoDataUri is not null)"
+                             OnPhotoChanged="OnPhotoChanged"
+                             OnRemovePhoto="OnRemovePhoto"
+                             ShowSelector="@(!ViewModel.IsNew)"
+                             IsSelectorLoading="@ViewModel.IsSelectorLoading"
+                             IsSelectorDisabled="@ViewModel.IsNew"
+                             SelectedId="@((long?)ViewModel.StudentId)"
+                             SelectorValue="@ViewModel.SelectorSearchText"
+                             SelectorPlaceholder="Search students"
+                             SelectorAriaLabel="Student selector"
+                             SelectorHint="@(ViewModel.IsNew ? "(Create student profile)" : "(Select Student name)")"
+                             SelectorEmptyMessage="No matching students found."
+                             SelectorItems="@ViewModel.ProfileSelectorItems"
+                             OnSelectorValueChanged="OnSelectorValueChanged"
+                             OnSelectorItemSelected="OnSelectorItemSelected"
+                             Fields="@ViewModel.BannerFields" />
 
             @* ─── TAB BAR ──────────────────────────────────────────────────── *@
-            <div class="spv2-tab-bar">
-                @foreach (var (label, idx) in Tabs)
-                {
-                    <button class="spv2-tab @(ViewModel.ActiveTab == idx ? "spv2-tab--active" : "")"
-                            @onclick="@(() => ViewModel.SetTab(idx))">
-                        @label
-                    </button>
-                }
-            </div>
+            <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs"
+                           ActiveTab="@ViewModel.ActiveTab"
+                           ActiveTabChanged="OnTabChanged" />
 
             @* ─── TAB CONTENT ──────────────────────────────────────────────── *@
             <div class="spv2-tab-content">
 
-                @* Tab 0 — Profile (view or edit) *@
+                @* Tab 0 — Basic Info (view or edit) *@
                 @if (ViewModel.ActiveTab == 0)
                 {
                     @if (ViewModel.IsEditing)
@@ -339,8 +309,20 @@
                     }
                 }
 
-                @* Tab 2 — Medical *@
+                @* Tab 2 — Devices *@
                 @if (ViewModel.ActiveTab == 2)
+                {
+                    <p class="spv2-empty">No devices available.</p>
+                }
+
+                @* Tab 3 — External *@
+                @if (ViewModel.ActiveTab == 3)
+                {
+                    <p class="spv2-empty">No external accounts available.</p>
+                }
+
+                @* Tab 4 — Medical *@
+                @if (ViewModel.ActiveTab == 4)
                 {
                     @if (ViewModel.Medical.Count == 0)
                     {
@@ -363,53 +345,8 @@
                     }
                 }
 
-                @* Tab 3 — Flags *@
-                @if (ViewModel.ActiveTab == 3)
-                {
-                    @if (ViewModel.Flags.Count == 0)
-                    {
-                        <p class="spv2-empty">No flags on record.</p>
-                    }
-                    else
-                    {
-                        <table class="spv2-table">
-                            <thead>
-                                <tr>
-                                    <th>Flag Code</th>
-                                    <th>Active</th>
-                                    <th>Assigned</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var f in ViewModel.Flags)
-                                {
-                                    <tr>
-                                        <td>@f.FlagCode</td>
-                                        <td>@(f.IsActive ? "Yes" : "No")</td>
-                                        <td>@f.AssignedAt.ToString("dd/MM/yyyy")</td>
-                                        <td>@(f.Notes ?? "—")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                }
-
-                @* Tab 4 — Additional (placeholder) *@
-                @if (ViewModel.ActiveTab == 4)
-                {
-                    <p class="spv2-empty">No additional information available.</p>
-                }
-
-                @* Tab 5 — Notes (placeholder) *@
+                @* Tab 5 — Absences (CRUD) *@
                 @if (ViewModel.ActiveTab == 5)
-                {
-                    <p class="spv2-empty">No notes on record.</p>
-                }
-
-                @* Tab 6 — Absences (CRUD) *@
-                @if (ViewModel.ActiveTab == 6)
                 {
                     <div class="spv2-absence-toolbar">
                         <button class="spv2-btn spv2-btn--primary"
@@ -480,17 +417,6 @@
 @code {
     [Parameter] public int Id { get; set; }
 
-    private static readonly (string Label, int Index)[] Tabs =
-    [
-        ("Profile",    0),
-        ("Contacts",   1),
-        ("Medical",    2),
-        ("Flags",      3),
-        ("Additional", 4),
-        ("Notes",      5),
-        ("Absences",   6),
-    ];
-
     private bool _isNew => Id == 0;
 
     private string PageTitle => _isNew
@@ -514,6 +440,22 @@
     private async Task OnBeginEdit()
     {
         await ViewModel.BeginEditAsync();
+    }
+
+    private Task OnSelectorValueChanged(string value)
+        => ViewModel.SearchProfileSelectorAsync(value);
+
+    private Task OnSelectorItemSelected(ProfileNameSelectorItemDto item)
+    {
+        var route = string.IsNullOrWhiteSpace(item.Route) ? $"/v2/students/{item.Id}" : item.Route;
+        Nav.NavigateTo(route);
+        return Task.CompletedTask;
+    }
+
+    private Task OnTabChanged(int index)
+    {
+        ViewModel.SetTab(index);
+        return Task.CompletedTask;
     }
 
     private async Task OnSave()

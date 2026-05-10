@@ -1,0 +1,115 @@
+/* ===========================================================================
+   File        : ProfileNameSelector.razor.css
+   Component   : ProfileNameSelector
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-10
+   Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Scoped CSS for the shared ProfileNameSelector component.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+   ===========================================================================
+*/
+
+.pfv2-selector {
+    position: relative;
+    max-width: 420px;
+}
+
+.pfv2-selector__control {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .45rem .7rem;
+    border-radius: var(--ds-radius, .5rem);
+    border: 1px solid rgba(255,255,255,.24);
+    background: rgba(255,255,255,.08);
+}
+
+.pfv2-selector__icon {
+    color: rgba(255,255,255,.78);
+}
+
+.pfv2-selector__input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.pfv2-selector__input::placeholder {
+    color: rgba(255,255,255,.72);
+    font-weight: 600;
+}
+
+.pfv2-selector__input:focus {
+    outline: none;
+}
+
+.pfv2-selector__loading {
+    font-size: .75rem;
+    color: rgba(255,255,255,.72);
+    white-space: nowrap;
+}
+
+.pfv2-selector__menu {
+    position: absolute;
+    top: calc(100% + .45rem);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .35rem;
+    border-radius: var(--ds-radius-lg, .75rem);
+    border: 1px solid rgba(30,41,59,.18);
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15,23,42,.18);
+}
+
+.pfv2-selector__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .12rem;
+    width: 100%;
+    padding: .6rem .75rem;
+    border: none;
+    border-radius: .55rem;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.pfv2-selector__item:hover,
+.pfv2-selector__item--active {
+    background: #eff6ff;
+}
+
+.pfv2-selector__item--selected {
+    background: #dbeafe;
+}
+
+.pfv2-selector__item-main {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.pfv2-selector__item-sub {
+    font-size: .78rem;
+    color: #64748b;
+}
+
+.pfv2-selector__empty {
+    padding: .75rem;
+    font-size: .82rem;
+    color: #64748b;
+}

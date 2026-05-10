@@ -3,25 +3,15 @@
  File        : UserProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.7.0
+ Version     : 1.8.0
    Created     : 2026-04-21
-     Updated     : 2026-05-06
+     Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for the full User Profile / Add User page
                (UserFormPageV2.razor). Handles both Add User and Edit User
-               modes, including:
-                 - Profile header data (photo, name, role, status)
-                 - Basic User Info tab (User + UserProfile fields)
-                 - Contacts tab (Staff employment / contact data)
-                 - Classes & Year Groups tab (StaffAssignments)
-                 - Devices tab (StaffDevices)
-                 - External Systems tab (StaffExternalAccounts)
-                 - Medical Records tab (placeholder — no staff_medical table)
-                 - Absence Records tab (Absences where PersonType=Staff)
-                 - Login Audit tab (LoginAudit rows)
-                 - Profile photo upload (local MAUI file system)
-                 - Change password
-                 - Module permissions matrix
+               modes, including unified profile banner/tab/selector state,
+               profile header data, the full tabbed user/staff detail surface,
+               profile photo upload, change password, and permissions.
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-04-21  Initial creation.
@@ -48,6 +38,8 @@
                          GetUsersForSelectAsync; added RefreshDropdownsAsync().
                          Amendment A: HeaderLastLogin already exists and is set
                          in InitEditAsync — now surfaced in banner far-right section.
+   - 1.8.0  2026-05-10  Added shared profile banner fields, tab metadata, and
+                         searchable selector state for the unified profile UI.
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in V2ServiceCollectionExtensions.cs.
@@ -79,83 +71,159 @@ public sealed class UserProfileViewModelV2
     // Mode
     // =========================================================================
 
-    public bool IsNew    { get; private set; } = true;
-    public int  UserId   { get; private set; }
-    public int  StaffId  { get; private set; }
+    public bool IsNew { get; private set; } = true;
+    public int UserId { get; private set; }
+    public int StaffId { get; private set; }
 
     // =========================================================================
-    // Active tab (0–7)
+    // Active tab (0–8)
     // =========================================================================
 
-    public int  ActiveTab    { get; private set; } = 0;
+    public int ActiveTab { get; private set; } = 0;
+    public void SetTab(int index)
+    {
+        if (!IsNew || index == 0)
+            ActiveTab = index;
+    }
 
-    public void SetTab(int index) { if (!IsNew || index == 0) ActiveTab = index; }
+    public IReadOnlyList<ProfileTabItemDto> ProfileTabs =>
+    [
+        new() { Index = 0, Label = "Basic Info",    Icon = "bi-person",         Enabled = true },
+        new() { Index = 1, Label = "Contacts",      Icon = "bi-telephone",      Enabled = !IsNew },
+        new() { Index = 2, Label = "Classes",       Icon = "bi-mortarboard",    Enabled = !IsNew },
+        new() { Index = 3, Label = "Devices",       Icon = "bi-laptop",         Enabled = !IsNew },
+        new() { Index = 4, Label = "External",      Icon = "bi-box-arrow-up-right", Enabled = !IsNew },
+        new() { Index = 5, Label = "Medical",       Icon = "bi-heart-pulse",    Enabled = !IsNew },
+        new() { Index = 6, Label = "Absences",      Icon = "bi-calendar-x",     Enabled = !IsNew },
+        new() { Index = 7, Label = "Login Audit",   Icon = "bi-clock-history",  Enabled = !IsNew },
+        new() { Index = 8, Label = "Permissions",   Icon = "bi-shield-lock",    Enabled = !IsNew },
+    ];
 
     // =========================================================================
     // Profile Header (edit mode)
     // =========================================================================
 
-    public string  HeaderFullName    { get; private set; } = string.Empty;
-    public string  HeaderEmail       { get; private set; } = string.Empty;
-    public string  HeaderRoleName    { get; private set; } = string.Empty;
-    public string  HeaderStatus      { get; private set; } = string.Empty;
-    public bool    HeaderIsAdmin     { get; private set; }
+    public string HeaderFullName     { get; private set; } = string.Empty;
+    public string HeaderEmail        { get; private set; } = string.Empty;
+    public string HeaderRoleName     { get; private set; } = string.Empty;
+    public string HeaderStatus       { get; private set; } = string.Empty;
+    public bool HeaderIsAdmin        { get; private set; }
     public DateTime? HeaderLastLogin { get; private set; }
-    public DateTime  HeaderCreatedAt { get; private set; }
+    public DateTime HeaderCreatedAt  { get; private set; }
+
+    public string BannerAsideLabel => IsNew ? string.Empty : "Last Login";
+    public string BannerAsideValue => IsNew
+        ? string.Empty
+        : HeaderLastLogin?.ToString("dd MMM yyyy HH:mm") ?? "Never";
+
+    public IReadOnlyList<ProfileBannerFieldDto> BannerFields =>
+    [
+        new() { Label = "Role:", Value = HeaderRoleName },
+        new() { Label = "Email:", Value = HeaderEmail },
+        new()
+        {
+            Label = "Status:",
+            Value = string.IsNullOrWhiteSpace(HeaderStatus) ? "—" : HeaderStatus,
+            IsBadge = true,
+            CssClass = BuildStatusBadgeClass(HeaderStatus),
+        },
+        new()
+        {
+            Label = "Access:",
+            Value = HeaderIsAdmin ? "Administrator" : "Standard",
+            IsBadge = true,
+            CssClass = HeaderIsAdmin ? "upv2-badge--status-active" : "upv2-badge--status-default",
+        },
+    ];
+
+    // =========================================================================
+    // Shared selector
+    // =========================================================================
+
+    public string SelectorSearchText { get; private set; } = string.Empty;
+    public bool IsSelectorLoading { get; private set; }
+    public IReadOnlyList<ProfileNameSelectorItemDto> ProfileSelectorItems { get; private set; } = [];
+
+    public async Task RefreshProfileSelectorAsync(CancellationToken ct = default)
+    {
+        if (IsNew)
+        {
+            ProfileSelectorItems = [];
+            return;
+        }
+
+        IsSelectorLoading = true;
+        try
+        {
+            ProfileSelectorItems = await _svc.SearchUserProfileSelectorAsync(null, ct: ct);
+        }
+        finally
+        {
+            IsSelectorLoading = false;
+        }
+    }
+
+    public async Task SearchProfileSelectorAsync(string term, CancellationToken ct = default)
+    {
+        SelectorSearchText = term;
+
+        if (IsNew)
+        {
+            ProfileSelectorItems = [];
+            return;
+        }
+
+        IsSelectorLoading = true;
+        try
+        {
+            ProfileSelectorItems = await _svc.SearchUserProfileSelectorAsync(term, ct: ct);
+        }
+        finally
+        {
+            IsSelectorLoading = false;
+        }
+    }
 
     // =========================================================================
     // Profile photo
     // =========================================================================
 
-    /// <summary>
-    /// Bytes of the currently displayed photo. Set either from loading the
-    /// saved file or from a newly picked file before upload.
-    /// </summary>
     public byte[]? PhotoBytes { get; private set; }
-
-    /// <summary>
-    /// Local file path stored in UserProfile.ProfilePictureUrl.
-    /// </summary>
     public string? PhotoStoredPath { get; private set; }
 
-    /// <summary>
-    /// Base64 data-URI for use in an &lt;img src="..."&gt; tag.
-    /// Returns null when no photo is available.
-    /// </summary>
     public string? PhotoDataUri => PhotoBytes is { Length: > 0 } b
         ? $"data:image/jpeg;base64,{Convert.ToBase64String(b)}"
         : null;
 
     public bool IsUploadingPhoto { get; private set; }
-    public string? PhotoError    { get; private set; }
+    public string? PhotoError { get; private set; }
 
     // =========================================================================
     // Tab 0 — Basic User Info (User fields)
     // =========================================================================
 
-    public string Username   { get; set; } = string.Empty;
-    public string Email      { get; set; } = string.Empty;
-    public int   RoleId { get; set; }
-    public string Status     { get; set; } = "active";
-    public bool   IsAdmin    { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public int RoleId { get; set; }
+    public string Status { get; set; } = "active";
+    public bool IsAdmin { get; set; }
     public DateTime UserCreatedAt { get; private set; }
 
     // =========================================================================
     // Tab 0 — Basic User Info (UserProfile fields)
     // =========================================================================
 
-    public string  FirstName     { get; set; } = string.Empty;
-    public string  LastName      { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public string? PreferredName { get; set; }
-    public string  Title         { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; } = DateTime.Today;
-
-    public string?  Bio          { get; set; }
-    public string?  Gender       { get; set; }
-    public string   Timezone     { get; set; } = "UTC";
-    public string   LanguageCode { get; set; } = "en";
-    public int     DepartmentId { get; set; }
-    public int     JobTitleId   { get; set; }
+    public string? Bio { get; set; }
+    public string? Gender { get; set; }
+    public string Timezone { get; set; } = "UTC";
+    public string LanguageCode { get; set; } = "en";
+    public int DepartmentId { get; set; }
+    public int JobTitleId { get; set; }
 
     // =========================================================================
     // Add User — password (create mode only)
@@ -167,11 +235,11 @@ public sealed class UserProfileViewModelV2
     // Change Password panel (edit mode)
     // =========================================================================
 
-    public string OldPassword      { get; set; } = string.Empty;
-    public string NewPassword      { get; set; } = string.Empty;
-    public bool   IsChangingPw     { get; private set; }
-    public string? PwError         { get; private set; }
-    public string? PwSuccess       { get; private set; }
+    public string OldPassword { get; set; } = string.Empty;
+    public string NewPassword { get; set; } = string.Empty;
+    public bool IsChangingPw { get; private set; }
+    public string? PwError { get; private set; }
+    public string? PwSuccess { get; private set; }
 
     // =========================================================================
     // Tab 1 — Contacts
@@ -213,8 +281,8 @@ public sealed class UserProfileViewModelV2
     // Reference data
     // =========================================================================
 
-    public IReadOnlyList<RoleTypeSelectDto> RoleTypes   { get; private set; } = [];
-    public List<PagePermissionDto>          Permissions { get; private set; } = [];
+    public IReadOnlyList<RoleTypeSelectDto> RoleTypes { get; private set; } = [];
+    public List<PagePermissionDto> Permissions { get; private set; } = [];
 
     // =========================================================================
     // Add-User staff list (populated when no staff is pre-selected)
@@ -223,7 +291,7 @@ public sealed class UserProfileViewModelV2
     public IReadOnlyList<StaffSelectDto> StaffWithoutAccounts { get; private set; } = [];
 
     // =========================================================================
-    // Edit-User — users with accounts (for banner navigation dropdown)
+    // Edit-User — users with accounts (legacy compatibility)
     // =========================================================================
 
     public IReadOnlyList<UserSelectDto> UsersWithAccounts { get; private set; } = [];
@@ -238,10 +306,10 @@ public sealed class UserProfileViewModelV2
     // State
     // =========================================================================
 
-    public bool    IsLoading        { get; private set; }
-    public bool    IsSaving         { get; private set; }
-    public string? Error            { get; private set; }
-    public string? Success          { get; private set; }
+    public bool IsLoading { get; private set; }
+    public bool IsSaving { get; private set; }
+    public string? Error { get; private set; }
+    public string? Success { get; private set; }
 
     public void SetError(string message) => Error = message;
 
@@ -251,61 +319,62 @@ public sealed class UserProfileViewModelV2
 
     public async Task InitNewAsync(long? preselectedStaffId = null, CancellationToken ct = default)
     {
-        IsNew    = true;
-        StaffId  = (int)(preselectedStaffId ?? 0L);
+        IsNew     = true;
+        StaffId   = (int)(preselectedStaffId ?? 0L);
         IsLoading = true;
-        Error    = null;
-        Success  = null;
+        Error     = null;
+        Success   = null;
 
-        // Reset all stale edit-mode state (Issue N1)
-        UserId          = 0;
-        HeaderFullName  = string.Empty;
-        HeaderEmail     = string.Empty;
-        HeaderRoleName  = string.Empty;
-        HeaderStatus    = string.Empty;
-        HeaderIsAdmin   = false;
-        HeaderLastLogin = null;
-        HeaderCreatedAt = default;
-        UserCreatedAt   = default;
+        UserId             = 0;
+        HeaderFullName     = string.Empty;
+        HeaderEmail        = string.Empty;
+        HeaderRoleName     = string.Empty;
+        HeaderStatus       = string.Empty;
+        HeaderIsAdmin      = false;
+        HeaderLastLogin    = null;
+        HeaderCreatedAt    = default;
+        UserCreatedAt      = default;
+        SelectorSearchText = string.Empty;
+        ProfileSelectorItems = [];
 
-        Username       = string.Empty;
-        Email          = string.Empty;
-        Password       = string.Empty;
-        RoleId         = 0;
-        Status         = "active";
-        IsAdmin        = false;
-        FirstName      = string.Empty;
-        LastName       = string.Empty;
-        PreferredName  = null;
-        Title          = string.Empty;
-        DateOfBirth    = DateTime.Today;
-        Bio            = null;
-        Gender         = null;
-        Timezone       = "UTC";
-        LanguageCode   = "en";
-        DepartmentId   = 0;
-        JobTitleId     = 0;
+        Username      = string.Empty;
+        Email         = string.Empty;
+        Password      = string.Empty;
+        RoleId        = 0;
+        Status        = "active";
+        IsAdmin       = false;
+        FirstName     = string.Empty;
+        LastName      = string.Empty;
+        PreferredName = null;
+        Title         = string.Empty;
+        DateOfBirth   = DateTime.Today;
+        Bio           = null;
+        Gender        = null;
+        Timezone      = "UTC";
+        LanguageCode  = "en";
+        DepartmentId  = 0;
+        JobTitleId    = 0;
 
-        OldPassword    = string.Empty;
-        NewPassword    = string.Empty;
-        PwError        = null;
-        PwSuccess      = null;
+        OldPassword = string.Empty;
+        NewPassword = string.Empty;
+        PwError     = null;
+        PwSuccess   = null;
 
-        PhotoBytes        = null;
-        PhotoStoredPath   = null;
-        PhotoError        = null;
+        PhotoBytes      = null;
+        PhotoStoredPath = null;
+        PhotoError      = null;
 
-        Contact           = null;
-        Classes           = [];
-        Devices           = [];
-        ExternalAccounts  = [];
-        Absences          = [];
-        LoginAudit        = [];
+        Contact          = null;
+        Classes          = [];
+        Devices          = [];
+        ExternalAccounts = [];
+        Absences         = [];
+        LoginAudit       = [];
 
-        LinkedStaff       = null;
-        UsersWithAccounts = [];
-
-        ActiveTab = 0;
+        LinkedStaff          = null;
+        StaffWithoutAccounts = [];
+        UsersWithAccounts    = [];
+        ActiveTab            = 0;
 
         try
         {
@@ -314,24 +383,29 @@ public sealed class UserProfileViewModelV2
 
             if (preselectedStaffId.HasValue && preselectedStaffId.Value > 0)
             {
-                // Pre-selected staff (navigated from StaffDetailPage).
                 LinkedStaff = await _svc.GetStaffForUserCreateAsync((int)preselectedStaffId.Value, ct);
                 if (LinkedStaff is null)
                 {
                     Error = $"Staff record {preselectedStaffId.Value} not found.";
                     return;
                 }
+
                 Email          = LinkedStaff.WorkEmail;
                 HeaderFullName = LinkedStaff.FullName;
             }
             else
             {
-                // No pre-selection — load the staff-without-accounts dropdown.
                 StaffWithoutAccounts = await _svc.GetStaffWithoutUsersAsync(ct);
             }
         }
-        catch (Exception ex) { Error = ex.Message; }
-        finally { IsLoading = false; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     // =========================================================================
@@ -356,7 +430,10 @@ public sealed class UserProfileViewModelV2
             if (LinkedStaff is not null)
                 Email = LinkedStaff.WorkEmail;
         }
-        catch (Exception ex) { Error = ex.Message; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
     }
 
     // =========================================================================
@@ -370,6 +447,7 @@ public sealed class UserProfileViewModelV2
         IsLoading = true;
         Error     = null;
         Success   = null;
+
         try
         {
             PhotoBytes      = null;
@@ -385,26 +463,22 @@ public sealed class UserProfileViewModelV2
 
             RoleTypes   = full.RoleTypes;
             Permissions = full.Permissions.ToList();
-
-            // Load users-with-accounts for Edit Mode navigation dropdown.
             UsersWithAccounts = await _svc.GetUsersForSelectAsync(ct);
 
-            // Populate header.
-            StaffId           = full.StaffId ?? 0;
-            HeaderFullName    = full.FullName;
-            HeaderEmail       = full.Email;
-            HeaderRoleName    = full.RoleDisplayName;
-            HeaderStatus      = full.Status;
-            HeaderIsAdmin     = full.IsAdmin;
-            HeaderLastLogin   = full.LastLoginAt;
-            HeaderCreatedAt   = full.UserCreatedAt;
-            PhotoStoredPath   = full.ProfilePictureUrl;
+            StaffId         = full.StaffId ?? 0;
+            HeaderFullName  = full.FullName;
+            HeaderEmail     = full.Email;
+            HeaderRoleName  = full.RoleDisplayName;
+            HeaderStatus    = full.Status;
+            HeaderIsAdmin   = full.IsAdmin;
+            HeaderLastLogin = full.LastLoginAt;
+            HeaderCreatedAt = full.UserCreatedAt;
+            PhotoStoredPath = full.ProfilePictureUrl;
+            SelectorSearchText = HeaderFullName;
 
-            // Load stored photo bytes.
             if (!string.IsNullOrWhiteSpace(PhotoStoredPath) && File.Exists(PhotoStoredPath))
                 PhotoBytes = await File.ReadAllBytesAsync(PhotoStoredPath, ct);
 
-            // Populate Basic User Info fields.
             Username      = full.Username;
             Email         = full.Email;
             Status        = full.Status;
@@ -412,7 +486,6 @@ public sealed class UserProfileViewModelV2
             UserCreatedAt = full.UserCreatedAt;
             RoleId        = full.RoleId;
 
-            // Populate UserProfile fields.
             if (full.ProfileExists)
             {
                 FirstName     = full.FirstName;
@@ -427,20 +500,28 @@ public sealed class UserProfileViewModelV2
                 JobTitleId    = full.JobTitleId;
             }
 
-            DateOfBirth     = full.DateOfBirth;
-            Contact         = full.Contact;
-            Classes         = full.Classes;
-            Devices         = full.StaffDevices;
+            DateOfBirth      = full.DateOfBirth;
+            Contact          = full.Contact;
+            Classes          = full.Classes;
+            Devices          = full.StaffDevices;
             ExternalAccounts = full.StaffExternalAccounts;
-            Absences        = full.StaffAbsences;
-            LoginAudit      = full.StaffLoginAudit;
+            Absences         = full.StaffAbsences;
+            LoginAudit       = full.StaffLoginAudit;
+
+            await RefreshProfileSelectorAsync(ct);
         }
-        catch (Exception ex) { Error = ex.Message; }
-        finally { IsLoading = false; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     // =========================================================================
-    // Refresh both dropdown lists (called after CreateUserAsync succeeds)
+    // Refresh dropdown data
     // =========================================================================
 
     public async Task RefreshDropdownsAsync(CancellationToken ct = default)
@@ -449,8 +530,14 @@ public sealed class UserProfileViewModelV2
         {
             StaffWithoutAccounts = await _svc.GetStaffWithoutUsersAsync(ct);
             UsersWithAccounts    = await _svc.GetUsersForSelectAsync(ct);
+
+            if (!IsNew)
+                await RefreshProfileSelectorAsync(ct);
         }
-        catch (Exception ex) { Error = ex.Message; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
     }
 
     // =========================================================================
@@ -459,31 +546,45 @@ public sealed class UserProfileViewModelV2
 
     public async Task<(bool Ok, long NewUserId)> CreateUserAsync(CancellationToken ct = default)
     {
-        Error   = null;
-        Success = null;
+        Error    = null;
+        Success  = null;
         IsSaving = true;
         try
         {
             var (ok, err, id) = await _svc.CreateUserAsync(new UserCreateDto
             {
-                StaffId    = StaffId,
-                Username   = Username.Trim(),
-                Email      = Email.Trim(),
-                Password   = Password,
-                RoleId     = RoleId,
+                StaffId  = StaffId,
+                Username = Username.Trim(),
+                Email    = Email.Trim(),
+                Password = Password,
+                RoleId   = RoleId,
             }, ct);
 
-            if (!ok) { Error = err ?? "Unknown error."; return (false, 0); }
+            if (!ok)
+            {
+                Error = err ?? "Unknown error.";
+                return (false, 0);
+            }
 
-            // Save permission matrix.
             var (permOk, permErr) = await _svc.SaveUserPermissionsAsync(id, Permissions, ct);
-            if (!permOk) { Error = permErr ?? "Permissions save failed."; return (false, 0); }
+            if (!permOk)
+            {
+                Error = permErr ?? "Permissions save failed.";
+                return (false, 0);
+            }
 
             Success = "User account created successfully.";
             return (true, id);
         }
-        catch (Exception ex) { Error = ex.Message; return (false, 0); }
-        finally { IsSaving = false; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            return (false, 0);
+        }
+        finally
+        {
+            IsSaving = false;
+        }
     }
 
     // =========================================================================
@@ -492,8 +593,8 @@ public sealed class UserProfileViewModelV2
 
     public async Task<bool> SaveProfileAsync(CancellationToken ct = default)
     {
-        Error   = null;
-        Success = null;
+        Error    = null;
+        Success  = null;
         IsSaving = true;
         try
         {
@@ -518,24 +619,40 @@ public sealed class UserProfileViewModelV2
                 JobTitleId    = JobTitleId,
             }, ct);
 
-            if (!ok) { Error = err ?? "Unknown error."; return false; }
+            if (!ok)
+            {
+                Error = err ?? "Unknown error.";
+                return false;
+            }
 
-            // Save permission matrix.
             var (permOk, permErr) = await _svc.SaveUserPermissionsAsync(UserId, Permissions, ct);
-            if (!permOk) { Error = permErr ?? "Permissions save failed."; return false; }
+            if (!permOk)
+            {
+                Error = permErr ?? "Permissions save failed.";
+                return false;
+            }
 
-            // Refresh header display values.
-            HeaderEmail    = Email;
-            HeaderStatus   = Status;
-            HeaderFullName = $"{FirstName} {LastName}".Trim();
-            var matchRole  = RoleTypes.FirstOrDefault(r => r.Id == RoleId);
-            if (matchRole is not null) HeaderRoleName = matchRole.DisplayName;
+            HeaderEmail     = Email;
+            HeaderStatus    = Status;
+            HeaderFullName  = $"{FirstName} {LastName}".Trim();
+            HeaderIsAdmin   = IsAdmin;
+            SelectorSearchText = HeaderFullName;
+            var matchRole = RoleTypes.FirstOrDefault(r => r.Id == RoleId);
+            if (matchRole is not null)
+                HeaderRoleName = matchRole.DisplayName;
 
             Success = "Profile saved successfully.";
             return true;
         }
-        catch (Exception ex) { Error = ex.Message; return false; }
-        finally { IsSaving = false; }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+            return false;
+        }
+        finally
+        {
+            IsSaving = false;
+        }
     }
 
     // =========================================================================
@@ -552,6 +669,7 @@ public sealed class UserProfileViewModelV2
             PwError = "Both current and new password are required.";
             return;
         }
+
         if (NewPassword.Length < 8)
         {
             PwError = "New password must be at least 8 characters.";
@@ -568,25 +686,30 @@ public sealed class UserProfileViewModelV2
                 NewPassword = NewPassword,
             }, ct);
 
-            if (!ok) { PwError = err ?? "Password change failed."; return; }
+            if (!ok)
+            {
+                PwError = err ?? "Password change failed.";
+                return;
+            }
 
             OldPassword = string.Empty;
             NewPassword = string.Empty;
             PwSuccess   = "Password changed successfully.";
         }
-        catch (Exception ex) { PwError = ex.Message; }
-        finally { IsChangingPw = false; }
+        catch (Exception ex)
+        {
+            PwError = ex.Message;
+        }
+        finally
+        {
+            IsChangingPw = false;
+        }
     }
 
     // =========================================================================
     // Photo upload
     // =========================================================================
 
-    /// <summary>
-    /// Reads the picked file, stores bytes in memory, saves to the local MAUI
-    /// app-data folder, and persists the path to the DB.
-    /// Max size: 5 MB.
-    /// </summary>
     public async Task UploadPhotoAsync(IBrowserFile file, CancellationToken ct = default)
     {
         PhotoError       = null;
@@ -594,7 +717,7 @@ public sealed class UserProfileViewModelV2
 
         try
         {
-            const long MaxSize = 5 * 1024 * 1024; // 5 MB
+            const long MaxSize = 5 * 1024 * 1024;
 
             if (file.Size > MaxSize)
             {
@@ -602,40 +725,42 @@ public sealed class UserProfileViewModelV2
                 return;
             }
 
-            // Read bytes into memory.
             await using var ms = new MemoryStream();
             await using var stream = file.OpenReadStream(MaxSize, ct);
             await stream.CopyToAsync(ms, ct);
             var bytes = ms.ToArray();
 
-            // Determine extension (default to jpg).
             var ext = Path.GetExtension(file.Name).ToLowerInvariant() switch
             {
                 ".png"  => ".png",
                 ".gif"  => ".gif",
                 ".webp" => ".webp",
-                _       => ".jpg",
+                _        => ".jpg",
             };
 
-            // Save to local MAUI app-data folder.
             var dir  = Path.Combine(FileSystem.AppDataDirectory, "user_photos");
             Directory.CreateDirectory(dir);
             var path = Path.Combine(dir, $"user_{UserId}{ext}");
             await File.WriteAllBytesAsync(path, bytes, ct);
 
-            // Update in-memory state.
             PhotoBytes      = bytes;
             PhotoStoredPath = path;
 
-            // Persist path to DB (non-blocking — best-effort).
             if (UserId > 0)
             {
                 var (ok, err) = await _svc.UpdateProfilePhotoAsync(UserId, path, ct);
-                if (!ok) PhotoError = $"Photo saved locally but DB update failed: {err}";
+                if (!ok)
+                    PhotoError = $"Photo saved locally but DB update failed: {err}";
             }
         }
-        catch (Exception ex) { PhotoError = ex.Message; }
-        finally { IsUploadingPhoto = false; }
+        catch (Exception ex)
+        {
+            PhotoError = ex.Message;
+        }
+        finally
+        {
+            IsUploadingPhoto = false;
+        }
     }
 
     // =========================================================================
@@ -648,24 +773,45 @@ public sealed class UserProfileViewModelV2
         IsUploadingPhoto = true;
         try
         {
-            // Delete local file if it exists.
             if (!string.IsNullOrWhiteSpace(PhotoStoredPath) && File.Exists(PhotoStoredPath))
             {
-                try { File.Delete(PhotoStoredPath); } catch { /* best-effort */ }
+                try
+                {
+                    File.Delete(PhotoStoredPath);
+                }
+                catch
+                {
+                    // best-effort
+                }
             }
 
-            // Clear in-memory state.
             PhotoBytes      = null;
             PhotoStoredPath = null;
 
-            // Clear path in DB.
             if (UserId > 0)
             {
                 var (ok, err) = await _svc.UpdateProfilePhotoAsync(UserId, string.Empty, ct);
-                if (!ok) PhotoError = $"Photo removed locally but DB update failed: {err}";
+                if (!ok)
+                    PhotoError = $"Photo removed locally but DB update failed: {err}";
             }
         }
-        catch (Exception ex) { PhotoError = ex.Message; }
-        finally { IsUploadingPhoto = false; }
+        catch (Exception ex)
+        {
+            PhotoError = ex.Message;
+        }
+        finally
+        {
+            IsUploadingPhoto = false;
+        }
     }
+
+    private static string BuildStatusBadgeClass(string? status) =>
+        status?.Trim().ToLowerInvariant() switch
+        {
+            "active"    => "upv2-badge--status-active",
+            "inactive"  => "upv2-badge--status-inactive",
+            "suspended" => "upv2-badge--status-suspended",
+            "left"      => "upv2-badge--status-left",
+            _            => "upv2-badge--status-default",
+        };
 }

@@ -1,0 +1,144 @@
+@* ===========================================================================
+   File        : ProfileBannerV2.razor
+   Namespace   : AbsenceApp.Client.Shared.Components
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-10
+   Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable profile banner for the unified V2 User, Student, and
+                 Staff profile pages. Hosts photo upload/remove actions,
+                 profile-specific banner text, optional trailing summary text,
+                 and the shared ProfileNameSelector.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Presentation-only component; parent owns upload/search/navigation logic.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Core.DTOs
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="upv2-banner">
+    <div class="upv2-banner-photo">
+        <label class="upv2-banner-avatar-label @(IsUploadingPhoto ? "upv2-banner-upload--busy" : "") @(DebugAvatarHitbox ? "upv2-banner-avatar-label--debug-hitbox" : "")">
+            <InputFile OnChange="HandlePhotoChangedAsync"
+                       accept="image/*"
+                       class="upv2-file-input"
+                       disabled="@IsUploadingPhoto" />
+            @if (!string.IsNullOrWhiteSpace(PhotoDataUri))
+            {
+                <img class="upv2-banner-avatar" src="@PhotoDataUri" alt="@AvatarAltText" />
+            }
+            else
+            {
+                <div class="upv2-banner-avatar upv2-banner-avatar--placeholder upv2-banner-avatar--has-upload">
+                    <i class="bi bi-camera" aria-hidden="true"></i>
+                    <span class="upv2-banner-avatar-upload-text">@UploadPlaceholderText</span>
+                </div>
+            }
+        </label>
+
+        @if (!string.IsNullOrWhiteSpace(PhotoError))
+        {
+            <div class="upv2-banner-photo-error">@PhotoError</div>
+        }
+
+        @if (ShowRemovePhoto)
+        {
+            <button type="button"
+                    class="upv2-banner-remove-photo"
+                    disabled="@IsUploadingPhoto"
+                    @onclick="HandleRemovePhotoAsync">
+                <i class="bi bi-trash" aria-hidden="true"></i> Remove
+            </button>
+        }
+    </div>
+
+    <div class="upv2-banner-identity">
+        <div class="upv2-banner-name">
+            @if (ShowSelector)
+            {
+                <ProfileNameSelector Value="@SelectorValue"
+                                     Placeholder="@SelectorPlaceholder"
+                                     AriaLabel="@SelectorAriaLabel"
+                                     HintText="@SelectorHint"
+                                     EmptyMessage="@SelectorEmptyMessage"
+                                     IsLoading="@IsSelectorLoading"
+                                     Disabled="@IsSelectorDisabled"
+                                     Items="@SelectorItems"
+                                     SelectedId="@SelectedId"
+                                     ValueChanged="@OnSelectorValueChanged"
+                                     ItemSelected="@OnSelectorItemSelected" />
+            }
+            else
+            {
+                <span>@EntityDisplayName</span>
+                @if (!string.IsNullOrWhiteSpace(SelectorHint))
+                {
+                    <span class="upv2-banner-mode-hint">@SelectorHint</span>
+                }
+            }
+        </div>
+
+        @foreach (var field in Fields)
+        {
+            <div class="upv2-banner-kv-row">
+                <span class="upv2-banner-kv-label">@field.Label</span>
+                @if (field.IsBadge)
+                {
+                    <span class="upv2-badge @field.CssClass">@field.Value</span>
+                }
+                else
+                {
+                    <span class="upv2-banner-kv-value">@field.Value</span>
+                }
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(AsideLabel) || !string.IsNullOrWhiteSpace(AsideValue))
+    {
+        <div class="upv2-banner-lastlogin">
+            <span class="upv2-banner-lastlogin-label">@AsideLabel</span>
+            <span class="upv2-banner-lastlogin-value">@AsideValue</span>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string EntityDisplayName { get; set; } = string.Empty;
+    [Parameter] public string AvatarAltText { get; set; } = "Profile photo";
+    [Parameter] public string? PhotoDataUri { get; set; }
+    [Parameter] public string? PhotoError { get; set; }
+    [Parameter] public string UploadPlaceholderText { get; set; } = "Upload Photo";
+    [Parameter] public bool IsUploadingPhoto { get; set; }
+    [Parameter] public bool ShowRemovePhoto { get; set; }
+    [Parameter] public bool DebugAvatarHitbox { get; set; }
+    [Parameter] public EventCallback<InputFileChangeEventArgs> OnPhotoChanged { get; set; }
+    [Parameter] public EventCallback OnRemovePhoto { get; set; }
+
+    [Parameter] public bool ShowSelector { get; set; }
+    [Parameter] public bool IsSelectorLoading { get; set; }
+    [Parameter] public bool IsSelectorDisabled { get; set; }
+    [Parameter] public long? SelectedId { get; set; }
+    [Parameter] public string SelectorValue { get; set; } = string.Empty;
+    [Parameter] public string SelectorPlaceholder { get; set; } = "Search profile";
+    [Parameter] public string SelectorAriaLabel { get; set; } = "Profile selector";
+    [Parameter] public string SelectorHint { get; set; } = string.Empty;
+    [Parameter] public string SelectorEmptyMessage { get; set; } = "No matching profiles found.";
+    [Parameter] public IReadOnlyList<ProfileNameSelectorItemDto> SelectorItems { get; set; } = [];
+    [Parameter] public EventCallback<string> OnSelectorValueChanged { get; set; }
+    [Parameter] public EventCallback<ProfileNameSelectorItemDto> OnSelectorItemSelected { get; set; }
+
+    [Parameter] public IReadOnlyList<ProfileBannerFieldDto> Fields { get; set; } = [];
+    [Parameter] public string AsideLabel { get; set; } = string.Empty;
+    [Parameter] public string AsideValue { get; set; } = string.Empty;
+
+    private Task HandlePhotoChangedAsync(InputFileChangeEventArgs args) => OnPhotoChanged.InvokeAsync(args);
+    private Task HandleRemovePhotoAsync() => OnRemovePhoto.InvokeAsync();
+}

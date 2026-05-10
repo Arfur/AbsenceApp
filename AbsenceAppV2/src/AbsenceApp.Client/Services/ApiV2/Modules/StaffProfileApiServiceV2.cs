@@ -3,9 +3,9 @@
  File        : StaffProfileApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-05-09
- Updated     : 2026-05-09
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : Client-side Staff Profile API service. Wraps the data layer
                for the Staff Profile page. Uses IServiceScopeFactory
@@ -13,6 +13,8 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-05-09  Initial creation (Phase 5).
+   - 1.1.0  2026-05-10  Added SearchStaffProfileSelectorAsync() for the shared
+                         profile-name selector.
 ===============================================================================
 */
 
@@ -49,6 +51,55 @@ public sealed class StaffProfileApiServiceV2
         {
             AppLog.Write("StaffProfileApiServiceV2.cs", "GetStaffAsync", $"ERROR {ex.Message}");
             return null;
+        }
+    }
+
+    public async Task<IReadOnlyList<ProfileNameSelectorItemDto>> SearchStaffProfileSelectorAsync(
+        string? term,
+        int maxResults = 12,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var svc = scope.ServiceProvider.GetRequiredService<IStaffFullViewService>();
+            var staff = await svc.GetAllAsync();
+            var query = staff.AsEnumerable();
+            var search = term?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(s =>
+                    s.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    s.StaffNumber.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    s.DepartmentName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    s.WorkEmail.Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return query
+                .OrderBy(s => s.FullName)
+                .Take(maxResults)
+                .Select(s => new ProfileNameSelectorItemDto
+                {
+                    Id = s.Id,
+                    DisplayName = s.FullName,
+                    SecondaryText = string.Join(" • ", new[]
+                    {
+                        string.IsNullOrWhiteSpace(s.StaffNumber) ? null : s.StaffNumber,
+                        string.IsNullOrWhiteSpace(s.DepartmentName) ? null : s.DepartmentName,
+                        string.IsNullOrWhiteSpace(s.WorkEmail) ? null : s.WorkEmail,
+                    }.Where(value => !string.IsNullOrWhiteSpace(value))),
+                    Route = $"/v2/staff/{s.Id}",
+                    EntityType = "Staff",
+                    Status = s.AccountStatus,
+                })
+                .ToList()
+                .AsReadOnly();
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("StaffProfileApiServiceV2.cs", "SearchStaffProfileSelectorAsync", $"ERROR {ex.Message}");
+            return [];
         }
     }
 

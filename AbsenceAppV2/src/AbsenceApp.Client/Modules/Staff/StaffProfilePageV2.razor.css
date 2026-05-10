@@ -1,5 +1,165 @@
-/* StaffProfilePageV2.razor.css
-   All layout is handled by the shared spv2-* rules defined in
-   StudentProfilePageV2.razor.css (loaded globally).
-   Add staff-specific overrides here as needed.
-*/
+/* =============================================================================
+   File        : StaffProfilePageV2.razor.css
+   Namespace   : AbsenceApp.Client.Modules.Staff
+   Version     : 1.0.0
+   Created     : 2026-05-10
+   Updated     : 2026-05-10
+   Purpose     : Scoped styles for StaffProfilePageV2.
+             Mirrors shared spv2 profile-page layout/form/table styles so
+             the staff module does not depend on student-scoped CSS.
+   Changes     :
+    - 1.0.0  2026-05-10  Initial staff scoped style set (aligned to student
+                     profile page classes).
+============================================================================= */
+
+.spv2-loading {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   padding: 2rem;
+   color: var(--dsv2-text-muted, #6c757d);
+   font-size: 0.95rem;
+}
+
+.spv2-btn {
+   display: inline-flex;
+   align-items: center;
+   gap: 0.35rem;
+   padding: 0.4rem 0.9rem;
+   border: 1px solid transparent;
+   border-radius: 0.35rem;
+   font-size: 0.875rem;
+   cursor: pointer;
+   transition: opacity 0.15s;
+}
+
+.spv2-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.spv2-btn--primary  { background: var(--dsv2-primary, #0d6efd); color: #fff; border-color: var(--dsv2-primary, #0d6efd); }
+.spv2-btn--secondary{ background: transparent; color: var(--dsv2-text, #212529); border-color: var(--dsv2-border, #dee2e6); }
+.spv2-btn--icon     { padding: 0.3rem 0.5rem; background: transparent; border-color: var(--dsv2-border, #dee2e6); }
+.spv2-btn--danger   { color: #dc3545; border-color: #dc3545; }
+
+.spv2-tab-content { padding: 0.5rem 0; }
+
+.spv2-fields-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+   gap: 0.75rem;
+}
+
+.spv2-field {
+   display: flex;
+   flex-direction: column;
+   gap: 0.2rem;
+}
+
+.spv2-label {
+   font-size: 0.75rem;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+   color: var(--dsv2-text-muted, #6c757d);
+}
+
+.spv2-value {
+   font-size: 0.9rem;
+   color: var(--dsv2-text, #212529);
+   padding: 0.4rem 0.6rem;
+   background: var(--dsv2-surface, #f8f9fa);
+   border: 1px solid var(--dsv2-border, #dee2e6);
+   border-radius: 0.3rem;
+   min-height: 2rem;
+}
+
+.spv2-card {
+   padding: 1rem;
+   border: 1px solid var(--dsv2-border, #dee2e6);
+   border-radius: 0.4rem;
+   margin-bottom: 0.75rem;
+}
+
+.spv2-empty {
+   color: var(--dsv2-text-muted, #6c757d);
+   font-size: 0.9rem;
+   padding: 1.5rem 0;
+}
+
+.spv2-absence-toolbar { margin-bottom: 0.75rem; }
+
+.spv2-table {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 0.875rem;
+}
+
+.spv2-table th,
+.spv2-table td {
+   padding: 0.55rem 0.75rem;
+   border-bottom: 1px solid var(--dsv2-border, #dee2e6);
+   text-align: left;
+   vertical-align: middle;
+}
+
+.spv2-table thead th {
+   font-weight: 600;
+   background: var(--dsv2-surface, #f8f9fa);
+   font-size: 0.8rem;
+   text-transform: uppercase;
+   letter-spacing: 0.03em;
+}
+
+.spv2-absence-actions { white-space: nowrap; }
+
+.spv2-edit-form {
+   display: flex;
+   flex-direction: column;
+   gap: 0.9rem;
+}
+
+.spv2-edit-section-title {
+   font-size: 0.92rem;
+   font-weight: 700;
+   color: var(--dsv2-text, #1f2937);
+   margin-top: 0.35rem;
+}
+
+.spv2-fields-grid--edit {
+   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+   gap: 0.85rem 1rem;
+   margin-bottom: 0.2rem;
+}
+
+.spv2-form-field {
+   display: flex;
+   flex-direction: column;
+   gap: 0.35rem;
+}
+
+.spv2-form-label {
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: var(--dsv2-text, #374151);
+}
+
+.spv2-req {
+   color: #dc2626;
+}
+
+.spv2-form-input {
+   width: 100%;
+   min-height: 2.25rem;
+   padding: 0.45rem 0.65rem;
+   border: 1px solid var(--dsv2-border, #d1d5db);
+   border-radius: 0.35rem;
+   background: #ffffff;
+   color: var(--dsv2-text, #111827);
+   font-size: 0.88rem;
+   line-height: 1.2;
+}
+
+.spv2-form-input:focus {
+   outline: none;
+   border-color: #2563eb;
+   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}

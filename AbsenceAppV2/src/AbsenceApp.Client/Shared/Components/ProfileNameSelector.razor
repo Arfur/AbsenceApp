@@ -1,0 +1,162 @@
+@* ===========================================================================
+   File        : ProfileNameSelector.razor
+   Namespace   : AbsenceApp.Client.Shared.Components
+   Author      : Michael
+    Version     : 1.0.1
+   Created     : 2026-05-10
+   Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable searchable profile-name selector for the unified V2
+                 profile chrome. Provides keyboard navigation, loading/empty
+                 states, and an item-selected callback while leaving search and
+                 navigation logic in the parent page/ViewModel.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+         - 1.0.1  2026-05-10  Added missing Microsoft.AspNetCore.Components.Web
+                                                     import for KeyboardEventArgs.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Presentation-only component; caller owns search data and navigation.
+     - Intended for User, Student, and Staff profile banner integration.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Core.DTOs
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="pfv2-selector">
+    <div class="pfv2-selector__control">
+        <i class="bi bi-search pfv2-selector__icon" aria-hidden="true"></i>
+        <input class="pfv2-selector__input"
+               type="text"
+               value="@_inputValue"
+               placeholder="@Placeholder"
+               disabled="@Disabled"
+               @oninput="HandleInputAsync"
+               @onfocus="OpenDropdown"
+               @onkeydown="HandleKeyDownAsync"
+               autocomplete="off"
+               aria-label="@AriaLabel"
+               aria-expanded="@_isOpen" />
+        @if (IsLoading)
+        {
+            <span class="pfv2-selector__loading">Loading…</span>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(HintText))
+    {
+        <span class="upv2-banner-mode-hint">@HintText</span>
+    }
+
+    @if (_isOpen && !Disabled)
+    {
+        <div class="pfv2-selector__menu" role="listbox">
+            @if (Items.Count == 0)
+            {
+                <div class="pfv2-selector__empty">@EmptyMessage</div>
+            }
+            else
+            {
+                @for (var i = 0; i < Items.Count; i++)
+                {
+                    var item = Items[i];
+                    <button type="button"
+                            class="pfv2-selector__item @(i == _highlightedIndex ? "pfv2-selector__item--active" : "") @(item.Id == SelectedId ? "pfv2-selector__item--selected" : "")"
+                            role="option"
+                            aria-selected="@(item.Id == SelectedId)"
+                            @onmousedown:preventDefault="true"
+                            @onclick="() => SelectItemAsync(item)">
+                        <span class="pfv2-selector__item-main">@item.DisplayName</span>
+                        @if (!string.IsNullOrWhiteSpace(item.SecondaryText))
+                        {
+                            <span class="pfv2-selector__item-sub">@item.SecondaryText</span>
+                        }
+                    </button>
+                }
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public string Placeholder { get; set; } = "Search profile";
+    [Parameter] public string AriaLabel { get; set; } = "Profile search";
+    [Parameter] public string HintText { get; set; } = string.Empty;
+    [Parameter] public string EmptyMessage { get; set; } = "No matches found.";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public long? SelectedId { get; set; }
+    [Parameter] public IReadOnlyList<ProfileNameSelectorItemDto> Items { get; set; } = [];
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public EventCallback<ProfileNameSelectorItemDto> ItemSelected { get; set; }
+
+    private string _inputValue = string.Empty;
+    private bool _isOpen;
+    private int _highlightedIndex = -1;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.Equals(_inputValue, Value, StringComparison.Ordinal))
+            _inputValue = Value;
+
+        if (_highlightedIndex >= Items.Count)
+            _highlightedIndex = Items.Count - 1;
+    }
+
+    private void OpenDropdown()
+    {
+        _isOpen = true;
+        if (Items.Count > 0 && _highlightedIndex < 0)
+            _highlightedIndex = 0;
+    }
+
+    private async Task HandleInputAsync(ChangeEventArgs e)
+    {
+        _inputValue = e.Value?.ToString() ?? string.Empty;
+        _isOpen = true;
+        _highlightedIndex = Items.Count > 0 ? 0 : -1;
+        await ValueChanged.InvokeAsync(_inputValue);
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (Disabled)
+            return;
+
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                _isOpen = true;
+                if (Items.Count > 0)
+                    _highlightedIndex = Math.Min(_highlightedIndex + 1, Items.Count - 1);
+                break;
+
+            case "ArrowUp":
+                if (Items.Count > 0)
+                    _highlightedIndex = Math.Max(_highlightedIndex - 1, 0);
+                break;
+
+            case "Enter":
+                if (_isOpen && _highlightedIndex >= 0 && _highlightedIndex < Items.Count)
+                    await SelectItemAsync(Items[_highlightedIndex]);
+                break;
+
+            case "Escape":
+                _isOpen = false;
+                break;
+        }
+    }
+
+    private async Task SelectItemAsync(ProfileNameSelectorItemDto item)
+    {
+        _inputValue = item.DisplayName;
+        _isOpen = false;
+        _highlightedIndex = -1;
+        await ValueChanged.InvokeAsync(_inputValue);
+        await ItemSelected.InvokeAsync(item);
+    }
+}

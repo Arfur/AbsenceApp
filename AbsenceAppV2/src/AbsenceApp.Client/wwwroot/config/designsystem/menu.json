@@ -1,7 +1,7 @@
 ﻿{
   "_comment": "Main Sidebar",
-  "_version": "6.0.0",
-  "_updated": "2026-03-30",
+  "_version": "6.1.0",
+  "_updated": "2026-05-10",
   "categories": [
     {
       "category": null,
@@ -42,11 +42,6 @@
               "icon": "bi-people"
             },
             {
-              "label": "Student Details",
-              "href": "/v2/students/details",
-              "icon": "bi-person-lines-fill"
-            },
-            {
               "label": "Add Student",
               "href": "/v2/students/new",
               "icon": "bi-person-plus"
@@ -61,11 +56,6 @@
               "label": "All Staff",
               "href": "/v2/staff",
               "icon": "bi-people-fill"
-            },
-            {
-              "label": "Staff Details",
-              "href": "/v2/staff/details",
-              "icon": "bi-person-lines-fill"
             },
             {
               "label": "Add Staff",

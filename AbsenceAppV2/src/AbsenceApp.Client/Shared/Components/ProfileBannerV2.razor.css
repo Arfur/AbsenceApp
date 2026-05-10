@@ -1,0 +1,235 @@
+/* ===========================================================================
+   File        : ProfileBannerV2.razor.css
+   Component   : ProfileBannerV2
+   Author      : Michael
+     Version     : 1.0.2
+   Created     : 2026-05-10
+     Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Shared banner styles for the unified V2 profile pages. Rules
+                 are published globally so the shared components and the legacy
+                 user form page consume the same banner chrome.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+         - 1.0.1  2026-05-10  Replaced invalid :global() selectors with valid
+                                                 component selectors so scoped CSS compiles to
+                                                 runtime-applicable rules.
+         - 1.0.2  2026-05-10  Added optional debug hitbox outline/overlay styles
+                                                 for avatar upload click-area diagnostics.
+   ===========================================================================
+*/
+
+.upv2-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--ds-color-accent, #2563eb) !important;
+    border-radius: var(--ds-radius-lg, .75rem);
+    margin-bottom: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.upv2-banner-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+    flex-shrink: 0;
+}
+
+.upv2-banner-avatar-label {
+    display: block;
+    position: relative;
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.upv2-banner-avatar-label--debug-hitbox {
+    outline: 2px dashed #fbbf24;
+    outline-offset: 2px;
+}
+
+.upv2-banner-avatar-label--debug-hitbox > .upv2-file-input {
+    opacity: .15;
+    background: rgba(251, 191, 36, .6);
+}
+
+.upv2-banner-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,.25);
+}
+
+.upv2-banner-avatar-label:hover .upv2-banner-avatar {
+    opacity: .85;
+}
+
+.upv2-banner-avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.5);
+    font-size: 3rem;
+}
+
+.upv2-banner-avatar--has-upload {
+    flex-direction: column;
+    gap: .35rem;
+    cursor: pointer;
+}
+
+.upv2-banner-avatar-upload-text {
+    font-size: .7rem;
+    color: rgba(255,255,255,.75);
+    font-weight: 500;
+}
+
+.upv2-banner-photo-error {
+    font-size: .75rem;
+    color: #fca5a5;
+    text-align: center;
+    max-width: 110px;
+}
+
+.upv2-banner-remove-photo {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    margin-top: .35rem;
+    padding: .25rem .6rem;
+    border-radius: var(--ds-radius, .5rem);
+    background: rgba(252,165,165,.15);
+    border: 1px solid rgba(252,165,165,.3);
+    color: #fca5a5;
+    font-size: .72rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.upv2-banner-identity {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    justify-content: center;
+}
+
+.upv2-banner-name {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.upv2-banner-kv-row {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .83rem;
+}
+
+.upv2-banner-kv-label {
+    color: rgba(255,255,255,.6);
+    font-weight: 600;
+    min-width: 6rem;
+}
+
+.upv2-banner-kv-value {
+    color: rgba(255,255,255,.92);
+}
+
+.upv2-banner-lastlogin {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-self: flex-start;
+    gap: .3rem;
+}
+
+.upv2-banner-lastlogin-label {
+    font-size: .75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.7);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.upv2-banner-lastlogin-value {
+    font-size: .88rem;
+    font-weight: 500;
+    color: rgba(255,255,255,.95);
+}
+
+.upv2-banner-mode-hint {
+    display: block;
+    font-size: .75rem;
+    color: rgba(255,255,255,.55);
+    font-style: italic;
+    margin-top: .15rem;
+}
+
+.upv2-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upv2-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: .2rem .6rem;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.upv2-badge--status-active {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.upv2-badge--status-inactive {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+}
+
+.upv2-badge--status-suspended {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.upv2-badge--status-left {
+    background: #ffedd5;
+    color: #9a3412;
+    border: 1px solid #fdba74;
+}
+
+.upv2-badge--status-default {
+    background: rgba(255,255,255,.16);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,.25);
+}

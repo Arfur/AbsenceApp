@@ -1,0 +1,67 @@
+/* ===========================================================================
+   File        : ProfileTabsV2.razor.css
+   Component   : ProfileTabsV2
+   Author      : Michael
+    Version     : 1.0.1
+   Created     : 2026-05-10
+    Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Shared sticky tab-strip styles for the unified V2 profile
+                 pages. Rules are published globally so legacy profile markup
+                 and the new shared component share one visual contract.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+         - 1.0.1  2026-05-10  Replaced invalid :global() selectors with valid
+                                                    component selectors so shared tab styles render.
+   ===========================================================================
+*/
+
+.upv2-tab-bar {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--ds-border, #e5e7eb);
+    background: var(--ds-bg-subtle, #f9fafb);
+    scrollbar-width: none;
+    position: sticky;
+    top: calc(110px + 3rem);
+    z-index: 19;
+}
+
+.upv2-tab-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.upv2-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .75rem 1.1rem;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--ds-text-muted, #6b7280);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s, background .15s;
+    line-height: 1;
+}
+
+.upv2-tab-btn:hover:not(.upv2-tab-btn--active):not(.upv2-tab-btn--disabled) {
+    color: var(--ds-text, #374151);
+    background: var(--ds-bg-hover, #f3f4f6);
+}
+
+.upv2-tab-btn--active {
+    color: var(--ds-primary, #2563eb);
+    border-bottom-color: var(--ds-primary, #2563eb);
+    background: var(--ds-surface, #fff);
+    font-weight: 600;
+}
+
+.upv2-tab-btn--disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}

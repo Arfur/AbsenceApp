@@ -3,9 +3,9 @@
  File        : UserManagementApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.4.0
+ Version     : 1.5.0
  Created     : 2026-04-11
- Updated     : 2026-05-04
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : Client-side User Management API service. Provides full user
                CRUD, role/page reference data, per-user permission matrix
@@ -29,6 +29,8 @@
     - 1.4.0  2026-05-04  Added GetUsersForSelectAsync() wrapper — returns all users
                          with accounts as IReadOnlyList<UserSelectDto>, used for the
                          Edit Mode user-navigation dropdown (Amendment C).
+   - 1.5.0  2026-05-10  Added SearchUserProfileSelectorAsync() for the shared
+                         profile-name selector.
 ===============================================================================
 */
 
@@ -286,6 +288,48 @@ public sealed class UserManagementApiServiceV2
         catch (Exception ex)
         {
             AppLog.Write("UserManagementApiServiceV2.cs", "GetUsersForSelectAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<ProfileNameSelectorItemDto>> SearchUserProfileSelectorAsync(
+        string? term,
+        int maxResults = 12,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var users = await GetUsersForSelectAsync(ct);
+            var query = users.AsEnumerable();
+            var search = term?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(u =>
+                    u.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    u.Username.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    u.Id.ToString().Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return query
+                .OrderBy(u => u.FullName)
+                .Take(maxResults)
+                .Select(u => new ProfileNameSelectorItemDto
+                {
+                    Id = u.Id,
+                    DisplayName = u.FullName,
+                    SecondaryText = string.IsNullOrWhiteSpace(u.Username)
+                        ? $"User #{u.Id}"
+                        : u.Username,
+                    Route = $"/v2/users/{u.Id}",
+                    EntityType = "User",
+                })
+                .ToList()
+                .AsReadOnly();
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "SearchUserProfileSelectorAsync", $"ERROR {ex.Message}");
             return [];
         }
     }

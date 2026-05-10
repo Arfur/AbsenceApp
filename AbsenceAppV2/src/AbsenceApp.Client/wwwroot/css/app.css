@@ -2,9 +2,9 @@
    File        : app.css
    Project     : AbsenceApp.Client
    Author      : Michael
-   Version     : 2.1.0
+    Version     : 2.2.0
    Created     : 2026-03-13
-   Updated     : 2026-05-05
+    Updated     : 2026-05-10
    Purpose     : Full application design system — light/dark theme, layout shell,
                  sidebar, header, footer, auth pages, content cards, stat cards.
    Changes     :
@@ -12,10 +12,12 @@
                  - 2026-05-05: Fix A2 — Added non-isolated .upv2-file-input rule (Blazor InputFile
                                does not propagate the scoped [b-xxxxx] attribute to its inner
                                <input type="file">, so the rule in razor.css never matches).
+                 - 2026-05-10: Section F — narrowed global InputFile fallback to the
+                               avatar label container so upload click capture is bounded.
 ============================================================================= */
 
 /* ── Blazor isolation workaround: InputFile scoped rule cannot be isolated ── */
-.upv2-file-input {
+.upv2-banner-avatar-label > .upv2-file-input {
     position: absolute;
     top: 0;
     left: 0;

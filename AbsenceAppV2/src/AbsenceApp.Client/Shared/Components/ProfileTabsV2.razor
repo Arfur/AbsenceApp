@@ -1,0 +1,46 @@
+@* ===========================================================================
+   File        : ProfileTabsV2.razor
+   Namespace   : AbsenceApp.Client.Shared.Components
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-10
+   Updated     : 2026-05-10
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable sticky tab strip for the unified V2 profile pages.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-10  Initial creation.
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Presentation-only component; parent owns active-tab state.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Core.DTOs
+
+<div class="upv2-tab-bar" role="tablist">
+    @foreach (var tab in Tabs.Where(t => t.Visible))
+    {
+        <button type="button"
+                role="tab"
+                aria-selected="@(ActiveTab == tab.Index)"
+                class="upv2-tab-btn @(ActiveTab == tab.Index ? "upv2-tab-btn--active" : "") @(!tab.Enabled ? "upv2-tab-btn--disabled" : "")"
+                disabled="@(!tab.Enabled)"
+                @onclick="() => OnTabSelectedAsync(tab.Index)">
+            @if (!string.IsNullOrWhiteSpace(tab.Icon))
+            {
+                <i class="bi @tab.Icon" aria-hidden="true"></i>
+            }
+            <span>@tab.Label</span>
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<ProfileTabItemDto> Tabs { get; set; } = [];
+    [Parameter] public int ActiveTab { get; set; }
+    [Parameter] public EventCallback<int> ActiveTabChanged { get; set; }
+
+    private Task OnTabSelectedAsync(int index) => ActiveTabChanged.InvokeAsync(index);
+}

@@ -2,26 +2,19 @@
    File        : UserProfilePageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-05-09
+   Updated     : 2026-05-10
    ---------------------------------------------------------------------------
-   Purpose     : User profile page — view and edit a full user profile.
+   Purpose     : User profile page — view and edit a full user profile using
+                 the shared V2 profile banner and tab-strip components.
                  Routes:
                    /v2/users/{Id:long}   — view / edit existing user
-
-                 Layout:
-                   · Full-width dark navy banner: circular photo (left) +
-                     identity block (centre) + last login (right).
-                   · 8-tab interface:
-                       0  Basic Info (User + UserProfile + Change Password)
-                       1  Contacts
-                       2  Classes & Year Groups
-                       3  Devices
-                       4  External Systems
-                       5  Medical Records
-                       6  Absence Records
-                       7  Login Audit
-                       8  Permissions
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-09  Initial creation.
+     - 1.1.0  2026-05-10  Replaced inline profile chrome with shared
+                           ProfileBannerV2 and ProfileTabsV2 components.
    ---------------------------------------------------------------------------
    Notes       :
      - Uses UserProfileViewModelV2 (same ViewModel as UserFormPageV2).
@@ -36,6 +29,7 @@
 @using AbsenceApp.Client.Framework.Layout
 @using AbsenceApp.Client.ViewModels.V2
 @using AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Core.DTOs
 @inject UserProfileViewModelV2 ViewModel
 @inject NavigationManager Nav
 
@@ -75,91 +69,36 @@
                 <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
             }
 
-            @* ─── PROFILE BANNER ─────────────────────────────────────────────── *@
-            <div class="upv2-banner">
-
-                @* Left: circular photo *@
-                <div class="upv2-banner-photo">
-                    <label class="upv2-banner-avatar-label @(ViewModel.IsUploadingPhoto ? "upv2-banner-upload--busy" : "")">
-                        <InputFile OnChange="OnPhotoChanged" accept="image/*"
-                                   class="upv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
-                        @if (ViewModel.PhotoDataUri is not null)
-                        {
-                            <img class="upv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Profile photo" />
-                        }
-                        else
-                        {
-                            <div class="upv2-banner-avatar upv2-banner-avatar--placeholder upv2-banner-avatar--has-upload">
-                                <i class="bi bi-camera" aria-hidden="true"></i>
-                                <span class="upv2-banner-avatar-upload-text">Upload Photo</span>
-                            </div>
-                        }
-                    </label>
-                    @if (ViewModel.PhotoError is not null)
-                    {
-                        <div class="upv2-banner-photo-error">@ViewModel.PhotoError</div>
-                    }
-                    @if (ViewModel.PhotoDataUri is not null)
-                    {
-                        <button class="upv2-banner-remove-photo"
-                                disabled="@ViewModel.IsUploadingPhoto"
-                                @onclick="OnRemovePhoto">
-                            <i class="bi bi-trash" aria-hidden="true"></i> Remove
-                        </button>
-                    }
-                </div>
-
-                @* Centre: identity block *@
-                <div class="upv2-banner-identity">
-                    <div class="upv2-banner-name">
-                        <select class="upv2-banner-user-select"
-                                value="@ViewModel.UserId"
-                                @onchange="OnUserSelectChanged">
-                            @foreach (var u in ViewModel.UsersWithAccounts)
-                            {
-                                <option value="@u.Id">@u.FullName</option>
-                            }
-                        </select>
-                        <span class="upv2-banner-mode-hint">(Select User name)</span>
-                    </div>
-                    <div class="upv2-banner-kv-row">
-                        <span class="upv2-banner-kv-label">Role:</span>
-                        <span class="upv2-banner-kv-value">@ViewModel.HeaderRoleName</span>
-                    </div>
-                    <div class="upv2-banner-kv-row">
-                        <span class="upv2-banner-kv-label">Email:</span>
-                        <span class="upv2-banner-kv-value">@ViewModel.HeaderEmail</span>
-                    </div>
-                    <div class="upv2-banner-kv-row">
-                        <span class="upv2-banner-kv-label">Status:</span>
-                        <span class="upv2-badge upv2-badge--status-@ViewModel.HeaderStatus.ToLower()">@ViewModel.HeaderStatus</span>
-                    </div>
-                </div>
-
-                @* Far right: last login *@
-                <div class="upv2-banner-lastlogin">
-                    <span class="upv2-banner-lastlogin-label">Last Login</span>
-                    <span class="upv2-banner-lastlogin-value">
-                        @(ViewModel.HeaderLastLogin.HasValue
-                            ? ViewModel.HeaderLastLogin.Value.ToString("dd MMM yyyy HH:mm")
-                            : "&mdash;")
-                    </span>
-                </div>
-            </div>
+            <ProfileBannerV2 EntityDisplayName="@ViewModel.HeaderFullName"
+                             AvatarAltText="Profile photo"
+                             PhotoDataUri="@ViewModel.PhotoDataUri"
+                             PhotoError="@ViewModel.PhotoError"
+                             UploadPlaceholderText="Upload Photo"
+                             IsUploadingPhoto="@ViewModel.IsUploadingPhoto"
+                             ShowRemovePhoto="@(ViewModel.PhotoDataUri is not null)"
+                             OnPhotoChanged="OnPhotoChanged"
+                             OnRemovePhoto="OnRemovePhoto"
+                             ShowSelector="true"
+                             IsSelectorLoading="@ViewModel.IsSelectorLoading"
+                             IsSelectorDisabled="false"
+                             SelectedId="@((long?)ViewModel.UserId)"
+                             SelectorValue="@ViewModel.SelectorSearchText"
+                             SelectorPlaceholder="Search users"
+                             SelectorAriaLabel="User selector"
+                             SelectorHint="(Select User name)"
+                             SelectorEmptyMessage="No matching users found."
+                             SelectorItems="@ViewModel.ProfileSelectorItems"
+                             OnSelectorValueChanged="OnSelectorValueChanged"
+                             OnSelectorItemSelected="OnSelectorItemSelected"
+                             Fields="@ViewModel.BannerFields"
+                             AsideLabel="@ViewModel.BannerAsideLabel"
+                             AsideValue="@ViewModel.BannerAsideValue" />
 
             @* ─── TAB PANEL ───────────────────────────────────────────────────── *@
             <div class="upv2-right-panel">
-                <div class="upv2-tab-bar" role="tablist">
-                    @RenderTabBtn(0, "bi-person",       "Basic Info")
-                    @RenderTabBtn(1, "bi-telephone",    "Contacts")
-                    @RenderTabBtn(2, "bi-diagram-3",    "Classes")
-                    @RenderTabBtn(3, "bi-laptop",       "Devices")
-                    @RenderTabBtn(4, "bi-plug",         "External")
-                    @RenderTabBtn(5, "bi-heart-pulse",  "Medical")
-                    @RenderTabBtn(6, "bi-calendar-x",   "Absences")
-                    @RenderTabBtn(7, "bi-shield-check", "Login Audit")
-                    @RenderTabBtn(8, "bi-key",          "Permissions")
-                </div>
+                <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs"
+                               ActiveTab="@ViewModel.ActiveTab"
+                               ActiveTabChanged="OnTabChanged" />
 
                 @* Tab 0 — Basic Info *@
                 @if (ViewModel.ActiveTab == 0)
@@ -627,10 +566,20 @@
         }
     }
 
-    private void OnUserSelectChanged(ChangeEventArgs e)
+    private Task OnSelectorValueChanged(string value)
+        => ViewModel.SearchProfileSelectorAsync(value);
+
+    private Task OnSelectorItemSelected(ProfileNameSelectorItemDto item)
     {
-        if (long.TryParse(e.Value?.ToString(), out var selectedId) && selectedId > 0)
-            Nav.NavigateTo($"/v2/users/{selectedId}");
+        var route = string.IsNullOrWhiteSpace(item.Route) ? $"/v2/users/{item.Id}" : item.Route;
+        Nav.NavigateTo(route);
+        return Task.CompletedTask;
+    }
+
+    private Task OnTabChanged(int index)
+    {
+        ViewModel.SetTab(index);
+        return Task.CompletedTask;
     }
 
     private async Task OnSaveProfile() => await ViewModel.SaveProfileAsync();
@@ -641,13 +590,4 @@
         await ViewModel.UploadPhotoAsync(e.File);
 
     private async Task OnRemovePhoto() => await ViewModel.RemovePhotoAsync();
-
-    private RenderFragment RenderTabBtn(int index, string icon, string label) =>
-        @<button role="tab"
-                 aria-selected="@(ViewModel.ActiveTab == index)"
-                 class="upv2-tab-btn @(ViewModel.ActiveTab == index ? "upv2-tab-btn--active" : "")"
-                 @onclick="@(() => ViewModel.SetTab(index))">
-            <i class="bi @icon" aria-hidden="true"></i>
-            <span>@label</span>
-        </button>;
 }

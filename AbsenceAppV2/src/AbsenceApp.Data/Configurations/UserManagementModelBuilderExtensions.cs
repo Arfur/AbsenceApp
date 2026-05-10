@@ -3,9 +3,9 @@
  File        : UserManagementModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 1.3.0
+ Version     : 1.4.0
  Created     : 2026-04-11
- Updated     : 2026-04-24
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : ModelBuilder extension that configures the four E15 entities:
                AppPage, RoleDefaultPagePermission, UserPageOverride, and
@@ -33,6 +33,8 @@
    - 1.3.0  2026-04-24  Added detail/create AppPages for Students/Staff/Classes
                          and System admin pages (ids 15–27), plus Super Admin
                          RoleDefaultPagePermission seeds for these new pages.
+   - 1.4.0  2026-05-10  Marked legacy student/staff detail AppPages inactive so
+                         the registry matches the canonical list/profile routes.
 -------------------------------------------------------------------------------
  Notes     :
    - apppages is seeded with the canonical set of V2 application routes.
@@ -55,6 +57,12 @@ namespace AbsenceApp.Data.Configurations;
 
 public static class UserManagementModelBuilderExtensions
 {
+    private static readonly HashSet<int> InactivePageIds =
+    [
+        15, // Student Details
+        17, // Staff Details
+    ];
+
     // -------------------------------------------------------------------------
     // Fixed seed timestamp — must be a compile-time constant for HasData().
     // -------------------------------------------------------------------------
@@ -236,7 +244,7 @@ public static class UserManagementModelBuilderExtensions
                 CategoryKey    = p.CategoryKey,
                 MenuKey        = p.MenuKey,
                 IconKey        = p.IconKey,
-                IsActive       = true,
+                IsActive       = !InactivePageIds.Contains(p.Id),
                 SortOrder      = p.Sort,
                 SupportsRead   = p.SupportsRead,
                 SupportsWrite  = p.SupportsWrite,

@@ -3,9 +3,9 @@
  File        : StudentProfileApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-05-05
- Updated     : 2026-05-05
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : Client-side Student Profile API service. Wraps the data layer
                for the Student Profile, Absence Management, and Calendar pages.
@@ -14,6 +14,8 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-05-05  Initial creation.
+   - 1.1.0  2026-05-10  Added SearchStudentProfileSelectorAsync() for the shared
+                         profile-name selector.
 ===============================================================================
 */
 
@@ -50,6 +52,55 @@ public sealed class StudentProfileApiServiceV2
         {
             AppLog.Write("StudentProfileApiServiceV2.cs", "GetStudentAsync", $"ERROR {ex.Message}");
             return null;
+        }
+    }
+
+    public async Task<IReadOnlyList<ProfileNameSelectorItemDto>> SearchStudentProfileSelectorAsync(
+        string? term,
+        int maxResults = 12,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var svc = scope.ServiceProvider.GetRequiredService<IStudentFullViewService>();
+            var students = await svc.GetAllAsync();
+            var query = students.AsEnumerable();
+            var search = term?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(s =>
+                    s.FullName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (s.AdmissionNumber ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (s.YearGroupName ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (s.ClassName ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return query
+                .OrderBy(s => s.FullName)
+                .Take(maxResults)
+                .Select(s => new ProfileNameSelectorItemDto
+                {
+                    Id = s.Id,
+                    DisplayName = s.FullName,
+                    SecondaryText = string.Join(" • ", new[]
+                    {
+                        string.IsNullOrWhiteSpace(s.AdmissionNumber) ? null : s.AdmissionNumber,
+                        string.IsNullOrWhiteSpace(s.YearGroupName) ? null : s.YearGroupName,
+                        string.IsNullOrWhiteSpace(s.ClassName) ? null : s.ClassName,
+                    }.Where(value => !string.IsNullOrWhiteSpace(value))),
+                    Route = $"/v2/students/{s.Id}",
+                    EntityType = "Student",
+                    Status = s.Status,
+                })
+                .ToList()
+                .AsReadOnly();
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("StudentProfileApiServiceV2.cs", "SearchStudentProfileSelectorAsync", $"ERROR {ex.Message}");
+            return [];
         }
     }
 

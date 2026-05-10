@@ -1,18 +1,23 @@
-/*
+﻿/*
 ===============================================================================
  File        : StaffFormViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-03-21
- Updated     : 2026-03-21
+ Updated     : 2026-05-10
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for StaffFormPageV2 (add and edit). Manages form
                field state and delegates create/update calls to
-               StaffApiServiceV2.
+               StaffProfileApiServiceV2 (EF Core, MAUI-compatible).
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-03-21  Initial implementation (Phase 7).
+   - 1.1.0  2026-05-10  Fix JobGroup mapping: switched from StaffApiServiceV2
+                         (HTTP) to StaffProfileApiServiceV2 (EF Core). LoadForEditAsync
+                         now calls GetStaffRawAsync so DepartmentId, JobTitleId,
+                         and JobGroupId are properly loaded. SaveAsync now calls
+                         CreateStaffAsync / UpdateStaffAsync (EF Core).
 -------------------------------------------------------------------------------
  Notes       :
    - Register as Scoped in DI (Phase 10).
@@ -29,9 +34,9 @@ namespace AbsenceApp.Client.ViewModels.V2;
 /// </summary>
 public sealed class StaffFormViewModelV2
 {
-    private readonly StaffApiServiceV2 _api;
+    private readonly StaffProfileApiServiceV2 _api;
 
-    public StaffFormViewModelV2(StaffApiServiceV2 api) => _api = api;
+    public StaffFormViewModelV2(StaffProfileApiServiceV2 api) => _api = api;
 
     // -------------------------------------------------------------------------
     // Mode
@@ -85,27 +90,27 @@ public sealed class StaffFormViewModelV2
         IsBusy = true;
         Error = null;
 
-        var result = await _api.GetDetailAsync(id, ct);
-        if (result.Success && result.Data is not null)
+        var raw = await _api.GetStaffRawAsync(id, ct);
+        if (raw is not null)
         {
-            var s = result.Data;
-            StaffNumber    = s.StaffNumber;
-            Title          = s.Title;
-            FirstName      = s.FirstName;
-            LastName       = s.LastName;
-            WorkEmail      = s.WorkEmail;
-            EmploymentType = s.EmploymentType;
-            ContractType   = s.ContractType;
-            WorkLocation   = s.WorkLocation;
-            HireDate       = s.HireDate;
-            DateOfBirth    = s.DateOfBirth;
-            AccountStatus  = s.AccountStatus;
-            // DepartmentId, JobTitleId, JobGroupId: StaffFullViewDto exposes resolved
-            // names (DepartmentName etc.) rather than raw IDs. Leave IDs as 0.
+            StaffNumber    = raw.StaffNumber;
+            Title          = raw.Title;
+            FirstName      = raw.FirstName;
+            LastName       = raw.LastName;
+            WorkEmail      = raw.WorkEmail;
+            EmploymentType = raw.EmploymentType;
+            ContractType   = raw.ContractType;
+            WorkLocation   = raw.WorkLocation;
+            HireDate       = raw.HireDate;
+            DateOfBirth    = raw.DateOfBirth;
+            AccountStatus  = raw.AccountStatus;
+            DepartmentId   = raw.DepartmentId;
+            JobTitleId     = raw.JobTitleId;
+            JobGroupId     = raw.JobGroupId;
         }
         else
         {
-            Error = result.ErrorMessage ?? "Failed to load staff member for editing.";
+            Error = "Failed to load staff member for editing.";
         }
 
         IsBusy = false;
@@ -125,15 +130,15 @@ public sealed class StaffFormViewModelV2
 
         if (IsNew)
         {
-            var result = await _api.CreateAsync(dto, ct);
-            SaveSuccess = result.Success;
-            if (!result.Success) Error = result.ErrorMessage ?? "Failed to create staff member.";
+            var (success, error, _) = await _api.CreateStaffAsync(dto, ct);
+            SaveSuccess = success;
+            if (!success) Error = error ?? "Failed to create staff member.";
         }
         else
         {
-            var result = await _api.UpdateAsync(EditId, dto, ct);
-            SaveSuccess = result.Success;
-            if (!result.Success) Error = result.ErrorMessage ?? "Failed to update staff member.";
+            var (success, error) = await _api.UpdateStaffAsync(EditId, dto, ct);
+            SaveSuccess = success;
+            if (!success) Error = error ?? "Failed to update staff member.";
         }
 
         IsBusy = false;
