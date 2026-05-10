@@ -117,6 +117,8 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<PagesApiServiceV2>();
         // Student Absence Management API service (direct DB via IServiceScopeFactory)
         services.AddScoped<StudentProfileApiServiceV2>();
+        // Staff Profile API service (direct DB via IServiceScopeFactory)
+        services.AddScoped<StaffProfileApiServiceV2>();
 
         // -----------------------------------------------------------------
         // V2 Table settings — Singleton: shared local-file store
@@ -151,6 +153,8 @@ public static class V2ServiceCollectionExtensions
         // E16 — Pages Registry ViewModels
         services.AddScoped<PagesListViewModelV2>();
         services.AddScoped<PageFormViewModelV2>();
+        // Staff Profile ViewModel (direct DB via IServiceScopeFactory)
+        services.AddScoped<StaffProfileViewModelV2>();
 
         return services;
     }

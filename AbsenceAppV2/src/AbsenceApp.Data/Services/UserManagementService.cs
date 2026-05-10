@@ -901,21 +901,73 @@ public sealed class UserManagementService : IUserManagementService
         var roleTypes = await GetRoleTypesAsync(ct);
         var permissions = await GetUserPermissionsAsync(userId, ct);
 
-        var contact = user.StaffId.HasValue
-            ? await GetStaffContactAsync(user.StaffId.Value, ct)
-            : null;
+        var primaryUserContact = await _db.UserContacts
+            .AsNoTracking()
+            .Where(c => c.UserId == userId)
+            .OrderByDescending(c => c.IsPrimary)
+            .ThenBy(c => c.Id)
+            .FirstOrDefaultAsync(ct);
+
+        var contact = primaryUserContact is not null
+            ? new StaffContactDto
+            {
+                WorkEmail = user.Email,
+                AltEmail = primaryUserContact.Email,
+                PhoneHome = primaryUserContact.Phone,
+                PhoneMobile = primaryUserContact.Phone,
+                PhoneEmergency = primaryUserContact.Phone,
+                WorkLocation = staff?.WorkLocation ?? string.Empty,
+                EmploymentType = staff?.EmploymentType ?? string.Empty,
+                ContractType = staff?.ContractType ?? string.Empty,
+                HireDate = staff?.HireDate ?? DateOnly.FromDateTime(DateTime.Today),
+                EndDate = staff?.EndDate,
+            }
+            : (user.StaffId.HasValue
+                ? await GetStaffContactAsync(user.StaffId.Value, ct)
+                : null);
 
         var classes = user.StaffId.HasValue
             ? await GetStaffClassAssignmentsAsync(user.StaffId.Value, ct)
             : [];
 
-        var devices = user.StaffId.HasValue
-            ? await GetStaffDevicesAsync(user.StaffId.Value, ct)
-            : [];
+        var userDevices = await _db.UserDevices
+            .AsNoTracking()
+            .Where(d => d.UserId == userId)
+            .OrderByDescending(d => d.AssignedDate)
+            .ToListAsync(ct);
 
-        var external = user.StaffId.HasValue
-            ? await GetStaffExternalAccountsAsync(user.StaffId.Value, ct)
-            : [];
+        var devices = userDevices.Count > 0
+            ? userDevices.Select(d => new StaffDeviceRowDto
+            {
+                Id = d.Id,
+                DeviceType = d.DeviceType,
+                SerialNumber = d.SerialNumber ?? string.Empty,
+                AssignedDate = d.AssignedDate,
+                ReturnedDate = d.ReturnedDate,
+            }).ToList()
+            : (user.StaffId.HasValue
+                ? await GetStaffDevicesAsync(user.StaffId.Value, ct)
+                : []);
+
+        var userExternal = await _db.UserExternalAccounts
+            .AsNoTracking()
+            .Where(e => e.UserId == userId)
+            .OrderBy(e => e.SystemName)
+            .ToListAsync(ct);
+
+        var external = userExternal.Count > 0
+            ? userExternal.Select(e => new StaffExternalRowDto
+            {
+                Id = e.Id,
+                SystemName = e.SystemName,
+                SystemCode = e.SystemCode,
+                AccountUsername = e.AccountUsername ?? string.Empty,
+                AccountEmail = e.AccountEmail ?? string.Empty,
+                Status = e.Status,
+            }).ToList()
+            : (user.StaffId.HasValue
+                ? await GetStaffExternalAccountsAsync(user.StaffId.Value, ct)
+                : []);
 
         var absences = user.StaffId.HasValue
             ? await GetStaffAbsencesAsync(user.StaffId.Value, ct)

@@ -36,6 +36,8 @@ using AbsenceApp.Client.Services;
 using AbsenceApp.Client.Shared;
 using AbsenceApp.Core.DTOs;
 using AbsenceApp.Core.Interfaces;
+using AbsenceApp.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AbsenceApp.Client.Services.ApiV2.Modules;
@@ -521,6 +523,162 @@ public sealed class UserManagementApiServiceV2
         {
             AppLog.Write("UserManagementApiServiceV2.cs", "UpdateProfilePhotoAsync", $"ERROR {ex.Message}");
             return (false, ex.Message);
+        }
+    }
+
+    // =========================================================================
+    // User profile supplementary tables (contacts/devices/external/overrides/notes)
+    // =========================================================================
+
+    public async Task<IReadOnlyList<UserContactDto>> GetUserContactsAsync(int userId, CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            return await db.UserContacts.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.IsPrimary)
+                .ThenBy(x => x.ContactName)
+                .Select(x => new UserContactDto
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    ContactName = x.ContactName,
+                    Relationship = x.Relationship,
+                    Phone = x.Phone,
+                    Email = x.Email,
+                    IsPrimary = x.IsPrimary,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt,
+                })
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUserContactsAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<UserDeviceDto>> GetUserDevicesAsync(int userId, CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            return await db.UserDevices.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.AssignedDate)
+                .Select(x => new UserDeviceDto
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    DeviceType = x.DeviceType,
+                    SerialNumber = x.SerialNumber,
+                    AssignedDate = x.AssignedDate,
+                    ReturnedDate = x.ReturnedDate,
+                    Notes = x.Notes,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt,
+                })
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUserDevicesAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<UserExternalAccountDto>> GetUserExternalAccountsAsync(int userId, CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            return await db.UserExternalAccounts.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderBy(x => x.SystemName)
+                .Select(x => new UserExternalAccountDto
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    SystemId = x.SystemId,
+                    SystemName = x.SystemName,
+                    SystemCode = x.SystemCode,
+                    AccountUsername = x.AccountUsername,
+                    AccountEmail = x.AccountEmail,
+                    Status = x.Status,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt,
+                })
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUserExternalAccountsAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<UserPermissionOverrideDto>> GetUserPermissionOverridesAsync(int userId, CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            return await db.UserPermissionOverrides.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderBy(x => x.PageId)
+                .Select(x => new UserPermissionOverrideDto
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    PageId = x.PageId,
+                    CanRead = x.CanRead,
+                    CanWrite = x.CanWrite,
+                    CanCreate = x.CanCreate,
+                    CanDelete = x.CanDelete,
+                    CanImport = x.CanImport,
+                    CanExport = x.CanExport,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt,
+                })
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUserPermissionOverridesAsync", $"ERROR {ex.Message}");
+            return [];
+        }
+    }
+
+    public async Task<IReadOnlyList<UserNoteDto>> GetUserNotesAsync(int userId, CancellationToken ct = default)
+    {
+        try
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            return await db.UserNotes.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.CreatedAt)
+                .Select(x => new UserNoteDto
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    NoteType = x.NoteType,
+                    Body = x.Body,
+                    CreatedBy = x.CreatedBy,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt,
+                })
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            AppLog.Write("UserManagementApiServiceV2.cs", "GetUserNotesAsync", $"ERROR {ex.Message}");
+            return [];
         }
     }
 }

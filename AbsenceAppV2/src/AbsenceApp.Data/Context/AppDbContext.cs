@@ -163,6 +163,22 @@ public class AppDbContext : DbContext
     public DbSet<StaffAttributeType> StaffAttributeTypes { get; set; }
     public DbSet<JobTitle> JobTitles { get; set; }
     public DbSet<StaffDepartment> StaffDepartments { get; set; }
+    public DbSet<JobGroup> JobGroups { get; set; }
+
+    // =========================================================================
+    // DbSets - Profile Notes
+    // =========================================================================
+    public DbSet<StudentNote> StudentNotes { get; set; }
+    public DbSet<StaffNote> StaffNotes { get; set; }
+    public DbSet<UserNote> UserNotes { get; set; }
+
+    // =========================================================================
+    // DbSets - User-scoped link tables
+    // =========================================================================
+    public DbSet<UserContact> UserContacts { get; set; }
+    public DbSet<UserDevice> UserDevices { get; set; }
+    public DbSet<UserExternalAccount> UserExternalAccounts { get; set; }
+    public DbSet<UserPermissionOverride> UserPermissionOverrides { get; set; }
 
     // =========================================================================
     // Model configuration
@@ -357,6 +373,22 @@ public class AppDbContext : DbContext
                 .IsRequired();
         });
 
+        // Lookup table mappings
+        modelBuilder.Entity<JobTitle>().ToTable("jobtitles");
+        modelBuilder.Entity<StaffDepartment>().ToTable("staffdepartments");
+        modelBuilder.Entity<JobGroup>().ToTable("jobgroups");
+
+        // Profile notes
+        modelBuilder.Entity<StudentNote>().ToTable("studentnotes");
+        modelBuilder.Entity<StaffNote>().ToTable("staffnotes");
+        modelBuilder.Entity<UserNote>().ToTable("usernotes");
+
+        // User-scoped link tables
+        modelBuilder.Entity<UserContact>().ToTable("usercontacts");
+        modelBuilder.Entity<UserDevice>().ToTable("userdevices");
+        modelBuilder.Entity<UserExternalAccount>().ToTable("userexternalaccounts");
+        modelBuilder.Entity<UserPermissionOverride>().ToTable("userpermissionoverrides");
+
         // ---------------------------------------------------------------------
         // Disable IDENTITY on all integer/long primary keys so the CSV import
         // pipeline can insert explicit ID values from the CSV files.
@@ -386,6 +418,18 @@ public class AppDbContext : DbContext
             if (entityType.ClrType == typeof(AbsenceStatus)) continue;
             if (entityType.ClrType == typeof(Absence))       continue;
             if (entityType.ClrType == typeof(AbsenceAudit))  continue;
+
+            // Profile Notes + User link tables use AUTO_INCREMENT
+            if (entityType.ClrType == typeof(StudentNote))           continue;
+            if (entityType.ClrType == typeof(StaffNote))             continue;
+            if (entityType.ClrType == typeof(UserNote))              continue;
+            if (entityType.ClrType == typeof(UserContact))           continue;
+            if (entityType.ClrType == typeof(UserDevice))            continue;
+            if (entityType.ClrType == typeof(UserExternalAccount))   continue;
+            if (entityType.ClrType == typeof(UserPermissionOverride)) continue;
+            if (entityType.ClrType == typeof(JobGroup))              continue;
+            if (entityType.ClrType == typeof(JobTitle))              continue;
+            if (entityType.ClrType == typeof(StaffDepartment))       continue;
 
             var pk = entityType.FindPrimaryKey();
             if (pk == null) continue;

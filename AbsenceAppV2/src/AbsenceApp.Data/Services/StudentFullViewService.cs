@@ -105,4 +105,18 @@ public class StudentFullViewService : IStudentFullViewService
             className:     "(unknown)",
             houseName:     houseName);
     }
+
+    // =========================================================================
+    // DeleteAsync — permanently remove a student record
+    // =========================================================================
+
+    public async Task DeleteAsync(long id, CancellationToken ct = default)
+    {
+        var student = await _db.Students.FindAsync([id], ct);
+        if (student is not null)
+        {
+            _db.Students.Remove(student);
+            await _db.SaveChangesAsync(ct);
+        }
+    }
 }

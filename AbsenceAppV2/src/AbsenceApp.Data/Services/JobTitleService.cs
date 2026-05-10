@@ -13,30 +13,32 @@ public class JobTitleService : IJobTitleService
 
     public async Task<IEnumerable<JobTitleDto>> GetAllAsync()
     {
-        var ids = await _db.Staff
+        var titles = await _db.JobTitles
             .AsNoTracking()
-            .Where(s => s.JobTitleId > 0)
-            .Select(s => s.JobTitleId)
-            .Distinct()
-            .OrderBy(id => id)
+            .OrderBy(t => t.Title)
             .ToListAsync();
 
-        return ids.Select(id => new JobTitleDto
+        return titles.Select(t => new JobTitleDto
         {
-            Id = id,
-            Title = $"Job Title {id}",
-            Code = $"JT{id}",
+            Id = t.Id,
+            Title = t.Title,
+            Code = t.Code,
         });
     }
 
     public async Task<JobTitleDto?> GetByIdAsync(long id)
     {
-        var exists = await _db.Staff
+        var t = await _db.JobTitles
             .AsNoTracking()
-            .AnyAsync(s => s.JobTitleId == id);
+            .FirstOrDefaultAsync(x => x.Id == id);
 
-        return exists
-            ? new JobTitleDto { Id = (int)id, Title = $"Job Title {id}", Code = $"JT{id}" }
-            : null;
+        return t is null
+            ? null
+            : new JobTitleDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Code = t.Code,
+            };
     }
 }

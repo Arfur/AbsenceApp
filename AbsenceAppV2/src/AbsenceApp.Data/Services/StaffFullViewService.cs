@@ -56,6 +56,18 @@ public class StaffFullViewService : IStaffFullViewService
                 s => s.Id,
                 s => $"{s.FirstName} {s.LastName}".Trim());
 
+        var jobTitles = await _db.JobTitles
+            .AsNoTracking()
+            .ToDictionaryAsync(j => j.Id, j => j.Title ?? string.Empty);
+
+        var jobGroups = await _db.JobGroups
+            .AsNoTracking()
+            .ToDictionaryAsync(j => j.Id, j => j.Name);
+
+        var departments = await _db.StaffDepartments
+            .AsNoTracking()
+            .ToDictionaryAsync(d => d.Id, d => d.Name);
+
         var allStaff = await _db.Staff
             .AsNoTracking()
             .ToListAsync();
@@ -63,13 +75,27 @@ public class StaffFullViewService : IStaffFullViewService
         return allStaff
             .Select(s => StaffFullViewMapper.ToDto(
                 s,
-                jobTitleName:   s.JobTitleId > 0 ? $"Job Title #{s.JobTitleId}" : string.Empty,
-                jobGroupName:   s.JobGroupId > 0 ? $"Job Group #{s.JobGroupId}" : string.Empty,
-                departmentName: s.DepartmentId > 0 ? $"Department #{s.DepartmentId}" : string.Empty,
+                jobTitleName:   s.JobTitleId > 0 && jobTitles.TryGetValue(s.JobTitleId, out var jt) ? jt : string.Empty,
+                jobGroupName:   s.JobGroupId > 0 && jobGroups.TryGetValue(s.JobGroupId, out var jg) ? jg : string.Empty,
+                departmentName: s.DepartmentId > 0 && departments.TryGetValue(s.DepartmentId, out var dn) ? dn : string.Empty,
                 managerName:    s.ReportingManagerId.HasValue
                                     ? staffNames.GetValueOrDefault(s.ReportingManagerId.Value)
                                     : null))
             .ToList()
             .AsReadOnly();
+    }
+
+    // =========================================================================
+    // DeleteAsync — permanently remove a staff record
+    // =========================================================================
+
+    public async Task DeleteAsync(long id, CancellationToken ct = default)
+    {
+        var staff = await _db.Staff.FindAsync([id], ct);
+        if (staff is not null)
+        {
+            _db.Staff.Remove(staff);
+            await _db.SaveChangesAsync(ct);
+        }
     }
 }

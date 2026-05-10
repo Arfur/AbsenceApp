@@ -269,12 +269,30 @@
                                 </td>
                             }
                             <td class="tpt-td tpt-td--actions">
-                                <a href="@($"/v2/staff/{staff.Id}")" class="tpt-action-icon tpt-action-view" title="View">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </a>
-                                <a href="@($"/v2/staff/{staff.Id}/edit")" class="tpt-action-icon tpt-action-edit" title="Edit">
+                                <a href="@($"/v2/staff/{staff.Id}")" class="tpt-action-icon tpt-action-edit" title="Edit @staff.FirstName @staff.LastName">
                                     <i class="bi bi-pencil" aria-hidden="true"></i>
                                 </a>
+                                @if (_confirmDeleteId == staff.Id)
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete-confirm"
+                                            title="Confirm delete"
+                                            @onclick="@(() => ConfirmDeleteAsync(staff.Id))">
+                                        <i class="bi bi-check-circle" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="tpt-action-icon tpt-action-cancel"
+                                            title="Cancel"
+                                            @onclick="@(() => _confirmDeleteId = null)">
+                                        <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete"
+                                            title="Delete @staff.FirstName @staff.LastName"
+                                            @onclick="@(() => _confirmDeleteId = staff.Id)">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                    </button>
+                                }
                             </td>
                         </tr>
                     }
@@ -463,6 +481,19 @@
     private bool _showExportMenu;
     private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
     private void CloseExportMenu()  => _showExportMenu = false;
+
+    // -------------------------------------------------------------------------
+    // Delete (two-click confirm)
+    // -------------------------------------------------------------------------
+
+    private long? _confirmDeleteId;
+
+    private async Task ConfirmDeleteAsync(long id)
+    {
+        _confirmDeleteId = null;
+        await ViewModel.DeleteStaffAsync(id);
+        RebuildFilterOptions();
+    }
 
     // -------------------------------------------------------------------------
     // Settings change (Issue 5)

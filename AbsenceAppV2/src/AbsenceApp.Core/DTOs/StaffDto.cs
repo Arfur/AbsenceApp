@@ -12,7 +12,9 @@ public class StaffDto
     public string? Gender { get; set; }
     public string WorkEmail { get; set; } = string.Empty;
     public string? AltEmail { get; set; }
+    public string? PhoneHome { get; set; }
     public string? PhoneMobile { get; set; }
+    public string? PhoneEmergency { get; set; }
     public string EmploymentType { get; set; } = string.Empty;
     public string ContractType { get; set; } = string.Empty;
     public DateOnly HireDate { get; set; }
@@ -21,6 +23,7 @@ public class StaffDto
     public int JobTitleId { get; set; }
     public int JobGroupId { get; set; }
     public int DepartmentId { get; set; }
+    public int? ReportingManagerId { get; set; }
     public string? ProfilePhotoUrl { get; set; }
     public string AccountStatus { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }

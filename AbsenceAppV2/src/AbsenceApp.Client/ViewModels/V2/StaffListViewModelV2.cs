@@ -189,18 +189,43 @@ public sealed class StaffListViewModelV2
         // Sort
         query = SortColumn switch
         {
-            "staff_code"  => SortAscending ? query.OrderBy(s => s.StaffNumber)   : query.OrderByDescending(s => s.StaffNumber),
-            "first_name"  => SortAscending ? query.OrderBy(s => s.FirstName)     : query.OrderByDescending(s => s.FirstName),
-            "last_name"   => SortAscending ? query.OrderBy(s => s.LastName)      : query.OrderByDescending(s => s.LastName),
-            "job_title"   => SortAscending ? query.OrderBy(s => s.JobTitleName)  : query.OrderByDescending(s => s.JobTitleName),
-            "department"  => SortAscending ? query.OrderBy(s => s.DepartmentName): query.OrderByDescending(s => s.DepartmentName),
-            "status"      => SortAscending ? query.OrderBy(s => s.AccountStatus) : query.OrderByDescending(s => s.AccountStatus),
+            "staffNumber"    => SortAscending ? query.OrderBy(s => s.StaffNumber)    : query.OrderByDescending(s => s.StaffNumber),
+            "firstName"      => SortAscending ? query.OrderBy(s => s.FirstName)      : query.OrderByDescending(s => s.FirstName),
+            "lastName"       => SortAscending ? query.OrderBy(s => s.LastName)       : query.OrderByDescending(s => s.LastName),
+            "jobTitleName"   => SortAscending ? query.OrderBy(s => s.JobTitleName)   : query.OrderByDescending(s => s.JobTitleName),
+            "departmentName" => SortAscending ? query.OrderBy(s => s.DepartmentName) : query.OrderByDescending(s => s.DepartmentName),
+            "accountStatus"  => SortAscending ? query.OrderBy(s => s.AccountStatus)  : query.OrderByDescending(s => s.AccountStatus),
+            // Legacy json keys kept for backward compat with staff.json sort callbacks
+            "staff_code"  => SortAscending ? query.OrderBy(s => s.StaffNumber)    : query.OrderByDescending(s => s.StaffNumber),
+            "first_name"  => SortAscending ? query.OrderBy(s => s.FirstName)      : query.OrderByDescending(s => s.FirstName),
+            "last_name"   => SortAscending ? query.OrderBy(s => s.LastName)       : query.OrderByDescending(s => s.LastName),
+            "job_title"   => SortAscending ? query.OrderBy(s => s.JobTitleName)   : query.OrderByDescending(s => s.JobTitleName),
+            "department"  => SortAscending ? query.OrderBy(s => s.DepartmentName) : query.OrderByDescending(s => s.DepartmentName),
+            "status"      => SortAscending ? query.OrderBy(s => s.AccountStatus)  : query.OrderByDescending(s => s.AccountStatus),
             _             => query.OrderBy(s => s.LastName)
         };
 
         var list = query.ToList();
         TotalCount = list.Count;
         Items = list.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
+    }
+
+    // -------------------------------------------------------------------------
+    // Delete
+    // -------------------------------------------------------------------------
+
+    public async Task DeleteStaffAsync(long id, CancellationToken ct = default)
+    {
+        try
+        {
+            await _svc.DeleteAsync(id, ct);
+            _all = _all.Where(s => s.Id != id).ToList().AsReadOnly();
+            ApplyView();
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
     }
 }
 

@@ -43,8 +43,12 @@
 
 @using AbsenceApp.Client.Framework.PageTemplates
 @using AbsenceApp.Client.ViewModels.V2
+@using AbsenceApp.Client.Services.TableV2
+@using AbsenceApp.Core.DTOs
 @inject UserListViewModelV2 ViewModel
+@inject AppStateService AppState
 @inject NavigationManager Nav
+@inject TableSettingsFileService SettingsFile
 @implements IDisposable
 
 <PageTemplateV2 PageTitleText="Users">
@@ -127,37 +131,55 @@
             </Filters>
 
             <TableHeader>
-                <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("staffName")" @onclick="@(() => OnSort("staffName"))">
-                        Staff
-                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
-                    </button>
-                </th>
-                <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("fullName")" @onclick="@(() => OnSort("fullName"))">
-                        Full Name
-                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
-                    </button>
-                </th>
-                <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("username")" @onclick="@(() => OnSort("username"))">
-                        Username
-                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
-                    </button>
-                </th>
-                <th class="tpt-th">Email</th>
-                <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("roleName")" @onclick="@(() => OnSort("roleName"))">
-                        Role
-                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
-                    </button>
-                </th>
-                <th class="tpt-th">
-                    <button class="tpt-sort-btn @SortClass("status")" @onclick="@(() => OnSort("status"))">
-                        Status
-                        <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
-                    </button>
-                </th>
+                @if (IsVisible("staff"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("staffName")" @onclick="@(() => OnSort("staffName"))">
+                            @ColLabel("staff")
+                            <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("full_name"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("fullName")" @onclick="@(() => OnSort("fullName"))">
+                            @ColLabel("full_name")
+                            <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("username"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("username")" @onclick="@(() => OnSort("username"))">
+                            @ColLabel("username")
+                            <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("email"))
+                {
+                    <th class="tpt-th">@ColLabel("email")</th>
+                }
+                @if (IsVisible("role"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("roleName")" @onclick="@(() => OnSort("roleName"))">
+                            @ColLabel("role")
+                            <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                        </button>
+                    </th>
+                }
+                @if (IsVisible("status"))
+                {
+                    <th class="tpt-th">
+                        <button class="tpt-sort-btn @SortClass("status")" @onclick="@(() => OnSort("status"))">
+                            @ColLabel("status")
+                            <span class="tpt-sort-icons"><span class="tpt-sort-up">▲</span><span class="tpt-sort-dn">▼</span></span>
+                        </button>
+                    </th>
+                }
                 <th class="tpt-th tpt-th--actions">Actions</th>
             </TableHeader>
 
@@ -167,7 +189,7 @@
                     @for (var i = 0; i < ViewModel.PageSize; i++)
                     {
                         <tr class="tpt-tr tpt-tr--skeleton">
-                            @for (var c = 0; c < 7; c++)
+                            @for (var c = 0; c < _colCount; c++)
                             {
                                 <td class="tpt-td"><span class="tpt-skeleton"></span></td>
                             }
@@ -177,7 +199,7 @@
                 else if (ViewModel.Items.Count == 0)
                 {
                     <tr>
-                        <td class="tpt-td tpt-td--empty" colspan="7">No users found.</td>
+                        <td class="tpt-td tpt-td--empty" colspan="@_colCount">No users found.</td>
                     </tr>
                 }
                 else
@@ -185,18 +207,24 @@
                     @foreach (var item in ViewModel.Items)
                     {
                         <tr class="tpt-tr">
-                            <td class="tpt-td">@item.StaffName</td>
-                            <td class="tpt-td">@item.FullName</td>
-                            <td class="tpt-td">@item.Username</td>
-                            <td class="tpt-td">@item.Email</td>
-                            <td class="tpt-td">
-                                <span class="tpt-badge">@item.RoleName</span>
-                            </td>
-                            <td class="tpt-td">
-                                <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
-                            </td>
+                            @if (IsVisible("staff"))    { <td class="tpt-td">@item.StaffName</td> }
+                            @if (IsVisible("full_name")) { <td class="tpt-td">@item.FullName</td> }
+                            @if (IsVisible("username")) { <td class="tpt-td">@item.Username</td> }
+                            @if (IsVisible("email"))    { <td class="tpt-td">@item.Email</td> }
+                            @if (IsVisible("role"))
+                            {
+                                <td class="tpt-td">
+                                    <span class="tpt-badge">@item.RoleName</span>
+                                </td>
+                            }
+                            @if (IsVisible("status"))
+                            {
+                                <td class="tpt-td">
+                                    <span class="tpt-badge tpt-badge-@item.Status.ToLowerInvariant()">@item.Status</span>
+                                </td>
+                            }
                             <td class="tpt-td tpt-td--actions">
-                                <a href="/v2/system/users/@item.Id"
+                                <a href="/v2/users/@item.Id"
                                    class="tpt-action-icon tpt-action-edit"
                                    title="Edit @item.FullName">
                                     <i class="bi bi-pencil" aria-hidden="true"></i>
@@ -296,16 +324,47 @@
     };
 
     // =========================================================================
+    // Table settings state
+    // =========================================================================
+
+    private List<TablePageSettingDto> _settings = [];
+
+    private bool IsVisible(string fieldName) =>
+        _settings.Count == 0 ||
+        (_settings.FirstOrDefault(s => s.FieldName == fieldName)?.IsVisible ?? true);
+
+    private string ColLabel(string fieldName) =>
+        _settings.FirstOrDefault(s => s.FieldName == fieldName)?.DisplayLabel ?? fieldName;
+
+    private int _colCount => _settings.Count == 0
+        ? 7
+        : _settings.Count(s => s.IsVisible) + 1;
+
+    // =========================================================================
     // Lifecycle
     // =========================================================================
 
     protected override async Task OnInitializedAsync()
     {
+        AppState.OnTableSettingsChanged += OnSettingsChanged;
+        _settings = await SettingsFile.LoadAsync("users");
         await ViewModel.LoadAsync();
         RebuildRoleOptions();
     }
 
-    public void Dispose() { }
+    private void OnSettingsChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            _settings = await SettingsFile.LoadAsync("users");
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        AppState.OnTableSettingsChanged -= OnSettingsChanged;
+    }
 
     // =========================================================================
     // Search / show-entries

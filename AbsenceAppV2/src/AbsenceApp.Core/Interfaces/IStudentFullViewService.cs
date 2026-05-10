@@ -35,4 +35,7 @@ public interface IStudentFullViewService
 
     /// <summary>Returns a single student as a flattened full-view projection by ID.</summary>
     Task<StudentFullViewDto?> GetByIdAsync(int id, CancellationToken ct = default);
+
+    /// <summary>Permanently deletes a student record by ID.</summary>
+    Task DeleteAsync(long id, CancellationToken ct = default);
 }

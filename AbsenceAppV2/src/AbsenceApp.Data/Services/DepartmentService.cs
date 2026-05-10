@@ -13,31 +13,34 @@ public class DepartmentService : IDepartmentService
 
     public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
     {
-        var ids = await _db.Staff
+        var departments = await _db.StaffDepartments
             .AsNoTracking()
-            .Where(s => s.DepartmentId > 0)
-            .Select(s => s.DepartmentId)
-            .Distinct()
-            .OrderBy(id => id)
+            .OrderBy(d => d.Name)
             .ToListAsync();
 
-        return ids.Select(id => new DepartmentDto
+        return departments.Select(d => new DepartmentDto
         {
-            Id = id,
-            Name = $"Department {id}",
-            Code = $"D{id}",
-            Status = "active",
+            Id = d.Id,
+            Name = d.Name,
+            Code = d.Code,
+            Status = d.Status,
         });
     }
 
     public async Task<DepartmentDto?> GetByIdAsync(long id)
     {
-        var exists = await _db.Staff
+        var d = await _db.StaffDepartments
             .AsNoTracking()
-            .AnyAsync(s => s.DepartmentId == id);
+            .FirstOrDefaultAsync(x => x.Id == id);
 
-        return exists
-            ? new DepartmentDto { Id = (int)id, Name = $"Department {id}", Code = $"D{id}", Status = "active" }
-            : null;
+        return d is null
+            ? null
+            : new DepartmentDto
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Code = d.Code,
+                Status = d.Status,
+            };
     }
 }

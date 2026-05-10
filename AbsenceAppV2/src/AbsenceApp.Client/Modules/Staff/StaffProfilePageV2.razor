@@ -1,0 +1,526 @@
+@* ===========================================================================
+   File        : StaffProfilePageV2.razor
+   Namespace   : AbsenceApp.Client.Modules.Staff
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-09
+   Updated     : 2026-05-09
+   ---------------------------------------------------------------------------
+   Purpose     : Combined view / edit / add staff profile page.
+                 View mode shows all tabs read-only.
+                 Edit mode (Tab 0) allows editing all fields.
+                 Add mode (/v2/staff/new) initialises a blank form.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-09  Initial creation (Phase 5).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Routes: /v2/staff/{Id:long}  +  /v2/staff/new
+     - Tabs: 0=Profile, 1=Contacts, 2=Employment, 3=Absences, 4=Additional
+     - CSS prefix: spv2-*  (shares styles with StudentProfilePageV2.razor.css)
+   ===========================================================================
+*@
+
+@page "/v2/staff/{Id:long}"
+@page "/v2/staff/new"
+@layout MainLayoutV2
+@namespace AbsenceApp.Client.Modules.Staff
+
+@using AbsenceApp.Client.ViewModels.V2
+@inject StaffProfileViewModelV2 ViewModel
+@inject NavigationManager Nav
+
+<PageTemplateV2 PageTitleText="@PageTitle">
+
+    <ActionsContent>
+        @if (ViewModel.IsEditing)
+        {
+            <button class="spv2-btn spv2-btn--primary"
+                    disabled="@ViewModel.IsSaving"
+                    @onclick="OnSave">
+                <i class="bi bi-check-lg" aria-hidden="true"></i> @(ViewModel.IsSaving ? "Saving…" : "Save Staff Member")
+            </button>
+            @if (!ViewModel.IsNew)
+            {
+                <button class="spv2-btn spv2-btn--secondary"
+                        disabled="@ViewModel.IsSaving"
+                        @onclick="@(() => ViewModel.CancelEdit())">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i> Cancel
+                </button>
+            }
+        }
+        else
+        {
+            <button class="spv2-btn spv2-btn--primary"
+                    @onclick="OnBeginEdit">
+                <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+            </button>
+        }
+        <button class="spv2-btn spv2-btn--secondary"
+                @onclick="@(() => Nav.NavigateTo("/v2/staff"))">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Staff
+        </button>
+    </ActionsContent>
+
+    <ChildContent>
+
+        @if (ViewModel.IsLoading)
+        {
+            <div class="spv2-loading">
+                <i class="bi bi-arrow-clockwise spin" aria-hidden="true"></i> Loading...
+            </div>
+        }
+        else
+        {
+            @if (ViewModel.Error is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+
+            @if (ViewModel.SaveError is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.SaveError</div>
+            }
+
+            @* ─── PROFILE BANNER ───────────────────────────────────────────── *@
+            <div class="spv2-banner">
+
+                @* Left — avatar with upload *@
+                <div class="spv2-banner-photo">
+                    <label class="spv2-banner-avatar-label @(ViewModel.IsUploadingPhoto ? "spv2-banner-upload--busy" : "")">
+                        <InputFile OnChange="OnPhotoChanged" accept="image/*"
+                                   class="spv2-file-input" disabled="@ViewModel.IsUploadingPhoto" />
+                        @if (ViewModel.PhotoDataUri is not null)
+                        {
+                            <img class="spv2-banner-avatar" src="@ViewModel.PhotoDataUri" alt="Staff photo" />
+                        }
+                        else
+                        {
+                            <div class="spv2-banner-avatar spv2-banner-avatar--placeholder">
+                                <i class="bi bi-person-circle" aria-hidden="true"></i>
+                            </div>
+                        }
+                    </label>
+                    @if (ViewModel.PhotoError is not null)
+                    {
+                        <div class="spv2-banner-photo-error">@ViewModel.PhotoError</div>
+                    }
+                    @if (ViewModel.PhotoDataUri is not null)
+                    {
+                        <button class="spv2-banner-remove-photo" @onclick="OnRemovePhoto">
+                            <i class="bi bi-trash" aria-hidden="true"></i> Remove
+                        </button>
+                    }
+                </div>
+
+                @* Right — identity block *@
+                <div class="spv2-banner-identity">
+                    <div class="spv2-banner-name">@ViewModel.HeaderFullName</div>
+                    <div class="spv2-banner-kv-row">
+                        <span class="spv2-banner-kv-label">Staff No:</span>
+                        <span class="spv2-banner-kv-value">@ViewModel.HeaderStaffNumber</span>
+                    </div>
+                    <div class="spv2-banner-kv-row">
+                        <span class="spv2-banner-kv-label">Department:</span>
+                        <span class="spv2-banner-kv-value">@ViewModel.HeaderDepartment</span>
+                    </div>
+                    <div class="spv2-banner-kv-row">
+                        <span class="spv2-banner-kv-label">Status:</span>
+                        <span class="spv2-badge spv2-badge--@ViewModel.HeaderStatus.ToLower()">
+                            @ViewModel.HeaderStatus
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            @* ─── TAB BAR ──────────────────────────────────────────────────── *@
+            <div class="spv2-tab-bar">
+                @foreach (var (label, idx) in Tabs)
+                {
+                    <button class="spv2-tab @(ViewModel.ActiveTab == idx ? "spv2-tab--active" : "")"
+                            @onclick="@(() => ViewModel.SetTab(idx))">
+                        @label
+                    </button>
+                }
+            </div>
+
+            @* ─── TAB CONTENT ──────────────────────────────────────────────── *@
+            <div class="spv2-tab-content">
+
+                @* Tab 0 — Profile (view or edit) *@
+                @if (ViewModel.ActiveTab == 0)
+                {
+                    @if (ViewModel.IsEditing)
+                    {
+                        <div class="spv2-edit-form">
+
+                            <div class="spv2-edit-section-title">Personal Details</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-staffno">Staff Number <span class="spv2-req">*</span></label>
+                                    <input id="fld-staffno" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditStaffNumber" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-title">Title</label>
+                                    <input id="fld-title" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditTitle" placeholder="Mr, Mrs, Dr…" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-fname">First Name <span class="spv2-req">*</span></label>
+                                    <input id="fld-fname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditFirstName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-lname">Last Name <span class="spv2-req">*</span></label>
+                                    <input id="fld-lname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditLastName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-prefname">Preferred Name</label>
+                                    <input id="fld-prefname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditPreferredName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-gender">Gender</label>
+                                    <input id="fld-gender" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditGender" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-dob">Date of Birth <span class="spv2-req">*</span></label>
+                                    <input id="fld-dob" type="date" class="spv2-form-input"
+                                           value="@ViewModel.EditDateOfBirth.ToString("yyyy-MM-dd")"
+                                           @onchange="OnDobChanged" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-status">Account Status <span class="spv2-req">*</span></label>
+                                    <select id="fld-status" class="spv2-form-input"
+                                            @bind="ViewModel.EditAccountStatus">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                        <option value="Suspended">Suspended</option>
+                                        <option value="Left">Left</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    else if (ViewModel.Staff is not null)
+                    {
+                        var s = ViewModel.Staff;
+                        <div class="spv2-fields-grid">
+                            <div class="spv2-field"><span class="spv2-label">Staff Number</span><span class="spv2-value">@s.StaffNumber</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Title</span><span class="spv2-value">@s.Title</span></div>
+                            <div class="spv2-field"><span class="spv2-label">First Name</span><span class="spv2-value">@s.FirstName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Last Name</span><span class="spv2-value">@s.LastName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Preferred Name</span><span class="spv2-value">@(s.PreferredName ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Gender</span><span class="spv2-value">@(s.Gender ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Date of Birth</span><span class="spv2-value">@s.DateOfBirth.ToString("dd/MM/yyyy")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Account Status</span><span class="spv2-value">@s.AccountStatus</span></div>
+                        </div>
+                    }
+                }
+
+                @* Tab 1 — Contacts *@
+                @if (ViewModel.ActiveTab == 1 && ViewModel.Staff is not null)
+                {
+                    @if (ViewModel.IsEditing)
+                    {
+                        <div class="spv2-edit-form">
+                            <div class="spv2-edit-section-title">Contact Details</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-email">Work Email <span class="spv2-req">*</span></label>
+                                    <input id="fld-email" type="email" class="spv2-form-input"
+                                           @bind="ViewModel.EditWorkEmail" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-altemail">Alt Email</label>
+                                    <input id="fld-altemail" type="email" class="spv2-form-input"
+                                           @bind="ViewModel.EditAltEmail" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-mobile">Mobile</label>
+                                    <input id="fld-mobile" type="tel" class="spv2-form-input"
+                                           @bind="ViewModel.EditPhoneMobile" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-home">Home Phone</label>
+                                    <input id="fld-home" type="tel" class="spv2-form-input"
+                                           @bind="ViewModel.EditPhoneHome" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-emerg">Emergency Phone</label>
+                                    <input id="fld-emerg" type="tel" class="spv2-form-input"
+                                           @bind="ViewModel.EditPhoneEmergency" />
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        var s = ViewModel.Staff;
+                        <div class="spv2-fields-grid">
+                            <div class="spv2-field"><span class="spv2-label">Work Email</span><span class="spv2-value">@s.WorkEmail</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Alt Email</span><span class="spv2-value">@(s.AltEmail ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Phone (Home)</span><span class="spv2-value">@(s.PhoneHome ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Phone (Mobile)</span><span class="spv2-value">@(s.PhoneMobile ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Phone (Emergency)</span><span class="spv2-value">@(s.PhoneEmergency ?? "—")</span></div>
+                        </div>
+                    }
+                }
+
+                @* Tab 2 — Employment *@
+                @if (ViewModel.ActiveTab == 2 && ViewModel.Staff is not null)
+                {
+                    @if (ViewModel.IsEditing)
+                    {
+                        <div class="spv2-edit-form">
+                            <div class="spv2-edit-section-title">Employment Details</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-emptype">Employment Type</label>
+                                    <select id="fld-emptype" class="spv2-form-input"
+                                            @bind="ViewModel.EditEmploymentType">
+                                        <option value="Full-time">Full-time</option>
+                                        <option value="Part-time">Part-time</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Contractor">Contractor</option>
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-conttype">Contract Type</label>
+                                    <select id="fld-conttype" class="spv2-form-input"
+                                            @bind="ViewModel.EditContractType">
+                                        <option value="Permanent">Permanent</option>
+                                        <option value="Fixed-term">Fixed-term</option>
+                                        <option value="Casual">Casual</option>
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-hiredate">Hire Date <span class="spv2-req">*</span></label>
+                                    <input id="fld-hiredate" type="date" class="spv2-form-input"
+                                           value="@ViewModel.EditHireDate.ToString("yyyy-MM-dd")"
+                                           @onchange="OnHireDateChanged" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-enddate">End Date</label>
+                                    <input id="fld-enddate" type="date" class="spv2-form-input"
+                                           value="@(ViewModel.EditEndDate?.ToString("yyyy-MM-dd") ?? "")"
+                                           @onchange="OnEndDateChanged" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-location">Work Location</label>
+                                    <input id="fld-location" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditWorkLocation" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-dept">Department</label>
+                                    <select id="fld-dept" class="spv2-form-input"
+                                            value="@ViewModel.EditDepartmentId"
+                                            @onchange="OnDepartmentChanged">
+                                        <option value="0">— Select —</option>
+                                        @foreach (var d in ViewModel.Departments)
+                                        {
+                                            <option value="@d.Id">@d.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-jobtitle">Job Title</label>
+                                    <select id="fld-jobtitle" class="spv2-form-input"
+                                            value="@ViewModel.EditJobTitleId"
+                                            @onchange="OnJobTitleChanged">
+                                        <option value="0">— Select —</option>
+                                        @foreach (var jt in ViewModel.JobTitles)
+                                        {
+                                            <option value="@jt.Id">@(jt.Title ?? jt.Code ?? $"#{jt.Id}")</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-jobgroup">Job Group ID</label>
+                                    <input id="fld-jobgroup" type="number" class="spv2-form-input"
+                                           @bind="ViewModel.EditJobGroupId" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-manager">Reporting Manager ID</label>
+                                    <input id="fld-manager" type="number" class="spv2-form-input"
+                                           @bind="ViewModel.EditReportingManagerId" />
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        var s = ViewModel.Staff;
+                        <div class="spv2-fields-grid">
+                            <div class="spv2-field"><span class="spv2-label">Employment Type</span><span class="spv2-value">@s.EmploymentType</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Contract Type</span><span class="spv2-value">@s.ContractType</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Hire Date</span><span class="spv2-value">@s.HireDate.ToString("dd/MM/yyyy")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">End Date</span><span class="spv2-value">@(s.EndDate.HasValue ? s.EndDate.Value.ToString("dd/MM/yyyy") : "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Work Location</span><span class="spv2-value">@s.WorkLocation</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Department</span><span class="spv2-value">@s.DepartmentName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Job Title</span><span class="spv2-value">@s.JobTitleName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Job Group</span><span class="spv2-value">@s.JobGroupName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Reporting Manager</span><span class="spv2-value">@(s.ReportingManagerName ?? "—")</span></div>
+                        </div>
+                    }
+                }
+
+                @* Tab 3 — Absences (CRUD) *@
+                @if (ViewModel.ActiveTab == 3)
+                {
+                    <div class="spv2-absence-toolbar">
+                        <button class="spv2-btn spv2-btn--primary"
+                                @onclick="@(() => Nav.NavigateTo($"/v2/staff/{Id}/absences/new"))">
+                            <i class="bi bi-plus-circle" aria-hidden="true"></i> Add Absence
+                        </button>
+                    </div>
+
+                    @if (_absenceDeleteError is not null)
+                    {
+                        <div class="dsv2-alert dsv2-alert--danger" role="alert">@_absenceDeleteError</div>
+                    }
+
+                    @if (ViewModel.Absences.Count == 0)
+                    {
+                        <p class="spv2-empty">No absence records on file.</p>
+                    }
+                    else
+                    {
+                        <table class="spv2-table spv2-absence-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Days</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var a in ViewModel.Absences)
+                                {
+                                    <tr>
+                                        <td>@a.AbsenceTypeName</td>
+                                        <td>@a.StatusName</td>
+                                        <td>@a.StartDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@a.EndDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@a.DurationDays</td>
+                                        <td>@(a.Notes ?? "—")</td>
+                                        <td class="spv2-absence-actions">
+                                            <button class="spv2-btn spv2-btn--icon"
+                                                    title="Edit"
+                                                    @onclick="@(() => Nav.NavigateTo($"/v2/staff/{Id}/absences/{a.Id}/edit"))">
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            </button>
+                                            <button class="spv2-btn spv2-btn--icon spv2-btn--danger"
+                                                    title="Delete"
+                                                    @onclick="@(() => OnDeleteAbsence(a.Id))">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+
+                @* Tab 4 — Additional (placeholder) *@
+                @if (ViewModel.ActiveTab == 4)
+                {
+                    <p class="spv2-empty">No additional information available.</p>
+                }
+
+            </div>
+        }
+
+    </ChildContent>
+
+</PageTemplateV2>
+
+@code {
+    [Parameter] public long Id { get; set; }
+
+    private static readonly (string Label, int Index)[] Tabs =
+    [
+        ("Profile",    0),
+        ("Contacts",   1),
+        ("Employment", 2),
+        ("Absences",   3),
+        ("Additional", 4),
+    ];
+
+    private bool _isNew => Id == 0;
+
+    private string PageTitle => _isNew
+        ? "Add Staff Member"
+        : (ViewModel.Staff is not null ? $"{ViewModel.HeaderFullName} — Profile" : "Staff Profile");
+
+    private string? _absenceDeleteError;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_isNew)
+            await ViewModel.InitNewAsync();
+        else
+            await ViewModel.InitAsync(Id);
+    }
+
+    private async Task OnBeginEdit() => await ViewModel.BeginEditAsync();
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok && ViewModel.StaffId != 0)
+            Nav.NavigateTo($"/v2/staff/{ViewModel.StaffId}");
+    }
+
+    private async Task OnPhotoChanged(InputFileChangeEventArgs e)
+        => await ViewModel.UploadPhotoAsync(e.File);
+
+    private void OnRemovePhoto() => ViewModel.RemovePhoto();
+
+    private async Task OnDeleteAbsence(long absenceId)
+    {
+        _absenceDeleteError = null;
+        await ViewModel.DeleteAbsenceAsync(absenceId);
+        if (ViewModel.Error is not null)
+            _absenceDeleteError = ViewModel.Error;
+    }
+
+    private void OnDobChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var d))
+            ViewModel.EditDateOfBirth = d;
+    }
+
+    private void OnHireDateChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var d))
+            ViewModel.EditHireDate = d;
+    }
+
+    private void OnEndDateChanged(ChangeEventArgs e)
+    {
+        var s = e.Value?.ToString();
+        ViewModel.EditEndDate = string.IsNullOrWhiteSpace(s) ? null
+            : DateOnly.TryParseExact(s, "yyyy-MM-dd", out var d) ? d : null;
+    }
+
+    private void OnDepartmentChanged(ChangeEventArgs e)
+        => ViewModel.EditDepartmentId = int.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+
+    private void OnJobTitleChanged(ChangeEventArgs e)
+        => ViewModel.EditJobTitleId = int.TryParse(e.Value?.ToString(), out var v) ? v : 0;
+}

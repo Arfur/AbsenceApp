@@ -1,0 +1,8 @@
+[
+  { "id": 0, "pageName": "users", "fieldName": "staff",     "displayLabel": "Staff",     "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 1 },
+  { "id": 0, "pageName": "users", "fieldName": "full_name", "displayLabel": "Full Name", "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 2 },
+  { "id": 0, "pageName": "users", "fieldName": "username",  "displayLabel": "Username",  "isVisible": true,  "isSortable": true,  "isFilterable": false, "isSearchable": true,  "displayOrder": 3 },
+  { "id": 0, "pageName": "users", "fieldName": "email",     "displayLabel": "Email",     "isVisible": true,  "isSortable": false, "isFilterable": false, "isSearchable": true,  "displayOrder": 4 },
+  { "id": 0, "pageName": "users", "fieldName": "role",      "displayLabel": "Role",      "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 5 },
+  { "id": 0, "pageName": "users", "fieldName": "status",    "displayLabel": "Status",    "isVisible": true,  "isSortable": true,  "isFilterable": true,  "isSearchable": false, "displayOrder": 6 }
+]

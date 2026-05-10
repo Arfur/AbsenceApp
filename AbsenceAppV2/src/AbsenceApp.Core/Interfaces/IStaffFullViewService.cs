@@ -32,4 +32,7 @@ public interface IStaffFullViewService
 {
     /// <summary>Returns all staff as flattened full-view projections.</summary>
     Task<IReadOnlyList<StaffFullViewDto>> GetAllAsync();
+
+    /// <summary>Permanently deletes a staff record by ID.</summary>
+    Task DeleteAsync(long id, CancellationToken ct = default);
 }

@@ -2,19 +2,21 @@
    File        : StudentProfilePageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Students
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 2.0.0
    Created     : 2026-05-05
    Updated     : 2026-05-05
    ---------------------------------------------------------------------------
-   Purpose     : Full student profile page — view-only profile data across
-                 7 tabs plus CRUD absence management on Tab 6.
-                 Avatar upload is supported (stored locally via ViewModel).
+   Purpose     : Combined view / edit / add student profile page.
+                 View mode shows all tabs read-only.
+                 Edit mode (Tab 0) allows editing all basic fields.
+                 Add mode (/v2/students/new) initialises a blank form.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-05-05  Initial creation.
+     - 1.0.0  2026-05-05  Initial creation (view-only).
+     - 2.0.0  2026-05-05  Phase 4: combined view+edit+add mode.
    ---------------------------------------------------------------------------
    Notes       :
-     - Route: /v2/students/{Id:int}
+     - Routes: /v2/students/{Id:int}  +  /v2/students/new
      - Tabs: 0=Profile, 1=Contacts, 2=Medical, 3=Flags,
              4=Additional, 5=Notes, 6=Absences
      - CSS prefix: spv2-*
@@ -22,6 +24,7 @@
 *@
 
 @page "/v2/students/{Id:int}"
+@page "/v2/students/new"
 @layout MainLayoutV2
 @namespace AbsenceApp.Client.Modules.Students
 
@@ -32,10 +35,33 @@
 <PageTemplateV2 PageTitleText="@PageTitle">
 
     <ActionsContent>
-        <button class="spv2-btn spv2-btn--secondary"
-                @onclick="@(() => Nav.NavigateTo($"/v2/students/{Id}/calendar"))">
-            <i class="bi bi-calendar3" aria-hidden="true"></i> View Calendar
-        </button>
+        @if (ViewModel.IsEditing)
+        {
+            <button class="spv2-btn spv2-btn--primary"
+                    disabled="@ViewModel.IsSaving"
+                    @onclick="OnSave">
+                <i class="bi bi-check-lg" aria-hidden="true"></i> @(ViewModel.IsSaving ? "Saving…" : "Save Student")
+            </button>
+            @if (!ViewModel.IsNew)
+            {
+                <button class="spv2-btn spv2-btn--secondary"
+                        disabled="@ViewModel.IsSaving"
+                        @onclick="@(() => ViewModel.CancelEdit())">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i> Cancel
+                </button>
+            }
+        }
+        else
+        {
+            <button class="spv2-btn spv2-btn--primary"
+                    @onclick="OnBeginEdit">
+                <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+            </button>
+            <button class="spv2-btn spv2-btn--secondary"
+                    @onclick="@(() => Nav.NavigateTo($"/v2/students/{Id}/calendar"))">
+                <i class="bi bi-calendar3" aria-hidden="true"></i> View Calendar
+            </button>
+        }
         <button class="spv2-btn spv2-btn--secondary"
                 @onclick="@(() => Nav.NavigateTo("/v2/students"))">
             <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Students
@@ -55,6 +81,12 @@
             @if (ViewModel.Error is not null)
             {
                 <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.Error</div>
+            }
+
+            @* ─── SAVE ERROR ───────────────────────────────────────────────── *@
+            @if (ViewModel.SaveError is not null)
+            {
+                <div class="dsv2-alert dsv2-alert--danger" role="alert">@ViewModel.SaveError</div>
             }
 
             @* ─── PROFILE BANNER ───────────────────────────────────────────── *@
@@ -126,26 +158,161 @@
             @* ─── TAB CONTENT ──────────────────────────────────────────────── *@
             <div class="spv2-tab-content">
 
-                @* Tab 0 — Profile (view-only) *@
-                @if (ViewModel.ActiveTab == 0 && ViewModel.Student is not null)
+                @* Tab 0 — Profile (view or edit) *@
+                @if (ViewModel.ActiveTab == 0)
                 {
-                    var s = ViewModel.Student;
-                    <div class="spv2-fields-grid">
-                        <div class="spv2-field"><span class="spv2-label">First Name</span><span class="spv2-value">@s.FirstName</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Last Name</span><span class="spv2-value">@s.LastName</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Middle Names</span><span class="spv2-value">@(s.MiddleNames ?? "—")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Preferred Name</span><span class="spv2-value">@(s.PreferredName ?? "—")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Date of Birth</span><span class="spv2-value">@s.DateOfBirth.ToString("dd/MM/yyyy")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Gender</span><span class="spv2-value">@(s.Gender ?? "—")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Admission Number</span><span class="spv2-value">@s.AdmissionNumber</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Admission Date</span><span class="spv2-value">@s.AdmissionDate.ToString("dd/MM/yyyy")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Year Group</span><span class="spv2-value">@s.YearGroupName</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Class</span><span class="spv2-value">@s.ClassName</span></div>
-                        <div class="spv2-field"><span class="spv2-label">House</span><span class="spv2-value">@(s.HouseName ?? "—")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Status</span><span class="spv2-value">@s.Status</span></div>
-                        <div class="spv2-field"><span class="spv2-label">Username</span><span class="spv2-value">@(s.Username ?? "—")</span></div>
-                        <div class="spv2-field"><span class="spv2-label">UPN</span><span class="spv2-value">@(s.Upn ?? "—")</span></div>
-                    </div>
+                    @if (ViewModel.IsEditing)
+                    {
+                        @* ── Edit / Add form ── *@
+                        <div class="spv2-edit-form">
+
+                            <div class="spv2-edit-section-title">Personal Details</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-fname">First Name <span class="spv2-req">*</span></label>
+                                    <input id="fld-fname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditFirstName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-lname">Last Name <span class="spv2-req">*</span></label>
+                                    <input id="fld-lname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditLastName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-mnames">Middle Names</label>
+                                    <input id="fld-mnames" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditMiddleNames" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-prefname">Preferred Name</label>
+                                    <input id="fld-prefname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditPreferredName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-legalfname">Legal First Name</label>
+                                    <input id="fld-legalfname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditLegalFirstName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-legallname">Legal Last Name</label>
+                                    <input id="fld-legallname" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditLegalLastName" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-gender">Gender</label>
+                                    <input id="fld-gender" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditGender" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-dob">Date of Birth <span class="spv2-req">*</span></label>
+                                    <input id="fld-dob" type="date" class="spv2-form-input"
+                                           value="@ViewModel.EditDateOfBirth.ToString("yyyy-MM-dd")"
+                                           @onchange="OnDobChanged" />
+                                </div>
+
+                            </div>
+
+                            <div class="spv2-edit-section-title">Academic Details</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-admno">Admission Number <span class="spv2-req">*</span></label>
+                                    <input id="fld-admno" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditAdmissionNumber" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-admdate">Admission Date <span class="spv2-req">*</span></label>
+                                    <input id="fld-admdate" type="date" class="spv2-form-input"
+                                           value="@ViewModel.EditAdmissionDate.ToString("yyyy-MM-dd")"
+                                           @onchange="OnAdmissionDateChanged" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-yeargroup">Year Group <span class="spv2-req">*</span></label>
+                                    <select id="fld-yeargroup" class="spv2-form-input"
+                                            @bind="ViewModel.EditYearGroupId">
+                                        <option value="0">— Select —</option>
+                                        @foreach (var yg in ViewModel.YearGroups)
+                                        {
+                                            <option value="@yg.Id">@yg.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-class">Class</label>
+                                    <select id="fld-class" class="spv2-form-input"
+                                            value="@(ViewModel.EditClassId?.ToString() ?? "")"
+                                            @onchange="OnClassChanged">
+                                        <option value="">— None —</option>
+                                        @foreach (var cl in ViewModel.Classes)
+                                        {
+                                            <option value="@cl.Id">@cl.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-house">House</label>
+                                    <select id="fld-house" class="spv2-form-input"
+                                            value="@(ViewModel.EditHouseId?.ToString() ?? "")"
+                                            @onchange="OnHouseChanged">
+                                        <option value="">— None —</option>
+                                        @foreach (var h in ViewModel.Houses)
+                                        {
+                                            <option value="@h.Id">@h.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-status">Status <span class="spv2-req">*</span></label>
+                                    <select id="fld-status" class="spv2-form-input"
+                                            @bind="ViewModel.EditStatus">
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                        <option value="Suspended">Suspended</option>
+                                        <option value="Left">Left</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="spv2-edit-section-title">Account</div>
+                            <div class="spv2-fields-grid spv2-fields-grid--edit">
+
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-username">Username</label>
+                                    <input id="fld-username" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditUsername" />
+                                </div>
+                                <div class="spv2-form-field">
+                                    <label class="spv2-form-label" for="fld-upn">UPN</label>
+                                    <input id="fld-upn" type="text" class="spv2-form-input"
+                                           @bind="ViewModel.EditUpn" />
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    else if (ViewModel.Student is not null)
+                    {
+                        @* ── View mode ── *@
+                        var s = ViewModel.Student;
+                        <div class="spv2-fields-grid">
+                            <div class="spv2-field"><span class="spv2-label">First Name</span><span class="spv2-value">@s.FirstName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Last Name</span><span class="spv2-value">@s.LastName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Middle Names</span><span class="spv2-value">@(s.MiddleNames ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Preferred Name</span><span class="spv2-value">@(s.PreferredName ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Date of Birth</span><span class="spv2-value">@s.DateOfBirth.ToString("dd/MM/yyyy")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Gender</span><span class="spv2-value">@(s.Gender ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Admission Number</span><span class="spv2-value">@s.AdmissionNumber</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Admission Date</span><span class="spv2-value">@s.AdmissionDate.ToString("dd/MM/yyyy")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Year Group</span><span class="spv2-value">@s.YearGroupName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Class</span><span class="spv2-value">@s.ClassName</span></div>
+                            <div class="spv2-field"><span class="spv2-label">House</span><span class="spv2-value">@(s.HouseName ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Status</span><span class="spv2-value">@s.Status</span></div>
+                            <div class="spv2-field"><span class="spv2-label">Username</span><span class="spv2-value">@(s.Username ?? "—")</span></div>
+                            <div class="spv2-field"><span class="spv2-label">UPN</span><span class="spv2-value">@(s.Upn ?? "—")</span></div>
+                        </div>
+                    }
                 }
 
                 @* Tab 1 — Contacts *@
@@ -324,15 +491,36 @@
         ("Absences",   6),
     ];
 
-    private string PageTitle => ViewModel.Student is not null
-        ? $"{ViewModel.HeaderFullName} — Profile"
-        : "Student Profile";
+    private bool _isNew => Id == 0;
+
+    private string PageTitle => _isNew
+        ? "Add Student"
+        : (ViewModel.Student is not null ? $"{ViewModel.HeaderFullName} — Profile" : "Student Profile");
 
     private string? _absenceDeleteError;
 
     protected override async Task OnParametersSetAsync()
     {
-        await ViewModel.InitAsync(Id);
+        if (_isNew)
+        {
+            await ViewModel.InitNewAsync();
+        }
+        else
+        {
+            await ViewModel.InitAsync(Id);
+        }
+    }
+
+    private async Task OnBeginEdit()
+    {
+        await ViewModel.BeginEditAsync();
+    }
+
+    private async Task OnSave()
+    {
+        var ok = await ViewModel.SaveAsync();
+        if (ok && ViewModel.StudentId != 0)
+            Nav.NavigateTo($"/v2/students/{ViewModel.StudentId}");
     }
 
     private async Task OnPhotoChanged(InputFileChangeEventArgs e)
@@ -348,5 +536,28 @@
         await ViewModel.DeleteAbsenceAsync(absenceId);
         if (ViewModel.Error is not null)
             _absenceDeleteError = ViewModel.Error;
+    }
+
+    private void OnDobChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", null,
+            System.Globalization.DateTimeStyles.None, out var dob))
+            ViewModel.EditDateOfBirth = dob;
+    }
+
+    private void OnAdmissionDateChanged(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var d))
+            ViewModel.EditAdmissionDate = d;
+    }
+
+    private void OnClassChanged(ChangeEventArgs e)
+    {
+        ViewModel.EditClassId = int.TryParse(e.Value?.ToString(), out var v) ? v : null;
+    }
+
+    private void OnHouseChanged(ChangeEventArgs e)
+    {
+        ViewModel.EditHouseId = int.TryParse(e.Value?.ToString(), out var v) ? v : null;
     }
 }

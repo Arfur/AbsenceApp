@@ -227,4 +227,22 @@ public sealed class StudentsListViewModelV2
         TotalCount = filtered.Count;
         Items = filtered.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
     }
+
+    // -------------------------------------------------------------------------
+    // Delete
+    // -------------------------------------------------------------------------
+
+    public async Task DeleteStudentAsync(long id, CancellationToken ct = default)
+    {
+        try
+        {
+            await _svc.DeleteAsync(id, ct);
+            _all = _all.Where(s => s.Id != id).ToList().AsReadOnly();
+            ApplyView();
+        }
+        catch (Exception ex)
+        {
+            Error = ex.Message;
+        }
+    }
 }

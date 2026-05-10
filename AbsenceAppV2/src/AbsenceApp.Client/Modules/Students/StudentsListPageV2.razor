@@ -455,12 +455,30 @@
                             }
                             @if (IsVisible("upn"))              { <td class="tpt-td">@(student.Upn ?? "—")</td> }
                             <td class="tpt-td tpt-td--actions">
-                                <a href="@DetailHref(student.Id)" class="tpt-action-icon tpt-action-view" title="View">
-                                    <i class="bi bi-eye" aria-hidden="true"></i>
-                                </a>
-                                <a href="@EditHref(student.Id)" class="tpt-action-icon tpt-action-edit" title="Edit">
+                                <a href="@($"/v2/students/{student.Id}")" class="tpt-action-icon tpt-action-edit" title="Edit @student.FirstName @student.LastName">
                                     <i class="bi bi-pencil" aria-hidden="true"></i>
                                 </a>
+                                @if (_confirmDeleteId == student.Id)
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete-confirm"
+                                            title="Confirm delete"
+                                            @onclick="@(() => ConfirmDeleteAsync(student.Id))">
+                                        <i class="bi bi-check-circle" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="tpt-action-icon tpt-action-cancel"
+                                            title="Cancel"
+                                            @onclick="@(() => _confirmDeleteId = null)">
+                                        <i class="bi bi-x-circle" aria-hidden="true"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="tpt-action-icon tpt-action-delete"
+                                            title="Delete @student.FirstName @student.LastName"
+                                            @onclick="@(() => _confirmDeleteId = student.Id)">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                    </button>
+                                }
                             </td>
                         </tr>
                     }
@@ -695,6 +713,19 @@
         ViewModel.SortAscending ? "asc" : "desc";
 
     // -------------------------------------------------------------------------
+    // Delete (two-click confirm)
+    // -------------------------------------------------------------------------
+
+    private long? _confirmDeleteId;
+
+    private async Task ConfirmDeleteAsync(long id)
+    {
+        _confirmDeleteId = null;
+        await ViewModel.DeleteStudentAsync(id);
+        RebuildFilterOptions();
+    }
+
+    // -------------------------------------------------------------------------
     // Navigation
     // -------------------------------------------------------------------------
 
@@ -704,12 +735,6 @@
     private bool _showExportMenu;
     private void ToggleExportMenu() => _showExportMenu = !_showExportMenu;
     private void CloseExportMenu()  => _showExportMenu = false;
-
-    private static string DetailHref(long id) =>
-        $"/v2/students/{id}";
-
-    private static string EditHref(long id) =>
-        $"/v2/students/{id}/edit";
 
     // -------------------------------------------------------------------------
     // Settings change notification (Issue 5)

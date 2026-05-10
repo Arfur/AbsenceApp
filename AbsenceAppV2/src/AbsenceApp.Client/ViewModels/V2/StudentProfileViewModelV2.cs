@@ -235,4 +235,189 @@ public sealed class StudentProfileViewModelV2
         var fresh = await _api.GetAbsencesAsync(StudentId, ct);
         Absences = fresh.ToList().AsReadOnly();
     }
+
+    // =========================================================================
+    // Edit / Add mode
+    // =========================================================================
+
+    public bool IsNew      { get; private set; }
+    public bool IsEditing  { get; private set; }
+
+    // Reference lookup lists (populated once on first edit request)
+    public IReadOnlyList<Core.DTOs.YearGroupDto> YearGroups { get; private set; } = [];
+    public IReadOnlyList<Core.DTOs.ClassDto>     Classes    { get; private set; } = [];
+    public IReadOnlyList<Core.DTOs.HouseDto>     Houses     { get; private set; } = [];
+
+    // Editable form fields
+    public string   EditAdmissionNumber { get; set; } = string.Empty;
+    public string   EditFirstName       { get; set; } = string.Empty;
+    public string   EditMiddleNames     { get; set; } = string.Empty;
+    public string   EditLastName        { get; set; } = string.Empty;
+    public string   EditLegalFirstName  { get; set; } = string.Empty;
+    public string   EditLegalLastName   { get; set; } = string.Empty;
+    public string   EditPreferredName   { get; set; } = string.Empty;
+    public string   EditGender          { get; set; } = string.Empty;
+    public DateTime EditDateOfBirth     { get; set; } = DateTime.Today.AddYears(-10);
+    public DateOnly EditAdmissionDate   { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    public int      EditYearGroupId     { get; set; }
+    public int?     EditClassId         { get; set; }
+    public int?     EditHouseId         { get; set; }
+    public string   EditUsername        { get; set; } = string.Empty;
+    public string   EditUpn             { get; set; } = string.Empty;
+    public string   EditStatus          { get; set; } = "Active";
+
+    public bool    IsSaving  { get; private set; }
+    public string? SaveError { get; private set; }
+
+    /// <summary>Initialise for Add (new student) mode.</summary>
+    public async Task InitNewAsync(CancellationToken ct = default)
+    {
+        IsNew     = true;
+        IsEditing = true;
+        StudentId = 0;
+        Student   = null;
+        Contacts  = [];
+        Medical   = [];
+        Flags     = [];
+        Absences  = [];
+        HeaderFullName        = "New Student";
+        HeaderAdmissionNumber = string.Empty;
+        HeaderStatus          = string.Empty;
+        HeaderYearGroup       = string.Empty;
+        HeaderClass           = string.Empty;
+        PhotoBytes            = null;
+        ActiveTab             = 0;
+
+        // Reset form to defaults
+        EditAdmissionNumber = string.Empty;
+        EditFirstName       = string.Empty;
+        EditMiddleNames     = string.Empty;
+        EditLastName        = string.Empty;
+        EditLegalFirstName  = string.Empty;
+        EditLegalLastName   = string.Empty;
+        EditPreferredName   = string.Empty;
+        EditGender          = string.Empty;
+        EditDateOfBirth     = DateTime.Today.AddYears(-10);
+        EditAdmissionDate   = DateOnly.FromDateTime(DateTime.Today);
+        EditYearGroupId     = 0;
+        EditClassId         = null;
+        EditHouseId         = null;
+        EditUsername        = string.Empty;
+        EditUpn             = string.Empty;
+        EditStatus          = "Active";
+
+        await LoadLookupsAsync(ct);
+    }
+
+    /// <summary>Start editing an existing (already loaded) student.</summary>
+    public async Task BeginEditAsync(CancellationToken ct = default)
+    {
+        if (IsNew) return; // already in add mode
+
+        // Load raw FK ids
+        var raw = await _api.GetStudentRawAsync(StudentId, ct);
+        if (raw is not null)
+        {
+            EditAdmissionNumber = raw.AdmissionNumber;
+            EditFirstName       = raw.FirstName;
+            EditMiddleNames     = raw.MiddleNames  ?? string.Empty;
+            EditLastName        = raw.LastName;
+            EditLegalFirstName  = raw.LegalFirstName ?? string.Empty;
+            EditLegalLastName   = raw.LegalLastName  ?? string.Empty;
+            EditPreferredName   = raw.PreferredName  ?? string.Empty;
+            EditGender          = raw.Gender         ?? string.Empty;
+            EditDateOfBirth     = raw.DateOfBirth.ToDateTime(TimeOnly.MinValue);
+            EditAdmissionDate   = raw.AdmissionDate;
+            EditYearGroupId     = raw.YearGroupId;
+            EditClassId         = raw.ClassId;
+            EditHouseId         = raw.HouseId;
+            EditUsername        = raw.Username ?? string.Empty;
+            EditUpn             = raw.Upn      ?? string.Empty;
+            EditStatus          = raw.Status   ?? "Active";
+        }
+
+        await LoadLookupsAsync(ct);
+        IsEditing = true;
+    }
+
+    /// <summary>Cancel edit — revert to view mode.</summary>
+    public void CancelEdit()
+    {
+        IsEditing = false;
+        SaveError = null;
+    }
+
+    /// <summary>Save the current form fields (create or update).</summary>
+    public async Task<bool> SaveAsync(CancellationToken ct = default)
+    {
+        IsSaving  = true;
+        SaveError = null;
+
+        var dto = new Core.DTOs.StudentDto
+        {
+            Id              = IsNew ? 0 : StudentId,
+            AdmissionNumber = EditAdmissionNumber,
+            FirstName       = EditFirstName,
+            MiddleNames     = string.IsNullOrWhiteSpace(EditMiddleNames)    ? null : EditMiddleNames,
+            LastName        = EditLastName,
+            LegalFirstName  = string.IsNullOrWhiteSpace(EditLegalFirstName) ? null : EditLegalFirstName,
+            LegalLastName   = string.IsNullOrWhiteSpace(EditLegalLastName)  ? null : EditLegalLastName,
+            PreferredName   = string.IsNullOrWhiteSpace(EditPreferredName)  ? null : EditPreferredName,
+            Gender          = string.IsNullOrWhiteSpace(EditGender)         ? null : EditGender,
+            DateOfBirth     = DateOnly.FromDateTime(EditDateOfBirth),
+            AdmissionDate   = EditAdmissionDate,
+            YearGroupId     = EditYearGroupId,
+            ClassId         = EditClassId,
+            HouseId         = EditHouseId,
+            Username        = string.IsNullOrWhiteSpace(EditUsername) ? null : EditUsername,
+            Upn             = string.IsNullOrWhiteSpace(EditUpn)      ? null : EditUpn,
+            Status          = EditStatus,
+        };
+
+        bool ok;
+        if (IsNew)
+        {
+            var (success, err, newId) = await _api.CreateStudentAsync(dto, ct);
+            ok = success;
+            if (ok)
+            {
+                StudentId = newId;
+                IsNew     = false;
+                IsEditing = false;
+                await InitAsync(StudentId, ct);
+            }
+            else
+            {
+                SaveError = err;
+            }
+        }
+        else
+        {
+            var (success, err) = await _api.UpdateStudentAsync(StudentId, dto, ct);
+            ok = success;
+            if (ok)
+            {
+                IsEditing = false;
+                await InitAsync(StudentId, ct);
+            }
+            else
+            {
+                SaveError = err;
+            }
+        }
+
+        IsSaving = false;
+        return ok;
+    }
+
+    private async Task LoadLookupsAsync(CancellationToken ct = default)
+    {
+        if (YearGroups.Count > 0) return; // already loaded
+        var yg = await _api.GetYearGroupsAsync(ct);
+        var cl = await _api.GetClassesAsync(ct);
+        var ho = await _api.GetHousesAsync(ct);
+        YearGroups = yg.ToList().AsReadOnly();
+        Classes    = cl.ToList().AsReadOnly();
+        Houses     = ho.ToList().AsReadOnly();
+    }
 }
