@@ -600,3 +600,217 @@
 .dark .gc-table-wrap {
     border-color: var(--v2-border-color, #2d3348);
 }
+
+/* ==========================================================================
+   dsv2-btn — Global V2 button system
+   Loaded in global-config.css so rules apply across all pages (not scoped).
+   All colour values reference --v2-color-* tokens from tokens/colors.css.
+   NOTE: Scoped definitions in UserFormPageV2.razor.css (.dsv2-btn--secondary)
+         and SettingsListPageV2.razor.css (.dsv2-btn--sm) remain unchanged.
+   ========================================================================== */
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+.dsv2-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--v2-radius-base, 6px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.25;
+    transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.dsv2-btn:disabled,
+.dsv2-btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Colour fills ────────────────────────────────────────────────────────── */
+.dsv2-btn--primary {
+    background: var(--v2-color-primary, #0d6efd);
+    color: #ffffff;
+    border-color: var(--v2-color-primary, #0d6efd);
+}
+.dsv2-btn--primary:hover {
+    background: #0b5ed7;
+    border-color: #0b5ed7;
+    color: #ffffff;
+}
+
+.dsv2-btn--secondary {
+    background: transparent;
+    color: var(--v2-text-primary, #212529);
+    border-color: var(--v2-border-color, #dee2e6);
+}
+.dsv2-btn--secondary:hover {
+    background: var(--v2-bg-subtle, #f8f9fa);
+    border-color: var(--v2-border-color, #dee2e6);
+    color: var(--v2-text-primary, #212529);
+}
+
+.dsv2-btn--success {
+    background: var(--v2-color-success, #198754);
+    color: #ffffff;
+    border-color: var(--v2-color-success, #198754);
+}
+.dsv2-btn--success:hover {
+    background: #157347;
+    border-color: #157347;
+    color: #ffffff;
+}
+
+.dsv2-btn--danger {
+    background: var(--v2-color-danger, #dc3545);
+    color: #ffffff;
+    border-color: var(--v2-color-danger, #dc3545);
+}
+.dsv2-btn--danger:hover {
+    background: #bb2d3b;
+    border-color: #b02a37;
+    color: #ffffff;
+}
+
+.dsv2-btn--warning {
+    background: var(--v2-color-warning, #ffc107);
+    color: #212529;
+    border-color: var(--v2-color-warning, #ffc107);
+}
+.dsv2-btn--warning:hover {
+    background: #ffca2c;
+    border-color: #ffc720;
+    color: #212529;
+}
+
+.dsv2-btn--info {
+    background: var(--v2-color-info, #0dcaf0);
+    color: #212529;
+    border-color: var(--v2-color-info, #0dcaf0);
+}
+.dsv2-btn--info:hover {
+    background: #31d2f2;
+    border-color: #25cff2;
+    color: #212529;
+}
+
+.dsv2-btn--light {
+    background: var(--v2-color-light, #f8f9fa);
+    color: #212529;
+    border-color: var(--v2-border-color, #dee2e6);
+}
+.dsv2-btn--light:hover {
+    background: #e2e6ea;
+    border-color: #dae0e5;
+    color: #212529;
+}
+
+.dsv2-btn--dark {
+    background: var(--v2-color-dark, #212529);
+    color: #ffffff;
+    border-color: var(--v2-color-dark, #212529);
+}
+.dsv2-btn--dark:hover {
+    background: #1c1f23;
+    border-color: #1a1e21;
+    color: #ffffff;
+}
+
+/* ── Outline variants ────────────────────────────────────────────────────── */
+.dsv2-btn--outline-primary {
+    background: transparent;
+    color: var(--v2-color-primary, #0d6efd);
+    border-color: var(--v2-color-primary, #0d6efd);
+}
+.dsv2-btn--outline-primary:hover {
+    background: var(--v2-color-primary, #0d6efd);
+    color: #ffffff;
+}
+
+.dsv2-btn--outline-secondary {
+    background: transparent;
+    color: var(--v2-color-secondary, #6c757d);
+    border-color: var(--v2-color-secondary, #6c757d);
+}
+.dsv2-btn--outline-secondary:hover {
+    background: var(--v2-color-secondary, #6c757d);
+    color: #ffffff;
+}
+
+.dsv2-btn--outline-success {
+    background: transparent;
+    color: var(--v2-color-success, #198754);
+    border-color: var(--v2-color-success, #198754);
+}
+.dsv2-btn--outline-success:hover {
+    background: var(--v2-color-success, #198754);
+    color: #ffffff;
+}
+
+.dsv2-btn--outline-danger {
+    background: transparent;
+    color: var(--v2-color-danger, #dc3545);
+    border-color: var(--v2-color-danger, #dc3545);
+}
+.dsv2-btn--outline-danger:hover {
+    background: var(--v2-color-danger, #dc3545);
+    color: #ffffff;
+}
+
+.dsv2-btn--outline-warning {
+    background: transparent;
+    color: var(--v2-color-warning, #ffc107);
+    border-color: var(--v2-color-warning, #ffc107);
+}
+.dsv2-btn--outline-warning:hover {
+    background: var(--v2-color-warning, #ffc107);
+    color: #212529;
+}
+
+.dsv2-btn--outline-info {
+    background: transparent;
+    color: var(--v2-color-info, #0dcaf0);
+    border-color: var(--v2-color-info, #0dcaf0);
+}
+.dsv2-btn--outline-info:hover {
+    background: var(--v2-color-info, #0dcaf0);
+    color: #212529;
+}
+
+/* ── Size variants ───────────────────────────────────────────────────────── */
+.dsv2-btn--lg {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+.dsv2-btn--sm {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+}
+
+/* ── Dark mode overrides ─────────────────────────────────────────────────── */
+.dark .dsv2-btn--secondary {
+    color: var(--v2-text-primary, #e9ecef);
+    border-color: var(--v2-border-color, #2d3348);
+}
+.dark .dsv2-btn--secondary:hover {
+    background: var(--v2-bg-subtle, #151824);
+}
+
+.dark .dsv2-btn--light {
+    background: var(--v2-bg-subtle, #1e2130);
+    color: var(--v2-text-primary, #e9ecef);
+    border-color: var(--v2-border-color, #2d3348);
+}
+.dark .dsv2-btn--light:hover {
+    background: #252840;
+}

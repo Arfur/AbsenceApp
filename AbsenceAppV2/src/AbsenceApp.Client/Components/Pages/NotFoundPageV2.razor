@@ -1,0 +1,66 @@
+@* ===========================================================================
+   File        : NotFoundPageV2.razor
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-11
+   Updated     : 2026-05-11
+   ---------------------------------------------------------------------------
+   Purpose     : 404 "Page Not Found" page for unmatched routes.
+                 Rendered by Routes.razor <NotFound> block inside a
+                 <LayoutView Layout="@typeof(MainLayoutV2)"> wrapper so the
+                 full application shell (sidebar, header, footer) is visible.
+
+                 Follows the same structure as UnderConstructionTemplate.razor
+                 (gs-template wrapper, icon, title, body, action) but with
+                 404-specific content and a navigation button.
+
+                 No @page directive — this component is not a routed page.
+                 It is injected directly into the router's NotFound slot.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-11  Initial creation (404 plan).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - "Back to Home" navigates to /v2/dashboard/overview (full app shell).
+     - gs-template styles are defined in NotFoundPageV2.razor.css (scoped).
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.Pages
+@inject NavigationManager Nav
+
+@* =========================
+   SECTION: LAYOUT ROOT
+   Mirrors gs-template structure from UnderConstructionTemplate.razor.
+   ========================= *@
+<div class="gs-template gs-template--not-found">
+
+    @* =========================
+       SECTION: HEADER
+       ========================= *@
+    <div class="gs-template__uc-icon">
+        <i class="bi bi-exclamation-circle"></i>
+    </div>
+    <h2 class="gs-template__uc-title">Page Not Found</h2>
+
+    @* =========================
+       SECTION: CONTENT REGION
+       ========================= *@
+    <p class="gs-template__uc-body">
+        The page you are looking for does not exist or may have been moved.<br />
+        Use the sidebar to navigate or click the button below to return home.
+    </p>
+
+    @* =========================
+       SECTION: ACTION REGION
+       ========================= *@
+    <div class="nfpv2-actions">
+        <button class="dsv2-btn dsv2-btn--primary"
+                @onclick="@(() => Nav.NavigateTo("/v2/dashboard/overview"))">
+            <i class="bi bi-house-fill" aria-hidden="true"></i>
+            Back to Home
+        </button>
+    </div>
+
+</div>

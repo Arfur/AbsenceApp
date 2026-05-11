@@ -1,0 +1,41 @@
+/* =============================================================================
+   File    : components.css
+   Project : AbsenceApp.Client
+   Phase   : V2 Design System — Phase 2
+   Author  : Michael
+   Version : 1.0.0
+   Created : 2026-05-11
+   Updated : 2026-05-11
+   ---------------------------------------------------------------------------
+   Purpose : Component-level design tokens for V2 shared components.
+             Depends on colors.css and typography.css (must be loaded after
+             those files). All --ds-tab-* tokens reference existing palette
+             and typography primitives so a single colour-system change
+             propagates to the tab strip automatically.
+             DO NOT modify V1 app.css.
+   ---------------------------------------------------------------------------
+   Changes :
+     - 1.0.0  2026-05-11  Initial creation. Tab design tokens (--ds-tab-*).
+============================================================================= */
+
+:root {
+    /* ── Tab strip — shared background ─────────────────────────────── */
+    --ds-tab-bg:                     var(--ds-color-surface-raised);    /* #ffffff — white background */
+
+    /* ── Tab strip — active state ───────────────────────────────────── */
+    --ds-tab-active-color:           var(--ds-color-accent);            /* #2563eb — Corporate Blue */
+    --ds-tab-active-weight:          var(--ds-font-semibold);           /* 600 */
+    --ds-tab-active-border-color:    var(--ds-color-accent);            /* #2563eb — 4px blue indicator */
+    --ds-tab-active-border-width:    4px;
+
+    /* ── Tab strip — inactive state ─────────────────────────────────── */
+    --ds-tab-inactive-color:         var(--ds-color-gray-500);          /* #6b7280 — Slate Grey */
+    --ds-tab-inactive-weight:        var(--ds-font-medium);             /* 500 */
+    --ds-tab-inactive-border-color:  var(--ds-color-gray-200);          /* #e5e7eb — light grey 1px track */
+    --ds-tab-inactive-border-width:  1px;
+
+    /* ── Tab strip — hover state ────────────────────────────────────── */
+    --ds-tab-hover-bg:               var(--ds-color-accent-subtle);     /* #eff6ff — very light blue tint */
+    --ds-tab-hover-color:            var(--ds-color-accent);            /* #2563eb — Corporate Blue */
+    --ds-tab-hover-border-color:     var(--ds-color-accent-light);      /* #dbeafe — light blue 1px track */
+}

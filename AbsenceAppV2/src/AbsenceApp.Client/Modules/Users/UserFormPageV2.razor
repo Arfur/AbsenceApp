@@ -2,7 +2,7 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 6.4.0
+   Version     : 6.5.0
    Created     : 2026-04-11
    Updated     : 2026-05-11
    ---------------------------------------------------------------------------
@@ -109,6 +109,11 @@
                            identity block with ProfileNameSelector component.
                            Added OnUserSelectorValueChanged and
                            OnUserSelectorItemSelected handler methods.
+     - 6.5.0  2026-05-11  Tab consolidation: replaced inline upv2-tab-bar markup
+                           and RenderTabBtn helper with shared ProfileTabsV2
+                           component, wired to ViewModel.ProfileTabs / ActiveTab
+                           / SetTab(int). Eliminates CSS scope isolation issue
+                           that prevented indicator-style tokens from applying.
      - 6.2.0  2026-05-05  Fixes B+C — Unified banner identity block:
                            - B: Replaced dual-branch identity block (LinkedStaff==null /
                              LinkedStaff!=null split) with a single unified <div> containing
@@ -351,17 +356,9 @@
                 }
 
                 @* Tab navigation bar *@
-                <div class="upv2-tab-bar" role="tablist">
-                    @RenderTabBtn(0, "bi-person",        "Basic Info")
-                    @RenderTabBtn(1, "bi-telephone",     "Contacts",   ViewModel.IsNew)
-                    @RenderTabBtn(2, "bi-diagram-3",     "Classes",    ViewModel.IsNew)
-                    @RenderTabBtn(3, "bi-laptop",        "Devices",    ViewModel.IsNew)
-                    @RenderTabBtn(4, "bi-plug",          "External",   ViewModel.IsNew)
-                    @RenderTabBtn(5, "bi-heart-pulse",   "Medical",    ViewModel.IsNew)
-                    @RenderTabBtn(6, "bi-calendar-x",    "Absences",   ViewModel.IsNew)
-                    @RenderTabBtn(7, "bi-shield-check",  "Login Audit",ViewModel.IsNew)
-                    @RenderTabBtn(8, "bi-key",           "Permissions",ViewModel.IsNew)
-                </div>
+                <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs"
+                               ActiveTab="@ViewModel.ActiveTab"
+                               ActiveTabChanged="@(i => ViewModel.SetTab(i))" />
 
                 @* -- Tab 0: Basic Info ----------------------------- *@
                 @if (ViewModel.ActiveTab == 0)
@@ -1073,13 +1070,4 @@
         await ViewModel.RemovePhotoAsync();
     }
 
-    private RenderFragment RenderTabBtn(int index, string icon, string label, bool disabled = false) =>
-        @<button role="tab"
-                 aria-selected="@(ViewModel.ActiveTab == index)"
-                 class="upv2-tab-btn @(ViewModel.ActiveTab == index ? "upv2-tab-btn--active" : "") @(disabled ? "upv2-tab-btn--disabled" : "")"
-                 disabled="@disabled"
-                 @onclick="@(() => ViewModel.SetTab(index))">
-            <i class="bi @icon" aria-hidden="true"></i>
-            <span>@label</span>
-        </button>;
 }

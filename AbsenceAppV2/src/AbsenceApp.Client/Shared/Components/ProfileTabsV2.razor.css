@@ -2,9 +2,9 @@
    File        : ProfileTabsV2.razor.css
    Component   : ProfileTabsV2
    Author      : Michael
-    Version     : 1.0.1
+    Version     : 1.0.2
    Created     : 2026-05-10
-    Updated     : 2026-05-10
+    Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Shared sticky tab-strip styles for the unified V2 profile
                  pages. Rules are published globally so legacy profile markup
@@ -14,6 +14,12 @@
      - 1.0.0  2026-05-10  Initial creation.
          - 1.0.1  2026-05-10  Replaced invalid :global() selectors with valid
                                                     component selectors so shared tab styles render.
+   - 1.0.2  2026-05-11  Indicator-style redesign: white tab background,
+                         4px Corporate Blue bottom indicator on active tab,
+                         1px light-grey indicator on inactive tabs, light-blue
+                         hover tint. All values use --ds-tab-* tokens from
+                         wwwroot/css/tokens/components.css. box-shadow inset
+                         technique used for indicator to avoid layout shift.
    ===========================================================================
 */
 
@@ -21,7 +27,7 @@
     display: flex;
     overflow-x: auto;
     border-bottom: 1px solid var(--ds-border, #e5e7eb);
-    background: var(--ds-bg-subtle, #f9fafb);
+    background: var(--ds-tab-bg, #ffffff);
     scrollbar-width: none;
     position: sticky;
     top: calc(110px + 3rem);
@@ -38,27 +44,28 @@
     gap: .35rem;
     padding: .75rem 1.1rem;
     font-size: .82rem;
-    font-weight: 500;
-    color: var(--ds-text-muted, #6b7280);
-    background: transparent;
+    font-weight: var(--ds-tab-inactive-weight, 500);
+    color: var(--ds-tab-inactive-color, #6b7280);
+    background: var(--ds-tab-bg, #ffffff);
     border: none;
-    border-bottom: 2px solid transparent;
+    box-shadow: inset 0 calc(-1 * var(--ds-tab-inactive-border-width, 1px)) 0 var(--ds-tab-inactive-border-color, #e5e7eb);
     cursor: pointer;
     white-space: nowrap;
-    transition: color .15s, border-color .15s, background .15s;
+    transition: color .15s, box-shadow .15s, background .15s;
     line-height: 1;
 }
 
 .upv2-tab-btn:hover:not(.upv2-tab-btn--active):not(.upv2-tab-btn--disabled) {
-    color: var(--ds-text, #374151);
-    background: var(--ds-bg-hover, #f3f4f6);
+    color: var(--ds-tab-hover-color, #2563eb);
+    background: var(--ds-tab-hover-bg, #eff6ff);
+    box-shadow: inset 0 calc(-1 * var(--ds-tab-inactive-border-width, 1px)) 0 var(--ds-tab-hover-border-color, #dbeafe);
 }
 
 .upv2-tab-btn--active {
-    color: var(--ds-primary, #2563eb);
-    border-bottom-color: var(--ds-primary, #2563eb);
-    background: var(--ds-surface, #fff);
-    font-weight: 600;
+    color: var(--ds-tab-active-color, #2563eb);
+    background: var(--ds-tab-bg, #ffffff);
+    font-weight: var(--ds-tab-active-weight, 600);
+    box-shadow: inset 0 calc(-1 * var(--ds-tab-active-border-width, 4px)) 0 var(--ds-tab-active-border-color, #2563eb);
 }
 
 .upv2-tab-btn--disabled {

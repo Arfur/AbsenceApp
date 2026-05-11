@@ -1,0 +1,65 @@
+/* ===========================================================================
+   File        : NotFoundPageV2.razor.css
+   Namespace   : AbsenceApp.Client.Components.Pages
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-11
+   Updated     : 2026-05-11
+   ---------------------------------------------------------------------------
+   Purpose     : Scoped styles for NotFoundPageV2.
+                 Provides visual styles for the gs-template structural classes
+                 used by this component (mirrors UnderConstructionTemplate
+                 pattern; gs-template classes have no global CSS definition).
+                 Minimal additions only: the button is styled globally via
+                 dsv2-btn in global-config.css.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-11  Initial creation.
+   ===========================================================================
+*/
+
+/* ─── Layout root ───────────────────────────────────────────────────────── */
+
+.gs-template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    min-height: 40vh;
+}
+
+/* ─── Icon ───────────────────────────────────────────────────────────────── */
+
+.gs-template__uc-icon {
+    font-size: 4rem;
+    color: var(--v2-color-text-secondary, #6b7280);
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+/* ─── Title ──────────────────────────────────────────────────────────────── */
+
+.gs-template__uc-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--v2-color-text-primary, #1e293b);
+    margin: 0 0 0.5rem;
+}
+
+/* ─── Body text ─────────────────────────────────────────────────────────── */
+
+.gs-template__uc-body {
+    font-size: 0.95rem;
+    color: var(--v2-color-text-secondary, #6b7280);
+    margin: 0 0 0;
+    max-width: 480px;
+    line-height: 1.6;
+}
+
+/* ─── Action button wrapper ─────────────────────────────────────────────── */
+
+.nfpv2-actions {
+    margin-top: 2rem;
+}

@@ -1472,12 +1472,6 @@ The SYSTEM MANAGEMENT > User Management page (`UserFormPageV2.razor`, route `/v2
   - `UserFormPageV2.razor` edit-mode identity block contains `<ProfileNameSelector>` (no `<select>`).
   - `UserFormPageV2.razor` `@code` block contains `OnUserSelectorValueChanged` and `OnUserSelectorItemSelected`.
 
-
-
-
-
-
-
 ---
 
 ## 2026-05-11 – Banner Height Fix, ATTENDANCE Sidebar Fix, Add Student Blank Dates
@@ -1526,3 +1520,167 @@ The SYSTEM MANAGEMENT > User Management page (`UserFormPageV2.razor`, route `/v2
   - `StudentProfileViewModelV2.SaveAsync` uses null-safe conversions for both fields.
   - `StudentProfilePageV2.razor` date `value=` bindings use `?.ToString(...)`.
   - `StudentProfilePageV2.razor` `OnDobChanged`/`OnAdmissionDateChanged` set fields to `null` on empty input.
+
+
+---
+
+## 2026-05-11 � Indicator-Style Tab Design
+
+### Summary
+Upgraded the V2 tab strip from a flat underline to a 4px Corporate Blue bottom indicator on the active tab, with a 1px light-grey track on inactive tabs and a blue tint hover state. Introduced a dedicated component-level token layer (components.css) so tab appearance is fully token-driven. Eliminated a Blazor CSS scope isolation gap that caused UserFormPageV2 tabs to receive no indicator styling. Added a GlobalConfig demo page for live visual reference.
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| wwwroot/css/tokens/components.css | **NEW** � 12 --ds-tab-* design tokens for background, active, inactive and hover states. References existing palette and typography primitives from colors.css and 	ypography.css. |
+| wwwroot/index.html | Added <link rel="stylesheet" href="css/tokens/components.css" /> between layout.css and global-config.css. |
+| Shared/Components/ProfileTabsV2.razor.css | v1.0.1 ? v1.0.2. Replaced order-bottom approach with ox-shadow: inset technique to deliver a 4px active / 1px inactive indicator without layout shift. All colour and weight values now consume --ds-tab-* tokens. |
+| Modules/Users/UserFormPageV2.razor | v6.4.0 ? v6.5.0. Removed inline <div class="upv2-tab-bar"> and RenderTabBtn helper; replaced with <ProfileTabsV2> shared component wired to ViewModel.ProfileTabs / ActiveTab / SetTab. Resolves CSS scope gap that previously blocked indicator styles from applying. |
+| Components/Pages/GlobalConfig/Tabs/Index.razor | **NEW** � Dual-route demo page (/global-config/tabs, /global-settings/tabs). Three dsv2-card blocks: Active Tab state + token table, Inactive Tab state + token table, Full Strip Preview with active/inactive/disabled examples. |
+
+### Technical Notes
+- **box-shadow inset technique**: ox-shadow: inset 0 calc(-1 * var(--ds-tab-active-border-width)) 0 var(--ds-tab-active-border-color) paints the bottom indicator inside the element box � no height change, no layout shift when switching between 1px and 4px states.
+- **Blazor CSS scope isolation**: ProfileTabsV2.razor.css rules are attribute-scoped to the component's rendered output. UserFormPageV2's previous inline markup sat outside that scope and received no indicator styling. The conversion to the shared component closes this gap.
+- **Token chain**: --ds-tab-active-border-color ? --ds-color-accent ? #2563eb (Corporate Blue). A single palette change propagates to all tab states automatically.
+- **ProfileTabItemDto.Visible**: defaults to 	rue; ProfileTabsV2 already filters Where(t => t.Visible) � no ViewModel changes required for UserFormPageV2.
+
+### Rollout Notes
+- Steps to deploy: 1) build (dotnet build AbsenceAppV2.sln -c Debug), 2) run app, navigate to any profile page and confirm active tab shows 4px blue indicator, inactive tabs show 1px grey track, 3) navigate to User Management edit page and confirm same indicator style, 4) navigate to /global-config/tabs or /global-settings/tabs and confirm demo cards render.
+- Backout plan: git checkout HEAD -- src/AbsenceApp.Client/wwwroot/css/tokens/components.css src/AbsenceApp.Client/wwwroot/index.html src/AbsenceApp.Client/Shared/Components/ProfileTabsV2.razor.css src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor src/AbsenceApp.Client/Components/Pages/GlobalConfig/Tabs/Index.razor
+
+### Verification
+- Build: dotnet build AbsenceAppV2.sln -c Debug succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - components.css :root block contains all 12 --ds-tab-* tokens.
+  - index.html components.css link sits between layout.css and global-config.css.
+  - ProfileTabsV2.razor.css .upv2-tab-btn has ox-shadow: inset and no order-bottom.
+  - ProfileTabsV2.razor.css .upv2-tab-btn--active has ox-shadow: inset 0 calc(-1 * var(--ds-tab-active-border-width)) and no order-bottom-color.
+  - UserFormPageV2.razor no longer contains RenderTabBtn or <div class="upv2-tab-bar".
+  - UserFormPageV2.razor contains <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs".
+  - GlobalConfig/Tabs/Index.razor has both @page "/global-config/tabs" and @page "/global-settings/tabs" directives.
+
+
+---
+
+## 2026-05-11 - Sidebar Dual-Students Fix + Global Button CSS
+
+### Summary
+Two issues resolved: (1) clicking either "Students" menu (PEOPLE or ATTENDANCE) expanded both simultaneously due to identical group labels; (2) dsv2-btn colour variants rendered with no background because no global CSS defined them. Both fixes applied with live MySQL data authority - CSV seed files were explicitly not used (confirmed outdated; live DB had 2 extra rolemenuitems rows not present in CSVs).
+
+### Issue 1 - Sidebar Expands Both Students Menus
+
+#### Root Cause
+SidebarV2.razor tracks accordion state with a single string: `private string _openGroup = string.Empty`. The open test is `_openGroup == group.Group`. Both PEOPLE->Students (Id=201000) and ATTENDANCE->Students (Id=402000) produced group.Group=="Students", so clicking either set _openGroup="Students" and both rendered open. No code change required - renaming 402000's label to "Student Attendance" makes the two groups distinct.
+
+#### Live DB Changes (127.0.0.1:3306/absenceapp)
+Validated live state before any modifications:
+- 401000 (Attendance/menu), 401010 (Attendance/submenu), 402000 (Students/menu) - all confirmed present
+- rolemenuitems for 401000: 3 rows (RoleIds 1, 2, 3) - CSV showed only 1 (confirmed CSV outdated)
+- rolemenuitems for 401010: 3 rows (RoleIds 1, 2, 3)
+
+Applied:
+- `DELETE FROM rolemenuitems WHERE MenuItemId IN (401000, 401010)` - 6 rows deleted
+- `DELETE FROM menuitems WHERE Id IN (401000, 401010)` - 2 rows deleted
+- `UPDATE menuitems SET Label='Student Attendance', GroupName='Student Attendance', UpdatedAt=NOW() WHERE Id=402000` - 1 row updated
+
+Post-change ATTENDANCE category: only Id=402000 (Student Attendance) remains as a child of 400000.
+
+### Issue 2 - Button Background Colours Not Applying
+
+#### Root Cause
+dsv2-btn colour variants used across 9+ pages but defined nowhere globally. global-config.css had dsv2-card only. UserFormPageV2.razor.css and SettingsListPageV2.razor.css had partial scoped definitions (Blazor-isolated, not available to other components). index.html load order was already correct - no change needed.
+
+#### Files Changed
+
+| File | Change |
+|------|--------|
+| `wwwroot/css/global-config.css` | Appended full dsv2-btn system: base, disabled state, 8 colour fills (primary/secondary/success/danger/warning/info/light/dark) + hovers, 6 outline variants + hovers, 2 size modifiers (--lg, --sm), dark mode overrides for secondary and light. All values use `--v2-color-*` tokens from colors.css. |
+
+Existing scoped definitions verified compatible:
+- `UserFormPageV2.razor.css`: base .dsv2-btn + .dsv2-btn--secondary - values match global (no conflict)
+- `SettingsListPageV2.razor.css`: .dsv2-btn--sm padding 0.25rem/0.625rem = 4px/10px - matches global exactly (no conflict)
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` - 0 errors, 0 warnings
+- Live DB post-check: ATTENDANCE category has single child (Student Attendance/402000); rolemenuitems for 401000/401010 = 0 rows remaining; rolemenuitems for 402000 intact (RoleIds 1/2/3)
+- Runtime checks required:
+  - Sidebar ATTENDANCE section: shows "Student Attendance" only
+  - Clicking PEOPLE->Students does NOT open ATTENDANCE->Student Attendance
+  - `/global-settings/buttons`: all 8 colour variant buttons show correct backgrounds
+  - StudentFormPageV2, StaffFormPageV2: primary (blue) save buttons render correctly
+
+### No CSV Files Modified
+aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They are reference/re-seed documents and do not drive runtime behaviour. The live DB is the authoritative data source.
+
+---
+
+## 2026-05-11 - 404 Page + Student Attendance Route Fix
+
+### Summary
+Three issues resolved: (1) Student Absences and Student Calendar sidebar items navigated to broken routes using Express `:param` notation that Blazor cannot match; (2) the router `<NotFound>` block showed bare text with no layout or navigation; (3) a test submenu was added to verify 404 behaviour. All DB changes applied to live MySQL (not CSV files).
+
+### Issue 1 - Student Attendance Sidebar Routes Broken
+
+#### Root Cause
+Live `menuitems` had:
+- 402010 (Student Absences): Route = `/v2/students/{id}/absences`
+- 402020 (Student Calendar): Route = `/v2/students/{id}/calendar`
+
+These routes use a literal placeholder token (`{id}`) rather than a resolvable numeric parameter. When clicked from the sidebar, `NavigationManager.NavigateTo` navigates to the literal URL `/v2/students/{id}/absences` (curly braces intact) which matches no Blazor `@page` directive -> router fires `<NotFound>`.
+
+#### Live DB Changes (127.0.0.1:3306/absenceapp)
+
+Pre-check: `AppPages` had `(Id=401010, Route='/v2/attendance')` - duplicate of 402010's new target.
+
+Applied:
+- `UPDATE menuitems SET Route='/v2/attendance' WHERE Id=402010` - 1 row
+- `UPDATE menuitems SET Route='/v2/attendance/student' WHERE Id=402020` - 1 row
+- `DELETE FROM AppPages WHERE Id=402010` - route `/v2/attendance` already existed under Id=401010; deleted 402010 row to prevent duplicate dictionary key in `PermissionServiceV2` cache
+- `UPDATE AppPages SET Route='/v2/attendance/student' WHERE Id=402020` - 1 row
+
+Target pages confirmed existing (no new pages needed):
+- `Modules/Attendance/AttendanceListPageV2.razor` - `@page "/v2/attendance"` - absence records list
+- `Modules/Attendance/AttendanceStudentPageV2.razor` - `@page "/v2/attendance/student"` - monthly A/P calendar
+
+### Issue 2 - Proper 404 Page
+
+#### Root Cause
+`Routes.razor` `<NotFound>` block contained `<p>Page not found.</p>` - bare text, no `LayoutView`, no `MainLayoutV2` applied. Result: white page with text, no sidebar, no navigation available to the user.
+
+#### Files Created
+
+| File | Change |
+|------|--------|
+| `Components/Pages/NotFoundPageV2.razor` | New 404 component. Follows `UnderConstructionTemplate.razor` structure (`gs-template` wrapper, icon, title, body, action). Icon: `bi-exclamation-circle`. Title: "Page Not Found". Message: friendly 404 text. Button: "Back to Home" -> `/v2/dashboard/overview`. No `@page` directive - rendered via `<LayoutView>` in `Routes.razor`. |
+| `Components/Pages/NotFoundPageV2.razor.css` | Scoped styles. Defines `gs-template` layout (centred flex column, min-height 40vh), `gs-template__uc-icon` (4rem, text-secondary), `gs-template__uc-title` (1.75rem, 600), `gs-template__uc-body` (0.95rem, text-secondary, max-width 480px), `.nfpv2-actions` (margin-top 2rem). Button styled by existing global `dsv2-btn dsv2-btn--primary` in `global-config.css`. |
+
+#### Files Modified
+
+| File | Change |
+|------|--------|
+| `Components/Routes.razor` | v2.12.0 -> v2.13.0. Added `@using AbsenceApp.Client.Components.Pages`. Replaced `<NotFound><p>Page not found.</p></NotFound>` with `<NotFound><LayoutView Layout="@typeof(MainLayoutV2)"><NotFoundPageV2 /></LayoutView></NotFound>`. |
+
+### Issue 3 - Test 404 Submenu
+
+#### Live DB Changes
+
+Applied:
+- `INSERT INTO menuitems`: Id=402030, ParentId=402000, ItemType='submenu', Label='Test 404Page', Icon='bi-exclamation-triangle', Route='/v2/test/404', SortOrder=402030, Status='active', CategoryKey='ATTENDANCE', GroupName='Student Attendance'
+- `INSERT INTO rolemenuitems`: 3 rows (RoleId=1/2/3, MenuItemId=402030, IsEnabled=1, AssignedBy=1)
+- No `AppPages` entry added - `PermissionServiceV2` v1.7.0 returns `true` for unregistered routes (fail-open)
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` - 0 errors, 0 warnings
+- Live DB: menuitems 402010=/v2/attendance, 402020=/v2/attendance/student, 402030=/v2/test/404
+- Live DB: AppPages 402010 deleted; AppPages 402020 updated to /v2/attendance/student
+- Live DB: rolemenuitems for 402030: RoleId 1/2/3 IsEnabled=1
+- Runtime checks required:
+  - Sidebar -> Student Attendance -> Student Absences -> AttendanceListPageV2 at /v2/attendance
+  - Sidebar -> Student Attendance -> Student Calendar -> AttendanceStudentPageV2 at /v2/attendance/student
+  - Sidebar -> Student Attendance -> Test 404Page -> NotFoundPageV2 renders with full sidebar + header
+  - Navigate to any unknown URL -> NotFoundPageV2 renders with full sidebar + header
+  - "Back to Home" button -> /v2/dashboard/overview restores full app shell
+
+### Temp Scripts
+`C:\DevAbsence1\db_phase_404.py`, `db_verify.py`, `db_sample_roles.py` - temporary scripts, can be deleted.

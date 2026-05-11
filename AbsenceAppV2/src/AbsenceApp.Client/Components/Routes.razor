@@ -2,9 +2,9 @@
    File        : Routes.razor
    Namespace   : AbsenceApp.Client.Components
    Author      : Michael
-   Version     : 2.12.0
+   Version     : 2.13.0
    Created     : 2026-03-13
-   Updated     : 2026-04-07
+   Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Root Blazor router component for AbsenceApp V2.
                  Matches the current URL to a @page-decorated component and
@@ -30,11 +30,15 @@
      - 2.11.0 2026-04-07  Added forced redirect to /login after ignoring stale
                           MAUI navigation so the UI renders the correct page.
      - 2.12.0 2026-04-07  Debug instrumentation: added Dispose log.
+     - 2.13.0 2026-05-11  404 page: replaced bare NotFound block with
+                          LayoutView+NotFoundPageV2 so unmatched routes
+                          render within the full MainLayoutV2 shell.
    ===========================================================================
 *@
 
 @using AbsenceApp.Client.Framework.Layouts
 @using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Components.Pages
 @inject NavigationManager Nav
 @inject AppStateService AppState
 @implements IDisposable
@@ -57,7 +61,9 @@
         </ErrorBoundary>
     </Found>
     <NotFound>
-        <p>Page not found.</p>
+        <LayoutView Layout="@typeof(MainLayoutV2)">
+            <NotFoundPageV2 />
+        </LayoutView>
     </NotFound>
 </Router>
 
