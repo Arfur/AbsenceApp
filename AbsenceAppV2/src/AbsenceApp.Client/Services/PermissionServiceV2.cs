@@ -3,9 +3,9 @@
  File        : PermissionServiceV2.cs
  Namespace   : AbsenceApp.Client.Services
  Author      : Michael
- Version     : 1.6.0
+ Version     : 1.7.0
  Created     : 2026-04-11
- Updated     : 2026-05-07
+ Updated     : 2026-05-11
 -------------------------------------------------------------------------------
  Purpose     : Client-side permission resolution service (E15).
                Provides per-page effective CRUD flags for the current user.
@@ -34,6 +34,10 @@
    - 1.6.0  2026-05-07  Corrected page-permission resolution to use RoleId
                          (int) instead of RoleCode. Added RoleId SQL lookup,
                          removed invalid r.rolecode filter, and updated logs.
+   - 1.7.0  2026-05-11  Fix 2: Changed CanViewAsync to return true for routes
+                         not found in the AppPage registry, restoring the
+                         documented intent that unregistered routes are always
+                         visible (prevents sidebar items being silently hidden).
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as Singleton in V2ServiceCollectionExtensions.cs.
@@ -145,8 +149,8 @@ public sealed class PermissionServiceV2
         }
 
         AppLog.Write("PermissionServiceV2.cs", "CanViewAsync",
-            $"Route '{route}' not found → returning false");
-        return false;
+            $"Route '{route}' not in AppPage registry → returning true (unregistered routes are always visible)");
+        return true;
     }
 
     public async Task ResetAsync(CancellationToken ct = default)

@@ -3,9 +3,9 @@
  File        : StudentProfileViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.4.0
  Created     : 2026-05-05
- Updated     : 2026-05-10
+ Updated     : 2026-05-11
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for StudentProfilePageV2. Provides student profile
                data across 6 tabs, avatar upload capability, full CRUD for the
@@ -18,6 +18,13 @@
                          searchable selector state for the unified profile UI.
      - 1.2.0  2026-05-10  Updated runtime tab contract to Basic Info, Contacts,
                                                  Devices, External, Medical, Absences.
+   - 1.3.0  2026-05-11  Issue 2: Removed Admission No. from BannerFields.
+                         Added BannerAsideLabel and BannerAsideValue properties
+                         to route the value to the banner top-right aside slot.
+   - 1.4.0  2026-05-11  Fix 3: Made EditDateOfBirth and EditAdmissionDate
+                         nullable (DateTime? / DateOnly?) so the Add Student
+                         form starts with blank date fields instead of
+                         pre-filled defaults.
 -------------------------------------------------------------------------------
  Notes       :
      - Register as Scoped in V2ServiceCollectionExtensions.cs.
@@ -78,7 +85,6 @@ public sealed class StudentProfileViewModelV2
 
     public IReadOnlyList<ProfileBannerFieldDto> BannerFields =>
     [
-        new() { Label = "Admission No:", Value = HeaderAdmissionNumber },
         new() { Label = "Year Group:",   Value = HeaderYearGroup },
         new() { Label = "Class:",        Value = HeaderClass },
         new()
@@ -89,6 +95,9 @@ public sealed class StudentProfileViewModelV2
             CssClass = BuildStatusBadgeClass(HeaderStatus),
         },
     ];
+
+    public string BannerAsideLabel => IsNew ? string.Empty : "Admission No:";
+    public string BannerAsideValue => IsNew ? string.Empty : HeaderAdmissionNumber;
 
     // =========================================================================
     // Shared selector
@@ -339,8 +348,8 @@ public sealed class StudentProfileViewModelV2
     public string   EditLegalLastName   { get; set; } = string.Empty;
     public string   EditPreferredName   { get; set; } = string.Empty;
     public string   EditGender          { get; set; } = string.Empty;
-    public DateTime EditDateOfBirth     { get; set; } = DateTime.Today.AddYears(-10);
-    public DateOnly EditAdmissionDate   { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    public DateTime? EditDateOfBirth     { get; set; } = null;
+    public DateOnly? EditAdmissionDate   { get; set; } = null;
     public int      EditYearGroupId     { get; set; }
     public int?     EditClassId         { get; set; }
     public int?     EditHouseId         { get; set; }
@@ -380,8 +389,8 @@ public sealed class StudentProfileViewModelV2
         EditLegalLastName   = string.Empty;
         EditPreferredName   = string.Empty;
         EditGender          = string.Empty;
-        EditDateOfBirth     = DateTime.Today.AddYears(-10);
-        EditAdmissionDate   = DateOnly.FromDateTime(DateTime.Today);
+        EditDateOfBirth     = null;
+        EditAdmissionDate   = null;
         EditYearGroupId     = 0;
         EditClassId         = null;
         EditHouseId         = null;
@@ -444,8 +453,8 @@ public sealed class StudentProfileViewModelV2
             LegalLastName   = string.IsNullOrWhiteSpace(EditLegalLastName) ? null : EditLegalLastName,
             PreferredName   = string.IsNullOrWhiteSpace(EditPreferredName) ? null : EditPreferredName,
             Gender          = string.IsNullOrWhiteSpace(EditGender) ? null : EditGender,
-            DateOfBirth     = DateOnly.FromDateTime(EditDateOfBirth),
-            AdmissionDate   = EditAdmissionDate,
+            DateOfBirth     = EditDateOfBirth.HasValue ? DateOnly.FromDateTime(EditDateOfBirth.Value) : default,
+            AdmissionDate   = EditAdmissionDate ?? default,
             YearGroupId     = EditYearGroupId,
             ClassId         = EditClassId,
             HouseId         = EditHouseId,

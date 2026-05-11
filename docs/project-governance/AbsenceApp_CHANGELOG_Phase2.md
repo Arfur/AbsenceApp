@@ -1430,8 +1430,99 @@ StaffProfileApiServiceV2 is already registered as Scoped in DI
 - Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
 - Static code-path check confirms overflow-friendly width/layout rules are active on `.tpt-table`.
 
+---
+
+## 2026-05-11 — Profile UI Fixes: Hint Text Scoping, Admission No. Aside, User Search Dropdown
+
+**Author:** Michael  
+**Type:** UI | CSS | Component | Code  
+**Scope:** `component:ProfileNameSelector`, `page:StudentProfilePageV2`, `page:UserFormPageV2`  
+**Summary:** Three targeted fixes: (1) corrected Blazor CSS scoping for hint text in ProfileNameSelector; (2) moved Admission No. from the student banner metadata column to the top-right aside slot; (3) replaced the native `<select>` in UserFormPageV2 edit mode with the ProfileNameSelector search component.
+
+### Details
+
+#### Issue 1 — Hint text too large and bold (Blazor CSS scoping bug)
+The `.upv2-banner-mode-hint` CSS rule existed only in `ProfileBannerV2.razor.css`. Because Blazor scopes CSS per component via attribute selectors, the rule's scope attribute matched `ProfileBannerV2`-rendered elements only. The `<span class="upv2-banner-mode-hint">` is rendered by `ProfileNameSelector` (a different component), so the rule never applied — the span inherited `font-size: 1.35rem; font-weight: 700` from its `.upv2-banner-name` ancestor. Fix: added a `.upv2-banner-mode-hint` rule directly to `ProfileNameSelector.razor.css` matching the metadata-row size (`.83rem`, weight 400). This also corrects the same issue on `UserProfilePageV2` at no extra cost.
+
+#### Issue 2 — Admission No. in left column instead of top-right aside
+`StudentProfileViewModelV2.BannerFields` included `"Admission No:"` as its first entry, placing it in the left metadata column. `StudentProfilePageV2` passed no `AsideLabel`/`AsideValue` to `ProfileBannerV2`, so the top-right aside block was never rendered. Fix: removed the Admission No. entry from `BannerFields`; added `BannerAsideLabel` and `BannerAsideValue` computed properties (guarded by `IsNew`, matching the `UserProfileViewModelV2` pattern); added `AsideLabel`/`AsideValue` parameters to the `<ProfileBannerV2>` call in `StudentProfilePageV2.razor`.
+
+#### Issue 3 — UserFormPageV2 edit mode uses native `<select>`
+The SYSTEM MANAGEMENT > User Management page (`UserFormPageV2.razor`, route `/v2/system/users/{Id:long}`) used a raw `<select class="upv2-banner-user-select">` in its inline banner identity block. The injected `UserProfileViewModelV2` already exposed all required `ProfileNameSelector` properties (`SelectorSearchText`, `ProfileSelectorItems`, `IsSelectorLoading`, `SearchProfileSelectorAsync()`). Fix: replaced the edit-mode `<select>` and its following hint `<span>` with a `<ProfileNameSelector>` component wired to those ViewModel properties; added `OnUserSelectorValueChanged` and `OnUserSelectorItemSelected` handler methods. Add-mode staff `<select>` is unchanged.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor.css` — v1.0.0 → v1.0.1
+- `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs` — v1.2.0 → v1.3.0
+- `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor` — v2.2.0 → v2.3.0
+- `src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor` — v6.3.0 → v6.4.0
+- Components: `ProfileNameSelector`, `ProfileBannerV2`
+
+### Rollout Notes
+- Steps to deploy: 1) build (`dotnet build AbsenceAppV2.sln -c Debug`), 2) run app and verify Student Profile and User Management pages
+- Backout plan: `git checkout HEAD -- src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor.css src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor`
+
+### Verification
+- Diagnostics: 0 errors, 0 warnings in all modified files.
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - `ProfileNameSelector.razor.css` contains `.upv2-banner-mode-hint` rule at `.83rem / weight 400`.
+  - `StudentProfileViewModelV2.BannerFields` no longer contains `"Admission No:"` entry.
+  - `StudentProfileViewModelV2` exposes `BannerAsideLabel` and `BannerAsideValue` computed properties.
+  - `StudentProfilePageV2.razor` `<ProfileBannerV2>` call includes `AsideLabel` and `AsideValue` parameters.
+  - `UserFormPageV2.razor` edit-mode identity block contains `<ProfileNameSelector>` (no `<select>`).
+  - `UserFormPageV2.razor` `@code` block contains `OnUserSelectorValueChanged` and `OnUserSelectorItemSelected`.
 
 
 
 
 
+
+
+---
+
+## 2026-05-11 – Banner Height Fix, ATTENDANCE Sidebar Fix, Add Student Blank Dates
+
+**Author:** Michael  
+**Type:** UI | CSS | Component | Service | Code  
+**Scope:** `component:ProfileBannerV2`, `service:PermissionServiceV2`, `data:UserManagementModelBuilderExtensions`, `page:StudentProfilePageV2`, `vm:StudentProfileViewModelV2`  
+**Summary:** Three targeted fixes: (1) banner height mismatch between edit and static/add mode resolved by adding a CSS rule for the static-name div; (2) ATTENDANCE > Students menu items (Absences, Calendar) now visible in the sidebar; (3) Add Student form date fields now start blank instead of pre-filled.
+
+### Details
+
+#### Fix 1 – Banner height mismatch (Edit vs Add/static mode)
+`ProfileBannerV2.razor` rendered a bare `<span>@EntityDisplayName</span>` when `ShowSelector=false`, while the `ShowSelector=true` branch rendered `<ProfileNameSelector>` whose `.pfv2-selector__control` has `padding: .45rem .7rem` and a 1px border. This caused the banner to be ~0.68rem shorter in view/static mode. Additionally, `.upv2-banner-mode-hint` was `.75rem` in `ProfileBannerV2.razor.css` but `.83rem` in `ProfileNameSelector.razor.css` (fixed last session), causing mismatched font-sizes between modes. Fix: replaced the bare `<span>` with `<div class="upv2-banner-name--static">` and added the matching `.upv2-banner-name--static` rule (`padding: .45rem .7rem; border: 1px solid transparent`) to `ProfileBannerV2.razor.css`. Also corrected `.upv2-banner-mode-hint` font-size from `.75rem` to `.83rem` in the same file.
+
+#### Fix 2 – ATTENDANCE > Students invisible in sidebar
+`PermissionServiceV2.CanViewAsync` returned `false` for any route not found in the AppPage cache. Menu items 201050 (`/v2/students/{id}/absences`) and 201060 (`/v2/students/{id}/calendar`) use template routes with `{id}` placeholders; these never matched the exact AppPage route strings in the cache, so both returned `false`. `NavigationApiServiceV2.FilterByPermissionsAsync` pruned the resulting empty Students group, which caused the entire ATTENDANCE category to disappear from the sidebar. Two-part fix: (a) changed `CanViewAsync` to `return true` for unregistered routes, restoring the documented intent that unregistered routes are always visible; (b) added AppPages 28 (Student Absences, `/v2/students/:id/absences`) and 29 (Student Calendar, `/v2/students/:id/calendar`) under the ATTENDANCE/Students category, with super_admin RoleDefaultPagePermission seed rows. The "View Calendar" button in `StudentProfilePageV2.ActionsContent` was also removed — navigation to the calendar is now exclusively through the sidebar.
+
+#### Fix 3 – Add Student form pre-fills date fields
+`StudentProfileViewModelV2.EditDateOfBirth` and `EditAdmissionDate` were non-nullable with hardcoded defaults (`DateTime.Today.AddYears(-10)` and `DateOnly.FromDateTime(DateTime.Today)`). When `InitNewAsync` ran, the defaults were re-applied, and the `<input type="date">` always rendered a non-empty value. Fix: changed both properties to nullable (`DateTime?` / `DateOnly?`), reset to `null` in `InitNewAsync`, null-guarded `SaveAsync` conversions (`HasValue` check for `DateOfBirth`; `?? default` for `AdmissionDate`), and updated the Razor `value=` bindings to `?.ToString(...)`. `OnDobChanged` and `OnAdmissionDateChanged` now also set the property to `null` when the input is cleared.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css` – v1.0.2 → v1.0.3
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor` – v1.0.0 → v1.0.1
+- `src/AbsenceApp.Client/Services/PermissionServiceV2.cs` – v1.6.0 → v1.7.0
+- `src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs` – v1.4.0 → v1.5.0
+- `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor` – v2.3.0 → v2.4.0
+- `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs` – v1.3.0 → v1.4.0
+
+### Rollout Notes
+- Steps to deploy: 1) build (`dotnet build AbsenceAppV2.sln -c Debug`), 2) run app, navigate to a student in view mode and confirm banner height matches edit mode, 3) check ATTENDANCE > Students in sidebar is visible, 4) navigate to Add Student and confirm DoB and Admission Date fields are empty.
+- Backout plan: `git checkout HEAD -- src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor src/AbsenceApp.Client/Services/PermissionServiceV2.cs src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs`
+- Note: `UserManagementModelBuilderExtensions.cs` seed changes require a new EF migration + `dotnet ef database update` before taking effect at runtime. This step is **deferred** and must be run explicitly.
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - `ProfileBannerV2.razor.css` contains `.upv2-banner-name--static` rule and `.upv2-banner-mode-hint` at `.83rem`.
+  - `ProfileBannerV2.razor` `ShowSelector=false` branch renders `<div class="upv2-banner-name--static">`.
+  - `PermissionServiceV2.CanViewAsync` tail returns `true` with updated log message.
+  - `UserManagementModelBuilderExtensions.DefaultPages` contains tuples for ids 28 and 29.
+  - `UserManagementModelBuilderExtensions.DefaultRoleDefaults` contains ids 28 and 29 for `super_admin`.
+  - `StudentProfilePageV2.razor` ActionsContent (view mode) no longer contains "View Calendar" button.
+  - `StudentProfileViewModelV2.EditDateOfBirth` is `DateTime?` defaulting to `null`.
+  - `StudentProfileViewModelV2.EditAdmissionDate` is `DateOnly?` defaulting to `null`.
+  - `StudentProfileViewModelV2.InitNewAsync` sets both fields to `null`.
+  - `StudentProfileViewModelV2.SaveAsync` uses null-safe conversions for both fields.
+  - `StudentProfilePageV2.razor` date `value=` bindings use `?.ToString(...)`.
+  - `StudentProfilePageV2.razor` `OnDobChanged`/`OnAdmissionDateChanged` set fields to `null` on empty input.

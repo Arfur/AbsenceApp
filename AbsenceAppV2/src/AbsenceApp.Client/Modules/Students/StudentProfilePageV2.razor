@@ -2,9 +2,9 @@
    File        : StudentProfilePageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Students
    Author      : Michael
-    Version     : 2.2.0
+    Version     : 2.4.0
    Created     : 2026-05-05
-   Updated     : 2026-05-10
+   Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Combined view / edit / add student profile page using the
                  shared V2 profile banner and tab-strip components.
@@ -20,6 +20,13 @@
          - 2.2.0  2026-05-10  Updated runtime tabs to Basic Info/Contacts/Devices/
                                                      External/Medical/Absences and aligned primary
                                                      save action label to "Save Changes".
+     - 2.3.0  2026-05-11  Issue 2: Added AsideLabel and AsideValue parameters
+                           to ProfileBannerV2 call to route Admission No. to the
+                           banner top-right aside slot.
+     - 2.4.0  2026-05-11  Fix 2: Removed "View Calendar" button from ActionsContent
+                           (navigation now via ATTENDANCE > Students > Calendar sidebar).
+                           Fix 3: Updated date input bindings to nullable and changed
+                           OnDobChanged/OnAdmissionDateChanged to reset to null on clear.
    ---------------------------------------------------------------------------
    Notes       :
      - Routes: /v2/students/{Id:int}  +  /v2/students/new
@@ -64,10 +71,6 @@
             <button class="spv2-btn spv2-btn--primary"
                     @onclick="OnBeginEdit">
                 <i class="bi bi-pencil" aria-hidden="true"></i> Edit
-            </button>
-            <button class="spv2-btn spv2-btn--secondary"
-                    @onclick="@(() => Nav.NavigateTo($"/v2/students/{Id}/calendar"))">
-                <i class="bi bi-calendar3" aria-hidden="true"></i> View Calendar
             </button>
         }
         <button class="spv2-btn spv2-btn--secondary"
@@ -118,7 +121,9 @@
                              SelectorItems="@ViewModel.ProfileSelectorItems"
                              OnSelectorValueChanged="OnSelectorValueChanged"
                              OnSelectorItemSelected="OnSelectorItemSelected"
-                             Fields="@ViewModel.BannerFields" />
+                             Fields="@ViewModel.BannerFields"
+                             AsideLabel="@ViewModel.BannerAsideLabel"
+                             AsideValue="@ViewModel.BannerAsideValue" />
 
             @* ─── TAB BAR ──────────────────────────────────────────────────── *@
             <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs"
@@ -177,7 +182,7 @@
                                 <div class="spv2-form-field">
                                     <label class="spv2-form-label" for="fld-dob">Date of Birth <span class="spv2-req">*</span></label>
                                     <input id="fld-dob" type="date" class="spv2-form-input"
-                                           value="@ViewModel.EditDateOfBirth.ToString("yyyy-MM-dd")"
+                                           value="@ViewModel.EditDateOfBirth?.ToString("yyyy-MM-dd")"
                                            @onchange="OnDobChanged" />
                                 </div>
 
@@ -194,7 +199,7 @@
                                 <div class="spv2-form-field">
                                     <label class="spv2-form-label" for="fld-admdate">Admission Date <span class="spv2-req">*</span></label>
                                     <input id="fld-admdate" type="date" class="spv2-form-input"
-                                           value="@ViewModel.EditAdmissionDate.ToString("yyyy-MM-dd")"
+                                           value="@ViewModel.EditAdmissionDate?.ToString("yyyy-MM-dd")"
                                            @onchange="OnAdmissionDateChanged" />
                                 </div>
                                 <div class="spv2-form-field">
@@ -485,12 +490,16 @@
         if (DateTime.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", null,
             System.Globalization.DateTimeStyles.None, out var dob))
             ViewModel.EditDateOfBirth = dob;
+        else if (string.IsNullOrEmpty(e.Value?.ToString()))
+            ViewModel.EditDateOfBirth = null;
     }
 
     private void OnAdmissionDateChanged(ChangeEventArgs e)
     {
         if (DateOnly.TryParseExact(e.Value?.ToString(), "yyyy-MM-dd", out var d))
             ViewModel.EditAdmissionDate = d;
+        else if (string.IsNullOrEmpty(e.Value?.ToString()))
+            ViewModel.EditAdmissionDate = null;
     }
 
     private void OnClassChanged(ChangeEventArgs e)

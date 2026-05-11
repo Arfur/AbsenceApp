@@ -3,9 +3,9 @@
  File        : UserManagementModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 1.4.0
+ Version     : 1.5.0
  Created     : 2026-04-11
- Updated     : 2026-05-10
+ Updated     : 2026-05-11
 -------------------------------------------------------------------------------
  Purpose     : ModelBuilder extension that configures the four E15 entities:
                AppPage, RoleDefaultPagePermission, UserPageOverride, and
@@ -35,6 +35,12 @@
                          RoleDefaultPagePermission seeds for these new pages.
    - 1.4.0  2026-05-10  Marked legacy student/staff detail AppPages inactive so
                          the registry matches the canonical list/profile routes.
+   - 1.5.0  2026-05-11  Fix 2: Added AppPages 28 (Student Absences) and 29
+                         (Student Calendar) under ATTENDANCE category so
+                         PermissionServiceV2 resolves them and the sidebar
+                         Students menu under ATTENDANCE remains visible.
+                         Added super_admin RoleDefaultPagePermission seeds
+                         (ids 28-29) for the two new pages.
 -------------------------------------------------------------------------------
  Notes     :
    - apppages is seeded with the canonical set of V2 application routes.
@@ -166,6 +172,14 @@ public static class UserManagementModelBuilderExtensions
         (27, "Page Metadata", "page-metadata", "/v2/system/pages/metadata",
              "CONFIGURATION", "System", "bi-info-circle",
              true, true, false, false, false, false, 96 ),
+
+        // ── ATTENDANCE sub-pages (ids 28–29) ─────────────────────────────────
+        (28, "Student Absences", "student-absences-attendance", "/v2/students/:id/absences",
+             "ATTENDANCE", "Students", "bi-calendar-x",
+             true, true, true, true, false, false, 51 ),
+        (29, "Student Calendar", "student-calendar-attendance", "/v2/students/:id/calendar",
+             "ATTENDANCE", "Students", "bi-calendar3",
+             true, false, false, false, false, false, 52 ),
     ];
 
     // -------------------------------------------------------------------------
@@ -200,6 +214,8 @@ public static class UserManagementModelBuilderExtensions
         (25, "super_admin", 25, true, true, true,  true,  false, false), // Pages Registry
         (26, "super_admin", 26, true, true, false, false, false, false), // Page Layouts
         (27, "super_admin", 27, true, true, false, false, false, false), // Page Metadata
+        (28, "super_admin", 28, true, true, true,  true,  false, false), // Student Absences
+        (29, "super_admin", 29, true, false, false, false, false, false), // Student Calendar
     ];
 
     // -------------------------------------------------------------------------

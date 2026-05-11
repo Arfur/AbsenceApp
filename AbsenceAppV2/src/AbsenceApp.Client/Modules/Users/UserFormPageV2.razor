@@ -2,9 +2,9 @@
    File        : UserFormPageV2.razor
    Namespace   : AbsenceApp.Client.Modules.Users
    Author      : Michael
-   Version     : 6.3.0
+   Version     : 6.4.0
    Created     : 2026-04-11
-   Updated     : 2026-05-06
+   Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : E15 User Management � Add / Edit User � full profile page.
                  Routes:
@@ -105,6 +105,10 @@
                              parameter; tabs 1-8 are disabled in Add Mode.
                            - Tab 8 panel shows "Save account first" placeholder
                              in Add Mode instead of the permission matrix.
+     - 6.4.0  2026-05-11  Issue 3: Replaced edit-mode native <select> in banner
+                           identity block with ProfileNameSelector component.
+                           Added OnUserSelectorValueChanged and
+                           OnUserSelectorItemSelected handler methods.
      - 6.2.0  2026-05-05  Fixes B+C — Unified banner identity block:
                            - B: Replaced dual-branch identity block (LinkedStaff==null /
                              LinkedStaff!=null split) with a single unified <div> containing
@@ -269,18 +273,18 @@
                         }
                         else
                         {
-                            <select class="upv2-banner-user-select"
-                                    value="@ViewModel.UserId"
-                                    @onchange="OnUserSelectChanged">
-                                @foreach (var u in ViewModel.UsersWithAccounts)
-                                {
-                                    <option value="@u.Id">@u.FullName</option>
-                                }
-                            </select>
+                            <ProfileNameSelector Value="@ViewModel.SelectorSearchText"
+                                                 Placeholder="Search users"
+                                                 AriaLabel="User selector"
+                                                 HintText="(Select User name)"
+                                                 EmptyMessage="No matching users found."
+                                                 IsLoading="@ViewModel.IsSelectorLoading"
+                                                 Disabled="false"
+                                                 Items="@ViewModel.ProfileSelectorItems"
+                                                 SelectedId="@((long?)ViewModel.UserId)"
+                                                 ValueChanged="OnUserSelectorValueChanged"
+                                                 ItemSelected="OnUserSelectorItemSelected" />
                         }
-                        <span class="upv2-banner-mode-hint">
-                            @(ViewModel.IsNew ? "(Select new staff name)" : "(Select User name)")
-                        </span>
                     </div>
 
                     <div class="upv2-banner-kv-row">
@@ -1027,6 +1031,16 @@
     {
         if (long.TryParse(e.Value?.ToString(), out var selectedId) && selectedId > 0)
             Nav.NavigateTo($"/v2/system/users/{selectedId}");
+    }
+
+    private Task OnUserSelectorValueChanged(string value)
+        => ViewModel.SearchProfileSelectorAsync(value);
+
+    private Task OnUserSelectorItemSelected(ProfileNameSelectorItemDto item)
+    {
+        var route = string.IsNullOrWhiteSpace(item.Route) ? $"/v2/system/users/{item.Id}" : item.Route;
+        Nav.NavigateTo(route);
+        return Task.CompletedTask;
     }
 
     private async Task OnCreate()

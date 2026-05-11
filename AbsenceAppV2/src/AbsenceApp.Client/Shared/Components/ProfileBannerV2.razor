@@ -2,9 +2,9 @@
    File        : ProfileBannerV2.razor
    Namespace   : AbsenceApp.Client.Shared.Components
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.0.1
    Created     : 2026-05-10
-   Updated     : 2026-05-10
+   Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Reusable profile banner for the unified V2 User, Student, and
                  Staff profile pages. Hosts photo upload/remove actions,
@@ -13,6 +13,9 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-05-10  Initial creation.
+     - 1.0.1  2026-05-11  Fix 1: Replaced bare <span> in ShowSelector=false
+                           branch with <div class="upv2-banner-name--static">
+                           to match the selector control height in add/static mode.
    ---------------------------------------------------------------------------
    Notes       :
      - Presentation-only component; parent owns upload/search/navigation logic.
@@ -77,7 +80,7 @@
             }
             else
             {
-                <span>@EntityDisplayName</span>
+                <div class="upv2-banner-name--static">@EntityDisplayName</div>
                 @if (!string.IsNullOrWhiteSpace(SelectorHint))
                 {
                     <span class="upv2-banner-mode-hint">@SelectorHint</span>

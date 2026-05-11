@@ -2,14 +2,17 @@
    File        : ProfileNameSelector.razor.css
    Component   : ProfileNameSelector
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.0.1
    Created     : 2026-05-10
-   Updated     : 2026-05-10
+   Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Scoped CSS for the shared ProfileNameSelector component.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-05-10  Initial creation.
+     - 1.0.1  2026-05-11  Added .upv2-banner-mode-hint rule so the hint span
+                           rendered inside this component applies the correct
+                           size/weight (Blazor scoping fix).
    ===========================================================================
 */
 
@@ -112,4 +115,13 @@
     padding: .75rem;
     font-size: .82rem;
     color: #64748b;
+}
+
+.upv2-banner-mode-hint {
+    display: block;
+    font-size: .83rem;
+    font-weight: 400;
+    color: rgba(255,255,255,.55);
+    font-style: italic;
+    margin-top: .15rem;
 }

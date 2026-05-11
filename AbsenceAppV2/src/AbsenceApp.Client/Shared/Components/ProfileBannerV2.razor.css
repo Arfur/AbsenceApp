@@ -2,9 +2,9 @@
    File        : ProfileBannerV2.razor.css
    Component   : ProfileBannerV2
    Author      : Michael
-     Version     : 1.0.2
+     Version     : 1.0.3
    Created     : 2026-05-10
-     Updated     : 2026-05-10
+     Updated     : 2026-05-11
    ---------------------------------------------------------------------------
    Purpose     : Shared banner styles for the unified V2 profile pages. Rules
                  are published globally so the shared components and the legacy
@@ -17,6 +17,10 @@
                                                  runtime-applicable rules.
          - 1.0.2  2026-05-10  Added optional debug hitbox outline/overlay styles
                                                  for avatar upload click-area diagnostics.
+   - 1.0.3  2026-05-11  Fix 1: Added .upv2-banner-name--static rule to match
+                         the selector control height in add/static mode.
+                         Updated .upv2-banner-mode-hint font-size to .83rem to
+                         align with ProfileNameSelector.razor.css.
    ===========================================================================
 */
 
@@ -174,9 +178,17 @@
     color: rgba(255,255,255,.95);
 }
 
+.upv2-banner-name--static {
+    display: flex;
+    align-items: center;
+    padding: .45rem .7rem;
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius, .5rem);
+}
+
 .upv2-banner-mode-hint {
     display: block;
-    font-size: .75rem;
+    font-size: .83rem;
     color: rgba(255,255,255,.55);
     font-style: italic;
     margin-top: .15rem;
