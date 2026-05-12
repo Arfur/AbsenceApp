@@ -7,7 +7,7 @@
       "category": "DESIGN SYSTEM",
       "groups": [
         {
-          "group": "Foundations",
+          "group": "FOUNDATIONS",
           "icon": "bi-sliders",
           "items": [
             { "label": "Colours",    "href": "/global-settings/colours",    "icon": "bi-palette2" },
@@ -17,10 +17,11 @@
           ]
         },
         {
-          "group": "Components",
+          "group": "COMPONENTS",
           "icon": "bi-grid-3x3-gap-fill",
           "items": [
-            { "label": "Buttons",       "href": "/global-settings/buttons",       "icon": "bi-stop-btn" },
+            { "label": "Buttons",        "href": "/global-settings/buttons",      "icon": "bi-stop-btn" },
+            { "label": "Buttons — Editor", "href": "/global-settings/buttons/edit", "icon": "bi-pencil-square" },
             { "label": "Cards",         "href": "/global-settings/cards",         "icon": "bi-card-heading" },
             { "label": "Tables",        "href": "/global-settings/tables",        "icon": "bi-table" },
             { "label": "Forms",         "href": "/global-settings/forms",         "icon": "bi-input-cursor-text" },
@@ -49,7 +50,7 @@
           ]
         },
         {
-          "group": "Templates",
+          "group": "TEMPLATES",
           "icon": "bi-layout-text-window",
           "items": [
             { "label": "Dashboards", "href": "/global-settings/dashboards", "icon": "bi-speedometer" },

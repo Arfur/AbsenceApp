@@ -1,0 +1,88 @@
+@* ===========================================================================
+   File        : ButtonDemoCard.razor
+   Namespace   : AbsenceApp.Client.Shared.Components.DesignSystem
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-12
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable KI-Admin-style demo card for button showcase pages.
+                 Renders a titled card with two sections:
+                   Section A — always-visible live demo row (DemoContent slot)
+                   Section B — accordion with code snippet + actions
+
+                 Each card independently manages its own open/closed state
+                 via a private _open boolean. No parent state coordination.
+   ---------------------------------------------------------------------------
+   Parameters  :
+     Title         (string)          — card heading text
+     DemoContent   (RenderFragment)  — live demo buttons rendered in Section A
+     CodeSnippet   (string)          — HTML markup shown in Section B code block
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-12  Initial creation (Phase C — Buttons demo layout).
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Shared.Components.DesignSystem
+
+<div class="kbp-card">
+
+    @* ── Card header: title (left) + toggle icon (right) ── *@
+    <div class="kbp-card__header">
+        <h3 class="kbp-card__title">@Title</h3>
+        <button type="button"
+                class="kbp-card__toggle @(_open ? "kbp-card__toggle--active" : "")"
+                title="@(_open ? "Hide code" : "Show code")"
+                aria-expanded="@_open"
+                @onclick="Toggle">
+            <i class="bi bi-code-slash" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    @* ── Section A: live demo area (always visible) ── *@
+    <div class="kbp-section-a">
+        <div class="kbp-btn-row">
+            @DemoContent
+        </div>
+    </div>
+
+    @* ── Section B: code snippet + actions (accordion, DOM-controlled by @if) ── *@
+    @if (_open)
+    {
+        <div class="kbp-divider" aria-hidden="true"></div>
+
+        <div class="kbp-section-b">
+
+            @* Action buttons *@
+            <div class="kbp-code-actions">
+                <a href="/global-settings/buttons/edit"
+                   class="dsv2-btn dsv2-btn--primary dsv2-btn--sm">
+                    <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                    Edit Tokens
+                </a>
+                <button type="button"
+                        class="dsv2-btn dsv2-btn--secondary dsv2-btn--sm"
+                        @onclick="Toggle">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    Collapse
+                </button>
+            </div>
+
+            @* Code block *@
+            <pre class="kbp-code-block"><code>@CodeSnippet</code></pre>
+
+        </div>
+    }
+
+</div>
+
+@code {
+
+    [Parameter, EditorRequired] public string          Title       { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public RenderFragment? DemoContent { get; set; }
+    [Parameter]                 public string          CodeSnippet { get; set; } = string.Empty;
+
+    private bool _open = false;
+
+    private void Toggle() => _open = !_open;
+}

@@ -27,6 +27,7 @@
 @namespace AbsenceApp.Client.Framework.Layouts
 @inherits LayoutComponentBase
 @using AbsenceApp.Client.Services
+@using AbsenceApp.Client.Framework.Layout
 @inject AppStateService AppState
 @implements IDisposable
 
@@ -42,6 +43,7 @@
 
         <main class="v2-main">
             <div class="v2-page-container">
+                <PageHeaderV2 />
                 @Body
             </div>
         </main>

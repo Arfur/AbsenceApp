@@ -68,10 +68,10 @@
 
 /* ── Card component (matches Ki-Admin .card + .card-header + .card-body) ─── */
 .dsv2-card {
-    background: var(--v2-bg-surface, #ffffff);
-    border: 1px solid var(--v2-border-color, #dee2e6);
-    border-radius: var(--v2-radius-base, 8px);
-    box-shadow: var(--v2-shadow-sm, 0 1px 4px rgba(0,0,0,0.06));
+    background: var(--ds-card-bg, #ffffff);
+    border: 1px solid var(--ds-card-border-color, #dee2e6);
+    border-radius: var(--ds-card-radius, 8px);
+    box-shadow: var(--ds-card-shadow, 0 1px 4px rgba(0,0,0,0.06));
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -79,12 +79,12 @@
 
 .dsv2-card__header {
     padding: 0.875rem 1.25rem;
-    border-bottom: 1px solid var(--v2-border-color, #dee2e6);
+    border-bottom: 1px solid var(--ds-card-border-color, #dee2e6);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    background: var(--v2-bg-subtle, #f8f9fa);
+    background: var(--ds-card-header-bg, #f8f9fa);
 }
 
 .dsv2-card__title {
@@ -101,7 +101,7 @@
 }
 
 .dsv2-card__body {
-    padding: 1.25rem;
+    padding: var(--ds-card-padding, 1.25rem);
     flex: 1;
 }
 
@@ -112,8 +112,8 @@
 
 .dsv2-card__footer {
     padding: 0.75rem 1.25rem;
-    border-top: 1px solid var(--v2-border-color, #dee2e6);
-    background: var(--v2-bg-subtle, #f8f9fa);
+    border-top: 1px solid var(--ds-card-border-color, #dee2e6);
+    background: var(--ds-card-header-bg, #f8f9fa);
 }
 
 /* Card colour variants */
@@ -604,7 +604,9 @@
 /* ==========================================================================
    dsv2-btn — Global V2 button system
    Loaded in global-config.css so rules apply across all pages (not scoped).
-   All colour values reference --v2-color-* tokens from tokens/colors.css.
+   Phase A: Colour and structural values use --ds-btn-* design tokens seeded
+   in the DesignTokens table. DesignTokenStyleInjectorV2 injects a :root {}
+   override block at runtime; CSS fallback values mirror the seed defaults.
    NOTE: Scoped definitions in UserFormPageV2.razor.css (.dsv2-btn--secondary)
          and SettingsListPageV2.razor.css (.dsv2-btn--sm) remain unchanged.
    ========================================================================== */
@@ -614,9 +616,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 16px;
-    border-radius: var(--v2-radius-base, 6px);
-    font-size: 0.875rem;
+    padding: var(--ds-btn-padding-y, 7px) var(--ds-btn-padding-x, 16px);
+    border-radius: var(--ds-btn-border-radius, 6px);
+    font-size: var(--ds-btn-font-size, 0.875rem);
     font-weight: 600;
     cursor: pointer;
     border: 1px solid transparent;
@@ -638,69 +640,69 @@
 
 /* ── Colour fills ────────────────────────────────────────────────────────── */
 .dsv2-btn--primary {
-    background: var(--v2-color-primary, #0d6efd);
-    color: #ffffff;
-    border-color: var(--v2-color-primary, #0d6efd);
+    background: var(--ds-btn-primary-bg, #0d6efd);
+    color: var(--ds-btn-primary-text, #ffffff);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
 }
 .dsv2-btn--primary:hover {
-    background: #0b5ed7;
-    border-color: #0b5ed7;
-    color: #ffffff;
+    background: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    border-color: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    color: var(--ds-btn-primary-text, #ffffff);
 }
 
 .dsv2-btn--secondary {
-    background: transparent;
-    color: var(--v2-text-primary, #212529);
-    border-color: var(--v2-border-color, #dee2e6);
+    background: var(--ds-btn-secondary-bg, transparent);
+    color: var(--ds-btn-secondary-text, #212529);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
 }
 .dsv2-btn--secondary:hover {
-    background: var(--v2-bg-subtle, #f8f9fa);
-    border-color: var(--v2-border-color, #dee2e6);
-    color: var(--v2-text-primary, #212529);
+    background: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    border-color: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    color: var(--ds-btn-secondary-text, #212529);
 }
 
 .dsv2-btn--success {
-    background: var(--v2-color-success, #198754);
-    color: #ffffff;
-    border-color: var(--v2-color-success, #198754);
+    background: var(--ds-btn-success-bg, #198754);
+    color: var(--ds-btn-success-text, #ffffff);
+    border-color: var(--ds-btn-success-border, #198754);
 }
 .dsv2-btn--success:hover {
-    background: #157347;
-    border-color: #157347;
-    color: #ffffff;
+    background: var(--ds-btn-success-hover-bg, #157347);
+    border-color: var(--ds-btn-success-hover-bg, #157347);
+    color: var(--ds-btn-success-text, #ffffff);
 }
 
 .dsv2-btn--danger {
-    background: var(--v2-color-danger, #dc3545);
-    color: #ffffff;
-    border-color: var(--v2-color-danger, #dc3545);
+    background: var(--ds-btn-danger-bg, #dc3545);
+    color: var(--ds-btn-danger-text, #ffffff);
+    border-color: var(--ds-btn-danger-border, #dc3545);
 }
 .dsv2-btn--danger:hover {
-    background: #bb2d3b;
-    border-color: #b02a37;
-    color: #ffffff;
+    background: var(--ds-btn-danger-hover-bg, #bb2d3b);
+    border-color: var(--ds-btn-danger-hover-bg, #bb2d3b);
+    color: var(--ds-btn-danger-text, #ffffff);
 }
 
 .dsv2-btn--warning {
-    background: var(--v2-color-warning, #ffc107);
-    color: #212529;
-    border-color: var(--v2-color-warning, #ffc107);
+    background: var(--ds-btn-warning-bg, #ffc107);
+    color: var(--ds-btn-warning-text, #212529);
+    border-color: var(--ds-btn-warning-border, #ffc107);
 }
 .dsv2-btn--warning:hover {
-    background: #ffca2c;
-    border-color: #ffc720;
-    color: #212529;
+    background: var(--ds-btn-warning-hover-bg, #ffca2c);
+    border-color: var(--ds-btn-warning-hover-bg, #ffca2c);
+    color: var(--ds-btn-warning-text, #212529);
 }
 
 .dsv2-btn--info {
-    background: var(--v2-color-info, #0dcaf0);
-    color: #212529;
-    border-color: var(--v2-color-info, #0dcaf0);
+    background: var(--ds-btn-info-bg, #0dcaf0);
+    color: var(--ds-btn-info-text, #212529);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
 }
 .dsv2-btn--info:hover {
-    background: #31d2f2;
-    border-color: #25cff2;
-    color: #212529;
+    background: var(--ds-btn-info-hover-bg, #31d2f2);
+    border-color: var(--ds-btn-info-hover-bg, #31d2f2);
+    color: var(--ds-btn-info-text, #212529);
 }
 
 .dsv2-btn--light {
@@ -813,4 +815,20 @@
 }
 .dark .dsv2-btn--light:hover {
     background: #252840;
+}
+
+/* =============================================================================
+   SCAFFOLD PLACEHOLDER — Phase 8 "Under construction" utility class
+   ============================================================================= */
+
+.kbp-scaffold {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--v2-text-muted, #6c757d);
+    font-size: 0.88rem;
+    border: 2px dashed var(--v2-border-color, #dee2e6);
+    border-radius: 8px;
+    padding: 2rem;
 }

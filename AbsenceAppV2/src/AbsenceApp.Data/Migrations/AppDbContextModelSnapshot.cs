@@ -636,7 +636,7 @@ namespace AbsenceApp.Data.Migrations
                             CategoryKey = "PEOPLE",
                             CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             IconKey = "bi-person-lines-fill",
-                            IsActive = true,
+                            IsActive = false,
                             MenuKey = "Students",
                             Name = "Student Details",
                             Route = "/v2/students/details",
@@ -676,7 +676,7 @@ namespace AbsenceApp.Data.Migrations
                             CategoryKey = "PEOPLE",
                             CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             IconKey = "bi-person-lines-fill",
-                            IsActive = true,
+                            IsActive = false,
                             MenuKey = "Staff",
                             Name = "Staff Details",
                             Route = "/v2/staff/details",
@@ -889,6 +889,46 @@ namespace AbsenceApp.Data.Migrations
                             SupportsRead = true,
                             SupportsWrite = true,
                             UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryKey = "ATTENDANCE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-calendar-x",
+                            IsActive = true,
+                            MenuKey = "Students",
+                            Name = "Student Absences",
+                            Route = "/v2/students/:id/absences",
+                            Slug = "student-absences-attendance",
+                            SortOrder = 51,
+                            SupportsCreate = true,
+                            SupportsDelete = true,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = true,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryKey = "ATTENDANCE",
+                            CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IconKey = "bi-calendar3",
+                            IsActive = true,
+                            MenuKey = "Students",
+                            Name = "Student Calendar",
+                            Route = "/v2/students/:id/calendar",
+                            Slug = "student-calendar-attendance",
+                            SortOrder = 52,
+                            SupportsCreate = false,
+                            SupportsDelete = false,
+                            SupportsExport = false,
+                            SupportsImport = false,
+                            SupportsRead = true,
+                            SupportsWrite = false,
+                            UpdatedAt = new DateTime(2026, 4, 11, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -977,6 +1017,548 @@ namespace AbsenceApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("classyeargroups", (string)null);
+                });
+
+            modelBuilder.Entity("AbsenceApp.Data.Models.DesignToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ComponentGroup")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CssVariable")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("CurrentValue")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("DefaultValue")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TokenKey")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComponentGroup", "TokenKey")
+                        .IsUnique()
+                        .HasDatabaseName("IX_DesignTokens_ComponentGroup_TokenKey");
+
+                    b.ToTable("DesignTokens", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-primary-bg",
+                            DefaultValue = "#0d6efd",
+                            Description = "Primary button background colour",
+                            IsActive = true,
+                            SortOrder = 10,
+                            TokenKey = "primary-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-primary-text",
+                            DefaultValue = "#ffffff",
+                            Description = "Primary button text colour",
+                            IsActive = true,
+                            SortOrder = 11,
+                            TokenKey = "primary-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-primary-border",
+                            DefaultValue = "#0d6efd",
+                            Description = "Primary button border colour",
+                            IsActive = true,
+                            SortOrder = 12,
+                            TokenKey = "primary-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-primary-hover-bg",
+                            DefaultValue = "#0b5ed7",
+                            Description = "Primary button hover background colour",
+                            IsActive = true,
+                            SortOrder = 13,
+                            TokenKey = "primary-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-secondary-bg",
+                            DefaultValue = "transparent",
+                            Description = "Secondary button background colour",
+                            IsActive = true,
+                            SortOrder = 20,
+                            TokenKey = "secondary-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-secondary-text",
+                            DefaultValue = "#212529",
+                            Description = "Secondary button text colour",
+                            IsActive = true,
+                            SortOrder = 21,
+                            TokenKey = "secondary-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-secondary-border",
+                            DefaultValue = "#dee2e6",
+                            Description = "Secondary button border colour",
+                            IsActive = true,
+                            SortOrder = 22,
+                            TokenKey = "secondary-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-secondary-hover-bg",
+                            DefaultValue = "#f8f9fa",
+                            Description = "Secondary button hover background colour",
+                            IsActive = true,
+                            SortOrder = 23,
+                            TokenKey = "secondary-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-success-bg",
+                            DefaultValue = "#198754",
+                            Description = "Success button background colour",
+                            IsActive = true,
+                            SortOrder = 30,
+                            TokenKey = "success-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-success-text",
+                            DefaultValue = "#ffffff",
+                            Description = "Success button text colour",
+                            IsActive = true,
+                            SortOrder = 31,
+                            TokenKey = "success-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-success-border",
+                            DefaultValue = "#198754",
+                            Description = "Success button border colour",
+                            IsActive = true,
+                            SortOrder = 32,
+                            TokenKey = "success-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-success-hover-bg",
+                            DefaultValue = "#157347",
+                            Description = "Success button hover background colour",
+                            IsActive = true,
+                            SortOrder = 33,
+                            TokenKey = "success-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-danger-bg",
+                            DefaultValue = "#dc3545",
+                            Description = "Danger button background colour",
+                            IsActive = true,
+                            SortOrder = 40,
+                            TokenKey = "danger-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-danger-text",
+                            DefaultValue = "#ffffff",
+                            Description = "Danger button text colour",
+                            IsActive = true,
+                            SortOrder = 41,
+                            TokenKey = "danger-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-danger-border",
+                            DefaultValue = "#dc3545",
+                            Description = "Danger button border colour",
+                            IsActive = true,
+                            SortOrder = 42,
+                            TokenKey = "danger-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-danger-hover-bg",
+                            DefaultValue = "#bb2d3b",
+                            Description = "Danger button hover background colour",
+                            IsActive = true,
+                            SortOrder = 43,
+                            TokenKey = "danger-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-warning-bg",
+                            DefaultValue = "#ffc107",
+                            Description = "Warning button background colour",
+                            IsActive = true,
+                            SortOrder = 50,
+                            TokenKey = "warning-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-warning-text",
+                            DefaultValue = "#212529",
+                            Description = "Warning button text colour",
+                            IsActive = true,
+                            SortOrder = 51,
+                            TokenKey = "warning-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-warning-border",
+                            DefaultValue = "#ffc107",
+                            Description = "Warning button border colour",
+                            IsActive = true,
+                            SortOrder = 52,
+                            TokenKey = "warning-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-warning-hover-bg",
+                            DefaultValue = "#ffca2c",
+                            Description = "Warning button hover background colour",
+                            IsActive = true,
+                            SortOrder = 53,
+                            TokenKey = "warning-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-info-bg",
+                            DefaultValue = "#0dcaf0",
+                            Description = "Info button background colour",
+                            IsActive = true,
+                            SortOrder = 60,
+                            TokenKey = "info-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-info-text",
+                            DefaultValue = "#212529",
+                            Description = "Info button text colour",
+                            IsActive = true,
+                            SortOrder = 61,
+                            TokenKey = "info-text",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-info-border",
+                            DefaultValue = "#0dcaf0",
+                            Description = "Info button border colour",
+                            IsActive = true,
+                            SortOrder = 62,
+                            TokenKey = "info-border",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Category = "color",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-info-hover-bg",
+                            DefaultValue = "#31d2f2",
+                            Description = "Info button hover background colour",
+                            IsActive = true,
+                            SortOrder = 63,
+                            TokenKey = "info-hover-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Category = "structure",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-border-radius",
+                            DefaultValue = "6px",
+                            Description = "Button border radius",
+                            IsActive = true,
+                            SortOrder = 70,
+                            TokenKey = "border-radius",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Category = "structure",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-font-size",
+                            DefaultValue = "0.875rem",
+                            Description = "Button font size",
+                            IsActive = true,
+                            SortOrder = 71,
+                            TokenKey = "font-size",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Category = "structure",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-padding-y",
+                            DefaultValue = "7px",
+                            Description = "Button vertical padding",
+                            IsActive = true,
+                            SortOrder = 72,
+                            TokenKey = "padding-y",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Category = "structure",
+                            ComponentGroup = "btn",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-btn-padding-x",
+                            DefaultValue = "16px",
+                            Description = "Button horizontal padding",
+                            IsActive = true,
+                            SortOrder = 73,
+                            TokenKey = "padding-x",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 100,
+                            Category = "color",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-bg",
+                            DefaultValue = "#ffffff",
+                            Description = "Card background colour",
+                            IsActive = true,
+                            SortOrder = 100,
+                            TokenKey = "bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Category = "color",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-border-color",
+                            DefaultValue = "#dee2e6",
+                            Description = "Card border colour",
+                            IsActive = true,
+                            SortOrder = 101,
+                            TokenKey = "border-color",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Category = "structure",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-radius",
+                            DefaultValue = "8px",
+                            Description = "Card border radius",
+                            IsActive = true,
+                            SortOrder = 102,
+                            TokenKey = "radius",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Category = "structure",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-shadow",
+                            DefaultValue = "0 1px 4px rgba(0,0,0,0.06)",
+                            Description = "Card box shadow",
+                            IsActive = true,
+                            SortOrder = 103,
+                            TokenKey = "shadow",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 104,
+                            Category = "color",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-header-bg",
+                            DefaultValue = "#f8f9fa",
+                            Description = "Card header background colour",
+                            IsActive = true,
+                            SortOrder = 104,
+                            TokenKey = "header-bg",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 105,
+                            Category = "structure",
+                            ComponentGroup = "card",
+                            CreatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CssVariable = "--ds-card-padding",
+                            DefaultValue = "1.25rem",
+                            Description = "Card body padding",
+                            IsActive = true,
+                            SortOrder = 105,
+                            TokenKey = "padding",
+                            UpdatedAt = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.DeviceType", b =>
@@ -1571,6 +2153,32 @@ namespace AbsenceApp.Data.Migrations
                             CanWrite = true,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PageId = 27,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CanCreate = true,
+                            CanDelete = true,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = true,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 28,
+                            RoleTypeName = "super_admin"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CanCreate = false,
+                            CanDelete = false,
+                            CanExport = false,
+                            CanImport = false,
+                            CanRead = true,
+                            CanWrite = false,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PageId = 29,
                             RoleTypeName = "super_admin"
                         });
                 });

@@ -1684,3 +1684,726 @@ Applied:
 
 ### Temp Scripts
 `C:\DevAbsence1\db_phase_404.py`, `db_verify.py`, `db_sample_roles.py` - temporary scripts, can be deleted.
+
+---
+
+## 2026-05-12 — Phase A: Global Design Token System (Phase 1 + Phase 2)
+
+**Author:** Michael  
+**Type:** Code | Schema | DI | Layout  
+**Scope:** `design-system:token-phase-a`  
+**Summary:** Implemented Phase A of the Global Design Token System. Phase 1 creates the `DesignTokens` table with 28 seeded button tokens. Phase 2 wires up the runtime CSS injection service and injects a `<style id="ds-token-overrides">` block into every page via `MainLayoutV2`.
+
+### Phase 1 — Database + EF Model
+
+#### New Files
+
+| File | Version | Purpose |
+|------|---------|---------|
+| `src/AbsenceApp.Data/Models/DesignToken.cs` | 1.0.0 | EF entity for `DesignTokens` table. Properties: `Id, ComponentGroup, TokenKey, CssVariable, DefaultValue, CurrentValue?, Category, Description?, IsActive, SortOrder, CreatedAt, UpdatedAt`. `[Table("DesignTokens")]`. |
+| `src/AbsenceApp.Data/Configurations/DesignTokenModelBuilderExtensions.cs` | 1.0.0 | `ConfigureDesignTokens()` extension. Configures entity, unique index `IX_DesignTokens_ComponentGroup_TokenKey`, and 28 seed rows. Seed timestamp: `2026-05-12 00:00:00 UTC`. |
+| `C:\DevAbsence1\db_design_tokens.py` | 1.0.0 | Python SQL script — creates `DesignTokens` table and inserts all 28 seed rows via `INSERT IGNORE`. |
+
+#### Modified Files
+
+| File | Change |
+|------|--------|
+| `src/AbsenceApp.Data/Context/AppDbContext.cs` | v2.4.0 → v2.5.0. Added `DbSet<DesignToken> DesignTokens`. Called `modelBuilder.ConfigureDesignTokens()` in `OnModelCreating`. Added `DesignToken` to `ValueGeneratedNever` exclusion list. Added `DesignTokens` `ToTable` mapping. |
+
+#### DB Changes
+
+- `DesignTokens` table created in `absenceapp` database.
+- 28 seed rows inserted: primary(10–13), secondary(20–23), success(30–33), danger(40–43), warning(50–53), info(60–63), structural base/radius/font/padding(70–73). All `ComponentGroup = "btn"`.
+
+### Phase 2 — Runtime CSS Injection System
+
+#### New Files
+
+| File | Version | Purpose |
+|------|---------|---------|
+| `src/AbsenceApp.Client/Services/ApiV2/Modules/DesignTokenApiServiceV2.cs` | 1.0.0 | Singleton service. Methods: `GetGeneratedCssAsync()`, `GetGroupAsync(string)`, `UpdateTokensAsync(Dictionary<string,string?>)`, `ResetGroupAsync(string)`, `InvalidateCache()`. Event: `OnTokensChanged`. CSS output: `:root { --ds-btn-*: value; }` ordered by ComponentGroup ASC, SortOrder ASC. |
+| `src/AbsenceApp.Client/Shared/Components/DesignTokenStyleInjectorV2.razor` | 1.0.0 | Renders `<style id="ds-token-overrides">` with runtime CSS. Subscribes to `OnTokensChanged`, re-renders on change. Implements `IAsyncDisposable`. |
+
+#### Modified Files
+
+| File | Change |
+|------|--------|
+| `src/AbsenceApp.Client/Extensions/V2ServiceCollectionExtensions.cs` | v1.7.0 → v1.8.0. Added `services.AddSingleton<DesignTokenApiServiceV2>()`. |
+| `src/AbsenceApp.Client/Framework/Layout/MainLayoutV2.razor` | v1.9.0 → v2.0.0. Added `@using AbsenceApp.Client.Shared.Components`. Added `<DesignTokenStyleInjectorV2 />` before the init loader section. |
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` — **0 errors, 0 warnings**
+- DB: `DesignTokens` table exists with **28 rows** (all `ComponentGroup = "btn"`)
+- Runtime: `<style id="ds-token-overrides">` renders in every page via `MainLayoutV2`
+- No UI changes — buttons still use static `global-config.css` fallback values (Phase 3 wires the tokens into the CSS rules)
+- No other files modified beyond those listed above
+
+---
+
+## 2026-05-10 — Profile ViewModel Shared Chrome State
+
+**Author:** Michael  
+**Type:** Code | UI  
+**Scope:** `ui:profile-chrome-viewmodels`  
+**Summary:** Updated the User, Student, and Staff profile ViewModels to expose shared banner fields, tab metadata, selector state, and add-mode tab restrictions for the unified V2 profile chrome.
+
+### Details
+- Added `ProfileTabs` metadata collections to the three profile ViewModels so pages can render the same shared tab-strip component with page-specific labels and enablement.
+- Added `BannerFields` and selector state (`SelectorSearchText`, `ProfileSelectorItems`, loading/search methods) so the shared banner can render profile-specific text and the searchable selector can use the new direct-DB service methods.
+- Ensured Student and Staff add modes only allow Tab 0 activation, matching the user-profile add-mode guard already present in the repository plan.
+- Preserved the existing profile/photo/save/absence logic while moving only shared chrome state into the ViewModels.
+
+### Affected Files and Components
+- Files: `src/AbsenceApp.Client/ViewModels/V2/UserProfileViewModelV2.cs`; `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs`; `src/AbsenceApp.Client/ViewModels/V2/StaffProfileViewModelV2.cs`
+- Components: `ProfileBannerV2`; `ProfileTabsV2`; `ProfileNameSelector`
+- Services/APIs: `UserManagementApiServiceV2`; `StudentProfileApiServiceV2`; `StaffProfileApiServiceV2`
+
+### Rollout Notes
+- Deploy together with the page refactor batch so the new shared ViewModel surface is consumed by the profile pages.
+- Backout plan: revert the three ViewModel-file edits.
+
+### Verification
+- Static verification: shared chrome properties and methods are now present on the three profile ViewModels.
+- Functional verification deferred to the later page/refactor and validation batches.
+- Environments applied: dev
+
+---
+
+## 2026-05-10 — Profile Pages Switched to Shared Chrome
+
+**Author:** Michael  
+**Type:** UI | Refactor  
+**Scope:** `ui:profile-chrome-pages`  
+**Summary:** Refactored the User, Student, and Staff profile pages to consume the shared `ProfileBannerV2` and `ProfileTabsV2` components while preserving their existing tab body content and action handlers.
+
+### Details
+- Replaced the inline User profile banner and tab button rendering with the shared profile banner/tab-strip, wiring the searchable selector to the new ViewModel selector state and existing navigation routes.
+- Replaced the inline Student and Staff profile banner/tab markup with the shared components, using profile-specific selector visibility and banner field text while keeping the existing edit/add/view tab bodies intact.
+- Preserved existing photo upload/remove, absence actions, save handlers, and route navigation so this batch only changes the shared profile chrome surface.
+- Removed redundant local Student profile banner, badge, and tab-strip CSS now that those styles are provided by the shared profile chrome components.
+
+### Affected Files and Components
+- Files: `src/AbsenceApp.Client/Modules/Users/UserProfilePageV2.razor`; `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor`; `src/AbsenceApp.Client/Modules/Staff/StaffProfilePageV2.razor`; `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor.css`
+- Components: `ProfileBannerV2`; `ProfileTabsV2`; `ProfileNameSelector`
+- Services/APIs: existing page navigation only
+
+### Rollout Notes
+- Deploy together with the shared component CSS bundle so the extracted banner/tab styles are present for all three pages.
+- Backout plan: revert the four page/CSS file edits.
+
+### Verification
+- Editor diagnostics: no errors reported for the modified User, Student, and Staff profile pages or the updated Student profile CSS file.
+- Functional verification deferred to the later validation batch.
+- Environments applied: dev
+
+---
+
+## 2026-05-10 — Legacy Detail Menu Route Cleanup
+
+**Author:** Michael  
+**Type:** Code | Navigation  
+**Scope:** `navigation:profile-routes`  
+**Summary:** Removed the redundant Student/Staff detail placeholder routes from the active navigation path by filtering stale menu rows at runtime, redirecting old placeholder hits, and marking the corresponding AppPage seeds inactive.
+
+### Details
+- Added a runtime compatibility filter in `NavigationApiServiceV2` to suppress `/v2/students/detail`, `/v2/students/details`, `/v2/staff/detail`, and `/v2/staff/details` when stale database navigation data is still present.
+- Updated `PlaceholderPageV2` so the legacy student/staff detail placeholder routes now redirect to `/v2/students` and `/v2/staff` instead of showing a dead-end placeholder.
+- Marked AppPage ids 15 (`Student Details`) and 17 (`Staff Details`) inactive in the seed configuration so the registry reflects the canonical list/profile route model while preserving `New Student` and `New Staff`.
+- Left the CSV import artifacts untouched because they do not carry the required file-header block and the runtime/seed fixes already align with the repository’s established hide-legacy-route pattern.
+
+### Affected Files and Components
+- Files: `src/AbsenceApp.Client/Services/ApiV2/Modules/NavigationApiServiceV2.cs`; `src/AbsenceApp.Client/Modules/PlaceholderPageV2.razor`; `src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs`
+- Components: sidebar/navigation; shared placeholder routing
+- Services/APIs: `NavigationApiServiceV2`
+
+### Rollout Notes
+- Seed-state change applies on the next database update path that consumes the AppPage seed.
+- Runtime filtering and placeholder redirects protect current environments immediately even if stale menu rows already exist.
+- Backout plan: revert the three file edits.
+
+### Verification
+- Editor diagnostics: no errors reported for the modified navigation, placeholder, and AppPage seed files.
+- Functional verification deferred to the later validation batch.
+- Environments applied: dev
+
+================================================================================
+ Date        : 2026-05-10
+ Type        : Bug Fix
+ Scope       : Staff Form ViewModel
+ Files       : src/AbsenceApp.Client/ViewModels/V2/StaffFormViewModelV2.cs
+ Version     : 1.1.0
+================================================================================
+
+## Fix JobGroup Mapping � StaffFormViewModelV2
+
+### Problem
+StaffFormViewModelV2.LoadForEditAsync called StaffApiServiceV2.GetDetailAsync
+which returns StaffFullViewDto � a names-only projection that intentionally
+omits raw FK IDs (DepartmentId, JobTitleId, JobGroupId). As a result, all
+three IDs were silently reset to 0 when opening a staff member for editing, and
+any save would overwrite the stored FK values with 0.
+
+Additionally, StaffApiServiceV2 makes HTTP calls to http://localhost/ which
+cannot be reached from MAUI's C# context (only valid inside the WebView2 browser
+context), making the old approach entirely non-functional at runtime.
+
+### Fix
+Switched StaffFormViewModelV2 to use StaffProfileApiServiceV2 (EF Core,
+MAUI-compatible):
+
+- **Load**: LoadForEditAsync now calls GetStaffRawAsync which returns a full
+  StaffDto including DepartmentId, JobTitleId, and JobGroupId from the
+  raw EF Core entity.
+- **Save**: SaveAsync now calls CreateStaffAsync / UpdateStaffAsync (EF
+  Core direct) instead of the HTTP CreateAsync / UpdateAsync.
+
+StaffProfileApiServiceV2 is already registered as Scoped in DI
+(V2ServiceCollectionExtensions.cs), so no DI registration change is needed.
+
+================================================================================
+
+## 2026-05-10 — Profile Selector Keyboard Event Compile Fix
+
+**Author:** Michael  
+**Type:** Bug Fix | Component | Build  
+**Scope:** `ui:profile-chrome-selector`  
+**Summary:** Fixed a missing `KeyboardEventArgs` import in `ProfileNameSelector` that caused compile failure and cascaded false type-resolution errors in dependent profile pages/viewmodels.
+
+### Details
+- Root cause was in `ProfileNameSelector.razor`: `HandleKeyDownAsync(KeyboardEventArgs e)` referenced `KeyboardEventArgs` without importing `Microsoft.AspNetCore.Components.Web`.
+- Added `@using Microsoft.AspNetCore.Components.Web` to the component.
+- Updated component header metadata/version to record the patch (`1.0.0` → `1.0.1`).
+- Revalidated the originally reported files (`StudentProfileViewModelV2.cs`, `StaffProfilePageV2.razor`) after the fix; both compile cleanly.
+
+### Affected Files and Components
+- Files: `src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor`
+- Components: `ProfileNameSelector`; indirectly `ProfileBannerV2`, `StudentProfilePageV2`, `StaffProfilePageV2`
+- Services/APIs: none
+
+### Rollout Notes
+- Deploy with the next client build; no DB, migration, or config changes required.
+- Backout plan: revert the single component file edit.
+
+### Verification
+- `dotnet build C:\DevAbsence1\AbsenceAppV2\AbsenceAppV2.sln -c Debug` completed with 0 errors and 0 warnings.
+- Editor diagnostics report no errors for:
+  - `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs`
+  - `src/AbsenceApp.Client/Modules/Staff/StaffProfilePageV2.razor`
+  - `src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor`
+- Environments applied: dev
+
+---
+
+## 2026-05-10 — Shared Profile CSS Runtime Recovery (Section C)
+
+**Author:** Michael  
+**Type:** Hotfix | UI | Component  
+**Scope:** `ui:profile-chrome-styles`  
+**Summary:** Corrected shared profile banner/tab CSS selector syntax and restored missing `spv2-*` form styles so Student and Staff profile pages render the intended unified V2 chrome at runtime.
+
+### Details
+- Replaced invalid `:global(...)` selectors in `ProfileBannerV2.razor.css` with valid component selectors (`.upv2-*`) so generated scoped CSS can apply.
+- Replaced invalid `:global(...)` selectors in `ProfileTabsV2.razor.css` with valid component selectors (`.upv2-tab-*`) so shared tab styling renders.
+- Restored missing `spv2-*` edit-form/input rules in `StudentProfilePageV2.razor.css` for classes currently used by the Student profile Razor markup.
+- Added a full scoped `spv2-*` style set to `StaffProfilePageV2.razor.css` so Staff no longer depends on Student-scoped CSS assumptions.
+
+### Affected Files and Components
+- Files:
+  - `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css` (v1.0.0 → v1.0.1)
+  - `src/AbsenceApp.Client/Shared/Components/ProfileTabsV2.razor.css` (v1.0.0 → v1.0.1)
+  - `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor.css` (v1.1.0 → v1.2.0)
+  - `src/AbsenceApp.Client/Modules/Staff/StaffProfilePageV2.razor.css` (new structured header + scoped style set)
+- Components: `ProfileBannerV2`, `ProfileTabsV2`, Student/Staff profile edit forms
+
+### Rollout Notes
+- Deploy with the client build so updated scoped CSS assets are included.
+- No DB, migration, or API changes required.
+- Backout plan: revert the four CSS-file edits.
+
+### Verification
+- Diagnostics check: no errors in all modified CSS files.
+- Build check: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors/0 warnings.
+- Runtime/UI validation proceeds in the subsequent plan sections and final matrix.
+
+---
+
+## 2026-05-10 — Menu Layer Reconciliation (Section D)
+
+**Author:** Michael  
+**Type:** Navigation | Config  
+**Scope:** `navigation:multi-layer-menu`  
+**Summary:** Reconciled Student/Staff menu behavior across JSON, seed, runtime filter, and DB-script intent by removing legacy Details links from `menu.json` while keeping Add links visible per corrected policy.
+
+### Details
+- Updated `menu.json` to remove:
+  - `/v2/students/details`
+  - `/v2/staff/details`
+- Kept:
+  - `/v2/students/new`
+  - `/v2/staff/new`
+  as intentional create shortcuts.
+- Confirmed seed layer keeps details inactive via `InactivePageIds = {15,17}` and keeps Add routes active (ids 16/18).
+- Confirmed runtime DB navigation still suppresses stale legacy detail rows via `NavigationApiServiceV2.HiddenLegacyRoutes` filter.
+- Confirmed DB script layer (`E19_NavigationAuditFixes.sql`) still hides detail records (`201020`, `202020`) when applied.
+
+### Affected Files and Components
+- Files:
+  - `src/AbsenceApp.Client/wwwroot/config/designsystem/menu.json` (`_version` 6.0.0 → 6.1.0)
+- Verified (no edit in this section):
+  - `src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs`
+  - `src/AbsenceApp.Client/Services/ApiV2/Modules/NavigationApiServiceV2.cs`
+  - `scripts/E19_NavigationAuditFixes.sql`
+
+### Rollout Notes
+- Deploy updated client assets so JSON-based surfaces no longer show legacy detail links.
+- No new migration required; runtime and seed protections remain in effect.
+- Backout plan: revert `menu.json` to prior version.
+
+### Verification
+- `menu.json` no longer contains `/v2/students/details` or `/v2/staff/details`.
+- Seeds/runtime/DB-script evidence remains aligned with corrected visibility rules.
+
+---
+
+## 2026-05-10 — Staff Lookup Schema Alignment (Section E)
+
+**Author:** Michael  
+**Type:** Data Model | Runtime Stability  
+**Scope:** `staff:jobgroup-schema-alignment`  
+**Summary:** Removed stale `JobGroup.TypicalMembers` EF property mapping so generated SQL no longer selects a non-existent `jobgroups.TypicalMembers` column.
+
+### Details
+- Deterministic fix path selected: **Option A (model-boundary alignment)**.
+- Removed `TypicalMembers` from:
+  - `src/AbsenceApp.Data/Models/JobGroup.cs`
+  - `src/AbsenceApp.Data/Migrations/AppDbContextModelSnapshot.cs`
+  - `src/AbsenceApp.Data/Migrations/20260509002508_UnifiedProfileSchemaV1.Designer.cs`
+- This aligns EF projection with runtime schema where `jobgroups` exposes `Name/Description` but not `TypicalMembers`.
+
+### Affected Files and Components
+- `src/AbsenceApp.Data/Models/JobGroup.cs` (header bumped to `1.1.0`)
+- `src/AbsenceApp.Data/Migrations/AppDbContextModelSnapshot.cs`
+- `src/AbsenceApp.Data/Migrations/20260509002508_UnifiedProfileSchemaV1.Designer.cs`
+
+### Verification
+- Static check: `TypicalMembers` no longer appears in model/snapshot/designer mappings.
+- Diagnostics check: no errors in modified data model/migration files.
+- Build check: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors/0 warnings.
+
+---
+
+## 2026-05-10 — Avatar Upload Hitbox Isolation (Section F)
+
+**Author:** Michael  
+**Type:** UI Runtime | Diagnostics  
+**Scope:** `profile-banner:file-input-hitbox`  
+**Summary:** Isolated photo upload click capture to avatar-label bounds and added an opt-in diagnostic hitbox overlay for runtime validation.
+
+### Details
+- Added opt-in debug parameter on `ProfileBannerV2`:
+  - `DebugAvatarHitbox` (default `false`)
+- When enabled, banner shows a dashed avatar outline and translucent file-input overlay to visually verify click-capture bounds.
+- Hardened global InputFile fallback selector in `app.css`:
+  - from: `.upv2-file-input`
+  - to: `.upv2-banner-avatar-label > .upv2-file-input`
+  so full-size invisible input behavior only applies inside avatar label containers.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor`
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css` (header bumped to `1.0.2`)
+- `src/AbsenceApp.Client/wwwroot/css/app.css` (header bumped to `2.2.0`)
+
+### Verification
+- Diagnostics check: no errors in modified banner/CSS files.
+- Build check: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors/0 warnings.
+
+---
+
+## 2026-05-10 — Selector Behavior Contract Verification (Section G)
+
+**Author:** Michael  
+**Type:** UX Contract | Routing  
+**Scope:** `profile-selector:mode-and-route-behavior`  
+**Summary:** Verified and documented expected selector/dropdown behavior for add mode and legacy `/details` routes.
+
+### Expected Behavior (explicit contract)
+- **Add mode (`/v2/students/new`, `/v2/staff/new`)**
+  - Profile selector is intentionally hidden (`ShowSelector = !IsNew`).
+  - Selector search is disabled/empty while creating a new profile.
+- **Legacy detail routes (`/v2/students/details`, `/v2/staff/details`)**
+  - Always redirect to list pages (`/v2/students`, `/v2/staff`).
+  - Users do not land on profile page from these compatibility routes.
+- **Selector search semantics**
+  - Both student and staff selectors default to `maxResults = 12`.
+  - Search fields are multi-field contains-matches (name + contextual identifiers).
+
+### Affected Files and Components
+- Verified (no functional edits):
+  - `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor`
+  - `src/AbsenceApp.Client/Modules/Staff/StaffProfilePageV2.razor`
+  - `src/AbsenceApp.Client/Services/ApiV2/Modules/StudentProfileApiServiceV2.cs`
+  - `src/AbsenceApp.Client/Services/ApiV2/Modules/StaffProfileApiServiceV2.cs`
+- Documentation/contract clarification:
+  - `src/AbsenceApp.Client/Modules/PlaceholderPageV2.razor` (header metadata/comments only)
+
+### Verification
+- Static checks confirm `ShowSelector="@(!ViewModel.IsNew)"` and `IsSelectorDisabled="@ViewModel.IsNew"` on both profile pages.
+- Placeholder redirects for `students/staff details` routes remain active with `replace: true` navigation.
+- Selector service methods retain explicit `maxResults = 12` and multi-field search filters.
+
+---
+
+## 2026-05-10 — Final Verification Matrix and Rollback Safety (Section H)
+
+**Author:** Michael  
+**Type:** Verification | Release Safety  
+**Scope:** `phase2:sections-c-to-g-closure`  
+**Summary:** Completed post-change verification across compile, routing contracts, selector behavior, menu visibility policy, and schema-model alignment with explicit rollback notes by layer.
+
+### Verification Matrix
+- **Build/diagnostics**
+  - Workspace diagnostics: no active errors.
+  - Final build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded (0 errors, 0 warnings).
+- **Menu/routing contract**
+  - `menu.json` no longer advertises `/v2/students/details` and `/v2/staff/details`.
+  - Compatibility routes still exist in `PlaceholderPageV2` and redirect to list pages.
+  - Add routes remain visible and active (`/v2/students/new`, `/v2/staff/new`).
+- **Selector behavior**
+  - Student/Staff profile pages set `ShowSelector="@(!ViewModel.IsNew)"`.
+  - Selector services retain deterministic `maxResults = 12` and multi-field matching.
+- **Schema/runtime crash path**
+  - `JobGroup.TypicalMembers` mapping removed from model + snapshot + designer artifacts.
+  - Staff lookup SQL projection no longer includes non-existent `jobgroups.TypicalMembers`.
+- **File input capture safety**
+  - Global fallback now scoped to `.upv2-banner-avatar-label > .upv2-file-input`.
+  - Optional `DebugAvatarHitbox` visual aid is available for runtime click-boundary confirmation.
+
+### Rollback Notes (layer-by-layer)
+- **CSS/UI layer rollback**
+  - Revert `ProfileBannerV2.razor(.css)`, `ProfileTabsV2.razor.css`, student/staff profile CSS updates, and `app.css` selector scoping change.
+- **Navigation/menu layer rollback**
+  - Revert `menu.json` (6.1.0 → previous), `PlaceholderPageV2` header clarifications if needed, and any runtime filter changes if policy changes.
+- **Data model layer rollback**
+  - Restore `TypicalMembers` property and related snapshot/designer mappings only if schema is explicitly extended with that column.
+
+### Deployment Notes
+- Ship client/static assets and binaries together so CSS/menu updates and model/runtime behavior remain aligned.
+- If stale DB menu rows persist, runtime filter + placeholder redirects continue to protect navigation behavior.
+
+---
+
+## 2026-05-10 — Staff/Student Profile Runtime Contract Alignment (AGENT MODE)
+
+**Author:** Michael  
+**Type:** UI | Code | Runtime Contract  
+**Scope:** `ui:student-staff-profile-tabs`  
+**Summary:** Aligned Staff and Student profile runtime tab contracts and primary save action wording with the approved UX contract; removed legacy tab branches from active rendering.
+
+### Details
+- Updated Staff profile runtime contract to seven tabs: Basic Info, Contacts, Classes, Devices, External, Medical, Absences.
+- Updated Student profile runtime contract to six tabs: Basic Info, Contacts, Devices, External, Medical, Absences.
+- Standardized primary save action text on both pages to **"Save Changes"** (retaining existing saving-state text).
+- Remapped tab-body conditional branches to match the new index contracts and removed retired Flags/Additional/Notes tab branches from student rendering.
+- Updated file-header Notes/Changes metadata in all modified Staff/Student profile ViewModel and Razor files.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/ViewModels/V2/StaffProfileViewModelV2.cs`
+- `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs`
+- `src/AbsenceApp.Client/Modules/Staff/StaffProfilePageV2.razor`
+- `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor`
+- Components: `ProfileTabsV2`, Staff/Student profile tab content regions
+
+### Verification
+- Diagnostics: no errors in all modified Staff/Student profile files.
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Code-path validation: tab metadata labels and Razor `ActiveTab` branches now match approved index contracts.
+
+---
+
+## 2026-05-10 — All Students Horizontal Overflow Layout Fix
+
+**Author:** Michael  
+**Type:** UI | CSS | Runtime Layout  
+**Scope:** `ui:table-template-overflow`  
+**Summary:** Fixed wide-table compression in the shared table template so list pages (including All Students) can horizontally scroll when columns exceed viewport width.
+
+### Details
+- Changed `.tpt-table` layout contract in shared template CSS:
+  - `width: 100%` → `width: max-content`
+  - added `min-width: 100%`
+  - `table-layout: fixed` → `table-layout: auto`
+- Preserves full-width behavior for normal tables while allowing true overflow for wider column sets.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/TablePageTemplateV2.razor.css`
+- Components/pages using `TablePageTemplateV2` (including All Students)
+
+### Verification
+- Diagnostics: no errors in modified CSS file.
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Static code-path check confirms overflow-friendly width/layout rules are active on `.tpt-table`.
+
+---
+
+## 2026-05-11 — Profile UI Fixes: Hint Text Scoping, Admission No. Aside, User Search Dropdown
+
+**Author:** Michael  
+**Type:** UI | CSS | Component | Code  
+**Scope:** `component:ProfileNameSelector`, `page:StudentProfilePageV2`, `page:UserFormPageV2`  
+**Summary:** Three targeted fixes: (1) corrected Blazor CSS scoping for hint text in ProfileNameSelector; (2) moved Admission No. from the student banner metadata column to the top-right aside slot; (3) replaced the native `<select>` in UserFormPageV2 edit mode with the ProfileNameSelector search component.
+
+### Details
+
+#### Issue 1 — Hint text too large and bold (Blazor CSS scoping bug)
+The `.upv2-banner-mode-hint` CSS rule existed only in `ProfileBannerV2.razor.css`. Because Blazor scopes CSS per component via attribute selectors, the rule's scope attribute matched `ProfileBannerV2`-rendered elements only. The `<span class="upv2-banner-mode-hint">` is rendered by `ProfileNameSelector` (a different component), so the rule never applied — the span inherited `font-size: 1.35rem; font-weight: 700` from its `.upv2-banner-name` ancestor. Fix: added a `.upv2-banner-mode-hint` rule directly to `ProfileNameSelector.razor.css` matching the metadata-row size (`.83rem`, weight 400). This also corrects the same issue on `UserProfilePageV2` at no extra cost.
+
+#### Issue 2 — Admission No. in left column instead of top-right aside
+`StudentProfileViewModelV2.BannerFields` included `"Admission No:"` as its first entry, placing it in the left metadata column. `StudentProfilePageV2` passed no `AsideLabel`/`AsideValue` to `ProfileBannerV2`, so the top-right aside block was never rendered. Fix: removed the Admission No. entry from `BannerFields`; added `BannerAsideLabel` and `BannerAsideValue` computed properties (guarded by `IsNew`, matching the `UserProfileViewModelV2` pattern); added `AsideLabel`/`AsideValue` parameters to the `<ProfileBannerV2>` call in `StudentProfilePageV2.razor`.
+
+#### Issue 3 — UserFormPageV2 edit mode uses native `<select>`
+The SYSTEM MANAGEMENT > User Management page (`UserFormPageV2.razor`, route `/v2/system/users/{Id:long}`) used a raw `<select class="upv2-banner-user-select">` in its inline banner identity block. The injected `UserProfileViewModelV2` already exposed all required `ProfileNameSelector` properties (`SelectorSearchText`, `ProfileSelectorItems`, `IsSelectorLoading`, `SearchProfileSelectorAsync()`). Fix: replaced the edit-mode `<select>` and its following hint `<span>` with a `<ProfileNameSelector>` component wired to those ViewModel properties; added `OnUserSelectorValueChanged` and `OnUserSelectorItemSelected` handler methods. Add-mode staff `<select>` is unchanged.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor.css` — v1.0.0 → v1.0.1
+- `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs` — v1.2.0 → v1.3.0
+- `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor` — v2.2.0 → v2.3.0
+- `src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor` — v6.3.0 → v6.4.0
+- Components: `ProfileNameSelector`, `ProfileBannerV2`
+
+### Rollout Notes
+- Steps to deploy: 1) build (`dotnet build AbsenceAppV2.sln -c Debug`), 2) run app and verify Student Profile and User Management pages
+- Backout plan: `git checkout HEAD -- src/AbsenceApp.Client/Shared/Components/ProfileNameSelector.razor.css src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor`
+
+### Verification
+- Diagnostics: 0 errors, 0 warnings in all modified files.
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - `ProfileNameSelector.razor.css` contains `.upv2-banner-mode-hint` rule at `.83rem / weight 400`.
+  - `StudentProfileViewModelV2.BannerFields` no longer contains `"Admission No:"` entry.
+  - `StudentProfileViewModelV2` exposes `BannerAsideLabel` and `BannerAsideValue` computed properties.
+  - `StudentProfilePageV2.razor` `<ProfileBannerV2>` call includes `AsideLabel` and `AsideValue` parameters.
+  - `UserFormPageV2.razor` edit-mode identity block contains `<ProfileNameSelector>` (no `<select>`).
+  - `UserFormPageV2.razor` `@code` block contains `OnUserSelectorValueChanged` and `OnUserSelectorItemSelected`.
+
+---
+
+## 2026-05-11 – Banner Height Fix, ATTENDANCE Sidebar Fix, Add Student Blank Dates
+
+**Author:** Michael  
+**Type:** UI | CSS | Component | Service | Code  
+**Scope:** `component:ProfileBannerV2`, `service:PermissionServiceV2`, `data:UserManagementModelBuilderExtensions`, `page:StudentProfilePageV2`, `vm:StudentProfileViewModelV2`  
+**Summary:** Three targeted fixes: (1) banner height mismatch between edit and static/add mode resolved by adding a CSS rule for the static-name div; (2) ATTENDANCE > Students menu items (Absences, Calendar) now visible in the sidebar; (3) Add Student form date fields now start blank instead of pre-filled.
+
+### Details
+
+#### Fix 1 – Banner height mismatch (Edit vs Add/static mode)
+`ProfileBannerV2.razor` rendered a bare `<span>@EntityDisplayName</span>` when `ShowSelector=false`, while the `ShowSelector=true` branch rendered `<ProfileNameSelector>` whose `.pfv2-selector__control` has `padding: .45rem .7rem` and a 1px border. This caused the banner to be ~0.68rem shorter in view/static mode. Additionally, `.upv2-banner-mode-hint` was `.75rem` in `ProfileBannerV2.razor.css` but `.83rem` in `ProfileNameSelector.razor.css` (fixed last session), causing mismatched font-sizes between modes. Fix: replaced the bare `<span>` with `<div class="upv2-banner-name--static">` and added the matching `.upv2-banner-name--static` rule (`padding: .45rem .7rem; border: 1px solid transparent`) to `ProfileBannerV2.razor.css`. Also corrected `.upv2-banner-mode-hint` font-size from `.75rem` to `.83rem` in the same file.
+
+#### Fix 2 – ATTENDANCE > Students invisible in sidebar
+`PermissionServiceV2.CanViewAsync` returned `false` for any route not found in the AppPage cache. Menu items 201050 (`/v2/students/{id}/absences`) and 201060 (`/v2/students/{id}/calendar`) use template routes with `{id}` placeholders; these never matched the exact AppPage route strings in the cache, so both returned `false`. `NavigationApiServiceV2.FilterByPermissionsAsync` pruned the resulting empty Students group, which caused the entire ATTENDANCE category to disappear from the sidebar. Two-part fix: (a) changed `CanViewAsync` to `return true` for unregistered routes, restoring the documented intent that unregistered routes are always visible; (b) added AppPages 28 (Student Absences, `/v2/students/:id/absences`) and 29 (Student Calendar, `/v2/students/:id/calendar`) under the ATTENDANCE/Students category, with super_admin RoleDefaultPagePermission seed rows. The "View Calendar" button in `StudentProfilePageV2.ActionsContent` was also removed — navigation to the calendar is now exclusively through the sidebar.
+
+#### Fix 3 – Add Student form pre-fills date fields
+`StudentProfileViewModelV2.EditDateOfBirth` and `EditAdmissionDate` were non-nullable with hardcoded defaults (`DateTime.Today.AddYears(-10)` and `DateOnly.FromDateTime(DateTime.Today)`). When `InitNewAsync` ran, the defaults were re-applied, and the `<input type="date">` always rendered a non-empty value. Fix: changed both properties to nullable (`DateTime?` / `DateOnly?`), reset to `null` in `InitNewAsync`, null-guarded `SaveAsync` conversions (`HasValue` check for `DateOfBirth`; `?? default` for `AdmissionDate`), and updated the Razor `value=` bindings to `?.ToString(...)`. `OnDobChanged` and `OnAdmissionDateChanged` now also set the property to `null` when the input is cleared.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css` – v1.0.2 → v1.0.3
+- `src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor` – v1.0.0 → v1.0.1
+- `src/AbsenceApp.Client/Services/PermissionServiceV2.cs` – v1.6.0 → v1.7.0
+- `src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs` – v1.4.0 → v1.5.0
+- `src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor` – v2.3.0 → v2.4.0
+- `src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs` – v1.3.0 → v1.4.0
+
+### Rollout Notes
+- Steps to deploy: 1) build (`dotnet build AbsenceAppV2.sln -c Debug`), 2) run app, navigate to a student in view mode and confirm banner height matches edit mode, 3) check ATTENDANCE > Students in sidebar is visible, 4) navigate to Add Student and confirm DoB and Admission Date fields are empty.
+- Backout plan: `git checkout HEAD -- src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor.css src/AbsenceApp.Client/Shared/Components/ProfileBannerV2.razor src/AbsenceApp.Client/Services/PermissionServiceV2.cs src/AbsenceApp.Data/Configurations/UserManagementModelBuilderExtensions.cs src/AbsenceApp.Client/Modules/Students/StudentProfilePageV2.razor src/AbsenceApp.Client/ViewModels/V2/StudentProfileViewModelV2.cs`
+- Note: `UserManagementModelBuilderExtensions.cs` seed changes require a new EF migration + `dotnet ef database update` before taking effect at runtime. This step is **deferred** and must be run explicitly.
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - `ProfileBannerV2.razor.css` contains `.upv2-banner-name--static` rule and `.upv2-banner-mode-hint` at `.83rem`.
+  - `ProfileBannerV2.razor` `ShowSelector=false` branch renders `<div class="upv2-banner-name--static">`.
+  - `PermissionServiceV2.CanViewAsync` tail returns `true` with updated log message.
+  - `UserManagementModelBuilderExtensions.DefaultPages` contains tuples for ids 28 and 29.
+  - `UserManagementModelBuilderExtensions.DefaultRoleDefaults` contains ids 28 and 29 for `super_admin`.
+  - `StudentProfilePageV2.razor` ActionsContent (view mode) no longer contains "View Calendar" button.
+  - `StudentProfileViewModelV2.EditDateOfBirth` is `DateTime?` defaulting to `null`.
+  - `StudentProfileViewModelV2.EditAdmissionDate` is `DateOnly?` defaulting to `null`.
+  - `StudentProfileViewModelV2.InitNewAsync` sets both fields to `null`.
+  - `StudentProfileViewModelV2.SaveAsync` uses null-safe conversions for both fields.
+  - `StudentProfilePageV2.razor` date `value=` bindings use `?.ToString(...)`.
+  - `StudentProfilePageV2.razor` `OnDobChanged`/`OnAdmissionDateChanged` set fields to `null` on empty input.
+
+
+---
+
+## 2026-05-11 � Indicator-Style Tab Design
+
+### Summary
+Upgraded the V2 tab strip from a flat underline to a 4px Corporate Blue bottom indicator on the active tab, with a 1px light-grey track on inactive tabs and a blue tint hover state. Introduced a dedicated component-level token layer (components.css) so tab appearance is fully token-driven. Eliminated a Blazor CSS scope isolation gap that caused UserFormPageV2 tabs to receive no indicator styling. Added a GlobalConfig demo page for live visual reference.
+
+### Files Changed
+
+| File | Change |
+|------|--------|
+| wwwroot/css/tokens/components.css | **NEW** � 12 --ds-tab-* design tokens for background, active, inactive and hover states. References existing palette and typography primitives from colors.css and        ypography.css. |
+| wwwroot/index.html | Added <link rel="stylesheet" href="css/tokens/components.css" /> between layout.css and global-config.css. |
+| Shared/Components/ProfileTabsV2.razor.css | v1.0.1 ? v1.0.2. Replacedorder-bottom approach withox-shadow: inset technique to deliver a 4px active / 1px inactive indicator without layout shift. All colour and weight values now consume --ds-tab-* tokens. |
+| Modules/Users/UserFormPageV2.razor | v6.4.0 ? v6.5.0. Removed inline <div class="upv2-tab-bar"> and RenderTabBtn helper; replaced with <ProfileTabsV2> shared component wired to ViewModel.ProfileTabs / ActiveTab / SetTab. Resolves CSS scope gap that previously blocked indicator styles from applying. |
+| Components/Pages/GlobalConfig/Tabs/Index.razor | **NEW** � Dual-route demo page (/global-config/tabs, /global-settings/tabs). Three dsv2-card blocks: Active Tab state + token table, Inactive Tab state + token table, Full Strip Preview with active/inactive/disabled examples. |
+
+### Technical Notes
+- **box-shadow inset technique**:ox-shadow: inset 0 calc(-1 * var(--ds-tab-active-border-width)) 0 var(--ds-tab-active-border-color) paints the bottom indicator inside the element box � no height change, no layout shift when switching between 1px and 4px states.
+- **Blazor CSS scope isolation**: ProfileTabsV2.razor.css rules are attribute-scoped to the component's rendered output. UserFormPageV2's previous inline markup sat outside that scope and received no indicator styling. The conversion to the shared component closes this gap.
+- **Token chain**: --ds-tab-active-border-color ? --ds-color-accent ? #2563eb (Corporate Blue). A single palette change propagates to all tab states automatically.
+- **ProfileTabItemDto.Visible**: defaults to    rue; ProfileTabsV2 already filters Where(t => t.Visible) � no ViewModel changes required for UserFormPageV2.
+
+### Rollout Notes
+- Steps to deploy: 1) build (dotnet build AbsenceAppV2.sln -c Debug), 2) run app, navigate to any profile page and confirm active tab shows 4px blue indicator, inactive tabs show 1px grey track, 3) navigate to User Management edit page and confirm same indicator style, 4) navigate to /global-config/tabs or /global-settings/tabs and confirm demo cards render.
+- Backout plan: git checkout HEAD -- src/AbsenceApp.Client/wwwroot/css/tokens/components.css src/AbsenceApp.Client/wwwroot/index.html src/AbsenceApp.Client/Shared/Components/ProfileTabsV2.razor.css src/AbsenceApp.Client/Modules/Users/UserFormPageV2.razor src/AbsenceApp.Client/Components/Pages/GlobalConfig/Tabs/Index.razor
+
+### Verification
+- Build: dotnet build AbsenceAppV2.sln -c Debug succeeded with 0 errors and 0 warnings.
+- Code-level checks:
+  - components.css :root block contains all 12 --ds-tab-* tokens.
+  - index.html components.css link sits between layout.css and global-config.css.
+  - ProfileTabsV2.razor.css .upv2-tab-btn hasox-shadow: inset and noorder-bottom.
+  - ProfileTabsV2.razor.css .upv2-tab-btn--active hasox-shadow: inset 0 calc(-1 * var(--ds-tab-active-border-width)) and noorder-bottom-color.
+  - UserFormPageV2.razor no longer contains RenderTabBtn or <div class="upv2-tab-bar".
+  - UserFormPageV2.razor contains <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs".
+  - GlobalConfig/Tabs/Index.razor has both @page "/global-config/tabs" and @page "/global-settings/tabs" directives.
+
+
+---
+
+## 2026-05-11 � Sidebar Dual-Students Fix + Global Button CSS
+
+### Summary
+Two issues resolved: (1) clicking either "Students" menu (PEOPLE or ATTENDANCE) expanded both simultaneously due to identical group labels; (2) dsv2-btn colour variants rendered with no background because no global CSS defined them. Both fixes applied with live MySQL data authority � CSV seed files were explicitly not used (confirmed outdated; live DB had 2 extra rolemenuitems rows not present in CSVs).
+
+### Issue 1 � Sidebar Expands Both Students Menus
+
+#### Root Cause
+SidebarV2.razor tracks accordion state with a single string: `private string _openGroup = string.Empty`. The open test is `_openGroup == group.Group`. Both PEOPLE?Students (Id=201000) and ATTENDANCE?Students (Id=402000) produced group.Group=="Students", so clicking either set _openGroup="Students" and both rendered open. No code change required � renaming 402000's label to "Student Attendance" makes the two groups distinct.
+
+#### Live DB Changes (127.0.0.1:3306/absenceapp)
+Validated live state before any modifications:
+- 401000 (Attendance/menu), 401010 (Attendance/submenu), 402000 (Students/menu) � all confirmed present
+- rolemenuitems for 401000: 3 rows (RoleIds 1, 2, 3) � CSV showed only 1 (confirmed CSV outdated)
+- rolemenuitems for 401010: 3 rows (RoleIds 1, 2, 3)
+
+Applied:
+- `DELETE FROM rolemenuitems WHERE MenuItemId IN (401000, 401010)` � 6 rows deleted
+- `DELETE FROM menuitems WHERE Id IN (401000, 401010)` � 2 rows deleted
+- `UPDATE menuitems SET Label='Student Attendance', GroupName='Student Attendance', UpdatedAt=NOW() WHERE Id=402000` � 1 row updated
+
+Post-change ATTENDANCE category: only Id=402000 (Student Attendance) remains as a child of 400000.
+
+### Issue 2 � Button Background Colours Not Applying
+
+#### Root Cause
+dsv2-btn colour variants used across 9+ pages but defined nowhere globally. global-config.css had dsv2-card only. UserFormPageV2.razor.css and SettingsListPageV2.razor.css had partial scoped definitions (Blazor-isolated, not available to other components). index.html load order was already correct � no change needed.
+
+#### Files Changed
+
+| File | Change |
+|------|--------|
+| `wwwroot/css/global-config.css` | Appended full dsv2-btn system: base, disabled state, 8 colour fills (primary/secondary/success/danger/warning/info/light/dark) + hovers, 6 outline variants + hovers, 2 size modifiers (--lg, --sm), dark mode overrides for secondary and light. All values use `--v2-color-*` tokens from colors.css. |
+
+Existing scoped definitions verified compatible:
+- `UserFormPageV2.razor.css`: base .dsv2-btn + .dsv2-btn--secondary � values match global (no conflict)
+- `SettingsListPageV2.razor.css`: .dsv2-btn--sm padding 0.25rem/0.625rem = 4px/10px � matches global exactly (no conflict)
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` � 0 errors, 0 warnings
+- Live DB post-check: ATTENDANCE category has single child (Student Attendance/402000); rolemenuitems for 401000/401010 = 0 rows remaining; rolemenuitems for 402000 intact (RoleIds 1/2/3)
+- Runtime checks required:
+  - Sidebar ATTENDANCE section: shows "Student Attendance" only
+  - Clicking PEOPLE?Students does NOT open ATTENDANCE?Student Attendance
+  - `/global-settings/buttons`: all 8 colour variant buttons show correct backgrounds
+  - StudentFormPageV2, StaffFormPageV2: primary (blue) save buttons render correctly
+
+### No CSV Files Modified
+aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They are reference/re-seed documents and do not drive runtime behaviour. The live DB is the authoritative data source.
+
+(.venv) PS C:\DevAbsence1\AbsenceAppV2> Get-Content "C:\DevAbsence1\docs\project-governance\AbsenceApp_CHANGELOG_Phase2.md" | Select-Object -Last 55
+  - UserFormPageV2.razor contains <ProfileTabsV2 Tabs="@ViewModel.ProfileTabs".
+  - GlobalConfig/Tabs/Index.razor has both @page "/global-config/tabs" and @page "/global-settings/tabs" directives.
+
+
+---
+
+## 2026-05-11 - Sidebar Dual-Students Fix + Global Button CSS
+
+### Summary
+Two issues resolved: (1) clicking either "Students" menu (PEOPLE or ATTENDANCE) expanded both simultaneously due to identical group labels; (2) dsv2-btn colour variants rendered with no background because no global CSS defined them. Both fixes applied with live MySQL data authority - CSV seed files were explicitly not used (confirmed outdated; live DB had 2 extra rolemenuitems rows not present in CSVs).
+
+### Issue 1 - Sidebar Expands Both Students Menus
+
+#### Root Cause
+SidebarV2.razor tracks accordion state with a single string: `private string _openGroup = string.Empty`. The open test is `_openGroup == group.Group`. Both PEOPLE->Students (Id=201000) and ATTENDANCE->Students (Id=402000) produced group.Group=="Students", so clicking either set _openGroup="Students" and both rendered open. No code change required - renaming 402000's label to "Student Attendance" makes the two groups distinct.
+
+#### Live DB Changes (127.0.0.1:3306/absenceapp)
+Validated live state before any modifications:
+- 401000 (Attendance/menu), 401010 (Attendance/submenu), 402000 (Students/menu) - all confirmed present
+- rolemenuitems for 401000: 3 rows (RoleIds 1, 2, 3) - CSV showed only 1 (confirmed CSV outdated)
+- rolemenuitems for 401010: 3 rows (RoleIds 1, 2, 3)
+
+Applied:
+- `DELETE FROM rolemenuitems WHERE MenuItemId IN (401000, 401010)` - 6 rows deleted
+- `DELETE FROM menuitems WHERE Id IN (401000, 401010)` - 2 rows deleted
+- `UPDATE menuitems SET Label='Student Attendance', GroupName='Student Attendance', UpdatedAt=NOW() WHERE Id=402000` - 1 row updated
+
+Post-change ATTENDANCE category: only Id=402000 (Student Attendance) remains as a child of 400000.
+
+### Issue 2 - Button Background Colours Not Applying
+
+#### Root Cause
+dsv2-btn colour variants used across 9+ pages but defined nowhere globally. global-config.css had dsv2-card only. UserFormPageV2.razor.css and SettingsListPageV2.razor.css had partial scoped definitions (Blazor-isolated, not available to other components). index.html load order was already correct - no change needed.
+
+#### Files Changed
+
+| File | Change |
+|------|--------|
+| `wwwroot/css/global-config.css` | Appended full dsv2-btn system: base, disabled state, 8 colour fills (primary/secondary/success/danger/warning/info/light/dark) + hovers, 6 outline variants + hovers, 2 size modifiers (--lg, --sm), dark mode overrides for secondary and light. All values use `--v2-color-*` tokens from colors.css. |
+
+Existing scoped definitions verified compatible:
+- `UserFormPageV2.razor.css`: base .dsv2-btn + .dsv2-btn--secondary - values match global (no conflict)
+- `SettingsListPageV2.razor.css`: .dsv2-btn--sm padding 0.25rem/0.625rem = 4px/10px - matches global exactly (no conflict)
+
+### Verification
+- Build: `dotnet build AbsenceAppV2.sln -c Debug` - 0 errors, 0 warnings
+- Live DB post-check: ATTENDANCE category has single child (Student Attendance/402000); rolemenuitems for 401000/401010 = 0 rows remaining; rolemenuitems for 402000 intact (RoleIds 1/2/3)
+- Runtime checks required:
+  - Sidebar ATTENDANCE section: shows "Student Attendance" only
+  - Clicking PEOPLE->Students does NOT open ATTENDANCE->Student Attendance
+  - `/global-settings/buttons`: all 8 colour variant buttons show correct backgrounds
+  - StudentFormPageV2, StaffFormPageV2: primary (blue) save buttons render correctly
+
+### No CSV Files Modified
+aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They are reference/re-seed documents and do not drive runtime behaviour. The live DB is the authoritative data source.
+(.venv) PS C:\DevAbsence1\AbsenceAppV2> Select-String -Path "C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\**\*" -Pattern "gs-template" -Recurse -Include "*.css" | Select-Object FileName, LineNumber, Line | Format-Table -AutoSize
+Select-String : A parameter cannot be found that matches parameter name 
+'Recurse'.
+At line:1 char:101
++ ... 2\src\AbsenceApp.Client\**\*" -Pattern "gs-template" -Recurse -Includ ...
++                                                          ~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Select-String], ParameterB 
+   indingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Microsoft.PowerShell.Comm 
+   ands.SelectStringCommand
+ 
+(.venv) PS C:\DevAbsence1\AbsenceAppV2> Select-String -Path "C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\**\*" -Pattern "gs-template" -Recurse -Include "*.css" | Select-Object FileName, LineNumber, Line | Format-Table -AutoSize
+Select-String : A parameter cannot be found that matches parameter name 
+'Recurse'.
+At line:1 char:101
++ ... 2\src\AbsenceApp.Client\**\*" -Pattern "gs-template" -Recurse -Includ ...
++                                                          ~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Select-String], ParameterB 
+   indingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Microsoft.PowerShell.Comm 
+   ands.SelectStringCommand
+ 
+(.venv) PS C:\DevAbsence1\AbsenceAppV2> Get-ChildItem -Path "C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\**\*" | Where-Object { $_.Extension -eq ".css" } | ForEach-Object { $content = Get-Content $_.FullName; $matches = $content | Select-String "gs-template"; if ($matches) { Write-Output "File: $($_.Name) | Line: $matches.LineNumber | Match: $matches.Line } }
+>> ^C
+(.venv)                                                                         

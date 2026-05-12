@@ -3,9 +3,9 @@
  File        : AppDbContext.cs
  Namespace   : AbsenceApp.Data.Context
  Author      : Michael
- Version     : 2.4.0
+ Version     : 2.5.0
  Created     : Unknown
- Updated     : 2026-05-05
+ Updated     : 2026-05-12
 -------------------------------------------------------------------------------
  Purpose     : Primary Entity Framework Core DbContext for the AbsenceApp API.
 
@@ -49,6 +49,10 @@
                          overrides from AbsenceType, AbsenceStatus, Absence, and
                          AbsenceAudit entity blocks. EF default long→bigint mapping
                          is correct; explicit unsigned overrides caused type mismatches.
+   - 2.5.0  2026-05-12  Phase A Design Token System: added DbSet<DesignToken>,
+                         called modelBuilder.ConfigureDesignTokens(), added
+                         DesignTokens table mapping, and excluded DesignToken
+                         from the ValueGeneratedNever loop.
    - 2.4.0  2026-05-05  Schema lock: removed DbSets and ToTable mappings for
                          deleted tables (systemevents, attendance, globalconfigs).
                          Table rolemenuitem was renamed to rolemenuitems — code
@@ -173,6 +177,11 @@ public class AppDbContext : DbContext
     public DbSet<UserNote> UserNotes { get; set; }
 
     // =========================================================================
+    // DbSets - Design System
+    // =========================================================================
+    public DbSet<DesignToken> DesignTokens { get; set; }
+
+    // =========================================================================
     // DbSets - User-scoped link tables
     // =========================================================================
     public DbSet<UserContact> UserContacts { get; set; }
@@ -196,6 +205,11 @@ public class AppDbContext : DbContext
         // Phase 2 — Entitlement entity configuration
         // ---------------------------------------------------------------------
         modelBuilder.ConfigureEntitlements();
+
+        // ---------------------------------------------------------------------
+        // Design System — token configuration and seed data
+        // ---------------------------------------------------------------------
+        modelBuilder.ConfigureDesignTokens();
 
         // ---------------------------------------------------------------------
         // E15 — User management + page-level permission configuration
@@ -389,6 +403,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<UserExternalAccount>().ToTable("userexternalaccounts");
         modelBuilder.Entity<UserPermissionOverride>().ToTable("userpermissionoverrides");
 
+        // Design System
+        modelBuilder.Entity<DesignToken>().ToTable("DesignTokens");
+
         // ---------------------------------------------------------------------
         // Disable IDENTITY on all integer/long primary keys so the CSV import
         // pipeline can insert explicit ID values from the CSV files.
@@ -430,6 +447,9 @@ public class AppDbContext : DbContext
             if (entityType.ClrType == typeof(JobGroup))              continue;
             if (entityType.ClrType == typeof(JobTitle))              continue;
             if (entityType.ClrType == typeof(StaffDepartment))       continue;
+
+            // Design System tokens use AUTO_INCREMENT
+            if (entityType.ClrType == typeof(DesignToken))           continue;
 
             var pk = entityType.FindPrimaryKey();
             if (pk == null) continue;

@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.7.0
+ Version     : 1.9.0
  Created     : 2026-03-22
- Updated     : 2026-05-05
+ Updated     : 2026-05-12
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -30,6 +30,8 @@
    - 1.4.0  2026-04-11  E15 additions: UserManagementApiServiceV2, ViewModels.
    - 1.5.0  2026-04-11  E16 Pages Registry: PagesApiServiceV2, ViewModels.
    - 1.6.0  2026-04-21  Added UserProfileViewModelV2 registration.
+   - 1.8.0  2026-05-12  Phase A Design Token System: added
+                         DesignTokenApiServiceV2 as Singleton.
    - 1.7.0  2026-05-05  Student Absence Management: added StudentProfileApiServiceV2,
                          StudentProfileViewModelV2, StudentAbsenceFormViewModelV2,
                          StudentCalendarViewModelV2. Removed StudentDetailViewModelV2.
@@ -93,6 +95,8 @@ public static class V2ServiceCollectionExtensions
         services.AddSingleton<ThemeServiceV2>();
         services.AddSingleton<BrandingServiceV2>();
         services.AddSingleton<IDesignSystemService, DesignSystemService>();
+        // Design Token System — Phase A (runtime CSS token override injection)
+        services.AddSingleton<DesignTokenApiServiceV2>();
 
         // -----------------------------------------------------------------
         // V2 Scoped services — new instance per Blazor scope (page lifetime)
@@ -155,6 +159,8 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<PageFormViewModelV2>();
         // Staff Profile ViewModel (direct DB via IServiceScopeFactory)
         services.AddScoped<StaffProfileViewModelV2>();
+        // Phase B — Buttons Design Token Editor
+        services.AddScoped<ButtonsEditorViewModelV2>();
 
         return services;
     }

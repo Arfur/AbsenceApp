@@ -2,9 +2,9 @@
    File        : MainLayoutV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layouts
    Author      : Michael
-   Version     : 1.9.0
+   Version     : 2.0.0
    Created     : 2026-03-29
-   Updated     : 2026-04-13
+   Updated     : 2026-05-12
    ---------------------------------------------------------------------------
    Purpose     : Root layout component for all authenticated V2 pages.
                  Composes HeaderV2, SidebarV2, BreadcrumbV2, the main @Body
@@ -67,8 +67,16 @@
 @inherits LayoutComponentBase
 @using AbsenceApp.Client.Services
 @using AbsenceApp.Client.Framework.Layout
+@using AbsenceApp.Client.Shared.Components
 @inject AppStateService AppState
 @implements IDisposable
+
+@* =========================================================================
+   SECTION: DESIGN TOKEN CSS OVERRIDES
+   Injects :root { --ds-* } variables into the document head equivalent.
+   Must appear before any layout markup so tokens are available globally.
+   ========================================================================= *@
+<DesignTokenStyleInjectorV2 />
 
 @* =========================================================================
    SECTION: INIT LOADER
