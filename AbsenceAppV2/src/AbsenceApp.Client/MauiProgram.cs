@@ -3,11 +3,11 @@
  File        : MauiProgram.cs
  Namespace   : AbsenceApp.Client
  Author      : Michael
- Version     : 1.2.5
+ Version     : 1.3.0
  Created     : 2026-03-13
- Updated     : 2026-04-07
+ Updated     : 2026-05-12
 -------------------------------------------------------------------------------
- Purpose     : MAUI application bootstrap.  Builds the MauiApp host, registers
+ Purpose     : MAUI application bootstrap. Builds the MauiApp host, registers
                the Blazor web view, loads the embedded appsettings.json, wires
                the full EF data layer via AddDataLayer(), and registers all
                application services and scoped ViewModels into the DI container.
@@ -33,6 +33,8 @@
    - 1.2.4  2026-04-06  Option A Phase 3: removed EntitlementsService.
    - 1.2.5  2026-04-07  Crash log path changed from Desktop to
                          C:\DevAbsence1\logs (unified log directory).
+   - 1.3.0  2026-05-12  Enabled full Blazor WebView logging (Debug + Console)
+                         to surface hidden WebView2 render exceptions.
 -------------------------------------------------------------------------------
  Notes       :
    - appsettings.json is embedded as a ManifestResource so MAUI can read it
@@ -72,6 +74,12 @@ public static class MauiProgram
                 });
 
             builder.Services.AddMauiBlazorWebView();
+
+            // -----------------------------------------------------------------
+            // NEW: Enable Blazor WebView logging so hidden exceptions appear
+            // -----------------------------------------------------------------
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+            builder.Logging.AddDebug();
 
             // -----------------------------------------------------------------
             // Configuration — load appsettings.json from embedded resource

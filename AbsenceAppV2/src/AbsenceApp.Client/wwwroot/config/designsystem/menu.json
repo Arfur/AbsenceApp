@@ -229,7 +229,7 @@
           "items": [
             {
               "label": "Global Config",
-              "href": "/global-settings/colours",
+              "href": "/globalsettings/colours",
               "icon": "bi-grid-3x3-gap-fill"
             }
           ]

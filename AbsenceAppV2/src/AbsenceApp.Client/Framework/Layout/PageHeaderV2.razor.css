@@ -2,18 +2,19 @@
    File    : PageHeaderV2.razor.css
    Project : AbsenceApp.Client
    Author  : Michael
-   Version : 1.2.0
+   Version : 1.3.0
    Phase   : V2 Design System — Phase 3
    Created : 2026-04-13
-   Updated : 2026-04-14
+   Updated : 2026-05-12
    Purpose : Scoped styles for PageHeaderV2.razor.
              Two-row page header:
                Row 1 — large bold title (left) + action buttons (right)
                Row 2 — navigation path ⌂ > GroupName > ItemName (small, muted)
              CSS class prefix: phv2__ (PageHeaderV2).
    Changes :
-     - 1.0.0  2026-04-13  Initial implementation (renamed from HeaderV3.razor.css).
-                          Updated CSS class prefix from ph3__ to phv2__.
+     - 1.3.0  2026-05-12  Fixed global click-blocking issue by hiding the
+                          .phv2-export-backdrop by default. Backdrop now only
+                          becomes active when explicitly shown by dropdown logic.
      - 1.2.0  2026-04-15  Issue 4: added .phv2-btn--add orange class for
                           Add buttons. Export and primary keep blue accent.
                           Issue 5: added .phv2__category for accent-coloured
@@ -97,7 +98,7 @@
     white-space: nowrap;
 }
 
-/* Issue 5: category label in accent colour (e.g. PEOPLE, ACADEMICS) */
+/* Issue 5: category label in accent colour */
 .phv2__category {
     font-size: 0.8rem;
     font-weight: 600;
@@ -145,7 +146,7 @@
     background: var(--ds-color-sidebar-hover, #e8eaed);
 }
 
-/* Add button: orange fill — distinct from the blue accent primary button */
+/* Add button: orange fill */
 ::deep .phv2-btn--add {
     background: var(--ds-color-add, #f97316);
     color: #fff;
@@ -200,11 +201,12 @@
     background: var(--ds-color-sidebar-hover, #e8eaed);
 }
 
-/* Transparent full-screen backdrop to close the export dropdown on outside-click */
+/* Transparent full-screen backdrop — hidden by default (fixes click-blocking) */
 ::deep .phv2-export-backdrop {
     position: fixed;
     inset: 0;
     z-index: 45;
     background: transparent;
     cursor: default;
+    display: none; /* FIX: prevents global click-blocking */
 }

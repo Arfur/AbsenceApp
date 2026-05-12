@@ -1,13 +1,13 @@
 ﻿@* ===========================================================================
    File        : Index.razor
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
-   Route       : /global-settings/buttons
+   Route       : /globalsettings/buttons
    Author      : Michael
    Version     : 3.0.0
    Created     : 2026-03-26
    Updated     : 2026-05-12
    ---------------------------------------------------------------------------
-   Purpose     : Global Settings â€” Buttons showcase page (KI-Admin style).
+   Purpose     : Global Settings — Buttons showcase page (KI-Admin style).
                  Displays all button variants as static live demos using the
                  ButtonDemoCard component. Each card has an independently
                  toggled code-snippet section. No token logic or DB writes.
@@ -18,17 +18,16 @@
      - 2.0.0  2026-05-12  Phase B: token editor (moved to /edit in Phase C).
      - 3.0.0  2026-05-12  Phase C: KI-Admin-style demo layout with 12 card
                           sections. No token logic. Static demo only.
-   ===========================================================================
-*@
+   =========================================================================== *@
 
-@page "/global-settings/buttons"
+@page "/globalsettings/buttons"
 @layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
 @namespace AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
 @using AbsenceApp.Client.Shared.Components.DesignSystem
 
 <div class="kbp-page">
 
-    @* â”€â”€ 1. Basic Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 1. Basic Buttons -->
     <ButtonDemoCard Title="Basic Buttons" CodeSnippet="@_basicCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary">Primary</button>
@@ -43,7 +42,7 @@
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 2. Outline Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 2. Outline Buttons -->
     <ButtonDemoCard Title="Outline Buttons" CodeSnippet="@_outlineCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary">Primary</button>
@@ -58,7 +57,7 @@
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 3. Light Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 3. Light Buttons -->
     <ButtonDemoCard Title="Light Buttons" CodeSnippet="@_lightCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-light-primary">Primary</button>
@@ -70,157 +69,157 @@
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 4. Icon Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 4. Icon Buttons -->
     <ButtonDemoCard Title="Icon Buttons" CodeSnippet="@_iconCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--secondary">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-secondary">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-light-primary">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 5. Radius (Pill) Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 5. Radius Buttons -->
     <ButtonDemoCard Title="Radius Buttons" CodeSnippet="@_radiusCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary kbp-pill">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--secondary kbp-pill">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary kbp-pill">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-secondary kbp-pill">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-light-primary kbp-pill">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-pill">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 6. Social Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 6. Social Buttons -->
     <ButtonDemoCard Title="Social Buttons" CodeSnippet="@_socialCode">
         <DemoContent>
             <button type="button" class="dsv2-btn kbp-social kbp-social--facebook">
-                <i class="bi bi-facebook" aria-hidden="true"></i> Facebook
+                <i class="bi bi-facebook"></i> Facebook
             </button>
             <button type="button" class="dsv2-btn kbp-social kbp-social--twitter">
-                <i class="bi bi-twitter-x" aria-hidden="true"></i> Twitter
+                <i class="bi bi-twitter-x"></i> Twitter
             </button>
-            <button type="button" class="dsv2-btn kbp-social kbp-social--pinterest" style="border-style:solid;">
-                <i class="bi bi-pinterest" aria-hidden="true"></i> Pinterest
+            <button type="button" class="dsv2-btn kbp-social kbp-social--pinterest">
+                <i class="bi bi-pinterest"></i> Pinterest
             </button>
-            <button type="button" class="dsv2-btn kbp-social kbp-social--linkedin" style="border-style:solid;">
-                <i class="bi bi-linkedin" aria-hidden="true"></i> Linkedin
+            <button type="button" class="dsv2-btn kbp-social kbp-social--linkedin">
+                <i class="bi bi-linkedin"></i> Linkedin
             </button>
-            <button type="button" class="dsv2-btn kbp-social kbp-social--reddit" style="border-style:solid;">
-                <i class="bi bi-reddit" aria-hidden="true"></i> Reddit
+            <button type="button" class="dsv2-btn kbp-social kbp-social--reddit">
+                <i class="bi bi-reddit"></i> Reddit
             </button>
-            <button type="button" class="dsv2-btn kbp-social kbp-social--twitter" style="border-style:solid;">
-                <i class="bi bi-twitter-x" aria-hidden="true"></i> Twitter
+            <button type="button" class="dsv2-btn kbp-social kbp-social--twitter">
+                <i class="bi bi-twitter-x"></i> Twitter
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 7. Disabled Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 7. Disabled Buttons -->
     <ButtonDemoCard Title="Disable Buttons" CodeSnippet="@_disableCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary" disabled>
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--secondary" disabled>
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary" disabled>
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-secondary" disabled>
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-light-primary" disabled>
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light" disabled>
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 8. Active Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 8. Active Buttons -->
     <ButtonDemoCard Title="Active Buttons" CodeSnippet="@_activeCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary active">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--secondary active">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary active">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-secondary active">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light kbp-light-primary active">
-                <i class="bi bi-download" aria-hidden="true"></i> Primary
+                <i class="bi bi-download"></i> Primary
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--light active">
-                <i class="bi bi-triangle" aria-hidden="true"></i> Secondary
+                <i class="bi bi-triangle"></i> Secondary
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 9. Loading Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 9. Loading Buttons -->
     <ButtonDemoCard Title="Loading Buttons" CodeSnippet="@_loadingCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary kbp-loading" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span> Loading...
+                <span class="kbp-spinner"></span> Loading...
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--secondary kbp-loading" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span> Wait...
+                <span class="kbp-spinner"></span> Wait...
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--success kbp-loading kbp-loading--icon-only" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span>
+                <span class="kbp-spinner"></span>
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--danger kbp-loading kbp-loading--icon-only" disabled>
-                <span class="kbp-spinner kbp-spinner--stop" aria-hidden="true"></span>
+                <span class="kbp-spinner kbp-spinner--stop"></span>
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-primary kbp-loading" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span> Loading...
+                <span class="kbp-spinner"></span> Loading...
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-secondary kbp-loading" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span> Wait...
+                <span class="kbp-spinner"></span> Wait...
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-success kbp-loading kbp-loading--icon-only" disabled>
-                <span class="kbp-spinner" aria-hidden="true"></span>
+                <span class="kbp-spinner"></span>
             </button>
             <button type="button" class="dsv2-btn dsv2-btn--outline-danger kbp-loading kbp-loading--icon-only" disabled>
-                <span class="kbp-spinner kbp-spinner--stop" aria-hidden="true"></span>
+                <span class="kbp-spinner kbp-spinner--stop"></span>
             </button>
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 10. Block Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 10. Block Buttons -->
     <ButtonDemoCard Title="Block Buttons" CodeSnippet="@_blockCode">
         <DemoContent>
             <div class="kbp-block-row">
@@ -231,7 +230,7 @@
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 11. Button Sizes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 11. Button Sizes -->
     <ButtonDemoCard Title="Button Sizes" CodeSnippet="@_sizesCode">
         <DemoContent>
             <button type="button" class="dsv2-btn dsv2-btn--primary dsv2-btn--lg">Large</button>
@@ -243,20 +242,20 @@
         </DemoContent>
     </ButtonDemoCard>
 
-    @* â”€â”€ 12. Button Groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ *@
+    <!-- 12. Button Groups -->
     <ButtonDemoCard Title="Button Groups" CodeSnippet="@_groupCode">
         <DemoContent>
-            <div class="kbp-btn-group" role="group" aria-label="Primary group">
+            <div class="kbp-btn-group" role="group">
                 <button type="button" class="dsv2-btn dsv2-btn--primary kbp-group-btn">Left</button>
                 <button type="button" class="dsv2-btn dsv2-btn--primary kbp-group-btn">Middle</button>
                 <button type="button" class="dsv2-btn dsv2-btn--primary kbp-group-btn">Right</button>
             </div>
-            <div class="kbp-btn-group" role="group" aria-label="Outline group">
+            <div class="kbp-btn-group" role="group">
                 <button type="button" class="dsv2-btn dsv2-btn--outline-secondary kbp-group-btn">Left</button>
                 <button type="button" class="dsv2-btn dsv2-btn--outline-secondary kbp-group-btn">Middle</button>
                 <button type="button" class="dsv2-btn dsv2-btn--outline-secondary kbp-group-btn">Right</button>
             </div>
-            <div class="kbp-btn-group" role="group" aria-label="Success group">
+            <div class="kbp-btn-group" role="group">
                 <button type="button" class="dsv2-btn dsv2-btn--success kbp-group-btn">1</button>
                 <button type="button" class="dsv2-btn dsv2-btn--success kbp-group-btn">2</button>
                 <button type="button" class="dsv2-btn dsv2-btn--success kbp-group-btn">3</button>
@@ -266,6 +265,3 @@
     </ButtonDemoCard>
 
 </div>
-
-
-

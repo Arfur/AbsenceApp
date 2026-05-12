@@ -15,6 +15,15 @@ namespace AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons;
 
 public partial class Index
 {
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("[DBG] Buttons/Index.OnInitialized — page component initialised");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"[DBG] Buttons/Index.OnAfterRender — firstRender={firstRender}");
+    }
     private const string _basicCode =
         """
         <button type="button" class="dsv2-btn dsv2-btn--primary">Primary</button>

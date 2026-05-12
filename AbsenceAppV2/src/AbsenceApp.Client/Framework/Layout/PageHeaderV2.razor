@@ -156,7 +156,7 @@
         AppLog.Write("PageHeaderV2.razor", "UpdateAsync", $"ENTER path='{path}'");
 
         // ── Global Settings (/global-settings/*) ─────────────────────────
-        if (path.StartsWith("/global-settings/", StringComparison.OrdinalIgnoreCase))
+        if (path.StartsWith("/globalsettings/", StringComparison.OrdinalIgnoreCase))
         {
             AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
                 "Path is global-settings — calling GetGlobalSettingsMenuGroupsAsync()");

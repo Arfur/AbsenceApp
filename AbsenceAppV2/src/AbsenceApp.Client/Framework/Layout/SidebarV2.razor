@@ -468,14 +468,14 @@
 
             _isSuperAdminMenu = true;
             _openGroup = string.Empty;
-            currentPath = "/global-settings/dashboard";
+            currentPath = "/globalsettings/dashboard";
 
             _ = InvokeAsync(async () =>
             {
                 await LoadMenuAsync(currentPath);
                 ComputeRouteMatch();
                 AutoOpenGroup();
-                Nav.NavigateTo("/global-settings/dashboard");
+                Nav.NavigateTo("/globalsettings/dashboard");
                 StateHasChanged();
             });
 
