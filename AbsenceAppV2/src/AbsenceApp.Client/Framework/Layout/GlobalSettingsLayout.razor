@@ -6,12 +6,12 @@
    Created     : 2026-03-29
    Updated     : 2026-04-13
    ---------------------------------------------------------------------------
-   Purpose     : Layout for all Global Settings pages (/global-settings/*).
+   Purpose     : Layout for all Global Settings pages (/globalsettings/*).
                  Mirrors the Ki-Admin structure of BaseLayoutV2 but is kept
                  as a separate layout so Global Settings pages are never
                  accidentally wrapped by the main app layout.
                  SidebarV2 automatically switches to Global Settings mode
-                 when the current route starts with /global-settings/.
+                 when the current route starts with /globalsettings/.
    ---------------------------------------------------------------------------
    Notes       :
      - All Global Settings pages must declare @layout GlobalSettingsLayout.
@@ -33,7 +33,7 @@
 
 <div class="v2-layout-root @(AppState.DarkMode ? "dark" : "")">
 
-    @* Sidebar — SidebarV2 auto-detects /global-settings/ and loads
+    @* Sidebar — SidebarV2 auto-detects /globalsettings/ and loads
        the Global Settings menu instead of the main application menu. *@
     <SidebarV2 />
 
@@ -59,11 +59,13 @@
 @code {
     protected override void OnInitialized()
     {
+        Console.WriteLine("[DBG] GlobalSettingsLayout.OnInitialized — subscribing to AppState.OnChange");
         AppState.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
+        Console.WriteLine("[DBG] GlobalSettingsLayout.Dispose — unsubscribing from AppState.OnChange");
         AppState.OnChange -= StateHasChanged;
     }
 }

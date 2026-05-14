@@ -27,6 +27,8 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.AspNetCore.Components.WebView.Maui;
+
 
 namespace AbsenceApp.Client.WinUI;
 

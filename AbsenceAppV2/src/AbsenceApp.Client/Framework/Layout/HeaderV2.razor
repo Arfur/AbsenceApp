@@ -2,9 +2,9 @@
    File        : HeaderV2.razor
    Namespace   : AbsenceApp.Client.Components.LayoutV2
    Author      : Michael
-   Version     : 2.3.0
+   Version     : 2.4.0
    Created     : 2026-03-21
-   Updated     : 2026-04-12
+   Updated     : 2026-05-14
    ---------------------------------------------------------------------------
    Purpose     : V2 top navigation header. Provides logo zone, sidebar toggle,
                  optional search slot, dark-mode toggle, message icon with
@@ -16,37 +16,19 @@
    Changes     :
      - 1.0.0  2026-03-21  Initial implementation.
      - 1.1.0  2026-03-27  Phase 3 stabilisation; search and actions slots.
-     - 2.0.0  2026-04-05  Phase 3 Header Nav Identity & Messaging parity:
-                          added user identity cluster (avatar + username +
-                          role) with anchored dropdown (Profile Details,
-                          Settings, Log Out). Added message icon with badge
-                          and conditional dropdown. Upgraded notification
-                          bell with conditional dropdown. Added full-screen
-                          transparent overlay for outside-click dismiss.
-                          Role sourced dynamically via AppState.UserRole,
-                          which is set at login from AuthService using
-                          RoleTypes.DisplayName from the database.
+     - 2.0.0  2026-04-05  Phase 3 Header Nav Identity & Messaging parity.
      - 2.1.0  2026-04-05  Phase 3 messaging enablement.
-     - 2.2.0  2026-04-07  Debug instrumentation: added AppLog.Write to
-                          OnInitialized, Dispose, ToggleUser, ToggleMsg,
-                          ToggleNotif, CloseAll, and HandleLogout.
-     - 2.3.0  2026-04-12  E30: Messages dropdown uses avatar row layout with
-                          sender initials and cycling colours. Notifications
-                          dropdown uses icon row layout. User menu updated to
-                          match design reference: orange header showing
-                          username, items My Profile / Task / Message /
-                          Account Settings / Log Out. DEV debug role label
-                          removed. Dropdown z-index fixed (260) so dropdowns
-                          appear above the transparent overlay (240).
+     - 2.2.0  2026-04-07  Debug instrumentation added.
+     - 2.3.0  2026-04-12  E30: Updated dropdown layouts and z-index fixes.
+     - 2.4.0  2026-05-14  FIX: Added Nav.LocationChanged auto-close to prevent
+                          persistent transparent overlay blocking page clicks.
    ---------------------------------------------------------------------------
    Notes       :
      - Phase 3 component. Requires AppStateService.
-     - Role is NOT hardcoded: AppState.UserRole is populated at login from
-       AuthService.LoginAsync → RoleTypes.DisplayName (database lookup).
-       Fallback “Admin”/“Staff” strings only execute when the DB has no
-       matching RoleType row for the authenticated user’s role_type_id.
+     - Role is NOT hardcoded: AppState.UserRole is populated at login.
    ===========================================================================
 *@
+
 @using AbsenceApp.Client.Services
 @inject AppStateService AppState
 @inject NavigationManager Nav
@@ -60,8 +42,8 @@
 
 <header class="dsv2-header" role="banner">
     @* =========================================================================
-   Section: Logo zone
-   ========================================================================= *@
+       Section: Logo zone
+       ========================================================================= *@
     <div class="dsv2-header__logo-zone">
         <a href="/v2/dashboard" class="dsv2-header__logo-link" aria-label="AbsenceApp home">
             <i class="bi bi-calendar-check-fill dsv2-header__logo-icon" aria-hidden="true"></i>
@@ -69,9 +51,9 @@
         </a>
     </div>
 
-@* =========================================================================
-   Section: Centre zone — sidebar toggle + optional search
-   ========================================================================= *@
+    @* =========================================================================
+       Section: Centre zone — sidebar toggle + optional search
+       ========================================================================= *@
     <div class="dsv2-header__centre">
         <button class="dsv2-header__icon-btn"
                 title="Toggle sidebar"
@@ -100,9 +82,9 @@
         }
     </div>
 
-@* =========================================================================
-   Section: Right zone — dark mode / messages / notifications / user cluster
-   ========================================================================= *@
+    @* =========================================================================
+       Section: Right zone — dark mode / messages / notifications / user cluster
+       ========================================================================= *@
     <div class="dsv2-header__right">
         @if (ActionsContent is not null)
         {
@@ -117,7 +99,7 @@
             <i class="bi @(AppState.DarkMode ? "bi-sun" : "bi-moon")" aria-hidden="true"></i>
         </button>
 
-        @* Messages — badge shown when unread > 0; dropdown opens only when count > 0 *@
+        @* Messages *@
         <div class="dsv2-header__dd-wrap">
             <button class="dsv2-header__icon-btn"
                     title="Messages (@AppState.UnreadMessagesCount unread)"
@@ -156,7 +138,7 @@
             }
         </div>
 
-        @* Notifications — badge shown when unread > 0; dropdown opens only when count > 0 *@
+        @* Notifications *@
         <div class="dsv2-header__dd-wrap">
             <button class="dsv2-header__icon-btn dsv2-header__notif-btn"
                     title="Notifications (@AppState.UnreadNotificationsCount unread)"
@@ -192,7 +174,7 @@
             }
         </div>
 
-        @* User identity cluster: avatar + username + role — opens anchored dropdown menu *@
+        @* User identity cluster *@
         <div class="dsv2-header__dd-wrap dsv2-header__user-wrap">
             <button class="dsv2-header__user-btn"
                     type="button"
@@ -214,6 +196,7 @@
                     </span>
                 </span>
             </button>
+
             @if (_userOpen)
             {
                 <ul class="dsv2-header__dropdown dsv2-header__dropdown--user" role="menu">
@@ -266,27 +249,14 @@
 </header>
 
 @code {
-    // ── Parameters ────────────────────────────────────────────────────────────────────────────
-    /// <summary>Whether to show the default search input in the centre zone.</summary>
+    // ── Parameters ────────────────────────────────────────────────────────────
     [Parameter] public bool ShowDefaultSearch { get; set; } = true;
-
-    /// <summary>Placeholder text for the default search input.</summary>
     [Parameter] public string SearchPlaceholder { get; set; } = "Search pages, students, staff…";
-
-    /// <summary>Optional slot to replace the default search with custom content.</summary>
     [Parameter] public RenderFragment? SearchContent { get; set; }
-
-    /// <summary>Optional slot for additional action buttons in the right zone.</summary>
     [Parameter] public RenderFragment? ActionsContent { get; set; }
-
-    /// <summary>Fires when the user presses Enter in the default search input.</summary>
     [Parameter] public EventCallback<string> OnSearch { get; set; }
 
-    // ── Demo data removed: HeaderV2 now binds directly to AppState.UnreadMessages
-    // and AppState.UnreadNotifications populated at login from the database.
-    // See Login.razor DoLogin() → IMessageService + INotificationService → AppState.SetMessagingData()
-
-    // ── Dropdown open / close state ──────────────────────────────────────────────────────
+    // ── Dropdown state ───────────────────────────────────────────────────────
     private bool _userOpen;
     private bool _msgOpen;
     private bool _notifOpen;
@@ -338,14 +308,10 @@
         Nav.NavigateTo("/login");
     }
 
-    // ── Avatar / icon colour helpers ────────────────────────────────────────────────────
+    // ── Avatar helpers ───────────────────────────────────────────────────────
     private static readonly string[] _avatarColors =
     {
-        "#20c997", // teal
-        "#f59e0b", // amber
-        "#3b82f6", // blue
-        "#ef4444", // red
-        "#8b5cf6"  // purple
+        "#20c997", "#f59e0b", "#3b82f6", "#ef4444", "#8b5cf6"
     };
 
     private static string GetAvatarColor(int index) =>
@@ -354,15 +320,19 @@
     private static string GetInitial(string name) =>
         string.IsNullOrWhiteSpace(name) ? "?" : name[0].ToString().ToUpper();
 
-    // ── Search ─────────────────────────────────────────────────────────────────────────────
+    // ── Search ───────────────────────────────────────────────────────────────
     private string _searchValue = string.Empty;
 
-    // ── Lifecycle ───────────────────────────────────────────────────────────────────────
+    // ── Lifecycle ────────────────────────────────────────────────────────────
     protected override void OnInitialized()
     {
         AppLog.Write("HeaderV2.razor", "OnInitialized",
             $"IsAuthenticated={AppState.IsAuthenticated} UserName='{AppState.UserName}' UserRole='{AppState.UserRole}' UnreadMessages={AppState.UnreadMessagesCount} UnreadNotifications={AppState.UnreadNotificationsCount}");
+
         AppState.OnChange += StateHasChanged;
+
+        // NEW: Auto-close overlays on navigation
+        Nav.LocationChanged += (_, __) => CloseAll();
     }
 
     private async Task HandleSearchKey(KeyboardEventArgs e)

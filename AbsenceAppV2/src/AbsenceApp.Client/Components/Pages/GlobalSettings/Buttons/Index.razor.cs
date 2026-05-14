@@ -2,14 +2,12 @@
 // File        : Index.razor.cs
 // Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
 // Author      : Michael
-// Version     : 1.0.0
+// Version     : 1.0.1
 // Created     : 2026-05-12
-// ---------------------------------------------------------------------------
-// Purpose     : Code-behind partial class for the Buttons demo page.
-//               Raw string literals (C# 11+) are NOT supported by the Razor
-//               parser inside .razor files, so all multi-line code-snippet
-//               constants live here where the C# compiler handles them.
+// Updated     : 2026-05-13
 // ===========================================================================
+
+using AbsenceApp.Client.Services;
 
 namespace AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons;
 
@@ -17,13 +15,22 @@ public partial class Index
 {
     protected override void OnInitialized()
     {
-        Console.WriteLine("[DBG] Buttons/Index.OnInitialized — page component initialised");
+        AppLog.Write("Buttons.razor", "OnInitialized", "ENTER");
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        AppLog.Write("Buttons.razor", "OnParametersSet", "Parameters applied");
+        base.OnParametersSet();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        Console.WriteLine($"[DBG] Buttons/Index.OnAfterRender — firstRender={firstRender}");
+        AppLog.Write("Buttons.razor", "OnAfterRender", $"firstRender={firstRender}");
+        base.OnAfterRender(firstRender);
     }
+
     private const string _basicCode =
         """
         <button type="button" class="dsv2-btn dsv2-btn--primary">Primary</button>

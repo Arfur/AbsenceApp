@@ -3,29 +3,37 @@
  File        : Index.razor.css
  Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
  Author      : Michael
- Version     : 2.1.0
- Created     : 2026-05-12
- Updated     : 2026-05-12
+ Version     : 2.2.0
+ Created     : 2026-05-10
+ Updated     : 2026-05-14
 -------------------------------------------------------------------------------
- Purpose     : Scoped CSS for the Buttons demo page (KI-Admin style).
-               Prefix kbp = ki-buttons-page.
-               Phase C: replaces Phase B bep-* styles with page-level helpers
-               for the 12-section demo layout.
+ Purpose     : Scoped CSS for the Global Settings → Buttons page.
+               Provides layout and spacing for the demo cards and page content.
+
+               v2.2.0 FIX:
+               - Removed incorrect z-index rule targeting .kbp-card with the
+                 Index.razor scope ID (b-b2cgcemols). This rule never matched
+                 any elements because .kbp-card is rendered by ButtonDemoCard,
+                 which has a different scope ID. The correct fix now lives in
+                 ButtonDemoCard.razor.css.
 -------------------------------------------------------------------------------
  Changes     :
-   - 1.0.0  2026-05-12  Phase B — Buttons editor (bep-* styles).
-   - 2.0.0  2026-05-12  Phase C — Buttons demo layout (kbp-* styles).
-   - 2.1.0  2026-05-12  Fixed click-blocking issue: elevated .kbp-card above
-                        PageHeaderV2 overlay using position:relative + z-index.
+   - 2.0.0  2026-05-10  Initial creation for Buttons demo page.
+   - 2.1.0  2026-05-12  Attempted z-index fix (incorrect scope, now removed).
+   - 2.2.0  2026-05-14  FIXED: Removed invalid z-index rule; fix moved to
+                        ButtonDemoCard.razor.css.
 ===============================================================================
 */
 
 /* =============================================================================
-   FIX: Ensure cards sit above PageHeaderV2 overlay
+   PAGE LAYOUT
    ============================================================================= */
-.kbp-card {
-    position: relative;
-    z-index: 2;
+
+.gs-buttons-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 40px;
 }
 
 /* =============================================================================

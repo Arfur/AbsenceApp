@@ -3,27 +3,30 @@
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
    Route       : /globalsettings/buttons
    Author      : Michael
-   Version     : 3.0.0
+   Version     : 3.1.0
    Created     : 2026-03-26
-   Updated     : 2026-05-12
+   Updated     : 2026-05-13
    ---------------------------------------------------------------------------
    Purpose     : Global Settings — Buttons showcase page (KI-Admin style).
                  Displays all button variants as static live demos using the
                  ButtonDemoCard component. Each card has an independently
                  toggled code-snippet section. No token logic or DB writes.
-                 Token editing is at /global-settings/buttons/edit.
+                 Token editing is at /globalsettings/buttons/edit.
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
      - 2.0.0  2026-05-12  Phase B: token editor (moved to /edit in Phase C).
      - 3.0.0  2026-05-12  Phase C: KI-Admin-style demo layout with 12 card
                           sections. No token logic. Static demo only.
+     - 3.1.0  2026-05-13  Added runtime page-load diagnostic log for routing
+                          verification. No visual or layout changes.
    =========================================================================== *@
 
 @page "/globalsettings/buttons"
 @layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
 @namespace AbsenceApp.Client.Components.Pages.GlobalSettings.Buttons
 @using AbsenceApp.Client.Shared.Components.DesignSystem
+@using System.Threading.Tasks
 
 <div class="kbp-page">
 

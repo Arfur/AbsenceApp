@@ -7,7 +7,7 @@
  Created     : 2026-05-12
  Updated     : 2026-05-12
 -------------------------------------------------------------------------------
- Purpose     : ViewModel for the Buttons Editor page (/global-settings/buttons).
+ Purpose     : ViewModel for the Buttons Editor page (/globalsettings/buttons).
                Provides token loading, edit buffering, live validation, save,
                and reset operations backed by DesignTokenApiServiceV2.
 

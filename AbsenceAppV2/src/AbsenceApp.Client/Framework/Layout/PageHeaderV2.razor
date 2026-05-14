@@ -17,7 +17,7 @@
                  Subscribes to NavigationManager.LocationChanged and resolves
                  the active group and item labels from NavigationServiceV2
                  using the same three-pass (exact / prefix / group-root) and
-                 global-settings logic previously used by BreadcrumbV2.
+                 globalsettings logic previously used by BreadcrumbV2.
 
                  Clicking the home icon navigates to /v2/dashboard.
    ---------------------------------------------------------------------------
@@ -155,11 +155,11 @@
         var path = GetCleanPath(uri);
         AppLog.Write("PageHeaderV2.razor", "UpdateAsync", $"ENTER path='{path}'");
 
-        // ── Global Settings (/global-settings/*) ─────────────────────────
+        // ── Global Settings (/globalsettings/*) ─────────────────────────
         if (path.StartsWith("/globalsettings/", StringComparison.OrdinalIgnoreCase))
         {
             AppLog.Write("PageHeaderV2.razor", "UpdateAsync",
-                "Path is global-settings — calling GetGlobalSettingsMenuGroupsAsync()");
+                "Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()");
             var groups = await NavService.GetGlobalSettingsMenuGroupsAsync();
 
             // Pass 1: exact
@@ -193,7 +193,7 @@
                 }
             }
 
-            // Fallback: at /global-settings/ root or unknown sub-path
+            // Fallback: at /globalsettings/ root or unknown sub-path
             _categoryLabel = "Configuration";
             _groupLabel    = "Global Settings";
             return;

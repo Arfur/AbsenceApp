@@ -3,9 +3,9 @@
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalConfig.Buttons
    Route       : /global-config/buttons
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.1.0
    Created     : 2026-03-27
-   Updated     : 2026-03-28
+   Updated     : 2026-05-13
    ---------------------------------------------------------------------------
    Purpose     : Global Config — Buttons demo page.
                  Ki-Admin–style card layout. Each variant is in its own
@@ -14,13 +14,15 @@
    Changes     :
      - 1.0.0  2026-03-27  Initial implementation.
      - 2.0.0  2026-03-28  Rebuilt with Ki-Admin card structure (gc-page layout).
-   ===========================================================================
-*@
+     - 2.1.0  2026-05-13  Added runtime page-load diagnostic log for routing
+                          verification. No visual or layout changes.
+   =========================================================================== *@
 
 @page "/global-config/buttons"
 @layout AbsenceApp.Client.Framework.Layouts.BaseLayoutV2
 @namespace AbsenceApp.Client.Components.Pages.GlobalConfig.Buttons
 @using AbsenceApp.Client.Framework.PageTemplates
+@using System.Threading.Tasks
 
 <PageTemplateV2 PageTitleText="Buttons">
     <ChildContent>
@@ -169,3 +171,11 @@
         </div>
     </ChildContent>
 </PageTemplateV2>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("PAGE LOADED: GlobalConfig/Buttons/Index.razor");
+        await base.OnInitializedAsync();
+    }
+}

@@ -9,7 +9,7 @@
                  Provides the same full-screen flex shell as MainLayoutV2
                  (sidebar left + content column right) with the fixed header
                  and sidebar-offset rules so the header never overlaps the
-                 sidebar or page content on /global-settings/* pages.
+                 sidebar or page content on /globalsettings/* pages.
    ---------------------------------------------------------------------------
    Notes       :
      - Rules here mirror MainLayoutV2.razor.css intentionally.
@@ -21,7 +21,7 @@
    Changes     :
      - 1.0.0  2026-03-30  Initial implementation. All structural + containment
                           rules ported from MainLayoutV2.razor.css so
-                          /global-settings/* pages render with the correct
+                          /globalsettings/* pages render with the correct
                           fixed-header / sidebar-offset layout.
    ===========================================================================
 */

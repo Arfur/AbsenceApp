@@ -1,195 +1,562 @@
-[2026-05-13 00:20:57.922] Login.razor::DoLogin — Attempting login. username='mbattle'
-[2026-05-13 00:20:57.963] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
-[2026-05-13 00:20:58.596] Login.razor::DoLogin — LoginAsync succeeded. UserId=1 Role='Super Admin'
-[2026-05-13 00:20:58.597] Login.razor::DoLogin — Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()
-[2026-05-13 00:20:58.599] AppStateService.cs::SetUser — CurrentUserId=1 UserName='mbattle' Role='Super Admin' — calling Notify()
-[2026-05-13 00:20:58.600] Login.razor::DoLogin — AppState.SetUser done. IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' — loading messages and notifications
-[2026-05-13 00:20:58.623] Login.razor::DoLogin — Calling AppState.SetMessagingData — will fire Notify() again
-[2026-05-13 00:20:58.624] AppStateService.cs::SetMessagingData — UnreadMessages=5 UnreadNotifications=5 — calling Notify()
-[2026-05-13 00:20:58.625] Login.razor::DoLogin — Messaging data loaded. messages=5 notifications=5
-[2026-05-13 00:20:58.626] Login.razor::DoLogin — Calling PermSvc.ResetAsync() to clear previous user's permission cache
-[2026-05-13 00:20:58.627] PermissionServiceV2.cs::ResetAsync — Permission cache cleared; _loadFailed reset to false.
-[2026-05-13 00:20:58.628] Login.razor::DoLogin — Calling NavService.ResetAsync() — async reset to avoid UI thread blocking
-[2026-05-13 00:20:58.629] NavigationServiceV2.cs::ResetAsync — ENTER ResetAsync() — _cache is populated (0 categories) — acquiring async lock
-[2026-05-13 00:20:58.630] NavigationServiceV2.cs::ResetAsync — Lock acquired — clearing main menu cache
-[2026-05-13 00:20:58.631] NavigationServiceV2.cs::ResetAsync — Main menu cache cleared — lock released
-[2026-05-13 00:20:58.631] NavigationServiceV2.cs::ResetAsync — gsLock acquired — clearing global settings cache
-[2026-05-13 00:20:58.632] NavigationServiceV2.cs::ResetAsync — Global settings cache cleared — gsLock released
-[2026-05-13 00:20:58.632] Login.razor::DoLogin — NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.
-[2026-05-13 00:20:58.634] Login.razor::DoLogin — Nav.NavigateTo('/v2/dashboard/overview') called.
-[2026-05-13 00:20:58.636] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=True errorMessage=''
-[2026-05-13 00:20:58.637] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
-[2026-05-13 00:20:58.638] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:20:58.639] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
-[2026-05-13 00:20:58.640] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
-[2026-05-13 00:20:58.643] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
-[2026-05-13 00:20:58.645] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard/overview' IsAuthenticated=True _loadPending=True
-[2026-05-13 00:20:58.647] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
-[2026-05-13 00:20:58.662] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
-[2026-05-13 00:20:58.662] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
-[2026-05-13 00:20:58.663] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
-[2026-05-13 00:20:58.664] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
-[2026-05-13 00:20:58.665] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
-[2026-05-13 00:20:58.666] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
-[2026-05-13 00:20:58.666] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
-[2026-05-13 00:20:58.668] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=1
-[2026-05-13 00:20:58.673] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 47
-[2026-05-13 00:20:58.677] PermissionServiceV2.cs::CanViewAsync — _cache is null → invoking LoadAsync for route='/v2/dashboard/overview'
-[2026-05-13 00:20:58.680] PermissionServiceV2.cs::LoadAsync — Loading permissions for userId=1
-[2026-05-13 00:20:58.686] PermissionServiceV2.cs::LoadAsync — roleCode='SUPERADMIN'
-[2026-05-13 00:20:58.697] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:20:58.699] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
-[2026-05-13 00:20:58.701] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
-[2026-05-13 00:20:58.702] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
-[2026-05-13 00:20:58.704] PermissionServiceV2.cs::LoadAsync — roleId=1
-[2026-05-13 00:20:58.730] PermissionServiceV2.cs::LoadAsync — Cache loaded — 27 page(s) resolved for userId=1
-[2026-05-13 00:20:58.731] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/overview' → CanRead=True
-[2026-05-13 00:20:58.732] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/trends' → CanRead=True
-[2026-05-13 00:20:58.733] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/safeguarding' → CanRead=True
-[2026-05-13 00:20:58.733] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students' → CanRead=True
-[2026-05-13 00:20:58.734] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students/new' → CanRead=True
-[2026-05-13 00:20:58.735] PermissionServiceV2.cs::CanViewAsync — Route '/v2/students/{id}' not in AppPage registry → returning true (unregistered routes are always visible)
-[2026-05-13 00:20:58.735] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff' → CanRead=True
-[2026-05-13 00:20:58.736] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff/new' → CanRead=True
-[2026-05-13 00:20:58.736] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes' → CanRead=True
-[2026-05-13 00:20:58.737] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/details' → CanRead=True
-[2026-05-13 00:20:58.738] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/new' → CanRead=True
-[2026-05-13 00:20:58.739] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance' → CanRead=True
-[2026-05-13 00:20:58.739] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance/student' → CanRead=True
-[2026-05-13 00:20:58.740] PermissionServiceV2.cs::CanViewAsync — Route '/v2/test/404' not in AppPage registry → returning true (unregistered routes are always visible)
-[2026-05-13 00:20:58.740] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/auditlog' → CanRead=True
-[2026-05-13 00:20:58.741] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/settings' → CanRead=True
-[2026-05-13 00:20:58.741] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/diagnostics' → CanRead=True
-[2026-05-13 00:20:58.742] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/site' → CanRead=True
-[2026-05-13 00:20:58.743] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/global-settings/colours' → CanRead=True
-[2026-05-13 00:20:58.743] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/users' → CanRead=True
-[2026-05-13 00:20:58.744] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/roles' → CanRead=True
-[2026-05-13 00:20:58.745] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/permissions' → CanRead=True
-[2026-05-13 00:20:58.745] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/page-access' → CanRead=True
-[2026-05-13 00:20:58.746] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages' → CanRead=True
-[2026-05-13 00:20:58.746] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/layouts' → CanRead=True
-[2026-05-13 00:20:58.747] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/metadata' → CanRead=True
-[2026-05-13 00:20:58.748] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 8
-[2026-05-13 00:20:58.749] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 8 categories
-[2026-05-13 00:20:58.749] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
-[2026-05-13 00:20:58.750] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
-[2026-05-13 00:20:58.751] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel='Operational Overview'
-[2026-05-13 00:20:58.752] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
-[2026-05-13 00:20:58.753] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 8 cached categories
-[2026-05-13 00:20:58.753] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
-[2026-05-13 00:20:58.754] SidebarV2.razor::LoadMenuAsync — Categories received = 8
-[2026-05-13 00:20:58.757] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
-[2026-05-13 00:20:58.763] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
-[2026-05-13 00:21:03.241] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/global-settings/colours IsAuthenticated=True
-[2026-05-13 00:21:03.243] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/global-settings/colours'
-[2026-05-13 00:21:03.244] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
-[2026-05-13 00:21:03.245] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/global-settings/colours' — dispatching UpdateAsync
-[2026-05-13 00:21:03.246] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/global-settings/colours' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:03.247] SidebarV2.razor::LoadMenuAsync — ENTER path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:03.249] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
-[2026-05-13 00:21:03.249] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
-[2026-05-13 00:21:03.250] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync
-[2026-05-13 00:21:03.251] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — ENTER GetGlobalSettingsCategoriesAsync
-[2026-05-13 00:21:03.258] PageHeaderV2.razor::UpdateAsync — ENTER path='/global-settings/colours'
-[2026-05-13 00:21:03.259] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/global-settings/colours'
-[2026-05-13 00:21:03.260] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:03.261] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
-[2026-05-13 00:21:03.262] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Rows returned = 60
-[2026-05-13 00:21:03.263] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Categories built = 9
-[2026-05-13 00:21:03.264] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — NavigationApiServiceV2 returned — caching 9 categories
-[2026-05-13 00:21:03.265] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
-[2026-05-13 00:21:03.266] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
-[2026-05-13 00:21:03.273] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
-[2026-05-13 00:21:03.338] Routes.razor::Dispose — Unsubscribing from Nav.LocationChanged. IsAuthenticated=True
-[2026-05-13 00:21:03.339] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:03.340] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
-[2026-05-13 00:21:03.341] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
-[2026-05-13 00:21:03.342] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
-[2026-05-13 00:21:03.352] AppLog.cs::TestWrite — Log file initialised. Path=C:\DevAbsence1\logs\AbsenceApp.log
-[2026-05-13 00:21:03.353] AppLog.cs::TestWrite — FILE EXISTS — write verified OK
-[2026-05-13 00:21:03.354] Routes.razor::OnInitialized — Router started. IsAuthenticated=True URI=https://0.0.0.0/global-settings/colours
-[2026-05-13 00:21:03.355] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:03.356] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
-[2026-05-13 00:21:03.357] Routes.razor::CheckAuthRedirect — [from=OnInitialized] path='/global-settings/colours' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:03.359] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
-[2026-05-13 00:21:03.361] SidebarV2.razor::OnInitialized — Setup complete. path='/global-settings/colours' IsAuthenticated=True _loadPending=True
-[2026-05-13 00:21:03.361] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
-[2026-05-13 00:21:03.365] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:21:03.366] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:03.367] SidebarV2.razor::LoadMenuAsync — ENTER path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:03.367] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
-[2026-05-13 00:21:03.368] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
-[2026-05-13 00:21:03.369] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
-[2026-05-13 00:21:03.371] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
-[2026-05-13 00:21:18.280] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard IsAuthenticated=True
-[2026-05-13 00:21:18.282] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
-[2026-05-13 00:21:18.283] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
-[2026-05-13 00:21:18.284] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:18.285] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:18.286] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
-[2026-05-13 00:21:18.287] SidebarV2.razor::OnLocationChanged — path changed '/global-settings/colours' → '/v2/dashboard'
-[2026-05-13 00:21:18.288] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:18.292] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
-[2026-05-13 00:21:18.293] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard' IsAuthenticated=True _loadPending=True
-[2026-05-13 00:21:18.294] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
-[2026-05-13 00:21:18.295] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard'
-[2026-05-13 00:21:18.296] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard'
-[2026-05-13 00:21:18.297] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard'
-[2026-05-13 00:21:18.298] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:18.299] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
-[2026-05-13 00:21:18.299] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel=''
-[2026-05-13 00:21:18.301] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
-[2026-05-13 00:21:18.306] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:21:18.307] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard' → '/v2/dashboard/overview'
-[2026-05-13 00:21:18.308] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/v2/dashboard/overview' — dispatching UpdateAsync
-[2026-05-13 00:21:18.310] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:18.311] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
-[2026-05-13 00:21:18.312] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:18.313] SidebarV2.razor::LoadMenuAsync — Categories received = 8
-[2026-05-13 00:21:18.315] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
-[2026-05-13 00:21:18.316] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
-[2026-05-13 00:21:18.317] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:18.318] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
-[2026-05-13 00:21:18.320] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:21:18.321] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
-[2026-05-13 00:21:18.322] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
-[2026-05-13 00:21:18.323] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:18.324] SidebarV2.razor::LoadMenuAsync — Categories received = 8
-[2026-05-13 00:21:18.325] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
-[2026-05-13 00:21:18.327] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:21:18.328] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
-[2026-05-13 00:21:18.330] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
-[2026-05-13 00:21:22.072] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/global-settings/colours IsAuthenticated=True
-[2026-05-13 00:21:22.073] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/global-settings/colours'
-[2026-05-13 00:21:22.074] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
-[2026-05-13 00:21:22.075] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/global-settings/colours' — dispatching UpdateAsync
-[2026-05-13 00:21:22.077] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/global-settings/colours' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:22.078] SidebarV2.razor::LoadMenuAsync — ENTER path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:22.078] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
-[2026-05-13 00:21:22.079] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
-[2026-05-13 00:21:22.080] PageHeaderV2.razor::UpdateAsync — ENTER path='/global-settings/colours'
-[2026-05-13 00:21:22.081] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/global-settings/colours'
-[2026-05-13 00:21:22.081] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE HIT — returning 8 cached categories
-[2026-05-13 00:21:22.083] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
-[2026-05-13 00:21:22.085] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
-[2026-05-13 00:21:22.145] Routes.razor::Dispose — Unsubscribing from Nav.LocationChanged. IsAuthenticated=True
-[2026-05-13 00:21:22.146] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:22.147] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
-[2026-05-13 00:21:22.148] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
-[2026-05-13 00:21:22.149] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
-[2026-05-13 00:21:22.153] AppLog.cs::TestWrite — Log file initialised. Path=C:\DevAbsence1\logs\AbsenceApp.log
-[2026-05-13 00:21:22.154] AppLog.cs::TestWrite — FILE EXISTS — write verified OK
-[2026-05-13 00:21:22.155] Routes.razor::OnInitialized — Router started. IsAuthenticated=True URI=https://0.0.0.0/global-settings/colours
-[2026-05-13 00:21:22.157] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
-[2026-05-13 00:21:22.158] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
-[2026-05-13 00:21:22.159] Routes.razor::CheckAuthRedirect — [from=OnInitialized] path='/global-settings/colours' IsAuthenticated=True — no redirect
-[2026-05-13 00:21:22.160] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
-[2026-05-13 00:21:22.161] SidebarV2.razor::OnInitialized — Setup complete. path='/global-settings/colours' IsAuthenticated=True _loadPending=True
-[2026-05-13 00:21:22.162] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
-[2026-05-13 00:21:22.166] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
-[2026-05-13 00:21:22.167] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:22.168] SidebarV2.razor::LoadMenuAsync — ENTER path='/global-settings/colours' _isSuperAdminMenu=True
-[2026-05-13 00:21:22.169] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
-[2026-05-13 00:21:22.170] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
-[2026-05-13 00:21:22.170] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
-[2026-05-13 00:21:22.174] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:05:16.703] AppLog.cs::TestWrite — Log file initialised. Path=C:\DevAbsence1\logs\AbsenceApp.log
+[2026-05-14 10:05:16.706] AppLog.cs::TestWrite — FILE EXISTS — write verified OK
+[2026-05-14 10:05:16.709] Routes.razor::OnInitialized — Router started. IsAuthenticated=False URI=https://0.0.0.0/
+[2026-05-14 10:05:16.833] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-14 10:05:16.837] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-14 10:05:20.600] Routes.razor::CheckAuthRedirect — [from=OnInitialized] Unauthenticated access to '/' — redirecting to /login
+[2026-05-14 10:05:20.636] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:05:20.639] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-14 10:05:20.650] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-14 10:05:20.657] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:05:20.665] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-14 10:05:20.667] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-14 10:05:20.684] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-14 10:05:20.694] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=False
+[2026-05-14 10:05:20.697] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-14 10:05:20.699] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-14 10:05:20.743] Routes.razor::CheckAuthRedirect — [from=LocationChanged] Ignoring stale MAUI WebView navigation to '/v2/dashboard/overview' while unauthenticated.
+[2026-05-14 10:05:20.747] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:05:20.749] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-14 10:05:20.755] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-14 10:05:20.763] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-14 10:05:20.766] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-14 10:05:20.769] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:20.770] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:05:20.773] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-14 10:05:20.778] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-14 10:05:20.782] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=0
+[2026-05-14 10:05:21.002] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-14 10:05:21.005] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:05:21.009] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-14 10:05:21.011] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-14 10:05:21.013] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-14 10:05:21.016] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/login' — dispatching UpdateAsync
+[2026-05-14 10:05:21.018] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-14 10:05:21.021] PageHeaderV2.razor::UpdateAsync — ENTER path='/login'
+[2026-05-14 10:05:21.023] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/login'
+[2026-05-14 10:05:21.024] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:21.033] Login.razor::OnAfterRender — firstRender=True IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:21.113] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 0
+[2026-05-14 10:05:21.118] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 0
+[2026-05-14 10:05:21.120] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 0 categories
+[2026-05-14 10:05:21.122] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:05:21.124] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-14 10:05:21.125] PageHeaderV2.razor::UpdateAsync — EXIT path='/v2/dashboard/overview' — no route match found — labels remain empty
+[2026-05-14 10:05:21.126] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='' _itemLabel=''
+[2026-05-14 10:05:21.131] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:05:21.132] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 0 cached categories
+[2026-05-14 10:05:21.133] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:05:21.134] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-14 10:05:21.136] PageHeaderV2.razor::UpdateAsync — EXIT path='/login' — no route match found — labels remain empty
+[2026-05-14 10:05:26.733] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-14 10:05:26.742] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:26.744] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:26.883] Login.razor::HandleKeyDown — Key='b' IsAuthenticated=False
+[2026-05-14 10:05:26.887] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:26.889] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.043] Login.razor::HandleKeyDown — Key='a' IsAuthenticated=False
+[2026-05-14 10:05:27.054] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.056] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.331] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-14 10:05:27.337] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.338] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.443] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-14 10:05:27.454] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:27.457] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:28.307] Login.razor::HandleKeyDown — Key='l' IsAuthenticated=False
+[2026-05-14 10:05:28.320] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:28.322] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:28.659] Login.razor::HandleKeyDown — Key='e' IsAuthenticated=False
+[2026-05-14 10:05:28.671] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:28.678] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:28.963] Login.razor::HandleKeyDown — Key='Tab' IsAuthenticated=False
+[2026-05-14 10:05:28.970] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:29.636] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-14 10:05:29.638] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:29.987] Login.razor::HandleKeyDown — Key='A' IsAuthenticated=False
+[2026-05-14 10:05:30.004] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.006] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.243] Login.razor::HandleKeyDown — Key='d' IsAuthenticated=False
+[2026-05-14 10:05:30.254] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.256] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.450] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-14 10:05:30.453] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.455] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.642] Login.razor::HandleKeyDown — Key='i' IsAuthenticated=False
+[2026-05-14 10:05:30.654] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.656] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.786] Login.razor::HandleKeyDown — Key='n' IsAuthenticated=False
+[2026-05-14 10:05:30.804] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:30.806] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.075] Login.razor::HandleKeyDown — Key='1' IsAuthenticated=False
+[2026-05-14 10:05:31.087] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.089] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.266] Login.razor::HandleKeyDown — Key='2' IsAuthenticated=False
+[2026-05-14 10:05:31.270] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.271] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.475] Login.razor::HandleKeyDown — Key='3' IsAuthenticated=False
+[2026-05-14 10:05:31.486] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.488] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.651] Login.razor::HandleKeyDown — Key='4' IsAuthenticated=False
+[2026-05-14 10:05:31.653] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:31.655] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:32.290] Login.razor::HandleKeyDown — Key='Enter' IsAuthenticated=False
+[2026-05-14 10:05:32.293] Login.razor::DoLogin — Attempting login. username='mbattle'
+[2026-05-14 10:05:32.332] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:05:33.029] Login.razor::DoLogin — LoginAsync succeeded. UserId=1 Role='Super Admin'
+[2026-05-14 10:05:33.030] Login.razor::DoLogin — Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()
+[2026-05-14 10:05:33.031] AppStateService.cs::SetUser — CurrentUserId=1 UserName='mbattle' Role='Super Admin' — calling Notify()
+[2026-05-14 10:05:33.032] Login.razor::DoLogin — AppState.SetUser done. IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' — loading messages and notifications
+[2026-05-14 10:05:33.084] Login.razor::DoLogin — Calling AppState.SetMessagingData — will fire Notify() again
+[2026-05-14 10:05:33.086] AppStateService.cs::SetMessagingData — UnreadMessages=5 UnreadNotifications=5 — calling Notify()
+[2026-05-14 10:05:33.086] Login.razor::DoLogin — Messaging data loaded. messages=5 notifications=5
+[2026-05-14 10:05:33.087] Login.razor::DoLogin — Calling PermSvc.ResetAsync() to clear previous user's permission cache
+[2026-05-14 10:05:33.090] PermissionServiceV2.cs::ResetAsync — Permission cache cleared; _loadFailed reset to false.
+[2026-05-14 10:05:33.091] Login.razor::DoLogin — Calling NavService.ResetAsync() — async reset to avoid UI thread blocking
+[2026-05-14 10:05:33.092] NavigationServiceV2.cs::ResetAsync — ENTER ResetAsync() — _cache is populated (0 categories) — acquiring async lock
+[2026-05-14 10:05:33.093] NavigationServiceV2.cs::ResetAsync — Lock acquired — clearing main menu cache
+[2026-05-14 10:05:33.094] NavigationServiceV2.cs::ResetAsync — Main menu cache cleared — lock released
+[2026-05-14 10:05:33.096] NavigationServiceV2.cs::ResetAsync — gsLock acquired — clearing global settings cache
+[2026-05-14 10:05:33.096] NavigationServiceV2.cs::ResetAsync — Global settings cache cleared — gsLock released
+[2026-05-14 10:05:33.097] Login.razor::DoLogin — NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.
+[2026-05-14 10:05:33.099] Login.razor::DoLogin — Nav.NavigateTo('/v2/dashboard/overview') called.
+[2026-05-14 10:05:33.101] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=True errorMessage=''
+[2026-05-14 10:05:33.102] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
+[2026-05-14 10:05:33.104] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
+[2026-05-14 10:05:33.104] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
+[2026-05-14 10:05:33.106] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
+[2026-05-14 10:05:33.109] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:05:33.112] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard/overview' IsAuthenticated=True _loadPending=True
+[2026-05-14 10:05:33.115] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-14 10:05:33.139] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-14 10:05:33.140] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-14 10:05:33.142] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-14 10:05:33.143] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:33.144] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:05:33.145] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-14 10:05:33.146] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-14 10:05:33.148] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=1
+[2026-05-14 10:05:33.160] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
+[2026-05-14 10:05:33.162] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-14 10:05:33.165] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-14 10:05:33.166] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:33.169] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 47
+[2026-05-14 10:05:33.175] PermissionServiceV2.cs::CanViewAsync — _cache is null → invoking LoadAsync for route='/v2/dashboard/overview'
+[2026-05-14 10:05:33.181] PermissionServiceV2.cs::LoadAsync — Loading permissions for userId=1
+[2026-05-14 10:05:33.189] PermissionServiceV2.cs::LoadAsync — roleCode='SUPERADMIN'
+[2026-05-14 10:05:33.207] PermissionServiceV2.cs::LoadAsync — roleId=1
+[2026-05-14 10:05:33.277] PermissionServiceV2.cs::LoadAsync — Cache loaded — 27 page(s) resolved for userId=1
+[2026-05-14 10:05:33.279] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/overview' → CanRead=True
+[2026-05-14 10:05:33.281] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/trends' → CanRead=True
+[2026-05-14 10:05:33.281] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/safeguarding' → CanRead=True
+[2026-05-14 10:05:33.282] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students' → CanRead=True
+[2026-05-14 10:05:33.283] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students/new' → CanRead=True
+[2026-05-14 10:05:33.284] PermissionServiceV2.cs::CanViewAsync — Route '/v2/students/{id}' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-14 10:05:33.285] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff' → CanRead=True
+[2026-05-14 10:05:33.285] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff/new' → CanRead=True
+[2026-05-14 10:05:33.286] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes' → CanRead=True
+[2026-05-14 10:05:33.287] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/details' → CanRead=True
+[2026-05-14 10:05:33.288] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/new' → CanRead=True
+[2026-05-14 10:05:33.289] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance' → CanRead=True
+[2026-05-14 10:05:33.289] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance/student' → CanRead=True
+[2026-05-14 10:05:33.290] PermissionServiceV2.cs::CanViewAsync — Route '/v2/test/404' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-14 10:05:33.291] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/auditlog' → CanRead=True
+[2026-05-14 10:05:33.292] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/settings' → CanRead=True
+[2026-05-14 10:05:33.292] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/diagnostics' → CanRead=True
+[2026-05-14 10:05:33.293] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/site' → CanRead=True
+[2026-05-14 10:05:33.294] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/globalsettings/colours' → CanRead=True
+[2026-05-14 10:05:33.295] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/users' → CanRead=True
+[2026-05-14 10:05:33.296] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/roles' → CanRead=True
+[2026-05-14 10:05:33.297] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/permissions' → CanRead=True
+[2026-05-14 10:05:33.297] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/page-access' → CanRead=True
+[2026-05-14 10:05:33.298] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages' → CanRead=True
+[2026-05-14 10:05:33.299] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/layouts' → CanRead=True
+[2026-05-14 10:05:33.300] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/metadata' → CanRead=True
+[2026-05-14 10:05:33.301] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 8
+[2026-05-14 10:05:33.301] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 8 categories
+[2026-05-14 10:05:33.302] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:05:33.303] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
+[2026-05-14 10:05:33.304] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel='Operational Overview'
+[2026-05-14 10:05:33.305] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:05:33.306] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 8 cached categories
+[2026-05-14 10:05:33.307] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:05:33.308] SidebarV2.razor::LoadMenuAsync — Categories received = 8
+[2026-05-14 10:05:33.311] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
+[2026-05-14 10:05:33.316] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
+[2026-05-14 10:05:36.968] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/colours IsAuthenticated=True
+[2026-05-14 10:05:36.973] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:05:36.974] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
+[2026-05-14 10:05:36.975] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
+[2026-05-14 10:05:36.976] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-14 10:05:36.977] SidebarV2.razor::OnInitialized — Setup complete. path='/globalsettings/colours' IsAuthenticated=True _loadPending=True
+[2026-05-14 10:05:36.978] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-14 10:05:36.979] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/globalsettings/colours'
+[2026-05-14 10:05:36.980] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-14 10:05:36.981] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:05:36.982] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:05:36.983] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:36.984] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:05:36.985] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync
+[2026-05-14 10:05:36.986] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — ENTER GetGlobalSettingsCategoriesAsync
+[2026-05-14 10:05:36.995] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/globalsettings/colours'
+[2026-05-14 10:05:36.996] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
+[2026-05-14 10:05:36.997] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:05:36.998] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/colours' — dispatching UpdateAsync
+[2026-05-14 10:05:36.999] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/colours' IsAuthenticated=True — no redirect
+[2026-05-14 10:05:37.000] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:05:37.001] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:37.002] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-14 10:05:37.003] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:05:37.003] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:05:37.004] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:05:37.005] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Rows returned = 60
+[2026-05-14 10:05:37.006] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Categories built = 9
+[2026-05-14 10:05:37.007] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — NavigationApiServiceV2 returned — caching 9 categories
+[2026-05-14 10:05:37.007] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:05:37.008] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:05:37.009] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Global Settings' _itemLabel=''
+[2026-05-14 10:05:37.010] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:05:37.010] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-14 10:05:37.011] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:05:37.011] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:05:37.013] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:05:37.014] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-14 10:05:37.015] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:05:37.015] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:05:37.017] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:05:37.018] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:05:37.018] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:05:37.020] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:05:37.021] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
+[2026-05-14 10:05:37.023] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:05:38.122] SidebarV2.razor::HandleGroupClick — group='UI Kits' opened
+[2026-05-14 10:05:38.137] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:05:39.304] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/buttons IsAuthenticated=True
+[2026-05-14 10:05:39.305] Buttons.razor::OnInitialized — ENTER
+[2026-05-14 10:05:39.307] Buttons.razor::OnParametersSet — Parameters applied
+[2026-05-14 10:05:39.312] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:05:39.313] SidebarV2.razor::OnLocationChanged — path changed '' → '/globalsettings/buttons'
+[2026-05-14 10:05:39.314] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:05:39.315] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/buttons' — dispatching UpdateAsync
+[2026-05-14 10:05:39.315] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/buttons' IsAuthenticated=True — no redirect
+[2026-05-14 10:05:39.317] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/buttons' _isSuperAdminMenu=True
+[2026-05-14 10:05:39.317] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:05:39.318] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:05:39.319] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/buttons'
+[2026-05-14 10:05:39.319] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:05:39.320] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:05:39.321] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:05:39.322] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:05:39.323] Buttons.razor::OnAfterRender — firstRender=True
+[2026-05-14 10:05:39.325] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:14:58.651] AppLog.cs::TestWrite — Log file initialised. Path=C:\DevAbsence1\logs\AbsenceApp.log
+[2026-05-14 10:14:58.654] AppLog.cs::TestWrite — FILE EXISTS — write verified OK
+[2026-05-14 10:14:58.656] Routes.razor::OnInitialized — Router started. IsAuthenticated=False URI=https://0.0.0.0/
+[2026-05-14 10:14:58.810] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-14 10:14:58.812] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-14 10:15:02.706] Routes.razor::CheckAuthRedirect — [from=OnInitialized] Unauthenticated access to '/' — redirecting to /login
+[2026-05-14 10:15:02.744] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:15:02.745] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-14 10:15:02.753] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-14 10:15:02.761] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:15:02.769] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-14 10:15:02.772] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-14 10:15:02.786] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-14 10:15:02.789] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=False
+[2026-05-14 10:15:02.790] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-14 10:15:02.793] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-14 10:15:02.842] Routes.razor::CheckAuthRedirect — [from=LocationChanged] Ignoring stale MAUI WebView navigation to '/v2/dashboard/overview' while unauthenticated.
+[2026-05-14 10:15:02.865] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:15:02.867] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-14 10:15:02.874] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-14 10:15:02.880] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-14 10:15:02.882] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-14 10:15:02.886] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:02.887] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:15:02.889] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-14 10:15:02.895] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-14 10:15:02.899] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=0
+[2026-05-14 10:15:03.113] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-14 10:15:03.115] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:15:03.117] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-14 10:15:03.118] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-14 10:15:03.120] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-14 10:15:03.124] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/login' — dispatching UpdateAsync
+[2026-05-14 10:15:03.125] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-14 10:15:03.127] PageHeaderV2.razor::UpdateAsync — ENTER path='/login'
+[2026-05-14 10:15:03.129] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/login'
+[2026-05-14 10:15:03.130] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:03.132] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 0
+[2026-05-14 10:15:03.139] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 0
+[2026-05-14 10:15:03.141] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 0 categories
+[2026-05-14 10:15:03.143] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:15:03.144] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-14 10:15:03.145] PageHeaderV2.razor::UpdateAsync — EXIT path='/v2/dashboard/overview' — no route match found — labels remain empty
+[2026-05-14 10:15:03.147] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='' _itemLabel=''
+[2026-05-14 10:15:03.150] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:15:03.151] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 0 cached categories
+[2026-05-14 10:15:03.154] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:15:03.156] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-14 10:15:03.157] PageHeaderV2.razor::UpdateAsync — EXIT path='/login' — no route match found — labels remain empty
+[2026-05-14 10:15:03.160] Login.razor::OnAfterRender — firstRender=True IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:10.709] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-14 10:15:10.716] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:10.718] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.154] Login.razor::HandleKeyDown — Key='b' IsAuthenticated=False
+[2026-05-14 10:15:11.171] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.175] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.321] Login.razor::HandleKeyDown — Key='a' IsAuthenticated=False
+[2026-05-14 10:15:11.337] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.339] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.554] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-14 10:15:11.570] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.572] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.681] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-14 10:15:11.687] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:11.689] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:12.649] Login.razor::HandleKeyDown — Key='l' IsAuthenticated=False
+[2026-05-14 10:15:12.653] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:12.655] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:12.937] Login.razor::HandleKeyDown — Key='e' IsAuthenticated=False
+[2026-05-14 10:15:12.953] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:12.955] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:13.225] Login.razor::HandleKeyDown — Key='Tab' IsAuthenticated=False
+[2026-05-14 10:15:13.237] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:13.914] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-14 10:15:13.919] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:14.489] Login.razor::HandleKeyDown — Key='A' IsAuthenticated=False
+[2026-05-14 10:15:14.503] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:14.505] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:14.785] Login.razor::HandleKeyDown — Key='d' IsAuthenticated=False
+[2026-05-14 10:15:14.788] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:14.789] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.113] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-14 10:15:15.120] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.122] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.353] Login.razor::HandleKeyDown — Key='i' IsAuthenticated=False
+[2026-05-14 10:15:15.370] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.371] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.577] Login.razor::HandleKeyDown — Key='n' IsAuthenticated=False
+[2026-05-14 10:15:15.587] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.589] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.913] Login.razor::HandleKeyDown — Key='1' IsAuthenticated=False
+[2026-05-14 10:15:15.920] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:15.921] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.153] Login.razor::HandleKeyDown — Key='2' IsAuthenticated=False
+[2026-05-14 10:15:16.170] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.172] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.321] Login.razor::HandleKeyDown — Key='3' IsAuthenticated=False
+[2026-05-14 10:15:16.337] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.339] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.554] Login.razor::HandleKeyDown — Key='4' IsAuthenticated=False
+[2026-05-14 10:15:16.570] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:16.572] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:17.489] Login.razor::HandleKeyDown — Key='Enter' IsAuthenticated=False
+[2026-05-14 10:15:17.492] Login.razor::DoLogin — Attempting login. username='mbattle'
+[2026-05-14 10:15:17.519] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-14 10:15:18.159] Login.razor::DoLogin — LoginAsync succeeded. UserId=1 Role='Super Admin'
+[2026-05-14 10:15:18.160] Login.razor::DoLogin — Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()
+[2026-05-14 10:15:18.161] AppStateService.cs::SetUser — CurrentUserId=1 UserName='mbattle' Role='Super Admin' — calling Notify()
+[2026-05-14 10:15:18.163] Login.razor::DoLogin — AppState.SetUser done. IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' — loading messages and notifications
+[2026-05-14 10:15:18.197] Login.razor::DoLogin — Calling AppState.SetMessagingData — will fire Notify() again
+[2026-05-14 10:15:18.198] AppStateService.cs::SetMessagingData — UnreadMessages=5 UnreadNotifications=5 — calling Notify()
+[2026-05-14 10:15:18.199] Login.razor::DoLogin — Messaging data loaded. messages=5 notifications=5
+[2026-05-14 10:15:18.200] Login.razor::DoLogin — Calling PermSvc.ResetAsync() to clear previous user's permission cache
+[2026-05-14 10:15:18.202] PermissionServiceV2.cs::ResetAsync — Permission cache cleared; _loadFailed reset to false.
+[2026-05-14 10:15:18.202] Login.razor::DoLogin — Calling NavService.ResetAsync() — async reset to avoid UI thread blocking
+[2026-05-14 10:15:18.205] NavigationServiceV2.cs::ResetAsync — ENTER ResetAsync() — _cache is populated (0 categories) — acquiring async lock
+[2026-05-14 10:15:18.205] NavigationServiceV2.cs::ResetAsync — Lock acquired — clearing main menu cache
+[2026-05-14 10:15:18.206] NavigationServiceV2.cs::ResetAsync — Main menu cache cleared — lock released
+[2026-05-14 10:15:18.207] NavigationServiceV2.cs::ResetAsync — gsLock acquired — clearing global settings cache
+[2026-05-14 10:15:18.208] NavigationServiceV2.cs::ResetAsync — Global settings cache cleared — gsLock released
+[2026-05-14 10:15:18.209] Login.razor::DoLogin — NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.
+[2026-05-14 10:15:18.211] Login.razor::DoLogin — Nav.NavigateTo('/v2/dashboard/overview') called.
+[2026-05-14 10:15:18.213] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=True errorMessage=''
+[2026-05-14 10:15:18.214] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
+[2026-05-14 10:15:18.215] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
+[2026-05-14 10:15:18.216] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
+[2026-05-14 10:15:18.217] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
+[2026-05-14 10:15:18.220] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-14 10:15:18.223] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard/overview' IsAuthenticated=True _loadPending=True
+[2026-05-14 10:15:18.226] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-14 10:15:18.248] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-14 10:15:18.249] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-14 10:15:18.251] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-14 10:15:18.252] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:18.253] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:15:18.254] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-14 10:15:18.255] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-14 10:15:18.257] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=1
+[2026-05-14 10:15:18.264] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 47
+[2026-05-14 10:15:18.269] PermissionServiceV2.cs::CanViewAsync — _cache is null → invoking LoadAsync for route='/v2/dashboard/overview'
+[2026-05-14 10:15:18.273] PermissionServiceV2.cs::LoadAsync — Loading permissions for userId=1
+[2026-05-14 10:15:18.279] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
+[2026-05-14 10:15:18.281] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-14 10:15:18.283] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-14 10:15:18.284] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:18.285] PermissionServiceV2.cs::LoadAsync — roleCode='SUPERADMIN'
+[2026-05-14 10:15:18.296] PermissionServiceV2.cs::LoadAsync — roleId=1
+[2026-05-14 10:15:18.317] PermissionServiceV2.cs::LoadAsync — Cache loaded — 27 page(s) resolved for userId=1
+[2026-05-14 10:15:18.318] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/overview' → CanRead=True
+[2026-05-14 10:15:18.319] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/trends' → CanRead=True
+[2026-05-14 10:15:18.320] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/safeguarding' → CanRead=True
+[2026-05-14 10:15:18.321] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students' → CanRead=True
+[2026-05-14 10:15:18.322] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students/new' → CanRead=True
+[2026-05-14 10:15:18.323] PermissionServiceV2.cs::CanViewAsync — Route '/v2/students/{id}' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-14 10:15:18.323] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff' → CanRead=True
+[2026-05-14 10:15:18.324] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff/new' → CanRead=True
+[2026-05-14 10:15:18.325] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes' → CanRead=True
+[2026-05-14 10:15:18.326] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/details' → CanRead=True
+[2026-05-14 10:15:18.326] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/new' → CanRead=True
+[2026-05-14 10:15:18.328] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance' → CanRead=True
+[2026-05-14 10:15:18.329] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance/student' → CanRead=True
+[2026-05-14 10:15:18.329] PermissionServiceV2.cs::CanViewAsync — Route '/v2/test/404' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-14 10:15:18.330] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/auditlog' → CanRead=True
+[2026-05-14 10:15:18.331] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/settings' → CanRead=True
+[2026-05-14 10:15:18.332] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/diagnostics' → CanRead=True
+[2026-05-14 10:15:18.333] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/site' → CanRead=True
+[2026-05-14 10:15:18.333] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/globalsettings/colours' → CanRead=True
+[2026-05-14 10:15:18.334] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/users' → CanRead=True
+[2026-05-14 10:15:18.335] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/roles' → CanRead=True
+[2026-05-14 10:15:18.336] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/permissions' → CanRead=True
+[2026-05-14 10:15:18.336] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/page-access' → CanRead=True
+[2026-05-14 10:15:18.337] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages' → CanRead=True
+[2026-05-14 10:15:18.338] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/layouts' → CanRead=True
+[2026-05-14 10:15:18.338] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/metadata' → CanRead=True
+[2026-05-14 10:15:18.340] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 8
+[2026-05-14 10:15:18.340] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 8 categories
+[2026-05-14 10:15:18.341] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:15:18.342] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
+[2026-05-14 10:15:18.342] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel='Operational Overview'
+[2026-05-14 10:15:18.343] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-14 10:15:18.344] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 8 cached categories
+[2026-05-14 10:15:18.345] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-14 10:15:18.345] SidebarV2.razor::LoadMenuAsync — Categories received = 8
+[2026-05-14 10:15:18.349] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
+[2026-05-14 10:15:18.353] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
+[2026-05-14 10:15:20.322] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/colours IsAuthenticated=True
+[2026-05-14 10:15:20.327] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-14 10:15:20.328] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
+[2026-05-14 10:15:20.329] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
+[2026-05-14 10:15:20.330] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-14 10:15:20.331] SidebarV2.razor::OnInitialized — Setup complete. path='/globalsettings/colours' IsAuthenticated=True _loadPending=True
+[2026-05-14 10:15:20.331] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-14 10:15:20.332] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/globalsettings/colours'
+[2026-05-14 10:15:20.333] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-14 10:15:20.333] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:15:20.335] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:15:20.336] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:20.337] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:15:20.338] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync
+[2026-05-14 10:15:20.339] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — ENTER GetGlobalSettingsCategoriesAsync
+[2026-05-14 10:15:20.345] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/globalsettings/colours'
+[2026-05-14 10:15:20.346] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
+[2026-05-14 10:15:20.347] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:15:20.348] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/colours' — dispatching UpdateAsync
+[2026-05-14 10:15:20.349] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/colours' IsAuthenticated=True — no redirect
+[2026-05-14 10:15:20.350] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:15:20.351] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:20.352] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-14 10:15:20.353] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:15:20.354] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:15:20.354] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-14 10:15:20.355] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Rows returned = 60
+[2026-05-14 10:15:20.356] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Categories built = 9
+[2026-05-14 10:15:20.357] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — NavigationApiServiceV2 returned — caching 9 categories
+[2026-05-14 10:15:20.358] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:15:20.359] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:15:20.360] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Global Settings' _itemLabel=''
+[2026-05-14 10:15:20.361] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:15:20.361] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-14 10:15:20.362] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:15:20.363] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:15:20.364] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-14 10:15:20.365] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-14 10:15:20.366] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-14 10:15:20.367] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:15:20.369] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:15:20.370] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-14 10:15:20.371] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:15:20.372] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:15:20.373] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
+[2026-05-14 10:15:20.375] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:15:21.819] SidebarV2.razor::HandleGroupClick — group='UI Kits' opened
+[2026-05-14 10:15:21.822] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:15:23.602] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/buttons IsAuthenticated=True
+[2026-05-14 10:15:23.604] Buttons.razor::OnInitialized — ENTER
+[2026-05-14 10:15:23.605] Buttons.razor::OnParametersSet — Parameters applied
+[2026-05-14 10:15:23.611] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:15:23.612] SidebarV2.razor::OnLocationChanged — path changed '' → '/globalsettings/buttons'
+[2026-05-14 10:15:23.612] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:15:23.613] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/buttons' — dispatching UpdateAsync
+[2026-05-14 10:15:23.614] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/buttons' IsAuthenticated=True — no redirect
+[2026-05-14 10:15:23.615] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/buttons' _isSuperAdminMenu=True
+[2026-05-14 10:15:23.616] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:15:23.617] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:15:23.618] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/buttons'
+[2026-05-14 10:15:23.618] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:15:23.619] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:15:23.620] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:15:23.620] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:15:23.622] Buttons.razor::OnAfterRender — firstRender=True
+[2026-05-14 10:15:23.628] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:16:41.191] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/cheatsheet IsAuthenticated=True
+[2026-05-14 10:16:41.192] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:41.193] SidebarV2.razor::OnLocationChanged — path changed '/globalsettings/buttons' → '/globalsettings/ui-kits/cheatsheet'
+[2026-05-14 10:16:41.194] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:41.195] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/cheatsheet' — dispatching UpdateAsync
+[2026-05-14 10:16:41.196] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/cheatsheet' IsAuthenticated=True — no redirect
+[2026-05-14 10:16:41.196] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/cheatsheet' _isSuperAdminMenu=True
+[2026-05-14 10:16:41.197] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:41.197] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:16:41.198] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/cheatsheet'
+[2026-05-14 10:16:41.199] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:16:41.200] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:16:41.200] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:41.201] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:16:41.205] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:16:42.937] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/alert IsAuthenticated=True
+[2026-05-14 10:16:42.939] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:42.940] SidebarV2.razor::OnLocationChanged — path changed '/globalsettings/ui-kits/cheatsheet' → '/globalsettings/ui-kits/alert'
+[2026-05-14 10:16:42.941] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:42.942] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/alert' — dispatching UpdateAsync
+[2026-05-14 10:16:42.942] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/alert' IsAuthenticated=True — no redirect
+[2026-05-14 10:16:42.943] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/alert' _isSuperAdminMenu=True
+[2026-05-14 10:16:42.944] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:42.945] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:16:42.945] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/alert'
+[2026-05-14 10:16:42.946] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:16:42.947] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:16:42.948] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:42.948] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:16:42.953] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:16:43.742] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/badges IsAuthenticated=True
+[2026-05-14 10:16:43.744] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:43.745] SidebarV2.razor::OnLocationChanged — path changed '/globalsettings/ui-kits/alert' → '/globalsettings/ui-kits/badges'
+[2026-05-14 10:16:43.746] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:43.747] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/badges' — dispatching UpdateAsync
+[2026-05-14 10:16:43.748] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/badges' IsAuthenticated=True — no redirect
+[2026-05-14 10:16:43.748] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/badges' _isSuperAdminMenu=True
+[2026-05-14 10:16:43.749] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:43.749] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:16:43.751] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/badges'
+[2026-05-14 10:16:43.751] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:16:43.752] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:16:43.753] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:43.753] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:16:43.755] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-14 10:16:44.758] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/cheatsheet IsAuthenticated=True
+[2026-05-14 10:16:44.760] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:44.761] SidebarV2.razor::OnLocationChanged — path changed '/globalsettings/ui-kits/badges' → '/globalsettings/ui-kits/cheatsheet'
+[2026-05-14 10:16:44.762] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-14 10:16:44.762] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/cheatsheet' — dispatching UpdateAsync
+[2026-05-14 10:16:44.763] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/cheatsheet' IsAuthenticated=True — no redirect
+[2026-05-14 10:16:44.764] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/cheatsheet' _isSuperAdminMenu=True
+[2026-05-14 10:16:44.765] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:44.765] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-14 10:16:44.766] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/cheatsheet'
+[2026-05-14 10:16:44.767] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-14 10:16:44.768] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-14 10:16:44.769] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-14 10:16:44.770] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-14 10:16:44.771] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True

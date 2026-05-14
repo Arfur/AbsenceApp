@@ -32,12 +32,12 @@
                          Removed JSON/System.Text.Json.Nodes references.
                          Added Reset() for logout cache clearing.
                          GetGlobalSettingsMenuGroupsAsync() now extracts
-                         global-settings groups from the same API response.
+                         globalsettings groups from the same API response.
    - 4.0.0  2026-04-06  Schema alignment: replaced all i.Href references with
                          i.Route to match MenuItemModel.Route (was Href).
                          GetGlobalSettingsMenuGroupsAsync() updated to also
                          detect leaf groups (no Items) whose own Route starts
-                         with /global-settings. FindItemByHrefAsync updated
+                         with /globalsettings. FindItemByHrefAsync updated
                          to match on i.Route.
    - 4.1.0  2026-04-07  Debug instrumentation: added AppLog.Write calls to
                          GetMenuCategoriesAsync (cache-hit/miss/lock/DB paths),
@@ -50,10 +50,10 @@
                          await _lock.WaitAsync() to eliminate UI freeze
                          during login when BreadcrumbV2 holds the async lock.
    - 4.3.0  2026-04-10  Added GetGlobalSettingsCategoriesAsync() returning a
-                         filtered List<MenuCategoryModel> for global-settings
+                         filtered List<MenuCategoryModel> for globalsettings
                          mode. Preserves category structure (labels + groups)
                          so SidebarV2 can render section headers in the
-                         global-settings sidebar.
+                         globalsettings sidebar.
    - 4.4.0  2026-04-12  Reworked GetGlobalSettingsCategoriesAsync() to call
                          NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync()
                          which reads dbo.MenuItemsGlobalConfig directly.
@@ -92,7 +92,7 @@ public sealed class NavigationServiceV2
     private readonly SemaphoreSlim _lock = new(1, 1);
 
     // Global settings has its own independent cache and lock so that
-    // the main-menu and global-settings read paths never contend.
+    // the main-menu and globalsettings read paths never contend.
     private List<MenuCategoryModel>? _globalSettingsCache;
     private readonly SemaphoreSlim _gsLock = new(1, 1);
 
@@ -160,7 +160,7 @@ public sealed class NavigationServiceV2
             .SelectMany(c => c.Groups)
             .ToList();
         AppLog.Write("NavigationServiceV2.cs", "GetGlobalSettingsMenuGroupsAsync",
-            $"Returning {groups.Count} global-settings groups");
+            $"Returning {groups.Count} globalsettings groups");
         return groups;
     }
 

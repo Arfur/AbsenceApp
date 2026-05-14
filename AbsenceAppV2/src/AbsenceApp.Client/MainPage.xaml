@@ -9,34 +9,42 @@
      File        : MainPage.xaml
      Namespace   : AbsenceApp.Client
      Author      : Michael
-     Version     : 1.1.0
+     Version     : 1.2.0
      Created     : 2026-03-13
-     Updated     : 2026-03-23
+     Updated     : 2026-05-14
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     Purpose     : Single MAUI ContentPage that hosts the BlazorWebView.
-                   Acts as the entry point for the Blazor Hybrid UI.
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     Notes       :
-       - BlazorWebView HostPage points to wwwroot/index.html.
-       - The root Blazor component is responsible for applying the
-         application layout (header, sidebar, footer) and routing.
+     Purpose     : Hosts the BlazorWebView for the MAUI Blazor Hybrid app.
+                   This version applies the WebView2 hit-test fix to ensure
+                   click events inside scrollable Blazor regions are delivered.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Changes     :
-       - 1.1.0  2026-03-23  Updated RootComponent to use AppHost as the
-                            Blazor entry point, restoring global layout
-                            (header, sidebar, footer).
+       - 1.2.0  2026-05-14  Wrapped BlazorWebView in a Grid with
+                            InputTransparent="False" and added x:Name="webview"
+                            to support hit-test correction in code-behind.
+       - 1.1.0  2026-03-23  Updated RootComponent to use AppHost.
        - 1.0.0  2026-03-13  Initial implementation.
     ===========================================================================
     -->
 
     <!-- =========================================================
-         Page layout — BlazorWebView fills the entire page
+         WebView2 Hit-Test Fix:
+         Wrap the BlazorWebView in a Grid with InputTransparent="False".
          ========================================================= -->
-    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
-        <BlazorWebView.RootComponents>
-            <RootComponent Selector="#app"
-                           ComponentType="{x:Type local:Components.AppHost}" />
-        </BlazorWebView.RootComponents>
-    </BlazorWebView>
+    <Grid InputTransparent="False">
+
+        <BlazorWebView x:Name="webview"
+                       HostPage="wwwroot/index.html"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+
+            <BlazorWebView.RootComponents>
+                <RootComponent Selector="#app"
+                               ComponentType="{x:Type local:Components.AppHost}" />
+            </BlazorWebView.RootComponents>
+
+        </BlazorWebView>
+
+    </Grid>
 
 </ContentPage>
+
