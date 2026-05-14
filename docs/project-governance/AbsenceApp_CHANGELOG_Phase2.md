@@ -2372,3 +2372,483 @@ aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They
   - Edit a colour value, click Preview — selected button in demo row reflects preview colours (scoped style override).
   - Click Save — tokens persisted to DB, accordion exits edit mode, status "CSS Code Successfully Updated".
   - Click Cancel — working copy discarded; synthesized CSS restored from DB values.
+
+  ---
+
+  ## 2026-05-14 — Schema-Driven Design Token Engine Plan Execution (Phases A–D)
+
+  **Author:** Michael  
+  **Type:** Design | Planning | Governance  
+  **Scope:** `design-system:schema-driven-engine`  
+  **Summary:** Completed plan-mode execution of Phases A–D for the schema-driven design-token engine. Locked deterministic architecture decisions and phase artifacts for schema authority, DB reconciliation policy, CSS generation policy, and universal editor behavior design.
+
+  ### Details
+
+  #### Phase A — Schema format and governance (completed)
+  - Locked schema as the single source of truth for component/variant/property definitions, defaults, inheritance, special-value semantics, and editor metadata.
+  - Finalized canonical schema entity set and required/optional attribute classifications.
+  - Finalized deterministic identity/naming/normalization rules and uniqueness constraints.
+  - Finalized inheritance resolution order, override precedence, and invalid-reference/cycle handling policy.
+  - Finalized special-value semantics policy (data-defined behavior only; no hardcoded assumptions).
+  - Finalized schema lifecycle governance policy (versioning, compatibility, approvals, audit metadata).
+
+  #### Phase B — DB auto-seeding strategy design (completed)
+  - Finalized schema-to-persistence authority boundaries and synchronization objectives.
+  - Finalized deterministic reconciliation state matrix (missing/matching/default-drift/deprecated/unknown).
+  - Finalized preservation guarantees for runtime/user overrides and field mutability policy.
+  - Finalized reconciliation run trigger and idempotency contract.
+  - Finalized reconciliation audit, observability, and failure-handling policy.
+
+  #### Phase C — CSS auto-generation strategy design (completed)
+  - Finalized two CSS output domains: token-variable output and component-rule output.
+  - Finalized deterministic schema-to-CSS mapping policy, ordering, and normalization rules.
+  - Finalized inheritance-aware precedence and conflict resolution policy for generated CSS semantics.
+  - Finalized legacy coexistence and retirement gate policy for transition from static CSS sources.
+  - Finalized CSS generation audit requirements and evidence expectations.
+
+  #### Phase D — Universal editor strategy design (completed)
+  - Finalized universal, schema-driven editor contract (component/variant/property agnostic).
+  - Finalized schema-driven navigation/grouping/order model.
+  - Finalized editability semantics across editable/inherited/static/read-only states.
+  - Finalized working/preview/persisted state-transition model (edit/preview/save/cancel/reset).
+  - Finalized validation and user feedback policy standards for deterministic behavior.
+
+  ### Affected Files and Components
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only update)
+
+  ### Rollout Notes
+  - This entry records planning/governance outcomes only; no implementation changes are included in this phase entry.
+  - Phases A–D are closed in plan mode and are execution-ready for subsequent implementation mode when explicitly authorized.
+
+  ### Verification
+  - Phase A definition-of-done criteria satisfied.
+  - Phase B definition-of-done criteria satisfied.
+  - Phase C definition-of-done criteria satisfied.
+  - Phase D definition-of-done criteria satisfied.
+
+  ---
+
+  ## 2026-05-14 — Schema-Driven Design Token Engine Plan Execution (Phase E)
+
+  **Author:** Michael  
+  **Type:** Design | Planning | Governance  
+  **Scope:** `design-system:synthesis-parsing-engine`  
+  **Summary:** Completed plan-mode execution of Phase E for the schema-driven design-token engine. Locked deterministic synthesis/parsing contracts, round-trip expectations, inheritance/special-value resolution policy, and engine auditability requirements.
+
+  ### Details
+
+  #### E1 — Synthesis objective (completed)
+  - Finalized canonical synthesis contract: schema plus effective token values produce deterministic representation output.
+  - Finalized output ordering/normalization expectations for reproducible synthesis outcomes.
+
+  #### E2 — Parsing objective (completed)
+  - Finalized deterministic parsing contract from edited representation back to schema-constrained token updates.
+  - Finalized accepted/ignored/rejected outcome classes for parse decisions.
+
+  #### E3 — Round-trip contract (completed)
+  - Finalized synthesis→parse round-trip expectations and tolerance boundaries.
+  - Finalized handling policy for declared non-reversible edge conditions.
+
+  #### E4 — Inheritance and special-value resolution (completed)
+  - Finalized schema-driven precedence rules for inherited and locally defined values in synthesis and parsing flows.
+  - Finalized special-value resolution policy as data-defined behavior, with no component-specific hardcoding.
+
+  #### E5 — Engine auditability requirements (completed)
+  - Finalized mandatory traceability requirements for mapping decisions, rejected inputs, ignored values, and applied outcomes.
+  - Finalized schema-version linkage requirements for all synthesis/parsing decision traces.
+
+  ### Affected Files and Components
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only update)
+
+  ### Rollout Notes
+  - This entry records planning/governance outcomes only; no implementation changes are included in this phase entry.
+  - Phase E is closed in plan mode and ready to transition to implementation mode only when explicitly authorized.
+
+  ### Verification
+  - E1 definition-of-done criteria satisfied.
+  - E2 definition-of-done criteria satisfied.
+  - E3 definition-of-done criteria satisfied.
+  - E4 definition-of-done criteria satisfied.
+  - E5 definition-of-done criteria satisfied.
+
+  ---
+
+  ## 2026-05-14 — Schema-Driven Design Token Engine Plan Execution (Phase F)
+
+  **Author:** Michael  
+  **Type:** Design | Planning | Governance  
+  **Scope:** `design-system:migration-cutover`  
+  **Summary:** Completed plan-mode execution of Phase F for the schema-driven design-token engine. Locked deterministic migration baseline invariants, stage-gated cutover criteria, rollback policies, expansion governance, and legacy retirement conditions.
+
+  ### Details
+
+  #### F1 — Migration baseline and invariants (completed)
+  - Finalized baseline behavior invariants to preserve during migration.
+  - Finalized non-negotiable parity expectations across token semantics, CSS behavior, and editor outcomes.
+
+  #### F2 — Staged migration sequence (completed)
+  - Finalized deterministic stage order from schema authority through legacy retirement readiness.
+  - Finalized dependency ordering and stage-boundary ownership expectations.
+
+  #### F3 — Cutover gate criteria (completed)
+  - Finalized objective gate pass/fail criteria for stage advancement.
+  - Finalized required sign-off evidence artifacts per gate.
+
+  #### F4 — Rollback and contingency policy (completed)
+  - Finalized rollback triggers by severity and stage.
+  - Finalized rollback targets and required rollback-success evidence.
+
+  #### F5 — Component expansion policy (completed)
+  - Finalized schema-first onboarding policy for components beyond Buttons.
+  - Finalized entry criteria and acceptance controls for additional component groups.
+
+  #### F6 — Legacy retirement criteria (completed)
+  - Finalized objective retirement thresholds for legacy/static duplicate sources.
+  - Finalized closure conditions for decommissioning legacy paths after sustained parity validation.
+
+  ### Affected Files and Components
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only update)
+
+  ### Rollout Notes
+  - This entry records planning/governance outcomes only; no implementation changes are included in this phase entry.
+  - Phase F is closed in plan mode; all plan phases A–F are now complete and execution-ready for implementation mode when explicitly authorized.
+
+  ### Verification
+  - F1 definition-of-done criteria satisfied.
+  - F2 definition-of-done criteria satisfied.
+  - F3 definition-of-done criteria satisfied.
+  - F4 definition-of-done criteria satisfied.
+  - F5 definition-of-done criteria satisfied.
+  - F6 definition-of-done criteria satisfied.
+
+  ---
+
+  ## 2026-05-14 — Schema-Driven Design Token Engine Phase A (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | Execution-Mode Documentation  
+  **Scope:** `design-system:phase-a-artifacts`  
+  **Summary:** Executed Phase A (A1–A7) end-to-end in EXECUTION MODE by creating the full approved governance artifact set, closing all Phase A gates, and producing a signed sign-off pack. No application/runtime code, CSS, schema runtime assets, or executable implementation content was changed.
+
+  ### Details
+
+  #### A1 — Scope and authority lock
+  - Produced **Phase A Scope Record** and **Schema Authority Statement**.
+  - Locked scope in: `btn`, `card`.
+  - Locked scope out: `tab` and all non-listed UIKit domains.
+
+  #### A2 — Canonical entity definitions
+  - Produced **Canonical Entity Matrix** with mandatory/optional attributes and deterministic entity dependencies.
+
+  #### A3 — Identity and naming policy
+  - Produced **Identity/Naming Rulebook** with canonical keying, normalization, and collision policy.
+
+  #### A4 — Inheritance semantics
+  - Produced **Inheritance Resolution Matrix** with deterministic resolution order, precedence rules, and invalid-state handling.
+
+  #### A5 — Special-value semantics
+  - Produced **Special-Value Semantics Register** defining explicit semantic classes and validation outcomes.
+
+  #### A6 — Lifecycle governance
+  - Produced **Schema Lifecycle Governance Policy** defining versioning, compatibility classes, approvals, and compliance gates.
+
+  #### A7 — Sign-off pack
+  - Produced **Phase A Sign-Off Pack** aggregating all required artifacts and recording definition-of-done closure.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-a/PhaseA_Scope_Record.md`
+  - `docs/project-governance/design-token-engine/phase-a/Schema_Authority_Statement.md`
+  - `docs/project-governance/design-token-engine/phase-a/Canonical_Entity_Matrix.md`
+  - `docs/project-governance/design-token-engine/phase-a/Identity_Naming_Rulebook.md`
+  - `docs/project-governance/design-token-engine/phase-a/Inheritance_Resolution_Matrix.md`
+  - `docs/project-governance/design-token-engine/phase-a/Special_Value_Semantics_Register.md`
+  - `docs/project-governance/design-token-engine/phase-a/Schema_Lifecycle_Governance_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-a/PhaseA_SignOff_Pack.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was documentation/governance only.
+  - No runtime implementation changes were applied.
+
+  ### Verification
+  - Required Phase A artifacts: all present.
+  - Phase A gates A1–A7: all closed.
+  - Blocking ambiguities: none.
+  - Phase A execution-mode objective: satisfied.
+
+  ---
+
+  ## 2026-05-15 — Schema-Driven Design Token Engine Phase B (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | Reconciliation Policy  
+  **Scope:** `design-system:phase-b-reconciliation-governance`  
+  **Summary:** Executed Phase B (B1–B5) end-to-end in EXECUTION MODE by producing the full reconciliation governance artifact set covering synchronization objectives, authority boundaries, deterministic state handling, preservation guarantees, idempotency policy, and audit/failure requirements.
+
+  ### Details
+
+  #### B1 — Synchronization objectives and authority boundaries
+  - Produced **Phase B Synchronization Objective Record** and **Field Authority Map**.
+  - Locked schema-vs-persistence authority boundaries and in-sync criteria.
+
+  #### B2 — Deterministic reconciliation state design
+  - Produced **Reconciliation State Matrix** and **State Classification Rules**.
+  - Locked deterministic state classification and action mapping policy.
+
+  #### B3 — Preservation and lifecycle governance
+  - Produced **Preservation Contract**, **Field Mutability Register**, and **Lifecycle-State Governance Addendum**.
+  - Locked non-destructive runtime override preservation invariants and field mutability policy.
+
+  #### B4 — Trigger and idempotency governance
+  - Produced **Reconciliation Trigger Policy**, **Idempotency Contract**, and **Repeatability Acceptance Criteria**.
+  - Locked deterministic trigger classes and repeatability expectations.
+
+  #### B5 — Audit and failure governance
+  - Produced **Reconciliation Audit Requirements**, **Failure Severity Matrix**, and **Reconciliation Run Evidence Checklist**.
+  - Locked mandatory evidence and severity-based run outcome handling.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-b/PhaseB_Synchronization_Objective_Record.md`
+  - `docs/project-governance/design-token-engine/phase-b/Field_Authority_Map.md`
+  - `docs/project-governance/design-token-engine/phase-b/Reconciliation_State_Matrix.md`
+  - `docs/project-governance/design-token-engine/phase-b/State_Classification_Rules.md`
+  - `docs/project-governance/design-token-engine/phase-b/Preservation_Contract.md`
+  - `docs/project-governance/design-token-engine/phase-b/Field_Mutability_Register.md`
+  - `docs/project-governance/design-token-engine/phase-b/Lifecycle_State_Governance_Addendum.md`
+  - `docs/project-governance/design-token-engine/phase-b/Reconciliation_Trigger_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-b/Idempotency_Contract.md`
+  - `docs/project-governance/design-token-engine/phase-b/Repeatability_Acceptance_Criteria.md`
+  - `docs/project-governance/design-token-engine/phase-b/Reconciliation_Audit_Requirements.md`
+  - `docs/project-governance/design-token-engine/phase-b/Failure_Severity_Matrix.md`
+  - `docs/project-governance/design-token-engine/phase-b/Reconciliation_Run_Evidence_Checklist.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was governance/documentation only.
+  - No application code, CSS, schema runtime assets, or implementation logic changed.
+
+  ### Verification
+  - Required Phase B artifacts: all present.
+  - Phase B gates B1–B5: all closed.
+  - Blocking ambiguities: none.
+  - Phase B execution-mode objective: satisfied.
+
+  ---
+
+  ## 2026-05-15 — Schema-Driven Design Token Engine Phase C (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | CSS Mapping Policy  
+  **Scope:** `design-system:phase-c-css-governance`  
+  **Summary:** Executed Phase C (C1–C5) end-to-end in EXECUTION MODE by producing the full CSS governance artifact set for output domains, ownership decisions, schema-to-CSS mapping determinism, precedence/conflict policies, legacy coexistence/retirement criteria, and generation audit evidence requirements.
+
+  ### Details
+
+  #### C1 — CSS output domains and ownership
+  - Produced **CSS Output Domain Contract** and **Domain Ownership Decision Log**.
+  - Locked two-domain model and non-overlap ownership policy.
+
+  #### C2 — Schema-to-CSS mapping governance
+  - Produced **Schema-to-CSS Mapping Matrix**, **Ordering/Normalization Policy**, and **Mapping Validation Checklist**.
+  - Locked deterministic mapping, ordering, and normalization controls.
+
+  #### C3 — Inheritance and conflict governance
+  - Produced **CSS Inheritance/Precedence Table** and **Conflict Classification Policy**.
+  - Locked precedence resolution and conflict severity handling policy.
+
+  #### C4 — Legacy coexistence and transition governance
+  - Produced **Legacy Coexistence Policy**, **Transition Gate Criteria**, and **Legacy Retirement Criteria Register**.
+  - Locked controlled coexistence, stage-gate progression, and retirement conditions.
+
+  #### C5 — CSS generation audit governance
+  - Produced **CSS Generation Audit Specification** and **Generation Evidence Checklist**.
+  - Locked mandatory generation audit fields and evidence acceptance rules.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-c/CSS_Output_Domain_Contract.md`
+  - `docs/project-governance/design-token-engine/phase-c/Domain_Ownership_Decision_Log.md`
+  - `docs/project-governance/design-token-engine/phase-c/Schema_to_CSS_Mapping_Matrix.md`
+  - `docs/project-governance/design-token-engine/phase-c/Ordering_Normalization_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-c/Mapping_Validation_Checklist.md`
+  - `docs/project-governance/design-token-engine/phase-c/CSS_Inheritance_Precedence_Table.md`
+  - `docs/project-governance/design-token-engine/phase-c/Conflict_Classification_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-c/Legacy_Coexistence_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-c/Transition_Gate_Criteria.md`
+  - `docs/project-governance/design-token-engine/phase-c/Legacy_Retirement_Criteria_Register.md`
+  - `docs/project-governance/design-token-engine/phase-c/CSS_Generation_Audit_Specification.md`
+  - `docs/project-governance/design-token-engine/phase-c/Generation_Evidence_Checklist.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was governance/documentation only.
+  - No application code, CSS, schema runtime assets, or implementation logic changed.
+
+  ### Verification
+  - Required Phase C artifacts: all present.
+  - Phase C gates C1–C5: all closed.
+  - Blocking ambiguities: none.
+  - Phase C execution-mode objective: satisfied.
+
+  ---
+
+  ## 2026-05-15 — Schema-Driven Design Token Engine Phase D (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | UI Model Specification  
+  **Scope:** `design-system:phase-d-universal-editor-governance`  
+  **Summary:** Executed Phase D (D1–D5) end-to-end in EXECUTION MODE by producing the full universal editor governance artifact set for behavior contracts, schema-driven navigation/grouping, editability semantics, state model transitions, validation/feedback standards, and sign-off summary evidence.
+
+  ### Details
+
+  #### D1 — Universal editor behavior contract
+  - Produced **Universal Editor Behavior Contract**.
+  - Locked schema-driven, component-agnostic behavior scope and deterministic mode semantics.
+
+  #### D2 — Schema-driven navigation/grouping model
+  - Produced **Schema-Driven Navigation & Grouping Model**.
+  - Locked deterministic grouping, ordering, and reference integrity constraints.
+
+  #### D3 — Editability and override semantics
+  - Produced **Editability & Override Semantics Specification**.
+  - Locked semantic classes and override policy constraints.
+
+  #### D4 — Working/preview/persisted state model
+  - Produced **Working/Preview/Persisted State Model**.
+  - Locked explicit transition rules and non-destructive state guarantees.
+
+  #### D5 — Validation and feedback standards
+  - Produced **Validation & Feedback Standards**.
+  - Locked validation layers, outcome classes, and deterministic feedback policy.
+
+  #### Governance Sign-Off
+  - Produced **Phase D Sign-Off Summary** as closure evidence.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-d/Universal_Editor_Behavior_Contract.md`
+  - `docs/project-governance/design-token-engine/phase-d/Schema_Driven_Navigation_and_Grouping_Model.md`
+  - `docs/project-governance/design-token-engine/phase-d/Editability_and_Override_Semantics_Specification.md`
+  - `docs/project-governance/design-token-engine/phase-d/Working_Preview_Persisted_State_Model.md`
+  - `docs/project-governance/design-token-engine/phase-d/Validation_and_Feedback_Standards.md`
+  - `docs/project-governance/design-token-engine/phase-d/PhaseD_SignOff_Summary.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was governance/documentation only.
+  - No application code, CSS, schema runtime assets, or implementation logic changed.
+
+  ### Verification
+  - Required Phase D artifacts: all present.
+  - Phase D gates D1–D5: all closed.
+  - Blocking ambiguities: none.
+  - Phase D execution-mode objective: satisfied.
+
+  ---
+
+  ## 2026-05-15 — Schema-Driven Design Token Engine Phase E (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | Synthesis/Parsing Specification  
+  **Scope:** `design-system:phase-e-engine-governance`  
+  **Summary:** Executed Phase E (E1–E5) end-to-end in EXECUTION MODE by producing the full synthesis/parsing governance artifact set for synthesis objectives, parsing objectives, round-trip consistency controls, inheritance/special-value resolution, and engine auditability evidence requirements.
+
+  ### Details
+
+  #### E1 — Synthesis objective
+  - Produced **Synthesis Objective Specification**.
+  - Locked deterministic synthesis contract and canonical output constraints.
+
+  #### E2 — Parsing objective
+  - Produced **Parsing Objective Specification**.
+  - Locked deterministic parsing outcomes and classification policy.
+
+  #### E3 — Round-trip consistency
+  - Produced **Round-Trip Consistency Contract**.
+  - Locked semantic-preservation expectations and tolerance boundaries.
+
+  #### E4 — Inheritance and special-value resolution
+  - Produced **Inheritance & Special-Value Resolution Model**.
+  - Locked deterministic resolution order and invalid-condition handling.
+
+  #### E5 — Engine auditability and evidence
+  - Produced **Engine Auditability & Evidence Requirements**.
+  - Locked mandatory trace fields, severity classes, and evidence compliance rules.
+
+  #### Governance Sign-Off
+  - Produced **Phase E Sign-Off Summary** as closure evidence.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-e/Synthesis_Objective_Specification.md`
+  - `docs/project-governance/design-token-engine/phase-e/Parsing_Objective_Specification.md`
+  - `docs/project-governance/design-token-engine/phase-e/Round_Trip_Consistency_Contract.md`
+  - `docs/project-governance/design-token-engine/phase-e/Inheritance_and_Special_Value_Resolution_Model.md`
+  - `docs/project-governance/design-token-engine/phase-e/Engine_Auditability_and_Evidence_Requirements.md`
+  - `docs/project-governance/design-token-engine/phase-e/PhaseE_SignOff_Summary.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was governance/documentation only.
+  - No application code, CSS, schema runtime assets, or implementation logic changed.
+
+  ### Verification
+  - Required Phase E artifacts: all present.
+  - Phase E gates E1–E5: all closed.
+  - Blocking ambiguities: none.
+  - Phase E execution-mode objective: satisfied.
+
+  ---
+
+  ## 2026-05-15 — Schema-Driven Design Token Engine Phase F (EXECUTION MODE)
+
+  **Author:** Michael  
+  **Type:** Governance | Planning | Migration Policy  
+  **Scope:** `design-system:phase-f-migration-governance`  
+  **Summary:** Executed Phase F (F1–F6) end-to-end in EXECUTION MODE by producing the complete migration governance artifact set for baseline invariants, staged sequencing, cutover gate criteria, rollback/contingency controls, component expansion governance, and legacy retirement criteria.
+
+  ### Details
+
+  #### F1 — Migration baseline and invariants
+  - Produced **Migration Baseline & Invariants Record**.
+  - Locked baseline invariants and breach handling constraints.
+
+  #### F2 — Staged migration sequence
+  - Produced **Staged Migration Sequence Plan**.
+  - Locked deterministic stage order and dependency progression rules.
+
+  #### F3 — Cutover gate criteria
+  - Produced **Cutover Gate Criteria**.
+  - Locked objective pass/fail controls and blocking conditions.
+
+  #### F4 — Rollback and contingency policy
+  - Produced **Rollback & Contingency Policy**.
+  - Locked rollback triggers, evidence requirements, and re-entry controls.
+
+  #### F5 — Component expansion policy
+  - Produced **Component Expansion Policy**.
+  - Locked schema-first onboarding entry criteria and expansion governance rules.
+
+  #### F6 — Legacy retirement criteria
+  - Produced **Legacy Retirement Criteria**.
+  - Locked objective retirement conditions and evidence-backed closure policy.
+
+  #### Governance Sign-Off
+  - Produced **Phase F Sign-Off Summary** as closure evidence.
+
+  ### Affected Files and Components
+  - `docs/project-governance/design-token-engine/phase-f/Migration_Baseline_and_Invariants_Record.md`
+  - `docs/project-governance/design-token-engine/phase-f/Staged_Migration_Sequence_Plan.md`
+  - `docs/project-governance/design-token-engine/phase-f/Cutover_Gate_Criteria.md`
+  - `docs/project-governance/design-token-engine/phase-f/Rollback_and_Contingency_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-f/Component_Expansion_Policy.md`
+  - `docs/project-governance/design-token-engine/phase-f/Legacy_Retirement_Criteria.md`
+  - `docs/project-governance/design-token-engine/phase-f/PhaseF_SignOff_Summary.md`
+  - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only entry)
+
+  ### Rollout Notes
+  - This execution was governance/documentation only.
+  - No application code, CSS, schema runtime assets, or implementation logic changed.
+
+  ### Verification
+  - Required Phase F artifacts: all present.
+  - Phase F gates F1–F6: all closed.
+  - Blocking ambiguities: none.
+  - Phase F execution-mode objective: satisfied.
