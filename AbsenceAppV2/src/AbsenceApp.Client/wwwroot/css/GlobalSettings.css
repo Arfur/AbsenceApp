@@ -1,12 +1,12 @@
 /* ===========================================================================
-   File        : global-config.css
+   File        : GlobalSettings.css
    Author      : Michael
-   Version     : 2.0.0
+   Version     : 2.1.0
    Created     : 2026-03-27
-   Updated     : 2026-03-28
+   Updated     : 2026-05-14
    ---------------------------------------------------------------------------
-   Purpose     : Shared styles for all Global Config demo pages
-                 (/global-config/*). Provides the gc-* class family and
+   Purpose     : Shared styles for all Global Settings pages
+                 (/globalsettings/*). Provides the gc-* class family and
                  the dsv2-card component used by all demo pages.
 
    Class families:
@@ -603,7 +603,7 @@
 
 /* ==========================================================================
    dsv2-btn — Global V2 button system
-   Loaded in global-config.css so rules apply across all pages (not scoped).
+   Loaded in GlobalSettings.css so rules apply across all pages (not scoped).
    Phase A: Colour and structural values use --ds-btn-* design tokens seeded
    in the DesignTokens table. DesignTokenStyleInjectorV2 injects a :root {}
    override block at runtime; CSS fallback values mirror the seed defaults.
@@ -727,65 +727,85 @@
     color: #ffffff;
 }
 
-/* ── Outline variants ────────────────────────────────────────────────────── */
+.dsv2-btn--link {
+    background: transparent;
+    color: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: transparent;
+    text-decoration: none;
+}
+.dsv2-btn--link:hover {
+    background: transparent;
+    color: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    border-color: transparent;
+    text-decoration: underline;
+}
+
+/* ── Outline variants (use shared --ds-btn-* tokens; editing outline colours
+   also updates the corresponding filled button variant) ─────────────────── */
 .dsv2-btn--outline-primary {
     background: transparent;
-    color: var(--v2-color-primary, #0d6efd);
-    border-color: var(--v2-color-primary, #0d6efd);
+    color: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
 }
 .dsv2-btn--outline-primary:hover {
-    background: var(--v2-color-primary, #0d6efd);
-    color: #ffffff;
+    background: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
+    color: var(--ds-btn-primary-text, #ffffff);
 }
 
 .dsv2-btn--outline-secondary {
     background: transparent;
-    color: var(--v2-color-secondary, #6c757d);
-    border-color: var(--v2-color-secondary, #6c757d);
+    color: var(--ds-btn-secondary-text, #212529);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
 }
 .dsv2-btn--outline-secondary:hover {
-    background: var(--v2-color-secondary, #6c757d);
-    color: #ffffff;
+    background: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
+    color: var(--ds-btn-secondary-text, #212529);
 }
 
 .dsv2-btn--outline-success {
     background: transparent;
-    color: var(--v2-color-success, #198754);
-    border-color: var(--v2-color-success, #198754);
+    color: var(--ds-btn-success-bg, #198754);
+    border-color: var(--ds-btn-success-border, #198754);
 }
 .dsv2-btn--outline-success:hover {
-    background: var(--v2-color-success, #198754);
-    color: #ffffff;
+    background: var(--ds-btn-success-bg, #198754);
+    border-color: var(--ds-btn-success-border, #198754);
+    color: var(--ds-btn-success-text, #ffffff);
 }
 
 .dsv2-btn--outline-danger {
     background: transparent;
-    color: var(--v2-color-danger, #dc3545);
-    border-color: var(--v2-color-danger, #dc3545);
+    color: var(--ds-btn-danger-bg, #dc3545);
+    border-color: var(--ds-btn-danger-border, #dc3545);
 }
 .dsv2-btn--outline-danger:hover {
-    background: var(--v2-color-danger, #dc3545);
-    color: #ffffff;
+    background: var(--ds-btn-danger-bg, #dc3545);
+    border-color: var(--ds-btn-danger-border, #dc3545);
+    color: var(--ds-btn-danger-text, #ffffff);
 }
 
 .dsv2-btn--outline-warning {
     background: transparent;
-    color: var(--v2-color-warning, #ffc107);
-    border-color: var(--v2-color-warning, #ffc107);
+    color: var(--ds-btn-warning-bg, #ffc107);
+    border-color: var(--ds-btn-warning-border, #ffc107);
 }
 .dsv2-btn--outline-warning:hover {
-    background: var(--v2-color-warning, #ffc107);
-    color: #212529;
+    background: var(--ds-btn-warning-bg, #ffc107);
+    border-color: var(--ds-btn-warning-border, #ffc107);
+    color: var(--ds-btn-warning-text, #212529);
 }
 
 .dsv2-btn--outline-info {
     background: transparent;
-    color: var(--v2-color-info, #0dcaf0);
-    border-color: var(--v2-color-info, #0dcaf0);
+    color: var(--ds-btn-info-bg, #0dcaf0);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
 }
 .dsv2-btn--outline-info:hover {
-    background: var(--v2-color-info, #0dcaf0);
-    color: #212529;
+    background: var(--ds-btn-info-bg, #0dcaf0);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
+    color: var(--ds-btn-info-text, #212529);
 }
 
 /* ── Size variants ───────────────────────────────────────────────────────── */

@@ -154,7 +154,7 @@ public class AppDbContext : DbContext
     public DbSet<RoleFeature> RoleFeature { get; set; }
     public DbSet<RoleMenuItem> RoleMenuItem { get; set; }
     public DbSet<MenuItem> MenuItems { get; set; }
-    public DbSet<MenuItemsGlobalConfig> MenuItemsGlobalConfig { get; set; }
+    public DbSet<MenuItemsGlobalSettings> MenuItemsGlobalSettings { get; set; }
     public DbSet<UserFeatureOverride> UserFeatureOverride { get; set; }
     public DbSet<UserRole> UserRole { get; set; }
 
@@ -330,7 +330,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<RoleFeature>().ToTable("rolefeatures");
         modelBuilder.Entity<RoleMenuItem>().ToTable("rolemenuitems");
         modelBuilder.Entity<MenuItem>().ToTable("menuitems");
-        modelBuilder.Entity<MenuItemsGlobalConfig>().ToTable("menuitemglobalconfigs");
+        modelBuilder.Entity<MenuItemsGlobalSettings>().ToTable("menuitemsglobalsettings");
         modelBuilder.Entity<UserFeatureOverride>().ToTable("userfeatureoverrides");
         modelBuilder.Entity<UserRole>().ToTable("userrole");
 

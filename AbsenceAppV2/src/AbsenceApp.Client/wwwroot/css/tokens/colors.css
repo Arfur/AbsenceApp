@@ -7,7 +7,7 @@
    Purpose : Color design tokens for V2 components.
              Variable names are aligned with V1 app.css to ensure visual
              consistency. V2-specific tokens are prefixed with --ds-.
-             --v2-* aliases added in Phase 4 so all new Global Config
+             --v2-* aliases added in Phase 4 so all new Global Settings
              components and the GlobalErrorBoundaryV2 can use them.
              DO NOT modify V1 app.css.
 ============================================================================= */
@@ -67,7 +67,7 @@
 
     /* =========================================================
        --v2-* semantic aliases (Phase 4)
-       All new components (Global Config demo pages,
+       All new components (Global Settings pages,
        GlobalErrorBoundaryV2) use this naming scheme.
        They map directly to the --ds-* tokens above so
        both schemes resolve to the same value.

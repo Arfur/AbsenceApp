@@ -56,7 +56,7 @@
                          globalsettings sidebar.
    - 4.4.0  2026-04-12  Reworked GetGlobalSettingsCategoriesAsync() to call
                          NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync()
-                         which reads dbo.MenuItemsGlobalConfig directly.
+                         which reads dbo.MenuItemsGlobalSettings directly.
                          Added separate _globalSettingsCache + _gsLock for the
                          global settings hierarchy (same double-check pattern
                          as the main menu cache). Updated
@@ -167,7 +167,7 @@ public sealed class NavigationServiceV2
     // ===========================================================================
     // GetGlobalSettingsCategoriesAsync
     // Returns the full category → group → submenu hierarchy for the Global
-    // Settings sidebar by reading dbo.MenuItemsGlobalConfig via the API service.
+    // Settings sidebar by reading dbo.MenuItemsGlobalSettings via the API service.
     // Cached separately from the main menu; cleared by ResetAsync().
     // ===========================================================================
 

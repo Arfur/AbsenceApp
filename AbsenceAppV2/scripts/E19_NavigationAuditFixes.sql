@@ -48,7 +48,7 @@ WHERE  Id = 601010;  -- Table Settings submenu
 -- FIX-08 — Hide DESIGN SYSTEM legacy entries
 -- Keeps rows in place (IsHidden=1) so historical data is preserved.
 -- These entries duplicate /global-settings/colours which is already in
--- dbo.MenuItemsGlobalConfig (id=101010).
+-- dbo.MenuItemsGlobalSettings (id=101010).
 -- ===========================================================================
 PRINT 'FIX-08: Hiding DESIGN SYSTEM entries (700000, 701000, 701010)...';
 

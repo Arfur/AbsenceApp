@@ -11,7 +11,7 @@
 --   v1.1.0  2026-05-05  Fix rolemenuitem INSERT to supply explicit Id values
 --                       (900001-900009); table has no default. Merge into one
 --                       statement. Fix app_pages -> AppPages (correct table name).
---                       Delete Section D (menuitemglobalconfigs does not apply
+--                       Delete Section D (menuitemsglobalsettings does not apply
 --                       to PEOPLE/ATTENDANCE navigation items).
 -- -----------------------------------------------------------------------------
 -- Purpose : Adds navigation and permission rows for the three new Student

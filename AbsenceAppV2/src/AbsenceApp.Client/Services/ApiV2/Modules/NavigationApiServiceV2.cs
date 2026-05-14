@@ -60,14 +60,14 @@
                          duplicate sidebar entries for menu/submenu pairs that
                          represent the same logical destination.
    - 5.2.0  2026-04-12  Added GetGlobalSettingsCategoriesAsync() which queries
-                         dbo.MenuItemsGlobalConfig directly (no role filter).
+                         dbo.MenuItemsGlobalSettings directly (no role filter).
                          Projects the table rows into the existing MenuItemRow
                          shape using SQL NULLs for absent columns, then reuses
                          BuildCategories() to produce the category → group →
                          submenu hierarchy for the Global Settings sidebar.
    - 5.3.0  2026-04-10  Fixed InvalidCastException in
                          GetGlobalSettingsCategoriesAsync (E7 Issue 2).
-                         MenuItemsGlobalConfig.IsHidden was INT in the DB
+                         MenuItemsGlobalSettings.IsHidden was INT in the DB
                          (now corrected to BIT). Added explicit
                          CAST(IsHidden AS BIT) and CAST(IsFlat AS BIT) to
                          the SQL projection to prevent future type-mismatch
@@ -210,7 +210,7 @@ public sealed class NavigationApiServiceV2
 
     // ===========================================================================
     // GetGlobalSettingsCategoriesAsync
-    // Queries dbo.MenuItemsGlobalConfig directly and builds the full
+    // Queries dbo.MenuItemsGlobalSettings directly and builds the full
     // category → group → submenu hierarchy for the Global Settings sidebar.
     // No role filter is applied — this table is superadmin-only by design.
     // The table columns (Id, ParentId, ItemType, Label, Icon, IsHidden, Route,
@@ -230,7 +230,7 @@ public sealed class NavigationApiServiceV2
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
             // -----------------------------------------------------------------------
-            // Query MenuItemsGlobalConfig directly.
+            // Query MenuItemsGlobalSettings directly.
             // Columns absent from this table are supplied as SQL NULLs / defaults
             // so the projection matches MenuItemRow exactly and BuildCategories
             // can be reused unchanged. Icon is used as GroupIcon fallback
@@ -245,7 +245,7 @@ public sealed class NavigationApiServiceV2
                        IsFlat,
                        NULL        AS Status,
                        Description
-                FROM   menuitemsglobalconfig
+                FROM   menuitemsglobalsettings
                 WHERE  IsHidden = 0
                 ORDER  BY SortOrder;
                 """;

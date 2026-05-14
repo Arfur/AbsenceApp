@@ -2,9 +2,9 @@
 Phase8_Execute.py
 =================
 Connects to absenceapp MySQL/MariaDB and replaces the entire
-menuitemsglobalconfig table with the Phase 8 Ki-Admin structure.
+menuitemsglobalsettings table with the Phase 8 Ki-Admin structure.
 
-Tables modified : menuitemsglobalconfig  (INSERT + DELETE only)
+Tables modified : menuitemsglobalsettings  (INSERT + DELETE only)
 Schema changes  : NONE
 """
 
@@ -184,18 +184,18 @@ rows = [
 # PRINT GENERATED SQL (for review log)
 # ──────────────────────────────────────────────────────────────────────────────
 print("=" * 80)
-print("GENERATED SQL — Phase 8 menuitemsglobalconfig rebuild")
+print("GENERATED SQL — Phase 8 menuitemsglobalsettings rebuild")
 print("=" * 80)
 
 print("\n-- STEP 1: DELETE all existing rows")
-cur.execute("SELECT Id FROM menuitemsglobalconfig ORDER BY Id")
+cur.execute("SELECT Id FROM menuitemsglobalsettings ORDER BY Id")
 old_ids = [r[0] for r in cur.fetchall()]
-print(f"DELETE FROM menuitemsglobalconfig WHERE Id IN ({', '.join(str(i) for i in old_ids)});")
+print(f"DELETE FROM menuitemsglobalsettings WHERE Id IN ({', '.join(str(i) for i in old_ids)});")
 print(f"-- ({len(old_ids)} rows to delete)")
 
 print("\n-- STEP 2: INSERT Phase 8 structure")
 insert_sql = """
-INSERT INTO menuitemsglobalconfig
+INSERT INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, Description, CreatedAt, UpdatedAt)
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 """
@@ -218,7 +218,7 @@ try:
     # Step 1: Delete all existing rows
     if old_ids:
         placeholders = ', '.join(['%s'] * len(old_ids))
-        cur.execute(f"DELETE FROM menuitemsglobalconfig WHERE Id IN ({placeholders})", old_ids)
+        cur.execute(f"DELETE FROM menuitemsglobalsettings WHERE Id IN ({placeholders})", old_ids)
         print(f"  DELETE: {cur.rowcount} rows removed")
 
     # Step 2: Insert all new rows
@@ -242,7 +242,7 @@ print("VALIDATION SELECT 1: Full hierarchy ordered by SortOrder")
 print("=" * 80)
 cur.execute("""
     SELECT Id, ItemType, ParentId, Label, Route, SortOrder, IsFlat
-    FROM   menuitemsglobalconfig
+    FROM   menuitemsglobalsettings
     ORDER  BY SortOrder
 """)
 rows_out = cur.fetchall()
@@ -262,9 +262,9 @@ print("VALIDATION SELECT 2: Orphaned rows (ParentId references non-existent Id)"
 print("=" * 80)
 cur.execute("""
     SELECT Id, ItemType, ParentId, Label
-    FROM   menuitemsglobalconfig
+    FROM   menuitemsglobalsettings
     WHERE  ParentId IS NOT NULL
-      AND  ParentId NOT IN (SELECT Id FROM menuitemsglobalconfig)
+      AND  ParentId NOT IN (SELECT Id FROM menuitemsglobalsettings)
 """)
 orphans = cur.fetchall()
 if orphans:

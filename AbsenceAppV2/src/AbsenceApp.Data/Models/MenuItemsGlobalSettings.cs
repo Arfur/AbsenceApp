@@ -1,13 +1,13 @@
 /*
 ===============================================================================
- File        : MenuItemsGlobalConfig.cs
+ File        : MenuItemsGlobalSettings.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
  Version     : 1.0.0
  Created     : 2026-04-28
  Updated     : 2026-04-28
 -------------------------------------------------------------------------------
- Purpose     : EF Core entity for the `menuitemsglobalconfig` table.
+ Purpose     : EF Core entity for the `menuitemsglobalsettings` table.
                Minimal schema representation to satisfy AppDbContext and allow
                EF Core to map the table without errors.
 -------------------------------------------------------------------------------
@@ -23,7 +23,7 @@
 
 namespace AbsenceApp.Data.Models;
 
-public sealed class MenuItemsGlobalConfig
+public sealed class MenuItemsGlobalSettings
 {
     public int Id { get; set; }
 

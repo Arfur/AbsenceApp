@@ -4,7 +4,7 @@
 -- Created : 2026-05-12
 -- -----------------------------------------------------------------------------
 -- Purpose : Inserts the Phase 8 global-settings sidebar menu structure into
---           the `menuitemsglobalconfig` table.
+--           the `menuitemsglobalsettings` table.
 --
 --           Hierarchy (ItemType values):
 --             'category' → top-level sidebar section header
@@ -40,7 +40,7 @@ USE absenceapp;
 -- This guarantees no collision with any existing rows.
 -- =============================================================================
 
-SET @base = (SELECT COALESCE(MAX(Id), 0) FROM menuitemsglobalconfig);
+SET @base = (SELECT COALESCE(MAX(Id), 0) FROM menuitemsglobalsettings);
 SET @base = (FLOOR(@base / 1000) + 1) * 1000;
 
 -- =============================================================================
@@ -132,7 +132,7 @@ SET @s_borderedtable  = @base + 813;
 -- ItemType = 'category', ParentId = NULL, no Route
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, Description, CreatedAt, UpdatedAt)
 VALUES
     (@cat_dashboard,   'category', 'Dashboard',    'bi-speedometer2',    NULL, NULL, @cat_dashboard,   0, 0, 'Phase 8 — Dashboard category',    NOW(), NOW()),
@@ -151,7 +151,7 @@ VALUES
 -- Groups with Route = direct link; groups without Route = accordion
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, Description, CreatedAt, UpdatedAt)
 VALUES
     -- Direct-link menus (Route is set; no submenus needed)
@@ -173,7 +173,7 @@ VALUES
 -- Note: Buttons points to the existing /global-settings/buttons route.
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, CreatedAt, UpdatedAt)
 VALUES
     (@s_cheatsheet,    'submenu', 'Cheatsheet',    'bi-journal-code',         '/global-settings/ui-kits/cheatsheet',    @menu_uikits, @s_cheatsheet,    0, 0, NOW(), NOW()),
@@ -200,7 +200,7 @@ VALUES
 -- ItemType = 'submenu', ParentId = @menu_advance_ui
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, CreatedAt, UpdatedAt)
 VALUES
     (@s_modals,    'submenu', 'Modals',             'bi-window',                   '/global-settings/advance-ui/modals',            @menu_advance_ui, @s_modals,    0, 0, NOW(), NOW()),
@@ -228,7 +228,7 @@ VALUES
 -- ItemType = 'submenu', ParentId = @menu_map_charts
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, CreatedAt, UpdatedAt)
 VALUES
     (@s_map,    'submenu', 'Map',    'bi-map',      '/global-settings/map-charts/map',    @menu_map_charts, @s_map,    0, 0, NOW(), NOW()),
@@ -239,7 +239,7 @@ VALUES
 -- ItemType = 'submenu', ParentId = @menu_table_forms
 -- =============================================================================
 
-INSERT IGNORE INTO menuitemsglobalconfig
+INSERT IGNORE INTO menuitemsglobalsettings
     (Id, ItemType, Label, Icon, Route, ParentId, SortOrder, IsHidden, IsFlat, CreatedAt, UpdatedAt)
 VALUES
     (@s_basictable,    'submenu', 'Basic Table',    'bi-table',     '/global-settings/table-forms/basic-table',    @menu_table_forms, @s_basictable,    0, 0, NOW(), NOW()),
@@ -252,6 +252,6 @@ VALUES
 -- =============================================================================
 
 SELECT Id, ItemType, Label, Route, ParentId, SortOrder
-FROM   menuitemsglobalconfig
+FROM   menuitemsglobalsettings
 WHERE  Id >= @base
 ORDER  BY SortOrder;

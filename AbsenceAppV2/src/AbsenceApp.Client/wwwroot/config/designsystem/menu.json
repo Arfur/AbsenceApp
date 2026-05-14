@@ -223,12 +223,12 @@
       "category": "DESIGN SYSTEM",
       "groups": [
         {
-          "group": "Global Config",
+          "group": "Global Settings",
           "icon": "bi-grid-3x3-gap-fill",
           "flat": true,
           "items": [
             {
-              "label": "Global Config",
+              "label": "Global Settings",
               "href": "/globalsettings/colours",
               "icon": "bi-grid-3x3-gap-fill"
             }

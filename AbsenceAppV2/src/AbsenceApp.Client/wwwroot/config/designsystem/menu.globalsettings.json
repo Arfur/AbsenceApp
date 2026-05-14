@@ -1,5 +1,5 @@
 {
-  "_comment": "Global Config / Design System Sidebar",
+  "_comment": "Global Settings / Design System Sidebar",
   "_version": "2.0.0",
   "_updated": "2026-03-30",
   "categories": [
@@ -20,8 +20,7 @@
           "group": "COMPONENTS",
           "icon": "bi-grid-3x3-gap-fill",
           "items": [
-            { "label": "Buttons",        "href": "/globalsettings/buttons",      "icon": "bi-stop-btn" },
-            { "label": "Buttons — Editor", "href": "/globalsettings/buttons/edit", "icon": "bi-pencil-square" },
+            { "label": "Buttons",        "href": "/globalsettings/ui-kits/buttons", "icon": "bi-stop-btn" },
             { "label": "Cards",         "href": "/globalsettings/cards",         "icon": "bi-card-heading" },
             { "label": "Tables",        "href": "/globalsettings/tables",        "icon": "bi-table" },
             { "label": "Forms",         "href": "/globalsettings/forms",         "icon": "bi-input-cursor-text" },
@@ -30,7 +29,7 @@
             { "label": "Dropdowns",     "href": "/globalsettings/dropdowns",     "icon": "bi-chevron-down" },
             { "label": "Grid",          "href": "/globalsettings/grid",          "icon": "bi-grid" },
             { "label": "Avatar",        "href": "/globalsettings/avatar",        "icon": "bi-person-circle" },
-            { "label": "Tabs",          "href": "/globalsettings/tabs",          "icon": "bi-folder" },
+            { "label": "Tabs",          "href": "/globalsettings/ui-kits/tabs",  "icon": "bi-folder" },
             { "label": "Accordions",    "href": "/globalsettings/accordions",    "icon": "bi-layout-text-sidebar" },
             { "label": "Progress",      "href": "/globalsettings/progress",      "icon": "bi-hourglass-split" },
             { "label": "Notifications", "href": "/globalsettings/notifications", "icon": "bi-bell" },

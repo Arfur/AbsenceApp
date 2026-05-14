@@ -1,0 +1,290 @@
+/*
+===============================================================================
+ File        : Index.razor.css
+ Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
+ Author      : Michael
+ Version     : 1.0.0
+ Created     : 2026-05-14
+ Updated     : 2026-05-14
+-------------------------------------------------------------------------------
+ Purpose     : Scoped styles for the UIKits / Buttons page.
+               All selectors use the btp- (Buttons Page) prefix to avoid
+               collisions with global styles.
+
+               No overrides of dsv2-btn-* here — those live in GlobalSettings.css
+               and are driven by DesignTokens DB values.
+-------------------------------------------------------------------------------
+ Changes     :
+   - 1.0.0  2026-05-14  Initial creation — UIKits Buttons page Phase 1.
+===============================================================================
+*/
+
+/* ── Page wrapper ────────────────────────────────────────────────────────── */
+
+.btp-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* ── Group card ──────────────────────────────────────────────────────────── */
+
+.btp-group-card {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ── Group header ────────────────────────────────────────────────────────── */
+
+.btp-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+}
+
+.btp-group-title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+/* ── Accordion toggle button (</>)  ──────────────────────────────────────── */
+
+.btp-accordion-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: monospace;
+    background: transparent;
+    color: #6c757d;
+    border: 1.5px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    line-height: 1;
+    user-select: none;
+}
+
+.btp-accordion-toggle:hover {
+    background: #e9ecef;
+    color: #495057;
+    border-color: #adb5bd;
+}
+
+.btp-accordion-toggle--open {
+    background: #0d6efd;
+    color: #ffffff;
+    border-color: #0d6efd;
+}
+
+.btp-accordion-toggle--open:hover {
+    background: #0b5ed7;
+    border-color: #0b5ed7;
+    color: #ffffff;
+}
+
+/* ── Demo row ────────────────────────────────────────────────────────────── */
+
+.btp-demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+/* Selected-variant ring applied when accordion is open */
+.btp-btn--selected {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* ── Accordion panel ─────────────────────────────────────────────────────── */
+
+.btp-accordion-panel {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    background: #fdfdfe;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+/* ── CSS editor textarea ─────────────────────────────────────────────────── */
+
+.btp-editor {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    padding: 0.625rem 0.75rem;
+    border: 1.5px solid #ced4da;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #212529;
+    resize: vertical;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btp-editor:read-only {
+    background: #f1f3f5;
+    color: #6c757d;
+    cursor: default;
+}
+
+.btp-editor--active {
+    background: #ffffff;
+    color: #212529;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+.btp-editor--active:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* ── Notes above the editor ──────────────────────────────────────────────── */
+
+.btp-editor-readonly-note,
+.btp-editor-token-note {
+    margin: 0;
+    font-size: 0.8125rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 4px;
+}
+
+.btp-editor-readonly-note {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffc107;
+}
+
+.btp-editor-token-note {
+    background: #cff4fc;
+    color: #055160;
+    border: 1px solid #0dcaf0;
+}
+
+/* ── Action row ──────────────────────────────────────────────────────────── */
+
+.btp-action-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Edit / Save button */
+.btp-btn-edit {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 1.5px solid #0d6efd;
+    background: #0d6efd;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    line-height: 1.4;
+}
+
+.btp-btn-edit:hover {
+    background: #0b5ed7;
+    border-color: #0b5ed7;
+}
+
+/* Cancel button — ghost style */
+.btp-btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 1.5px solid #6c757d;
+    background: transparent;
+    color: #6c757d;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    line-height: 1.4;
+}
+
+.btp-btn-cancel:hover {
+    background: #6c757d;
+    color: #ffffff;
+}
+
+/* Preview button — teal */
+.btp-btn-preview {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 1.5px solid #0dcaf0;
+    background: transparent;
+    color: #0aa2c0;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    line-height: 1.4;
+}
+
+.btp-btn-preview:hover {
+    background: #0dcaf0;
+    color: #212529;
+}
+
+/* ── Status message ──────────────────────────────────────────────────────── */
+
+.btp-status {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+}
+
+.btp-status--success {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.btp-status--error {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* ── Loading / error states ──────────────────────────────────────────────── */
+
+.btp-loading {
+    padding: 2rem 1.5rem;
+    color: #6c757d;
+    font-size: 0.9375rem;
+}
+
+.btp-init-error {
+    padding: 1rem 1.5rem;
+    margin: 1.5rem;
+    background: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}

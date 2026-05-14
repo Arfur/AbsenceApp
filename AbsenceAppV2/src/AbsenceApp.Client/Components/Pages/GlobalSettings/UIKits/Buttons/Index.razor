@@ -1,0 +1,199 @@
+@* ============================================================================
+   File        : Index.razor
+   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-14
+   Updated     : 2026-05-14
+   Changes     : 1.0.0 — 2026-05-14 — Full UIKits Buttons page implementation.
+                 Replaced placeholder with two-group accordion CSS editor.
+   ============================================================================ *@
+@page "/globalsettings/ui-kits/buttons"
+@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
+@namespace AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
+
+@* Loading / error states *@
+@if (!_tokensLoaded)
+{
+    @if (_initError is not null)
+    {
+        <div class="btp-init-error">@_initError</div>
+    }
+    else
+    {
+        <div class="btp-loading">Loading button tokens&hellip;</div>
+    }
+}
+else
+{
+    <div class="btp-page">
+
+        @* ── BASIC BUTTONS GROUP ─────────────────────────────────────────── *@
+        <div class="btp-group-card">
+
+            <div class="btp-group-header">
+                <h3 class="btp-group-title">@_basicState.GroupTitle</h3>
+                <button type="button"
+                        class="btp-accordion-toggle @(_basicState.AccordionOpen ? "btp-accordion-toggle--open" : "")"
+                        title="Toggle CSS editor"
+                        @onclick="() => OnToggleAccordion(_basicState)">
+                    &lt;/&gt;
+                </button>
+            </div>
+
+            <div class="btp-demo-row" id="btn-demo-@_basicState.GroupKey">
+                @foreach (var variant in _basicState.Variants)
+                {
+                    <button type="button"
+                            class="dsv2-btn @variant.CssClass @(IsSelected(_basicState, variant) && _basicState.AccordionOpen ? "btp-btn--selected" : "")"
+                            @onclick="() => OnSelectedVariantChanged(_basicState, variant.Key)">
+                        @variant.Label
+                    </button>
+                }
+                @if (_basicState.PreviewCss is not null)
+                {
+                    <style id="preview-css-@_basicState.GroupKey">@((MarkupString)_basicState.PreviewCss)</style>
+                }
+            </div>
+
+            @if (_basicState.AccordionOpen)
+            {
+                <div class="btp-accordion-panel">
+
+                    @if (_basicState.Variants.FirstOrDefault(v => v.Key == _basicState.SelectedVariantKey) is { IsEditable: false })
+                    {
+                        <p class="btp-editor-readonly-note">
+                            This variant has no design tokens. CSS is read-only.
+                        </p>
+                    }
+
+                    <textarea class="btp-editor @(_basicState.IsEditing ? "btp-editor--active" : "")"
+                              readonly="@(!_basicState.IsEditing)"
+                              @bind="_basicState.EditorText"
+                              @bind:event="oninput"
+                              spellcheck="false"
+                              rows="10"></textarea>
+
+                    <div class="btp-action-row">
+                        @if (_basicState.Variants.FirstOrDefault(v => v.Key == _basicState.SelectedVariantKey)?.IsEditable == true)
+                        {
+                            <button type="button"
+                                    class="btp-btn-edit"
+                                    @onclick="() => OnEditSaveClickedAsync(_basicState)">
+                                @(_basicState.IsEditing ? "Save" : "Edit")
+                            </button>
+                        }
+                        @if (_basicState.IsEditing)
+                        {
+                            <button type="button"
+                                    class="btp-btn-cancel"
+                                    @onclick="() => OnCancelClicked(_basicState)">
+                                Cancel
+                            </button>
+                            <button type="button"
+                                    class="btp-btn-preview"
+                                    @onclick="() => OnPreviewClicked(_basicState)">
+                                Preview
+                            </button>
+                        }
+                        @if (_basicState.StatusMessage is not null)
+                        {
+                            <span class="btp-status @(_basicState.StatusIsError ? "btp-status--error" : "btp-status--success")">
+                                @_basicState.StatusMessage
+                            </span>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+
+        @* ── OUTLINE BUTTONS GROUP ───────────────────────────────────────── *@
+        <div class="btp-group-card">
+
+            <div class="btp-group-header">
+                <h3 class="btp-group-title">@_outlineState.GroupTitle</h3>
+                <button type="button"
+                        class="btp-accordion-toggle @(_outlineState.AccordionOpen ? "btp-accordion-toggle--open" : "")"
+                        title="Toggle CSS editor"
+                        @onclick="() => OnToggleAccordion(_outlineState)">
+                    &lt;/&gt;
+                </button>
+            </div>
+
+            <div class="btp-demo-row" id="btn-demo-@_outlineState.GroupKey">
+                @foreach (var variant in _outlineState.Variants)
+                {
+                    <button type="button"
+                            class="dsv2-btn @variant.CssClass @(IsSelected(_outlineState, variant) && _outlineState.AccordionOpen ? "btp-btn--selected" : "")"
+                            @onclick="() => OnSelectedVariantChanged(_outlineState, variant.Key)">
+                        @variant.Label
+                    </button>
+                }
+                @if (_outlineState.PreviewCss is not null)
+                {
+                    <style id="preview-css-@_outlineState.GroupKey">@((MarkupString)_outlineState.PreviewCss)</style>
+                }
+            </div>
+
+            @if (_outlineState.AccordionOpen)
+            {
+                <div class="btp-accordion-panel">
+
+                    @if (_outlineState.Variants.FirstOrDefault(v => v.Key == _outlineState.SelectedVariantKey) is { IsEditable: false })
+                    {
+                        <p class="btp-editor-readonly-note">
+                            This variant has no design tokens. CSS is read-only.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="btp-editor-token-note">
+                            Note: Editing outline colours updates the shared token for the
+                            corresponding filled button variant.
+                        </p>
+                    }
+
+                    <textarea class="btp-editor @(_outlineState.IsEditing ? "btp-editor--active" : "")"
+                              readonly="@(!_outlineState.IsEditing)"
+                              @bind="_outlineState.EditorText"
+                              @bind:event="oninput"
+                              spellcheck="false"
+                              rows="10"></textarea>
+
+                    <div class="btp-action-row">
+                        @if (_outlineState.Variants.FirstOrDefault(v => v.Key == _outlineState.SelectedVariantKey)?.IsEditable == true)
+                        {
+                            <button type="button"
+                                    class="btp-btn-edit"
+                                    @onclick="() => OnEditSaveClickedAsync(_outlineState)">
+                                @(_outlineState.IsEditing ? "Save" : "Edit")
+                            </button>
+                        }
+                        @if (_outlineState.IsEditing)
+                        {
+                            <button type="button"
+                                    class="btp-btn-cancel"
+                                    @onclick="() => OnCancelClicked(_outlineState)">
+                                Cancel
+                            </button>
+                            <button type="button"
+                                    class="btp-btn-preview"
+                                    @onclick="() => OnPreviewClicked(_outlineState)">
+                                Preview
+                            </button>
+                        }
+                        @if (_outlineState.StatusMessage is not null)
+                        {
+                            <span class="btp-status @(_outlineState.StatusIsError ? "btp-status--error" : "btp-status--success")">
+                                @_outlineState.StatusMessage
+                            </span>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
+
+    </div>
+}
