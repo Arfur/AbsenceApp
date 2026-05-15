@@ -5,7 +5,7 @@
   "button": {
     "defaultVariant": "primary",
     "defaultSize": "md",
-    "variants": ["primary", "secondary", "ghost", "danger", "success", "warning"],
+    "variants": ["primary", "secondary", "ghost", "danger", "success", "warning", "light", "dark", "outline-dark"],
     "sizes": {
       "sm": { "padding": "4px 10px",  "fontSize": "0.75rem", "height": "28px" },
       "md": { "padding": "6px 14px",  "fontSize": "0.875rem","height": "34px" },

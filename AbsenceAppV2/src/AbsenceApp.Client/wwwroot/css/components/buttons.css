@@ -1,0 +1,251 @@
+.dsv2-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--ds-btn-padding-y, 7px) var(--ds-btn-padding-x, 16px);
+    border-radius: var(--ds-btn-border-radius, 6px);
+    font-size: var(--ds-btn-font-size, 0.875rem);
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.25;
+    transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.dsv2-btn:disabled,
+.dsv2-btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Colour fills ────────────────────────────────────────────────────────── */
+.dsv2-btn--primary {
+    background: var(--ds-btn-primary-bg, #0d6efd);
+    color: var(--ds-btn-primary-text, #ffffff);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
+}
+.dsv2-btn--primary:hover {
+    background: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    border-color: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    color: var(--ds-btn-primary-text, #ffffff);
+}
+
+.dsv2-btn--secondary {
+    background: var(--ds-btn-secondary-bg, transparent);
+    color: var(--ds-btn-secondary-text, #212529);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
+}
+.dsv2-btn--secondary:hover {
+    background: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    border-color: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    color: var(--ds-btn-secondary-text, #212529);
+}
+
+.dsv2-btn--success {
+    background: var(--ds-btn-success-bg, #198754);
+    color: var(--ds-btn-success-text, #ffffff);
+    border-color: var(--ds-btn-success-border, #198754);
+}
+.dsv2-btn--success:hover {
+    background: var(--ds-btn-success-hover-bg, #157347);
+    border-color: var(--ds-btn-success-hover-bg, #157347);
+    color: var(--ds-btn-success-text, #ffffff);
+}
+
+.dsv2-btn--danger {
+    background: var(--ds-btn-danger-bg, #dc3545);
+    color: var(--ds-btn-danger-text, #ffffff);
+    border-color: var(--ds-btn-danger-border, #dc3545);
+}
+.dsv2-btn--danger:hover {
+    background: var(--ds-btn-danger-hover-bg, #bb2d3b);
+    border-color: var(--ds-btn-danger-hover-bg, #bb2d3b);
+    color: var(--ds-btn-danger-text, #ffffff);
+}
+
+.dsv2-btn--warning {
+    background: var(--ds-btn-warning-bg, #ffc107);
+    color: var(--ds-btn-warning-text, #212529);
+    border-color: var(--ds-btn-warning-border, #ffc107);
+}
+.dsv2-btn--warning:hover {
+    background: var(--ds-btn-warning-hover-bg, #ffca2c);
+    border-color: var(--ds-btn-warning-hover-bg, #ffca2c);
+    color: var(--ds-btn-warning-text, #212529);
+}
+
+.dsv2-btn--info {
+    background: var(--ds-btn-info-bg, #0dcaf0);
+    color: var(--ds-btn-info-text, #212529);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
+}
+.dsv2-btn--info:hover {
+    background: var(--ds-btn-info-hover-bg, #31d2f2);
+    border-color: var(--ds-btn-info-hover-bg, #31d2f2);
+    color: var(--ds-btn-info-text, #212529);
+}
+
+.dsv2-btn--light {
+    background: var(--ds-btn-light-bg, #f8f9fa);
+    color: var(--ds-btn-light-text, #212529);
+    border-color: var(--ds-btn-light-border, #f8f9fa);
+}
+.dsv2-btn--light:hover {
+    background: var(--ds-btn-light-hover-bg, #e2e6ea);
+    color: var(--ds-btn-light-hover-text, #212529);
+    border-color: var(--ds-btn-light-hover-border, #dae0e5);
+}
+.dsv2-btn--light:disabled,
+.dsv2-btn--light[disabled] {
+    background: var(--ds-btn-light-disabled-bg, #f8f9fa);
+    color: var(--ds-btn-light-disabled-text, #212529);
+    border-color: var(--ds-btn-light-disabled-border, #f8f9fa);
+}
+
+.dsv2-btn--dark {
+    background: var(--ds-btn-dark-bg, #212529);
+    color: var(--ds-btn-dark-text, #ffffff);
+    border-color: var(--ds-btn-dark-border, #212529);
+}
+.dsv2-btn--dark:hover {
+    background: var(--ds-btn-dark-hover-bg, #1c1f23);
+    color: var(--ds-btn-dark-hover-text, #ffffff);
+    border-color: var(--ds-btn-dark-hover-border, #1a1e21);
+}
+.dsv2-btn--dark:disabled,
+.dsv2-btn--dark[disabled] {
+    background: var(--ds-btn-dark-disabled-bg, #212529);
+    color: var(--ds-btn-dark-disabled-text, #ffffff);
+    border-color: var(--ds-btn-dark-disabled-border, #212529);
+}
+
+.dsv2-btn--outline-dark {
+    background: transparent;
+    color: var(--ds-btn-outline-dark-text, #212529);
+    border-color: var(--ds-btn-outline-dark-border, #212529);
+}
+.dsv2-btn--outline-dark:hover:not(:disabled) {
+    background: var(--ds-btn-outline-dark-hover-bg, #212529);
+    color: var(--ds-btn-outline-dark-hover-text, #ffffff);
+    border-color: var(--ds-btn-outline-dark-hover-border, #212529);
+}
+.dsv2-btn--outline-dark:disabled,
+.dsv2-btn--outline-dark[disabled] {
+    color: var(--ds-btn-outline-dark-disabled-text, #212529);
+    border-color: var(--ds-btn-outline-dark-disabled-border, #212529);
+}
+
+.dsv2-btn--link {
+    background: transparent;
+    color: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: transparent;
+    text-decoration: none;
+}
+.dsv2-btn--link:hover {
+    background: transparent;
+    color: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    border-color: transparent;
+    text-decoration: underline;
+}
+
+/* ── Outline variants (use shared --ds-btn-* tokens; editing outline colours
+   also updates the corresponding filled button variant) ─────────────────── */
+.dsv2-btn--outline-primary {
+    background: transparent;
+    color: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
+}
+.dsv2-btn--outline-primary:hover {
+    background: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: var(--ds-btn-primary-border, #0d6efd);
+    color: var(--ds-btn-primary-text, #ffffff);
+}
+
+.dsv2-btn--outline-secondary {
+    background: transparent;
+    color: var(--ds-btn-secondary-text, #212529);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
+}
+.dsv2-btn--outline-secondary:hover {
+    background: var(--ds-btn-secondary-hover-bg, #f8f9fa);
+    border-color: var(--ds-btn-secondary-border, #dee2e6);
+    color: var(--ds-btn-secondary-text, #212529);
+}
+
+.dsv2-btn--outline-success {
+    background: transparent;
+    color: var(--ds-btn-success-bg, #198754);
+    border-color: var(--ds-btn-success-border, #198754);
+}
+.dsv2-btn--outline-success:hover {
+    background: var(--ds-btn-success-bg, #198754);
+    border-color: var(--ds-btn-success-border, #198754);
+    color: var(--ds-btn-success-text, #ffffff);
+}
+
+.dsv2-btn--outline-danger {
+    background: transparent;
+    color: var(--ds-btn-danger-bg, #dc3545);
+    border-color: var(--ds-btn-danger-border, #dc3545);
+}
+.dsv2-btn--outline-danger:hover {
+    background: var(--ds-btn-danger-bg, #dc3545);
+    border-color: var(--ds-btn-danger-border, #dc3545);
+    color: var(--ds-btn-danger-text, #ffffff);
+}
+
+.dsv2-btn--outline-warning {
+    background: transparent;
+    color: var(--ds-btn-warning-bg, #ffc107);
+    border-color: var(--ds-btn-warning-border, #ffc107);
+}
+.dsv2-btn--outline-warning:hover {
+    background: var(--ds-btn-warning-bg, #ffc107);
+    border-color: var(--ds-btn-warning-border, #ffc107);
+    color: var(--ds-btn-warning-text, #212529);
+}
+
+.dsv2-btn--outline-info {
+    background: transparent;
+    color: var(--ds-btn-info-bg, #0dcaf0);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
+}
+.dsv2-btn--outline-info:hover {
+    background: var(--ds-btn-info-bg, #0dcaf0);
+    border-color: var(--ds-btn-info-border, #0dcaf0);
+    color: var(--ds-btn-info-text, #212529);
+}
+
+/* ── Size variants ───────────────────────────────────────────────────────── */
+.dsv2-btn--lg {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+.dsv2-btn--sm {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+}
+
+.dark .dsv2-btn--secondary {
+    color: var(--v2-text-primary, #e9ecef);
+    border-color: var(--v2-border-color, #2d3348);
+}
+.dark .dsv2-btn--secondary:hover {
+    background: var(--v2-bg-subtle, #151824);
+}
+
+.dark .dsv2-btn--light {
+    background: var(--v2-bg-subtle, #1e2130);
+    color: var(--v2-text-primary, #e9ecef);
+    border-color: var(--v2-border-color, #2d3348);
+}
+.dark .dsv2-btn--light:hover {
+    background: #252840;
+}

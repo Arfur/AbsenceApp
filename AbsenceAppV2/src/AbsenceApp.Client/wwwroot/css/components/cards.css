@@ -1,0 +1,71 @@
+/* ── Card component (matches Ki-Admin .card + .card-header + .card-body) ─── */
+.dsv2-card {
+    background: var(--ds-card-bg, #ffffff);
+    border: 1px solid var(--ds-card-border-color, #dee2e6);
+    border-radius: var(--ds-card-radius, 8px);
+    box-shadow: var(--ds-card-shadow, 0 1px 4px rgba(0,0,0,0.06));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dsv2-card__header {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--ds-card-border-color, #dee2e6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background: var(--ds-card-header-bg, #f8f9fa);
+}
+
+.dsv2-card__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--v2-text-primary, #212529);
+    margin: 0;
+}
+
+.dsv2-card__subtitle {
+    font-size: 0.8rem;
+    color: var(--v2-text-secondary, #6c757d);
+    margin: 0;
+}
+
+.dsv2-card__body {
+    padding: var(--ds-card-padding, 1.25rem);
+    flex: 1;
+}
+
+.dsv2-card__body--np {
+    padding: 0;
+    flex: 1;
+}
+
+.dsv2-card__footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--ds-card-border-color, #dee2e6);
+    background: var(--ds-card-header-bg, #f8f9fa);
+}
+
+/* Card colour variants */
+.dsv2-card--primary { border-left: 4px solid var(--v2-color-primary, #0d6efd); }
+.dsv2-card--success { border-left: 4px solid var(--v2-color-success, #198754); }
+.dsv2-card--warning { border-left: 4px solid var(--v2-color-warning, #ffc107); }
+.dsv2-card--danger  { border-left: 4px solid var(--v2-color-danger,  #dc3545); }
+.dsv2-card--info    { border-left: 4px solid var(--v2-color-info,    #0dcaf0); }
+
+.dark .dsv2-card {
+    background: var(--v2-bg-surface, #1e2130);
+    border-color: var(--v2-border-color, #2d3348);
+}
+
+.dark .dsv2-card__header {
+    background: var(--v2-bg-subtle, #151824);
+    border-color: var(--v2-border-color, #2d3348);
+}
+
+.dark .dsv2-card__footer {
+    background: var(--v2-bg-subtle, #151824);
+    border-color: var(--v2-border-color, #2d3348);
+}

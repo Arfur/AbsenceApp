@@ -2852,3 +2852,44 @@ aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They
   - Phase F gates F1–F6: all closed.
   - Blocking ambiguities: none.
   - Phase F execution-mode objective: satisfied.
+
+---
+
+## 2026-05-15 — Button Token Integration (Light / Dark / Outline-Dark)
+
+**Author:** Michael
+**Type:** Design | Component | Config
+**Scope:** `component:button`, `design-token-engine`
+**Summary:** Wired 25 new `btn` design tokens (IDs 106–130) into `buttons.css`, `components.json`, and `theme.json` for the Light, Dark, and Outline-Dark button variants.
+
+### Details
+Token source of truth: live `absenceapp.designtokens` table (MySQL), rows 106–130, `ComponentGroup='btn'`.
+
+Three changes applied exactly per BUTTON TOKEN INTEGRATION — EXECUTION MODE spec:
+
+1. **buttons.css** — `.dsv2-btn--light` and `.dsv2-btn--dark` updated from hardcoded/legacy `--v2-*` vars to explicit `--ds-btn-light-*` / `--ds-btn-dark-*` tokens (base, hover, disabled). New `.dsv2-btn--outline-dark` variant block added with base, hover (`:hover:not(:disabled)`), and disabled rules using `--ds-btn-outline-dark-*` tokens. All fallbacks match SQL `DefaultValue`.
+
+2. **components.json** — `button.variants` extended with `"light"`, `"dark"`, `"outline-dark"` appended to the existing array. No other keys changed.
+
+3. **theme.json** — All 25 tokens added to both `themes.light.colors` and `themes.dark.colors`. Light theme values match SQL `DefaultValue`; dark theme values use appropriate dark-mode palette values. Existing theme keys untouched.
+
+### Affected Files and Components
+- Files:
+  - `src/AbsenceApp.Client/wwwroot/css/components/buttons.css`
+  - `src/AbsenceApp.Client/wwwroot/config/designsystem/components.json`
+  - `src/AbsenceApp.Client/wwwroot/config/designsystem/theme.json`
+- Components: `dsv2-btn--light`, `dsv2-btn--dark`, `dsv2-btn--outline-dark`
+
+### Rollout Notes
+- CSS and JSON static assets; no migration required.
+- Runtime token injection via `DesignTokenApiServiceV2` will override CSS vars from DB `CurrentValue ?? DefaultValue` at runtime.
+- Backout: revert the three files; no DB changes were made.
+
+### Verification
+- SQL token source confirmed from live DB (25 rows, IDs 106–130).
+- `dotnet build AbsenceApp.Data.csproj`: 0 errors, 0 warnings.
+- Full solution build blocked by `AbsenceApp.Client (28244)` file-lock (app running during build) — all 4 errors are `MSB3021`/`MSB3027` DLL-copy locks, zero C# compilation errors.
+- All 25 tokens present in both light and dark sections of `theme.json`.
+- All 3 new variants registered in `components.json` `button.variants`.
+- All 3 CSS variant blocks present and correct in `buttons.css`.
+- No unrelated selectors or JSON keys modified.
