@@ -2,10 +2,10 @@
    File    : SidebarV2.razor.css
    Project : AbsenceApp.Client
    Author  : AI Assistant
-   Version : 2.3.0
+    Version : 2.5.0
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Updated : 2026-04-14
+    Updated : 2026-05-15
    Purpose : Scoped styles for SidebarV2.razor.
              Uses V2 design tokens exclusively. Does not affect V1 .app-sidebar.
    Changes :
@@ -53,14 +53,17 @@
                           left-indent from 20px to 24px (active: 21px for 3px bar).
                           Change 5 — category label accent colour:
                           changed category label text from muted grey to
-                          var(--ds-color-accent) to match active item colour.
+                          var(--ds-nav-sidebar-category-text) to match active item colour.
+        - 2.4.0  2026-05-15  Global token audit: noted missing
+                         sidebar/nav token families.
+     - 2.5.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
 ============================================================================= */
 
 .dsv2-sidebar {
     width: var(--ds-layout-sidebar-w, 230px);
     flex-shrink: 0;
-    background: var(--ds-color-surface, #f5f6f8);
-    border-right: 1px solid var(--ds-color-border, #dde1e7);
+    background: var(--ds-nav-sidebar-bg, #f5f6f8);
+    border-right: 1px solid var(--ds-nav-sidebar-border, #dde1e7);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -69,18 +72,18 @@
 }
 
 .dsv2-sidebar--collapsed {
-    width: var(--ds-layout-sidebar-w-col, 52px);
+    width: var(--ds-layout-sidebar-w-collapsed, 52px);
 }
 
 /* ── User panel removed: identity moved to HeaderV2 (Phase 3 Nav Identity) ── */
 
 /* ── Category section headers ──────────────────────────────────────── */
 ::deep .dsv2-sidebar__category-label {
-    font-size: 0.67rem;
-    font-weight: var(--ds-font-bold, 700);
+    font-size: var(--ds-text-size-xs, 0.67rem);
+    font-weight: var(--ds-text-font-bold, 700);
     letter-spacing: 1.1px;
-    color: var(--ds-color-accent, #2563eb);
-    padding: 14px 14px 4px;
+    color: var(--ds-nav-sidebar-category-text, #2563eb);
+    padding: var(--ds-space-4, 14px) var(--ds-space-4, 14px) var(--ds-space-1, 4px);
     text-transform: uppercase;
     white-space: nowrap;
     overflow: hidden;
@@ -91,7 +94,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px 0;
+    padding: var(--ds-space-2, 8px) 0;
     /* Always reserve thin gutter (invisible by default) so menu items never
        shift when the scrollbar thumb appears on hover. */
     scrollbar-width: thin;                          /* Firefox: reserve gutter */
@@ -115,20 +118,20 @@
 /* Thumb invisible by default */
 .dsv2-sidebar__nav::-webkit-scrollbar-thumb {
     background: transparent;
-    border-radius: 3px;
+    border-radius: var(--ds-radius-xs, 3px);
 }
 
 /* Reveal thumb on hover (Firefox + WebKit) */
 .dsv2-sidebar__nav:hover {
-    scrollbar-color: var(--ds-color-gray-300, #d1d5db) transparent; /* Firefox */
+    scrollbar-color: var(--ds-nav-sidebar-scrollbar-thumb, #d1d5db) transparent; /* Firefox */
 }
 
 .dsv2-sidebar__nav:hover::-webkit-scrollbar-thumb {
-    background: var(--ds-color-gray-300, #d1d5db);
+    background: var(--ds-nav-sidebar-scrollbar-thumb, #d1d5db);
 }
 
 .dsv2-sidebar__nav:hover::-webkit-scrollbar-thumb:hover {
-    background: var(--ds-color-gray-400, #9ca3af);
+    background: var(--ds-nav-sidebar-scrollbar-thumb-hover, #9ca3af);
 }
 
 /* ── Group button ───────────────────────────────────────────────────── */
@@ -138,17 +141,17 @@
 ::deep .dsv2-sidebar__group-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 9px 10px;
+    gap: var(--ds-space-2, 10px);
+    padding: var(--ds-space-2, 9px) var(--ds-space-3, 10px);
     width: calc(100% - 12px);
     margin: 2px 6px;
     text-align: left;
     background: none;
     border: none;
     border-left: none;
-    border-radius: 8px;
-    color: var(--ds-color-text, #2c3345);
-    font-size: var(--ds-text-size-sidebar-item, 0.88rem);
+    border-radius: var(--ds-radius-md, 8px);
+    color: var(--ds-nav-sidebar-text, #2c3345);
+    font-size: var(--ds-text-size-sm, 0.88rem);
     font-family: var(--ds-font-sans, inherit);
     cursor: pointer;
     white-space: nowrap;
@@ -157,52 +160,52 @@
 }
 
 ::deep .dsv2-sidebar__group-btn:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
+    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
 }
 
 ::deep .dsv2-sidebar__group-btn--active {
-    background: var(--ds-color-accent, #2563eb);
-    color: #ffffff;
-    font-weight: var(--ds-font-semibold, 600);
+    background: var(--ds-nav-sidebar-active-bg, #2563eb);
+    color: var(--ds-nav-sidebar-active-text, #ffffff);
+    font-weight: var(--ds-text-font-semibold, 600);
 }
 
 ::deep .dsv2-sidebar__group-btn--active:hover {
-    background: var(--ds-color-accent-hover, #1d4ed8);
-    color: #ffffff;
+    background: var(--ds-nav-sidebar-hover-bg, #1d4ed8);
+    color: var(--ds-nav-sidebar-active-text, #ffffff);
 }
 
 /* Flat group button: rendered as <a>, same shape as group-btn */
 ::deep .dsv2-sidebar__group-btn--flat {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 9px 10px;
+    gap: var(--ds-space-2, 10px);
+    padding: var(--ds-space-2, 9px) var(--ds-space-3, 10px);
     width: calc(100% - 12px);
     margin: 2px 6px;
     border: none;
     border-left: none;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-md, 8px);
     text-decoration: none;
-    font-size: var(--ds-text-size-sidebar-item, 0.88rem);
-    color: var(--ds-color-text, #2c3345);
+    font-size: var(--ds-text-size-sm, 0.88rem);
+    color: var(--ds-nav-sidebar-text, #2c3345);
     white-space: nowrap;
     transition: background var(--ds-transition-fast, 0.12s ease);
 }
 
 ::deep .dsv2-sidebar__group-btn--flat:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
+    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
     text-decoration: none;
 }
 
 ::deep .dsv2-sidebar__group-btn--flat.dsv2-sidebar__group-btn--active {
-    background: var(--ds-color-accent, #2563eb);
-    color: #ffffff;
+    background: var(--ds-nav-sidebar-active-bg, #2563eb);
+    color: var(--ds-nav-sidebar-active-text, #ffffff);
 }
 
 /* ── Chevron ────────────────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__chevron {
     margin-left: auto;
-    font-size: 0.75rem;
+    font-size: var(--ds-text-size-xs, 0.75rem);
     transition: transform var(--ds-transition-fast, 0.12s ease);
     flex-shrink: 0;
 }
@@ -218,17 +221,17 @@
 
 /* ── Sub-menu ───────────────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__submenu {
-    background: var(--ds-color-surface, #f5f6f8);
+    background: var(--ds-nav-sidebar-bg, #f5f6f8);
 }
 
 ::deep .dsv2-sidebar__sublink {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--ds-gap-sm, 8px);
     position: relative;
-    padding: 7px 14px 7px 28px;
-    color: var(--ds-color-text-muted, #7b8494);
-    font-size: 0.83rem;
+    padding: var(--ds-space-2, 7px) var(--ds-space-4, 14px) var(--ds-space-2, 7px) var(--ds-space-8, 28px);
+    color: var(--ds-nav-sidebar-text-muted, #7b8494);
+    font-size: var(--ds-text-size-sm, 0.83rem);
     text-decoration: none;
     transition: background var(--ds-transition-fast, 0.12s ease),
                 color var(--ds-transition-fast, 0.12s ease);
@@ -236,8 +239,8 @@
 }
 
 ::deep .dsv2-sidebar__sublink:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
-    color: var(--ds-color-text, #2c3345);
+    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    color: var(--ds-nav-sidebar-text, #2c3345);
     text-decoration: none;
 }
 
@@ -245,31 +248,31 @@
    border-left. Height 16px, width 3px, rounded, centered vertically at 8px
    from the left edge (indented away from the sidebar edge). */
 ::deep .dsv2-sidebar__sublink--active {
-    color: var(--ds-color-accent, #2563eb);
-    font-weight: var(--ds-font-semibold, 600);
+    color: var(--ds-nav-sidebar-active-text, #2563eb);
+    font-weight: var(--ds-text-font-semibold, 600);
     background: transparent;
 }
 
 ::deep .dsv2-sidebar__sublink--active::before {
     content: '';
     position: absolute;
-    left: 8px;
+    left: var(--ds-space-2, 8px);
     top: 50%;
     transform: translateY(-50%);
-    height: 16px;
+    height: var(--ds-space-4, 16px);
     width: 3px;
-    border-radius: 2px;
-    background: var(--ds-color-accent, #2563eb);
+    border-radius: var(--ds-radius-xs, 2px);
+    background: var(--ds-nav-sidebar-active-text, #2563eb);
 }
 
 ::deep .dsv2-sidebar__sublink--active:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
-    color: var(--ds-color-accent, #2563eb);
+    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    color: var(--ds-nav-sidebar-active-text, #2563eb);
 }
 
 /* ── Item icon & label ──────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__item-icon {
-    font-size: 1rem;
+    font-size: var(--ds-icon-size-md, 1rem);
     flex-shrink: 0;
 }
 
@@ -281,17 +284,17 @@
 
 /* ── Status badges ──────────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__status-badge {
-    font-size: 0.6rem;
-    font-weight: var(--ds-font-bold, 700);
-    padding: 1px 5px;
+    font-size: var(--ds-text-size-xs, 0.6rem);
+    font-weight: var(--ds-text-font-bold, 700);
+    padding: var(--ds-space-1, 1px) var(--ds-space-2, 5px);
     border-radius: var(--ds-radius-full, 9999px);
     flex-shrink: 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-::deep .dsv2-sidebar__status-badge--beta    { background: var(--ds-color-info-light, #e0f2fe);    color: var(--ds-color-info, #0284c7); }
-::deep .dsv2-sidebar__status-badge--planned { background: var(--ds-color-warning-light, #fef3c7); color: var(--ds-color-warning, #d97706); }
+::deep .dsv2-sidebar__status-badge--beta    { background: var(--ds-badge-active-bg, #e0f2fe);    color: var(--ds-badge-active-text, #0284c7); }
+::deep .dsv2-sidebar__status-badge--planned { background: var(--ds-badge-planned-bg, #fef3c7); color: var(--ds-badge-planned-text, #d97706); }
 
 /* ── Loading placeholder ────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__loading {
@@ -299,8 +302,8 @@
     align-items: center;
     gap: 8px;
     padding: 16px 14px;
-    color: var(--ds-color-text-muted, #7b8494);
-    font-size: 0.875rem;
+    color: var(--ds-nav-sidebar-text-muted, #7b8494);
+    font-size: var(--ds-text-size-sm, 0.875rem);
 }
 
 /* ── Back to Main Menu link (superadmin sidebar only) ───────────────── */
@@ -308,21 +311,21 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 14px;
+    padding: var(--ds-space-2, 8px) var(--ds-space-4, 14px);
     text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: var(--ds-font-semibold, 600);
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.82rem);
+    font-weight: var(--ds-text-font-semibold, 600);
+    color: var(--ds-nav-sidebar-text-muted, #7b8494);
     background: transparent;
-    border-bottom: 1px solid var(--ds-color-border, #dde1e7);
-    margin-bottom: 4px;
+    border-bottom: 1px solid var(--ds-nav-sidebar-border, #dde1e7);
+    margin-bottom: var(--ds-space-1, 4px);
     white-space: nowrap;
     transition: background var(--ds-transition-fast, 0.12s ease),
                 color var(--ds-transition-fast, 0.12s ease);
 }
 
 ::deep .dsv2-sidebar__back-link:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
-    color: var(--ds-color-text, #2c3345);
+    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    color: var(--ds-nav-sidebar-text, #2c3345);
     text-decoration: none;
 }

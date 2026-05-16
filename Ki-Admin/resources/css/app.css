@@ -1,0 +1,56 @@
+/*
+ * =========================================================
+ * Project   : ki-admin - v1.0.0
+ * File Name : app.css
+ * 
+ * Author    : Michael Battle
+ * Created On: 18/Aug/2025
+ * Updated On: 18/Aug/2025
+ * 
+ * Description:
+ * Main stylesheet for ki-admin. Handles global styles and overrides, including sidebar formatting.
+ * 
+ * Origin:
+ * Used by all main Blade layouts via @vite. Controls global appearance.
+ * 
+ * Changes:
+ * - Added global override to remove vertical bars from sidebar submenus (chg0199)
+ * =========================================================
+ */
+@import 'tailwindcss';
+
+/* =====================================================
+ * Section: Sidebar Submenu Vertical Bar Removal
+ * Description: Remove vertical bar from sidebar submenus globally. Ensure correct Bootstrap collapse markup.
+ * Change Ref: chg0199
+ * PT File: PT_2025-08-18.md Session 0199
+ * ===================================================== */
+.main-nav ul.collapse li {
+    border-left: none !important;
+}
+.main-nav ul.collapse li::before {
+    border-left: none !important;
+    content: none !important;
+}
+
+/* =====================================================
+ * Section: Sidebar Submenu Vertical Bar Removal (Override)
+ * Description: Remove vertical bar icon from sidebar submenu items.
+ * Change Ref: chg0200
+ * PT File: PT_2025-08-18.md Session 0200
+ * ===================================================== */
+.main-nav li a::after {
+    content: none !important;
+}
+
+/* =====================================================
+ * Section: Sidebar Submenu Icon Removal (Aggressive Override)
+ * Description: Remove vertical bar icon from all sidebar submenu items, targeting .another-level > a::after and .main-nav li.another-level > a::after.
+ * Change Ref: chg0201
+ * PT File: PT_2025-08-18.md Session 0201
+ * ===================================================== */
+.main-nav li.another-level > a::after,
+.another-level > a::after {
+    content: none !important;
+    display: none !important;
+}

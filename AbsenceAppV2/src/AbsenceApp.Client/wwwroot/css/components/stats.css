@@ -1,52 +1,63 @@
+/* =============================================================================
+   File    : stats.css
+   Project : AbsenceApp.Client
+   Version : 1.1.0
+   Created : 2026-05-15
+   Updated : 2026-05-15
+   Purpose : Global styles for V2 stat cards.
+   Changes :
+     - 1.1.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
+============================================================================= */
+
 .dsv2-stat-card {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    padding: 1rem 1.25rem;
-    background: var(--v2-bg-surface, #ffffff);
-    border: 1px solid var(--v2-border-color, #dee2e6);
-    border-radius: var(--v2-radius-base, 8px);
-    box-shadow: var(--v2-shadow-sm, 0 1px 4px rgba(0,0,0,0.07));
+    gap: var(--ds-space-3, 0.875rem);
+    padding: var(--ds-space-4, 1rem) var(--ds-space-5, 1.25rem);
+    background: var(--ds-surface-raised, #ffffff);
+    border: 1px solid var(--ds-border-default, #dee2e6);
+    border-radius: var(--ds-radius-card, 8px);
+    box-shadow: var(--ds-shadow-xs, 0 1px 4px rgba(0,0,0,0.07));
 }
 
 .dsv2-stat-card__icon-wrap {
     width: 44px;
     height: 44px;
-    border-radius: var(--v2-radius-sm, 6px);
+    border-radius: var(--ds-radius-sm, 6px);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-.dsv2-stat-card__icon-wrap--primary  { background: rgba(13, 110, 253, 0.12); }
-.dsv2-stat-card__icon-wrap--warning  { background: rgba(255, 193,   7, 0.15); }
-.dsv2-stat-card__icon-wrap--danger   { background: rgba(220,  53,  69, 0.12); }
-.dsv2-stat-card__icon-wrap--info     { background: rgba( 13, 202, 240, 0.15); }
+.dsv2-stat-card__icon-wrap--primary  { background: var(--ds-alert-info-bg, rgba(13, 110, 253, 0.12)); }
+.dsv2-stat-card__icon-wrap--warning  { background: var(--ds-alert-warning-bg, rgba(255, 193,   7, 0.15)); }
+.dsv2-stat-card__icon-wrap--danger   { background: var(--ds-alert-danger-bg, rgba(220,  53,  69, 0.12)); }
+.dsv2-stat-card__icon-wrap--info     { background: var(--ds-alert-info-bg, rgba( 13, 202, 240, 0.15)); }
 
 .dsv2-stat-card__icon {
-    font-size: 1.25rem;
-    color: var(--v2-color-primary, #0d6efd);
+    font-size: var(--ds-icon-size-xl, 1.25rem);
+    color: var(--ds-alert-info-text, #0d6efd);
 }
 
-.dsv2-stat-card__icon-wrap--warning  .dsv2-stat-card__icon { color: var(--v2-color-warning, #ffc107); }
-.dsv2-stat-card__icon-wrap--danger   .dsv2-stat-card__icon { color: var(--v2-color-danger,  #dc3545); }
-.dsv2-stat-card__icon-wrap--info     .dsv2-stat-card__icon { color: var(--v2-color-info,    #0dcaf0); }
+.dsv2-stat-card__icon-wrap--warning  .dsv2-stat-card__icon { color: var(--ds-alert-warning-text, #ffc107); }
+.dsv2-stat-card__icon-wrap--danger   .dsv2-stat-card__icon { color: var(--ds-alert-danger-text,  #dc3545); }
+.dsv2-stat-card__icon-wrap--info     .dsv2-stat-card__icon { color: var(--ds-alert-info-text,    #0dcaf0); }
 
 .dsv2-stat-card__value {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--v2-text-primary, #212529);
+    font-size: var(--ds-text-size-2xl, 1.6rem);
+    font-weight: var(--ds-text-font-bold, 700);
+    color: var(--ds-text-color-primary, #212529);
     line-height: 1;
 }
 
 .dsv2-stat-card__label {
-    font-size: 0.78rem;
-    color: var(--v2-text-secondary, #6c757d);
+    font-size: var(--ds-text-size-xs, 0.78rem);
+    color: var(--ds-text-color-secondary, #6c757d);
     margin-top: 0.2rem;
 }
 
 .dark .dsv2-stat-card {
-    background: var(--v2-bg-surface, #1e2130);
-    border-color: var(--v2-border-color, #2d3348);
+    background: var(--ds-surface-base, #1e2130);
+    border-color: var(--ds-border-default, #2d3348);
 }

@@ -1,0 +1,488 @@
+HTML Render: [1] 'Dashboard' | collapseId: menu_1 | class: collapse show | aria-expanded: true
+HTML Render: [8] 'Create Custom Dashboard' | collapseId: menu_8 | class: collapse | aria-expanded: false
+HTML Render: [13] 'Tickets' | collapseId: menu_13 | class: collapse | aria-expanded: false
+HTML Render: [21] 'Projects' | collapseId: menu_21 | class: collapse | aria-expanded: false
+HTML Render: [32] 'Tasks' | collapseId: menu_32 | class: collapse | aria-expanded: false
+HTML Render: [40] 'Knowledge Base' | collapseId: menu_40 | class: collapse | aria-expanded: false
+HTML Render: [46] 'Calendar' | collapseId: menu_46 | class: collapse | aria-expanded: false
+HTML Render: [53] 'Email' | collapseId: menu_53 | class: collapse | aria-expanded: false
+HTML Render: [61] 'Assets & Files' | collapseId: menu_61 | class: collapse | aria-expanded: false
+HTML Render: [72] 'Reports' | collapseId: menu_72 | class: collapse | aria-expanded: false
+HTML Render: [79] 'Users & Roles' | collapseId: menu_79 | class: collapse | aria-expanded: false
+HTML Render: [87] 'Settings' | collapseId: menu_87 | class: collapse | aria-expanded: false
+HTML Render: [96] 'Admin Tools' | collapseId: menu_96 | class: collapse | aria-expanded: false
+HTML Render: [102] 'QA & Testing' | collapseId: menu_102 | class: collapse | aria-expanded: false
+HTML Render: [107] 'Integrations' | collapseId: menu_107 | class: collapse | aria-expanded: false
+HTML Render: [113] 'Compliance' | collapseId: menu_113 | class: collapse | aria-expanded: false
+HTML Render: [118] 'Help & Onboarding' | collapseId: menu_118 | class: collapse | aria-expanded: false
+HTML Render: [124] 'My Account' | collapseId: menu_124 | class: collapse | aria-expanded: false
+HTML Render: [130] 'Sidebar & Navigation' | collapseId: menu_130 | class: collapse | aria-expanded: false
+HTML Render: [131] 'Menu Management' | collapseId: menu_131 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false
+HTML Render: [1010000] 'Dashboard' | collapseId: menu_1010000 | class: collapse | aria-expanded: false
+HTML Render: [1010700] 'Custom Dashboard' | collapseId: menu_1010700 | class: collapse | aria-expanded: false
+HTML Render: [1020000] 'Tickets' | collapseId: menu_1020000 | class: collapse | aria-expanded: false
+HTML Render: [1030000] 'Projects' | collapseId: menu_1030000 | class: collapse | aria-expanded: false
+HTML Render: [1040000] 'Tasks' | collapseId: menu_1040000 | class: collapse | aria-expanded: false
+HTML Render: [1050000] 'Knowledge Base' | collapseId: menu_1050000 | class: collapse | aria-expanded: false
+HTML Render: [1060000] 'Calendar' | collapseId: menu_1060000 | class: collapse | aria-expanded: false
+HTML Render: [1070000] 'Email' | collapseId: menu_1070000 | class: collapse | aria-expanded: false
+HTML Render: [1080000] 'Assets & Files' | collapseId: menu_1080000 | class: collapse | aria-expanded: false
+HTML Render: [1090000] 'Reports' | collapseId: menu_1090000 | class: collapse | aria-expanded: false
+HTML Render: [1100000] 'Users & Roles' | collapseId: menu_1100000 | class: collapse | aria-expanded: false
+HTML Render: [1110000] 'Settings' | collapseId: menu_1110000 | class: collapse | aria-expanded: false
+HTML Render: [1120000] 'Admin Tools' | collapseId: menu_1120000 | class: collapse | aria-expanded: false
+HTML Render: [1130000] 'QA & Testing' | collapseId: menu_1130000 | class: collapse | aria-expanded: false
+HTML Render: [1140000] 'Integrations' | collapseId: menu_1140000 | class: collapse | aria-expanded: false
+HTML Render: [1150000] 'Compliance' | collapseId: menu_1150000 | class: collapse | aria-expanded: false
+HTML Render: [1160000] 'Help & Onboarding' | collapseId: menu_1160000 | class: collapse | aria-expanded: false
+HTML Render: [1170000] 'Menu Management' | collapseId: menu_1170000 | class: collapse | aria-expanded: false

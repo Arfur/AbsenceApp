@@ -1,0 +1,625 @@
+<?php
+/**
+ * =========================================================
+ * Project   : ki-admin - v1.0.0
+ * File Name : web.php
+ * 
+ * Author    : Michael Battle
+ * Created On: 03/Aug/2025
+ * Updated On: 03/Aug/2025
+ * 
+ * Description:
+ * Main web routes file with authentication and Support Hub routes.
+ * Includes role-based access control and proper middleware protection.
+ * 
+ * Origin:
+ * Central routing configuration for ki-admin Support Hub
+ * 
+ * Changes:
+ * - Added custom authentication routes
+ * - Integrated role-based middleware
+ * - Organized route groups logically
+ * =========================================================
+ */
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\OtpVerificationController;
+use App\Notifications\OtpVerificationNotification;
+use App\Models\User;
+/**
+ * =========================================================
+ * Section: Sidebar JS Debug Route (chg0237)
+ * Description: Accepts JS debug output for sidebar expansion diagnostics.
+ * - POST /sidebar-js-debug writes debug data to storage/sidebar_js_debug.txt
+ * - Uses SidebarDebugController@store for backend logic
+ * =========================================================
+ */
+
+/**
+ * =========================================================
+ * Section: Sidebar JS Debug Route (chg0237)
+ * Description: Accepts JS debug output for sidebar expansion diagnostics.
+ * - POST /sidebar-js-debug writes debug data to storage/sidebar_js_debug.txt
+ * - Used for comparing frontend JS state to backend expansion logic
+ * =========================================================
+ */
+
+/**
+ * =========================================================
+ * Section: Menu Route Sync (chg0230)
+ * Description: Ensure all route_name values in menu_items.csv exist in web.php
+ * - Added missing routes for menu_items
+ * - Corrected route names to match menu_items.csv
+ * =========================================================
+ */
+Route::view('dashboard/overview', 'dashboard.overview')->name('dashboard.overview');
+Route::view('dashboard/activity', 'dashboard.activity')->name('dashboard.activity');
+Route::view('dashboard/quick', 'dashboard.quick')->name('dashboard.quick');
+Route::view('dashboard/agent', 'dashboard.agent')->name('dashboard.agent');
+Route::view('dashboard/manager', 'dashboard.manager')->name('dashboard.manager');
+Route::view('dashboard/admin', 'dashboard.admin')->name('dashboard.admin');
+Route::view('dashboard/custom', 'dashboard.custom')->name('dashboard.custom');
+Route::view('dashboard/custom/add-card', 'dashboard.custom.add-card')->name('dashboard.custom.add-card');
+Route::view('dashboard/custom/reorder', 'dashboard.custom.reorder')->name('dashboard.custom.reorder');
+Route::view('dashboard/custom/save', 'dashboard.custom.save')->name('dashboard.custom.save');
+Route::view('dashboard/custom/default', 'dashboard.custom.default')->name('dashboard.custom.default');
+Route::view('tickets/my', 'tickets.my')->name('tickets.my');
+Route::view('tickets/all', 'tickets.all')->name('tickets.all');
+Route::view('tickets/unassigned', 'tickets.unassigned')->name('tickets.unassigned');
+Route::view('tickets/closed', 'tickets.closed')->name('tickets.closed');
+Route::view('tickets/templates', 'tickets.templates')->name('tickets.templates');
+Route::view('tickets/tags', 'tickets.tags')->name('tickets.tags');
+Route::view('projects/overview', 'projects.overview')->name('projects.overview');
+Route::view('projects/milestones', 'projects.milestones')->name('projects.milestones');
+Route::view('projects/tasks', 'projects.tasks')->name('projects.tasks');
+Route::view('projects/tickets', 'projects.tickets')->name('projects.tickets');
+Route::view('projects/team', 'projects.team')->name('projects.team');
+Route::view('projects/files', 'projects.files')->name('projects.files');
+Route::view('projects/timeline', 'projects.timeline')->name('projects.timeline');
+Route::view('projects/reports', 'projects.reports')->name('projects.reports');
+Route::view('tasks/my', 'tasks.my')->name('tasks.my');
+Route::view('tasks/team', 'tasks.team')->name('tasks.team');
+Route::view('tasks/templates', 'tasks.templates')->name('tasks.templates');
+Route::view('tasks/statuses', 'tasks.statuses')->name('tasks.statuses');
+Route::view('tasks/projects', 'tasks.projects')->name('tasks.projects');
+Route::view('tasks/tickets', 'tasks.tickets')->name('tasks.tickets');
+Route::view('tasks/calendar', 'tasks.calendar')->name('tasks.calendar');
+Route::view('knowledge/browse', 'knowledge.browse')->name('knowledge.browse');
+Route::view('knowledge/manage', 'knowledge.manage')->name('knowledge.manage');
+Route::view('knowledge/categories', 'knowledge.categories')->name('knowledge.categories');
+Route::view('knowledge/feedback', 'knowledge.feedback')->name('knowledge.feedback');
+Route::view('knowledge/drafts', 'knowledge.drafts')->name('knowledge.drafts');
+Route::view('calendar/my', 'calendar.my')->name('calendar.my');
+Route::view('calendar/team', 'calendar.team')->name('calendar.team');
+Route::view('calendar/tickets', 'calendar.tickets')->name('calendar.tickets');
+Route::view('calendar/tasks', 'calendar.tasks')->name('calendar.tasks');
+Route::view('calendar/events', 'calendar.events')->name('calendar.events');
+Route::view('calendar/sync', 'calendar.sync')->name('calendar.sync');
+Route::view('email/inbox', 'email.inbox')->name('email.inbox');
+Route::view('email/sent', 'email.sent')->name('email.sent');
+Route::view('email/drafts', 'email.drafts')->name('email.drafts');
+Route::view('email/tickets', 'email.tickets')->name('email.tickets');
+Route::view('email/tasks', 'email.tasks')->name('email.tasks');
+Route::view('email/templates', 'email.templates')->name('email.templates');
+Route::view('email/settings', 'email.settings')->name('email.settings');
+Route::view('files/upload', 'files.upload')->name('files.upload');
+Route::view('files/my', 'files.my')->name('files.my');
+Route::view('files/shared', 'files.shared')->name('files.shared');
+Route::view('files/tickets', 'files.tickets')->name('files.tickets');
+Route::view('files/tasks', 'files.tasks')->name('files.tasks');
+Route::view('files/knowledge', 'files.knowledge')->name('files.knowledge');
+Route::view('files/images', 'files.images')->name('files.images');
+Route::view('files/metadata', 'files.metadata')->name('files.metadata');
+Route::view('files/retention', 'files.retention')->name('files.retention');
+Route::view('files/logs', 'files.logs')->name('files.logs');
+Route::view('reports/tickets', 'reports.tickets')->name('reports.tickets');
+Route::view('reports/tasks', 'reports.tasks')->name('reports.tasks');
+Route::view('reports/agents', 'reports.agents')->name('reports.agents');
+Route::view('reports/satisfaction', 'reports.satisfaction')->name('reports.satisfaction');
+Route::view('reports/logs', 'reports.logs')->name('reports.logs');
+Route::view('reports/export', 'reports.export')->name('reports.export');
+Route::view('users/index', 'users.index')->name('users.index');
+Route::view('users/create', 'users.create')->name('users.create');
+Route::view('users/activity', 'users.activity')->name('users.activity');
+Route::view('users/modern', 'users.modern')->name('users.modern');
+Route::view('roles/index', 'roles.index')->name('roles.index');
+Route::view('roles/menus', 'roles.menus')->name('roles.menus');
+Route::view('users/menus', 'users.menus')->name('users.menus');
+Route::view('settings/system', 'settings.system')->name('settings.system');
+Route::view('settings/email', 'settings.email')->name('settings.email');
+Route::view('settings/tickets', 'settings.tickets')->name('settings.tickets');
+Route::view('settings/tasks', 'settings.tasks')->name('settings.tasks');
+Route::view('settings/notifications', 'settings.notifications')->name('settings.notifications');
+Route::view('settings/security', 'settings.security')->name('settings.security');
+Route::view('settings/api', 'settings.api')->name('settings.api');
+Route::view('settings/audit', 'settings.audit')->name('settings.audit');
+Route::view('admin/data', 'admin.data')->name('admin.data');
+Route::view('admin/migrations', 'admin.migrations')->name('admin.migrations');
+Route::view('admin/seeders', 'admin.seeders')->name('admin.seeders');
+Route::view('admin/cache', 'admin.cache')->name('admin.cache');
+Route::view('admin/health', 'admin.health')->name('admin.health');
+Route::view('qa/scenarios', 'qa.scenarios')->name('qa.scenarios');
+Route::view('qa/mock', 'qa.mock')->name('qa.mock');
+Route::view('qa/ui', 'qa.ui')->name('qa.ui');
+Route::view('qa/regression', 'qa.regression')->name('qa.regression');
+Route::view('integrations/webhooks', 'integrations.webhooks')->name('integrations.webhooks');
+Route::view('integrations/apps', 'integrations.apps')->name('integrations.apps');
+Route::view('integrations/notifications', 'integrations.notifications')->name('integrations.notifications');
+Route::view('integrations/crm', 'integrations.crm')->name('integrations.crm');
+Route::view('integrations/api', 'integrations.api')->name('integrations.api');
+Route::view('compliance/audit', 'compliance.audit')->name('compliance.audit');
+Route::view('compliance/retention', 'compliance.retention')->name('compliance.retention');
+Route::view('compliance/gdpr', 'compliance.gdpr')->name('compliance.gdpr');
+Route::view('compliance/access', 'compliance.access')->name('compliance.access');
+Route::view('help/started', 'help.started')->name('help.started');
+Route::view('help/features', 'help.features')->name('help.features');
+Route::view('help/faq', 'help.faq')->name('help.faq');
+Route::view('help/contact', 'help.contact')->name('help.contact');
+Route::view('help/feedback', 'help.feedback')->name('help.feedback');
+Route::view('account/profile', 'account.profile')->name('account.profile');
+Route::view('account/password', 'account.password')->name('account.password');
+Route::view('account/two-factor', 'account.two-factor')->name('account.two-factor');
+Route::view('account/sessions', 'account.sessions')->name('account.sessions');
+Route::view('account/notifications', 'account.notifications')->name('account.notifications');
+Route::view('menus/index', 'menus.index')->name('menus.index');
+Route::view('menus/reorder', 'menus.reorder')->name('menus.reorder');
+Route::view('menus/roles', 'menus.roles')->name('menus.roles');
+Route::view('menus/users', 'menus.users')->name('menus.users');
+
+// Route to set sidebarMenu test data in session
+Route::get('/set-sidebar-test', function () {
+    session(['sidebarMenu' => [
+        ['id' => 1, 'title' => 'Test Menu', 'url' => '/test', 'children' => []]
+    ]]);
+    return 'Sidebar test data set!';
+});
+
+
+// Sidebar Attribute Comparison Test Route
+Route::get('/sidebar-attribute-test', function () {
+    $sidebarMenu = session('sidebarMenu') ?? [];
+    return view('layout.sidebar-attribute-test', compact('sidebarMenu'));
+});
+
+/**
+ * =========================================================
+ * Section: Duplicate Use Statement Fix (chg0231)
+ * Description: Removed duplicate use statements to resolve PHP 'name is already in use' errors.
+ * - Removed duplicate use statements for Route, LoginController, RegisterController, etc.
+ * - Verified no other duplicate use statements exist in this file.
+ * =========================================================
+ */
+
+/* =========================================================
+ * Section: Guest Routes (Unauthenticated Users)
+ * Description: Routes available to non-logged-in users
+ * ========================================================= */
+
+// Redirect root to appropriate page based on auth status
+Route::get('/', function () {
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
+});
+
+// Index route (same as root for compatibility with template links)
+Route::get('/index', function () {
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
+})->name('index');
+
+/* =====================================================
+ * Section: Testing Routes
+ * Description: Routes for testing system connectivity and debugging
+ * Route: GET /test-connection, GET /debug-user
+ * Middleware: none, auth
+ * ===================================================== */
+
+// Simple test route (no authentication required)
+Route::get('/test-connection', function () {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Laravel routes are working correctly',
+        'timestamp' => now(),
+        'url' => request()->url()
+    ]);
+})->name('test-connection');
+
+// Debug user info route (authentication required)
+Route::get('/debug-user', function () {
+    if (!auth()->check()) {
+        return response()->json(['error' => 'Not authenticated']);
+    }
+    
+    $user = auth()->user();
+    return response()->json([
+        'user_id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'role_type_id' => $user->role_type_id ?? 'null',
+        'role_type' => $user->roleType ? [
+            'id' => $user->roleType->id,
+            'name' => $user->roleType->name,
+            'display_name' => $user->roleType->display_name
+        ] : 'null'
+    ]);
+})->name('debug-user');
+
+/* =====================================================
+ * Section: Authentication Routes
+ * Description: Guest routes for user login and registration
+ * Route: GET/POST /login, GET/POST /register
+ * Middleware: guest
+ * ===================================================== */
+
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('login', [LoginController::class, 'create'])->name('login');
+    Route::post('login', [LoginController::class, 'store']);
+    
+    Route::get('register', [RegisterController::class, 'create'])->name('register');
+    Route::post('register', [RegisterController::class, 'store']);
+});
+
+/* =====================================================
+ * Section: Logout Route
+ * Description: User logout functionality
+ * Route: POST /logout
+ * Middleware: auth
+ * ===================================================== */
+
+// Logout (available to authenticated users)
+Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
+
+/* =========================================================
+ * Section: Email Verification Routes (DISABLED)
+ * Description: Laravel's default email verification - disabled in favor of OTP
+ * ========================================================= */
+
+/*
+Route::middleware('auth')->group(function () {
+    Route::get('verify-email', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+    Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
+    Route::post('email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
+});
+*/
+
+/* =====================================================
+ * Section: OTP Verification Routes  
+ * Description: Routes for OTP-based email verification
+ * Route: GET/POST /otp-verification, POST /otp-verification/resend
+ * Middleware: auth
+ * ===================================================== */
+
+Route::middleware('auth')->group(function () {
+    Route::get('otp-verification', [OtpVerificationController::class, 'show'])->name('otp.verification.show');
+    Route::post('otp-verification', [OtpVerificationController::class, 'verify'])->name('otp.verification.verify');
+    Route::post('otp-verification/resend', [OtpVerificationController::class, 'resend'])->name('otp.verification.resend');
+});
+
+/* =====================================================
+ * Section: Authenticated User Routes
+ * Description: Routes requiring authentication and OTP verification
+ * Route: Various dashboard, ticket, knowledge base routes
+ * Middleware: auth, otp.verified
+ * ===================================================== */
+
+Route::middleware(['auth', 'otp.verified'])->group(function () {
+    /* =====================================================
+     * Section: Dashboard Routes
+     * Description: Main dashboard pages for different user types
+     * Route: GET /dashboard, /admin/dashboard, /support/dashboard, /project/dashboard
+     * Middleware: auth, otp.verified
+     * ===================================================== */
+
+    // Dashboard Routes
+    // Refactored: dashboard view now in dashboard/dashboard.blade.php
+    Route::get('/dashboard', function () {
+        $sidebarMenu = session('sidebarMenu') ?? [];
+        return view('dashboard.dashboard', compact('sidebarMenu'));
+    })->name('dashboard');
+    Route::view('admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::view('support/dashboard', 'support.dashboard')->name('support.dashboard');
+
+    /* =====================================================
+     * Section: Ticket System Routes
+     * Description: Support ticket management functionality
+     * Route: GET /tickets, /tickets/create, /tickets/{id}, /tickets/{id}/edit
+     * Middleware: auth, otp.verified
+     * ===================================================== */
+
+    // Ticket System Routes
+    Route::prefix('tickets')->group(function () {
+        Route::view('/', 'tickets.index')->name('tickets.index');
+        Route::view('create', 'tickets.create')->name('tickets.create');
+        Route::view('{id}', 'tickets.show')->name('tickets.show');
+        Route::view('{id}/edit', 'tickets.edit')->name('tickets.edit');
+    });
+
+    /* =====================================================
+     * Section: Knowledge Base Routes
+     * Description: Knowledge base articles and admin management
+     * Route: GET /knowledge-base, /knowledge-base/articles/{id}, admin routes
+     * Middleware: auth, otp.verified, role-based for admin
+     * ===================================================== */
+
+    // Knowledge Base Routes (Public reading, admin management)
+    Route::prefix('knowledge-base')->group(function () {
+        Route::view('/', 'knowledge.index')->name('knowledge.index');
+        Route::view('articles/{id}', 'knowledge.show')->name('knowledge.show');
+        /* =====================================================
+         * Section: Knowledge Base Admin Routes
+         * Description: Admin-only knowledge base management
+         * Route: GET /knowledge-base/admin/articles, /articles/create, /articles/{id}/edit
+         * Middleware: auth, otp.verified, role:admin,super_admin
+         * ===================================================== */
+
+        // Admin-only knowledge base management
+        Route::middleware('role:admin,super_admin')->prefix('admin')->group(function () {
+            Route::view('articles', 'knowledge.admin.index')->name('knowledge.admin.index');
+            Route::view('articles/create', 'knowledge.admin.create')->name('knowledge.admin.create');
+            Route::view('articles/{id}/edit', 'knowledge.admin.edit')->name('knowledge.admin.edit');
+        });
+    });
+
+    /* =====================================================
+     * Section: User Management Routes
+     * Description: Admin user management functionality
+     * Route: GET /admin/users, /admin/users/create, /admin/users/{id}/edit
+     * Middleware: auth, otp.verified, role:admin,super_admin
+     * ===================================================== */
+
+    // User Management Routes (Admin and Super Admin only)
+    Route::middleware('role:admin,super_admin')->prefix('admin/users')->group(function () {
+        Route::view('/', 'admin.users.index')->name('admin.users.index');
+        Route::view('create', 'admin.users.create')->name('admin.users.create');
+        Route::view('{id}/edit', 'admin.users.edit')->name('admin.users.edit');
+    });
+
+    /* =====================================================
+     * Section: Settings and Profile Routes
+     * Description: User settings and profile management
+     * Route: GET /settings, /profile
+     * Middleware: auth, otp.verified
+     * ===================================================== */
+
+    // Settings and Profile Routes
+    Route::view('settings', 'settings.index')->name('settings');
+    Route::view('profile', 'profile.index')->name('profile');
+});
+
+/* =====================================================
+ * Section: Demo Template Routes
+ * Description: Ki-admin template demonstration routes for development reference
+ * Route: Various demo routes (accordions, add_blog, etc.)
+ * Middleware: none
+ * ===================================================== */
+
+/* =========================================================
+ * Section: Demo Template Routes (Development Reference)
+ * Description: Keep existing ki-admin template routes for reference
+ * ========================================================= */
+Route::view('demo/accordions', 'accordions')->name('accordions');
+Route::view('add_blog', 'add_blog')->name('add_blog');
+Route::view('add_product', 'add_product')->name('add_product');
+Route::view('advance_table', 'advance_table')->name('advance_table');
+Route::view('alert', 'alert')->name('alert');
+Route::view('alignment', 'alignment')->name('alignment');
+Route::view('animated_icon', 'animated_icon')->name('animated_icon');
+Route::view('animation', 'animation')->name('animation');
+Route::view('api', 'api')->name('api');
+Route::view('area_chart', 'area_chart')->name('area_chart');
+Route::view('avatar', 'avatar')->name('avatar');
+
+Route::view('background', 'background')->name('background');
+Route::view('badges', 'badges')->name('badges');
+Route::view('bar_chart', 'bar_chart')->name('bar_chart');
+Route::view('base_inputs', 'base_inputs')->name('base_inputs');
+Route::view('basic_table', 'basic_table')->name('basic_table');
+Route::view('blank', 'blank')->name('blank');
+Route::view('block_ui', 'block_ui')->name('block_ui');
+Route::view('blog', 'blog')->name('blog');
+Route::view('blog_details', 'blog_details')->name('blog_details');
+Route::view('bookmark', 'bookmark')->name('bookmark');
+Route::view('bootstrap_slider', 'bootstrap_slider')->name('bootstrap_slider');
+Route::view('boxplot_chart', 'boxplot_chart')->name('boxplot_chart');
+Route::view('bubble_chart', 'bubble_chart')->name('bubble_chart');
+Route::view('bullet', 'bullet')->name('bullet');
+Route::view('buttons', 'buttons')->name('buttons');
+
+Route::view('calendar', 'calendar')->name('calendar');
+Route::view('candlestick_chart', 'candlestick_chart')->name('candlestick_chart');
+Route::view('cards', 'cards')->name('cards');
+Route::view('cart', 'cart')->name('cart');
+Route::view('chart_js', 'chart_js')->name('chart_js');
+Route::view('chat', 'chat')->name('chat');
+Route::view('cheatsheet', 'cheatsheet')->name('cheatsheet');
+Route::view('checkbox_radio', 'checkbox_radio')->name('checkbox_radio');
+Route::view('checkout', 'checkout')->name('checkout');
+Route::view('clipboard', 'clipboard')->name('clipboard');
+Route::view('collapse', 'collapse')->name('collapse');
+Route::view('column_chart', 'column_chart')->name('column_chart');
+Route::view('coming_soon', 'coming_soon')->name('coming_soon');
+Route::view('count_down', 'count_down')->name('count_down');
+Route::view('count_up', 'count_up')->name('count_up');
+
+Route::view('data_table', 'data_table')->name('data_table');
+Route::view('date_picker', 'date_picker')->name('date_picker');
+Route::view('default_forms', 'default_forms')->name('default_forms');
+Route::view('divider', 'divider')->name('divider');
+Route::view('draggable', 'draggable')->name('draggable');
+Route::view('dropdown', 'dropdown')->name('dropdown');
+Route::view('dual_list_boxes', 'dual_list_boxes')->name('dual_list_boxes');
+
+Route::view('editor', 'editor')->name('editor');
+Route::view('email', 'email')->name('email');
+Route::view('error_400', 'error_400')->name('error_400');
+Route::view('error_403', 'error_403')->name('error_403');
+Route::view('error_404', 'error_404')->name('error_404');
+Route::view('error_500', 'error_500')->name('error_500');
+Route::view('error_503', 'error_503')->name('error_503');
+
+Route::view('faq', 'faq')->name('faq');
+Route::view('file_manager', 'file_manager')->name('file_manager');
+Route::view('file_upload', 'file_upload')->name('file_upload');
+Route::view('flag_icons', 'flag_icons')->name('flag_icons');
+Route::view('floating_labels', 'floating_labels')->name('floating_labels');
+Route::view('fontawesome', 'fontawesome')->name('fontawesome');
+Route::view('footer_page', 'footer_page')->name('footer_page');
+Route::view('form_validation', 'form_validation')->name('form_validation');
+Route::view('form_wizard_1', 'form_wizard_1')->name('form_wizard_1');
+Route::view('form_wizard_2', 'form_wizard_2')->name('form_wizard_2');
+Route::view('form_wizards', 'form_wizards')->name('form_wizards');
+
+Route::view('gallery', 'gallery')->name('gallery');
+Route::view('google_map', 'google_map')->name('google_map');
+Route::view('grid', 'grid')->name('grid');
+
+Route::view('heatmap', 'heatmap')->name('heatmap');
+Route::view('helper_classes', 'helper_classes')->name('helper_classes');
+
+Route::view('iconoir_icon', 'iconoir_icon')->name('iconoir_icon');
+Route::view('input_groups', 'input_groups')->name('input_groups');
+Route::view('input_masks', 'input_masks')->name('input_masks');
+Route::view('invoice', 'invoice')->name('invoice');
+
+Route::view('kanban_board', 'kanban_board')->name('kanban_board');
+
+Route::view('landing', 'landing')->name('landing');
+Route::view('leaflet_map', 'leaflet_map')->name('leaflet_map');
+Route::view('line_chart', 'line_chart')->name('line_chart');
+Route::view('list', 'list')->name('list');
+Route::view('list_table', 'list_table')->name('list_table');
+Route::view('lock_screen', 'lock_screen')->name('lock_screen');
+Route::view('lock_screen_1', 'lock_screen_1')->name('lock_screen_1');
+
+
+Route::view('maintenance', 'maintenance')->name('maintenance');
+Route::view('misc', 'misc')->name('misc');
+Route::view('mixed_chart', 'mixed_chart')->name('mixed_chart');
+Route::view('modals', 'modals')->name('modals');
+Route::view('notifications', 'notifications')->name('notifications');
+
+Route::view('offcanvas', 'offcanvas')->name('offcanvas');
+Route::view('orders', 'orders')->name('orders');
+Route::view('order_details', 'order_details')->name('order_details');
+Route::view('order_list', 'order_list')->name('order_list');
+
+Route::view('password_create_1', 'password_create_1')->name('password_create_1');
+Route::view('password_reset_1', 'password_reset_1')->name('password_reset_1');
+Route::view('phosphor', 'phosphor')->name('phosphor');
+Route::view('pie_charts', 'pie_charts')->name('pie_charts');
+Route::view('placeholder', 'placeholder')->name('placeholder');
+Route::view('pricing', 'pricing')->name('pricing');
+Route::view('prismjs', 'prismjs')->name('prismjs');
+Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
+Route::view('product', 'product')->name('product');
+Route::view('product_details', 'product_details')->name('product_details');
+Route::view('product_list', 'product_list')->name('product_list');
+Route::view('profile', 'profile')->name('profile');
+Route::view('progress', 'progress')->name('progress');
+Route::view('password_create', 'password_create')->name('password_create');
+Route::view('password_reset', 'password_reset')->name('password_reset');
+
+Route::view('radar_chart', 'radar_chart')->name('radar_chart');
+Route::view('radial_bar_chart', 'radial_bar_chart')->name('radial_bar_chart');
+Route::view('range_slider', 'range_slider')->name('range_slider');
+Route::view('ratings', 'ratings')->name('ratings');
+Route::view('read_email', 'read_email')->name('read_email');
+Route::view('ready_to_use_form', 'ready_to_use_form')->name('ready_to_use_form');
+Route::view('ready_to_use_table', 'ready_to_use_table')->name('ready_to_use_table');
+Route::view('ribbons', 'ribbons')->name('ribbons');
+
+Route::view('scatter_chart', 'scatter_chart')->name('scatter_chart');
+Route::view('scrollbar', 'scrollbar')->name('scrollbar');
+Route::view('scrollpy', 'scrollpy')->name('scrollpy');
+Route::view('select', 'select')->name('select');
+Route::view('setting', 'setting')->name('setting');
+Route::view('shadow', 'shadow')->name('shadow');
+Route::view('sign_in', 'sign_in')->name('sign_in');
+Route::view('sign_in_1', 'sign_in_1')->name('sign_in_1');
+Route::view('sign_up', 'sign_up')->name('sign_up');
+Route::view('sign_up_1', 'sign_up_1')->name('sign_up_1');
+Route::view('sitemap', 'sitemap')->name('sitemap');
+Route::view('slick_slider', 'slick_slider')->name('slick_slider');
+Route::view('spinners', 'spinners')->name('spinners');
+Route::view('sweetalert', 'sweetalert')->name('sweetalert');
+Route::view('switch', 'switch')->name('switch');
+
+Route::view('tabler_icons', 'tabler_icons')->name('tabler_icons');
+Route::view('tabs', 'tabs')->name('tabs');
+Route::view('team', 'team')->name('team');
+Route::view('terms_condition', 'terms_condition')->name('terms_condition');
+Route::view('textarea', 'textarea')->name('textarea');
+Route::view('ticket', 'ticket')->name('ticket');
+Route::view('ticket_details', 'ticket_details')->name('ticket_details');
+Route::view('timeline', 'timeline')->name('timeline');
+Route::view('timeline_range_charts', 'timeline_range_charts')->name('timeline_range_charts');
+Route::view('to_do', 'to_do')->name('to_do');
+Route::view('tooltips_popovers', 'tooltips_popovers')->name('tooltips_popovers');
+Route::view('touch_spin', 'touch_spin')->name('touch_spin');
+Route::view('tour', 'tour')->name('tour');
+Route::view('tree-view', 'tree-view')->name('tree-view');
+Route::view('treemap_chart', 'treemap_chart')->name('treemap_chart');
+Route::view('two_step_verification', 'two_step_verification')->name('two_step_verification');
+Route::view('two_step_verification_1', 'two_step_verification_1')->name('two_step_verification_1');
+Route::view('typeahead', 'typeahead')->name('typeahead');
+
+
+Route::view('video_embed', 'video_embed')->name('video_embed');
+Route::view('weather_icon', 'weather_icon')->name('weather_icon');
+Route::view('widget', 'widget')->name('widget');
+Route::view('wishlist', 'wishlist')->name('wishlist');
+Route::view('wrapper', 'wrapper')->name('wrapper');
+
+// Test route without authentication - exact copy of working structure
+Route::view('test-working-layout', 'test-working-layout')->name('test-working-layout');
+
+// Layout debugging route
+Route::view('layout-debug', 'layout-debug')->name('layout-debug');
+
+/* =====================================================
+ * Section: OTP Email Test Route
+ * Description: Test route for OTP email functionality
+ * Route: GET /test-otp-email
+ * Middleware: none
+ * ===================================================== */
+
+// Test route for OTP email
+Route::get('/test-otp-email', function() {
+    // Find any user or create a test object
+    $user = new stdClass();
+    $user->username = 'mbattle';
+    $user->email = 'michael.battle@proton.me';
+    
+    $notification = new OtpVerificationNotification('12345');
+    $mail = $notification->toMail($user);
+    
+    return [
+        'status' => 'Testing OTP email',
+        'mail_type' => get_class($mail),
+        'template_exists' => file_exists(resource_path('views/emails/otp-verification.blade.php')),
+        'mailable_exists' => class_exists('App\\Mail\\OtpVerificationMail')
+    ];
+})->name('test.otp.email');
+
+/* =====================================================
+ * Section: Menu System Testing Routes (Development Only)
+ * Description: Routes for testing role-based menu system
+ * ===================================================== */
+
+// Development/test routes removed (see documentation and PT for details)
+
+/**
+ * =========================================================
+ * Section: z_ki-admin Public Pages
+ * Description: Publicly displays any Blade view from z_ki-admin folder at /ki-admin/{page}
+ * Route: GET /ki-admin/{any}
+ * Middleware: none (no authentication required)
+ * =========================================================
+ */
+// chg0270: add a simple route to display the z_ki-admin index demo at /ki-admin
+Route::view('ki-admin', 'z_ki-admin.index')->name('ki-admin.index');
+
+
+// Removed legacy development catch-all and test view routes to prepare repo for production caching

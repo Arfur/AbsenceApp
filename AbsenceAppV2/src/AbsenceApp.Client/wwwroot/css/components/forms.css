@@ -1,25 +1,36 @@
+/* =============================================================================
+   File    : forms.css
+   Project : AbsenceApp.Client
+   Version : 1.1.0
+   Created : 2026-05-15
+   Updated : 2026-05-15
+   Purpose : Global styles for V2 form controls.
+   Changes :
+     - 1.1.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
+============================================================================= */
+
 .dsv2-form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: var(--ds-space-1, 0.3rem);
 }
 
 .dsv2-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--v2-text-primary, #212529);
+    font-size: var(--ds-text-size-xs, 0.8rem);
+    font-weight: var(--ds-text-font-semibold, 600);
+    color: var(--ds-form-field-label, #212529);
 }
 
 .dsv2-input,
 .dsv2-select,
 .dsv2-textarea {
     height: 36px;
-    padding: 0 0.625rem;
-    border: 1px solid var(--v2-border-color, #dee2e6);
-    border-radius: var(--v2-radius-sm, 6px);
-    font-size: var(--v2-font-size-base, 14px);
-    color: var(--v2-text-primary, #212529);
-    background: var(--v2-bg-surface, #ffffff);
+    padding: var(--ds-input-py, 0) var(--ds-input-px, 0.625rem);
+    border: 1px solid var(--ds-form-field-border, #dee2e6);
+    border-radius: var(--ds-radius-sm, 6px);
+    font-size: var(--ds-text-size-sm, 14px);
+    color: var(--ds-form-field-text, #212529);
+    background: var(--ds-form-field-bg, #ffffff);
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     width: 100%;
@@ -28,37 +39,37 @@
 
 .dsv2-textarea {
     height: auto;
-    padding: 0.5rem 0.625rem;
+    padding: var(--ds-space-2, 0.5rem) var(--ds-input-px, 0.625rem);
     resize: vertical;
 }
 
 .dsv2-input:focus,
 .dsv2-select:focus,
 .dsv2-textarea:focus {
-    border-color: var(--v2-color-primary, #0d6efd);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    border-color: var(--ds-form-field-focus-border, #0d6efd);
+    box-shadow: var(--ds-form-field-focus-ring, 0 0 0 3px rgba(13, 110, 253, 0.15));
 }
 
 .dsv2-input--error {
-    border-color: var(--v2-color-danger, #dc3545);
+    border-color: var(--ds-form-field-error-border, #dc3545);
 }
 
 .dsv2-form-hint {
-    font-size: 0.75rem;
-    color: var(--v2-text-muted, #adb5bd);
+    font-size: var(--ds-text-size-xs, 0.75rem);
+    color: var(--ds-form-field-hint, #adb5bd);
 }
 
 .dsv2-form-error {
-    font-size: 0.75rem;
-    color: var(--v2-color-danger, #dc3545);
+    font-size: var(--ds-text-size-xs, 0.75rem);
+    color: var(--ds-form-field-error-text, #dc3545);
 }
 
 .dsv2-check {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.875rem;
-    color: var(--v2-text-primary, #212529);
+    gap: var(--ds-space-2, 0.4rem);
+    font-size: var(--ds-text-size-sm, 0.875rem);
+    color: var(--ds-form-field-text, #212529);
     cursor: pointer;
     padding: 0.2rem 0;
 }
@@ -70,7 +81,7 @@
 .dark .dsv2-input,
 .dark .dsv2-select,
 .dark .dsv2-textarea {
-    background: var(--v2-bg-surface, #1e2130);
-    border-color: var(--v2-border-color, #2d3348);
-    color: var(--v2-text-primary, #e9ecef);
+    background: var(--ds-form-field-bg, #1e2130);
+    border-color: var(--ds-form-field-border, #2d3348);
+    color: var(--ds-form-field-text, #e9ecef);
 }

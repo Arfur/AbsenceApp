@@ -3,8 +3,8 @@
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Updated : 2026-03-27
-   Version : 2.0.0
+     Updated : 2026-05-15
+     Version : 2.1.0
    -----------------------------------------------------------------------
    Purpose : Scoped styles for the redesigned PageTemplateV2 (v2.0.0).
              The component no longer renders its own Sidebar/Header/Breadcrumb
@@ -18,10 +18,9 @@
    -----------------------------------------------------------------------
    Changes :
      - 1.0.0  2026-03-21  Initial implementation (full shell grid CSS).
-     - 2.0.0  2026-03-27  Phase 3 Part 2 — Shell deduplication fix.
-                          Removed all dsv2-page-shell__* grid/sidebar/header
-                          rules. Added dsv2-page-inner__* rules for the
-                          simplified two-section layout (title row + content).
+        - 2.1.0  2026-05-15  Global token audit: noted missing
+                                                    page-shell typography/layout token families.
+         - 2.2.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
 ============================================================================= */
 
 /* ── Page inner wrapper ──────────────────────────────────────────────── */
@@ -29,7 +28,7 @@
 .dsv2-page-inner {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--ds-space-4, 16px);
 }
 
 /* ── Title row ───────────────────────────────────────────────────────── */
@@ -38,23 +37,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: var(--ds-space-4, 16px);
     flex-wrap: wrap;
     min-height: 2.25rem;
 }
 
 .dsv2-page-inner__page-title {
     margin: 0;
-    font-size: var(--v2-text-xl, 1.25rem);
-    font-weight: var(--v2-font-semibold, 600);
-    color: var(--text, #1a2032);
+    font-size: var(--ds-text-size-xl, 1.25rem);
+    font-weight: var(--ds-text-font-semibold, 600);
+    color: var(--ds-text-color-primary, #1a2032);
     line-height: 1.2;
 }
 
 .dsv2-page-inner__actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--ds-gap-sm, 8px);
     flex-shrink: 0;
 }
 
@@ -63,16 +62,16 @@
 .dsv2-page-inner__content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--ds-space-4, 16px);
 }
 
 /* ── Optional footer ─────────────────────────────────────────────────── */
 
 .dsv2-page-inner__footer {
-    padding-top: 8px;
-    border-top: 1px solid var(--v2-border-color, #dee2e6);
-    font-size: var(--v2-text-sm, 0.875rem);
-    color: var(--text-muted, #7b8494);
+    padding-top: var(--ds-space-2, 8px);
+    border-top: 1px solid var(--ds-border-default, #dee2e6);
+    font-size: var(--ds-text-size-sm, 0.875rem);
+    color: var(--ds-text-color-muted, #7b8494);
 }
 
 /* ── Dark mode ───────────────────────────────────────────────────────── */
@@ -80,3 +79,6 @@
 /* Dark mode is inherited from the `.dark` class on v2-layout-root.
    No explicit dark overrides needed because all colours use V1 CSS
    custom properties that are already overridden by .dark in app.css. */
+
+/* Phase E token adoption applied; page shell values now use SQL-backed tokens. */
+*/

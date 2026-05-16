@@ -1,0 +1,70 @@
+/* =====================================================
+ * Section: Sidebar Submenu Icon Removal (Final Override)
+ * Description: Remove vertical bar icon from all sidebar submenu items.
+ * Change Ref: chg0202
+ * PT File: PT_2025-08-18.md Session 0202
+ * ===================================================== */
+/* Only remove pseudo-elements and left-border for nested submenu LIST ITEMS
+   (ul.collapse li::before / ::after). This preserves the top-level anchor :after
+   chevrons and the rotate behavior while removing the vertical bar used for
+   deep nesting visual markers. Do NOT hide the <li> elements themselves. */
+.main-nav ul.collapse li::before,
+.main-nav ul.collapse li::after {
+    content: none !important;
+    display: none !important;
+    border-left: none !important;
+}
+
+/* =====================================================
+ * Section: Sidebar Submenu Vertical Bar Removal (Final)
+ * Description: Remove vertical bar from sidebar submenu items, targeting li, ::before, ::after, and SVG.
+ * Change Ref: chg0204
+ * PT File: PT_2025-08-18.md Session 0204
+ * ===================================================== */
+/* Ensure nested SVG/list markers inside collapsed submenus do not render
+   the vertical bar or left-border. Keep top-level li markers intact so
+   the theme's chevrons and indicators continue to work. */
+.main-nav ul.collapse li svg {
+    border-left: none !important;
+}
+
+/* =====================================================
+ * Section: Sidebar Scrollbar Styling (chg0226)
+ * Description: Enforce max-height, overflow-y, and consistent scrollbar styling for #app-simple-bar.
+ * PT File: PT_2025-08-18.md Session 0226
+ * ===================================================== */
+#app-simple-bar {
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+}
+
+/* Optional: SimpleBar integration */
+.simplebar-scrollbar::before {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* =====================================================
+ * Section: Sidebar Menu Icon Visibility (chg0253)
+ * Description: Ensure SVG icons inside .menu-icon are visible,
+ * sized and inherit color even when compiled CSS contains
+ * conflicting rules. This is a small, scoped override intended
+ * as a fast diagnostic/fallback. Reversible.
+ * PT File: PT_2025-08-18.md Session 0253
+ * ===================================================== */
+/* Scoped to the sidebar markup to avoid global side-effects. */
+.main-nav .menu-icon svg,
+.menu-icon svg {
+    display: inline-block !important;
+    width: 1.25em !important;
+    height: 1.25em !important;
+    vertical-align: middle !important;
+    overflow: visible !important;
+    color: inherit !important;
+}
+.main-nav .menu-icon svg use,
+.menu-icon svg use {
+    /* For browsers that apply fill to <use> elements; prefer currentColor */
+    fill: currentColor !important;
+}
+

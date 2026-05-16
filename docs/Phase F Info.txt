@@ -1,0 +1,248 @@
+Absolutely, Michael — I understand exactly what you’re asking.
+
+You want me to **capture and preserve the full, detailed blueprint of Phase F** so that:
+
+- You can safely build the missing Global Settings UI pages first  
+- And later, when you’re ready, I can execute Phase F perfectly  
+- Even though I won’t remember all the context unless you give me a detailed anchor now  
+
+So here’s what I’ll do:
+
+👉 I’ll give you the **most complete, explicit, structured, future‑proof description of Phase F** — everything that must happen, everything that must be updated, every dependency, every rule, every file, every constraint, every validation step.
+
+This will act as a **Phase F Master Specification** that you can paste back to me later.
+
+No execution.  
+No guessing.  
+Just the full, authoritative definition of what Phase F *is* and what it *must do*.
+
+---
+
+# ⭐ **PHASE F — MASTER SPECIFICATION (Token Value Finalisation)**  
+### *This is the complete, detailed definition of Phase F for future execution.*
+
+---
+
+# 1. **Purpose of Phase F**
+Phase F assigns **real, final, production‑ready values** to all SQL‑backed design tokens created in Phase D.
+
+Right now:
+
+- ~190 tokens exist in the seed file  
+- All have `DefaultValue = "TBD"`  
+- The UI uses them (Phase E), but they have no real values  
+- The database still contains only the original 59 tokens  
+
+Phase F turns the design system from **structural** to **visual**.
+
+---
+
+# 2. **What Phase F MUST update**
+Phase F touches **three** areas:
+
+### **A) SQL Seed File**
+`DesignTokenModelBuilderExtensions.cs`
+
+- Replace every `"TBD"` with real values  
+- Ensure values match design rules (colour, spacing, radius, shadow, etc.)  
+- Maintain deterministic SortOrder  
+- Maintain ComponentGroup + TokenKey integrity  
+- No renaming tokens  
+- No adding new tokens  
+- No removing tokens  
+
+### **B) theme.json**
+Both:
+
+- `wwwroot/config/designsystem/theme.json`  
+- `Framework/Config/theme.json`  
+
+For each token:
+
+- Add real **light theme** value  
+- Add real **dark theme** value  
+- Ensure values match SQL  
+- Ensure no `"TBD"` remains  
+- Ensure no unused tokens exist  
+- Ensure no missing tokens exist  
+
+### **C) components.json**
+Only update if:
+
+- A component requires a default variant value  
+- A token family needs a default mapping  
+
+No structural changes.  
+No new components.  
+No variant guessing.
+
+---
+
+# 3. **What Phase F MUST NOT do**
+- Must NOT modify CSS  
+- Must NOT modify Razor components  
+- Must NOT modify token names  
+- Must NOT modify token families  
+- Must NOT add new tokens  
+- Must NOT delete tokens  
+- Must NOT reorder tokens  
+- Must NOT guess values  
+- Must NOT modify unrelated files  
+
+Phase F is **value assignment only**.
+
+---
+
+# 4. **Token Families Requiring Values**
+Phase F must assign values to all tokens in these families:
+
+### **Foundation**
+- text  
+- surface  
+- border  
+- spacing  
+- radius  
+- shadow  
+- layout  
+
+### **Semantic**
+- alert  
+- table  
+- form-field  
+- form-shell  
+- nav-header  
+- nav-sidebar  
+- icon  
+- icon-btn  
+- badge-status  
+- chart  
+
+Total: **~190 tokens**
+
+---
+
+# 5. **Value Types Required**
+Each token must receive a value of the correct type:
+
+### **Colours**
+- hex (`#RRGGBB`)  
+- rgba (`rgba(r,g,b,a)`)  
+- semantic colours (brand palette)  
+
+### **Spacing**
+- px  
+- rem  
+- consistent scale (4px, 8px, 12px, 16px, etc.)  
+
+### **Radius**
+- px  
+- rem  
+- consistent scale (2px, 4px, 6px, 8px, etc.)  
+
+### **Shadows**
+- CSS shadow strings  
+- Multi-layer shadows allowed  
+
+### **Typography**
+- rem font sizes  
+- font weights  
+- line heights  
+
+### **Layout**
+- px widths/heights  
+- rem spacing  
+
+---
+
+# 6. **Light/Dark Theme Requirements**
+Every colour token must have:
+
+- A **light** value  
+- A **dark** value  
+
+Dark theme must not:
+
+- invert colours blindly  
+- break contrast  
+- break accessibility  
+
+---
+
+# 7. **Validation Requirements**
+Phase F must include:
+
+### **A) Build Validation**
+`dotnet build` must pass with 0 errors.
+
+### **B) Token Coverage Validation**
+- No `"TBD"` values remain  
+- No missing tokens  
+- No unused tokens  
+- No mismatched names  
+- No duplicate keys  
+
+### **C) Theme Validation**
+- theme.json must parse  
+- All tokens must exist in both light and dark  
+- No missing entries  
+
+### **D) UI Validation**
+- CSS injection must output correct values  
+- UI must visually reflect tokens  
+- No broken components  
+
+---
+
+# 8. **Changelog Requirements**
+Append a new entry to:
+
+`docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md`
+
+Entry must include:
+
+- Date  
+- Number of tokens updated  
+- Families completed  
+- Light/dark theme coverage  
+- Build validation result  
+- Confirmation that no `"TBD"` remains  
+- Confirmation that no CSS was modified  
+
+---
+
+# 9. **Execution Order**
+Phase F must follow this order:
+
+1. Update SQL seed values  
+2. Update theme.json (light + dark)  
+3. Update components.json (if needed)  
+4. Validate build  
+5. Validate theme  
+6. Validate UI  
+7. Append changelog  
+
+---
+
+# 10. **Dependencies**
+Phase F must NOT run until:
+
+- All Global Settings UI pages exist  
+- All token families have UI editors  
+- All tokens can be modified through the admin UI  
+
+Otherwise you will lock in values with no way to change them.
+
+---
+
+# ⭐ **One‑liner summary for future recall**
+**Phase F assigns real values to all 190+ tokens in SQL + theme.json, validates the entire design system, and finalises the visual identity — but must only run after the Global Settings UI pages exist.**
+
+---
+
+If you want, I can also generate:
+
+- A **Phase F PLAN MODE block**  
+- A **Phase F EXECUTION MODE block**  
+- A **Global Settings UI Expansion Plan**  
+
+Just tell me which one you want next.

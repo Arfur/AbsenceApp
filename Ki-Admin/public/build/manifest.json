@@ -1,0 +1,119 @@
+{
+  "public/assets/images/avatar/09.png": {
+    "file": "assets/09-RVi4f03I.png",
+    "src": "public/assets/images/avatar/09.png"
+  },
+  "public/assets/images/background/06.jpg": {
+    "file": "assets/06-BUZdJH04.jpg",
+    "src": "public/assets/images/background/06.jpg"
+  },
+  "public/assets/images/background/box-bg.jpg": {
+    "file": "assets/box-bg-CogJfHyy.jpg",
+    "src": "public/assets/images/background/box-bg.jpg"
+  },
+  "public/assets/images/background/login-bg.png": {
+    "file": "assets/login-bg-BzD9KQpW.png",
+    "src": "public/assets/images/background/login-bg.png"
+  },
+  "public/assets/images/background/sign-in-bg.jpg": {
+    "file": "assets/sign-in-bg-BHLg4wZk.jpg",
+    "src": "public/assets/images/background/sign-in-bg.jpg"
+  },
+  "public/assets/images/dashboard/ecommerce-dashboard/02.png": {
+    "file": "assets/02-DBzJUS7u.png",
+    "src": "public/assets/images/dashboard/ecommerce-dashboard/02.png"
+  },
+  "public/assets/images/dashboard/ecommerce-dashboard/kids-offer.png": {
+    "file": "assets/kids-offer-DjPfaMIp.png",
+    "src": "public/assets/images/dashboard/ecommerce-dashboard/kids-offer.png"
+  },
+  "public/assets/images/dashboard/ecommerce-dashboard/location-bg.jpg": {
+    "file": "assets/location-bg-Bvu12QAG.jpg",
+    "src": "public/assets/images/dashboard/ecommerce-dashboard/location-bg.jpg"
+  },
+  "public/assets/images/dashboard/project/chat-bg.jpg": {
+    "file": "assets/chat-bg-D5GZwZP6.jpg",
+    "src": "public/assets/images/dashboard/project/chat-bg.jpg"
+  },
+  "public/assets/images/dashboard/project/meeting-bg.png": {
+    "file": "assets/meeting-bg-BldcbZCY.png",
+    "src": "public/assets/images/dashboard/project/meeting-bg.png"
+  },
+  "public/assets/images/dashboard/project/payment-card-bg.jpg": {
+    "file": "assets/payment-card-bg-D5AvgPvx.jpg",
+    "src": "public/assets/images/dashboard/project/payment-card-bg.jpg"
+  },
+  "public/assets/images/landing/colour-theme-bg.png": {
+    "file": "assets/colour-theme-bg-DKFSn6ob.png",
+    "src": "public/assets/images/landing/colour-theme-bg.png"
+  },
+  "public/assets/images/landing/customize.png": {
+    "file": "assets/customize-B5oaM2ZB.png",
+    "src": "public/assets/images/landing/customize.png"
+  },
+  "public/assets/images/landing/dark-bg.png": {
+    "file": "assets/dark-bg-DnPKSwdm.png",
+    "src": "public/assets/images/landing/dark-bg.png"
+  },
+  "public/assets/images/landing/footer-bg.png": {
+    "file": "assets/footer-bg-FyBtHkrr.png",
+    "src": "public/assets/images/landing/footer-bg.png"
+  },
+  "public/assets/images/landing/speed-performance-bg.png": {
+    "file": "assets/speed-performance-bg-Bd7XT8WY.png",
+    "src": "public/assets/images/landing/speed-performance-bg.png"
+  },
+  "public/assets/images/profile-app/25.jpg": {
+    "file": "assets/25-DAR1kEkL.jpg",
+    "src": "public/assets/images/profile-app/25.jpg"
+  },
+  "public/assets/images/profile-app/28.jpg": {
+    "file": "assets/28-CK9LEFzI.jpg",
+    "src": "public/assets/images/profile-app/28.jpg"
+  },
+  "public/assets/images/slick/11.jpg": {
+    "file": "assets/11-j_sFk51y.jpg",
+    "src": "public/assets/images/slick/11.jpg"
+  },
+  "public/assets/images/slick/29.jpg": {
+    "file": "assets/29-CFjV2cZ4.jpg",
+    "src": "public/assets/images/slick/29.jpg"
+  },
+  "public/assets/images/slick/30.jpg": {
+    "file": "assets/30-BFd1pjVI.jpg",
+    "src": "public/assets/images/slick/30.jpg"
+  },
+  "public/assets/images/slick/31.jpg": {
+    "file": "assets/30-BFd1pjVI.jpg",
+    "src": "public/assets/images/slick/30.jpg"
+  },
+  "public/assets/images/slick/32.jpg": {
+    "file": "assets/32-SEdkjFpQ.jpg",
+    "src": "public/assets/images/slick/32.jpg"
+  },
+  "public/assets/images/slick/33.jpg": {
+    "file": "assets/30-BFd1pjVI.jpg",
+    "src": "public/assets/images/slick/30.jpg"
+  },
+  "public/assets/scss/style.scss": {
+    "file": "assets/style-gLIu1Kqz.css",
+    "src": "public/assets/scss/style.scss",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DsxUxJOe.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/sidebar-override.css": {
+    "file": "assets/sidebar-override-Du7bsNvw.css",
+    "src": "resources/css/sidebar-override.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-eMHK6VFw.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}

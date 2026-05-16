@@ -1,0 +1,131 @@
+menu_item_id,title,slug,is_visible,url,route_name,icon,icon_color,tooltip,badge_count,is_collapsible,permission_key,component,order,is_external,parent_id,display_order,menu_group,is_favorite
+1010000,Dashboard,dashboard,1,NULL,dashboard.index,fas fa-tachometer-alt,#333,Main dashboard,NULL,1,view_dashboard,NULL,1010000,0,NULL,1,main,0
+1010100,System Overview,system-overview,1,NULL,dashboard.overview,fas fa-info-circle,#333,System status overview,NULL,0,view_system_overview,NULL,1010100,0,1010000,1,main,0
+1010200,My Activity,my-activity,1,NULL,dashboard.activity,fas fa-user-clock,#333,Your recent activity,NULL,0,view_activity,NULL,1010200,0,1010000,2,main,0
+1010300,Quick Actions,quick-actions,1,NULL,dashboard.quick,fas fa-bolt,#333,Shortcuts for common actions,NULL,0,view_quick_actions,NULL,1010300,0,1010000,3,main,0
+1010400,Agent Dashboard,agent-dashboard,1,NULL,dashboard.agent,fas fa-user-tie,#333,Agent-specific dashboard,NULL,0,view_agent_dashboard,NULL,1010400,0,1010000,4,main,0
+1010500,Manager Dashboard,manager-dashboard,1,NULL,dashboard.manager,fas fa-user-cog,#333,Manager dashboard,NULL,0,view_manager_dashboard,NULL,1010500,0,1010000,5,main,0
+1010600,Admin Dashboard,admin-dashboard,1,NULL,dashboard.admin,fas fa-crown,#333,Admin dashboard,NULL,0,view_admin_dashboard,NULL,1010600,0,1010000,6,main,0
+1010700,Custom Dashboard,custom-dashboard,1,NULL,dashboard.custom,fas fa-th-large,#333,Custom dashboard,NULL,1,view_custom_dashboard,NULL,1010700,0,1010000,7,main,0
+1010710,Add Card,add-card,1,NULL,dashboard.custom.add,fas fa-plus,#333,Add dashboard card,NULL,0,add_dashboard_card,NULL,1010710,0,1010700,1,main,0
+1010720,Reorder Cards,reorder-cards,1,NULL,dashboard.custom.reorder,fas fa-sort,#333,Reorder dashboard cards,NULL,0,reorder_dashboard_cards,NULL,1010720,0,1010700,2,main,0
+1010730,Save Layout,save-layout,1,NULL,dashboard.custom.save,fas fa-save,#333,Save dashboard layout,NULL,0,save_dashboard_layout,NULL,1010730,0,1010700,3,main,0
+1010740,Set Default,set-default,1,NULL,dashboard.custom.default,fas fa-star,#333,Set default dashboard layout,NULL,0,set_default_dashboard,NULL,1010740,0,1010700,4,main,0
+1020000,Tickets,tickets,1,NULL,tickets.index,fas fa-ticket-alt,#333,Ticket management,NULL,1,view_tickets,NULL,1020000,0,NULL,1,tickets,0
+1020100,Create Ticket,create-ticket,1,NULL,tickets.create,fas fa-plus,#333,Create a new ticket,NULL,0,create_ticket,NULL,1020100,0,1020000,1,tickets,0
+1020200,My Tickets,my-tickets,1,NULL,tickets.my,fas fa-list,#333,Your assigned tickets,NULL,0,view_my_tickets,NULL,1020200,0,1020000,2,tickets,0
+1020300,All Tickets,all-tickets,1,NULL,tickets.all,fas fa-list-alt,#333,List all tickets,NULL,0,view_all_tickets,NULL,1020300,0,1020000,3,tickets,0
+1020400,Unassigned,unassigned-tickets,1,NULL,tickets.unassigned,fas fa-user-slash,#333,Unassigned tickets,NULL,0,view_unassigned_tickets,NULL,1020400,0,1020000,4,tickets,0
+1020500,Closed Tickets,closed-tickets,1,NULL,tickets.closed,fas fa-check,#333,Closed tickets,NULL,0,view_closed_tickets,NULL,1020500,0,1020000,5,tickets,0
+1020600,Templates,ticket-templates,1,NULL,tickets.templates,fas fa-clipboard,#333,Ticket templates,NULL,0,view_ticket_templates,NULL,1020600,0,1020000,6,tickets,0
+1020700,Ticket Tags,ticket-tags,1,NULL,tickets.tags,fas fa-tags,#333,Ticket tags,NULL,0,manage_ticket_tags,NULL,1020700,0,1020000,7,tickets,0
+1030000,Projects,projects,1,NULL,projects.index,fas fa-project-diagram,#333,Project management,NULL,1,view_projects,NULL,1030000,0,NULL,1,projects,0
+1030100,All Projects,all-projects,1,NULL,projects.all,fas fa-list,#333,List all projects,NULL,0,view_all_projects,NULL,1030100,0,1030000,1,projects,0
+1030200,Create Project,create-project,1,NULL,projects.create,fas fa-plus,#333,Start a new project,NULL,0,create_project,NULL,1030200,0,1030000,2,projects,0
+1030300,Overview,project-overview,1,NULL,projects.overview,fas fa-eye,#333,Project overview,NULL,0,view_project_overview,NULL,1030300,0,1030000,3,projects,0
+1030400,Milestones,milestones,1,NULL,projects.milestones,fas fa-flag,#333,Project milestones,NULL,0,view_milestones,NULL,1030400,0,1030000,4,projects,0
+1030500,Linked Tasks,linked-tasks,1,NULL,projects.linked-tasks,fas fa-tasks,#333,Tasks linked to project,NULL,0,view_linked_tasks,NULL,1030500,0,1030000,5,projects,0
+1030600,Linked Tickets,linked-tickets,1,NULL,projects.linked-tickets,fas fa-ticket-alt,#333,Tickets linked to project,NULL,0,view_linked_tickets,NULL,1030600,0,1030000,6,projects,0
+1030700,Team Setup,team-setup,1,NULL,projects.team,fas fa-users,#333,Setup project team,NULL,0,manage_team_setup,NULL,1030700,0,1030000,7,projects,0
+1030800,Files,project-files,1,NULL,projects.files,fas fa-folder,#333,Project files,NULL,0,view_project_files,NULL,1030800,0,1030000,8,projects,0
+1030900,Timeline,project-timeline,1,NULL,projects.timeline,fas fa-calendar-alt,#333,Project timeline,NULL,0,view_project_timeline,NULL,1030900,0,1030000,9,projects,0
+1031000,Reports,project-reports,1,NULL,projects.reports,fas fa-chart-bar,#333,Project reports,NULL,0,view_project_reports,NULL,1031000,0,1030000,10,projects,0
+1040000,Tasks,tasks,1,NULL,tasks.index,fas fa-tasks,#333,Task management,NULL,1,view_tasks,NULL,1040000,0,NULL,1,tasks,0
+1040100,My Tasks,my-tasks,1,NULL,tasks.my,fas fa-user,#333,Your assigned tasks,NULL,0,view_my_tasks,NULL,1040100,0,1040000,1,tasks,0
+1040200,Team Tasks,team-tasks,1,NULL,tasks.team,fas fa-users,#333,Team tasks,NULL,0,view_team_tasks,NULL,1040200,0,1040000,2,tasks,0
+1040300,Templates,task-templates,1,NULL,tasks.templates,fas fa-clipboard,#333,Task templates,NULL,0,view_task_templates,NULL,1040300,0,1040000,3,tasks,0
+1040400,Statuses,task-statuses,1,NULL,tasks.statuses,fas fa-check-square,#333,Task statuses,NULL,0,view_task_statuses,NULL,1040400,0,1040000,4,tasks,0
+1040500,Linked Projects,linked-projects,1,NULL,tasks.linked-projects,fas fa-project-diagram,#333,Projects linked to task,NULL,0,view_linked_projects,NULL,1040500,0,1040000,5,tasks,0
+1040600,Linked Tickets,linked-tickets-tasks,1,NULL,tasks.linked-tickets,fas fa-ticket-alt,#333,Tickets linked to task,NULL,0,view_linked_tickets,NULL,1040600,0,1040000,6,tasks,0
+1040700,Calendar Sync,calendar-sync,1,NULL,tasks.calendar,fas fa-sync,#333,Sync tasks with calendar,NULL,0,manage_calendar_sync,NULL,1040700,0,1040000,7,tasks,0
+1050000,Knowledge Base,knowledge-base,1,NULL,knowledge.index,fas fa-book,#333,Knowledge base,NULL,1,view_knowledge,NULL,1050000,0,NULL,1,knowledge,0
+1050100,Browse Articles,browse-articles,1,NULL,knowledge.browse,fas fa-search,#333,Browse articles,NULL,0,browse_articles,NULL,1050100,0,1050000,1,knowledge,0
+1050200,Manage Articles,manage-articles,1,NULL,knowledge.manage,fas fa-cog,#333,Manage articles,NULL,0,manage_articles,NULL,1050200,0,1050000,2,knowledge,0
+1050300,Categories,categories,1,NULL,knowledge.categories,fas fa-folder,#333,Article categories,NULL,0,view_categories,NULL,1050300,0,1050000,3,knowledge,0
+1050400,Feedback,article-feedback,1,NULL,knowledge.feedback,fas fa-comments,#333,Article feedback,NULL,0,view_article_feedback,NULL,1050400,0,1050000,4,knowledge,0
+1050500,Drafts Queue,drafts-queue,1,NULL,knowledge.drafts,fas fa-edit,#333,Drafts review queue,NULL,0,manage_drafts,NULL,1050500,0,1050000,5,knowledge,0
+1060000,Calendar,calendar,1,NULL,calendar.index,fas fa-calendar,#333,Calendar,NULL,1,view_calendar,NULL,1060000,0,NULL,1,calendar,0
+1060100,My Calendar,my-calendar,1,NULL,calendar.my,fas fa-user-clock,#333,My calendar,NULL,0,view_my_calendar,NULL,1060100,0,1060000,1,calendar,0
+1060200,Team Calendar,team-calendar,1,NULL,calendar.team,fas fa-users,#333,Team calendar,NULL,0,view_team_calendar,NULL,1060200,0,1060000,2,calendar,0
+1060300,Ticket Due Dates,ticket-due-dates,1,NULL,calendar.tickets,fas fa-ticket-alt,#333,Ticket due dates,NULL,0,view_ticket_due_dates,NULL,1060300,0,1060000,3,calendar,0
+1060400,Task Due Dates,task-due-dates,1,NULL,calendar.tasks,fas fa-tasks,#333,Task due dates,NULL,0,view_task_due_dates,NULL,1060400,0,1060000,4,calendar,0
+1060500,Event Types,event-types,1,NULL,calendar.events,fas fa-star,#333,Event types,NULL,0,view_event_types,NULL,1060500,0,1060000,5,calendar,0
+1060600,Sync Settings,sync-settings,1,NULL,calendar.sync,fas fa-sync-alt,#333,Calendar sync settings,NULL,0,manage_sync_settings,NULL,1060600,0,1060000,6,calendar,0
+1070000,Email,email,1,NULL,email.index,fas fa-envelope,#333,Email,NULL,1,view_email,NULL,1070000,0,NULL,1,email,0
+1070100,Inbox,inbox,1,NULL,email.inbox,fas fa-inbox,#333,Inbox,NULL,0,view_inbox,NULL,1070100,0,1070000,1,email,0
+1070200,Sent,sent,1,NULL,email.sent,fas fa-paper-plane,#333,Sent emails,NULL,0,view_sent,NULL,1070200,0,1070000,2,email,0
+1070300,Drafts,drafts,1,NULL,email.drafts,fas fa-edit,#333,Draft emails,NULL,0,view_drafts,NULL,1070300,0,1070000,3,email,0
+1070400,Ticket Emails,ticket-emails,1,NULL,email.tickets,fas fa-ticket-alt,#333,Ticket emails,NULL,0,view_ticket_emails,NULL,1070400,0,1070000,4,email,0
+1070500,Task Emails,task-emails,1,NULL,email.tasks,fas fa-tasks,#333,Task emails,NULL,0,view_task_emails,NULL,1070500,0,1070000,5,email,0
+1070600,Templates,email-templates,1,NULL,email.templates,fas fa-clipboard,#333,Email templates,NULL,0,manage_email_templates,NULL,1070600,0,1070000,6,email,0
+1070700,Email,email-settings,1,NULL,settings.email,fas fa-envelope,#333,Email settings,NULL,0,manage_email_settings,NULL,1070700,0,1070000,2,settings,0
+1080000,Assets & Files,assets-files,1,NULL,files.index,fas fa-file,#333,Assets and files,NULL,1,view_files,NULL,1080000,0,NULL,1,assets,0
+1080100,Upload File,upload-file,1,NULL,files.upload,fas fa-upload,#333,Upload file,NULL,0,upload_file,NULL,1080100,0,1080000,1,assets,0
+1080200,My Files,my-files,1,NULL,files.my,fas fa-folder-open,#333,My files,NULL,0,view_my_files,NULL,1080200,0,1080000,2,assets,0
+1080300,Shared Files,shared-files,1,NULL,files.shared,fas fa-share-alt,#333,Shared files,NULL,0,view_shared_files,NULL,1080300,0,1080000,3,assets,0
+1080400,Ticket Files,ticket-files,1,NULL,files.tickets,fas fa-ticket-alt,#333,Ticket files,NULL,0,view_ticket_files,NULL,1080400,0,1080000,4,assets,0
+1080500,Task Docs,task-docs,1,NULL,files.tasks,fas fa-tasks,#333,Task documents,NULL,0,view_task_docs,NULL,1080500,0,1080000,5,assets,0
+1080600,KB Assets,kb-assets,1,NULL,files.knowledge,fas fa-book-open,#333,Knowledge base assets,NULL,0,view_kb_assets,NULL,1080600,0,1080000,6,assets,0
+1080700,Image Library,image-library,1,NULL,files.images,fas fa-images,#333,Image library,NULL,0,view_image_library,NULL,1080700,0,1080000,7,assets,0
+1080800,File Metadata,file-metadata,1,NULL,files.metadata,fas fa-tags,#333,File metadata,NULL,0,manage_file_metadata,NULL,1080800,0,1080000,8,assets,0
+1080900,Retention Rules,retention-rules,1,NULL,files.retention,fas fa-clock,#333,Retention rules,NULL,0,manage_retention_rules,NULL,1080900,0,1080000,9,assets,0
+1081000,Access Logs,access-logs,1,NULL,files.logs,fas fa-history,#333,Access logs,NULL,0,view_access_logs,NULL,1081000,0,1080000,10,assets,0
+1090000,Reports,reports,1,NULL,reports.index,fas fa-chart-bar,#333,Reports,NULL,1,view_reports,NULL,1090000,0,NULL,1,reports,0
+1090100,Ticket Stats,ticket-stats,1,NULL,reports.tickets,fas fa-ticket-alt,#333,Ticket statistics,NULL,0,view_ticket_stats,NULL,1090100,0,1090000,1,reports,0
+1090200,Task Rates,task-rates,1,NULL,reports.tasks,fas fa-tasks,#333,Task completion rates,NULL,0,view_task_rates,NULL,1090200,0,1090000,2,reports,0
+1090300,Agent Score,agent-score,1,NULL,reports.agents,fas fa-user-check,#333,Agent performance score,NULL,0,view_agent_score,NULL,1090300,0,1090000,3,reports,0
+1090400,CSAT,csat,1,NULL,reports.csat,fas fa-smile,#333,Customer satisfaction,NULL,0,view_csat,NULL,1090400,0,1090000,4,reports,0
+1090500,System Logs,system-logs,1,NULL,reports.logs,fas fa-file-alt,#333,System logs,NULL,0,view_system_logs,NULL,1090500,0,1090000,5,reports,0
+1090600,Export Center,export-center,1,NULL,reports.export,fas fa-download,#333,Export data and reports,NULL,0,manage_export_center,NULL,1090600,0,1090000,6,reports,0
+1100000,Users & Roles,users-roles,1,NULL,users.index,fas fa-users,#333,Users and roles,NULL,1,manage_users,NULL,1100000,0,NULL,1,users,0
+1100100,All Users,all-users,1,NULL,users.all,fas fa-list,#333,All users,NULL,0,view_all_users,NULL,1100100,0,1100000,1,users,0
+1100200,Add User,add-user,1,NULL,users.add,fas fa-plus,#333,Add user,NULL,0,add_user,NULL,1100200,0,1100000,2,users,0
+1100300,User Activity,user-activity,1,NULL,users.activity,fas fa-history,#333,User activity,NULL,0,view_user_activity,NULL,1100300,0,1100000,3,users,0
+1100400,Modern View,modern-view,1,NULL,users.modern,fas fa-th-large,#333,Modern user view,NULL,0,view_modern_view,NULL,1100400,0,1100000,4,users,0
+1100500,Roles & Access,roles-access,1,NULL,roles.access,fas fa-shield-alt,#333,Roles and access,NULL,0,manage_roles_access,NULL,1100500,0,1100000,5,users,0
+1100600,Role Menus,role-menus,1,NULL,roles.menus,fas fa-user-tag,#333,Role menus,NULL,0,assign_role_menus,NULL,1100600,0,1100000,6,users,0
+1100700,User Menus,user-menus,1,NULL,users.menus,fas fa-user-cog,#333,User menus,NULL,0,override_user_menus,NULL,1100700,0,1100000,7,users,0
+1110000,Settings,settings,1,NULL,settings.index,fas fa-cog,#333,Settings,NULL,1,view_settings,NULL,1110000,0,NULL,1,settings,0
+1110100,System,system-settings,1,NULL,settings.system,fas fa-server,#333,System settings,NULL,0,manage_system_settings,NULL,1110100,0,1110000,1,settings,0
+1110200,Ticket,ticket-settings,1,NULL,settings.ticket,fas fa-ticket-alt,#333,Ticket settings,NULL,0,manage_ticket_settings,NULL,1110200,0,1110000,3,settings,0
+1110300,Task,task-settings,1,NULL,settings.task,fas fa-tasks,#333,Task settings,NULL,0,manage_task_settings,NULL,1110300,0,1110000,4,settings,0
+1110400,Notifications,notification-settings,1,NULL,settings.notifications,fas fa-bell,#333,Notification settings,NULL,0,manage_notification_settings,NULL,1110400,0,1110000,5,settings,0
+1110500,Security,security-settings,1,NULL,settings.security,fas fa-shield-alt,#333,Security settings,NULL,0,manage_security_settings,NULL,1110500,0,1110000,6,settings,0
+1110600,API Links,api-links,1,NULL,settings.api,fas fa-plug,#333,API links,NULL,0,manage_api_links,NULL,1110600,0,1110000,7,settings,0
+1110700,Audit Trail,audit-trail,1,NULL,settings.audit,fas fa-history,#333,Audit trail,NULL,0,view_audit_trail,NULL,1110700,0,1110000,8,settings,0
+1120000,Admin Tools,admin-tools,1,NULL,admin.tools,fas fa-tools,#333,Admin tools,NULL,1,view_admin_tools,NULL,1120000,0,NULL,1,admin,0
+1120100,Import/Export,import-export,1,NULL,admin.import-export,fas fa-exchange-alt,#333,Import/export data,NULL,0,manage_import_export,NULL,1120100,0,1120000,1,admin,0
+1120200,Migration Viewer,migration-viewer,1,NULL,admin.migrations,fas fa-database,#333,Migration viewer,NULL,0,view_migration_viewer,NULL,1120200,0,1120000,2,admin,0
+1120300,Seeder Manager,seeder-manager,1,NULL,admin.seeders,fas fa-seedling,#333,Seeder manager,NULL,0,manage_seeder_manager,NULL,1120300,0,1120000,3,admin,0
+1120400,Cache Monitor,cache-monitor,1,NULL,admin.cache,fas fa-tachometer-alt,#333,Cache monitor,NULL,0,view_cache_monitor,NULL,1120400,0,1120000,4,admin,0
+1120500,Health Check,health-check,1,NULL,admin.health,fas fa-heartbeat,#333,Health check,NULL,0,view_health_check,NULL,1120500,0,1120000,5,admin,0
+1130000,QA & Testing,qa-testing,1,NULL,qa.index,fas fa-bug,#333,QA and testing,NULL,1,view_qa,NULL,1130000,0,NULL,1,qa,0
+1130100,Test Scenarios,test-scenarios,1,NULL,qa.scenarios,fas fa-list-ol,#333,Test scenarios,NULL,0,view_test_scenarios,NULL,1130100,0,1130000,1,qa,0
+1130200,Mock Tickets,mock-tickets,1,NULL,qa.mock,fas fa-ticket-alt,#333,Mock tickets,NULL,0,view_mock_tickets,NULL,1130200,0,1130000,2,qa,0
+1130300,UI Preview,ui-preview,1,NULL,qa.ui,fas fa-eye,#333,UI preview,NULL,0,view_ui_preview,NULL,1130300,0,1130000,3,qa,0
+1130400,Regression List,regression-list,1,NULL,qa.regression,fas fa-check-double,#333,Regression checklist,NULL,0,view_regression_list,NULL,1130400,0,1130000,4,qa,0
+1140000,Integrations,integrations,1,NULL,integrations.index,fas fa-puzzle-piece,#333,Integrations,NULL,1,view_integrations,NULL,1140000,0,NULL,1,integrations,0
+1140100,Webhooks,webhooks,1,NULL,integrations.webhooks,fas fa-link,#333,Webhooks,NULL,0,manage_webhooks,NULL,1140100,0,1140000,1,integrations,0
+1140200,Third-Party Apps,third-party-apps,1,NULL,integrations.apps,fas fa-cubes,#333,Third-party apps,NULL,0,manage_third_party_apps,NULL,1140200,0,1140000,2,integrations,0
+1140300,Slack/Teams Alerts,slack-teams-alerts,1,NULL,integrations.notifications,fab fa-slack,#333,Slack/Teams alerts,NULL,0,manage_slack_teams_alerts,NULL,1140300,0,1140000,3,integrations,0
+1140400,CRM Sync,crm-sync,1,NULL,integrations.crm,fas fa-sync,#333,CRM sync,NULL,0,manage_crm_sync,NULL,1140400,0,1140000,4,integrations,0
+1140500,API Endpoints,api-endpoints,1,NULL,integrations.api,fas fa-code,#333,API endpoints,NULL,0,manage_api_endpoints,NULL,1140500,0,1140000,5,integrations,0
+1150000,Compliance,compliance,1,NULL,compliance.index,fas fa-gavel,#333,Compliance,NULL,1,view_compliance,NULL,1150000,0,NULL,1,compliance,0
+1150100,Audit Logs,audit-logs,1,NULL,compliance.audit,fas fa-history,#333,Audit logs,NULL,0,view_audit_logs,NULL,1150100,0,1150000,1,compliance,0
+1150200,Retention Policy,retention-policy,1,NULL,compliance.retention,fas fa-clock,#333,Retention policy,NULL,0,manage_retention_policy,NULL,1150200,0,1150000,2,compliance,0
+1150300,GDPR Tools,gdpr-tools,1,NULL,compliance.gdpr,fas fa-shield-alt,#333,GDPR tools,NULL,0,manage_gdpr_tools,NULL,1150300,0,1150000,3,compliance,0
+1150400,Access Reviews,access-reviews,1,NULL,compliance.access,fas fa-user-check,#333,Access reviews,NULL,0,manage_access_reviews,NULL,1150400,0,1150000,4,compliance,0
+1160000,Help & Onboarding,help-onboarding,1,NULL,help.index,fas fa-question-circle,#333,Help and onboarding,NULL,1,view_help,NULL,1160000,0,NULL,1,help,0
+1160100,Getting Started,getting-started,1,NULL,help.started,fas fa-play,#333,Getting started,NULL,0,view_getting_started,NULL,1160100,0,1160000,1,help,0
+1160200,Walkthroughs,walkthroughs,1,NULL,help.walkthroughs,fas fa-route,#333,Feature walkthroughs,NULL,0,view_walkthroughs,NULL,1160200,0,1160000,2,help,0
+1160300,FAQ,faq,1,NULL,help.faq,fas fa-question,#333,Frequently asked questions,NULL,0,view_faq,NULL,1160300,0,1160000,3,help,0
+1160400,Contact Support,contact-support,1,NULL,help.contact,fas fa-envelope,#333,Contact support,NULL,0,contact_support,NULL,1160400,0,1160000,4,help,0
+1160500,Feedback,feedback,1,NULL,help.feedback,fas fa-comment,#333,Submit feedback,NULL,0,submit_feedback,NULL,1160500,0,1160000,5,help,0
+1170000,Menu Management,menu-management,1,NULL,menu.index,fas fa-list,#333,Manage all sidebar menus,0,1,manage_menu_management,NULL,1170000,0,NULL,1,admin,0
+1170100,List Menus,list-menus,1,NULL,menu.list,fas fa-list-ul,#333,List all menu and submenu items,0,0,view_menu_list,NULL,1170100,0,1170000,1,admin,0
+1170200,Create Menu,create-menu,1,NULL,menu.create,fas fa-plus,#333,Create a new menu item,0,0,create_menu_item,NULL,1170200,0,1170000,2,admin,0
+1170300,Edit Menu,edit-menu,1,NULL,menu.edit,fas fa-edit,#333,Edit existing menu item,0,0,edit_menu_item,NULL,1170300,0,1170000,3,admin,0
+1170400,Reorder Menus,reorder-menus,1,NULL,menu.reorder,fas fa-sort,#333,Drag-and-drop reorder menus,0,0,reorder_menus,NULL,1170400,0,1170000,4,admin,0
+1170500,Toggle Visibility,toggle-visibility,1,NULL,menu.visibility,fas fa-eye,#333,Show/hide menu items,0,0,toggle_menu_visibility,NULL,1170500,0,1170000,5,admin,0
+1170600,Set Parent/Child,set-parent-child,1,NULL,menu.parent-child,fas fa-sitemap,#333,Set parent/child relationships,0,0,set_parent_child,NULL,1170600,0,1170000,6,admin,0
+1170700,Permissions Log,permissions-log,1,NULL,menu.permissions,fas fa-user-shield,#333,View menu change log,0,0,view_permissions_log,NULL,1170700,0,1170000,7,admin,0

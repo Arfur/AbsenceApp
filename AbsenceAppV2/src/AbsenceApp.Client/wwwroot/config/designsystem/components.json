@@ -1,8 +1,9 @@
 {
   "_comment": "AbsenceApp V2 Design System — components.json — Phase 2",
   "_description": "Global default configuration for V2 design system components. Loaded by DesignSystemConfigService.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "button": {
+    "tokenFamily": "btn",
     "defaultVariant": "primary",
     "defaultSize": "md",
     "variants": ["primary", "secondary", "ghost", "danger", "success", "warning", "light", "dark", "outline-dark"],
@@ -13,10 +14,12 @@
     }
   },
   "badge": {
+    "tokenFamily": "badge-status",
     "defaultVariant": "neutral",
     "variants": ["neutral", "primary", "success", "warning", "danger", "info"]
   },
   "card": {
+    "tokenFamily": "card",
     "defaultPadding": "16px",
     "defaultRadius": "8px",
     "defaultShadow": "xs",
@@ -28,6 +31,7 @@
     "subtitleSize": "0.875rem"
   },
   "icon": {
+    "tokenFamily": "icon",
     "defaultLibrary": "bootstrap-icons",
     "defaultSize": "1rem",
     "sizes": {
@@ -40,6 +44,7 @@
     }
   },
   "iconButton": {
+    "tokenFamily": "icon-btn",
     "defaultSize": "md",
     "defaultVariant": "ghost",
     "sizes": {
@@ -49,8 +54,40 @@
     }
   },
   "input": {
+    "tokenFamily": "form-field",
     "defaultSize": "md",
     "defaultRadius": "6px"
+  },
+  "formShell": {
+    "tokenFamily": "form-shell",
+    "defaultPadding": "16px",
+    "showActions": true
+  },
+  "table": {
+    "tokenFamily": "table",
+    "defaultPageSize": 25,
+    "pageSizeOptions": [10, 25, 50, 100],
+    "showPageSizeSelector": true,
+    "showPageInfo": true
+  },
+  "navHeader": {
+    "tokenFamily": "nav-header",
+    "showLogo": true,
+    "showNotifications": true,
+    "showUserMenu": true
+  },
+  "navSidebar": {
+    "tokenFamily": "nav-sidebar",
+    "defaultWidth": "230px",
+    "collapsedWidth": "52px",
+    "showScrollbar": true
+  },
+  "chart": {
+    "tokenFamily": "chart",
+    "defaultType": "line",
+    "defaultTheme": "light",
+    "showLegend": true,
+    "showGrid": true
   },
   "pagination": {
     "defaultPageSize": 25,
@@ -68,6 +105,7 @@
     "defaultMessage": "No records found."
   },
   "alert": {
+    "tokenFamily": "alert",
     "defaultDuration": 4000,
     "variants": ["success", "warning", "danger", "info"],
     "position": "top-right"

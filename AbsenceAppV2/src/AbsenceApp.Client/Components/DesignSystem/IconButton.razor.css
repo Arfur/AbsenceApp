@@ -1,9 +1,13 @@
 /* =============================================================================
-   File    : IconButton.razor.css
-   Project : AbsenceApp.Client
-   Phase   : V2 Design System — Phase 2
-   Created : 2026-03-21
-   Purpose : Scoped styles for IconButton.razor component.
+    File    : IconButton.razor.css
+    Project : AbsenceApp.Client
+    Phase   : V2 Design System — Phase 2
+    Version : 1.1.0
+    Updated : 2026-05-15
+    Created : 2026-03-21
+    Purpose : Scoped styles for IconButton.razor component.
+    Changes :
+      - 1.1.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
 ============================================================================= */
 
 .ds-icon-btn {
@@ -11,9 +15,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--ds-gap-sm, 8px);
+    gap: var(--ds-icon-btn-gap, 8px);
     border: none;
-    border-radius: var(--ds-radius-icon-btn, 6px);
+    border-radius: var(--ds-icon-btn-radius, 6px);
     cursor: pointer;
     font-family: var(--ds-font-sans, inherit);
     font-weight: var(--ds-font-medium, 500);
@@ -26,50 +30,50 @@
 }
 
 /* ── Sizes ──────────────────────────────────────────────────────────── */
-.ds-icon-btn--sm { padding: 4px 6px;  height: 28px; font-size: 0.9rem; }
-.ds-icon-btn--md { padding: 6px 9px;  height: 34px; font-size: 1.1rem; }
-.ds-icon-btn--lg { padding: 8px 10px; height: 40px; font-size: 1.3rem; }
+.ds-icon-btn--sm { padding: var(--ds-icon-btn-padding-sm, 4px 6px);  height: 28px; font-size: var(--ds-icon-btn-font-size-sm, 0.9rem); }
+.ds-icon-btn--md { padding: var(--ds-icon-btn-padding-md, 6px 9px);  height: 34px; font-size: var(--ds-icon-btn-font-size-md, 1.1rem); }
+.ds-icon-btn--lg { padding: var(--ds-icon-btn-padding-lg, 8px 10px); height: 40px; font-size: var(--ds-icon-btn-font-size-lg, 1.3rem); }
 
 /* ── Variants ───────────────────────────────────────────────────────── */
 .ds-icon-btn--ghost {
     background: none;
-    color: var(--ds-color-text-muted, #7b8494);
+    color: var(--ds-icon-btn-text, var(--ds-text-color-muted, #7b8494));
 }
 .ds-icon-btn--ghost:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
-    color: var(--ds-color-text, #2c3345);
+    background: var(--ds-icon-btn-ghost-hover-bg, #e8eaed);
+    color: var(--ds-icon-btn-text, var(--ds-text-color-primary, #2c3345));
 }
 
 .ds-icon-btn--primary {
-    background: var(--ds-color-accent, #2563eb);
-    color: #ffffff;
+    background: var(--ds-icon-btn-primary-bg, #2563eb);
+    color: var(--ds-text-color-inverse, #ffffff);
 }
 .ds-icon-btn--primary:hover {
-    background: var(--ds-color-accent-hover, #1d4ed8);
+    background: var(--ds-icon-btn-primary-hover-bg, #1d4ed8);
 }
 
 .ds-icon-btn--danger {
     background: none;
-    color: var(--ds-color-danger, #dc2626);
+    color: var(--ds-alert-danger-text, #dc2626);
 }
 .ds-icon-btn--danger:hover {
-    background: var(--ds-color-danger-light, #fee2e2);
+    background: var(--ds-icon-btn-danger-hover-bg, #fee2e2);
 }
 
 .ds-icon-btn--success {
     background: none;
-    color: var(--ds-color-success, #16a34a);
+    color: var(--ds-alert-success-text, #16a34a);
 }
 .ds-icon-btn--success:hover {
-    background: var(--ds-color-success-light, #dcfce7);
+    background: var(--ds-alert-success-bg, #dcfce7);
 }
 
 .ds-icon-btn--warning {
     background: none;
-    color: var(--ds-color-warning, #d97706);
+    color: var(--ds-alert-warning-text, #d97706);
 }
 .ds-icon-btn--warning:hover {
-    background: var(--ds-color-warning-light, #fef3c7);
+    background: var(--ds-alert-warning-bg, #fef3c7);
 }
 
 /* ── Disabled ───────────────────────────────────────────────────────── */
@@ -82,6 +86,6 @@
 
 /* ── With visible label ─────────────────────────────────────────────── */
 .ds-icon-btn__label {
-    font-size: 0.875rem;
-    font-weight: var(--ds-font-medium, 500);
+    font-size: var(--ds-text-size-sm, 0.875rem);
+    font-weight: var(--ds-text-font-medium, 500);
 }

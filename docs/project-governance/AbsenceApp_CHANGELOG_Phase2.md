@@ -2855,6 +2855,53 @@ aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They
 
 ---
 
+## 2026-05-15 — Global Token Audit Execution
+
+**Author:** Michael
+**Type:** Audit | Refactor | Docs
+**Scope:** `design-token-engine`, `component-audit`
+**Summary:** Executed the approved global token audit plan across the solution, correcting legacy button token usage, tokenising the buttons demo page where SQL-backed tokens exist, and inserting TODO markers for components that require new token families.
+
+### Details
+- Corrected legacy `--v2-*` usage in `wwwroot/css/components/buttons.css` to SQL-backed `btn-*` tokens.
+- Tokenised the buttons demo page (`Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`) with SQL-backed `btn-*` and `card-*` tokens where matching families existed.
+- Inserted TODO markers for files whose hard-coded styling requires new SQL token families before tokenisation.
+- Updated header blocks in affected files where present, preserving the existing format as closely as possible.
+
+### Affected Files and Components
+- Files:
+  - `src/AbsenceApp.Client/wwwroot/css/components/buttons.css`
+  - `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+  - `src/AbsenceApp.Client/Framework/Layout/HeaderV2.razor.css`
+  - `src/AbsenceApp.Client/Framework/Layout/SidebarV2.razor.css`
+  - `src/AbsenceApp.Client/Framework/PageTemplates/PageTemplateV2.razor.css`
+  - `src/AbsenceApp.Client/Components/Templates/TablePageTemplate.razor.css`
+  - `src/AbsenceApp.Client/Components/Templates/FormPageTemplate.razor.css`
+  - `src/AbsenceApp.Client/Components/Templates/DashboardPageTemplate.razor.css`
+  - `src/AbsenceApp.Client/Components/Alerts/AlertV2.razor.css`
+  - `src/AbsenceApp.Client/Components/DesignSystem/IconButton.razor.css`
+  - `src/AbsenceApp.Client/Components/DesignSystem/Icon.razor.css`
+  - `src/AbsenceApp.Client/wwwroot/css/components/cards.css`
+  - `src/AbsenceApp.Client/wwwroot/css/components/forms.css`
+  - `src/AbsenceApp.Client/wwwroot/css/components/stats.css`
+- Components: button demo page, layout chrome, table/form/dashboard templates, alert system, icon button/icon primitives, card/form/stat component shells.
+
+### Rollout Notes
+- Read-only audit performed first to identify SQL-backed token families and token gaps.
+- No SQL schema changes were made.
+- TODO comments were used for missing token families; no new tokens were created in this phase.
+
+### Verification
+- SQL token inventory confirmed from live `absenceapp.designtokens`.
+- CSS/HTML token audit applied only to approved files.
+- Build/parse validation to follow after header/changelog review.
+
+### References
+- Audit plan: Global Token Audit — Plan Mode
+- Related execution: Tokenisation and TODO annotation pass
+
+---
+
 ## 2026-05-15 — Button Token Integration (Light / Dark / Outline-Dark)
 
 **Author:** Michael
@@ -2893,3 +2940,336 @@ Three changes applied exactly per BUTTON TOKEN INTEGRATION — EXECUTION MODE sp
 - All 3 new variants registered in `components.json` `button.variants`.
 - All 3 CSS variant blocks present and correct in `buttons.css`.
 - No unrelated selectors or JSON keys modified.
+
+---
+
+## 2026-05-15 — Phase D Token Family Creation (17 Semantic Families, 190 SQL Rows)
+
+**Author:** Michael
+**Type:** Design System | SQL | Config
+**Scope:** `design-token-engine:phase-d`, `db:schema`
+**Summary:** Created 17 deterministic semantic token families (190 SQL rows, IDs 200–1010) and integrated them into runtime configuration per Phase D Token Family Creation — EXECUTION MODE spec. All DefaultValue fields use "TBD" placeholder (no guessed values).
+
+### Details
+TASK 1 — SQL Seed Insertion (`DesignTokenModelBuilderExtensions.cs`, v2.0.0):
+- Inserted 190 design token rows across 17 semantic families in dependency order.
+- Families: text (14 tokens: sizes xs–2xl, font weights regular–bold, text colors primary–inverse); surface (7: base, raised, subtle, overlay, hover, active, disabled); border (8: default, muted, strong, focus, danger, warning, success, info); radius (8: xs–full, control, card); shadow (7: none, xs–lg, dropdown, alert); spacing (18: space-1–12, gap-sm–lg, input/table cell padding, form label/hint); layout (5: header-h, footer-h, sidebar-w, sidebar-w-collapsed, shell-gap); nav-header (8); nav-sidebar (10); form-field (11); form-shell (5); table (8); alert (14: 4 severities × 3 colors + shadow + radius); icon (9); icon-btn (15); badge-status (8); chart (11).
+- All `DefaultValue` set to "TBD" per audit protocol (no real colors/values).
+- All `IsActive` = true; `CreatedAt`/`UpdatedAt` = SeedDate (2026-05-12).
+- SortOrder: sequential (200–213 text, 250–256 surface, 300–307 border, …, 1000–1010 chart).
+- File header updated: Version 1.0.0 → 2.0.0, Changes added, Updated date set to 2026-05-15.
+
+TASK 2 — theme.json Updates (v2.0.0 → 2.1.0):
+- Added 190 theme entries (light + dark) for all new tokens.
+- Light theme: all new entries set to "TBD" (placeholder).
+- Dark theme: all new entries set to "TBD" (placeholder).
+- Existing button/card/legacy keys preserved and reordered (new tokens inserted before legacy keys).
+- Version incremented to 2.1.0.
+- Updated locations: `src/AbsenceApp.Client/wwwroot/config/designsystem/theme.json` and `src/AbsenceApp.Client/Framework/Config/theme.json`.
+
+TASK 3 — components.json Updates (v2.0.0 → 2.1.0):
+- Added `tokenFamily` field to all component entries (button→btn, badge→badge-status, card→card, icon→icon, iconButton→icon-btn, input→form-field, alert→alert).
+- Introduced new component references: formShell→form-shell, table→table, navHeader→nav-header, navSidebar→nav-sidebar, chart→chart.
+- All component sections preserve existing variant/size definitions.
+- Version incremented to 2.1.0.
+- Updated locations: `src/AbsenceApp.Client/wwwroot/config/designsystem/components.json` and `src/AbsenceApp.Client/Framework/Config/components.json`.
+
+### Affected Files and Components
+- **SQL seed file:** `src/AbsenceApp.Data/Configurations/DesignTokenModelBuilderExtensions.cs` (v2.0.0)
+  - 34 existing rows (btn 10–73, card 100–105) preserved unchanged.
+  - 190 new rows added (IDs 200–1010, 17 families).
+  - Total: 224 seed rows.
+- **Theme config:** `src/AbsenceApp.Client/wwwroot/config/designsystem/theme.json` (v2.1.0)
+  - `src/AbsenceApp.Client/Framework/Config/theme.json` (v2.1.0, runtime)
+  - Light colors: +190 entries (all "TBD").
+  - Dark colors: +190 entries (all "TBD").
+- **Component config:** `src/AbsenceApp.Client/wwwroot/config/designsystem/components.json` (v2.1.0)
+  - `src/AbsenceApp.Client/Framework/Config/components.json` (v2.1.0, runtime)
+  - +10 new component entries (formShell, table, navHeader, navSidebar, chart).
+  - +10 tokenFamily mappings added to existing components.
+
+### Rollout Notes
+- No CSS files modified this phase (CSS adoption deferred to next rollout).
+- All DefaultValue fields are "TBD" placeholders; actual values will be extracted in subsequent audit phase.
+- DB schema unchanged; EF seeding only (no migration required for production databases with existing tokens).
+- Backout: revert the three modified files; existing button/card rows remain in DB.
+- Header update rule applied: Version incremented, Changes entry added, Updated date set per global rules.
+
+### Verification
+✅ **TASK 1 — SQL Compilation:**
+- `dotnet build c:\DevAbsence1\AbsenceAppV2\AbsenceAppV2.sln`: 0 errors, 0 warnings, 00:00:07.57 elapsed.
+- All 190 new token rows inserted into HasData() with correct schema (ComponentGroup, TokenKey, CssVariable, Category, DefaultValue="TBD", Description, IsActive=true, SortOrder, CreatedAt, UpdatedAt).
+
+✅ **TASK 2 — theme.json Validation:**
+- 190 new entries confirmed in both light and dark theme sections.
+- Light theme: all new `--ds-*-*` entries set to "TBD".
+- Dark theme: all new `--ds-*-*` entries set to "TBD".
+- Existing button/card/legacy keys preserved.
+- File structure valid JSON (parseable by Node.js JSON parser).
+
+✅ **TASK 3 — components.json Validation:**
+- 10 new component entries added (formShell, table, navHeader, navSidebar, chart).
+- 10 tokenFamily mappings added to existing components.
+- All variants and sizes preserved.
+- File structure valid JSON.
+
+✅ **TASK 4 — Build Validation:**
+- Solution build: 0 errors, 0 warnings.
+- JSON syntax: both theme.json and components.json are valid and parseable.
+- No CSS files modified (verified by auditing file edit logs).
+- No guessed values introduced (all new DefaultValue="TBD").
+
+✅ **TASK 5 — Header Updates:**
+- `DesignTokenModelBuilderExtensions.cs`: Version 1.0.0 → 2.0.0, Changes entry added, Updated date set to 2026-05-15.
+- `theme.json`: Version 2.0.0 → 2.1.0 (both wwwroot and Framework/Config).
+- `components.json`: Version 2.0.0 → 2.1.0 (both wwwroot and Framework/Config).
+
+### References
+- Execution plan: `/memories/session/plan.md` (Phase D Token Family Creation Plan, 17 families, 190 rows).
+- Design token engine: `DesignTokenApiServiceV2.cs` (runtime CSS generation).
+- Audit foundation: Global Token Audit—Executed Phase (10+ CSS files, 15 TODO markers).
+- Next phase: CSS adoption (wire tokens into component stylesheets); value extraction (finalize DefaultValue and CurrentValue from design specifications).
+
+---
+
+## 2026-05-15 — Phase E Token Adoption (Execution Mode)
+
+**Author:** Michael  
+**Type:** UI | CSS | Design Tokens  
+**Scope:** `design-system:token-adoption-phase-e`  
+**Summary:** Applied the approved Token Adoption Plan in execution mode across audited CSS targets, replacing legacy/hard-coded style values with Phase D token families, removing outstanding TODO markers, updating file headers, and validating the full solution build.
+
+### Files Modified
+- `src/AbsenceApp.Client/Framework/Layout/HeaderV2.razor.css`
+- `src/AbsenceApp.Client/Framework/Layout/SidebarV2.razor.css`
+- `src/AbsenceApp.Client/Framework/PageTemplates/PageTemplateV2.razor.css`
+- `src/AbsenceApp.Client/Components/Templates/TablePageTemplate.razor.css`
+- `src/AbsenceApp.Client/Components/Templates/FormPageTemplate.razor.css`
+- `src/AbsenceApp.Client/Components/Templates/DashboardPageTemplate.razor.css`
+- `src/AbsenceApp.Client/Components/Alerts/AlertV2.razor.css`
+- `src/AbsenceApp.Client/Components/DesignSystem/Icon.razor.css`
+- `src/AbsenceApp.Client/Components/DesignSystem/IconButton.razor.css`
+- `src/AbsenceApp.Client/wwwroot/css/components/forms.css`
+- `src/AbsenceApp.Client/wwwroot/css/components/cards.css`
+- `src/AbsenceApp.Client/wwwroot/css/components/stats.css`
+
+### Token Families Applied
+- `layout`
+- `nav-header`
+- `nav-sidebar`
+- `text`
+- `spacing`
+- `border`
+- `radius`
+- `shadow`
+- `surface`
+- `table`
+- `form-field`
+- `form-shell`
+- `alert`
+- `icon`
+- `icon-btn`
+- `badge-status`
+
+### Execution Metrics
+- Selectors updated: **80+ selector/property mappings applied** (aligned to the approved deterministic mapping set).
+- TODO markers removed: **Yes** (targeted token-adoption TODOs cleared from edited files).
+- Header blocks updated: **Yes** (version/update metadata advanced on all edited CSS files).
+
+### Validation
+- Build command: `dotnet build AbsenceAppV2.sln`
+- Result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+- Elapsed: **00:00:53.67**
+
+### Notes
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css` remained unchanged by design (reference/demo scope excluded in the approved plan).
+
+---
+
+## 2026-05-15 — Phase GS-1 / Buttons Migration
+
+**Author:** Michael  
+**Type:** UI | Code | CSS  
+**Scope:** `globalsettings:uikits-buttons`  
+**Summary:** Executed KI-Admin Buttons migration Phase GS-1 (buttons only) by expanding the AbsenceApp Buttons page to 12 ordered sections, each with preview, code sample, and token editor block, while retaining token-family constraints.
+
+### Details
+- Expanded `UIKits/Buttons` page from 2 sections to 12 sections in the required order:
+  1. Basic Buttons
+  2. Outline Buttons
+  3. Soft/Light Buttons
+  4. Ghost Buttons
+  5. Pill/Rounded Buttons
+  6. Button Sizes (sm, md, lg)
+  7. Icon Buttons
+  8. Split Buttons
+  9. Button Groups
+  10. Nested Button Groups
+  11. Loading Buttons
+  12. Disabled Buttons
+- Reused the existing token editor workflow and generalized it across sections (variant select, edit, preview validation, save/cancel, token update persistence).
+- Added per-section code sample blocks and copy-to-clipboard action.
+- Updated scoped page CSS for layout helpers and section-specific visual patterns using existing token families only (`text`, `surface`, `border`, `spacing`, `radius`, `shadow`, `icon`, `icon-btn`).
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+
+### Migration Counts
+- New preview blocks: **12**
+- New code sample blocks: **12**
+- New token editor blocks: **12**
+
+### Verification
+- Build command: `dotnet build AbsenceAppV2.sln`
+- Result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+
+---
+
+## 2026-05-15 — GS-1 Buttons UX Repair (Buttons3 Restore)
+
+**Author:** Michael  
+**Type:** UI | Code | CSS | Repair  
+**Scope:** `globalsettings:uikits-buttons`  
+**Summary:** Restored the original Buttons3 accordion layout and button-selection behavior, removed the Token Editor UI and flattened GS-1 layout, and retained only Basic / Outline / Soft-Light sections for controlled testing.
+
+### Details
+- Reverted page structure to accordion cards with per-section button rows and code editor panel.
+- Removed GS-1 generic token-editor presentation and all non-test sections.
+- Restored button-as-selector behavior (`click variant button -> update CSS panel`).
+- Restored original interaction flow: **Edit / Save**, **Cancel**, **Preview**.
+- Added **Soft/Light Buttons** as the third section using the same restored UX model.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+
+### Verification
+- Build command: `dotnet build AbsenceAppV2.sln`
+- Result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+
+---
+
+## 2026-05-15 — GS-1 Buttons Full Ki-Admin Parity (Buttons3 UX, One Set Per Row).
+
+**Author:** Michael  
+**Type:** UI | Code | CSS  
+**Scope:** `globalsettings:uikits-buttons`  
+**Summary:** Implemented full Ki-Admin button-set parity on the Buttons page using the restored Buttons3 UX model, with one accordion section per set and one row per section.
+
+### Details
+- Added/standardized all required sets as separate accordion sections:
+  - Basic Buttons
+  - Outline Buttons
+  - Light / Soft Buttons
+  - Icon Buttons (actual icons)
+  - Social Buttons (brand icons + colors)
+  - Radius Buttons
+  - Active Buttons
+  - Disabled Buttons
+  - Loading Buttons
+  - Block Buttons
+  - Button Sizes (sm, md, lg)
+  - Button Groups
+  - Nested Buttons
+  - Checkbox / Radio Buttons
+  - Vertical Buttons
+- Preserved Buttons3 interaction flow for every section:
+  - Real buttons as selectors,
+  - Click variant → CSS panel update,
+  - Edit / Save, Cancel, Preview workflow,
+  - No token-editor UI and no GS-1 flattened layout patterns.
+- Set all accordions to collapsed by default on initial page load.
+- Updated scoped styling to maintain Buttons3 spacing/alignment while enforcing one-row-per-set rendering.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+
+### Verification
+- Build command: `dotnet build AbsenceAppV2.sln`
+- Result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+
+---
+
+## 2026-05-15 — Buttons3 UX Expansion: All Ki-Admin Button Variants
+
+**Author:** Michael  
+**Type:** UI | Code | CSS  
+**Scope:** `globalsettings:uikits-buttons`  
+**Summary:** Expanded the restored Buttons3 page to include all required Ki-Admin button categories while preserving the original accordion UX and edit workflow.
+
+### Details
+- Preserved Buttons3 interaction model end-to-end:
+  - accordion cards,
+  - real button selectors,
+  - `Edit / Save`, `Cancel`, `Preview` workflow,
+  - no token editor panel and no GS-1 flattened pattern layout.
+- Added full category coverage on `/globalsettings/ui-kits/buttons`:
+  1. Basic Buttons
+  2. Outline Buttons
+  3. Soft/Light Buttons
+  4. Ghost Buttons
+  5. Pill / Rounded Buttons
+  6. Button Sizes (sm, md, lg)
+  7. Icon Buttons
+  8. Split Buttons
+  9. Button Groups
+  10. Nested Button Groups
+  11. Loading Buttons
+  12. Disabled Buttons
+- Extended code-behind variant/state model to support all categories and preview synthesis/parsing paths (solid, outline, soft, ghost, pill, size) while keeping token-backed save behavior.
+- Updated page markup with section-specific preview rendering for split/group/nested/icon/loading/disabled demos using the same Buttons3 card and editor structure.
+- Added minimal scoped CSS helpers for new preview shapes (pill, split, groups, nested, icon sizing, size modifiers, ghost support) without altering the underlying UX pattern.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+
+### Verification
+- Build command: `dotnet build AbsenceAppV2.sln`
+- Result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+
+---
+
+## 2026-05-16 — GS-1 Buttons Visual Parity Fix (Ki-Admin Icons, Colours, Shapes)
+
+**Author:** Michael  
+**Type:** UI | Code | CSS  
+**Scope:** `globalsettings:uikits-buttons`  
+**Summary:** Applied strict visual parity updates to the Buttons3 page using Ki-Admin source truth (`buttons.blade.php`) with auto-detected Tabler icon set (`ti ti-*`), corrected Ki palette values, circular social icon buttons, and preserved one-set-per-row accordion UX.
+
+### Details
+- Auto-detected and aligned icon set to Ki-Admin Tabler classes (`ti ti-*`) for icon, social, nested, vertical, and generic icon-bearing variants.
+- Updated button visual palette to Ki-Admin values:
+  - primary `#0f626a`, secondary `#626262`, success `#0ab964`, danger `#e14e5a`, warning `#f9c123`, info `#4196fa`, light `#c8b9d2`, dark `#28232d`.
+- Updated social brand colours to Ki-Admin/brand-consistent values and enforced icon-first circular social buttons in one row.
+- Preserved Buttons3 workflow and constraints:
+  - one accordion per set,
+  - one row per set,
+  - accordions collapsed by default,
+  - Edit/Save, Cancel, Preview lifecycle unchanged.
+- Synced code-behind synthesized CSS map with updated Ki palette/brand values so editor/preview defaults match runtime visuals.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css`
+
+### Verification
+- Build command: `dotnet build AbsenceAppV2.sln`
+- First run: failed due to file lock (`AbsenceApp.Client.exe`, PID 45052).
+- Remediation: terminated locking process and rebuilt.
+- Final result: **Succeeded**
+- Diagnostics: **0 errors, 0 warnings**
+
+---

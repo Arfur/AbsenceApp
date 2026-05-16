@@ -1,0 +1,129 @@
+Sidebar Expansion Debug
+Current Route: dashboard
+Active Menu ID: 
+Menu: [1010000] Dashboard | Expanded: NO
+  Submenu: [1010100] System Overview | Expanded: NO
+  Submenu: [1010200] My Activity | Expanded: NO
+  Submenu: [1010300] Quick Actions | Expanded: NO
+  Submenu: [1010400] Agent Dashboard | Expanded: NO
+  Submenu: [1010500] Manager Dashboard | Expanded: NO
+  Submenu: [1010600] Admin Dashboard | Expanded: NO
+  Submenu: [1010700] Custom Dashboard | Expanded: NO
+Menu: [1020000] Tickets | Expanded: NO
+  Submenu: [1020100] Create Ticket | Expanded: NO
+  Submenu: [1020200] My Tickets | Expanded: NO
+  Submenu: [1020300] All Tickets | Expanded: NO
+  Submenu: [1020400] Unassigned | Expanded: NO
+  Submenu: [1020500] Closed Tickets | Expanded: NO
+  Submenu: [1020600] Templates | Expanded: NO
+  Submenu: [1020700] Ticket Tags | Expanded: NO
+Menu: [1030000] Projects | Expanded: NO
+  Submenu: [1030100] All Projects | Expanded: NO
+  Submenu: [1030200] Create Project | Expanded: NO
+  Submenu: [1030300] Overview | Expanded: NO
+  Submenu: [1030400] Milestones | Expanded: NO
+  Submenu: [1030500] Linked Tasks | Expanded: NO
+  Submenu: [1030600] Linked Tickets | Expanded: NO
+  Submenu: [1030700] Team Setup | Expanded: NO
+  Submenu: [1030800] Files | Expanded: NO
+  Submenu: [1030900] Timeline | Expanded: NO
+  Submenu: [1031000] Reports | Expanded: NO
+Menu: [1040000] Tasks | Expanded: NO
+  Submenu: [1040100] My Tasks | Expanded: NO
+  Submenu: [1040200] Team Tasks | Expanded: NO
+  Submenu: [1040300] Templates | Expanded: NO
+  Submenu: [1040400] Statuses | Expanded: NO
+  Submenu: [1040500] Linked Projects | Expanded: NO
+  Submenu: [1040600] Linked Tickets | Expanded: NO
+  Submenu: [1040700] Calendar Sync | Expanded: NO
+Menu: [1050000] Knowledge Base | Expanded: NO
+  Submenu: [1050100] Browse Articles | Expanded: NO
+  Submenu: [1050200] Manage Articles | Expanded: NO
+  Submenu: [1050300] Categories | Expanded: NO
+  Submenu: [1050400] Feedback | Expanded: NO
+  Submenu: [1050500] Drafts Queue | Expanded: NO
+Menu: [1060000] Calendar | Expanded: NO
+  Submenu: [1060100] My Calendar | Expanded: NO
+  Submenu: [1060200] Team Calendar | Expanded: NO
+  Submenu: [1060300] Ticket Due Dates | Expanded: NO
+  Submenu: [1060400] Task Due Dates | Expanded: NO
+  Submenu: [1060500] Event Types | Expanded: NO
+  Submenu: [1060600] Sync Settings | Expanded: NO
+Menu: [1070000] Email | Expanded: NO
+  Submenu: [1070100] Inbox | Expanded: NO
+  Submenu: [1070200] Sent | Expanded: NO
+  Submenu: [1070300] Drafts | Expanded: NO
+  Submenu: [1070400] Ticket Emails | Expanded: NO
+  Submenu: [1070500] Task Emails | Expanded: NO
+  Submenu: [1070600] Templates | Expanded: NO
+  Submenu: [1070700] Email | Expanded: NO
+Menu: [1080000] Assets & Files | Expanded: NO
+  Submenu: [1080100] Upload File | Expanded: NO
+  Submenu: [1080200] My Files | Expanded: NO
+  Submenu: [1080300] Shared Files | Expanded: NO
+  Submenu: [1080400] Ticket Files | Expanded: NO
+  Submenu: [1080500] Task Docs | Expanded: NO
+  Submenu: [1080600] KB Assets | Expanded: NO
+  Submenu: [1080700] Image Library | Expanded: NO
+  Submenu: [1080800] File Metadata | Expanded: NO
+  Submenu: [1080900] Retention Rules | Expanded: NO
+  Submenu: [1081000] Access Logs | Expanded: NO
+Menu: [1090000] Reports | Expanded: NO
+  Submenu: [1090100] Ticket Stats | Expanded: NO
+  Submenu: [1090200] Task Rates | Expanded: NO
+  Submenu: [1090300] Agent Score | Expanded: NO
+  Submenu: [1090400] CSAT | Expanded: NO
+  Submenu: [1090500] System Logs | Expanded: NO
+  Submenu: [1090600] Export Center | Expanded: NO
+Menu: [1100000] Users & Roles | Expanded: NO
+  Submenu: [1100100] All Users | Expanded: NO
+  Submenu: [1100200] Add User | Expanded: NO
+  Submenu: [1100300] User Activity | Expanded: NO
+  Submenu: [1100400] Modern View | Expanded: NO
+  Submenu: [1100500] Roles & Access | Expanded: NO
+  Submenu: [1100600] Role Menus | Expanded: NO
+  Submenu: [1100700] User Menus | Expanded: NO
+Menu: [1110000] Settings | Expanded: NO
+  Submenu: [1110100] System | Expanded: NO
+  Submenu: [1110200] Ticket | Expanded: NO
+  Submenu: [1110300] Task | Expanded: NO
+  Submenu: [1110400] Notifications | Expanded: NO
+  Submenu: [1110500] Security | Expanded: NO
+  Submenu: [1110600] API Links | Expanded: NO
+  Submenu: [1110700] Audit Trail | Expanded: NO
+Menu: [1120000] Admin Tools | Expanded: NO
+  Submenu: [1120100] Import/Export | Expanded: NO
+  Submenu: [1120200] Migration Viewer | Expanded: NO
+  Submenu: [1120300] Seeder Manager | Expanded: NO
+  Submenu: [1120400] Cache Monitor | Expanded: NO
+  Submenu: [1120500] Health Check | Expanded: NO
+Menu: [1130000] QA & Testing | Expanded: NO
+  Submenu: [1130100] Test Scenarios | Expanded: NO
+  Submenu: [1130200] Mock Tickets | Expanded: NO
+  Submenu: [1130300] UI Preview | Expanded: NO
+  Submenu: [1130400] Regression List | Expanded: NO
+Menu: [1140000] Integrations | Expanded: NO
+  Submenu: [1140100] Webhooks | Expanded: NO
+  Submenu: [1140200] Third-Party Apps | Expanded: NO
+  Submenu: [1140300] Slack/Teams Alerts | Expanded: NO
+  Submenu: [1140400] CRM Sync | Expanded: NO
+  Submenu: [1140500] API Endpoints | Expanded: NO
+Menu: [1150000] Compliance | Expanded: NO
+  Submenu: [1150100] Audit Logs | Expanded: NO
+  Submenu: [1150200] Retention Policy | Expanded: NO
+  Submenu: [1150300] GDPR Tools | Expanded: NO
+  Submenu: [1150400] Access Reviews | Expanded: NO
+Menu: [1160000] Help & Onboarding | Expanded: NO
+  Submenu: [1160100] Getting Started | Expanded: NO
+  Submenu: [1160200] Walkthroughs | Expanded: NO
+  Submenu: [1160300] FAQ | Expanded: NO
+  Submenu: [1160400] Contact Support | Expanded: NO
+  Submenu: [1160500] Feedback | Expanded: NO
+Menu: [1170000] Menu Management | Expanded: NO
+  Submenu: [1170100] List Menus | Expanded: NO
+  Submenu: [1170200] Create Menu | Expanded: NO
+  Submenu: [1170300] Edit Menu | Expanded: NO
+  Submenu: [1170400] Reorder Menus | Expanded: NO
+  Submenu: [1170500] Toggle Visibility | Expanded: NO
+  Submenu: [1170600] Set Parent/Child | Expanded: NO
+  Submenu: [1170700] Permissions Log | Expanded: NO

@@ -1,0 +1,8 @@
+name,code,description,status
+Foundation,FND,"Early education phase for age 4+, formerly known as 'Early Years'.",active
+Key Stage 1,KS1,"Curriculum for ages 5–7, covering Years 1–2.",active
+Lower Key Stage 2,LKS2,"Curriculum for ages 8–9, covering Years 3–4.",active
+Upper Key Stage 2,UKS2,"Curriculum for ages 10–11, covering Years 5–6.",active
+STEM Enrichment,STEM,Hands-on science and technology innovation.,active
+Creative Arts,CA,"Visual, musical, and performance-based learning.",active
+Community Outreach,CO,Service learning and civic engagement.,active

@@ -234,18 +234,18 @@
 }
 
 .dark .dsv2-btn--secondary {
-    color: var(--v2-text-primary, #e9ecef);
-    border-color: var(--v2-border-color, #2d3348);
+    color: var(--ds-btn-secondary-text, #e9ecef);
+    border-color: var(--ds-btn-secondary-border, #2d3348);
 }
 .dark .dsv2-btn--secondary:hover {
-    background: var(--v2-bg-subtle, #151824);
+    background: var(--ds-btn-secondary-hover-bg, #151824);
 }
 
 .dark .dsv2-btn--light {
-    background: var(--v2-bg-subtle, #1e2130);
-    color: var(--v2-text-primary, #e9ecef);
-    border-color: var(--v2-border-color, #2d3348);
+    background: var(--ds-btn-light-bg, #1e2130);
+    color: var(--ds-btn-light-text, #e9ecef);
+    border-color: var(--ds-btn-light-border, #2d3348);
 }
 .dark .dsv2-btn--light:hover {
-    background: #252840;
+    background: var(--ds-btn-light-hover-bg, #252840);
 }

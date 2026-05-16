@@ -1,9 +1,13 @@
 /* =============================================================================
-   File    : Icon.razor.css
-   Project : AbsenceApp.Client
-   Phase   : V2 Design System — Phase 2
-   Created : 2026-03-21
-   Purpose : Scoped styles for Icon.razor component.
+    File    : Icon.razor.css
+    Project : AbsenceApp.Client
+    Phase   : V2 Design System — Phase 2
+    Version : 1.1.0
+    Updated : 2026-05-15
+    Created : 2026-03-21
+    Purpose : Scoped styles for Icon.razor component.
+    Changes :
+      - 1.1.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
 ============================================================================= */
 
 .ds-icon {
@@ -15,9 +19,9 @@
 }
 
 /* Named size variants */
-.ds-icon--xs  { font-size: var(--ds-text-xs,   0.67rem);  }
-.ds-icon--sm  { font-size: var(--ds-text-sm,   0.75rem);  }
-.ds-icon--md  { font-size: var(--ds-text-md,   1rem);     }
-.ds-icon--lg  { font-size: var(--ds-text-lg,   1.125rem); }
-.ds-icon--xl  { font-size: var(--ds-text-xl,   1.25rem);  }
-.ds-icon--2xl { font-size: var(--ds-text-2xl,  1.5rem);   }
+.ds-icon--xs  { font-size: var(--ds-icon-size-xs, 0.67rem);  }
+.ds-icon--sm  { font-size: var(--ds-icon-size-sm, 0.75rem);  }
+.ds-icon--md  { font-size: var(--ds-icon-size-md, 1rem);     }
+.ds-icon--lg  { font-size: var(--ds-icon-size-lg, 1.125rem); }
+.ds-icon--xl  { font-size: var(--ds-icon-size-xl, 1.25rem);  }
+.ds-icon--2xl { font-size: var(--ds-icon-size-2xl, 1.5rem);   }

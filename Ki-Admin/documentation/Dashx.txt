@@ -1,0 +1,2473 @@
+<html lang="en" dir="ltr"><head>
+    <!-- All meta and title start-->
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Multipurpose, super flexible, powerful, clean modern responsive bootstrap 5 admin template" name="description">
+<meta content="admin template, ki-admin admin template, dashboard template, flat admin template, responsive admin template, web app" name="keywords">
+<meta content="la-themes" name="author">
+
+<link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon">
+<link rel="shortcut icon" href="../assets/images/logo/favicon.png" type="image/x-icon">
+
+<title>Dashboard - Support Hub | ki-admin - Premium Admin Template</title>
+<!-- meta and title end-->
+
+<!-- css start !-->
+<!-- Animation css -->
+<link rel="stylesheet" href="https://ki-admin.test/assets/vendor/animation/animate.min.css">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet">
+
+<!--Flag Icon css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/flag-icons-master/flag-icon.css">
+
+<!-- Tabler icons-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/tabler-icons/tabler-icons.css">
+
+<!-- Prism css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/prism/prism.min.css">
+
+<!-- Bootstrap css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/bootstrap/bootstrap.min.css">
+
+<!-- Simplebar css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/simplebar/simplebar.css">
+
+    <style>
+        .dashboard-welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        .activity-card {
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+
+<link rel="preload" as="style" href="https://ki-admin.test/build/assets/style-gLIu1Kqz.css"><link rel="preload" as="style" href="https://ki-admin.test/build/assets/sidebar-override-B0wv7uhy.css"><link rel="stylesheet" href="https://ki-admin.test/build/assets/style-gLIu1Kqz.css"><link rel="stylesheet" href="https://ki-admin.test/build/assets/sidebar-override-B0wv7uhy.css"><!-- css end !-->
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/thin/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/light/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/duotone/style.css"></head>
+
+<body text="medium-text" class="ltr light">
+<!-- Loader start-->
+<div class="app-wrapper default">
+    <!-- Loader start-->
+    
+    <!-- Loader end-->
+
+    <!-- Menu Navigation start -->
+<!-- Menu Navigation starts -->
+<nav class="vertical-sidebar">
+    <div class="app-logo">
+        <a class="logo d-inline-block" href="https://ki-admin.test/index">
+            <img alt="#" src="https://ki-admin.test/../assets/images/logo/1.png">
+        </a>
+
+        <span class="bg-light-primary toggle-semi-nav d-flex-center">
+                <i class="ti ti-chevron-right"></i>
+            </span>
+
+        <div class="d-flex align-items-center nav-profile p-3">
+                <span class="h-45 w-45 d-flex-center b-r-10 position-relative bg-danger m-auto">
+                    <img alt="avatar" class="img-fluid b-r-10" src="https://ki-admin.test/../assets/images/avatar/woman.jpg">
+                    <span class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                </span>
+            <div class="flex-grow-1 ps-2">
+                <h6 class="text-primary mb-0">mbattle</h6>
+                <p class="text-muted f-s-12 mb-0">Super Admin</p>
+            </div>
+
+
+            <div class="dropdown profile-menu-dropdown">
+                <a aria-expanded="false" data-bs-auto-close="true" data-bs-placement="top" data-bs-toggle="dropdown" role="button">
+                    <i class="ti ti-settings fs-5"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">
+                        <a class="f-w-500" href="https://ki-admin.test/profile" target="_blank">
+                            <i class="ph-duotone  ph-user-circle pe-1 f-s-20"></i> Profile Details
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="f-w-500" href="https://ki-admin.test/setting" target="_blank">
+                            <i class="ph-duotone  ph-gear pe-1 f-s-20"></i> Settings
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <a class="f-w-500" href="#">
+                                    <i class="ph-duotone  ph-detective pe-1 f-s-20"></i> Incognito
+                                </a>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input form-check-primary" id="incognitoSwitch" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="mb-0 text-secondary f-w-500" href="https://ki-admin.test/sign_up" target="_blank">
+                            <i class="ph-bold  ph-plus pe-1 f-s-20"></i> Add account
+                        </a>
+                    </li>
+
+                    <li class="app-divider-v dotted py-1"></li>
+
+                    <li class="dropdown-item">
+                        <a class="mb-0 text-danger" href="https://ki-admin.test/sign_in" target="_blank">
+                            <i class="ph-duotone  ph-sign-out pe-1 f-s-20"></i> Log Out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    
+    
+    <div class="app-nav simplebar-scrollable-y" id="app-simple-bar" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+        
+        <ul class="main-nav p-0 mt-2" style="margin-left: 0px;">
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_1" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+                </svg>
+                        Dashboard
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_1" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+                </svg>
+                        System Overview33
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        My Activity
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Quick Actions
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        Agent Dashboard
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        Manager Dashboard
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Admin Dashboard
+            
+                    </a>
+        
+            </li>
+                                    <li class="another-level" style="border-left:none;">
+        <a href="#menu_8" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#squares"></use>
+                </svg>
+                        Create Custom Dashboard
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_8" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Add Card
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Reorder Cards
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                </svg>
+                        Save Layout
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#gift"></use>
+                </svg>
+                        Set as Default
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_13" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Tickets
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_13" aria-expanded="true">
+                                    <li class="no-sub" style="border-left:none;">
+        <a href="https://ki-admin.test/tickets/create" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Create Ticket
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        My Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        All Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+                </svg>
+                        Unassigned Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Closed Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                </svg>
+                        Ticket Templates
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Ticket Tags
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_21" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Projects
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_21" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        All Projects
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Create Project
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Project Overview
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Milestones
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Linked Tasks
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Linked Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Team Assignment
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+                </svg>
+                        Project Files
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+                </svg>
+                        Project Timeline
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Project Reports
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_32" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Tasks
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_32" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        My Tasks
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Team Tasks
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                </svg>
+                        Task Templates
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Task Statuses
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Linked Projects
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Linked Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+                </svg>
+                        Calendar Sync
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_40" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        Knowledge Base
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_40" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+                </svg>
+                        Browse Articles
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Manage Articles
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+                </svg>
+                        Categories
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Article Feedback
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Drafts &amp; Review Queue
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_46" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+                </svg>
+                        Calendar
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_46" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        My Calendar
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+                </svg>
+                        Team Calendar
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Ticket Deadlines
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Task Deadlines
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#gift"></use>
+                </svg>
+                        Event Types
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Sync Settings
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_53" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Email
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_53" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Inbox
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Sent
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Drafts
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Ticket-linked Emails
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Task-linked Emails
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                </svg>
+                        Email Templates
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Email Settings
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_61" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                </svg>
+                        Assets &amp; Files
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_61" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#arrow-down"></use>
+                </svg>
+                        Upload File
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+                </svg>
+                        My Files
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        Shared Files
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Ticket Attachments
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        Task Documents
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        Knowledge Base Assets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Image Library
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        File Tags &amp; Metadata
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Expiry &amp; Retention Rules
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        File Access Logs
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_72" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Reports
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_72" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Ticket Statistics
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Task Completion Rates
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Agent Performance
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Customer Satisfaction
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        System Logs
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#arrow-down"></use>
+                </svg>
+                        Export Center
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_79" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        Users &amp; Roles
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_79" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        All Users
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Add New User
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        User Activity
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+                </svg>
+                        Modern Dashboard
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Roles &amp; Permissions
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Role Menu Assignment
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        User Menu Override
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_87" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Settings
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_87" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        System Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Email Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Ticket Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Task Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Notification Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Security Settings
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        API &amp; Integrations
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Audit Trail
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_96" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                </svg>
+                        Admin Tools
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_96" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Data Import/Export
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Migration Viewer
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Seeder Manager
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+                </svg>
+                        Cache &amp; Queue Monitor
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        System Health Check
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_102" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        QA &amp; Testing
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_102" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Test Scenarios
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Mock Tickets
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        UI Component Preview
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Regression Checklist
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_107" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Integrations
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_107" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Webhooks
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Third-Party Apps
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Slack / Teams Notifications
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        CRM Sync
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Custom API Endpoints
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_113" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Compliance
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_113" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Audit Logs
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Data Retention Policies
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        GDPR Tools
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Access Reviews
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_118" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+                </svg>
+                        Help &amp; Onboarding
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_118" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Getting Started
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Feature Walkthroughs
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        FAQ
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                </svg>
+                        Contact Support
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Submit Feedback
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_124" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        My Account
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_124" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                </svg>
+                        Edit Profile
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        Change Password
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Two-Factor Authentication
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Active Sessions
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        My Notifications
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            <li class="another-level" style="border-left:none;">
+        <a href="#menu_130" data-bs-toggle="collapse" aria-expanded="false" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Sidebar &amp; Navigation
+            
+                    </a>
+        
+                    <ul class="collapse" id="menu_130">
+                                    <li class="another-level" style="border-left:none;">
+        <a href="#menu_131" data-bs-toggle="collapse" aria-expanded="true" style="font-size: 1rem;" class="show">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Menu Management
+            
+                    </a>
+        
+                    <ul class="collapse show" id="menu_131" aria-expanded="true">
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+                </svg>
+                        Reorder Sidebar
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                </svg>
+                        Role Menu Assignment
+            
+                    </a>
+        
+            </li>
+                                    <li class="no-sub active" style="border-left:none;">
+        <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            
+                            <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                </svg>
+                        User Menu Override
+            
+                    </a>
+        
+            </li>
+                            </ul>
+            </li>
+                            </ul>
+            </li>
+                    </ul>
+    </div></div></div></div><div class="simplebar-placeholder" style="width: 128px; height: 5791px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 96px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+</nav>
+<!-- Menu Navigation ends -->
+<!-- Menu Navigation end -->
+
+
+    <div class="app-content">
+        <!-- Header Section start -->
+    <!-- Header Section starts -->
+<header class="header-main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 col-sm-6 d-flex align-items-center header-left p-0">
+                           <span class="header-toggle ">
+                             <i class="ph ph-squares-four"></i>
+                           </span>
+
+                <div class="header-searchbar w-100">
+                    <form action="#" class="mx-sm-3 app-form app-icon-form ">
+                        <div class="position-relative">
+                            <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
+                            <i class="ti ti-search text-dark"></i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-4 col-sm-6 d-flex align-items-center justify-content-end header-right p-0">
+
+                <ul class="d-flex align-items-center">
+
+                    <li class="header-language">
+                        <div class="flex-shrink-0 dropdown" id="lang_selector">
+                            <a aria-expanded="false" class="d-block head-icon ps-0" data-bs-toggle="dropdown" href="#">
+                                <div class="lang-flag lang-en ">
+                                                <span class="flag rounded-circle overflow-hidden">
+                                                    <i class="flag-icon flag-icon-usa flag-icon-squared rounded-circle f-s-20"></i>
+                                                </span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu language-dropdown header-card border-0">
+                                <li class="lang lang-en selected dropdown-item p-2" data-bs-placement="top" data-bs-toggle="tooltip" title="US">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-usa flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">US</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-pt dropdown-item p-2" title="FR">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-fra flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">France</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-es dropdown-item p-2" title="UK">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-gbr flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">UK</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-es dropdown-item p-2" title="IT">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-ita flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">Italy</span>
+                                                </span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+
+                    <li class="header-apps">
+                        <a aria-controls="appscanvasRights" class="d-block head-icon bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#appscanvasRights" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-bounding-box"></i>
+
+                        </a>
+
+                        <div aria-labelledby="appscanvasRightsLabel" class="offcanvas offcanvas-end header-apps-canvas" id="appscanvasRights" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="appscanvasRightsLabel">Shortcut</h5>
+                                <div class="app-dropdown flex-shrink-0">
+                                    <a aria-expanded="false" class=" p-1" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#" role="button">
+                                        <i class="ph-bold  ph-faders-horizontal f-s-20"></i>
+
+
+                                    </a>
+                                    <ul class="dropdown-menu mb-3">
+                                        <li class="dropdown-item">
+                                            <a href="https://ki-admin.test/setting" target="_blank">
+                                                Privacy Settings
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="https://ki-admin.test/setting" target="_blank">
+                                                Account Settings
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="https://ki-admin.test/setting" target="_blank">
+                                                Accessibility
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item border-0">
+                                            <a aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button">
+                                                More Settings
+                                            </a>
+                                            <ul class="dropdown-menu sub-menu">
+                                                <li class="dropdown-item">
+                                                    <a href="https://ki-admin.test/setting" target="_blank">
+                                                        Backup and Restore
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="https://ki-admin.test/setting" target="_blank">
+                                                        <span>Data Usage</span>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="https://ki-admin.test/setting" target="_blank">
+                                                        <span>Theme</span>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item d-flex align-items-center justify-content-between">
+                                                    <a href="#">
+                                                        <p class="mb-0">Notification</p>
+                                                    </a>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input  form-check-primary" id="notificationSwitch" type="checkbox">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="offcanvas-body app-scroll">
+                                <div class="row row-cols-3 g-2">
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-primary w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/product" target="_blank">
+                                                          <span>
+                                                            <i class="ph-light  ph-shopping-bag-open  f-s-30"></i>
+                                                          </span>
+                                            <p class="mb-0 f-w-500 text-dark">E-shop</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-danger w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/email" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-envelope  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Email</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-success w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/chat" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-chat-circle-text  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Chat</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-warning w-100 rounded-3 py-3 px-2 " href="#" onclick="alert('Project management feature coming soon!'); return false;">
+                                                         <span>
+                                                           <i class="ph-light  ph-projector-screen-chart  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Project</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-info w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/invoice" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-scroll f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Invoice</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-dark w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/blog" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-notebook f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Blog</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-danger w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/calendar" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-calendar f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Calender</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-warning w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/file_manager" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-folder-open f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark txt-ellipsis-1">File
+                                                Manager</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-primary w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/gallery " target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-google-photos-logo f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Gallery</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-success w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/profile" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-users-three f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Profile</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-secondary w-100 rounded-3 py-3 px-2 " href="https://ki-admin.test/kanban_board" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-selection-foreground f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Task Board</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="d-flex-center text-light-secondary w-100 h-100 rounded-3 p-2 dashed-1-secondary" href="https://ki-admin.test/kanban_board" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-plus f-s-30"></i>
+                                                        </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="header-cart">
+                        <a aria-controls="cartcanvasRight" class="d-block head-icon position-relative bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#cartcanvasRight" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-shopping-cart-simple"></i>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger badge-notification">4</span>
+                        </a>
+                        <div aria-labelledby="cartcanvasRightLabel" class="offcanvas offcanvas-end header-cart-canvas" id="cartcanvasRight" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="cartcanvasRightLabel">Cart</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+                            </div>
+                            <div class="offcanvas-body app-scroll p-0">
+                                <div class="head-container">
+                                    <div class="head-box">
+                                                  <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/01.png">
+                                                  </span>
+
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="https://ki-admin.test/product_details" target="_blank"> Backpacks (3<i class="ti ti-star-filled text-warning f-s-12"></i>)
+                                            </a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : M</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Pink</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$600.50 x 1</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/05.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="https://ki-admin.test/product_details" target="_blank"> Women's Watch (4<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : S</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Rose Gold</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$519.10 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/04.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="https://ki-admin.test/product_details" target="_blank">Sandals (5 <i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : 8</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :White</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$390 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box ">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/03.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="https://ki-admin.test/product_details" target="_blank"> Jackets (3<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : XL</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Blue</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$300.00 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box ">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/02.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="https://ki-admin.test/product_details" target="_blank"> Shoes (3<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : 9</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :White</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$450.00 x 1</p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-massage py-4 px-3">
+
+                                        <div>
+                                            <i class="ph-duotone  ph-shopping-bag-open f-s-50 text-primary"></i>
+                                            <h6 class="mb-0">Your Cart is Empty</h6>
+                                            <p class="text-secondary mb-0">Add some items :)</p>
+                                            <a class="btn btn-light-primary btn-xs mt-2" href="https://ki-admin.test/product_details">Shop
+                                                Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="offcanvas-footer">
+                                <div class="head-box-footer p-3">
+                                    <div class="mb-4">
+                                        <h6 class="text-muted f-w-600">Total <span class="float-end text-primary">$3,468.00</span></h6>
+                                    </div>
+                                    <div class="header-cart-btn">
+                                        <a class="btn btn-primary" href="https://ki-admin.test/cart" role="button" target="_blank">
+                                            <i class="ti ti-eye"></i> View Cart</a>
+                                        <a class="btn btn-success" href="https://ki-admin.test/checkout" role="button" target="_blank">
+                                            Checkout <i class="ti ti-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="header-dark">
+                        <div class="sun-logo head-icon bg-light-dark rounded-circle f-s-22 p-2">
+                            <i class="ph ph-moon-stars"></i>
+                        </div>
+                        <div class="moon-logo head-icon bg-light-dark rounded-circle f-s-22 p-2">
+                            <i class="ph ph-sun-dim"></i>
+                        </div>
+                    </li>
+
+                    <li class="header-notification">
+                        <a aria-controls="notificationcanvasRight" class="d-block head-icon position-relative bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#notificationcanvasRight" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-bell"></i>
+                            <span class="position-absolute translate-middle p-1 bg-primary border border-light rounded-circle animate__animated animate__fadeIn animate__infinite animate__slower"></span>
+                        </a>
+                        <div aria-labelledby="notificationcanvasRightLabel" class="offcanvas offcanvas-end header-notification-canvas" id="notificationcanvasRight" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="notificationcanvasRightLabel">
+                                    Notification</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+                            </div>
+                            <div class="offcanvas-body app-scroll p-0">
+                                <div class="head-container">
+                                    <div class="notification-message head-box">
+
+                                        <div class="message-content-box flex-grow-1 pe-2">
+
+                                            <a class="f-s-15 text-dark mb-0" href="https://ki-admin.test/read_email"><span class="f-w-500 text-dark">Gene Hart</span> wants to
+                                                edit <span class="f-w-500 text-dark">Report.doc</span></a>
+                                            <div>
+                                                <a class="d-inline-block f-w-500 text-success me-1" href="#">Approve</a>
+                                                <a class="d-inline-block f-w-500 text-danger" href="#">Deny</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> sep 23 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="https://ki-admin.test/read_email">Hey
+                                                <span class="f-w-500 text-dark">Emery McKenzie</span>,
+                                                get ready: Your order from <span class="f-w-500 text-dark">@Shopper.com</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> sep 23 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="https://ki-admin.test/read_email"><span class="f-w-500 text-dark">Simon Young</span> shared
+                                                a file called <span class="f-w-500 text-dark">Dropdown.pdf</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 30 min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="https://ki-admin.test/read_email"><span class="f-w-500 text-dark">Becky G. Hayes</span> has
+                                                added a comment to <span class="f-w-500 text-dark">Final_Report.pdf</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 45 min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box  flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0 " href="https://ki-admin.test/read_email"><span class="f-w-600 text-dark">@Romaine</span>
+                                                invited you to a meeting
+                                            </a>
+                                            <div>
+                                                <a class="d-inline-block f-w-500 text-success me-1" href="#">Join</a>
+                                                <a class="d-inline-block f-w-500 text-danger" href="#">Decline</a>
+                                            </div>
+
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 1 hour ago </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hidden-massage py-4 px-3">
+                                        <div>
+                                            <i class="ph-duotone  ph-bell-ringing f-s-50 text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Notification Not Found</h6>
+                                            <p class="text-dark">When you have any notifications added
+                                                here,will
+                                                appear here.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Header Section ends -->
+    <!-- Header Section end -->
+
+        <!-- Main Section start -->
+        <main>
+            
+            <div class="container-fluid">
+    <div class="row m-1 mt-2">
+        <div class="col-12">
+            <h4 class="main-title">Dashboard</h4>
+            <ul class="app-line-breadcrumbs mb-3">
+                <li class="">
+                    <a href="#" class="f-s-14 f-w-500">
+                        <span>
+                            <i class="ph-duotone ph-house f-s-16"></i> Home
+                        </span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#" class="f-s-14 f-w-500">My Activity</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-welcome-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-image avatar-lg me-3">
+                            <div class="avatar-image-placeholder bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 24px; font-weight: bold;">
+                                m
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="mb-1 text-white">Welcome back, mbattle!</h2>
+                            <p class="mb-0 text-white-50">
+                                Role: <span class="badge bg-white text-primary">Super Admin</span>
+                                                                    <span class="badge bg-success ms-2">Email Verified</span>
+                                                            </p>
+                            <small class="text-white-50">Last login: Aug 18, 2025 at 11:03 AM</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4 justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-3 d-flex">
+            <div class="card activity-card border-0 shadow flex-fill" style="animation-delay: 0s;">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-primary text-white mx-auto mb-3">
+                        <i class="ph-duotone ph-ticket"></i>
+                    </div>
+                    <h5>Support Tickets</h5>
+                    <p class="text-muted">Create or view your tickets</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm">View Tickets</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3 d-flex">
+            <div class="card activity-card border-0 shadow flex-fill" style="animation-delay: 0.1s;">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-success text-white mx-auto mb-3">
+                        <i class="ph-duotone ph-book"></i>
+                    </div>
+                    <h5>Knowledge Base</h5>
+                    <p class="text-muted">Browse helpful articles</p>
+                    <a href="#" class="btn btn-outline-success btn-sm">Browse Articles</a>
+                </div>
+            </div>
+        </div>
+                <div class="col-lg-4 col-md-6 mb-3 d-flex">
+            <div class="card activity-card border-0 shadow flex-fill" style="animation-delay: 0.2s;">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-warning text-white mx-auto mb-3">
+                        <i class="ph-duotone ph-user"></i>
+                    </div>
+                    <h5>My Profile</h5>
+                    <p class="text-muted">Update your information</p>
+                    <a href="#" class="btn btn-outline-info btn-sm">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+            </div>
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="card-title mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item d-flex align-items-center mb-3">
+                            <div class="timeline-marker bg-primary rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                            <div>
+                                <p class="mb-1"><strong>Account Created</strong></p>
+                                <small class="text-muted">Apr 8, 2025 at 9:32 PM</small>
+                            </div>
+                        </div>
+                                                <div class="timeline-item d-flex align-items-center mb-3">
+                            <div class="timeline-marker bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                            <div>
+                                <p class="mb-1"><strong>Email Verified</strong></p>
+                                <small class="text-muted">Apr 8, 2025 at 9:34 PM</small>
+                            </div>
+                        </div>
+                                                <div class="timeline-item d-flex align-items-center mb-3">
+                            <div class="timeline-marker bg-info rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                            <div>
+                                <p class="mb-1"><strong>Dashboard Access</strong></p>
+                                <small class="text-muted">Aug 18, 2025 at 11:03 AM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="card-title mb-0">Quick Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Open Tickets</span>
+                        <span class="badge bg-danger">0</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Resolved Tickets</span>
+                        <span class="badge bg-success">0</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Articles Read</span>
+                        <span class="badge bg-info">0</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Account Status</span>
+                        <span class="badge bg-primary">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </main>
+        <!-- Main Section end -->
+    </div>
+
+    <!-- tap on top -->
+    <div class="go-top">
+      <span class="progress-value">
+        <i class="ti ti-arrow-up"></i>
+      </span>
+    </div>
+
+    <!-- Footer Section start -->
+     <!-- Footer Section starts-->
+<footer style="position: fixed; bottom: 0; left: var(--sidebar-width, 18rem); right: 0; z-index: 1000; background: white; border-top: 1px solid #e5e7eb; padding: 12px 0; transition: left 0.3s ease;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9 col-12">
+                <p class="footer-text f-w-600 mb-0">Copyright © 2025 ki-admin. All rights reserved 💖 V1.0.0</p>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-text text-end">
+                    <a class="f-w-500 text-primary" href="mailto:teqlathemes@gmail.com"> Need Help <i class="ti ti-help"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section ends-->
+    <!-- Footer Section end -->
+</div>
+
+<!--customizer-->
+<div id="customizer"><button class="customizer-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#customizerOptions" aria-controls="customizerOptions">
+  <i class="ti ti-settings-2"></i>
+</button>
+
+<div class="offcanvas offcanvas-end app-customizer" data-bs-scroll="true" tabindex="-1" id="customizerOptions" aria-labelledby="customizerOptionsLabel">
+
+  <div class="offcanvas-header flex-wrap bg-primary">
+    <h5 class="offcanvas-title text-white" id="customizerOptionsLabel"> Admin Customizer </h5>
+    <p class="d-block text-white opacity-75">it's time to style according to your choice ..!</p>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2">Sidebar option</h6>
+    </div>
+    <ul class="sidebar-option">
+      <li class="vertical-sidebar selected">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> Vertical</span> </li>
+        </ul>
+      </li>
+      <li class="horizontal-sidebar">
+        <ul>
+          <li class="header h-20"><span class="badge text-bg-secondary b-r-6"> Horizontal</span></li>
+          <li class="body w-100"></li>
+        </ul>
+      </li>
+      <li class="dark-sidebar">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar bg-dark-600"></li>
+          <li class="body"><span class="badge text-bg-secondary b-r-6"> Dark </span></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2">Layout option</h6>
+    </div>
+    <ul class="layout-option">
+      <li class="ltr selected">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"><span class="badge text-bg-secondary b-r-6"> LTR </span></li>
+        </ul>
+      </li>
+      <li class="rtl">
+        <ul>
+          <li class="header"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> RTL </span> </li>
+          <li class="sidebar"></li>
+        </ul>
+      </li>
+      <li class="box-layout">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> Box </span> </li>
+        </ul>
+      </li>
+    </ul>
+    <h6 class="mt-3">Color Hint</h6>
+    <ul class="color-hint p-0">
+      <li class="default selected">
+        <div></div>
+      </li>
+      <li class="gold">
+        <div></div>
+      </li>
+      <li class="warm">
+        <div></div>
+      </li>
+      <li class="happy">
+        <div></div>
+      </li>
+      <li class="nature">
+        <div></div>
+      </li>
+      <li class="hot">
+        <div></div>
+      </li>
+    </ul>
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2 font-primary">Text size</h6>
+    </div>
+    <ul class="text-size">
+      <li class="small-text"> sm </li>
+      <li class="medium-text selected"> md </li>
+      <li class="large-text"> lg </li>
+    </ul>
+  </div>
+
+  <div class="offcanvas-footer">
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-danger w-100" onclick="resetCustomizer()">Reset</button>
+      <a type="button" class="btn btn-success w-100" href="https://themeforest.net/user/la-themes/portfolio" target="_blank">Buy Now</a>
+    </div>
+    <div class="d-flex gap-2 mt-2">
+      <a type="button" class="btn btn-primary w-100" href="mailto:teqlathemes@gmail.com" target="_blank">Support</a>
+      <a type="button" class="btn btn-dark w-100" href="https://phpstack-1384472-5121645.cloudwaysapps.com/document/laravel/ki-admin/index.html" target="_blank">Document</a>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- scripts start-->
+<!-- latest jquery-->
+<script src="https://ki-admin.test/assets/js/jquery-3.6.3.min.js"></script>
+
+<!-- Bootstrap js-->
+<script src="https://ki-admin.test/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+
+<!-- Simple bar js-->
+<script src="https://ki-admin.test/assets/vendor/simplebar/simplebar.js"></script>
+
+<!-- phosphor js -->
+<script src="https://ki-admin.test/assets/vendor/phosphor/phosphor.js"></script>
+
+<!-- Customizer js-->
+<script src="https://ki-admin.test/assets/js/customizer.js"></script>
+
+<!-- prism js-->
+<script src="https://ki-admin.test/assets/vendor/prism/prism.min.js"></script>
+
+<!-- App js-->
+<script src="https://ki-admin.test/assets/js/script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const activityCards = document.querySelectorAll('.activity-card');
+            activityCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+            setInterval(function() {
+                console.log('Refreshing dashboard stats...');
+            }, 300000);
+        });
+    </script>
+<!-- scripts end-->
+
+
+
+
+
+</body></html>

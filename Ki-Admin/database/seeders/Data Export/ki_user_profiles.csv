@@ -1,0 +1,2 @@
+user_id,first_name,last_name,preferred_name,title,date_of_birth,profile_picture_url,bio,gender,timezone,language,department_id,job_title_id,school_id
+2,NULL,NULL,NULL,NULL,NULL,assets/images/avatar/sjohansson.jpeg,NULL,NULL,NULL,NULL,NULL,NULL,NULL

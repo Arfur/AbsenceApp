@@ -1,0 +1,1516 @@
+<ul class="main-nav p-0 mt-2" style="margin-left: 0px;">
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_1" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+            </svg>
+            Dashboard
+        </a>
+                    <ul class="collapse another-level show" id="menu_1" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+            </svg>
+            System Overview33
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            My Activity
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Quick Actions
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            Agent Dashboard
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            Manager Dashboard
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Admin Dashboard
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_8" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#squares"></use>
+            </svg>
+            Create Custom Dashboard
+        </a>
+                    <ul class="collapse another-level show" id="menu_8" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Add Card
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Reorder Cards
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+            </svg>
+            Save Layout
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#gift"></use>
+            </svg>
+            Set as Default
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_13" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Tickets
+        </a>
+                    <ul class="collapse another-level show" id="menu_13" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub" style="border-left:none;">
+                <a href="https://ki-admin.test/tickets/create" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Create Ticket
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            My Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            All Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+            </svg>
+            Unassigned Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Closed Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+            </svg>
+            Ticket Templates
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Ticket Tags
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_21" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Projects
+        </a>
+                    <ul class="collapse another-level show" id="menu_21" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            All Projects
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Create Project
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Project Overview
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Milestones
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Linked Tasks
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Linked Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Team Assignment
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+            </svg>
+            Project Files
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+            </svg>
+            Project Timeline
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Project Reports
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_32" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Tasks
+        </a>
+                    <ul class="collapse another-level show" id="menu_32" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            My Tasks
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Team Tasks
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+            </svg>
+            Task Templates
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Task Statuses
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Linked Projects
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Linked Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+            </svg>
+            Calendar Sync
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_40" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            Knowledge Base
+        </a>
+                    <ul class="collapse another-level show" id="menu_40" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+            </svg>
+            Browse Articles
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Manage Articles
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+            </svg>
+            Categories
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Article Feedback
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Drafts &amp; Review Queue
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_46" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+            </svg>
+            Calendar
+        </a>
+                    <ul class="collapse another-level show" id="menu_46" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            My Calendar
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+            </svg>
+            Team Calendar
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Ticket Deadlines
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Task Deadlines
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#gift"></use>
+            </svg>
+            Event Types
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Sync Settings
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_53" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Email
+        </a>
+                    <ul class="collapse another-level show" id="menu_53" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Inbox
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Sent
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Drafts
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Ticket-linked Emails
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Task-linked Emails
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+            </svg>
+            Email Templates
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Email Settings
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_61" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+            </svg>
+            Assets &amp; Files
+        </a>
+                    <ul class="collapse another-level show" id="menu_61" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#arrow-down"></use>
+            </svg>
+            Upload File
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+            </svg>
+            My Files
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            Shared Files
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Ticket Attachments
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            Task Documents
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            Knowledge Base Assets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Image Library
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            File Tags &amp; Metadata
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Expiry &amp; Retention Rules
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            File Access Logs
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_72" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Reports
+        </a>
+                    <ul class="collapse another-level show" id="menu_72" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Ticket Statistics
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Task Completion Rates
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Agent Performance
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Customer Satisfaction
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            System Logs
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#arrow-down"></use>
+            </svg>
+            Export Center
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_79" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            Users &amp; Roles
+        </a>
+                    <ul class="collapse another-level show" id="menu_79" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            All Users
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Add New User
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            User Activity
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+            </svg>
+            Modern Dashboard
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Roles &amp; Permissions
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Role Menu Assignment
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            User Menu Override
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_87" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Settings
+        </a>
+                    <ul class="collapse another-level show" id="menu_87" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            System Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Email Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Ticket Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Task Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Notification Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Security Settings
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            API &amp; Integrations
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Audit Trail
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_96" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+            </svg>
+            Admin Tools
+        </a>
+                    <ul class="collapse another-level show" id="menu_96" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Data Import/Export
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Migration Viewer
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Seeder Manager
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+            </svg>
+            Cache &amp; Queue Monitor
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            System Health Check
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_102" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            QA &amp; Testing
+        </a>
+                    <ul class="collapse another-level show" id="menu_102" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Test Scenarios
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Mock Tickets
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            UI Component Preview
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Regression Checklist
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_107" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Integrations
+        </a>
+                    <ul class="collapse another-level show" id="menu_107" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Webhooks
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Third-Party Apps
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Slack / Teams Notifications
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            CRM Sync
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Custom API Endpoints
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_113" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Compliance
+        </a>
+                    <ul class="collapse another-level show" id="menu_113" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Audit Logs
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Data Retention Policies
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            GDPR Tools
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Access Reviews
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_118" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+            </svg>
+            Help &amp; Onboarding
+        </a>
+                    <ul class="collapse another-level show" id="menu_118" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Getting Started
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Feature Walkthroughs
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            FAQ
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+            </svg>
+            Contact Support
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Submit Feedback
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_124" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            My Account
+        </a>
+                    <ul class="collapse another-level show" id="menu_124" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+            </svg>
+            Edit Profile
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            Change Password
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Two-Factor Authentication
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Active Sessions
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            My Notifications
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_130" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="false">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Sidebar &amp; Navigation
+        </a>
+                    <ul class="collapse another-level" id="menu_130" style="border-left:none;">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="another-level" style="border-left:none;">
+                <a href="#menu_131" style="font-size: 1rem;" data-bs-toggle="collapse" aria-expanded="true" class="show">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Menu Management
+        </a>
+                    <ul class="collapse another-level show" id="menu_131" style="border-left:none;" aria-expanded="true">
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#queue-list"></use>
+            </svg>
+            Reorder Sidebar
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+            </svg>
+            Role Menu Assignment
+        </a>
+            </li>
+                                    <!-- DEBUG: Sidebar Partial Loaded -->
+    
+    
+    <li class="no-sub active" style="border-left:none;">
+                <a href="https://ki-admin.test/dashboard" style="font-size: 1rem;">
+            <svg stroke="currentColor" stroke-width="1.2" style="width: 1em; height: 1em; vertical-align: middle;">
+                <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+            </svg>
+            User Menu Override
+        </a>
+            </li>
+                            </ul>
+            </li>
+                            </ul>
+            </li>
+                    </ul>

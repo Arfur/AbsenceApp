@@ -1,0 +1,65 @@
+
+{{--
+    =========================================================
+    Sidebar Menu Item Partial (Dynamic)
+    Refactored to match static sample sidebar markup and logic
+    - Uses 'another-level' for items with children, 'no-sub' for leaf items
+    - Bootstrap collapse attributes for submenus
+    - SVG icons, badges, and submenu structure consistent with sample
+    - Unlimited nesting via recursion
+    - Detailed comments for maintainability
+    =========================================================
+--}}
+
+@if(isset($item['menu_group']) && $item['menu_group'] === 'section_title')
+    {{-- Section Title (matches sample sidebar) --}}
+    <li class="menu-title">
+        <span>{{ $item['title'] ?? 'Section' }}</span>
+    </li>
+@else
+    {{-- Main Menu Item --}}
+    @php
+        $hasChildren = !empty($item['children']);
+        $liClass = $hasChildren ? 'another-level' : 'no-sub';
+        $menuUrl = '#';
+        if (!empty($item['url'])) {
+            $menuUrl = $item['url'];
+        } elseif (!empty($item['route_name'])) {
+            try {
+                $menuUrl = route($item['route_name']);
+            } catch (\Exception $e) {
+                $menuUrl = route('dashboard');
+            }
+        }
+        $collapseId = $hasChildren ? 'menu_' . $item['id'] : null;
+    @endphp
+    <li class="{{ $liClass }}" style="border-left:none;">
+        <a
+            href="{{ $hasChildren ? '#' . $collapseId : $menuUrl }}"
+            @if($hasChildren)
+                data-bs-toggle="collapse" aria-expanded="false"
+            @endif
+            style="font-size: 1rem;"
+        >
+            {{-- SVG Icon (matches sample) --}}
+            @if(!empty($item['icon']))
+                <svg stroke="currentColor" stroke-width="1.5" style="width: 1em; height: 1em; vertical-align: middle;">
+                    <use xlink:href="../assets/svg/_sprite.svg#{{ $item['icon'] }}"></use>
+                </svg>
+            @endif
+            {{ $item['title'] ?? 'Menu Item' }}
+            {{-- Badge (if present, matches sample sidebar) --}}
+            @if(!empty($item['badge']))
+                <span class="badge {{ $item['badge_class'] ?? 'bg-danger badge-dashboard badge-notification ms-2' }}">{{ $item['badge'] }}</span>
+            @endif
+        </a>
+        {{-- Submenu (recursive, matches sample markup) --}}
+        @if($hasChildren)
+            <ul class="collapse" id="{{ $collapseId }}">
+                @foreach($item['children'] as $child)
+                    @include('layout.sidebar-menu-item', ['item' => $child, 'level' => ($level ?? 0) + 1])
+                @endforeach
+            </ul>
+        @endif
+    </li>
+@endif

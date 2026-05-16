@@ -1,0 +1,2511 @@
+<html lang="en" dir="ltr"><head>
+    <!-- All meta and title start-->
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Multipurpose, super flexible, powerful, clean modern responsive bootstrap 5 admin template" name="description">
+<meta content="admin template, ki-admin admin template, dashboard template, flat admin template, responsive admin template, web app" name="keywords">
+<meta content="la-themes" name="author">
+
+<link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon">
+<link rel="shortcut icon" href="../assets/images/logo/favicon.png" type="image/x-icon">
+
+<title>Ecommerce Dashboard | ki-admin - Premium Admin Template</title>
+<!-- meta and title end-->
+
+<!-- css start !-->
+<!-- Animation css -->
+<link rel="stylesheet" href="https://ki-admin.test/assets/vendor/animation/animate.min.css">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet">
+
+<!--Flag Icon css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/flag-icons-master/flag-icon.css">
+
+<!-- Tabler icons-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/tabler-icons/tabler-icons.css">
+
+<!-- Prism css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/prism/prism.min.css">
+
+<!-- Bootstrap css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/bootstrap/bootstrap.min.css">
+
+<!-- Simplebar css-->
+<link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/simplebar/simplebar.css">
+
+
+    <!-- apexcharts css -->
+    <link rel="stylesheet" type="text/css" href="https://ki-admin.test/assets/vendor/apexcharts/apexcharts.css">
+
+    <!-- glight css -->
+    <link rel="stylesheet" href="https://ki-admin.test/assets/vendor/glightbox/glightbox.min.css">
+
+
+<link rel="preload" as="style" href="https://ki-admin.test/build/assets/style-C214Pq1h.css"><link rel="stylesheet" href="https://ki-admin.test/build/assets/style-C214Pq1h.css"><!-- css end !-->
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/thin/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/light/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/duotone/style.css"><style id="apexcharts-css">.apexcharts-canvas {
+  position: relative;
+  user-select: none;
+  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */
+}
+
+
+/* scrollbar is not visible by default for legend, hence forcing the visibility */
+.apexcharts-canvas ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+}
+
+.apexcharts-canvas ::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+
+.apexcharts-inner {
+  position: relative;
+}
+
+.apexcharts-text tspan {
+  font-family: inherit;
+}
+
+.legend-mouseover-inactive {
+  transition: 0.15s ease all;
+  opacity: 0.20;
+}
+
+.apexcharts-series-collapsed {
+  opacity: 0;
+}
+
+.apexcharts-tooltip {
+  border-radius: 5px;
+  box-shadow: 2px 2px 6px -4px #999;
+  cursor: default;
+  font-size: 14px;
+  left: 62px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 12;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-tooltip.apexcharts-active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light {
+  border: 1px solid #e3e3e3;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.apexcharts-tooltip.apexcharts-theme-dark {
+  color: #fff;
+  background: rgba(30, 30, 30, 0.8);
+}
+
+.apexcharts-tooltip * {
+  font-family: inherit;
+}
+
+
+.apexcharts-tooltip-title {
+  padding: 6px;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  background: #ECEFF1;
+  border-bottom: 1px solid #ddd;
+}
+
+.apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
+  background: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid #333;
+}
+
+.apexcharts-tooltip-text-y-value,
+.apexcharts-tooltip-text-goals-value,
+.apexcharts-tooltip-text-z-value {
+  display: inline-block;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.apexcharts-tooltip-title:empty,
+.apexcharts-tooltip-text-y-label:empty,
+.apexcharts-tooltip-text-y-value:empty,
+.apexcharts-tooltip-text-goals-label:empty,
+.apexcharts-tooltip-text-goals-value:empty,
+.apexcharts-tooltip-text-z-value:empty {
+  display: none;
+}
+
+.apexcharts-tooltip-text-y-value,
+.apexcharts-tooltip-text-goals-value,
+.apexcharts-tooltip-text-z-value {
+  font-weight: 600;
+}
+
+.apexcharts-tooltip-text-goals-label, 
+.apexcharts-tooltip-text-goals-value {
+  padding: 6px 0 5px;
+}
+
+.apexcharts-tooltip-goals-group, 
+.apexcharts-tooltip-text-goals-label, 
+.apexcharts-tooltip-text-goals-value {
+  display: flex;
+}
+.apexcharts-tooltip-text-goals-label:not(:empty),
+.apexcharts-tooltip-text-goals-value:not(:empty) {
+  margin-top: -6px;
+}
+
+.apexcharts-tooltip-marker {
+  width: 12px;
+  height: 12px;
+  position: relative;
+  top: 0px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.apexcharts-tooltip-series-group {
+  padding: 0 10px;
+  display: none;
+  text-align: left;
+  justify-content: left;
+  align-items: center;
+}
+
+.apexcharts-tooltip-series-group.apexcharts-active .apexcharts-tooltip-marker {
+  opacity: 1;
+}
+
+.apexcharts-tooltip-series-group.apexcharts-active,
+.apexcharts-tooltip-series-group:last-child {
+  padding-bottom: 4px;
+}
+
+.apexcharts-tooltip-series-group-hidden {
+  opacity: 0;
+  height: 0;
+  line-height: 0;
+  padding: 0 !important;
+}
+
+.apexcharts-tooltip-y-group {
+  padding: 6px 0 5px;
+}
+
+.apexcharts-tooltip-box, .apexcharts-custom-tooltip {
+  padding: 4px 8px;
+}
+
+.apexcharts-tooltip-boxPlot {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.apexcharts-tooltip-box>div {
+  margin: 4px 0;
+}
+
+.apexcharts-tooltip-box span.value {
+  font-weight: bold;
+}
+
+.apexcharts-tooltip-rangebar {
+  padding: 5px 8px;
+}
+
+.apexcharts-tooltip-rangebar .category {
+  font-weight: 600;
+  color: #777;
+}
+
+.apexcharts-tooltip-rangebar .series-name {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.apexcharts-xaxistooltip {
+  opacity: 0;
+  padding: 9px 10px;
+  pointer-events: none;
+  color: #373d3f;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 10;
+  background: #ECEFF1;
+  border: 1px solid #90A4AE;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-xaxistooltip.apexcharts-theme-dark {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.apexcharts-xaxistooltip:after,
+.apexcharts-xaxistooltip:before {
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.apexcharts-xaxistooltip:after {
+  border-color: rgba(236, 239, 241, 0);
+  border-width: 6px;
+  margin-left: -6px;
+}
+
+.apexcharts-xaxistooltip:before {
+  border-color: rgba(144, 164, 174, 0);
+  border-width: 7px;
+  margin-left: -7px;
+}
+
+.apexcharts-xaxistooltip-bottom:after,
+.apexcharts-xaxistooltip-bottom:before {
+  bottom: 100%;
+}
+
+.apexcharts-xaxistooltip-top:after,
+.apexcharts-xaxistooltip-top:before {
+  top: 100%;
+}
+
+.apexcharts-xaxistooltip-bottom:after {
+  border-bottom-color: #ECEFF1;
+}
+
+.apexcharts-xaxistooltip-bottom:before {
+  border-bottom-color: #90A4AE;
+}
+
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:after {
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:before {
+  border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-xaxistooltip-top:after {
+  border-top-color: #ECEFF1
+}
+
+.apexcharts-xaxistooltip-top:before {
+  border-top-color: #90A4AE;
+}
+
+.apexcharts-xaxistooltip-top.apexcharts-theme-dark:after {
+  border-top-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-xaxistooltip-top.apexcharts-theme-dark:before {
+  border-top-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-xaxistooltip.apexcharts-active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-yaxistooltip {
+  opacity: 0;
+  padding: 4px 10px;
+  pointer-events: none;
+  color: #373d3f;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  position: absolute;
+  z-index: 10;
+  background: #ECEFF1;
+  border: 1px solid #90A4AE;
+}
+
+.apexcharts-yaxistooltip.apexcharts-theme-dark {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.apexcharts-yaxistooltip:after,
+.apexcharts-yaxistooltip:before {
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.apexcharts-yaxistooltip:after {
+  border-color: rgba(236, 239, 241, 0);
+  border-width: 6px;
+  margin-top: -6px;
+}
+
+.apexcharts-yaxistooltip:before {
+  border-color: rgba(144, 164, 174, 0);
+  border-width: 7px;
+  margin-top: -7px;
+}
+
+.apexcharts-yaxistooltip-left:after,
+.apexcharts-yaxistooltip-left:before {
+  left: 100%;
+}
+
+.apexcharts-yaxistooltip-right:after,
+.apexcharts-yaxistooltip-right:before {
+  right: 100%;
+}
+
+.apexcharts-yaxistooltip-left:after {
+  border-left-color: #ECEFF1;
+}
+
+.apexcharts-yaxistooltip-left:before {
+  border-left-color: #90A4AE;
+}
+
+.apexcharts-yaxistooltip-left.apexcharts-theme-dark:after {
+  border-left-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-yaxistooltip-left.apexcharts-theme-dark:before {
+  border-left-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-yaxistooltip-right:after {
+  border-right-color: #ECEFF1;
+}
+
+.apexcharts-yaxistooltip-right:before {
+  border-right-color: #90A4AE;
+}
+
+.apexcharts-yaxistooltip-right.apexcharts-theme-dark:after {
+  border-right-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-yaxistooltip-right.apexcharts-theme-dark:before {
+  border-right-color: rgba(0, 0, 0, 0.5);
+}
+
+.apexcharts-yaxistooltip.apexcharts-active {
+  opacity: 1;
+}
+
+.apexcharts-yaxistooltip-hidden {
+  display: none;
+}
+
+.apexcharts-xcrosshairs,
+.apexcharts-ycrosshairs {
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-xcrosshairs.apexcharts-active,
+.apexcharts-ycrosshairs.apexcharts-active {
+  opacity: 1;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-ycrosshairs-hidden {
+  opacity: 0;
+}
+
+.apexcharts-selection-rect {
+  cursor: move;
+}
+
+.svg_select_boundingRect, .svg_select_points_rot {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+.apexcharts-selection-rect + g .svg_select_boundingRect,
+.apexcharts-selection-rect + g .svg_select_points_rot {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.apexcharts-selection-rect + g .svg_select_points_l,
+.apexcharts-selection-rect + g .svg_select_points_r {
+  cursor: ew-resize;
+  opacity: 1;
+  visibility: visible;
+}
+
+.svg_select_points {
+  fill: #efefef;
+  stroke: #333;
+  rx: 2;
+}
+
+.apexcharts-svg.apexcharts-zoomable.hovering-zoom {
+  cursor: crosshair
+}
+
+.apexcharts-svg.apexcharts-zoomable.hovering-pan {
+  cursor: move
+}
+
+.apexcharts-zoom-icon,
+.apexcharts-zoomin-icon,
+.apexcharts-zoomout-icon,
+.apexcharts-reset-icon,
+.apexcharts-pan-icon,
+.apexcharts-selection-icon,
+.apexcharts-menu-icon,
+.apexcharts-toolbar-custom-icon {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  line-height: 24px;
+  color: #6E8192;
+  text-align: center;
+}
+
+.apexcharts-zoom-icon svg,
+.apexcharts-zoomin-icon svg,
+.apexcharts-zoomout-icon svg,
+.apexcharts-reset-icon svg,
+.apexcharts-menu-icon svg {
+  fill: #6E8192;
+}
+
+.apexcharts-selection-icon svg {
+  fill: #444;
+  transform: scale(0.76)
+}
+
+.apexcharts-theme-dark .apexcharts-zoom-icon svg,
+.apexcharts-theme-dark .apexcharts-zoomin-icon svg,
+.apexcharts-theme-dark .apexcharts-zoomout-icon svg,
+.apexcharts-theme-dark .apexcharts-reset-icon svg,
+.apexcharts-theme-dark .apexcharts-pan-icon svg,
+.apexcharts-theme-dark .apexcharts-selection-icon svg,
+.apexcharts-theme-dark .apexcharts-menu-icon svg,
+.apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg {
+  fill: #f3f4f5;
+}
+
+.apexcharts-canvas .apexcharts-zoom-icon.apexcharts-selected svg,
+.apexcharts-canvas .apexcharts-selection-icon.apexcharts-selected svg,
+.apexcharts-canvas .apexcharts-reset-zoom-icon.apexcharts-selected svg {
+  fill: #008FFB;
+}
+
+.apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg,
+.apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg,
+.apexcharts-theme-light .apexcharts-zoomin-icon:hover svg,
+.apexcharts-theme-light .apexcharts-zoomout-icon:hover svg,
+.apexcharts-theme-light .apexcharts-reset-icon:hover svg,
+.apexcharts-theme-light .apexcharts-menu-icon:hover svg {
+  fill: #333;
+}
+
+.apexcharts-selection-icon,
+.apexcharts-menu-icon {
+  position: relative;
+}
+
+.apexcharts-reset-icon {
+  margin-left: 5px;
+}
+
+.apexcharts-zoom-icon,
+.apexcharts-reset-icon,
+.apexcharts-menu-icon {
+  transform: scale(0.85);
+}
+
+.apexcharts-zoomin-icon,
+.apexcharts-zoomout-icon {
+  transform: scale(0.7)
+}
+
+.apexcharts-zoomout-icon {
+  margin-right: 3px;
+}
+
+.apexcharts-pan-icon {
+  transform: scale(0.62);
+  position: relative;
+  left: 1px;
+  top: 0px;
+}
+
+.apexcharts-pan-icon svg {
+  fill: #fff;
+  stroke: #6E8192;
+  stroke-width: 2;
+}
+
+.apexcharts-pan-icon.apexcharts-selected svg {
+  stroke: #008FFB;
+}
+
+.apexcharts-pan-icon:not(.apexcharts-selected):hover svg {
+  stroke: #333;
+}
+
+.apexcharts-toolbar {
+  position: absolute;
+  z-index: 11;
+  max-width: 176px;
+  text-align: right;
+  border-radius: 3px;
+  padding: 0px 6px 2px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apexcharts-menu {
+  background: #fff;
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 3px;
+  right: 10px;
+  opacity: 0;
+  min-width: 110px;
+  transition: 0.15s ease all;
+  pointer-events: none;
+}
+
+.apexcharts-menu.apexcharts-menu-open {
+  opacity: 1;
+  pointer-events: all;
+  transition: 0.15s ease all;
+}
+
+.apexcharts-menu-item {
+  padding: 6px 7px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.apexcharts-theme-light .apexcharts-menu-item:hover {
+  background: #eee;
+}
+
+.apexcharts-theme-dark .apexcharts-menu {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .apexcharts-canvas:hover .apexcharts-toolbar {
+    opacity: 1;
+  }
+}
+
+.apexcharts-datalabel.apexcharts-element-hidden {
+  opacity: 0;
+}
+
+.apexcharts-pie-label,
+.apexcharts-datalabels,
+.apexcharts-datalabel,
+.apexcharts-datalabel-label,
+.apexcharts-datalabel-value {
+  cursor: default;
+  pointer-events: none;
+}
+
+.apexcharts-pie-label-delay {
+  opacity: 0;
+  animation-name: opaque;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+.apexcharts-canvas .apexcharts-element-hidden {
+  opacity: 0;
+}
+
+.apexcharts-hide .apexcharts-series-points {
+  opacity: 0;
+}
+
+.apexcharts-gridline,
+.apexcharts-annotation-rect,
+.apexcharts-tooltip .apexcharts-marker,
+.apexcharts-area-series .apexcharts-area,
+.apexcharts-line,
+.apexcharts-zoom-rect,
+.apexcharts-toolbar svg,
+.apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
+.apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
+.apexcharts-radar-series path,
+.apexcharts-radar-series polygon {
+  pointer-events: none;
+}
+
+
+/* markers */
+
+.apexcharts-marker {
+  transition: 0.15s ease all;
+}
+
+@keyframes opaque {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* Resize generated styles */
+
+@keyframes resizeanim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.resize-triggers {
+  animation: 1ms resizeanim;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.resize-triggers,
+.resize-triggers>div,
+.contract-trigger:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.resize-triggers>div {
+  background: #eee;
+  overflow: auto;
+}
+
+.contract-trigger:before {
+  width: 200%;
+  height: 200%;
+}</style></head>
+
+<body class="ltr light" text="medium-text" style="">
+<!-- Loader start-->
+<div class="app-wrapper default">
+    <!-- Loader start-->
+    
+    <!-- Loader end-->
+
+    <!-- Menu Navigation start -->
+<!-- Menu Navigation starts -->
+<nav class="vertical-sidebar semi-nav">
+    <div class="app-logo">
+        <a class="logo d-inline-block" href="/ki-admin/index">
+            <img alt="#" src="https://ki-admin.test/../assets/images/logo/1.png">
+        </a>
+
+        <span class="bg-light-primary toggle-semi-nav d-flex-center">
+                <i class="ti ti-chevron-right"></i>
+            </span>
+
+        <div class="d-flex align-items-center nav-profile p-3">
+                <span class="h-45 w-45 d-flex-center b-r-10 position-relative bg-danger m-auto">
+                    <img alt="avatar" class="img-fluid b-r-10" src="https://ki-admin.test/../assets/images/avatar/woman.jpg">
+                    <span class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                </span>
+            <div class="flex-grow-1 ps-2">
+                <h6 class="text-primary mb-0"> Ninfa Monaldo</h6>
+                <p class="text-muted f-s-12 mb-0">Web Developer</p>
+            </div>
+
+
+            <div class="dropdown profile-menu-dropdown">
+                <a aria-expanded="false" data-bs-auto-close="true" data-bs-placement="top" data-bs-toggle="dropdown" role="button">
+                    <i class="ti ti-settings fs-5"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item">
+                        <a class="f-w-500" href="/ki-admin/profile" target="_blank">
+                            <i class="ph-duotone  ph-user-circle pe-1 f-s-20"></i> Profile Details
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="f-w-500" href="/ki-admin/setting" target="_blank">
+                            <i class="ph-duotone  ph-gear pe-1 f-s-20"></i> Settings
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <a class="f-w-500" href="#">
+                                    <i class="ph-duotone  ph-detective pe-1 f-s-20"></i> Incognito
+                                </a>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input form-check-primary" id="incognitoSwitch" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="mb-0 text-secondary f-w-500" href="/ki-admin/sign_up" target="_blank">
+                            <i class="ph-bold  ph-plus pe-1 f-s-20"></i> Add account
+                        </a>
+                    </li>
+
+                    <li class="app-divider-v dotted py-1"></li>
+
+                    <li class="dropdown-item">
+                        <a class="mb-0 text-danger" href="/ki-admin/sign_in" target="_blank">
+                            <i class="ph-duotone  ph-sign-out pe-1 f-s-20"></i> Log Out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="app-nav" id="app-simple-bar" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
+        <ul class="main-nav p-0 mt-2" style="margin-left: 0px;">
+            <li class="menu-title">
+                <span>Dashboard</span>
+            </li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#dashboard">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#home"></use>
+                    </svg>
+                    dashboard
+                    <span class="badge bg-danger  badge-dashboard badge-notification ms-2">New</span>
+
+                </a>
+                <ul class="collapse" id="dashboard">
+                    <li><a href="/ki-admin/index">Ecommerce</a></li>
+                    <li><a href="/ki-admin/project_dashboard">Project</a></li>
+                </ul>
+            </li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#apps">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#stack"></use>
+                    </svg>
+                    Apps
+                </a>
+                <ul class="collapse" id="apps">
+                    <li><a href="/ki-admin/calendar">Calender</a></li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#Profile-page">
+                            Profile
+                        </a>
+                        <ul class="collapse" id="Profile-page">
+                            <li><a href="/ki-admin/profile">Profile</a></li>
+                            <li><a href="/ki-admin/setting">Setting</a></li>
+                        </ul>
+                    </li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#projects-page">
+                            Projects Page
+                        </a>
+                        <ul class="collapse" id="projects-page">
+                            <li><a href="/ki-admin/project_app">projects</a></li>
+                            <li><a href="/ki-admin/project_details">projects Details</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/ki-admin/to_do">To-Do</a></li>
+                    <li><a href="/ki-admin/team">Team</a></li>
+                    <li><a href="/ki-admin/api">API</a></li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#ticket-page">
+                            Ticket
+                        </a>
+                        <ul class="collapse" id="ticket-page">
+                            <li><a href="/ki-admin/ticket">Ticket</a></li>
+                            <li><a href="/ki-admin/ticket_details">Ticket Details</a></li>
+                        </ul>
+                    </li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#email-page">
+                            Email Page
+                        </a>
+                        <ul class="collapse" id="email-page">
+                            <li><a href="/ki-admin/email"> Email</a></li>
+                            <li><a href="/ki-admin/read_email">Read Email</a></li>
+                        </ul>
+                    </li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#e-shop">
+                            E-shop
+                        </a>
+                        <ul class="collapse" id="e-shop">
+                            <li><a href="/ki-admin/cart">Cart</a></li>
+                            <li><a href="/ki-admin/product">Product</a></li>
+                            <li><a href="/ki-admin/add_product">Add Product</a></li>
+                            <li><a href="/ki-admin/product_details">Product-Details</a></li>
+                            <li><a href="/ki-admin/product_list">Product list</a></li>
+                            <li><a href="/ki-admin/orders">Orders</a></li>
+                            <li><a href="/ki-admin/order_details">Orders Details</a></li>
+                            <li><a href="/ki-admin/order_list">Orders List</a></li>
+                            <li><a href="/ki-admin/checkout">Check out</a></li>
+                            <li><a href="/ki-admin/wishlist">Wishlist</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/ki-admin/invoice">Invoice</a></li>
+                    <li><a href="/ki-admin/chat">Chat</a></li>
+                    <li><a href="/ki-admin/file_manager">File manager</a></li>
+                    <li><a href="/ki-admin/bookmark">Bookmark</a></li>
+                    <li><a href="/ki-admin/kanban_board">Kanban board</a></li>
+                    <li><a href="/ki-admin/timeline">Timeline</a></li>
+                    <li><a href="/ki-admin/faq">FAQS</a></li>
+                    <li><a href="/ki-admin/pricing">Pricing</a></li>
+                    <li><a href="/ki-admin/gallery">Gallery</a></li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#blog-page">
+                            Blog Page
+                        </a>
+                        <ul class="collapse" id="blog-page">
+                            <li><a href="/ki-admin/blog">Blog</a></li>
+                            <li><a href="/ki-admin/blog_details">Blog Details</a></li>
+                            <li><a href="/ki-admin/add_blog">Add Blog</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-sub">
+                <a href="/ki-admin/widget">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#squares"></use>
+                    </svg>
+                    Widgets
+                </a>
+            </li>
+
+            <li class="menu-title"><span>Component</span></li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#ui-kits">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#briefcase"></use>
+                    </svg>
+                    UI kits
+                </a>
+                <ul class="collapse" id="ui-kits">
+                    <li><a href="/ki-admin/cheatsheet">Cheatsheet</a></li>
+                    <li><a href="/ki-admin/alert">Alert</a></li>
+                    <li><a href="/ki-admin/badges">Badges</a></li>
+                    <li><a href="/ki-admin/buttons">Buttons</a></li>
+                    <li><a href="/ki-admin/cards">Cards</a></li>
+                    <li><a href="/ki-admin/dropdown">Dropdown</a></li>
+                    <li><a href="/ki-admin/grid">Grid</a></li>
+                    <li><a href="/ki-admin/avatar">Avatar</a></li>
+                    <li><a href="/ki-admin/tabs">Tabs</a></li>
+                    <li><a href="/ki-admin/accordions">Accordions</a></li>
+                    <li><a href="/ki-admin/progress">Progress</a></li>
+                    <li><a href="/ki-admin/notifications">Notifications</a></li>
+                    <li><a href="/ki-admin/list">Lists</a></li>
+                    <li><a href="/ki-admin/helper_classes">Helper Classes</a></li>
+                    <li><a href="/ki-admin/background">Background</a></li>
+                    <li><a href="/ki-admin/divider">Divider</a></li>
+                    <li><a href="/ki-admin/ribbons">Ribbons</a></li>
+                    <li><a href="/ki-admin/editor">Editor </a></li>
+                    <li><a href="/ki-admin/collapse">Collapse</a></li>
+                    <li><a href="/ki-admin/footer_page">Footer</a></li>
+                    <li><a href="/ki-admin/shadow">Shadow</a></li>
+                    <li><a href="/ki-admin/wrapper">Wrapper</a></li>
+                    <li><a href="/ki-admin/bullet">Bullet</a></li>
+                    <li><a href="/ki-admin/placeholder">Placeholder</a></li>
+                    <li><a href="/ki-admin/alignment">Alignment Thing</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#advance-ui">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#briefcase-advance"></use>
+                    </svg>
+                    Advance UI
+                    <span class=" badge rounded-pill bg-warning badge-notification ms-2">
+                12+
+                <span class="visually-hidden">unread messages</span>
+              </span>
+                </a>
+                <ul class="collapse" id="advance-ui">
+                    <li><a href="/ki-admin/modals">Modals</a></li>
+                    <li><a href="/ki-admin/offcanvas">Offcanvas Toggle</a></li>
+                    <li><a href="/ki-admin/sweetalert">Sweat Alert</a></li>
+                    <li><a href="/ki-admin/scrollbar">Scrollbar</a></li>
+                    <li><a href="/ki-admin/spinners">Spinners</a></li>
+                    <li><a href="/ki-admin/animation">Animation</a></li>
+                    <li><a href="/ki-admin/video_embed">Video Embed</a></li>
+                    <li><a href="/ki-admin/tour">Tour</a></li>
+                    <li><a href="/ki-admin/slick_slider">Slider</a></li>
+                    <li><a href="/ki-admin/bootstrap_slider">Bootstrap Slider</a></li>
+                    <li><a href="/ki-admin/scrollpy">Scrollpy</a></li>
+                    <li><a href="/ki-admin/tooltips_popovers">Tooltip &amp; Popovers</a></li>
+                    <li><a href="/ki-admin/ratings">Rating</a></li>
+                    <li><a href="/ki-admin/prismjs">Prismjs</a></li>
+                    <li><a href="/ki-admin/count_down">Count Down</a></li>
+                    <li><a href="/ki-admin/count_up"> Count up </a></li>
+                    <li><a href="/ki-admin/draggable">Draggable</a></li>
+                    <li><a href="/ki-admin/tree-view">Tree View</a></li>
+                    <li><a href="/ki-admin/block_ui">Block Ui </a></li>
+                </ul>
+            </li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#icons">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#gift"></use>
+                    </svg>
+                    Icons
+                </a>
+                <ul class="collapse" id="icons">
+                    <li><a href="/ki-admin/fontawesome">Fontawesome</a></li>
+                    <li><a href="/ki-admin/flag_icons">Flag</a></li>
+                    <li><a href="/ki-admin/tabler_icons">Tabler</a></li>
+                    <li><a href="/ki-admin/weather_icon">Weather</a></li>
+                    <li><a href="/ki-admin/animated_icon">Animated</a></li>
+                    <li><a href="/ki-admin/iconoir_icon">Iconoir</a></li>
+                    <li><a href="/ki-admin/phosphor">Phosphor</a></li>
+                </ul>
+            </li>
+            <li class="no-sub">
+                <a href="/ki-admin/misc">
+
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#rectangle"></use>
+                    </svg>
+                    Misc
+                </a>
+            </li>
+            <li class="menu-title"><span>Map &amp; Charts </span></li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#maps">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#location"></use>
+                    </svg>
+                    Map
+                </a>
+                <ul class="collapse" id="maps">
+                    <li><a href="/ki-admin/google_map">Google Maps</a></li>
+                    <li><a href="/ki-admin/leaflet_map">Leaflet map</a></li>
+                </ul>
+            </li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#chart">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#chart"></use>
+                    </svg>
+                    Chart
+                </a>
+                <ul class="collapse" id="chart">
+                    <li><a href="/ki-admin/chart_js">Chart js</a></li>
+
+
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#apexcharts-page">
+                            Apexcharts
+                        </a>
+                        <ul class="collapse" id="apexcharts-page">
+                            <li><a href="/ki-admin/line_chart">Line</a></li>
+                            <li><a href="/ki-admin/area_chart">Area</a></li>
+                            <li><a href="/ki-admin/column_chart">Column</a></li>
+                            <li><a href="/ki-admin/bar_chart">Bar</a></li>
+                            <li><a href="/ki-admin/mixed_chart">Mixed</a></li>
+                            <li><a href="/ki-admin/timeline_range_charts">Timeline &amp; Range-Bars</a></li>
+                            <li><a href="/ki-admin/candlestick_chart">Candlestick</a></li>
+                            <li><a href="/ki-admin/boxplot_chart">Boxplot</a></li>
+                            <li><a href="/ki-admin/bubble_chart">Bubble</a></li>
+                            <li><a href="/ki-admin/scatter_chart">Scatter</a></li>
+                            <li><a href="/ki-admin/heatmap">Heatmap</a></li>
+                            <li><a href="/ki-admin/treemap_chart">Treemap</a></li>
+                            <li><a href="/ki-admin/pie_charts">Pie</a></li>
+                            <li><a href="/ki-admin/radial_bar_chart">Radial bar</a></li>
+                            <li><a href="/ki-admin/radar_chart">Radar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-title"><span>Table &amp; forms </span></li>
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#table">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#table"></use>
+                    </svg>
+                    Table
+                </a>
+                <ul class="collapse" id="table">
+                    <li><a href="/ki-admin/basic_table">BasicTable</a></li>
+                    <li><a href="/ki-admin/data_table">Data Table</a></li>
+                    <li><a href="/ki-admin/list_table">List Js</a></li>
+                    <li><a href="/ki-admin/advance_table">Advance Table</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#forms">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#wallet"></use>
+                    </svg>
+                    Forms elements
+                </a>
+                <ul class="collapse" id="forms">
+                    <li><a href="/ki-admin/form_validation">Form Validation</a></li>
+                    <li><a href="/ki-admin/base_inputs">Base Input</a></li>
+                    <li><a href="/ki-admin/checkbox_radio">Checkbox &amp; Radio</a></li>
+                    <li><a href="/ki-admin/input_groups">Input Groups</a></li>
+                    <li><a href="/ki-admin/input_masks">Input Masks</a></li>
+                    <li><a href="/ki-admin/floating_labels">Floating Labels</a></li>
+                    <li><a href="/ki-admin/date_picker">Datetimepicker</a></li>
+                    <li><a href="/ki-admin/touch_spin">Touch spin</a></li>
+                    <li><a href="/ki-admin/select">Select2</a></li>
+                    <li><a href="/ki-admin/switch">Switch</a></li>
+                    <li><a href="/ki-admin/range_slider">Range Slider</a></li>
+                    <li><a href="/ki-admin/typeahead">Typeahead</a></li>
+                    <li><a href="/ki-admin/textarea">Textarea</a></li>
+                    <li><a href="/ki-admin/clipboard">Clipboard</a></li>
+                    <li><a href="/ki-admin/file_upload">File Upload</a></li>
+                    <li><a href="/ki-admin/dual_list_boxes">Dual List Boxes</a></li>
+                    <li><a href="/ki-admin/default_forms">Default Forms</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#ready_to_use">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#newspaper"></use>
+                    </svg>
+                    Ready to use
+                    <span class="badge text-bg-success badge-notification ms-2">2</span>
+                </a>
+                <ul class="collapse" id="ready_to_use">
+                    <li><a href="/ki-admin/form_wizards">Form wizards</a></li>
+                    <li><a href="/ki-admin/form_wizard_1">Form wizards 1</a></li>
+                    <li><a href="/ki-admin/form_wizard_2">Form wizards 2</a></li>
+                    <li><a href="/ki-admin/ready_to_use_form">Ready To Use Form</a></li>
+                    <li><a href="/ki-admin/ready_to_use_table">Ready To Use Tables</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-title"><span>Pages</span></li>
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#auth_pages">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#window"></use>
+                    </svg>
+                    Auth Pages
+                </a>
+                <ul class="collapse" id="auth_pages">
+                    <li><a href="/ki-admin/sign_in">Sign In</a></li>
+                    <li><a href="/ki-admin/sign_in_1">Sign In with Bg-image</a></li>
+                    <li><a href="/ki-admin/sign_up">Sign Up</a></li>
+                    <li><a href="/ki-admin/sign_up_1">Sign Up with Bg-image</a></li>
+                    <li><a href="/ki-admin/password_reset">Password Reset</a></li>
+                    <li><a href="/ki-admin/password_reset_1">Password Reset with Bg-image</a></li>
+                    <li><a href="/ki-admin/password_create">Password Create</a></li>
+                    <li><a href="/ki-admin/password_create_1">Password Create with Bg-image</a></li>
+                    <li><a href="/ki-admin/lock_screen">Lock Screen</a></li>
+                    <li><a href="/ki-admin/lock_screen_1">Lock Screen with Bg-image</a></li>
+                    <li><a href="/ki-admin/two_step_verification">Two-Step Verification</a></li>
+                    <li><a href="/ki-admin/two_step_verification_1">Two-Step Verification with Bg-image</a></li>
+                </ul>
+            </li>
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#error_pages">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#exclamation-circle"></use>
+                    </svg>
+                    Error Pages
+                </a>
+                <ul class="collapse" id="error_pages">
+                    <li><a href="/ki-admin/error_400">Bad Request </a></li>
+                    <li><a href="/ki-admin/error_403">Forbidden </a></li>
+                    <li><a href="/ki-admin/error_404">Not Found</a></li>
+                    <li><a href="/ki-admin/error_500">Internal Server</a></li>
+                    <li><a href="/ki-admin/error_503">Service Unavailable</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#other_pages">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#document"></use>
+                    </svg>
+                    Other Pages
+                </a>
+                <ul class="collapse" id="other_pages">
+                    <li><a href="/ki-admin/blank">Blank</a></li>
+                    <li><a href="/ki-admin/maintenance">Maintenance</a></li>
+                    <li><a href="/ki-admin/landing">Landing Page</a></li>
+                    <li><a href="/ki-admin/coming_soon">Coming Soon</a></li>
+                    <li><a href="/ki-admin/sitemap">Sitemap</a></li>
+                    <li><a href="/ki-admin/privacy_policy">Privacy Policy</a></li>
+                    <li><a href="/ki-admin/terms_condition">Terms &amp; Condition</a></li>
+                </ul>
+            </li>
+
+            <li class="menu-title"><span>Others</span></li>
+
+            <li>
+                <a aria-expanded="false" data-bs-toggle="collapse" href="#level">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#arrow-down"></use>
+                    </svg>
+                    2 level
+                </a>
+                <ul class="collapse" id="level">
+                    <li><a href="#">Blank</a></li>
+                    <li class="another-level">
+                        <a aria-expanded="false" data-bs-toggle="collapse" href="#level2">
+                            Another level
+                        </a>
+                        <ul class="collapse" id="level2">
+                            <li><a href="/ki-admin/blank">Blank</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="no-sub">
+                <a href="https://phpstack-1384472-5121645.cloudwaysapps.com/document/laravel/ki-admin/index.html">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#document-text"></use>
+                    </svg>
+                    Document
+                </a>
+            </li>
+
+            <li class="no-sub">
+                <a href="mailto:teqlathemes@gmail.com">
+                    <svg stroke="currentColor" stroke-width="1.5">
+                        <use xlink:href="../assets/svg/_sprite.svg#chat-bubble"></use>
+                    </svg>
+                    Support
+                </a>
+            </li>
+
+
+        </ul>
+    </div></div></div></div><div class="simplebar-placeholder" style="width: 80px; height: 1002px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none; transform: translate3d(0px, 0px, 0px);"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
+
+    <div class="menu-navs">
+        <span class="menu-previous d-none"><i class="ti ti-chevron-left"></i></span>
+        <span class="menu-next d-none"><i class="ti ti-chevron-right"></i></span>
+    </div>
+
+</nav>
+<!-- Menu Navigation ends -->
+<!-- Menu Navigation end -->
+
+
+    <div class="app-content">
+        <!-- Header Section start -->
+    <!-- Header Section starts -->
+<header class="header-main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 col-sm-6 d-flex align-items-center header-left p-0">
+                           <span class="header-toggle ">
+                             <i class="ph ph-squares-four"></i>
+                           </span>
+
+                <div class="header-searchbar w-100">
+                    <form action="#" class="mx-sm-3 app-form app-icon-form ">
+                        <div class="position-relative">
+                            <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
+                            <i class="ti ti-search text-dark"></i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-4 col-sm-6 d-flex align-items-center justify-content-end header-right p-0">
+
+                <ul class="d-flex align-items-center">
+
+                    <li class="header-language">
+                        <div class="flex-shrink-0 dropdown" id="lang_selector">
+                            <a aria-expanded="false" class="d-block head-icon ps-0" data-bs-toggle="dropdown" href="#">
+                                <div class="lang-flag lang-en ">
+                                                <span class="flag rounded-circle overflow-hidden">
+                                                    <i class="flag-icon flag-icon-usa flag-icon-squared rounded-circle f-s-20"></i>
+                                                </span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu language-dropdown header-card border-0">
+                                <li class="lang lang-en selected dropdown-item p-2" data-bs-placement="top" data-bs-toggle="tooltip" title="US">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-usa flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">US</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-pt dropdown-item p-2" title="FR">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-fra flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">France</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-es dropdown-item p-2" title="UK">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-gbr flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">UK</span>
+                                                </span>
+                                </li>
+                                <li class="lang lang-es dropdown-item p-2" title="IT">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="flag-icon flag-icon-ita flag-icon-squared rounded-circle f-s-20"></i>
+                                                    <span class="ps-2">Italy</span>
+                                                </span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+
+                    <li class="header-apps">
+                        <a aria-controls="appscanvasRights" class="d-block head-icon bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#appscanvasRights" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-bounding-box"></i>
+
+                        </a>
+
+                        <div aria-labelledby="appscanvasRightsLabel" class="offcanvas offcanvas-end header-apps-canvas" id="appscanvasRights" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="appscanvasRightsLabel">Shortcut</h5>
+                                <div class="app-dropdown flex-shrink-0">
+                                    <a aria-expanded="false" class=" p-1" data-bs-auto-close="outside" data-bs-toggle="dropdown" href="#" role="button">
+                                        <i class="ph-bold  ph-faders-horizontal f-s-20"></i>
+
+
+                                    </a>
+                                    <ul class="dropdown-menu mb-3">
+                                        <li class="dropdown-item">
+                                            <a href="/ki-admin/setting" target="_blank">
+                                                Privacy Settings
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="/ki-admin/setting" target="_blank">
+                                                Account Settings
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-item">
+                                            <a href="/ki-admin/setting" target="_blank">
+                                                Accessibility
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item border-0">
+                                            <a aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button">
+                                                More Settings
+                                            </a>
+                                            <ul class="dropdown-menu sub-menu">
+                                                <li class="dropdown-item">
+                                                    <a href="/ki-admin/setting" target="_blank">
+                                                        Backup and Restore
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="/ki-admin/setting" target="_blank">
+                                                        <span>Data Usage</span>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="/ki-admin/setting" target="_blank">
+                                                        <span>Theme</span>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item d-flex align-items-center justify-content-between">
+                                                    <a href="#">
+                                                        <p class="mb-0">Notification</p>
+                                                    </a>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input  form-check-primary" id="notificationSwitch" type="checkbox">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="offcanvas-body app-scroll">
+                                <div class="row row-cols-3 g-2">
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-primary w-100 rounded-3 py-3 px-2 " href="/ki-admin/product" target="_blank">
+                                                          <span>
+                                                            <i class="ph-light  ph-shopping-bag-open  f-s-30"></i>
+                                                          </span>
+                                            <p class="mb-0 f-w-500 text-dark">E-shop</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-danger w-100 rounded-3 py-3 px-2 " href="/ki-admin/email" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-envelope  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Email</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-success w-100 rounded-3 py-3 px-2 " href="/ki-admin/chat" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-chat-circle-text  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Chat</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-warning w-100 rounded-3 py-3 px-2 " href="/ki-admin/project_app" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-projector-screen-chart  f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Project</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-info w-100 rounded-3 py-3 px-2 " href="/ki-admin/invoice" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-scroll f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Invoice</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-dark w-100 rounded-3 py-3 px-2 " href="/ki-admin/blog" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-notebook f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Blog</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-danger w-100 rounded-3 py-3 px-2 " href="/ki-admin/calendar" target="_blank">
+                                                         <span>
+                                                           <i class="ph-light  ph-calendar f-s-30"></i>
+                                                         </span>
+                                            <p class="mb-0 f-w-500 text-dark">Calender</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-warning w-100 rounded-3 py-3 px-2 " href="/ki-admin/file_manager" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-folder-open f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark txt-ellipsis-1">File
+                                                Manager</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-primary w-100 rounded-3 py-3 px-2 " href="/ki-admin/gallery " target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-google-photos-logo f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Gallery</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-success w-100 rounded-3 py-3 px-2 " href="/ki-admin/profile" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-users-three f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Profile</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="text-light-secondary w-100 rounded-3 py-3 px-2 " href="/ki-admin/kanban_board" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-selection-foreground f-s-30"></i>
+                                                        </span>
+                                            <p class="mb-0 f-w-500 text-dark">Task Board</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex-center text-center">
+                                        <a class="d-flex-center text-light-secondary w-100 h-100 rounded-3 p-2 dashed-1-secondary" href="/ki-admin/kanban_board" target="_blank">
+                                                        <span>
+                                                          <i class="ph-light  ph-plus f-s-30"></i>
+                                                        </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="header-cart">
+                        <a aria-controls="cartcanvasRight" class="d-block head-icon position-relative bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#cartcanvasRight" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-shopping-cart-simple"></i>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger badge-notification">4</span>
+                        </a>
+                        <div aria-labelledby="cartcanvasRightLabel" class="offcanvas offcanvas-end header-cart-canvas" id="cartcanvasRight" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="cartcanvasRightLabel">Cart</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+                            </div>
+                            <div class="offcanvas-body app-scroll p-0">
+                                <div class="head-container">
+                                    <div class="head-box">
+                                                  <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/01.png">
+                                                  </span>
+
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="/ki-admin/product_details" target="_blank"> Backpacks (3<i class="ti ti-star-filled text-warning f-s-12"></i>)
+                                            </a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : M</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Pink</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$600.50 x 1</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/05.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="/ki-admin/product_details" target="_blank"> Women's Watch (4<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : S</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Rose Gold</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$519.10 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/04.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="/ki-admin/product_details" target="_blank">Sandals (5 <i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : 8</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :White</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$390 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box ">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/03.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="/ki-admin/product_details" target="_blank"> Jackets (3<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : XL</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :Blue</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$300.00 x 2</p>
+                                        </div>
+                                    </div>
+                                    <div class="head-box ">
+                                                    <span class="b-1-light bg-light-primary h-45 w-45 d-flex-center b-r-6">
+                                                      <img alt="cart" class="img-fluid p-1" src="https://ki-admin.test/../assets/images/header/cart/02.png">
+                                                  </span>
+                                        <div class="flex-grow-1 ms-2">
+                                            <a class="mb-0 f-w-600 f-s-16" href="/ki-admin/product_details" target="_blank"> Shoes (3<i class="ti ti-star-filled text-warning f-s-12"></i>)</a>
+                                            <div>
+                                                            <span class="text-dark"><span class="text-secondary f-w-400">size</span> : 9</span>
+                                                <span class="text-dark ms-2"><span class="text-secondary f-w-400">color</span> :White</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <p class="text-muted f-w-500 mb-0">$450.00 x 1</p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-massage py-4 px-3">
+
+                                        <div>
+                                            <i class="ph-duotone  ph-shopping-bag-open f-s-50 text-primary"></i>
+                                            <h6 class="mb-0">Your Cart is Empty</h6>
+                                            <p class="text-secondary mb-0">Add some items :)</p>
+                                            <a class="btn btn-light-primary btn-xs mt-2" href="/ki-admin/product_details">Shop
+                                                Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="offcanvas-footer">
+                                <div class="head-box-footer p-3">
+                                    <div class="mb-4">
+                                        <h6 class="text-muted f-w-600">Total <span class="float-end text-primary">$3,468.00</span></h6>
+                                    </div>
+                                    <div class="header-cart-btn">
+                                        <a class="btn btn-primary" href="/ki-admin/cart" role="button" target="_blank">
+                                            <i class="ti ti-eye"></i> View Cart</a>
+                                        <a class="btn btn-success" href="/ki-admin/checkout" role="button" target="_blank">
+                                            Checkout <i class="ti ti-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="header-dark">
+                        <div class="sun-logo head-icon bg-light-dark rounded-circle f-s-22 p-2">
+                            <i class="ph ph-moon-stars"></i>
+                        </div>
+                        <div class="moon-logo head-icon bg-light-dark rounded-circle f-s-22 p-2">
+                            <i class="ph ph-sun-dim"></i>
+                        </div>
+                    </li>
+
+                    <li class="header-notification">
+                        <a aria-controls="notificationcanvasRight" class="d-block head-icon position-relative bg-light-dark rounded-circle f-s-22 p-2" data-bs-target="#notificationcanvasRight" data-bs-toggle="offcanvas" href="#" role="button">
+                            <i class="ph ph-bell"></i>
+                            <span class="position-absolute translate-middle p-1 bg-primary border border-light rounded-circle animate__animated animate__fadeIn animate__infinite animate__slower"></span>
+                        </a>
+                        <div aria-labelledby="notificationcanvasRightLabel" class="offcanvas offcanvas-end header-notification-canvas" id="notificationcanvasRight" tabindex="-1">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="notificationcanvasRightLabel">
+                                    Notification</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+                            </div>
+                            <div class="offcanvas-body app-scroll p-0">
+                                <div class="head-container">
+                                    <div class="notification-message head-box">
+
+                                        <div class="message-content-box flex-grow-1 pe-2">
+
+                                            <a class="f-s-15 text-dark mb-0" href="/ki-admin/read_email"><span class="f-w-500 text-dark">Gene Hart</span> wants to
+                                                edit <span class="f-w-500 text-dark">Report.doc</span></a>
+                                            <div>
+                                                <a class="d-inline-block f-w-500 text-success me-1" href="#">Approve</a>
+                                                <a class="d-inline-block f-w-500 text-danger" href="#">Deny</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> sep 23 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="/ki-admin/read_email">Hey
+                                                <span class="f-w-500 text-dark">Emery McKenzie</span>,
+                                                get ready: Your order from <span class="f-w-500 text-dark">@Shopper.com</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> sep 23 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="/ki-admin/read_email"><span class="f-w-500 text-dark">Simon Young</span> shared
+                                                a file called <span class="f-w-500 text-dark">Dropdown.pdf</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 30 min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0" href="/ki-admin/read_email"><span class="f-w-500 text-dark">Becky G. Hayes</span> has
+                                                added a comment to <span class="f-w-500 text-dark">Final_Report.pdf</span></a>
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 45 min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-message head-box">
+                                        <div class="message-content-box  flex-grow-1 pe-2">
+                                            <a class="f-s-15 text-dark mb-0 " href="/ki-admin/read_email"><span class="f-w-600 text-dark">@Romaine</span>
+                                                invited you to a meeting
+                                            </a>
+                                            <div>
+                                                <a class="d-inline-block f-w-500 text-success me-1" href="#">Join</a>
+                                                <a class="d-inline-block f-w-500 text-danger" href="#">Decline</a>
+                                            </div>
+
+                                        </div>
+                                        <div class="text-end">
+                                            <i class="ph ph-trash f-s-18 text-danger close-btn"></i>
+                                            <div>
+                                                <span class="badge text-light-primary"> 1 hour ago </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hidden-massage py-4 px-3">
+                                        <div>
+                                            <i class="ph-duotone  ph-bell-ringing f-s-50 text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Notification Not Found</h6>
+                                            <p class="text-dark">When you have any notifications added
+                                                here,will
+                                                appear here.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Header Section ends -->
+    <!-- Header Section end -->
+
+        <!-- Main Section start -->
+        <main>
+            
+                <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-5 col-xxl-3 eshop-cards-container">
+                <div class="row">
+                    <div class="col-6 col-md-3 col-lg-6">
+                        <div class="card">
+                            <span class="bg-primary h-50 w-50 d-flex-center rounded-circle m-auto eshop-icon-box">
+                                    <i class="ph  ph-currency-circle-dollar f-s-24"></i>
+                            </span>
+
+
+                            <div class="card-body eshop-cards">
+                                <span class="ripple-effect"></span>
+                                <div class="overflow-hidden">
+                                    <h3 class="text-primary mb-0">1.2M</h3>
+                                    <p class="mg-b-35 f-w-600 text-dark-800 txt-ellipsis-1">Total Sales</p>
+                                    <span class="badge bg-light-primary">View Report</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-6">
+                        <div class="card">
+                              <span class="bg-danger h-50 w-50 d-flex-center rounded-circle m-auto eshop-icon-box">
+                                                <i class="ph ph-x-circle f-s-24"></i>
+                              </span>
+                            <div class="card-body eshop-cards">
+                                <span class="ripple-effect"></span>
+                                <h3 class="text-danger mb-0">125</h3>
+                                <p class="mg-b-35 f-w-600 text-dark-800 txt-ellipsis-1">Canceled Orders</p>
+                                <span class="badge bg-light-danger">Refunded</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-6">
+                        <div class="card">
+                            <span class="bg-warning h-50 w-50 d-flex-center rounded-circle m-auto eshop-icon-box">
+                                <i class="ph-duotone  ph-certificate f-s-24"></i>
+                            </span>
+                            <div class="card-body eshop-cards">
+                                <span class="ripple-effect"></span>
+                                <h3 class="text-warning mb-0 txt-ellipsis-1"> 95% </h3>
+                                <p class="mg-b-35 f-w-600 text-dark-800 txt-ellipsis-1">Top Product</p>
+                                <span class="badge bg-light-dark">watch X200</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-6">
+                        <div class="card">
+                             <span class="bg-success h-50 w-50 d-flex-center rounded-circle m-auto eshop-icon-box">
+                                 <i class="ph-duotone  ph-user-circle-plus f-s-24"></i>
+                             </span>
+                            <div class="card-body eshop-cards">
+                                <span class="ripple-effect"></span>
+                                <h3 class="text-success mb-0">8.5k</h3>
+                                <p class="mg-b-35 f-w-600 text-dark-800 txt-ellipsis-1">New Customers</p>
+                                <span class="badge bg-light-success">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 col-xxl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 position-relative">
+                                <div class="location-container">
+                                    <div class="glass-effect-box position-absolute bottom-0">
+                                        <div class="d-flex align-items-center flex-wrap">
+                                            <div class="w-65 h-65 overflow-hidden position-absolute top-0 start-0 d-flex-center">
+                                                <img alt="image" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/order1.gif">
+                                            </div>
+                                            <div class="flex-grow-1 ps-5">
+                                                <p class="fw-medium mb-0"> OrderId</p>
+                                                <h6 class="text-primary mb-0 txt-ellipsis-1 ">r72qU2892</h6>
+                                            </div>
+                                            <span class="badge text-bg-primary f-s-10 ms-2">• On The Way</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 cart-side-card mt-3 mt-sm-0">
+                                <div class="mb-2">
+                                    <h6 class="text-dark mb-0 txt-ellipsis-1">Delivery Date : 20 Feb
+                                        2025 </h6>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table cart-side-table mb-0">
+                                        <tbody>
+                                        <tr class="total-price">
+                                            <th>Sub Total :</th>
+                                            <th class="text-end">
+                                                <span id="cart-sub">$359.96</span>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0 txt-ellipsis-1">Discount:</p>
+                                            </td>
+                                            <td class="text-end text-success">-$53.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td><p class="mb-0 txt-ellipsis-1">Estimated Tax (12.5%) :</p>
+                                            </td>
+                                            <td class="text-end text-danger">$44.99</td>
+                                        </tr>
+                                        <tr class="total-price">
+                                            <th><p class="mb-0 txt-ellipsis-1">Total (USD) :</p></th>
+                                            <th class="text-end">
+                                                                 <span id="cart-total">
+                                                                   $415.96
+                                                                 </span>
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="f-w-500 mb-0 txt-ellipsis-1">  Support: <a href="/ki-admin/email" class="link-primary text-d-underline ">https://support.aicom.com/order?r72qU2892</a> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="app-side-timeline shipping-timeline">
+                            <li class="side-timeline-section w-100 right-side complete-step">
+                                <div class="side-timeline-icon">
+                                                        <span class="bg-primary h-35 w-35 d-flex-center b-r-50">
+                                                               <i class="ph-fill  ph-shopping-bag-open f-s-18"></i>
+                                                        </span>
+                                </div>
+                                <div class="timeline-content p-0">
+                                    <div>
+                                        <h6 class="f-s-15 mb-2 txt-ellipsis-1">Order Placed</h6>
+                                        <p class="mb-0  text-dark-800 f-w-400">Feb 14/25 <span class="text-primary f-w-500">10:15 AM</span></p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="side-timeline-section w-100 right-side complete-step">
+                                <div class="side-timeline-icon">
+                                                <span class="bg-primary h-35 w-35 d-flex-center b-r-50">
+                                                    <i class="ph-fill  ph-seal-check f-s-18"></i>
+                                                </span>
+                                </div>
+                                <div class="timeline-content p-0">
+                                    <div>
+                                        <h6 class="f-s-15 mb-2 txt-ellipsis-1">Order Confirmed</h6>
+                                        <p class="mb-0  text-dark-800 f-w-400">Feb 14/25 <span class="text-primary f-w-500">10:30 AM</span></p>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <li class="side-timeline-section w-100 right-side">
+                                <div class="side-timeline-icon">
+                                                        <span class="bg-light-secondary text-dark-400 h-35 w-35 d-flex-center b-r-50">
+                                                            <i class="ph-fill  ph-truck f-s-18"></i>
+                                                        </span>
+                                </div>
+                                <div class="timeline-content p-0">
+                                    <div>
+                                        <h6 class="f-s-15 mb-2 txt-ellipsis-1">Shipped via Courier</h6>
+                                        <p class="mb-0  text-dark-800 f-w-400">Feb 15/25 <span class="text-primary f-w-500">9:00 AM</span></p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="side-timeline-section w-100 right-side">
+                                <div class="side-timeline-icon">
+                                                        <span class="bg-light-secondary text-dark-400 h-35 w-35 d-flex-center b-r-50">
+                                                            <i class="ph-fill  ph-house f-s-18"></i>
+                                                        </span>
+                                </div>
+                                <div class="timeline-content p-0">
+                                    <div>
+                                        <h6 class="f-s-15 mb-2 txt-ellipsis-1">Delivered</h6>
+                                        <p class="mb-0  text-dark-800 f-w-400">Feb 18/25 <span class="text-primary f-w-500">3:45 PM</span></p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-7 col-lg-4 col-xxl-3 ">
+                <ul class="notifications-list box-list mb-4 ">
+                    <li class="d-flex align-items-center justify-content-between gap-3 b-s-4-primary">
+                        <div>
+                            <h6 class="txt-ellipsis-1 mb-0"> Order Notifications List</h6>
+                            <p class="text-secondary mb-0">Last 2H Updates</p>
+                        </div>
+                        <div class="h-45 w-45 d-flex-center rounded-circle flex-shrink-0 bg-light-primary position-relative">
+                            <i class="ph ph-bell-ringing f-s-20"></i>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger badge-notification">4</span>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <div class="h-45 w-45 d-flex-center b-r-12 overflow-hidden flex-shrink-0 bg-primary">
+                            OR
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-0 f-w-500 f-s-16 txt-ellipsis-1">New Order Received</p>
+                            <p class="mb-0 text-secondary">5 min ago</p>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <div class="h-45 w-45 d-flex-center b-r-12 overflow-hidden flex-shrink-0 bg-success-400">
+                            <img alt="order" class="img-fluid" src="https://ki-admin.test/../assets/images/avatar/2.png">
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-0 f-w-500 f-s-16 txt-ellipsis-1">Order #1024 has been shipped</p>
+                            <p class="mb-0 text-secondary">10 min ago</p>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <div class="h-45 w-45 d-flex-center b-r-12 overflow-hidden flex-shrink-0 bg-danger-400">
+                            <img alt="order" class="img-fluid" src="https://ki-admin.test/../assets/images/avatar/5.png">
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-0 f-w-500 f-s-16 txt-ellipsis-1">Order #1022 has been canceled</p>
+                            <p class="mb-0 text-secondary">20 min ago</p>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <div class="h-45 w-45 d-flex-center b-r-12 overflow-hidden flex-shrink-0 bg-danger-400">
+                            <img alt="order" class="img-fluid" src="https://ki-admin.test/../assets/images/avatar/5.png">
+                        </div>
+                        <div class="ms-3">
+                            <p class="mb-0 f-w-500 f-s-16 txt-ellipsis-1">Order #1022 has been canceled</p>
+                            <p class="mb-0 text-secondary">20 min ago</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-5 col-lg-4 col-xxl-3 ">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="px-4 py-3">
+                            <h4 class="text-primary">$65,563.24</h4>
+                            <p class="mb-0 text-secondary"><span class="text-light-danger">38.3%-</span>
+                                Last week</p>
+                        </div>
+                        <div class="earning-chart">
+                            <div id="earningChart" style="min-height: 257px;"><div id="apexchartsuvsjn2ym" class="apexcharts-canvas apexchartsuvsjn2ym apexcharts-theme-light" style="width: 314px; height: 242px;"><svg id="SvgjsSvg1432" width="314" height="242" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1434" class="apexcharts-inner apexcharts-graphical" transform="translate(12, 30)"><defs id="SvgjsDefs1433"><linearGradient id="SvgjsLinearGradient1437" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1438" stop-opacity="0.4" stop-color="rgba(216,227,240,0.4)" offset="0"></stop><stop id="SvgjsStop1439" stop-opacity="0.5" stop-color="rgba(190,209,230,0.5)" offset="1"></stop><stop id="SvgjsStop1440" stop-opacity="0.5" stop-color="rgba(190,209,230,0.5)" offset="1"></stop></linearGradient><clipPath id="gridRectMaskuvsjn2ym"><rect id="SvgjsRect1442" width="296" height="197" x="-2" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskuvsjn2ym"></clipPath><clipPath id="nonForecastMaskuvsjn2ym"></clipPath><clipPath id="gridRectMarkerMaskuvsjn2ym"><rect id="SvgjsRect1443" width="296" height="201" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><rect id="SvgjsRect1441" width="5.84" height="197" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke-dasharray="3" fill="url(#SvgjsLinearGradient1437)" class="apexcharts-xcrosshairs" y2="197" filter="none" fill-opacity="0.9"></rect><g id="SvgjsG1469" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1470" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1482" class="apexcharts-grid"><g id="SvgjsG1483" class="apexcharts-gridlines-horizontal"><line id="SvgjsLine1485" x1="0" y1="0" x2="292" y2="0" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1486" x1="0" y1="32.833333333333336" x2="292" y2="32.833333333333336" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1487" x1="0" y1="65.66666666666667" x2="292" y2="65.66666666666667" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1488" x1="0" y1="98.5" x2="292" y2="98.5" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1489" x1="0" y1="131.33333333333334" x2="292" y2="131.33333333333334" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1490" x1="0" y1="164.16666666666669" x2="292" y2="164.16666666666669" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1491" x1="0" y1="197.00000000000003" x2="292" y2="197.00000000000003" stroke="rgba(var(--dark),0.1)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line></g><g id="SvgjsG1484" class="apexcharts-gridlines-vertical"></g><line id="SvgjsLine1493" x1="0" y1="197" x2="292" y2="197" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line><line id="SvgjsLine1492" x1="0" y1="1" x2="0" y2="197" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line></g><g id="SvgjsG1444" class="apexcharts-bar-series apexcharts-plot-series"><g id="SvgjsG1445" class="apexcharts-series" seriesName="sales" rel="1" data:realIndex="0"><path id="SvgjsPath1447" d="M 11.68 131.33333333333334L 11.68 61.10000000000001Q 11.68 59.10000000000001 13.68 59.10000000000001L 15.52 59.10000000000001Q 17.52 59.10000000000001 17.52 61.10000000000001L 17.52 61.10000000000001L 17.52 131.33333333333334L 17.52 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 11.68 131.33333333333334L 11.68 61.10000000000001Q 11.68 59.10000000000001 13.68 59.10000000000001L 15.52 59.10000000000001Q 17.52 59.10000000000001 17.52 61.10000000000001L 17.52 61.10000000000001L 17.52 131.33333333333334L 17.52 131.33333333333334z" pathFrom="M 11.68 131.33333333333334L 11.68 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 11.68 131.33333333333334" cy="59.10000000000001" cx="40.879999999999995" j="0" val="44" barHeight="72.23333333333333" barWidth="5.84"></path><path id="SvgjsPath1448" d="M 40.879999999999995 131.33333333333334L 40.879999999999995 43.041666666666686Q 40.879999999999995 41.041666666666686 42.879999999999995 41.041666666666686L 44.72 41.041666666666686Q 46.72 41.041666666666686 46.72 43.041666666666686L 46.72 43.041666666666686L 46.72 131.33333333333334L 46.72 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 40.879999999999995 131.33333333333334L 40.879999999999995 43.041666666666686Q 40.879999999999995 41.041666666666686 42.879999999999995 41.041666666666686L 44.72 41.041666666666686Q 46.72 41.041666666666686 46.72 43.041666666666686L 46.72 43.041666666666686L 46.72 131.33333333333334L 46.72 131.33333333333334z" pathFrom="M 40.879999999999995 131.33333333333334L 40.879999999999995 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 40.879999999999995 131.33333333333334" cy="41.041666666666686" cx="70.08" j="1" val="55" barHeight="90.29166666666666" barWidth="5.84"></path><path id="SvgjsPath1449" d="M 70.08 131.33333333333334L 70.08 66.02500000000002Q 70.08 64.02500000000002 72.08 64.02500000000002L 73.92 64.02500000000002Q 75.92 64.02500000000002 75.92 66.02500000000002L 75.92 66.02500000000002L 75.92 131.33333333333334L 75.92 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 70.08 131.33333333333334L 70.08 66.02500000000002Q 70.08 64.02500000000002 72.08 64.02500000000002L 73.92 64.02500000000002Q 75.92 64.02500000000002 75.92 66.02500000000002L 75.92 66.02500000000002L 75.92 131.33333333333334L 75.92 131.33333333333334z" pathFrom="M 70.08 131.33333333333334L 70.08 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 70.08 131.33333333333334" cy="64.02500000000002" cx="99.28" j="2" val="41" barHeight="67.30833333333332" barWidth="5.84"></path><path id="SvgjsPath1450" d="M 99.28 131.33333333333334L 99.28 23.341666666666683Q 99.28 21.341666666666683 101.28 21.341666666666683L 103.12 21.341666666666683Q 105.12 21.341666666666683 105.12 23.341666666666683L 105.12 23.341666666666683L 105.12 131.33333333333334L 105.12 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 99.28 131.33333333333334L 99.28 23.341666666666683Q 99.28 21.341666666666683 101.28 21.341666666666683L 103.12 21.341666666666683Q 105.12 21.341666666666683 105.12 23.341666666666683L 105.12 23.341666666666683L 105.12 131.33333333333334L 105.12 131.33333333333334z" pathFrom="M 99.28 131.33333333333334L 99.28 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 99.28 131.33333333333334" cy="21.341666666666683" cx="128.48" j="3" val="67" barHeight="109.99166666666666" barWidth="5.84"></path><path id="SvgjsPath1451" d="M 128.48 131.33333333333334L 128.48 97.21666666666667Q 128.48 95.21666666666667 130.48 95.21666666666667L 132.32 95.21666666666667Q 134.32 95.21666666666667 134.32 97.21666666666667L 134.32 97.21666666666667L 134.32 131.33333333333334L 134.32 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 128.48 131.33333333333334L 128.48 97.21666666666667Q 128.48 95.21666666666667 130.48 95.21666666666667L 132.32 95.21666666666667Q 134.32 95.21666666666667 134.32 97.21666666666667L 134.32 97.21666666666667L 134.32 131.33333333333334L 134.32 131.33333333333334z" pathFrom="M 128.48 131.33333333333334L 128.48 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 128.48 131.33333333333334" cy="95.21666666666667" cx="157.67999999999998" j="4" val="22" barHeight="36.11666666666667" barWidth="5.84"></path><path id="SvgjsPath1452" d="M 157.67999999999998 131.33333333333334L 157.67999999999998 62.74166666666669Q 157.67999999999998 60.74166666666669 159.67999999999998 60.74166666666669L 161.51999999999998 60.74166666666669Q 163.51999999999998 60.74166666666669 163.51999999999998 62.74166666666669L 163.51999999999998 62.74166666666669L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 157.67999999999998 131.33333333333334L 157.67999999999998 62.74166666666669Q 157.67999999999998 60.74166666666669 159.67999999999998 60.74166666666669L 161.51999999999998 60.74166666666669Q 163.51999999999998 60.74166666666669 163.51999999999998 62.74166666666669L 163.51999999999998 62.74166666666669L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334z" pathFrom="M 157.67999999999998 131.33333333333334L 157.67999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 157.67999999999998 131.33333333333334" cy="60.74166666666669" cx="186.87999999999997" j="5" val="43" barHeight="70.59166666666665" barWidth="5.84"></path><path id="SvgjsPath1453" d="M 186.87999999999997 131.33333333333334L 186.87999999999997 46.32500000000002Q 186.87999999999997 44.32500000000002 188.87999999999997 44.32500000000002L 190.71999999999997 44.32500000000002Q 192.71999999999997 44.32500000000002 192.71999999999997 46.32500000000002L 192.71999999999997 46.32500000000002L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 186.87999999999997 131.33333333333334L 186.87999999999997 46.32500000000002Q 186.87999999999997 44.32500000000002 188.87999999999997 44.32500000000002L 190.71999999999997 44.32500000000002Q 192.71999999999997 44.32500000000002 192.71999999999997 46.32500000000002L 192.71999999999997 46.32500000000002L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334z" pathFrom="M 186.87999999999997 131.33333333333334L 186.87999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 186.87999999999997 131.33333333333334" cy="44.32500000000002" cx="216.07999999999996" j="6" val="53" barHeight="87.00833333333333" barWidth="5.84"></path><path id="SvgjsPath1454" d="M 216.07999999999996 131.33333333333334L 216.07999999999996 97.21666666666667Q 216.07999999999996 95.21666666666667 218.07999999999996 95.21666666666667L 219.91999999999996 95.21666666666667Q 221.91999999999996 95.21666666666667 221.91999999999996 97.21666666666667L 221.91999999999996 97.21666666666667L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 216.07999999999996 131.33333333333334L 216.07999999999996 97.21666666666667Q 216.07999999999996 95.21666666666667 218.07999999999996 95.21666666666667L 219.91999999999996 95.21666666666667Q 221.91999999999996 95.21666666666667 221.91999999999996 97.21666666666667L 221.91999999999996 97.21666666666667L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334z" pathFrom="M 216.07999999999996 131.33333333333334L 216.07999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 216.07999999999996 131.33333333333334" cy="95.21666666666667" cx="245.27999999999994" j="7" val="22" barHeight="36.11666666666667" barWidth="5.84"></path><path id="SvgjsPath1455" d="M 245.27999999999994 131.33333333333334L 245.27999999999994 113.63333333333334Q 245.27999999999994 111.63333333333334 247.27999999999994 111.63333333333334L 249.11999999999995 111.63333333333334Q 251.11999999999995 111.63333333333334 251.11999999999995 113.63333333333334L 251.11999999999995 113.63333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 245.27999999999994 131.33333333333334L 245.27999999999994 113.63333333333334Q 245.27999999999994 111.63333333333334 247.27999999999994 111.63333333333334L 249.11999999999995 111.63333333333334Q 251.11999999999995 111.63333333333334 251.11999999999995 113.63333333333334L 251.11999999999995 113.63333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334z" pathFrom="M 245.27999999999994 131.33333333333334L 245.27999999999994 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 245.27999999999994 131.33333333333334" cy="111.63333333333334" cx="274.47999999999996" j="8" val="12" barHeight="19.7" barWidth="5.84"></path><path id="SvgjsPath1456" d="M 274.47999999999996 131.33333333333334L 274.47999999999996 26.625000000000014Q 274.47999999999996 24.625000000000014 276.47999999999996 24.625000000000014L 278.31999999999994 24.625000000000014Q 280.31999999999994 24.625000000000014 280.31999999999994 26.625000000000014L 280.31999999999994 26.625000000000014L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334z" fill="rgba(var(--primary), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="0" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 274.47999999999996 131.33333333333334L 274.47999999999996 26.625000000000014Q 274.47999999999996 24.625000000000014 276.47999999999996 24.625000000000014L 278.31999999999994 24.625000000000014Q 280.31999999999994 24.625000000000014 280.31999999999994 26.625000000000014L 280.31999999999994 26.625000000000014L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334z" pathFrom="M 274.47999999999996 131.33333333333334L 274.47999999999996 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 274.47999999999996 131.33333333333334" cy="24.625000000000014" cx="303.67999999999995" j="9" val="65" barHeight="106.70833333333333" barWidth="5.84"></path></g><g id="SvgjsG1457" class="apexcharts-series" seriesName="order" rel="2" data:realIndex="1"><path id="SvgjsPath1459" d="M 11.68 131.33333333333334L 11.68 150.675Q 11.68 152.675 13.68 152.675L 15.52 152.675Q 17.52 152.675 17.52 150.675L 17.52 150.675L 17.52 131.33333333333334L 17.52 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 11.68 131.33333333333334L 11.68 150.675Q 11.68 152.675 13.68 152.675L 15.52 152.675Q 17.52 152.675 17.52 150.675L 17.52 150.675L 17.52 131.33333333333334L 17.52 131.33333333333334z" pathFrom="M 11.68 131.33333333333334L 11.68 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 17.52 131.33333333333334L 11.68 131.33333333333334" cy="152.675" cx="40.879999999999995" j="0" val="-13" barHeight="-21.341666666666665" barWidth="5.84"></path><path id="SvgjsPath1460" d="M 40.879999999999995 131.33333333333334L 40.879999999999995 167.09166666666667Q 40.879999999999995 169.09166666666667 42.879999999999995 169.09166666666667L 44.72 169.09166666666667Q 46.72 169.09166666666667 46.72 167.09166666666667L 46.72 167.09166666666667L 46.72 131.33333333333334L 46.72 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 40.879999999999995 131.33333333333334L 40.879999999999995 167.09166666666667Q 40.879999999999995 169.09166666666667 42.879999999999995 169.09166666666667L 44.72 169.09166666666667Q 46.72 169.09166666666667 46.72 167.09166666666667L 46.72 167.09166666666667L 46.72 131.33333333333334L 46.72 131.33333333333334z" pathFrom="M 40.879999999999995 131.33333333333334L 40.879999999999995 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 46.72 131.33333333333334L 40.879999999999995 131.33333333333334" cy="169.09166666666667" cx="70.08" j="1" val="-23" barHeight="-37.75833333333333" barWidth="5.84"></path><path id="SvgjsPath1461" d="M 70.08 131.33333333333334L 70.08 162.16666666666669Q 70.08 164.16666666666669 72.08 164.16666666666669L 73.92 164.16666666666669Q 75.92 164.16666666666669 75.92 162.16666666666669L 75.92 162.16666666666669L 75.92 131.33333333333334L 75.92 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 70.08 131.33333333333334L 70.08 162.16666666666669Q 70.08 164.16666666666669 72.08 164.16666666666669L 73.92 164.16666666666669Q 75.92 164.16666666666669 75.92 162.16666666666669L 75.92 162.16666666666669L 75.92 131.33333333333334L 75.92 131.33333333333334z" pathFrom="M 70.08 131.33333333333334L 70.08 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 75.92 131.33333333333334L 70.08 131.33333333333334" cy="164.16666666666669" cx="99.28" j="2" val="-20" barHeight="-32.83333333333333" barWidth="5.84"></path><path id="SvgjsPath1462" d="M 99.28 131.33333333333334L 99.28 142.46666666666667Q 99.28 144.46666666666667 101.28 144.46666666666667L 103.12 144.46666666666667Q 105.12 144.46666666666667 105.12 142.46666666666667L 105.12 142.46666666666667L 105.12 131.33333333333334L 105.12 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 99.28 131.33333333333334L 99.28 142.46666666666667Q 99.28 144.46666666666667 101.28 144.46666666666667L 103.12 144.46666666666667Q 105.12 144.46666666666667 105.12 142.46666666666667L 105.12 142.46666666666667L 105.12 131.33333333333334L 105.12 131.33333333333334z" pathFrom="M 99.28 131.33333333333334L 99.28 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 105.12 131.33333333333334L 99.28 131.33333333333334" cy="144.46666666666667" cx="128.48" j="3" val="-8" barHeight="-13.133333333333333" barWidth="5.84"></path><path id="SvgjsPath1463" d="M 128.48 131.33333333333334L 128.48 150.675Q 128.48 152.675 130.48 152.675L 132.32 152.675Q 134.32 152.675 134.32 150.675L 134.32 150.675L 134.32 131.33333333333334L 134.32 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 128.48 131.33333333333334L 128.48 150.675Q 128.48 152.675 130.48 152.675L 132.32 152.675Q 134.32 152.675 134.32 150.675L 134.32 150.675L 134.32 131.33333333333334L 134.32 131.33333333333334z" pathFrom="M 128.48 131.33333333333334L 128.48 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 134.32 131.33333333333334L 128.48 131.33333333333334" cy="152.675" cx="157.67999999999998" j="4" val="-13" barHeight="-21.341666666666665" barWidth="5.84"></path><path id="SvgjsPath1464" d="M 157.67999999999998 131.33333333333334L 157.67999999999998 173.65833333333333Q 157.67999999999998 175.65833333333333 159.67999999999998 175.65833333333333L 161.51999999999998 175.65833333333333Q 163.51999999999998 175.65833333333333 163.51999999999998 173.65833333333333L 163.51999999999998 173.65833333333333L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 157.67999999999998 131.33333333333334L 157.67999999999998 173.65833333333333Q 157.67999999999998 175.65833333333333 159.67999999999998 175.65833333333333L 161.51999999999998 175.65833333333333Q 163.51999999999998 175.65833333333333 163.51999999999998 173.65833333333333L 163.51999999999998 173.65833333333333L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334z" pathFrom="M 157.67999999999998 131.33333333333334L 157.67999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 163.51999999999998 131.33333333333334L 157.67999999999998 131.33333333333334" cy="175.65833333333333" cx="186.87999999999997" j="5" val="-27" barHeight="-44.324999999999996" barWidth="5.84"></path><path id="SvgjsPath1465" d="M 186.87999999999997 131.33333333333334L 186.87999999999997 168.73333333333335Q 186.87999999999997 170.73333333333335 188.87999999999997 170.73333333333335L 190.71999999999997 170.73333333333335Q 192.71999999999997 170.73333333333335 192.71999999999997 168.73333333333335L 192.71999999999997 168.73333333333335L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 186.87999999999997 131.33333333333334L 186.87999999999997 168.73333333333335Q 186.87999999999997 170.73333333333335 188.87999999999997 170.73333333333335L 190.71999999999997 170.73333333333335Q 192.71999999999997 170.73333333333335 192.71999999999997 168.73333333333335L 192.71999999999997 168.73333333333335L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334z" pathFrom="M 186.87999999999997 131.33333333333334L 186.87999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 192.71999999999997 131.33333333333334L 186.87999999999997 131.33333333333334" cy="170.73333333333335" cx="216.07999999999996" j="6" val="-24" barHeight="-39.4" barWidth="5.84"></path><path id="SvgjsPath1466" d="M 216.07999999999996 131.33333333333334L 216.07999999999996 153.95833333333334Q 216.07999999999996 155.95833333333334 218.07999999999996 155.95833333333334L 219.91999999999996 155.95833333333334Q 221.91999999999996 155.95833333333334 221.91999999999996 153.95833333333334L 221.91999999999996 153.95833333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 216.07999999999996 131.33333333333334L 216.07999999999996 153.95833333333334Q 216.07999999999996 155.95833333333334 218.07999999999996 155.95833333333334L 219.91999999999996 155.95833333333334Q 221.91999999999996 155.95833333333334 221.91999999999996 153.95833333333334L 221.91999999999996 153.95833333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334z" pathFrom="M 216.07999999999996 131.33333333333334L 216.07999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 221.91999999999996 131.33333333333334L 216.07999999999996 131.33333333333334" cy="155.95833333333334" cx="245.27999999999994" j="7" val="-15" barHeight="-24.624999999999996" barWidth="5.84"></path><path id="SvgjsPath1467" d="M 245.27999999999994 131.33333333333334L 245.27999999999994 157.24166666666667Q 245.27999999999994 159.24166666666667 247.27999999999994 159.24166666666667L 249.11999999999995 159.24166666666667Q 251.11999999999995 159.24166666666667 251.11999999999995 157.24166666666667L 251.11999999999995 157.24166666666667L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 245.27999999999994 131.33333333333334L 245.27999999999994 157.24166666666667Q 245.27999999999994 159.24166666666667 247.27999999999994 159.24166666666667L 249.11999999999995 159.24166666666667Q 251.11999999999995 159.24166666666667 251.11999999999995 157.24166666666667L 251.11999999999995 157.24166666666667L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334z" pathFrom="M 245.27999999999994 131.33333333333334L 245.27999999999994 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 251.11999999999995 131.33333333333334L 245.27999999999994 131.33333333333334" cy="159.24166666666667" cx="274.47999999999996" j="8" val="-17" barHeight="-27.90833333333333" barWidth="5.84"></path><path id="SvgjsPath1468" d="M 274.47999999999996 131.33333333333334L 274.47999999999996 170.375Q 274.47999999999996 172.375 276.47999999999996 172.375L 278.31999999999994 172.375Q 280.31999999999994 172.375 280.31999999999994 170.375L 280.31999999999994 170.375L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334z" fill="rgba(var(--danger), 0.8)" fill-opacity="1" stroke-opacity="1" stroke-linecap="round" stroke-width="0" stroke-dasharray="0" class="apexcharts-bar-area" index="1" clip-path="url(#gridRectMaskuvsjn2ym)" pathTo="M 274.47999999999996 131.33333333333334L 274.47999999999996 170.375Q 274.47999999999996 172.375 276.47999999999996 172.375L 278.31999999999994 172.375Q 280.31999999999994 172.375 280.31999999999994 170.375L 280.31999999999994 170.375L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334z" pathFrom="M 274.47999999999996 131.33333333333334L 274.47999999999996 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 280.31999999999994 131.33333333333334L 274.47999999999996 131.33333333333334" cy="172.375" cx="303.67999999999995" j="9" val="-25" barHeight="-41.041666666666664" barWidth="5.84"></path></g><g id="SvgjsG1446" class="apexcharts-datalabels" data:realIndex="0"></g><g id="SvgjsG1458" class="apexcharts-datalabels" data:realIndex="1"></g></g><line id="SvgjsLine1494" x1="0" y1="0" x2="292" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1495" x1="0" y1="0" x2="292" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1496" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1497" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1498" class="apexcharts-point-annotations"></g></g><g id="SvgjsG1481" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g><g id="SvgjsG1435" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend" style="max-height: 121px;"></div><div class="apexcharts-tooltip apexcharts-theme-light"><div class="apexcharts-tooltip-series-group" style="order: 1;"><span class="apexcharts-tooltip-marker" style="background-color: rgba(var(--primary), 0.8);"></span><div class="apexcharts-tooltip-text" style="font-family: Rubik, serif; font-size: 16px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 2;"><span class="apexcharts-tooltip-marker" style="background-color: rgba(var(--danger), 0.8);"></span><div class="apexcharts-tooltip-text" style="font-family: Rubik, serif; font-size: 16px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light"><div class="apexcharts-yaxistooltip-text"></div></div><div class="apexcharts-toolbar" style="top: 0px; right: 3px;"><div class="apexcharts-menu-icon" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></div><div class="apexcharts-menu"><div class="apexcharts-menu-item exportSVG" title="Download SVG">Download SVG</div><div class="apexcharts-menu-item exportPNG" title="Download PNG">Download PNG</div><div class="apexcharts-menu-item exportCSV" title="Download CSV">Download CSV</div></div></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4 col-xxl-3 ">
+                <ul class=" box-list mb-4">
+                    <li class="b-s-4-primary">
+                        <h5>Recent Purchases</h5>
+                    </li>
+                    <li class="d-flex align-items-center justify-between gap-2">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                            <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/02.png">
+                        </div>
+                        <div class="mg-s-45 flex-grow-1">
+                            <h6 class="mb-0 text-dark-800 f-w-500 txt-ellipsis-1">Headphones</h6>
+                            <p class="text-secondary-800 mb-0">AudioTech</p>
+                        </div>
+                        <span class="badge bg-light-primary">$120</span>
+                    </li>
+                    <li class="d-flex align-items-center justify-between gap-2">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                            <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/03.png">
+                        </div>
+                        <div class="mg-s-45 flex-grow-1">
+                            <h6 class="mb-0 text-dark-800 f-w-500 txt-ellipsis-1">Digital Camera</h6>
+                            <p class="text-secondary-800 mb-0">LensPro</p>
+                        </div>
+                        <span class="badge bg-light-primary">$350</span>
+                    </li>
+                    <li class="d-flex align-items-center justify-between gap-2">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                            <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/01.png">
+                        </div>
+
+                        <div class="mg-s-45 flex-grow-1">
+                            <h6 class="mb-0 text-dark-800 f-w-500 txt-ellipsis-1">Smart Watch</h6>
+                            <p class="text-secondary-800 mb-0">TechWear</p>
+                        </div>
+                        <span class="badge bg-light-primary">$199</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                <ul class="list-box top-brand-list mb-4">
+                    <li class="b-s-4-primary">
+                        <h5>Top Brands</h5>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                                <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/04.png">
+                        </div>
+                        <div class="flex-grow-1 mg-s-45">
+                            <h6 class="mb-0 f-w-500 text-dark-800 txt-ellipsis-1">Stylique</h6>
+                            <p class="text-secondary-800 mb-0">Clothing</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-light-primary">96.85%</span>
+                        </div>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                            <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/06.png">
+                        </div>
+                        <div class="flex-grow-1 mg-s-45">
+                            <h6 class="mb-0 f-w-500 text-dark-800 txt-ellipsis-1">Techspire</h6>
+                            <p class="text-secondary-800 mb-0">Electronics</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-light-success">89.42%</span>
+                        </div>
+                    </li>
+
+                    <li class="d-flex align-items-center">
+                        <div class="b-1-light bg-primary-200 p-1 h-40 w-40 d-flex-center b-r-12 flex-shrink-0 overflow-hidden box-list-img">
+                            <img alt="Smart Watch" class="img-fluid" src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/07.png">
+                        </div>
+                        <div class="flex-grow-1 mg-s-45">
+                            <h6 class="mb-0 f-w-500 text-dark-800 txt-ellipsis-1">TrekVibe</h6>
+                            <p class="text-secondary-800 mb-0">Bag's</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-light-danger">74.30%</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                <div class="card offer-card-box">
+                    <div class="circle-ribbon circle-left ribbon-danger b-4-white">
+                        50%
+                    </div>
+
+                    <div class="card-body offer-card-body overflow-hidden ">
+                        <div>
+                            <div class="my-3">
+                                <span class="badge text-primary f-s-10 bg-white-500">Clothing</span>
+                                <span class="badge text-primary f-s-10 bg-white-500">Toys</span>
+                                <span class="badge text-primary f-s-10 bg-white-500">Accessories</span>
+                            </div>
+                            <h5 class="text-white mt-4">Super <span class="text-bg-primary  p-1 f-s-26 f-w-700 ">Kids’</span> Weekend
+                                <br> <span class="text-danger highlight-word p-1">Sale</span></h5>
+
+                        </div>
+                        <div>
+                            <a href="/ki-admin/product" target="_blank" class="btn btn-white  f-w-500 w-100 my-2">Shop Now</a>
+                            <a class="f-s-12 f-w-500 text-white text-d-underline" href="#">Minimum purchase
+                                of $30 required. Online &amp; in-store.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-xxl-2 order-3-md">
+                <div class="card service-trial-card">
+                    <div class="card-body">
+                        <h5 class="text-white f-w-600 txt-ellipsis-1"> AI Commerce</h5>
+                        <p class="text-white mt-2 txt-ellipsis-2">Smarter Shopping, Faster Growth</p>
+                        <div class=" service-img-box"></div>
+                        <div class="mt-3">
+                            <a href="/ki-admin/chat" target="_blank" class="btn btn-primary btn-sm w-100 text-nowrap">Start Free Trial</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6  col-lg-4">
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <div class="mb-2">
+                            <h4 class="text-primary">98.65% <span class="f-s-14 text-dark">Total sale</span></h4>
+                        </div>
+
+                        <div id="revenueChart" style="min-height: 245px;"><div id="apexchartsic4yz88s" class="apexcharts-canvas apexchartsic4yz88s apexcharts-theme-light" style="width: 274px; height: 230px;"><svg id="SvgjsSvg1501" width="274" height="230" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg apexcharts-zoomable" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><foreignObject x="0" y="0" width="274" height="230"><div class="apexcharts-legend apexcharts-align-right apx-legend-position-top" xmlns="http://www.w3.org/1999/xhtml" style="right: 0px; position: absolute; left: 0px; top: 4px; max-height: 115px;"><div class="apexcharts-legend-series" rel="1" seriesname="Thisxweek" data:collapsed="false" style="margin: 2px 5px;"><span class="apexcharts-legend-marker" rel="1" data:collapsed="false" style="background: rgba(var(--primary),1) !important; color: rgba(var(--primary),1); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span class="apexcharts-legend-text" rel="1" i="0" data:default-text="This%20week" data:collapsed="false" style="color: rgb(55, 61, 63); font-size: 12px; font-weight: 400; font-family: Rubik, serif;">This week</span></div><div class="apexcharts-legend-series" rel="2" seriesname="Lastxweek" data:collapsed="false" style="margin: 2px 5px;"><span class="apexcharts-legend-marker" rel="2" data:collapsed="false" style="background: rgba(var(--danger),1) !important; color: rgba(var(--danger),1); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span class="apexcharts-legend-text" rel="2" i="1" data:default-text="Last%20week" data:collapsed="false" style="color: rgb(55, 61, 63); font-size: 12px; font-weight: 400; font-family: Rubik, serif;">Last week</span></div></div><style type="text/css">	
+    	
+      .apexcharts-legend {	
+        display: flex;	
+        overflow: auto;	
+        padding: 0 10px;	
+      }	
+      .apexcharts-legend.apx-legend-position-bottom, .apexcharts-legend.apx-legend-position-top {	
+        flex-wrap: wrap	
+      }	
+      .apexcharts-legend.apx-legend-position-right, .apexcharts-legend.apx-legend-position-left {	
+        flex-direction: column;	
+        bottom: 0;	
+      }	
+      .apexcharts-legend.apx-legend-position-bottom.apexcharts-align-left, .apexcharts-legend.apx-legend-position-top.apexcharts-align-left, .apexcharts-legend.apx-legend-position-right, .apexcharts-legend.apx-legend-position-left {	
+        justify-content: flex-start;	
+      }	
+      .apexcharts-legend.apx-legend-position-bottom.apexcharts-align-center, .apexcharts-legend.apx-legend-position-top.apexcharts-align-center {	
+        justify-content: center;  	
+      }	
+      .apexcharts-legend.apx-legend-position-bottom.apexcharts-align-right, .apexcharts-legend.apx-legend-position-top.apexcharts-align-right {	
+        justify-content: flex-end;	
+      }	
+      .apexcharts-legend-series {	
+        cursor: pointer;	
+        line-height: normal;	
+      }	
+      .apexcharts-legend.apx-legend-position-bottom .apexcharts-legend-series, .apexcharts-legend.apx-legend-position-top .apexcharts-legend-series{	
+        display: flex;	
+        align-items: center;	
+      }	
+      .apexcharts-legend-text {	
+        position: relative;	
+        font-size: 14px;	
+      }	
+      .apexcharts-legend-text *, .apexcharts-legend-marker * {	
+        pointer-events: none;	
+      }	
+      .apexcharts-legend-marker {	
+        position: relative;	
+        display: inline-block;	
+        cursor: pointer;	
+        margin-right: 3px;	
+        border-style: solid;
+      }	
+      	
+      .apexcharts-legend.apexcharts-align-right .apexcharts-legend-series, .apexcharts-legend.apexcharts-align-left .apexcharts-legend-series{	
+        display: inline-block;	
+      }	
+      .apexcharts-legend-series.apexcharts-no-click {	
+        cursor: auto;	
+      }	
+      .apexcharts-legend .apexcharts-hidden-zero-series, .apexcharts-legend .apexcharts-hidden-null-series {	
+        display: none !important;	
+      }	
+      .apexcharts-inactive-legend {	
+        opacity: 0.45;	
+      }</style></foreignObject><g id="SvgjsG1503" class="apexcharts-inner apexcharts-graphical" transform="translate(61.89070129394531, 32)"><defs id="SvgjsDefs1502"><clipPath id="gridRectMaskic4yz88s"><rect id="SvgjsRect1509" width="196.92791748046875" height="159.303" x="-3.5" y="-1.5" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskic4yz88s"></clipPath><clipPath id="nonForecastMaskic4yz88s"></clipPath><clipPath id="gridRectMarkerMaskic4yz88s"><rect id="SvgjsRect1510" width="193.92791748046875" height="160.303" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><linearGradient id="SvgjsLinearGradient1515" x1="0" y1="1" x2="1" y2="1"><stop id="SvgjsStop1516" stop-opacity="0.8" stop-color="rgba(225,78,90,0.8)" offset="0"></stop><stop id="SvgjsStop1517" stop-opacity="0.6" stop-color="rgba(225,78,90,0.6)" offset="0.9"></stop><stop id="SvgjsStop1518" stop-opacity="0.6" stop-color="rgba(225,78,90,0.6)" offset="1"></stop></linearGradient></defs><line id="SvgjsLine1508" x1="0" y1="0" x2="0" y2="156.303" stroke="#b6b6b6" stroke-dasharray="3" stroke-linecap="butt" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="156.303" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1526" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1527" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"><text id="SvgjsText1529" font-family="&quot;Rubik&quot;, serif" x="0" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1530">Sun</tspan><title>Sun</title></text><text id="SvgjsText1532" font-family="&quot;Rubik&quot;, serif" x="31.65465291341146" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1533">Mon</tspan><title>Mon</title></text><text id="SvgjsText1535" font-family="&quot;Rubik&quot;, serif" x="63.309305826822914" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1536">Tue</tspan><title>Tue</title></text><text id="SvgjsText1538" font-family="&quot;Rubik&quot;, serif" x="94.96395874023436" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1539">Wed</tspan><title>Wed</title></text><text id="SvgjsText1541" font-family="&quot;Rubik&quot;, serif" x="126.61861165364583" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1542">Thu</tspan><title>Thu</title></text><text id="SvgjsText1544" font-family="&quot;Rubik&quot;, serif" x="158.2732645670573" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1545">Fri</tspan><title>Fri</title></text><text id="SvgjsText1547" font-family="&quot;Rubik&quot;, serif" x="189.92791748046878" y="185.303" text-anchor="middle" dominant-baseline="auto" font-size="14px" font-weight="500" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-xaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1548">Sat</tspan><title>Sat</title></text></g><line id="SvgjsLine1549" x1="0" y1="157.303" x2="189.92791748046875" y2="157.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt"></line></g><g id="SvgjsG1570" class="apexcharts-grid"><g id="SvgjsG1571" class="apexcharts-gridlines-horizontal"><line id="SvgjsLine1580" x1="0" y1="0" x2="189.92791748046875" y2="0" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1581" x1="0" y1="31.2606" x2="189.92791748046875" y2="31.2606" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1582" x1="0" y1="62.5212" x2="189.92791748046875" y2="62.5212" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1583" x1="0" y1="93.7818" x2="189.92791748046875" y2="93.7818" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1584" x1="0" y1="125.0424" x2="189.92791748046875" y2="125.0424" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line><line id="SvgjsLine1585" x1="0" y1="156.303" x2="189.92791748046875" y2="156.303" stroke="rgba(var(--secondary),.4)" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-gridline"></line></g><g id="SvgjsG1572" class="apexcharts-gridlines-vertical"></g><line id="SvgjsLine1573" x1="0" y1="157.303" x2="0" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1574" x1="31.654652913411457" y1="157.303" x2="31.654652913411457" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1575" x1="63.309305826822914" y1="157.303" x2="63.309305826822914" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1576" x1="94.96395874023438" y1="157.303" x2="94.96395874023438" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1577" x1="126.61861165364583" y1="157.303" x2="126.61861165364583" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1578" x1="158.27326456705728" y1="157.303" x2="158.27326456705728" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1579" x1="189.92791748046875" y1="157.303" x2="189.92791748046875" y2="163.303" stroke="#e0e0e0" stroke-dasharray="0" stroke-linecap="butt" class="apexcharts-xaxis-tick"></line><line id="SvgjsLine1587" x1="0" y1="156.303" x2="189.92791748046875" y2="156.303" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line><line id="SvgjsLine1586" x1="0" y1="1" x2="0" y2="156.303" stroke="transparent" stroke-dasharray="0" stroke-linecap="butt"></line></g><g id="SvgjsG1511" class="apexcharts-area-series apexcharts-plot-series"><g id="SvgjsG1512" class="apexcharts-series" seriesName="Lastxweek" data:longestSeries="true" rel="1" data:realIndex="1"><path id="SvgjsPath1519" d="M 0 156.303L 0 135.4626C 11.079128519694011 135.4626 20.57552439371745 128.5158 31.65465291341146 128.5158C 42.73378143310547 128.5158 52.23017730712891 97.2552 63.30930582682292 97.2552C 74.38843434651693 97.2552 83.88483022054038 86.83500000000001 94.96395874023439 86.83500000000001C 106.0430872599284 86.83500000000001 115.53948313395183 79.8882 126.61861165364584 79.8882C 137.69774017333987 79.8882 147.1941360473633 55.5744 158.2732645670573 55.5744C 169.35239308675133 55.5744 178.84878896077475 48.6276 189.92791748046878 48.6276C 189.92791748046878 48.6276 189.92791748046878 48.6276 189.92791748046878 156.303M 189.92791748046878 48.6276z" fill="url(#SvgjsLinearGradient1515)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="1" clip-path="url(#gridRectMaskic4yz88s)" pathTo="M 0 156.303L 0 135.4626C 11.079128519694011 135.4626 20.57552439371745 128.5158 31.65465291341146 128.5158C 42.73378143310547 128.5158 52.23017730712891 97.2552 63.30930582682292 97.2552C 74.38843434651693 97.2552 83.88483022054038 86.83500000000001 94.96395874023439 86.83500000000001C 106.0430872599284 86.83500000000001 115.53948313395183 79.8882 126.61861165364584 79.8882C 137.69774017333987 79.8882 147.1941360473633 55.5744 158.2732645670573 55.5744C 169.35239308675133 55.5744 178.84878896077475 48.6276 189.92791748046878 48.6276C 189.92791748046878 48.6276 189.92791748046878 48.6276 189.92791748046878 156.303M 189.92791748046878 48.6276z" pathFrom="M -1 187.5636L -1 187.5636L 31.65465291341146 187.5636L 63.30930582682292 187.5636L 94.96395874023439 187.5636L 126.61861165364584 187.5636L 158.2732645670573 187.5636L 189.92791748046878 187.5636"></path><path id="SvgjsPath1520" d="M 0 135.4626C 11.079128519694011 135.4626 20.57552439371745 128.5158 31.65465291341146 128.5158C 42.73378143310547 128.5158 52.23017730712891 97.2552 63.30930582682292 97.2552C 74.38843434651693 97.2552 83.88483022054038 86.83500000000001 94.96395874023439 86.83500000000001C 106.0430872599284 86.83500000000001 115.53948313395183 79.8882 126.61861165364584 79.8882C 137.69774017333987 79.8882 147.1941360473633 55.5744 158.2732645670573 55.5744C 169.35239308675133 55.5744 178.84878896077475 48.6276 189.92791748046878 48.6276" fill="none" fill-opacity="1" stroke="rgba(225,78,90,0.85)" stroke-opacity="1" stroke-linecap="butt" stroke-width="3" stroke-dasharray="0" class="apexcharts-area" index="1" clip-path="url(#gridRectMaskic4yz88s)" pathTo="M 0 135.4626C 11.079128519694011 135.4626 20.57552439371745 128.5158 31.65465291341146 128.5158C 42.73378143310547 128.5158 52.23017730712891 97.2552 63.30930582682292 97.2552C 74.38843434651693 97.2552 83.88483022054038 86.83500000000001 94.96395874023439 86.83500000000001C 106.0430872599284 86.83500000000001 115.53948313395183 79.8882 126.61861165364584 79.8882C 137.69774017333987 79.8882 147.1941360473633 55.5744 158.2732645670573 55.5744C 169.35239308675133 55.5744 178.84878896077475 48.6276 189.92791748046878 48.6276" pathFrom="M -1 187.5636L -1 187.5636L 31.65465291341146 187.5636L 63.30930582682292 187.5636L 94.96395874023439 187.5636L 126.61861165364584 187.5636L 158.2732645670573 187.5636L 189.92791748046878 187.5636"></path><g id="SvgjsG1513" class="apexcharts-series-markers-wrap" data:realIndex="1"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1593" r="0" cx="0" cy="0" class="apexcharts-marker wnq4hn8s2" stroke="#ffffff" fill="rgba(var(--danger),1)" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g></g></g><g id="SvgjsG1521" class="apexcharts-line-series apexcharts-plot-series"><g id="SvgjsG1522" class="apexcharts-series" seriesName="Thisxweek" data:longestSeries="true" rel="1" data:realIndex="0"><path id="SvgjsPath1525" d="M 0 145.8828C 11.079128519694011 145.8828 20.57552439371745 121.569 31.65465291341146 121.569C 42.73378143310547 121.569 52.23017730712891 83.36160000000001 63.30930582682292 83.36160000000001C 74.38843434651693 83.36160000000001 83.88483022054038 90.3084 94.96395874023439 90.3084C 106.0430872599284 90.3084 115.53948313395183 65.9946 126.61861165364584 65.9946C 137.69774017333987 65.9946 147.1941360473633 45.1542 158.2732645670573 45.1542C 169.35239308675133 45.1542 178.84878896077475 31.26060000000001 189.92791748046878 31.26060000000001" fill="none" fill-opacity="1" stroke="rgba(var(--primary),1)" stroke-opacity="1" stroke-linecap="butt" stroke-width="3" stroke-dasharray="0" class="apexcharts-line" index="0" clip-path="url(#gridRectMaskic4yz88s)" pathTo="M 0 145.8828C 11.079128519694011 145.8828 20.57552439371745 121.569 31.65465291341146 121.569C 42.73378143310547 121.569 52.23017730712891 83.36160000000001 63.30930582682292 83.36160000000001C 74.38843434651693 83.36160000000001 83.88483022054038 90.3084 94.96395874023439 90.3084C 106.0430872599284 90.3084 115.53948313395183 65.9946 126.61861165364584 65.9946C 137.69774017333987 65.9946 147.1941360473633 45.1542 158.2732645670573 45.1542C 169.35239308675133 45.1542 178.84878896077475 31.26060000000001 189.92791748046878 31.26060000000001" pathFrom="M -1 187.5636L -1 187.5636L 31.65465291341146 187.5636L 63.30930582682292 187.5636L 94.96395874023439 187.5636L 126.61861165364584 187.5636L 158.2732645670573 187.5636L 189.92791748046878 187.5636"></path><g id="SvgjsG1523" class="apexcharts-series-markers-wrap" data:realIndex="0"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1594" r="0" cx="0" cy="0" class="apexcharts-marker w8dnopxct" stroke="#ffffff" fill="rgba(var(--primary),1)" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g></g><g id="SvgjsG1514" class="apexcharts-datalabels" data:realIndex="1"></g><g id="SvgjsG1524" class="apexcharts-datalabels" data:realIndex="0"></g></g><line id="SvgjsLine1588" x1="0" y1="0" x2="189.92791748046875" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1589" x1="0" y1="0" x2="189.92791748046875" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1590" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1591" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1592" class="apexcharts-point-annotations"></g><rect id="SvgjsRect1595" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe" class="apexcharts-zoom-rect"></rect><rect id="SvgjsRect1596" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe" class="apexcharts-selection-rect"></rect></g><rect id="SvgjsRect1507" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect><g id="SvgjsG1550" class="apexcharts-yaxis" rel="0" transform="translate(31.890701293945312, 0)"><g id="SvgjsG1551" class="apexcharts-yaxis-texts-g"><text id="SvgjsText1553" font-family="&quot;Rubik&quot;, serif" x="20" y="33.5" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1554">5400</tspan><title>5400</title></text><text id="SvgjsText1556" font-family="&quot;Rubik&quot;, serif" x="20" y="64.7606" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1557">4500</tspan><title>4500</title></text><text id="SvgjsText1559" font-family="&quot;Rubik&quot;, serif" x="20" y="96.0212" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1560">3600</tspan><title>3600</title></text><text id="SvgjsText1562" font-family="&quot;Rubik&quot;, serif" x="20" y="127.28179999999999" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1563">2700</tspan><title>2700</title></text><text id="SvgjsText1565" font-family="&quot;Rubik&quot;, serif" x="20" y="158.5424" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1566">1800</tspan><title>1800</title></text><text id="SvgjsText1568" font-family="&quot;Rubik&quot;, serif" x="20" y="189.803" text-anchor="end" dominant-baseline="auto" font-size="14px" font-weight="400" fill="rgba(var(--dark),.8)" class="apexcharts-text apexcharts-yaxis-label " style="font-family: Rubik, serif;"><tspan id="SvgjsTspan1569">900</tspan><title>900</title></text></g></g><g id="SvgjsG1504" class="apexcharts-annotations"></g></svg><div class="apexcharts-tooltip apexcharts-theme-light"><div class="apexcharts-tooltip-series-group" style="order: 1;"><span class="apexcharts-tooltip-marker" style="background-color: rgba(var(--primary),1);"></span><div class="apexcharts-tooltip-text" style="font-family: Rubik, serif; font-size: 16px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 2;"><span class="apexcharts-tooltip-marker" style="background-color: rgba(var(--danger),1);"></span><div class="apexcharts-tooltip-text" style="font-family: Rubik, serif; font-size: 16px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label"></span><span class="apexcharts-tooltip-text-y-value"></span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-xaxistooltip apexcharts-xaxistooltip-bottom apexcharts-theme-light"><div class="apexcharts-xaxistooltip-text" style="font-family: Rubik, serif; font-size: 12px;"></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light"><div class="apexcharts-yaxistooltip-text"></div></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8  col-xxl-6">
+                <div class="card ecommerce-product-box">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="row g-2 h-100">
+                                    <div class="col-6">
+
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-01.jpg" class="glightbox brand-img-box" data-glightbox="type: image; zoomable: true;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-01.jpg" class="w-100" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-6 position-relative">
+                                        <div class="box-ribbon box-right">
+                                            <div class="ribbonbox ribbon-danger">Latest</div>
+                                        </div>
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-02.jpg" class="glightbox brand-img-box" data-glightbox="type: image;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-02.jpg" class="w-100" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-03.jpg" class="glightbox brand-img-box" data-glightbox="type: image;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-03.jpg" class="w-100" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-04.jpg" class="glightbox brand-img-box" data-glightbox="type: image;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-04.jpg" class="w-100" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-05.jpg" class="glightbox brand-img-box" data-glightbox="type: image;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-05.jpg" class="w-100" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-06.jpg" class="glightbox brand-img-box" data-glightbox="type: image;">
+                                            <img src="https://ki-admin.test/../assets/images/dashboard/ecommerce-dashboard/product/product-06.jpg" class="w-100 rounded" alt="...">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7">
+                                <div class="my-3">
+                                    <h3 class="text-dark-800 f-w-700 txt-ellipsis-1">$58,902.90 <span class="f-s-16 f-w-500 text-secondary">Last week</span></h3>
+                                    <div class="custom-progress-container">
+                                        <div class="progress-bar"></div>
+                                        <div class="progress-bar"></div>
+                                        <div class="progress-bar"></div>
+                                        <div class="progress-bar"></div>
+                                    </div>
+                                </div>
+
+                                <h6>Choose tags</h6>
+                                <div class="form-selectgroup products-tags-list my-3">
+                                    <label class="select-items">
+                                        <input checked="" class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○  New Arrivals</span>
+                                                    </span>
+                                    </label>
+                                    <label class="select-items">
+                                        <input class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○  Best Sellers</span>
+                                                    </span>
+                                    </label>
+                                    <label class="select-items">
+                                        <input checked="" class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○  Trending</span>
+                                                    </span>
+                                    </label>
+                                    <label class="select-items">
+                                        <input class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○  Exclusive</span>
+                                                    </span>
+                                    </label>
+                                    <label class="select-items">
+                                        <input checked="" class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○  On Sale</span>
+                                                    </span>
+                                    </label>
+                                    <label class="select-items">
+                                        <input class="select-input" type="checkbox">
+                                        <span class="select-box">
+                                                        <span class="selectitem">○   Free Shipping</span>
+                                                    </span>
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal -->
+
+    <div class="modal" data-bs-backdrop="static" id="welcomeCard" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content welcome-card">
+
+                <div class="modal-body p-0">
+                    <div>
+                        <img src="https://ki-admin.test/../assets/images/modals/welcome-bg.png" alt="img" class=" img-fluid">
+                        <div>
+                            <img src="https://ki-admin.test/../assets/images/modals/welcome-rocket.png" alt="img" class="modal-rocket img-fluid">
+                        </div>
+                    </div>
+                    <div class="text-end position-absolute end-0 top-0 p-3">
+                        <i class="ti ti-x fs-5 text-dark f-w-600" data-bs-dismiss="modal"></i>
+                    </div>
+                    <div class="text-center position-relative welcome-card-content z-1 p-3">
+
+                        <h2 class="f-w-600"> Welcome !👋 </h2>
+                        <h6 class="f-s-15 text-dark f-w-500 mx-0 mx-sm-5"> Start Multipurpose, clean modern responsive bootstrap 5 admin template </h6>
+                        <ul class="modal-features-list">
+                            <li class="btn btn-light-primary flex-fill">Fully Responsive</li>
+                            <li class="btn btn-light-primary flex-fill">Built with bootstrap 5</li>
+                            <li class="btn btn-light-primary flex-fill">scss support</li>
+                            <li class="btn btn-light-primary flex-fill">Light &amp; Dark Mode</li>
+                            <li class="btn btn-light-primary flex-fill">Enjoy Started!</li>
+                        </ul>
+                        <div class="mt-3 mb-4">
+                            <button class="btn btn-primary text-white btn-lg" data-bs-dismiss="modal" type="button">
+                                Get Started <i class="ti ti-chevrons-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal -->
+
+        </main>
+        <!-- Main Section end -->
+    </div>
+
+    <!-- tap on top -->
+    <div class="go-top">
+      <span class="progress-value">
+        <i class="ti ti-arrow-up"></i>
+      </span>
+    </div>
+
+    <!-- Footer Section start -->
+     <!-- Footer Section starts-->
+<footer>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9 col-12">
+                <p class="footer-text f-w-600 mb-0">Copyright © 2025 ki-admin. All rights reserved 💖 V1.0.0</p>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-text text-end">
+                    <a class="f-w-500 text-primary" href="mailto:teqlathemes@gmail.com"> Need Help <i class="ti ti-help"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section ends-->
+    <!-- Footer Section end -->
+</div>
+
+<!--customizer-->
+<div id="customizer"><button class="customizer-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#customizerOptions" aria-controls="customizerOptions">
+  <i class="ti ti-settings-2"></i>
+</button>
+
+<div class="offcanvas offcanvas-end app-customizer" data-bs-scroll="true" tabindex="-1" id="customizerOptions" aria-labelledby="customizerOptionsLabel">
+
+  <div class="offcanvas-header flex-wrap bg-primary">
+    <h5 class="offcanvas-title text-white" id="customizerOptionsLabel"> Admin Customizer </h5>
+    <p class="d-block text-white opacity-75">it's time to style according to your choice ..!</p>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2">Sidebar option</h6>
+    </div>
+    <ul class="sidebar-option">
+      <li class="vertical-sidebar selected">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> Vertical</span> </li>
+        </ul>
+      </li>
+      <li class="horizontal-sidebar">
+        <ul>
+          <li class="header h-20"><span class="badge text-bg-secondary b-r-6"> Horizontal</span></li>
+          <li class="body w-100"></li>
+        </ul>
+      </li>
+      <li class="dark-sidebar">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar bg-dark-600"></li>
+          <li class="body"><span class="badge text-bg-secondary b-r-6"> Dark </span></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2">Layout option</h6>
+    </div>
+    <ul class="layout-option">
+      <li class="ltr selected">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"><span class="badge text-bg-secondary b-r-6"> LTR </span></li>
+        </ul>
+      </li>
+      <li class="rtl">
+        <ul>
+          <li class="header"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> RTL </span> </li>
+          <li class="sidebar"></li>
+        </ul>
+      </li>
+      <li class="box-layout">
+        <ul>
+          <li class="header"></li>
+          <li class="sidebar"></li>
+          <li class="body"> <span class="badge text-bg-secondary b-r-6"> Box </span> </li>
+        </ul>
+      </li>
+    </ul>
+    <h6 class="mt-3">Color Hint</h6>
+    <ul class="color-hint p-0">
+      <li class="default selected">
+        <div></div>
+      </li>
+      <li class="gold">
+        <div></div>
+      </li>
+      <li class="warm">
+        <div></div>
+      </li>
+      <li class="happy">
+        <div></div>
+      </li>
+      <li class="nature">
+        <div></div>
+      </li>
+      <li class="hot">
+        <div></div>
+      </li>
+    </ul>
+    <div class="app-divider-v secondary py-3">
+      <h6 class="mt-2 font-primary">Text size</h6>
+    </div>
+    <ul class="text-size">
+      <li class="small-text"> sm </li>
+      <li class="medium-text selected"> md </li>
+      <li class="large-text"> lg </li>
+    </ul>
+  </div>
+
+  <div class="offcanvas-footer">
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-danger w-100" onclick="resetCustomizer()">Reset</button>
+      <a type="button" class="btn btn-success w-100" href="https://themeforest.net/user/la-themes/portfolio" target="_blank">Buy Now</a>
+    </div>
+    <div class="d-flex gap-2 mt-2">
+      <a type="button" class="btn btn-primary w-100" href="mailto:teqlathemes@gmail.com" target="_blank">Support</a>
+      <a type="button" class="btn btn-dark w-100" href="https://phpstack-1384472-5121645.cloudwaysapps.com/document/laravel/ki-admin/index.html" target="_blank">Document</a>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- scripts start-->
+<!-- latest jquery-->
+<script src="https://ki-admin.test/assets/js/jquery-3.6.3.min.js"></script>
+
+<!-- Bootstrap js-->
+<script src="https://ki-admin.test/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+
+<!-- Simple bar js-->
+<script src="https://ki-admin.test/assets/vendor/simplebar/simplebar.js"></script>
+
+<!-- phosphor js -->
+<script src="https://ki-admin.test/assets/vendor/phosphor/phosphor.js"></script>
+
+<!-- Customizer js-->
+<script src="https://ki-admin.test/assets/js/customizer.js"></script>
+
+<!-- prism js-->
+<script src="https://ki-admin.test/assets/vendor/prism/prism.min.js"></script>
+
+<!-- App js-->
+<script src="https://ki-admin.test/assets/js/script.js"></script>
+
+
+    <!-- apexcharts js-->
+    <script src="https://ki-admin.test/assets/vendor/apexcharts/apexcharts.min.js"></script>
+
+    <!-- Glight js -->
+    <script src="https://ki-admin.test/assets//vendor/glightbox/glightbox.min.js"></script>
+
+    <!-- Ecommerce js-->
+    <script src="https://ki-admin.test/assets/js/ecommerce_dashboard.js"></script>
+
+<!-- scripts end-->
+
+
+
+
+
+<svg id="SvgjsSvg1164" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1165"></defs><polyline id="SvgjsPolyline1166" points="0,0"></polyline><path id="SvgjsPath1167" d="M-1 189.96359999999999L-1 189.96359999999999C-1 189.96359999999999 113.32131958007812 189.96359999999999 113.32131958007812 189.96359999999999C113.32131958007812 189.96359999999999 226.64263916015625 189.96359999999999 226.64263916015625 189.96359999999999C226.64263916015625 189.96359999999999 339.9639587402344 189.96359999999999 339.9639587402344 189.96359999999999C339.9639587402344 189.96359999999999 453.2852783203125 189.96359999999999 453.2852783203125 189.96359999999999C453.2852783203125 189.96359999999999 566.6065979003906 189.96359999999999 566.6065979003906 189.96359999999999C566.6065979003906 189.96359999999999 679.9279174804688 189.96359999999999 679.9279174804688 189.96359999999999C679.9279174804688 189.96359999999999 679.9279174804688 189.96359999999999 679.9279174804688 189.96359999999999 "></path></svg></body></html>

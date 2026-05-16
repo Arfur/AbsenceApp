@@ -3,8 +3,8 @@
    Project : AbsenceApp.Client
    Phase   : V2 Design System — Phase 3
    Created : 2026-03-21
-   Updated : 2026-04-12
-   Version : 2.4.0
+    Updated : 2026-05-15
+    Version : 2.6.0
    Purpose : Scoped styles for HeaderV2.razor.
              Uses V2 design tokens. Does not affect V1 .app-header.
    Changes :
@@ -21,13 +21,16 @@
                           240). Messages header teal, notifications header red.
                           Added row layout and avatar/icon circle classes.
                           Added user-menu coloured header styles.
+    - 2.5.0  2026-05-15  Global token audit: noted missing
+                     header/nav token families.
+    - 2.6.0  2026-05-15  Applied SQL-backed design tokens (Phase E Token Adoption).
 ============================================================================= */
 
 .dsv2-header {
     flex-shrink: 0;
     height: var(--ds-layout-header-h, 52px);
-    background: var(--ds-color-surface, #f5f6f8);
-    border-bottom: 1px solid var(--ds-color-border, #dde1e7);
+    background: var(--ds-nav-header-bg, #f5f6f8);
+    border-bottom: 1px solid var(--ds-nav-header-border, #dde1e7);
     display: flex;
     align-items: center;
     gap: 0;
@@ -40,8 +43,8 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    padding: 0 16px;
-    border-right: 1px solid var(--ds-color-border, #dde1e7);
+    padding: 0 var(--ds-space-4, 16px);
+    border-right: 1px solid var(--ds-nav-header-border, #dde1e7);
     height: 100%;
     transition: width var(--ds-transition-base, 0.20s ease);
 }
@@ -49,17 +52,17 @@
 .dsv2-header__logo-link {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: var(--ds-color-text, #2c3345);
-    font-weight: var(--ds-font-bold, 700);
-    font-size: 1rem;
+    gap: var(--ds-gap-sm, 8px);
+    color: var(--ds-nav-header-text, #2c3345);
+    font-weight: var(--ds-text-font-bold, 700);
+    font-size: var(--ds-text-size-md, 1rem);
     letter-spacing: 0.3px;
     text-decoration: none;
 }
 
 .dsv2-header__logo-icon {
-    font-size: 1.3rem;
-    color: var(--ds-color-accent, #2563eb);
+    font-size: var(--ds-icon-size-xl, 1.3rem);
+    color: var(--ds-icon-color-accent, #2563eb);
 }
 
 .dsv2-header__logo-text {
@@ -71,8 +74,8 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 0 16px;
+    gap: var(--ds-gap-sm, 8px);
+    padding: 0 var(--ds-space-4, 16px);
 }
 
 .dsv2-header__search-slot {
@@ -82,40 +85,40 @@
 .dsv2-header__search {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: var(--ds-color-bg, #eaecf0);
-    border: 1px solid var(--ds-color-border, #dde1e7);
-    border-radius: var(--ds-radius-search, 8px);
-    padding: 5px 12px;
+    gap: var(--ds-gap-sm, 8px);
+    background: var(--ds-surface-subtle, #eaecf0);
+    border: 1px solid var(--ds-border-default, #dde1e7);
+    border-radius: var(--ds-radius-md, 8px);
+    padding: var(--ds-space-1, 5px) var(--ds-space-3, 12px);
     flex: 1;
     max-width: 380px;
 }
 
 .dsv2-header__search i {
-    color: var(--ds-color-text-muted, #7b8494);
-    font-size: 0.9rem;
+    color: var(--ds-text-color-muted, #7b8494);
+    font-size: var(--ds-text-size-sm, 0.9rem);
 }
 
 .dsv2-header__search input {
     background: none;
     border: none;
     outline: none;
-    color: var(--ds-color-text, #2c3345);
-    font-size: 0.88rem;
+    color: var(--ds-text-color-primary, #2c3345);
+    font-size: var(--ds-text-size-sm, 0.88rem);
     font-family: var(--ds-font-sans, inherit);
     width: 100%;
 }
 
 .dsv2-header__search input::placeholder {
-    color: var(--ds-color-text-muted, #7b8494);
+    color: var(--ds-text-color-muted, #7b8494);
 }
 
 /* ── Right zone ────────────────────────────────────────────────────── */
 .dsv2-header__right {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 0 12px;
+    gap: var(--ds-space-1, 4px);
+    padding: 0 var(--ds-space-3, 12px);
 }
 
 /* ── Icon buttons ──────────────────────────────────────────────────── */
@@ -123,11 +126,11 @@
     position: relative;
     background: none;
     border: none;
-    color: var(--ds-color-text-muted, #7b8494);
-    font-size: 1.2rem;
+    color: var(--ds-text-color-muted, #7b8494);
+    font-size: var(--ds-icon-size-lg, 1.2rem);
     cursor: pointer;
-    padding: 6px 9px;
-    border-radius: var(--ds-radius-icon-btn, 7px);
+    padding: var(--ds-icon-btn-padding-md, 6px 9px);
+    border-radius: var(--ds-icon-btn-radius, 7px);
     line-height: 1;
     display: flex;
     align-items: center;
@@ -137,8 +140,8 @@
 }
 
 .dsv2-header__icon-btn:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
-    color: var(--ds-color-text, #2c3345);
+    background: var(--ds-surface-hover, #e8eaed);
+    color: var(--ds-text-color-primary, #2c3345);
 }
 
 /* ── Notification badge ────────────────────────────────────────────── */
@@ -146,11 +149,11 @@
     position: absolute;
     top: 2px;
     right: 3px;
-    background: var(--ds-color-danger, #dc2626);
-    color: #fff;
-    font-size: 0.6rem;
-    font-weight: var(--ds-font-bold, 700);
-    padding: 1px 4px;
+    background: var(--ds-nav-header-badge-notification-bg, #dc2626);
+    color: var(--ds-nav-header-badge-notification-text, #fff);
+    font-size: var(--ds-text-size-xs, 0.6rem);
+    font-weight: var(--ds-text-font-bold, 700);
+    padding: var(--ds-space-1, 1px) var(--ds-space-1, 4px);
     border-radius: var(--ds-radius-full, 9999px);
     line-height: 1.4;
     min-width: 16px;
@@ -177,53 +180,53 @@
     right: 0;
     min-width: 220px;
     max-width: 340px;
-    background: var(--ds-color-surface, #ffffff);
-    border: 1px solid var(--ds-color-border, #dde1e7);
-    border-radius: 0.5rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    background: var(--ds-nav-header-dropdown-bg, #ffffff);
+    border: 1px solid var(--ds-nav-header-dropdown-border, #dde1e7);
+    border-radius: var(--ds-radius-md, 0.5rem);
+    box-shadow: var(--ds-nav-header-dropdown-shadow, 0 8px 24px rgba(0, 0, 0, 0.12));
     z-index: 260;
     overflow: visible;
 }
 
 .dsv2-header__dd-header {
-    padding: 0.55rem 1rem;
-    font-size: 0.72rem;
-    font-weight: 700;
+    padding: var(--ds-space-3, 0.55rem) var(--ds-space-4, 1rem);
+    font-size: var(--ds-text-size-xs, 0.72rem);
+    font-weight: var(--ds-text-font-bold, 700);
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--ds-color-text-muted, #7b8494);
-    border-bottom: 1px solid var(--ds-color-border, #dde1e7);
+    color: var(--ds-text-color-muted, #7b8494);
+    border-bottom: 1px solid var(--ds-nav-header-dropdown-border, #dde1e7);
 }
 
 /* ── Coloured header block (messages / notifications) ──────────────────── */
 .dsv2-header__dd-hdr-coloured {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-    color: #fff;
+    gap: var(--ds-space-2, 0.5rem);
+    padding: var(--ds-space-3, 0.75rem) var(--ds-space-4, 1rem);
+    border-radius: var(--ds-radius-md, 0.5rem) var(--ds-radius-md, 0.5rem) 0 0;
+    color: var(--ds-text-color-inverse, #fff);
     border-bottom: none;
 }
 
 .dsv2-header__dd-hdr-coloured--msgs {
-    background: #20b2aa;
+    background: var(--ds-nav-header-dropdown-bg, #20b2aa);
 }
 
 .dsv2-header__dd-hdr-coloured--notifs {
-    background: #dc2626;
+    background: var(--ds-nav-header-badge-notification-bg, #dc2626);
 }
 
 .dsv2-header__dd-hdr-count {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: var(--ds-text-size-2xl, 1.75rem);
+    font-weight: var(--ds-text-font-bold, 800);
     line-height: 1;
     letter-spacing: -0.02em;
 }
 
 .dsv2-header__dd-hdr-label {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: var(--ds-text-size-xs, 0.75rem);
+    font-weight: var(--ds-text-font-bold, 700);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     opacity: 0.9;
@@ -243,19 +246,19 @@
 }
 
 .dsv2-header__dropdown--msgs::before {
-    border-bottom: 8px solid #20b2aa;
+    border-bottom: 8px solid var(--ds-nav-header-dropdown-bg, #20b2aa);
 }
 
 .dsv2-header__dropdown--notifs::before {
-    border-bottom: 8px solid #dc2626;
+    border-bottom: 8px solid var(--ds-nav-header-badge-notification-bg, #dc2626);
 }
 
 .dsv2-header__dd-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    padding: 0.55rem 1rem;
-    border-bottom: 1px solid var(--ds-color-bg, #f0f2f5);
+    gap: var(--ds-space-1, 2px);
+    padding: var(--ds-space-3, 0.55rem) var(--ds-space-4, 1rem);
+    border-bottom: 1px solid var(--ds-border-default, #f0f2f5);
     cursor: default;
 }
 
@@ -263,20 +266,20 @@
 .dsv2-header__dd-item--row {
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 1rem;
+    gap: var(--ds-space-3, 0.75rem);
+    padding: var(--ds-space-3, 0.65rem) var(--ds-space-4, 1rem);
 }
 
 .dsv2-header__dd-sender-avatar {
     width: 38px;
     height: 38px;
     border-radius: 9999px;
-    color: #fff;
+    color: var(--ds-text-color-inverse, #fff);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--ds-text-size-sm, 0.875rem);
+    font-weight: var(--ds-text-font-bold, 700);
     flex-shrink: 0;
     text-transform: uppercase;
     line-height: 1;
@@ -286,11 +289,11 @@
     width: 38px;
     height: 38px;
     border-radius: 9999px;
-    color: #fff;
+    color: var(--ds-text-color-inverse, #fff);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: var(--ds-text-size-md, 1rem);
     flex-shrink: 0;
 }
 
@@ -299,14 +302,14 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--ds-space-1, 2px);
 }
 
 .dsv2-header__dd-item-row1 {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 0.5rem;
+    gap: var(--ds-space-2, 0.5rem);
 }
 
 .dsv2-header__dd-item:last-child {
@@ -314,17 +317,17 @@
 }
 
 .dsv2-header__dd-item-title {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--ds-color-text, #2c3345);
+    font-size: var(--ds-text-size-xs, 0.8125rem);
+    font-weight: var(--ds-text-font-semibold, 600);
+    color: var(--ds-text-color-primary, #2c3345);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .dsv2-header__dd-item-preview {
-    font-size: 0.78rem;
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.78rem);
+    color: var(--ds-text-color-muted, #7b8494);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -332,8 +335,8 @@
 }
 
 .dsv2-header__dd-item-time {
-    font-size: 0.72rem;
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.72rem);
+    color: var(--ds-text-color-muted, #7b8494);
 }
 
 /* ── User menu dropdown ───────────────────────────────────────────────── */
@@ -346,35 +349,35 @@
 
 /* Coloured header inside user menu (orange — matches design reference) */
 .dsv2-header__dd-user-hdr {
-    background: #f59e0b;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-    color: #fff;
+    background: var(--ds-alert-warning-bg, #f59e0b);
+    padding: var(--ds-space-3, 0.75rem) var(--ds-space-4, 1rem);
+    border-radius: var(--ds-radius-md, 0.5rem) var(--ds-radius-md, 0.5rem) 0 0;
+    color: var(--ds-text-color-inverse, #fff);
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin-bottom: 0.25rem;
+    gap: var(--ds-space-1, 2px);
+    margin-bottom: var(--ds-space-1, 0.25rem);
 }
 
 .dsv2-header__dd-user-hdr-name {
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: var(--ds-text-size-sm, 0.9rem);
+    font-weight: var(--ds-text-font-bold, 700);
     line-height: 1.2;
 }
 
 .dsv2-header__dd-user-hdr-role {
-    font-size: 0.72rem;
+    font-size: var(--ds-text-size-xs, 0.72rem);
     opacity: 0.85;
 }
 
 .dsv2-header__dd-link {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: var(--ds-space-2, 0.55rem);
     width: 100%;
-    padding: 0.55rem 1rem;
-    font-size: 0.875rem;
-    color: var(--ds-color-text, #2c3345);
+    padding: var(--ds-space-3, 0.55rem) var(--ds-space-4, 1rem);
+    font-size: var(--ds-text-size-sm, 0.875rem);
+    color: var(--ds-text-color-primary, #2c3345);
     background: none;
     border: none;
     text-decoration: none;
@@ -385,56 +388,56 @@
 }
 
 .dsv2-header__dd-link:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
+    background: var(--ds-surface-hover, #e8eaed);
 }
 
 .dsv2-header__dd-link--danger {
-    color: var(--ds-color-danger, #dc2626);
+    color: var(--ds-alert-danger-text, #dc2626);
 }
 
 .dsv2-header__dd-link--danger:hover {
-    background: #fef2f2;
+    background: var(--ds-alert-danger-bg, #fef2f2);
 }
 
 .dsv2-header__dd-divider {
     height: 1px;
-    background: var(--ds-color-border, #dde1e7);
-    margin: 0.25rem 0;
+    background: var(--ds-border-default, #dde1e7);
+    margin: var(--ds-space-1, 0.25rem) 0;
 }
 
 /* ── User identity cluster button ─────────────────────────────────────── */
 .dsv2-header__user-wrap {
-    margin-left: 4px;
+    margin-left: var(--ds-space-1, 4px);
 }
 
 .dsv2-header__user-btn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--ds-space-2, 0.5rem);
     background: none;
     border: none;
-    border-radius: var(--ds-radius-icon-btn, 7px);
-    padding: 4px 8px;
+    border-radius: var(--ds-icon-btn-radius, 7px);
+    padding: var(--ds-space-1, 4px) var(--ds-space-2, 8px);
     cursor: pointer;
     transition: background var(--ds-transition-fast, 0.12s ease);
-    color: var(--ds-color-text, #2c3345);
+    color: var(--ds-text-color-primary, #2c3345);
 }
 
 .dsv2-header__user-btn:hover {
-    background: var(--ds-color-sidebar-hover, #e8eaed);
+    background: var(--ds-surface-hover, #e8eaed);
 }
 
 .dsv2-header__user-avatar {
     width: 30px;
     height: 30px;
     border-radius: var(--ds-radius-full, 9999px);
-    background: var(--ds-color-accent, #2563eb);
-    color: #ffffff;
+    background: var(--ds-icon-color-accent, #2563eb);
+    color: var(--ds-text-color-inverse, #ffffff);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: var(--ds-text-size-xs, 0.8rem);
+    font-weight: var(--ds-text-font-bold, 700);
     flex-shrink: 0;
     text-transform: uppercase;
     line-height: 1;
@@ -448,21 +451,21 @@
 }
 
 .dsv2-header__user-name {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--ds-color-accent, #2563eb);
+    font-size: var(--ds-text-size-xs, 0.8125rem);
+    font-weight: var(--ds-text-font-semibold, 600);
+    color: var(--ds-icon-color-accent, #2563eb);
     white-space: nowrap;
 }
 
 .dsv2-header__user-role {
-    font-size: 0.7rem;
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.7rem);
+    color: var(--ds-text-color-muted, #7b8494);
     white-space: nowrap;
 }
 
 .dsv2-header__user-chevron {
-    font-size: 0.75rem;
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.75rem);
+    color: var(--ds-text-color-muted, #7b8494);
     transition: transform var(--ds-transition-fast, 0.12s ease);
 }
 
@@ -472,19 +475,19 @@
 
 /* ── DEV ONLY: Authenticated role debug label ──────────────────────── */
 .dsv2-header__dd-debug {
-    padding: 6px 14px 4px;
-    border-bottom: 1px dashed var(--ds-color-border, #dde1e7);
-    margin-bottom: 2px;
+    padding: var(--ds-space-2, 6px) var(--ds-space-4, 14px) var(--ds-space-1, 4px);
+    border-bottom: 1px dashed var(--ds-border-default, #dde1e7);
+    margin-bottom: var(--ds-space-1, 2px);
     pointer-events: none;
 }
 
 .dsv2-header__dd-debug-label {
-    font-size: 0.72rem;
-    color: var(--ds-color-text-muted, #7b8494);
+    font-size: var(--ds-text-size-xs, 0.72rem);
+    color: var(--ds-text-color-muted, #7b8494);
     white-space: nowrap;
 }
 
 .dsv2-header__dd-debug-label strong {
-    color: #c026d3; /* distinct magenta — clearly dev artefact */
-    font-weight: 700;
+    color: var(--ds-icon-color-accent, #c026d3); /* distinct accent — clearly dev artefact */
+    font-weight: var(--ds-text-font-bold, 700);
 }

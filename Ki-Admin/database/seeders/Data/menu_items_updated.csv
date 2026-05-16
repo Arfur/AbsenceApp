@@ -1,0 +1,136 @@
+id,title,slug,is_visible,url,route_name,icon,icon_color,tooltip,badge_count,is_collapsible,permission_key,component,order,is_external,parent_id,display_order,menu_group,is_favorite,created_at,updated_at
+1,User Management,user-management,1,,dashboard,fas fa-tachometer-alt,#333,"Main dashboard",0,0,view_dashboard,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+2,Menu Management,menu-management,1,,dashboard.overview,fas fa-info-circle,#333,"System status overview",0,0,view_system_overview,,0,0,1,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+3,System Settings,system-settings,1,,dashboard.activity,fas fa-user-clock,#333,"Your recent activity",0,0,view_activity,,0,0,1,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+4,Notification Settings,notification-settings,1,,dashboard.quick,fas fa-bolt,#333,"Shortcuts for common actions",0,0,view_quick_actions,,0,0,1,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+5,Agent Dashboard,agent-dashboard,1,,dashboard.agent,fas fa-user-tie,#333,"Agent-specific dashboard",0,0,view_agent_dashboard,,0,0,1,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+6,Admin Dashboard,admin-dashboard,1,,dashboard.admin,fas fa-crown,#333,"Admin dashboard",0,0,view_admin_dashboard,,0,0,1,5,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+7,Settings,settings,1,,settings.index,fas fa-cog,#333,"System settings",0,1,view_settings,,0,0,,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+8,Help,help,1,,help.index,fas fa-question-circle,#333,"Help and onboarding",0,1,view_help,,0,0,,1,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+9,My Account,my-account,1,,account.index,fas fa-user-circle,#333,"Manage your account",0,1,view_account,,0,0,,1,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+10,Reports,reports,1,,reports.index,fas fa-chart-bar,#333,"View system reports",0,1,view_reports,,0,0,,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+11,Projects,projects,1,,projects.index,fas fa-project-diagram,#333,"Project management",0,1,view_projects,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+12,Tasks,tasks,1,,tasks.index,fas fa-tasks,#333,"Task management",0,1,view_tasks,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+13,Knowledge Base,knowledge-base,1,,knowledge.index,fas fa-book,#333,"Browse articles and guides",0,1,view_knowledge,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+14,Calendar,calendar,1,,calendar.index,fas fa-calendar,#333,"View calendar events",0,1,view_calendar,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+15,Email,email,1,,email.index,fas fa-envelope,#333,"Email inbox and settings",0,1,view_email,,0,0,,1,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+16,Assets & Files,assets-files,1,,files.index,fas fa-file,#333,"Manage files and uploads",0,1,view_files,,0,0,,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+17,Users & Roles,users-roles,1,,users.index,fas fa-users,#333,"User and role management",0,1,manage_users,,0,0,,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+18,Admin Tools,admin-tools,1,,admin.tools,fas fa-tools,#333,"Admin utilities",0,1,view_admin_tools,,0,0,,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+19,QA & Testing,qa-testing,1,,qa.index,fas fa-bug,#333,"Quality assurance and testing",0,1,view_qa,,0,0,,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+20,Integrations,integrations,1,,integrations.index,fas fa-puzzle-piece,#333,"Third-party integrations",0,1,view_integrations,,0,0,,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+21,Compliance,compliance,1,,compliance.index,fas fa-gavel,#333,"Compliance and audit",0,1,view_compliance,,0,0,,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+22,Sidebar & Navigation,sidebar-navigation,1,,menus.index,fas fa-bars,#333,"Sidebar and menu management",0,1,manage_menus,,0,0,,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+22,All Projects,all-projects,1,,projects.index,fas fa-list,#333,"List all projects",0,0,view_projects,,0,0,11,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+23,Create Project,create-project,1,,projects.create,fas fa-plus,#333,"Start a new project",0,0,create_project,,0,0,11,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+24,Project Overview,project-overview,1,,projects.overview,fas fa-eye,#333,"Project summary",0,0,view_project_overview,,0,0,11,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+25,Milestones,milestones,1,,projects.milestones,fas fa-flag,#333,"Project milestones",0,0,view_milestones,,0,0,11,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+26,Linked Tasks,linked-tasks,1,,projects.tasks,fas fa-link,#333,"Tasks linked to project",0,0,view_linked_tasks,,0,0,11,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+27,Linked Tickets,linked-tickets,1,,projects.tickets,fas fa-link,#333,"Tickets linked to project",0,0,view_linked_tickets,,0,0,11,6,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+28,Team Assignment,team-assignment,1,,projects.team,fas fa-users,#333,"Assign team members",0,0,manage_team_assignment,,0,0,11,7,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+29,Project Files,project-files,1,,projects.files,fas fa-folder,#333,"Files for this project",0,0,view_project_files,,0,0,11,8,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+30,Project Timeline,project-timeline,1,,projects.timeline,fas fa-calendar-alt,#333,"Project schedule and timeline",0,0,view_project_timeline,,0,0,11,9,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+31,Project Reports,project-reports,1,,projects.reports,fas fa-chart-bar,#333,"Project analytics and reports",0,0,view_project_reports,,0,0,11,10,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+32,Tasks,tasks,1,,tasks.index,fas fa-tasks,#333,"Task management",0,1,view_tasks,,0,0,,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+33,My Tasks,my-tasks,1,,tasks.my,fas fa-list,#333,"Your assigned tasks",0,0,view_my_tasks,,0,0,32,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+34,Team Tasks,team-tasks,1,,tasks.team,fas fa-users,#333,"Tasks for your team",0,0,view_team_tasks,,0,0,32,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+35,Task Templates,task-templates,1,,tasks.templates,fas fa-clipboard,#333,"Reusable task templates",0,0,view_task_templates,,0,0,32,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+36,Task Statuses,task-statuses,1,,tasks.statuses,fas fa-check-square,#333,"Task progress statuses",0,0,view_task_statuses,,0,0,32,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+37,Linked Projects,linked-projects,1,,tasks.projects,fas fa-link,#333,"Projects linked to task",0,0,view_linked_projects,,0,0,32,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+38,Linked Tickets,linked-tickets-tasks,1,,tasks.tickets,fas fa-link,#333,"Tickets linked to task",0,0,view_linked_tickets,,0,0,32,6,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+39,Calendar Sync,calendar-sync,1,,tasks.calendar,fas fa-sync,#333,"Sync tasks with calendar",0,0,manage_calendar_sync,,0,0,32,7,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+40,Knowledge Base,knowledge-base,1,,knowledge.index,fas fa-book,#333,"Browse articles and guides",0,1,view_knowledge,,0,0,,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+41,Browse Articles,browse-articles,1,,knowledge.browse,fas fa-search,#333,"Search knowledge base articles",0,0,browse_articles,,0,0,40,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+42,Manage Articles,manage-articles,1,,knowledge.manage,fas fa-cog,#333,"Edit and manage articles",0,0,manage_articles,,0,0,40,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+43,Categories,categories,1,,knowledge.categories,fas fa-folder,#333,"Article categories",0,0,view_categories,,0,0,40,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+44,Article Feedback,article-feedback,1,,knowledge.feedback,fas fa-comments,#333,"Feedback on articles",0,0,view_article_feedback,,0,0,40,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+45,Drafts & Review,drafts-review,1,,knowledge.drafts,fas fa-edit,#333,"Drafts and review queue",0,0,manage_drafts,,0,0,40,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+46,Calendar,calendar,1,,calendar.index,fas fa-calendar,#333,"View calendar events",0,1,view_calendar,,0,0,,6,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+47,My Calendar,my-calendar,1,,calendar.my,fas fa-user-clock,#333,"Your personal calendar",0,0,view_my_calendar,,0,0,46,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+48,Team Calendar,team-calendar,1,,calendar.team,fas fa-users,#333,"Team events calendar",0,0,view_team_calendar,,0,0,46,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+49,Ticket Deadlines,ticket-deadlines,1,,calendar.tickets,fas fa-clock,#333,"Deadlines for tickets",0,0,view_ticket_deadlines,,0,0,46,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+50,Task Deadlines,task-deadlines,1,,calendar.tasks,fas fa-clock,#333,"Deadlines for tasks",0,0,view_task_deadlines,,0,0,46,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+51,Event Types,event-types,1,,calendar.events,fas fa-star,#333,"Types of calendar events",0,0,view_event_types,,0,0,46,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+52,Sync Settings,sync-settings,1,,calendar.sync,fas fa-sync-alt,#333,"Calendar sync settings",0,0,manage_sync_settings,,0,0,46,6,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+53,Email,email,1,,email.index,fas fa-envelope,#333,"Email inbox and settings",0,1,view_email,,0,0,,7,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+54,Inbox,inbox,1,,email.inbox,fas fa-inbox,#333,"Your email inbox",0,0,view_inbox,,0,0,53,1,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+55,Sent,sent,1,,email.sent,fas fa-paper-plane,#333,"Sent emails",0,0,view_sent,,0,0,53,2,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+56,Drafts,drafts,1,,email.drafts,fas fa-edit,#333,"Draft emails",0,0,view_drafts,,0,0,53,3,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+57,Ticket Emails,ticket-emails,1,,email.tickets,fas fa-ticket-alt,#333,"Emails linked to tickets",0,0,view_ticket_emails,,0,0,53,4,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+58,Task Emails,task-emails,1,,email.tasks,fas fa-tasks,#333,"Emails linked to tasks",0,0,view_task_emails,,0,0,53,5,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+59,Email Templates,email-templates,1,,email.templates,fas fa-clipboard,#333,"Reusable email templates",0,0,manage_email_templates,,0,0,53,6,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+60,Email Settings,email-settings,1,,email.settings,fas fa-cog,#333,"Configure email settings",0,0,manage_email_settings,,0,0,53,7,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+61,Assets & Files,assets-files,1,,files.index,fas fa-file,#333,"Manage files and uploads",0,1,view_files,,0,0,,8,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+62,Upload File,upload-file,1,,files.upload,fas fa-upload,#333,"Upload a new file",0,0,upload_file,,0,0,61,1,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+63,My Files,my-files,1,,files.my,fas fa-folder-open,#333,"Your personal files",0,0,view_my_files,,0,0,61,2,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+64,Shared Files,shared-files,1,,files.shared,fas fa-share-alt,#333,"Files shared with you",0,0,view_shared_files,,0,0,61,3,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+65,Ticket Attachments,ticket-attachments,1,,files.tickets,fas fa-paperclip,#333,"Attachments for tickets",0,0,view_ticket_attachments,,0,0,61,4,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+66,Task Documents,task-documents,1,,files.tasks,fas fa-file-alt,#333,"Documents for tasks",0,0,view_task_documents,,0,0,61,5,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+67,Knowledge Base Assets,kb-assets,1,,files.knowledge,fas fa-book-open,#333,"Assets for knowledge base",0,0,view_kb_assets,,0,0,61,6,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+68,Image Library,image-library,1,,files.images,fas fa-images,#333,"Library of images",0,0,view_image_library,,0,0,61,7,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+69,File Tags,file-metadata,1,,files.metadata,fas fa-tags,#333,"File tags and metadata",0,0,manage_file_metadata,,0,0,61,8,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+70,Expiry & Retention Rules,file-retention,1,,files.retention,fas fa-clock,#333,"File expiry and retention rules",0,0,manage_file_retention,,0,0,61,9,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+71,File Access Logs,file-logs,1,,files.logs,fas fa-history,#333,"Logs of file access",0,0,view_file_logs,,0,0,61,10,main,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+72,Reports,reports,1,,reports.index,fas fa-chart-bar,#333,"System and activity reports",0,1,view_reports,,0,0,,9,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+73,Ticket Statistics,ticket-statistics,1,,reports.tickets,fas fa-chart-line,#333,"Statistics for tickets",0,0,view_ticket_statistics,,0,0,72,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+74,Task Completion Rates,task-completion,1,,reports.tasks,fas fa-check,#333,"Task completion analytics",0,0,view_task_completion,,0,0,72,2,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+75,Agent Performance,agent-performance,1,,reports.agents,fas fa-user-check,#333,"Agent performance metrics",0,0,view_agent_performance,,0,0,72,3,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+76,Customer Satisfaction,customer-satisfaction,1,,reports.satisfaction,fas fa-smile,#333,"Customer satisfaction analytics",0,0,view_customer_satisfaction,,0,0,72,4,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+77,System Logs,system-logs,1,,reports.logs,fas fa-file-alt,#333,"System activity logs",0,0,view_system_logs,,0,0,72,5,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+78,Export Center,export-center,1,,reports.export,fas fa-download,#333,"Export data and reports",0,0,manage_export_center,,0,0,72,6,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+79,Users & Roles,users-roles,1,,users.index,fas fa-users,#333,"User and role management",0,1,manage_users,,0,0,,10,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+80,All Users,all-users,1,,users.index,fas fa-list,#333,"List all users",0,0,view_all_users,,0,0,79,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+81,Add New User,add-user,1,,users.create,fas fa-plus,#333,"Create a new user",0,0,add_user,,0,0,79,2,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+82,User Activity,user-activity,1,,users.activity,fas fa-history,#333,"User activity logs",0,0,view_user_activity,,0,0,79,3,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+83,Modern Dashboard,modern-dashboard,1,,users.modern,fas fa-th-large,#333,"Modern user dashboard",0,0,view_modern_dashboard,,0,0,79,4,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+84,Roles & Permissions,roles-permissions,1,,roles.index,fas fa-shield-alt,#333,"Manage roles and permissions",0,0,manage_roles_permissions,,0,0,79,5,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+85,Role Menu Assignment,role-menu-assignment,1,,roles.menus,fas fa-user-tag,#333,"Assign menus to roles",0,0,assign_role_menus,,0,0,79,6,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+86,User Menu Override,user-menu-override,1,,users.menus,fas fa-user-cog,#333,"Override user menu items",0,0,override_user_menu,,0,0,79,7,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+87,Settings,settings,1,,settings.index,fas fa-cog,#333,"System settings",0,1,view_settings,,0,0,,11,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+88,System Settings,system-settings,1,,settings.system,fas fa-server,#333,"Configure system settings",0,0,manage_system_settings,,0,0,87,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+89,Email Settings,email-settings-main,1,,settings.email,fas fa-envelope,#333,"Configure email settings",0,0,manage_email_settings,,0,0,87,2,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+90,Ticket Settings,ticket-settings,1,,settings.tickets,fas fa-ticket-alt,#333,"Configure ticket settings",0,0,manage_ticket_settings,,0,0,87,3,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+91,Task Settings,task-settings,1,,settings.tasks,fas fa-tasks,#333,"Configure task settings",0,0,manage_task_settings,,0,0,87,4,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+92,Notification Settings,notification-settings,1,,settings.notifications,fas fa-bell,#333,"Configure notification settings",0,0,manage_notification_settings,,0,0,87,5,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+93,Security Settings,security-settings,1,,settings.security,fas fa-shield-alt,#333,"Configure security settings",0,0,manage_security_settings,,0,0,87,6,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+94,API & Integrations,api-integrations,1,,settings.api,fas fa-plug,#333,"API and integration settings",0,0,manage_api_integrations,,0,0,87,7,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+95,Audit Trail,audit-trail,1,,settings.audit,fas fa-history,#333,"Audit logs and history",0,0,view_audit_trail,,0,0,87,8,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+96,Admin Tools,admin-tools,1,,admin.tools,fas fa-tools,#333,"Admin utilities and tools",0,1,view_admin_tools,,0,0,,12,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+97,Data Import/Export,data-import-export,1,,admin.data,fas fa-exchange-alt,#333,"Import or export data",0,0,manage_data_import_export,,0,0,96,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+98,Migration Viewer,migration-viewer,1,,admin.migrations,fas fa-database,#333,"View database migrations",0,0,view_migration_viewer,,0,0,96,2,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+99,Seeder Manager,seeder-manager,1,,admin.seeders,fas fa-seedling,#333,"Manage database seeders",0,0,manage_seeder_manager,,0,0,96,3,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+100,Cache & Queue Monitor,cache-queue,1,,admin.cache,fas fa-tachometer-alt,#333,"Monitor cache and queue",0,0,view_cache_queue,,0,0,96,4,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+101,System Health Check,health-check,1,,admin.health,fas fa-heartbeat,#333,"Monitor system health",0,0,view_system_health,,0,0,96,5,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+102,QA & Testing,qa-testing,1,,qa.index,fas fa-bug,#333,"Quality assurance and testing",0,1,view_qa,,0,0,,13,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+103,Test Scenarios,test-scenarios,1,,qa.scenarios,fas fa-list-ol,#333,"List of test scenarios",0,0,view_test_scenarios,,0,0,102,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+104,Mock Tickets,mock-tickets,1,,qa.mock,fas fa-ticket-alt,#333,"Mock tickets for testing",0,0,view_mock_tickets,,0,0,102,2,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+105,UI Component Preview,ui-preview,1,,qa.ui,fas fa-eye,#333,"Preview UI components",0,0,view_ui_preview,,0,0,102,3,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+106,Regression Checklist,regression-checklist,1,,qa.regression,fas fa-check-double,#333,"Regression test checklist",0,0,view_regression_checklist,,0,0,102,4,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+107,Integrations,integrations,1,,integrations.index,fas fa-puzzle-piece,#333,"Third-party integrations",0,1,view_integrations,,0,0,,14,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+108,Webhooks,webhooks,1,,integrations.webhooks,fas fa-link,#333,"Manage webhooks",0,0,manage_webhooks,,0,0,107,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+109,Third-Party Apps,third-party,1,,integrations.apps,fas fa-cubes,#333,"Manage third-party apps",0,0,manage_third_party_apps,,0,0,107,2,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+110,Slack / Teams Notifications,slack-teams,1,,integrations.notifications,fab fa-slack,#333,"Slack and Teams notifications",0,0,manage_slack_teams,,0,0,107,3,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+111,CRM Sync,crm-sync,1,,integrations.crm,fas fa-sync,#333,"Sync with CRM systems",0,0,manage_crm_sync,,0,0,107,4,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+112,Custom API Endpoints,custom-api,1,,integrations.api,fas fa-code,#333,"Manage custom API endpoints",0,0,manage_custom_api,,0,0,107,5,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+113,Compliance,compliance,1,,compliance.index,fas fa-gavel,#333,"Compliance and audit",0,1,view_compliance,,0,0,,15,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+114,Audit Logs,audit-logs,1,,compliance.audit,fas fa-history,#333,"Audit logs for compliance",0,0,view_audit_logs,,0,0,113,1,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+115,Data Retention Policies,data-retention,1,,compliance.retention,fas fa-clock,#333,"Data retention policies",0,0,manage_data_retention,,0,0,113,2,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+116,GDPR Tools,gdpr-tools,1,,compliance.gdpr,fas fa-shield-alt,#333,"GDPR compliance tools",0,0,manage_gdpr_tools,,0,0,113,3,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+117,Access Reviews,access-reviews,1,,compliance.access,fas fa-user-check,#333,"Review user access",0,0,manage_access_reviews,,0,0,113,4,admin,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+118,Help & Onboarding,help-onboarding,1,,help.index,fas fa-question-circle,#333,"Help and onboarding resources",0,1,view_help,,0,0,,16,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+119,Getting Started,getting-started,1,,help.started,fas fa-play,#333,"Getting started guide",0,0,view_getting_started,,0,0,118,1,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+120,Feature Walkthroughs,feature-walkthroughs,1,,help.features,fas fa-route,#333,"Feature walkthroughs",0,0,view_feature_walkthroughs,,0,0,118,2,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+121,FAQ,faq,1,,help.faq,fas fa-question,#333,"Frequently asked questions",0,0,view_faq,,0,0,118,3,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+122,Contact Support,contact-support,1,,help.contact,fas fa-envelope,#333,"Contact support team",0,0,contact_support,,0,0,118,4,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+123,Submit Feedback,submit-feedback,1,,help.feedback,fas fa-comment,#333,"Submit feedback or suggestions",0,0,submit_feedback,,0,0,118,5,help,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+124,My Account,my-account,1,,account.index,fas fa-user-circle,#333,"Manage your account",0,1,view_account,,0,0,,17,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+125,Edit Profile,edit-profile,1,,account.profile,fas fa-user-edit,#333,"Edit your profile",0,0,edit_profile,,0,0,124,1,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+126,Change Password,change-password,1,,account.password,fas fa-key,#333,"Change your password",0,0,change_password,,0,0,124,2,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+127,Two-Factor Authentication,two-factor-auth,1,,account.two-factor,fas fa-shield-alt,#333,"Enable two-factor authentication",0,0,manage_two_factor,,0,0,124,3,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+128,Active Sessions,active-sessions,1,,account.sessions,fas fa-list-alt,#333,"View active sessions",0,0,view_active_sessions,,0,0,124,4,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+129,My Notifications,my-notifications,1,,account.notifications,fas fa-bell,#333,"Your notifications",0,0,view_my_notifications,,0,0,124,5,user,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+130,Sidebar & Navigation,sidebar-navigation,1,,menus.index,fas fa-bars,#333,"Sidebar and menu management",0,1,manage_menus,,0,0,,18,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+131,Menu Management,menu-management,1,,menus.index,fas fa-list,#333,"Manage sidebar menus",0,1,manage_menu_management,,0,0,130,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+132,Reorder Sidebar,reorder-sidebar,1,,menus.reorder,fas fa-sort,#333,"Reorder sidebar items",0,0,reorder_sidebar,,0,0,131,1,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+133,Role Menu Assignment,role-menu-assignment-sub,1,,menus.roles,fas fa-user-tag,#333,"Assign menus to roles",0,0,assign_role_menus,,0,0,131,2,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00
+134,User Menu Override,user-menu-override-sub,1,,menus.users,fas fa-user-cog,#333,"Override user menu items",0,0,override_user_menu,,0,0,131,3,settings,0,2025-08-08 00:00:00,2025-08-08 00:00:00

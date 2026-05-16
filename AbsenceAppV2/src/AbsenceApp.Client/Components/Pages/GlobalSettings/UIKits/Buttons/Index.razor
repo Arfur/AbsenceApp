@@ -1,199 +1,319 @@
-@* ============================================================================
+@* ===========================================================================
    File        : Index.razor
-   Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
-   Author      : Michael
-   Version     : 1.0.0
-   Created     : 2026-05-14
-   Updated     : 2026-05-14
-   Changes     : 1.0.0 — 2026-05-14 — Full UIKits Buttons page implementation.
-                 Replaced placeholder with two-group accordion CSS editor.
-   ============================================================================ *@
-@page "/globalsettings/ui-kits/buttons"
-@layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
-@namespace AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
+   Author      : GitHub Copilot
+   Version     : 6.0.0
+   Created     : 2026-03-30
+   Updated     : 2026-05-15
+   ---------------------------------------------------------------------------
+   Purpose     : Buttons3 UX layout with full Ki-Admin parity (one set per row).
+                 - Accordion cards
+                 - Real button variant selectors
+                 - CSS code panel with Edit / Save, Cancel, Preview flow
+                 - All sections collapsed by default
+   =========================================================================== *@
 
-@* Loading / error states *@
-@if (!_tokensLoaded)
-{
-    @if (_initError is not null)
+@page "/globalsettings/ui-kits/buttons"
+
+<div class="btp-page">
+    <div class="btp-header">
+        <h1>Buttons</h1>
+        <p>UI Kits</p>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="btp-loading">Loading button sets…</div>
+    }
+    else if (!string.IsNullOrWhiteSpace(_initError))
     {
         <div class="btp-init-error">@_initError</div>
     }
     else
     {
-        <div class="btp-loading">Loading button tokens&hellip;</div>
+        @foreach (var state in GroupStates)
+        {
+            <section class="btp-group-card">
+                <header class="btp-group-header">
+                    <h2 class="btp-group-title">@state.GroupTitle</h2>
+                    <button type="button"
+                            class="btp-accordion-toggle @(state.AccordionOpen ? "btp-accordion-toggle--open" : string.Empty)"
+                            title="Toggle CSS editor"
+                            aria-label="Toggle CSS editor"
+                            @onclick="() => OnToggleAccordion(state)">
+                        &lt;/&gt;
+                    </button>
+                </header>
+
+                <div id="btn-demo-@state.GroupKey" class="btp-demo-row">
+                    @if (!string.IsNullOrWhiteSpace(state.PreviewCss))
+                    {
+                        <style>@state.PreviewCss</style>
+                    }
+
+                    @switch (state.GroupKey)
+                    {
+                        case "icon":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <button type="button"
+                                        class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
+                                        aria-label="@variant.Label"
+                                        @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                    @switch (variant.Key)
+                                    {
+                                        case "icon-fill-primary":
+                                            <i class="ti ti-capture" aria-hidden="true"></i>
+                                            break;
+                                        case "icon-fill-secondary":
+                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
+                                            break;
+                                        case "icon-outline-primary":
+                                            <i class="ti ti-capture" aria-hidden="true"></i>
+                                            break;
+                                        case "icon-outline-secondary":
+                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
+                                            break;
+                                        case "icon-soft-primary":
+                                            <i class="ti ti-capture" aria-hidden="true"></i>
+                                            break;
+                                        default:
+                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
+                                            break;
+                                    }
+                                </button>
+                            }
+                            break;
+
+                        case "social":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <button type="button"
+                                        class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
+                                        aria-label="@variant.Label"
+                                        @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                    @if (variant.Key == "social-facebook")
+                                    {
+                                        <i class="ti ti-brand-facebook" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-twitter")
+                                    {
+                                        <i class="ti ti-brand-twitter" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-instagram")
+                                    {
+                                        <i class="ti ti-brand-instagram" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-reddit")
+                                    {
+                                        <i class="ti ti-brand-reddit" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-whatsapp")
+                                    {
+                                        <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-linkedin")
+                                    {
+                                        <i class="ti ti-brand-linkedin" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-telegram")
+                                    {
+                                        <i class="ti ti-brand-telegram" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-youtube")
+                                    {
+                                        <i class="ti ti-brand-youtube" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-behance")
+                                    {
+                                        <i class="ti ti-brand-behance" aria-hidden="true"></i>
+                                    }
+                                    else if (variant.Key == "social-dribbble")
+                                    {
+                                        <i class="ti ti-brand-dribbble" aria-hidden="true"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="ti ti-brand-snapchat" aria-hidden="true"></i>
+                                    }
+                                </button>
+                            }
+                            break;
+
+                        case "loading":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <button type="button"
+                                        class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
+                                        @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                    @if (variant.Key.Contains("pulse", StringComparison.OrdinalIgnoreCase) || variant.Key.Contains("danger", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="btp-dot-loader" aria-hidden="true"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    }
+                                    <span>@variant.Label...</span>
+                                </button>
+                            }
+                            break;
+
+                        case "block":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <button type="button"
+                                        class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
+                                        @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                    @variant.Label
+                                </button>
+                            }
+                            break;
+
+                        case "groups":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <div class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)">
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Active link</button>
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Link</button>
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Link</button>
+                                </div>
+                            }
+                            break;
+
+                        case "nested":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <div class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)">
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">1</button>
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">2</button>
+                                    <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                        Dropdown <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            }
+                            break;
+
+                        case "checkradio":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <div class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)">
+                                    @if (variant.Key == "checkbox-line")
+                                    {
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Checkbox 1</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Checkbox 2</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Checkbox 3</button>
+                                    }
+                                    else if (variant.Key == "radio-line")
+                                    {
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 1</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 2</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 3</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">1</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">2</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">3</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">4</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">8</button>
+                                    }
+                                </div>
+                            }
+                            break;
+
+                        case "vertical":
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <div class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)">
+                                    @if (variant.Key == "vertical-radio")
+                                    {
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 1</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 2</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Radio 3</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Button</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">Button</button>
+                                        <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                            @(variant.Key == "vertical-solid" || variant.Key == "vertical-soft" ? "Dropdown" : "Button")
+                                            @if (variant.Key == "vertical-solid" || variant.Key == "vertical-soft")
+                                            {
+                                                <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                                            }
+                                        </button>
+                                    }
+                                </div>
+                            }
+                            break;
+
+                        default:
+                            @foreach (var variant in state.Variants)
+                            {
+                                var selected = IsSelected(state, variant);
+                                <button type="button"
+                                        class="dsv2-btn @variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
+                                        @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
+                                    @if (state.GroupKey is "active" or "disabled" or "sizes")
+                                    {
+                                        <i class="ti ti-download" aria-hidden="true"></i>
+                                    }
+                                    @variant.Label
+                                </button>
+                            }
+                            break;
+                    }
+                </div>
+
+                @if (state.AccordionOpen)
+                {
+                    <div class="btp-accordion-panel">
+                        <textarea class="btp-editor @(state.IsEditing ? "btp-editor--active" : string.Empty)"
+                                  readonly="@(!state.IsEditing)"
+                                  value="@state.EditorText"
+                                  @oninput="(e => OnEditorInput(state, e.Value?.ToString() ?? string.Empty))"></textarea>
+
+                        <div class="btp-action-row">
+                            <button type="button"
+                                    class="btp-btn-edit"
+                                    disabled="@state.IsSaving"
+                                    @onclick="() => OnEditSaveClickedAsync(state)">
+                                @(state.IsEditing ? (state.IsSaving ? "Saving..." : "Save") : "Edit")
+                            </button>
+
+                            @if (state.IsEditing)
+                            {
+                                <button type="button"
+                                        class="btp-btn-cancel"
+                                        @onclick="() => OnCancelClicked(state)">
+                                    Cancel
+                                </button>
+
+                                <button type="button"
+                                        class="btp-btn-preview"
+                                        @onclick="() => OnPreviewClicked(state)">
+                                    Preview
+                                </button>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(state.StatusMessage))
+                        {
+                            <div class="btp-status @(state.StatusIsError ? "btp-status--error" : "btp-status--success")">
+                                @state.StatusMessage
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+        }
     }
-}
-else
-{
-    <div class="btp-page">
-
-        @* ── BASIC BUTTONS GROUP ─────────────────────────────────────────── *@
-        <div class="btp-group-card">
-
-            <div class="btp-group-header">
-                <h3 class="btp-group-title">@_basicState.GroupTitle</h3>
-                <button type="button"
-                        class="btp-accordion-toggle @(_basicState.AccordionOpen ? "btp-accordion-toggle--open" : "")"
-                        title="Toggle CSS editor"
-                        @onclick="() => OnToggleAccordion(_basicState)">
-                    &lt;/&gt;
-                </button>
-            </div>
-
-            <div class="btp-demo-row" id="btn-demo-@_basicState.GroupKey">
-                @foreach (var variant in _basicState.Variants)
-                {
-                    <button type="button"
-                            class="dsv2-btn @variant.CssClass @(IsSelected(_basicState, variant) && _basicState.AccordionOpen ? "btp-btn--selected" : "")"
-                            @onclick="() => OnSelectedVariantChanged(_basicState, variant.Key)">
-                        @variant.Label
-                    </button>
-                }
-                @if (_basicState.PreviewCss is not null)
-                {
-                    <style id="preview-css-@_basicState.GroupKey">@((MarkupString)_basicState.PreviewCss)</style>
-                }
-            </div>
-
-            @if (_basicState.AccordionOpen)
-            {
-                <div class="btp-accordion-panel">
-
-                    @if (_basicState.Variants.FirstOrDefault(v => v.Key == _basicState.SelectedVariantKey) is { IsEditable: false })
-                    {
-                        <p class="btp-editor-readonly-note">
-                            This variant has no design tokens. CSS is read-only.
-                        </p>
-                    }
-
-                    <textarea class="btp-editor @(_basicState.IsEditing ? "btp-editor--active" : "")"
-                              readonly="@(!_basicState.IsEditing)"
-                              @bind="_basicState.EditorText"
-                              @bind:event="oninput"
-                              spellcheck="false"
-                              rows="10"></textarea>
-
-                    <div class="btp-action-row">
-                        @if (_basicState.Variants.FirstOrDefault(v => v.Key == _basicState.SelectedVariantKey)?.IsEditable == true)
-                        {
-                            <button type="button"
-                                    class="btp-btn-edit"
-                                    @onclick="() => OnEditSaveClickedAsync(_basicState)">
-                                @(_basicState.IsEditing ? "Save" : "Edit")
-                            </button>
-                        }
-                        @if (_basicState.IsEditing)
-                        {
-                            <button type="button"
-                                    class="btp-btn-cancel"
-                                    @onclick="() => OnCancelClicked(_basicState)">
-                                Cancel
-                            </button>
-                            <button type="button"
-                                    class="btp-btn-preview"
-                                    @onclick="() => OnPreviewClicked(_basicState)">
-                                Preview
-                            </button>
-                        }
-                        @if (_basicState.StatusMessage is not null)
-                        {
-                            <span class="btp-status @(_basicState.StatusIsError ? "btp-status--error" : "btp-status--success")">
-                                @_basicState.StatusMessage
-                            </span>
-                        }
-                    </div>
-
-                </div>
-            }
-        </div>
-
-        @* ── OUTLINE BUTTONS GROUP ───────────────────────────────────────── *@
-        <div class="btp-group-card">
-
-            <div class="btp-group-header">
-                <h3 class="btp-group-title">@_outlineState.GroupTitle</h3>
-                <button type="button"
-                        class="btp-accordion-toggle @(_outlineState.AccordionOpen ? "btp-accordion-toggle--open" : "")"
-                        title="Toggle CSS editor"
-                        @onclick="() => OnToggleAccordion(_outlineState)">
-                    &lt;/&gt;
-                </button>
-            </div>
-
-            <div class="btp-demo-row" id="btn-demo-@_outlineState.GroupKey">
-                @foreach (var variant in _outlineState.Variants)
-                {
-                    <button type="button"
-                            class="dsv2-btn @variant.CssClass @(IsSelected(_outlineState, variant) && _outlineState.AccordionOpen ? "btp-btn--selected" : "")"
-                            @onclick="() => OnSelectedVariantChanged(_outlineState, variant.Key)">
-                        @variant.Label
-                    </button>
-                }
-                @if (_outlineState.PreviewCss is not null)
-                {
-                    <style id="preview-css-@_outlineState.GroupKey">@((MarkupString)_outlineState.PreviewCss)</style>
-                }
-            </div>
-
-            @if (_outlineState.AccordionOpen)
-            {
-                <div class="btp-accordion-panel">
-
-                    @if (_outlineState.Variants.FirstOrDefault(v => v.Key == _outlineState.SelectedVariantKey) is { IsEditable: false })
-                    {
-                        <p class="btp-editor-readonly-note">
-                            This variant has no design tokens. CSS is read-only.
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="btp-editor-token-note">
-                            Note: Editing outline colours updates the shared token for the
-                            corresponding filled button variant.
-                        </p>
-                    }
-
-                    <textarea class="btp-editor @(_outlineState.IsEditing ? "btp-editor--active" : "")"
-                              readonly="@(!_outlineState.IsEditing)"
-                              @bind="_outlineState.EditorText"
-                              @bind:event="oninput"
-                              spellcheck="false"
-                              rows="10"></textarea>
-
-                    <div class="btp-action-row">
-                        @if (_outlineState.Variants.FirstOrDefault(v => v.Key == _outlineState.SelectedVariantKey)?.IsEditable == true)
-                        {
-                            <button type="button"
-                                    class="btp-btn-edit"
-                                    @onclick="() => OnEditSaveClickedAsync(_outlineState)">
-                                @(_outlineState.IsEditing ? "Save" : "Edit")
-                            </button>
-                        }
-                        @if (_outlineState.IsEditing)
-                        {
-                            <button type="button"
-                                    class="btp-btn-cancel"
-                                    @onclick="() => OnCancelClicked(_outlineState)">
-                                Cancel
-                            </button>
-                            <button type="button"
-                                    class="btp-btn-preview"
-                                    @onclick="() => OnPreviewClicked(_outlineState)">
-                                Preview
-                            </button>
-                        }
-                        @if (_outlineState.StatusMessage is not null)
-                        {
-                            <span class="btp-status @(_outlineState.StatusIsError ? "btp-status--error" : "btp-status--success")">
-                                @_outlineState.StatusMessage
-                            </span>
-                        }
-                    </div>
-
-                </div>
-            }
-        </div>
-
-    </div>
-}
+</div>
