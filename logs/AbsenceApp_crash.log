@@ -761,3 +761,23 @@ Error Number:208,State:1,Class:16
    at AbsenceApp.Client.Framework.Layout.PageHeaderV2.UpdateAsync(String uri) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\PageHeaderV2.razor:line 205
    at AbsenceApp.Client.Framework.Layout.PageHeaderV2.OnInitializedAsync() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Framework\Layout\PageHeaderV2.razor:line 120
    at Microsoft.AspNetCore.Components.ComponentBase.RunInitAndSetParametersAsync()
+[21:00:26] ErrorBoundary: System.InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at AbsenceApp.Data.Services.AuthService.LoginAsync(String username, String password) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Services\AuthService.cs:line 70
+   at AbsenceApp.Client.Components.Pages.Login.DoLogin() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Components\Pages\Login.razor:line 211
+   at AbsenceApp.Client.Components.Pages.Login.HandleKeyDown(KeyboardEventArgs e) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Components\Pages\Login.razor:line 177
+   at Microsoft.AspNetCore.Components.ComponentBase.CallStateHasChangedOnAsyncCompletion(Task task)
+   at Microsoft.AspNetCore.Components.RenderTree.Renderer.GetErrorHandledTask(Task taskToHandle, ComponentState owningComponentState)
+[21:00:26] ErrorBoundary: System.InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.ConcurrencyDetector.EnterCriticalSection()
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at AbsenceApp.Data.Services.AuthService.LoginAsync(String username, String password) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Data\Services\AuthService.cs:line 70
+   at AbsenceApp.Client.Components.Pages.Login.DoLogin() in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Components\Pages\Login.razor:line 211
+   at AbsenceApp.Client.Components.Pages.Login.HandleKeyDown(KeyboardEventArgs e) in C:\DevAbsence1\AbsenceAppV2\src\AbsenceApp.Client\Components\Pages\Login.razor:line 177
+   at Microsoft.AspNetCore.Components.ComponentBase.CallStateHasChangedOnAsyncCompletion(Task task)
+   at Microsoft.AspNetCore.Components.RenderTree.Renderer.GetErrorHandledTask(Task taskToHandle, ComponentState owningComponentState)

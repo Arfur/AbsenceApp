@@ -1,9 +1,11 @@
 @* ===========================================================================
    File        : Index.razor
    Author      : GitHub Copilot
-   Version     : 6.0.0
+   Version     : 6.1.0
    Created     : 2026-03-30
-   Updated     : 2026-05-15
+   Updated     : 18/05/2026
+   Changes     : Phase 2 — Removed icon from Active/Disabled/Sizes default render;
+                 loading case now uses btp-pulse-loader for pulse/danger variants.
    ---------------------------------------------------------------------------
    Purpose     : Buttons3 UX layout with full Ki-Admin parity (one set per row).
                  - Accordion cards
@@ -53,34 +55,53 @@
                     @switch (state.GroupKey)
                     {
                         case "icon":
+                            <div class="btp-icon-row">
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--primary @(state.SelectedVariantKey == "icon-1" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-1")'>
+                                    <i class="bi bi-download"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--secondary @(state.SelectedVariantKey == "icon-2" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-2")'>
+                                    <i class="bi bi-bell"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--outline-primary @(state.SelectedVariantKey == "icon-3" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-3")'>
+                                    <i class="bi bi-gear"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--outline-secondary @(state.SelectedVariantKey == "icon-4" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-4")'>
+                                    <i class="bi bi-alarm"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--soft-primary @(state.SelectedVariantKey == "icon-5" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-5")'>
+                                    <i class="bi bi-camera"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="dsv2-btn dsv2-btn--soft-secondary @(state.SelectedVariantKey == "icon-6" ? "btp-btn--selected" : string.Empty)"
+                                        @onclick='() => OnSelectedVariantChanged(state, "icon-6")'>
+                                    <i class="bi bi-image"></i>
+                                </button>
+                            </div>
+                            break;
+
+                        case "radius":
                             @foreach (var variant in state.Variants)
                             {
                                 var selected = IsSelected(state, variant);
                                 <button type="button"
                                         class="@variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
-                                        aria-label="@variant.Label"
                                         @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
-                                    @switch (variant.Key)
-                                    {
-                                        case "icon-fill-primary":
-                                            <i class="ti ti-capture" aria-hidden="true"></i>
-                                            break;
-                                        case "icon-fill-secondary":
-                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
-                                            break;
-                                        case "icon-outline-primary":
-                                            <i class="ti ti-capture" aria-hidden="true"></i>
-                                            break;
-                                        case "icon-outline-secondary":
-                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
-                                            break;
-                                        case "icon-soft-primary":
-                                            <i class="ti ti-capture" aria-hidden="true"></i>
-                                            break;
-                                        default:
-                                            <i class="ti ti-bell-ringing" aria-hidden="true"></i>
-                                            break;
-                                    }
+                                    @variant.Label
                                 </button>
                             }
                             break;
@@ -95,47 +116,47 @@
                                         @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
                                     @if (variant.Key == "social-facebook")
                                     {
-                                        <i class="ti ti-brand-facebook" aria-hidden="true"></i>
+                                        <i class="bi bi-facebook" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-twitter")
                                     {
-                                        <i class="ti ti-brand-twitter" aria-hidden="true"></i>
+                                        <i class="bi bi-twitter" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-instagram")
                                     {
-                                        <i class="ti ti-brand-instagram" aria-hidden="true"></i>
+                                        <i class="bi bi-instagram" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-reddit")
                                     {
-                                        <i class="ti ti-brand-reddit" aria-hidden="true"></i>
+                                        <i class="bi bi-reddit" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-whatsapp")
                                     {
-                                        <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
+                                        <i class="bi bi-whatsapp" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-linkedin")
                                     {
-                                        <i class="ti ti-brand-linkedin" aria-hidden="true"></i>
+                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-telegram")
                                     {
-                                        <i class="ti ti-brand-telegram" aria-hidden="true"></i>
+                                        <i class="bi bi-telegram" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-youtube")
                                     {
-                                        <i class="ti ti-brand-youtube" aria-hidden="true"></i>
+                                        <i class="bi bi-youtube" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-behance")
                                     {
-                                        <i class="ti ti-brand-behance" aria-hidden="true"></i>
+                                        <i class="bi bi-behance" aria-hidden="true"></i>
                                     }
                                     else if (variant.Key == "social-dribbble")
                                     {
-                                        <i class="ti ti-brand-dribbble" aria-hidden="true"></i>
+                                        <i class="bi bi-dribbble" aria-hidden="true"></i>
                                     }
                                     else
                                     {
-                                        <i class="ti ti-brand-snapchat" aria-hidden="true"></i>
+                                        <i class="bi bi-snapchat" aria-hidden="true"></i>
                                     }
                                 </button>
                             }
@@ -150,7 +171,7 @@
                                         @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
                                     @if (variant.Key.Contains("pulse", StringComparison.OrdinalIgnoreCase) || variant.Key.Contains("danger", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        <span class="btp-dot-loader" aria-hidden="true"></span>
+                                        <span class="btp-pulse-loader" aria-hidden="true"></span>
                                     }
                                     else
                                     {
@@ -193,7 +214,7 @@
                                     <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">1</button>
                                     <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">2</button>
                                     <button type="button" class="dsv2-btn" @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
-                                        Dropdown <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                                        Dropdown <i class="bi bi-chevron-down" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             }
@@ -247,7 +268,7 @@
                                             @(variant.Key == "vertical-solid" || variant.Key == "vertical-soft" ? "Dropdown" : "Button")
                                             @if (variant.Key == "vertical-solid" || variant.Key == "vertical-soft")
                                             {
-                                                <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                                                <i class="bi bi-chevron-down" aria-hidden="true"></i>
                                             }
                                         </button>
                                     }
@@ -262,10 +283,6 @@
                                 <button type="button"
                                         class="dsv2-btn @variant.PreviewCssClass @(selected ? "btp-btn--selected" : string.Empty)"
                                         @onclick="() => OnSelectedVariantChanged(state, variant.Key)">
-                                    @if (state.GroupKey is "active" or "disabled" or "sizes")
-                                    {
-                                        <i class="ti ti-download" aria-hidden="true"></i>
-                                    }
                                     @variant.Label
                                 </button>
                             }

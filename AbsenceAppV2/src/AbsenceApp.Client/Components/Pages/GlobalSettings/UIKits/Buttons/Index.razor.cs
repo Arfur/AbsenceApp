@@ -3,9 +3,12 @@
  File        : Index.razor.cs
  Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
  Author      : GitHub Copilot
- Version     : 6.1.0
+ Version     : 6.4.0
  Created     : 2026-05-14
- Updated     : 2026-05-16
+ Updated     : 18/05/2026
+ Changes     : v6.4.0 — Corrected Button Sizes group from 8 colour variants to 3 proper
+               size variants (Small/Medium/Large) using btp-size-sm/md/lg + primary colour;
+               updated StaticVariantCss size entries accordingly.
 -------------------------------------------------------------------------------
  Purpose     : Buttons3 UX model with full Ki-Admin button sets (one set per row).
                - Accordion sections
@@ -65,8 +68,7 @@ public partial class Index : ComponentBase
         new("basic-warning", "Warning", "dsv2-btn--warning", "dsv2-btn--warning", "custom", []),
         new("basic-info", "Info", "dsv2-btn--info", "dsv2-btn--info", "custom", []),
         new("basic-light", "Light", "dsv2-btn--light", "dsv2-btn--light", "custom", []),
-        new("basic-dark", "Dark", "dsv2-btn--dark", "dsv2-btn--dark", "custom", []),
-        new("basic-link", "Link", "dsv2-btn--link", "dsv2-btn--link", "custom", [])
+        new("basic-dark", "Dark", "dsv2-btn--dark", "dsv2-btn--dark", "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> OutlineVariants =
@@ -78,8 +80,7 @@ public partial class Index : ComponentBase
         new("outline-warning", "Warning", "dsv2-btn--outline-warning", "dsv2-btn--outline-warning", "custom", []),
         new("outline-info", "Info", "dsv2-btn--outline-info", "dsv2-btn--outline-info", "custom", []),
         new("outline-light", "Light", "dsv2-btn--outline-light", "dsv2-btn--outline-light", "custom", []),
-        new("outline-dark", "Dark", "dsv2-btn--outline-dark", "dsv2-btn--outline-dark", "custom", []),
-        new("outline-link", "Link", "dsv2-btn--outline-link", "dsv2-btn--outline-link", "custom", [])
+        new("outline-dark", "Dark", "dsv2-btn--outline-dark", "dsv2-btn--outline-dark", "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> SoftVariants =
@@ -91,8 +92,7 @@ public partial class Index : ComponentBase
         new("soft-warning", "Warning", "dsv2-btn--soft-warning", "dsv2-btn--soft-warning", "custom", []),
         new("soft-info", "Info", "dsv2-btn--soft-info", "dsv2-btn--soft-info", "custom", []),
         new("soft-light", "Light", "dsv2-btn--soft-light", "dsv2-btn--soft-light", "custom", []),
-        new("soft-dark", "Dark", "dsv2-btn--soft-dark", "dsv2-btn--soft-dark", "custom", []),
-        new("soft-link", "Link", "dsv2-btn--soft-link", "dsv2-btn--soft-link", "custom", [])
+        new("soft-dark", "Dark", "dsv2-btn--soft-dark", "dsv2-btn--soft-dark", "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> IconVariants =
@@ -122,30 +122,38 @@ public partial class Index : ComponentBase
 
     private static readonly List<ButtonVariantDef> RadiusVariants =
     [
-        new("radius-primary", "Primary", "btp-radius-primary", "dsv2-btn btp-radius-primary", "custom", []),
-        new("radius-secondary", "Secondary", "btp-radius-secondary", "dsv2-btn btp-radius-secondary", "custom", []),
-        new("radius-success", "Success", "btp-radius-success", "dsv2-btn btp-radius-success", "custom", []),
-        new("radius-danger", "Danger", "btp-radius-danger", "dsv2-btn btp-radius-danger", "custom", [])
+        new("radius-primary",   "Primary",   "btp-radius-primary",   "dsv2-btn dsv2-btn--primary btp-radius-primary",   "custom", []),
+        new("radius-secondary", "Secondary", "btp-radius-secondary", "dsv2-btn dsv2-btn--secondary btp-radius-secondary", "custom", []),
+        new("radius-success",   "Success",   "btp-radius-success",   "dsv2-btn dsv2-btn--success btp-radius-success",   "custom", []),
+        new("radius-danger",    "Danger",    "btp-radius-danger",    "dsv2-btn dsv2-btn--danger btp-radius-danger",    "custom", []),
+        new("radius-warning",   "Warning",   "btp-radius-warning",   "dsv2-btn dsv2-btn--warning btp-radius-warning",   "custom", []),
+        new("radius-info",      "Info",      "btp-radius-info",      "dsv2-btn dsv2-btn--info btp-radius-info",        "custom", []),
+        new("radius-light",     "Light",     "btp-radius-light",     "dsv2-btn dsv2-btn--light btp-radius-light",      "custom", []),
+        new("radius-dark",      "Dark",      "btp-radius-dark",      "dsv2-btn dsv2-btn--dark btp-radius-dark",        "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> ActiveVariants =
     [
-        new("active-primary", "Primary", "btp-active-primary", "dsv2-btn btp-active-primary", "custom", []),
+        new("active-primary",   "Primary",   "btp-active-primary",   "dsv2-btn btp-active-primary",   "custom", []),
         new("active-secondary", "Secondary", "btp-active-secondary", "dsv2-btn btp-active-secondary", "custom", []),
-        new("active-outline-primary", "Primary", "btp-active-outline-primary", "dsv2-btn btp-active-outline-primary", "custom", []),
-        new("active-outline-secondary", "Secondary", "btp-active-outline-secondary", "dsv2-btn btp-active-outline-secondary", "custom", []),
-        new("active-soft-primary", "Primary", "btp-active-soft-primary", "dsv2-btn btp-active-soft-primary", "custom", []),
-        new("active-soft-secondary", "Secondary", "btp-active-soft-secondary", "dsv2-btn btp-active-soft-secondary", "custom", [])
+        new("active-success",   "Success",   "btp-active-success",   "dsv2-btn btp-active-success",   "custom", []),
+        new("active-danger",    "Danger",    "btp-active-danger",    "dsv2-btn btp-active-danger",    "custom", []),
+        new("active-warning",   "Warning",   "btp-active-warning",   "dsv2-btn btp-active-warning",   "custom", []),
+        new("active-info",      "Info",      "btp-active-info",      "dsv2-btn btp-active-info",      "custom", []),
+        new("active-light",     "Light",     "btp-active-light",     "dsv2-btn btp-active-light",     "custom", []),
+        new("active-dark",      "Dark",      "btp-active-dark",      "dsv2-btn btp-active-dark",      "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> DisabledVariants =
     [
-        new("disabled-primary", "Primary", "btp-disabled-primary", "dsv2-btn btp-disabled-primary", "custom", []),
+        new("disabled-primary",   "Primary",   "btp-disabled-primary",   "dsv2-btn btp-disabled-primary",   "custom", []),
         new("disabled-secondary", "Secondary", "btp-disabled-secondary", "dsv2-btn btp-disabled-secondary", "custom", []),
-        new("disabled-outline-primary", "Primary", "btp-disabled-outline-primary", "dsv2-btn btp-disabled-outline-primary", "custom", []),
-        new("disabled-outline-secondary", "Secondary", "btp-disabled-outline-secondary", "dsv2-btn btp-disabled-outline-secondary", "custom", []),
-        new("disabled-soft-primary", "Primary", "btp-disabled-soft-primary", "dsv2-btn btp-disabled-soft-primary", "custom", []),
-        new("disabled-soft-secondary", "Secondary", "btp-disabled-soft-secondary", "dsv2-btn btp-disabled-soft-secondary", "custom", [])
+        new("disabled-success",   "Success",   "btp-disabled-success",   "dsv2-btn btp-disabled-success",   "custom", []),
+        new("disabled-danger",    "Danger",    "btp-disabled-danger",    "dsv2-btn btp-disabled-danger",    "custom", []),
+        new("disabled-warning",   "Warning",   "btp-disabled-warning",   "dsv2-btn btp-disabled-warning",   "custom", []),
+        new("disabled-info",      "Info",      "btp-disabled-info",      "dsv2-btn btp-disabled-info",      "custom", []),
+        new("disabled-light",     "Light",     "btp-disabled-light",     "dsv2-btn btp-disabled-light",     "custom", []),
+        new("disabled-dark",      "Dark",      "btp-disabled-dark",      "dsv2-btn btp-disabled-dark",      "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> LoadingVariants =
@@ -162,22 +170,19 @@ public partial class Index : ComponentBase
 
     private static readonly List<ButtonVariantDef> BlockVariants =
     [
-        new("block-primary", "Button", "btp-block-primary", "dsv2-btn btp-block-btn btp-block-primary", "custom", []),
-        new("block-secondary", "Button", "btp-block-secondary", "dsv2-btn btp-block-btn btp-block-secondary", "custom", []),
-        new("block-outline-primary", "Button", "btp-block-outline-primary", "dsv2-btn btp-block-btn btp-block-outline-primary", "custom", []),
-        new("block-outline-secondary", "Button", "btp-block-outline-secondary", "dsv2-btn btp-block-btn btp-block-outline-secondary", "custom", []),
-        new("block-soft-primary", "Button", "btp-block-soft-primary", "dsv2-btn btp-block-btn btp-block-soft-primary", "custom", []),
-        new("block-soft-secondary", "Button", "btp-block-soft-secondary", "dsv2-btn btp-block-btn btp-block-soft-secondary", "custom", [])
+        new("block-primary", "Button", "btp-block-primary", "dsv2-btn dsv2-btn--primary btp-block-btn btp-block-primary", "custom", []),
+        new("block-secondary", "Button", "btp-block-secondary", "dsv2-btn dsv2-btn--secondary btp-block-btn btp-block-secondary", "custom", []),
+        new("block-outline-primary", "Button", "btp-block-outline-primary", "dsv2-btn dsv2-btn--outline-primary btp-block-btn btp-block-outline-primary", "custom", []),
+        new("block-outline-secondary", "Button", "btp-block-outline-secondary", "dsv2-btn dsv2-btn--outline-secondary btp-block-btn btp-block-outline-secondary", "custom", []),
+        new("block-soft-primary", "Button", "btp-block-soft-primary", "dsv2-btn dsv2-btn--soft-primary btp-block-btn btp-block-soft-primary", "custom", []),
+        new("block-soft-secondary", "Button", "btp-block-soft-secondary", "dsv2-btn dsv2-btn--soft-secondary btp-block-btn btp-block-soft-secondary", "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> SizeVariants =
     [
-        new("size-sm", "Primary", "btp-size-sm", "dsv2-btn btp-size-primary btp-size-sm", "custom", []),
-        new("size-md", "Primary", "btp-size-md", "dsv2-btn btp-size-primary btp-size-md", "custom", []),
-        new("size-lg", "Primary", "btp-size-lg", "dsv2-btn btp-size-primary btp-size-lg", "custom", []),
-        new("size-secondary", "Secondary", "btp-size-secondary", "dsv2-btn btp-size-secondary", "custom", []),
-        new("size-success", "Success", "btp-size-success", "dsv2-btn btp-size-success", "custom", []),
-        new("size-danger", "Danger", "btp-size-danger", "dsv2-btn btp-size-danger", "custom", [])
+        new("size-sm", "Small",  "btp-size-sm", "dsv2-btn--primary btp-size-sm", "custom", []),
+        new("size-md", "Medium", "btp-size-md", "dsv2-btn--primary btp-size-md", "custom", []),
+        new("size-lg", "Large",  "btp-size-lg", "dsv2-btn--primary btp-size-lg", "custom", [])
     ];
 
     private static readonly List<ButtonVariantDef> GroupVariants =
@@ -211,123 +216,128 @@ public partial class Index : ComponentBase
 
     private static readonly Dictionary<string, string> StaticVariantCss = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["basic-primary"] = BuildCss(".dsv2-btn--primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["basic-secondary"] = BuildCss(".dsv2-btn--secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["basic-success"] = BuildCss(".dsv2-btn--success", "#0ab964", "#ffffff", "#0ab964", "#0ab964"),
-        ["basic-danger"] = BuildCss(".dsv2-btn--danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a"),
-        ["basic-warning"] = BuildCss(".dsv2-btn--warning", "#f9c123", "#212529", "#f9c123", "#f9c123"),
-        ["basic-info"] = BuildCss(".dsv2-btn--info", "#4196fa", "#ffffff", "#4196fa", "#4196fa"),
-        ["basic-light"] = BuildCss(".dsv2-btn--light", "#c8b9d2", "#212529", "#c8b9d2", "#c8b9d2"),
-        ["basic-dark"] = BuildCss(".dsv2-btn--dark", "#28232d", "#ffffff", "#28232d", "#28232d"),
-        ["basic-link"] = BuildLinkCss(".dsv2-btn--link", "#2167f3", "#1a54c4"),
+        ["basic-primary"] = BuildCss(".dsv2-btn--primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["basic-secondary"] = BuildCss(".dsv2-btn--secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["basic-success"] = BuildCss(".dsv2-btn--success", "#0ab964", "#ffffff", "#0ab964", "#0ab964", "10, 185, 100"),
+        ["basic-danger"] = BuildCss(".dsv2-btn--danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a", "225, 78, 90"),
+        ["basic-warning"] = BuildCss(".dsv2-btn--warning", "#f9c123", "#212529", "#f9c123", "#f9c123", "249, 193, 35"),
+        ["basic-info"] = BuildCss(".dsv2-btn--info", "#4196fa", "#ffffff", "#4196fa", "#4196fa", "65, 150, 250"),
+        ["basic-light"] = BuildCss(".dsv2-btn--light", "#c8b9d2", "#212529", "#c8b9d2", "#c8b9d2", "200, 185, 210"),
+        ["basic-dark"] = BuildCss(".dsv2-btn--dark", "#28232d", "#ffffff", "#28232d", "#28232d", "40, 35, 45"),
 
-        ["outline-primary"] = BuildOutlineCss(".dsv2-btn--outline-primary", "#0f626a", "#0f626a", "#ffffff"),
-        ["outline-secondary"] = BuildOutlineCss(".dsv2-btn--outline-secondary", "#626262", "#626262", "#ffffff"),
-        ["outline-success"] = BuildOutlineCss(".dsv2-btn--outline-success", "#0ab964", "#0ab964", "#ffffff"),
-        ["outline-danger"] = BuildOutlineCss(".dsv2-btn--outline-danger", "#e14e5a", "#e14e5a", "#ffffff"),
-        ["outline-warning"] = BuildOutlineCss(".dsv2-btn--outline-warning", "#f9c123", "#f9c123", "#212529"),
-        ["outline-info"] = BuildOutlineCss(".dsv2-btn--outline-info", "#4196fa", "#4196fa", "#ffffff"),
-        ["outline-light"] = BuildOutlineCss(".dsv2-btn--outline-light", "#c8b9d2", "#c8b9d2", "#212529"),
-        ["outline-dark"] = BuildOutlineCss(".dsv2-btn--outline-dark", "#28232d", "#28232d", "#ffffff"),
-        ["outline-link"] = BuildLinkCss(".dsv2-btn--outline-link", "#2167f3", "#1a54c4"),
+        ["outline-primary"] = BuildOutlineCss(".dsv2-btn--outline-primary", "#0f626a", "#0f626a", "#ffffff", "15, 98, 106"),
+        ["outline-secondary"] = BuildOutlineCss(".dsv2-btn--outline-secondary", "#626262", "#626262", "#ffffff", "98, 98, 98"),
+        ["outline-success"] = BuildOutlineCss(".dsv2-btn--outline-success", "#0ab964", "#0ab964", "#ffffff", "10, 185, 100"),
+        ["outline-danger"] = BuildOutlineCss(".dsv2-btn--outline-danger", "#e14e5a", "#e14e5a", "#ffffff", "225, 78, 90"),
+        ["outline-warning"] = BuildOutlineCss(".dsv2-btn--outline-warning", "#f9c123", "#f9c123", "#212529", "249, 193, 35"),
+        ["outline-info"] = BuildOutlineCss(".dsv2-btn--outline-info", "#4196fa", "#4196fa", "#ffffff", "65, 150, 250"),
+        ["outline-light"] = BuildOutlineCss(".dsv2-btn--outline-light", "#c8b9d2", "#c8b9d2", "#212529", "200, 185, 210"),
+        ["outline-dark"] = BuildOutlineCss(".dsv2-btn--outline-dark", "#28232d", "#28232d", "#ffffff", "40, 35, 45"),
 
-        ["soft-primary"] = BuildCss(".dsv2-btn--soft-primary", "#d7e7e8", "#0f626a", "#d7e7e8", "#dbe9ea"),
-        ["soft-secondary"] = BuildCss(".dsv2-btn--soft-secondary", "#e0e0e0", "#626262", "#e0e0e0", "#e4e4e4"),
-        ["soft-success"] = BuildCss(".dsv2-btn--soft-success", "#d1f1e0", "#0ab964", "#d1f1e0", "#d8f3e4"),
-        ["soft-danger"] = BuildCss(".dsv2-btn--soft-danger", "#f7dde0", "#e14e5a", "#f7dde0", "#f9e2e5"),
-        ["soft-warning"] = BuildCss(".dsv2-btn--soft-warning", "#f9f1d7", "#e1a900", "#f9f1d7", "#f4e9c7"),
-        ["soft-info"] = BuildCss(".dsv2-btn--soft-info", "#d6e9ff", "#4196fa", "#d6e9ff", "#deedff"),
-        ["soft-light"] = BuildCss(".dsv2-btn--soft-light", "#ece5f1", "#7f7191", "#ece5f1", "#f1eaf5"),
-        ["soft-dark"] = BuildCss(".dsv2-btn--soft-dark", "#dedde0", "#28232d", "#dedde0", "#e6e5e8"),
-        ["soft-link"] = BuildLinkCss(".dsv2-btn--soft-link", "#2167f3", "#1a54c4"),
+        ["soft-primary"] = BuildSoftCss(".dsv2-btn--soft-primary", "rgba(15, 98, 106, .1)", "#0f626a", "15, 98, 106"),
+        ["soft-secondary"] = BuildSoftCss(".dsv2-btn--soft-secondary", "rgba(98, 98, 98, .1)", "#626262", "98, 98, 98"),
+        ["soft-success"] = BuildSoftCss(".dsv2-btn--soft-success", "rgba(10, 185, 100, .1)", "#0ab964", "10, 185, 100"),
+        ["soft-danger"] = BuildSoftCss(".dsv2-btn--soft-danger", "rgba(225, 78, 90, .1)", "#e14e5a", "225, 78, 90"),
+        ["soft-warning"] = BuildSoftCss(".dsv2-btn--soft-warning", "rgba(249, 193, 35, .1)", "#e1a900", "249, 193, 35"),
+        ["soft-info"] = BuildSoftCss(".dsv2-btn--soft-info", "rgba(65, 150, 250, .1)", "#4196fa", "65, 150, 250"),
+        ["soft-light"] = BuildSoftCss(".dsv2-btn--soft-light", "rgba(200, 185, 210, .1)", "#6e647f", "200, 185, 210"),
+        ["soft-dark"] = BuildSoftCss(".dsv2-btn--soft-dark", "rgba(40, 35, 45, .1)", "#28232d", "40, 35, 45"),
 
-        ["icon-fill-primary"] = BuildCss(".btp-icon-fill-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["icon-fill-secondary"] = BuildCss(".btp-icon-fill-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["icon-outline-primary"] = BuildOutlineCss(".btp-icon-outline-primary", "#0f626a", "#0f626a", "#ffffff"),
-        ["icon-outline-secondary"] = BuildOutlineCss(".btp-icon-outline-secondary", "#626262", "#626262", "#ffffff"),
-        ["icon-soft-primary"] = BuildCss(".btp-icon-soft-primary", "#d7e7e8", "#0f626a", "#d7e7e8", "#dbe9ea"),
-        ["icon-soft-secondary"] = BuildCss(".btp-icon-soft-secondary", "#e0e0e0", "#626262", "#e0e0e0", "#e4e4e4"),
+        ["icon-fill-primary"] = BuildCss(".btp-icon-fill-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["icon-fill-secondary"] = BuildCss(".btp-icon-fill-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["icon-outline-primary"] = BuildOutlineCss(".btp-icon-outline-primary", "#0f626a", "#0f626a", "#ffffff", "15, 98, 106"),
+        ["icon-outline-secondary"] = BuildOutlineCss(".btp-icon-outline-secondary", "#626262", "#626262", "#ffffff", "98, 98, 98"),
+        ["icon-soft-primary"] = BuildSoftCss(".btp-icon-soft-primary", "rgba(15, 98, 106, .1)", "#0f626a", "15, 98, 106"),
+        ["icon-soft-secondary"] = BuildSoftCss(".btp-icon-soft-secondary", "rgba(98, 98, 98, .1)", "#626262", "98, 98, 98"),
 
-        ["social-facebook"] = BuildCss(".btp-social-facebook", "#3B5998", "#ffffff", "#3B5998", "#3B5998"),
-        ["social-twitter"] = BuildCss(".btp-social-twitter", "#55ACEE", "#ffffff", "#55ACEE", "#55ACEE"),
-        ["social-instagram"] = BuildCss(".btp-social-instagram", "#E1306C", "#ffffff", "#E1306C", "#c62a5d"),
-        ["social-reddit"] = BuildCss(".btp-social-reddit", "#FF4500", "#ffffff", "#FF4500", "#e23c00"),
-        ["social-whatsapp"] = BuildCss(".btp-social-whatsapp", "#43D854", "#ffffff", "#43D854", "#43D854"),
-        ["social-linkedin"] = BuildCss(".btp-social-linkedin", "#0077B5", "#ffffff", "#0077B5", "#00679c"),
-        ["social-telegram"] = BuildCss(".btp-social-telegram", "#00405D", "#ffffff", "#00405D", "#00405D"),
-        ["social-youtube"] = BuildCss(".btp-social-youtube", "#CD201F", "#ffffff", "#CD201F", "#CD201F"),
-        ["social-behance"] = BuildCss(".btp-social-behance", "#1769FF", "#ffffff", "#1769FF", "#1159d8"),
-        ["social-dribbble"] = BuildCss(".btp-social-dribbble", "#EA4C89", "#ffffff", "#EA4C89", "#d7437a"),
-        ["social-snapchat"] = BuildCss(".btp-social-snapchat", "#FFFC00", "#212529", "#FFFC00", "#ede900"),
+        ["social-facebook"] = BuildCss(".btp-social-facebook", "#3B5998", "#ffffff", "#3B5998", "#3B5998", "59, 89, 152"),
+        ["social-twitter"] = BuildCss(".btp-social-twitter", "#55ACEE", "#ffffff", "#55ACEE", "#55ACEE", "85, 172, 238"),
+        ["social-instagram"] = BuildCss(".btp-social-instagram", "#E1306C", "#ffffff", "#E1306C", "#E1306C", "225, 48, 108"),
+        ["social-reddit"] = BuildCss(".btp-social-reddit", "#FF4500", "#ffffff", "#FF4500", "#FF4500", "255, 69, 0"),
+        ["social-whatsapp"] = BuildCss(".btp-social-whatsapp", "#43D854", "#ffffff", "#43D854", "#43D854", "67, 216, 84"),
+        ["social-linkedin"] = BuildCss(".btp-social-linkedin", "#0077B5", "#ffffff", "#0077B5", "#0077B5", "0, 119, 181"),
+        ["social-telegram"] = BuildCss(".btp-social-telegram", "#00405D", "#ffffff", "#00405D", "#00405D", "0, 64, 93"),
+        ["social-youtube"] = BuildCss(".btp-social-youtube", "#CD201F", "#ffffff", "#CD201F", "#CD201F", "205, 32, 31"),
+        ["social-behance"] = BuildCss(".btp-social-behance", "#1769FF", "#ffffff", "#1769FF", "#1769FF", "23, 105, 255"),
+        ["social-dribbble"] = BuildCss(".btp-social-dribbble", "#EA4C89", "#ffffff", "#EA4C89", "#EA4C89", "234, 76, 137"),
+        ["social-snapchat"] = BuildCss(".btp-social-snapchat", "#FFFC00", "#212529", "#FFFC00", "#FFFC00", "255, 252, 0"),
 
-        ["radius-primary"] = BuildCss(".btp-radius-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["radius-secondary"] = BuildCss(".btp-radius-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["radius-success"] = BuildCss(".btp-radius-success", "#0ab964", "#ffffff", "#0ab964", "#0ab964"),
-        ["radius-danger"] = BuildCss(".btp-radius-danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a"),
+        ["radius-primary"]   = BuildCss(".btp-radius-primary",   "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["radius-secondary"] = BuildCss(".btp-radius-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["radius-success"]   = BuildCss(".btp-radius-success",   "#0ab964", "#ffffff", "#0ab964", "#0ab964", "10, 185, 100"),
+        ["radius-danger"]    = BuildCss(".btp-radius-danger",    "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a", "225, 78, 90"),
+        ["radius-warning"] = BuildCss(".btp-radius-warning", "#f9c123", "#212529", "#f9c123", "#f9c123", "249, 193, 35"),
+        ["radius-info"]    = BuildCss(".btp-radius-info",    "#4196fa", "#ffffff", "#4196fa", "#4196fa", "65, 150, 250"),
+        ["radius-light"]   = BuildCss(".btp-radius-light",   "#c8b9d2", "#212529", "#c8b9d2", "#c8b9d2", "200, 185, 210"),
+        ["radius-dark"]    = BuildCss(".btp-radius-dark",    "#28232d", "#ffffff", "#28232d", "#28232d", "40, 35, 45"),
 
-        ["active-primary"] = BuildCss(".btp-active-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["active-secondary"] = BuildCss(".btp-active-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["active-outline-primary"] = BuildOutlineCss(".btp-active-outline-primary", "#0f626a", "#0f626a", "#ffffff"),
-        ["active-outline-secondary"] = BuildOutlineCss(".btp-active-outline-secondary", "#626262", "#626262", "#ffffff"),
-        ["active-soft-primary"] = BuildCss(".btp-active-soft-primary", "#d7e7e8", "#0f626a", "#d7e7e8", "#dbe9ea"),
-        ["active-soft-secondary"] = BuildCss(".btp-active-soft-secondary", "#e0e0e0", "#626262", "#e0e0e0", "#e4e4e4"),
+        ["active-primary"]   = BuildCss(".btp-active-primary",   "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["active-secondary"] = BuildCss(".btp-active-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["active-success"]   = BuildCss(".btp-active-success",   "#0ab964", "#ffffff", "#0ab964", "#0ab964", "10, 185, 100"),
+        ["active-danger"]    = BuildCss(".btp-active-danger",    "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a", "225, 78, 90"),
+        ["active-warning"]   = BuildCss(".btp-active-warning",   "#f9c123", "#212529", "#f9c123", "#f9c123", "249, 193, 35"),
+        ["active-info"]      = BuildCss(".btp-active-info",      "#4196fa", "#ffffff", "#4196fa", "#4196fa", "65, 150, 250"),
+        ["active-light"]     = BuildCss(".btp-active-light",     "#c8b9d2", "#212529", "#c8b9d2", "#c8b9d2", "200, 185, 210"),
+        ["active-dark"]      = BuildCss(".btp-active-dark",      "#28232d", "#ffffff", "#28232d", "#28232d", "40, 35, 45"),
 
-        ["disabled-primary"] = BuildCss(".btp-disabled-primary", "#77aeb4", "#eaf3f4", "#77aeb4", "#77aeb4"),
-        ["disabled-secondary"] = BuildCss(".btp-disabled-secondary", "#a9aaac", "#ececed", "#a9aaac", "#a9aaac"),
-        ["disabled-outline-primary"] = BuildOutlineCss(".btp-disabled-outline-primary", "#7bb5bc", "#7bb5bc", "#ffffff"),
-        ["disabled-outline-secondary"] = BuildOutlineCss(".btp-disabled-outline-secondary", "#a5a7aa", "#a5a7aa", "#ffffff"),
-        ["disabled-soft-primary"] = BuildCss(".btp-disabled-soft-primary", "#d8e6e8", "#77aeb4", "#d8e6e8", "#d8e6e8"),
-        ["disabled-soft-secondary"] = BuildCss(".btp-disabled-soft-secondary", "#e4e5e6", "#a9aaac", "#e4e5e6", "#e4e5e6"),
+        ["disabled-primary"]   = BuildCss(".btp-disabled-primary",   "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["disabled-secondary"] = BuildCss(".btp-disabled-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["disabled-success"]   = BuildCss(".btp-disabled-success",   "#0ab964", "#ffffff", "#0ab964", "#0ab964", "10, 185, 100"),
+        ["disabled-danger"]    = BuildCss(".btp-disabled-danger",    "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a", "225, 78, 90"),
+        ["disabled-warning"]   = BuildCss(".btp-disabled-warning",   "#f9c123", "#212529", "#f9c123", "#f9c123", "249, 193, 35"),
+        ["disabled-info"]      = BuildCss(".btp-disabled-info",      "#4196fa", "#ffffff", "#4196fa", "#4196fa", "65, 150, 250"),
+        ["disabled-light"]     = BuildCss(".btp-disabled-light",     "#c8b9d2", "#212529", "#c8b9d2", "#c8b9d2", "200, 185, 210"),
+        ["disabled-dark"]      = BuildCss(".btp-disabled-dark",      "#28232d", "#ffffff", "#28232d", "#28232d", "40, 35, 45"),
 
-        ["loading-primary"] = BuildCss(".btp-loading-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["loading-secondary"] = BuildCss(".btp-loading-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["loading-success"] = BuildCss(".btp-loading-success", "#0ab964", "#ffffff", "#0ab964", "#0ab964"),
-        ["loading-danger"] = BuildCss(".btp-loading-danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a"),
-        ["loading-outline-primary"] = BuildOutlineCss(".btp-loading-outline-primary", "#0f626a", "#0f626a", "#ffffff"),
-        ["loading-outline-secondary"] = BuildOutlineCss(".btp-loading-outline-secondary", "#626262", "#626262", "#ffffff"),
-        ["loading-outline-success"] = BuildOutlineCss(".btp-loading-outline-success", "#0ab964", "#0ab964", "#ffffff"),
-        ["loading-outline-danger"] = BuildOutlineCss(".btp-loading-outline-danger", "#e14e5a", "#e14e5a", "#ffffff"),
+        ["loading-primary"] = BuildCss(".btp-loading-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["loading-secondary"] = BuildCss(".btp-loading-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["loading-success"] = BuildCss(".btp-loading-success", "#0ab964", "#ffffff", "#0ab964", "#0ab964", "10, 185, 100"),
+        ["loading-danger"] = BuildCss(".btp-loading-danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a", "225, 78, 90"),
+        ["loading-outline-primary"] = BuildOutlineCss(".btp-loading-outline-primary", "#0f626a", "#0f626a", "#ffffff", "15, 98, 106"),
+        ["loading-outline-secondary"] = BuildOutlineCss(".btp-loading-outline-secondary", "#626262", "#626262", "#ffffff", "98, 98, 98"),
+        ["loading-outline-success"] = BuildOutlineCss(".btp-loading-outline-success", "#0ab964", "#0ab964", "#ffffff", "10, 185, 100"),
+        ["loading-outline-danger"] = BuildOutlineCss(".btp-loading-outline-danger", "#e14e5a", "#e14e5a", "#ffffff", "225, 78, 90"),
 
-        ["block-primary"] = BuildCss(".btp-block-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["block-secondary"] = BuildCss(".btp-block-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["block-outline-primary"] = BuildOutlineCss(".btp-block-outline-primary", "#0f626a", "#0f626a", "#ffffff"),
-        ["block-outline-secondary"] = BuildOutlineCss(".btp-block-outline-secondary", "#626262", "#626262", "#ffffff"),
-        ["block-soft-primary"] = BuildCss(".btp-block-soft-primary", "#d7e7e8", "#0f626a", "#d7e7e8", "#dbe9ea"),
-        ["block-soft-secondary"] = BuildCss(".btp-block-soft-secondary", "#e0e0e0", "#626262", "#e0e0e0", "#e4e4e4"),
+        ["block-primary"] = BuildCss(".btp-block-primary", "#0f626a", "#ffffff", "#0f626a", "#0f626a", "15, 98, 106"),
+        ["block-secondary"] = BuildCss(".btp-block-secondary", "#626262", "#ffffff", "#626262", "#626262", "98, 98, 98"),
+        ["block-outline-primary"] = BuildOutlineCss(".btp-block-outline-primary", "#0f626a", "#0f626a", "#ffffff", "15, 98, 106"),
+        ["block-outline-secondary"] = BuildOutlineCss(".btp-block-outline-secondary", "#626262", "#626262", "#ffffff", "98, 98, 98"),
+        ["block-soft-primary"] = BuildSoftCss(".btp-block-soft-primary", "rgba(15, 98, 106, .1)", "#0f626a", "15, 98, 106"),
+        ["block-soft-secondary"] = BuildSoftCss(".btp-block-soft-secondary", "rgba(98, 98, 98, .1)", "#626262", "98, 98, 98"),
 
-        ["size-sm"] = BuildCss(".btp-size-primary.btp-size-sm", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["size-md"] = BuildCss(".btp-size-primary.btp-size-md", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["size-lg"] = BuildCss(".btp-size-primary.btp-size-lg", "#0f626a", "#ffffff", "#0f626a", "#0f626a"),
-        ["size-secondary"] = BuildCss(".btp-size-secondary", "#626262", "#ffffff", "#626262", "#626262"),
-        ["size-success"] = BuildCss(".btp-size-success", "#0ab964", "#ffffff", "#0ab964", "#0ab964"),
-        ["size-danger"] = BuildCss(".btp-size-danger", "#e14e5a", "#ffffff", "#e14e5a", "#e14e5a"),
+        ["size-sm"] = ".btp-size-sm {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  border-radius: 0.25rem;\n}",
+        ["size-md"] = ".btp-size-md {\n  padding: 0.375rem 0.75rem;\n  font-size: 0.875rem;\n  border-radius: 0.375rem;\n  line-height: 1.5;\n}",
+        ["size-lg"] = ".btp-size-lg {\n  padding: 0.5rem 1rem;\n  font-size: 1.125rem;\n  border-radius: 0.5rem;\n}",
 
-        ["group-solid"] = "/* Button Group (Solid) */",
-        ["group-outline"] = "/* Button Group (Outline) */",
-        ["group-soft"] = "/* Button Group (Soft) */",
+        ["group-solid"] = ".btp-group-solid .dsv2-btn {\n  background: #626262;\n  color: #ffffff;\n  border-color: #626262;\n}\n.btp-group-solid .dsv2-btn:hover {\n  background: #626262;\n  border-color: #626262;\n  color: #ffffff;\n  opacity: 0.85;\n}",
+        ["group-outline"] = ".btp-group-outline .dsv2-btn {\n  background: transparent;\n  color: #626262;\n  border-color: #626262;\n}\n.btp-group-outline .dsv2-btn:hover {\n  background: #626262;\n  border-color: #626262;\n  color: #ffffff;\n  opacity: 0.85;\n}",
+        ["group-soft"] = ".btp-group-soft .dsv2-btn {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n}\n.btp-group-soft .dsv2-btn:hover {\n  background: rgba(98, 98, 98, .1);\n  border-color: transparent;\n  color: #626262;\n  opacity: 0.85;\n}",
 
-        ["nested-solid"] = "/* Nested Buttons (Solid) */",
-        ["nested-outline"] = "/* Nested Buttons (Outline) */",
-        ["nested-soft"] = "/* Nested Buttons (Soft) */",
+        ["nested-solid"] = ".btp-nested-solid .dsv2-btn {\n  background: #626262;\n  color: #ffffff;\n  border-color: #626262;\n}\n.btp-nested-solid .dsv2-btn:hover {\n  background: #626262;\n  border-color: #626262;\n  color: #ffffff;\n  opacity: 0.85;\n}",
+        ["nested-outline"] = ".btp-nested-outline .dsv2-btn {\n  background: transparent;\n  color: #626262;\n  border-color: #626262;\n}\n.btp-nested-outline .dsv2-btn:hover {\n  background: #626262;\n  border-color: #626262;\n  color: #ffffff;\n  opacity: 0.85;\n}",
+        ["nested-soft"] = ".btp-nested-soft .dsv2-btn {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n}\n.btp-nested-soft .dsv2-btn:hover {\n  background: rgba(98, 98, 98, .1);\n  border-color: transparent;\n  color: #626262;\n  opacity: 0.85;\n}",
 
-        ["checkbox-line"] = "/* Checkbox/Radio (Checkbox line) */",
-        ["radio-line"] = "/* Checkbox/Radio (Radio line) */",
-        ["pager-line"] = "/* Checkbox/Radio (Pager line) */",
+        ["checkbox-line"] = ".btp-checkbox-line .dsv2-btn {\n  background: #ffffff;\n  color: #646a72;\n  border-color: #7d8289;\n}\n.btp-checkbox-line .dsv2-btn:hover {\n  background: #ffffff;\n  color: #646a72;\n  border-color: #7d8289;\n  opacity: 0.85;\n}",
+        ["radio-line"] = ".btp-radio-line .dsv2-btn {\n  background: #ffffff;\n  color: #646a72;\n  border-color: #7d8289;\n}\n.btp-radio-line .dsv2-btn:first-child {\n  background: #687689;\n  color: #ffffff;\n  border-color: #687689;\n}\n.btp-radio-line .dsv2-btn:hover {\n  opacity: 0.85;\n}",
+        ["pager-line"] = ".btp-pager-line .dsv2-btn {\n  background: #ffffff;\n  color: #646a72;\n  border-color: #7d8289;\n  min-width: 54px;\n}\n.btp-pager-line .dsv2-btn:first-child {\n  background: #687689;\n  color: #ffffff;\n  border-color: #687689;\n}\n.btp-pager-line .dsv2-btn:hover {\n  opacity: 0.85;\n}",
 
-        ["vertical-radio"] = "/* Vertical Buttons (Radio stack) */",
-        ["vertical-solid"] = "/* Vertical Buttons (Solid stack) */",
-        ["vertical-outline"] = "/* Vertical Buttons (Outline stack) */",
-        ["vertical-soft"] = "/* Vertical Buttons (Soft stack) */"
+        ["vertical-radio"] = ".btp-vertical-radio .dsv2-btn {\n  background: #ffffff;\n  color: #646a72;\n  border-color: #7d8289;\n}\n.btp-vertical-radio .dsv2-btn:first-child {\n  background: #687689;\n  color: #ffffff;\n  border-color: #687689;\n}\n.btp-vertical-radio .dsv2-btn:hover {\n  opacity: 0.85;\n}",
+        ["vertical-solid"] = ".btp-vertical-solid .dsv2-btn {\n  background: #626262;\n  color: #ffffff;\n  border-color: #626262;\n}\n.btp-vertical-solid .dsv2-btn:hover {\n  background: #626262;\n  color: #ffffff;\n  border-color: #626262;\n  opacity: 0.85;\n}",
+        ["vertical-outline"] = ".btp-vertical-outline .dsv2-btn {\n  background: transparent;\n  color: #626262;\n  border-color: #626262;\n}\n.btp-vertical-outline .dsv2-btn:hover {\n  background: #626262;\n  color: #ffffff;\n  border-color: #626262;\n  opacity: 0.85;\n}",
+        ["vertical-soft"] = ".btp-vertical-soft .dsv2-btn {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n}\n.btp-vertical-soft .dsv2-btn:hover {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n  opacity: 0.85;\n}"
     };
 
-    private static string BuildCss(string selector, string bg, string text, string border, string hover) =>
-        $"{selector} {{\n  background: {bg};\n  color: {text};\n  border-color: {border};\n}}\n{selector}:hover {{\n  background: {hover};\n  border-color: {hover};\n  color: {text};\n}}";
+    private static string BuildCss(string selector, string bg, string text, string border, string hover, string focusRgb) =>
+        $"{selector} {{\n  --btp-focus-rgb: {focusRgb};\n  background: {bg};\n  color: {text};\n  border-color: {border};\n}}\n{selector}:hover {{\n  background: {hover};\n  border-color: {hover};\n  color: {text};\n  opacity: 0.85;\n}}\n{selector}:focus-visible {{\n  box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);\n}}\n{selector}:active {{\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}}\n{selector}:disabled {{\n  opacity: 0.65;\n  cursor: not-allowed;\n  pointer-events: none;\n}}";
 
-    private static string BuildOutlineCss(string selector, string color, string border, string hoverText) =>
-        $"{selector} {{\n  background: transparent;\n  color: {color};\n  border-color: {border};\n}}\n{selector}:hover {{\n  background: {color};\n  border-color: {color};\n  color: {hoverText};\n}}";
+    private static string BuildOutlineCss(string selector, string color, string border, string hoverText, string focusRgb) =>
+        $"{selector} {{\n  --btp-focus-rgb: {focusRgb};\n  background: transparent;\n  color: {color};\n  border-color: {border};\n}}\n{selector}:hover {{\n  background: {color};\n  border-color: {color};\n  color: {hoverText};\n  opacity: 0.85;\n}}\n{selector}:focus-visible {{\n  box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);\n}}\n{selector}:active {{\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}}\n{selector}:disabled {{\n  opacity: 0.65;\n  cursor: not-allowed;\n  pointer-events: none;\n}}";
 
-    private static string BuildLinkCss(string selector, string color, string hover) =>
-        $"{selector} {{\n  background: transparent;\n  color: {color};\n  border-color: transparent;\n  text-decoration: none;\n}}\n{selector}:hover {{\n  background: transparent;\n  color: {hover};\n  border-color: transparent;\n  text-decoration: underline;\n}}";
+    private static string BuildSoftCss(string selector, string bg, string color, string focusRgb) =>
+        $"{selector} {{\n  --btp-focus-rgb: {focusRgb};\n  background: {bg};\n  color: {color};\n  border-color: transparent;\n}}\n{selector}:hover {{\n  background: {bg};\n  border-color: transparent;\n  color: {color};\n  opacity: 0.85;\n}}\n{selector}:focus-visible {{\n  box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);\n}}\n{selector}:active {{\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}}\n{selector}:disabled {{\n  opacity: 0.65;\n  cursor: not-allowed;\n  pointer-events: none;\n}}";
+
+    private static string BuildLinkCss(string selector, string color, string hover, string focusRgb) =>
+        $"{selector} {{\n  --btp-focus-rgb: {focusRgb};\n  background: transparent;\n  color: {color};\n  border-color: transparent;\n  text-decoration: none;\n}}\n{selector}:hover {{\n  background: transparent;\n  color: {hover};\n  border-color: transparent;\n  text-decoration: underline;\n  opacity: 0.85;\n}}\n{selector}:focus-visible {{\n  box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);\n}}\n{selector}:disabled {{\n  opacity: 0.65;\n  cursor: not-allowed;\n  pointer-events: none;\n}}";
 
     private ButtonGroupState _basicState = default!;
     private ButtonGroupState _outlineState = default!;
@@ -341,9 +351,6 @@ public partial class Index : ComponentBase
     private ButtonGroupState _blockState = default!;
     private ButtonGroupState _sizeState = default!;
     private ButtonGroupState _groupState = default!;
-    private ButtonGroupState _nestedState = default!;
-    private ButtonGroupState _checkRadioState = default!;
-    private ButtonGroupState _verticalState = default!;
 
     private readonly Dictionary<string, string> _workingCopies = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _customSavedCss = new(StringComparer.OrdinalIgnoreCase);
@@ -357,17 +364,14 @@ public partial class Index : ComponentBase
         _outlineState,
         _softState,
         _iconState,
-        _socialState,
         _radiusState,
-        _activeState,
+        _socialState,
         _disabledState,
+        _activeState,
         _loadingState,
         _blockState,
         _sizeState,
         _groupState,
-        _nestedState,
-        _checkRadioState,
-        _verticalState
     ];
 
     protected override void OnInitialized()
@@ -385,12 +389,8 @@ public partial class Index : ComponentBase
         _disabledState = CreateState("disabled", "Disabled Buttons", DisabledVariants);
         _loadingState = CreateState("loading", "Loading Buttons", LoadingVariants);
         _blockState = CreateState("block", "Block Buttons", BlockVariants);
-        _sizeState = CreateState("sizes", "Button Sizes (sm, md, lg)", SizeVariants);
+        _sizeState = CreateState("sizes", "Button Sizes", SizeVariants);
         _groupState = CreateState("groups", "Button Groups", GroupVariants);
-        _nestedState = CreateState("nested", "Nested Buttons", NestedVariants);
-        _checkRadioState = CreateState("checkradio", "Checkbox / Radio Buttons", CheckboxRadioVariants);
-        _verticalState = CreateState("vertical", "Vertical Buttons", VerticalVariants);
-
         foreach (var state in GroupStates)
         {
             state.EditorText = SynthesizeCss(state, state.SelectedVariantKey);
@@ -617,7 +617,9 @@ public partial class Index : ComponentBase
         {
             "background", "color", "border-color", "border", "opacity", "text-decoration",
             "border-radius", "padding", "font-size", "display", "gap", "width", "min-width",
-            "height", "align-items", "justify-content", "cursor", "pointer-events"
+            "height", "align-items", "justify-content", "cursor", "pointer-events",
+            "box-shadow", "transition", "line-height", "outline", "vertical-align", "white-space",
+            "font-weight", "--btp-focus-rgb"
         };
 
     private static readonly Regex HexColorRegex =

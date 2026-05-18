@@ -3,25 +3,15 @@
  File        : Index.razor.css
  Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
  Author      : GitHub Copilot
- Version     : 6.1.0
+ Version     : 6.3.0
  Created     : 2026-05-14
- Updated     : 2026-05-16
+ Updated     : 18/05/2026
+ Changes     : Phase 2 — Expanded Active and Disabled CSS blocks to 8 full-colour variants;
+               added @keyframes btp-pulse and .btp-pulse-loader for Pulse loading buttons.
 -------------------------------------------------------------------------------
  Purpose     : Buttons3 scoped styling for full Ki-Admin parity (one set/row).
 ===============================================================================
 */
-
-:root {
-    --btp-ki-primary: #0f626a;
-    --btp-ki-secondary: #626262;
-    --btp-ki-success: #0ab964;
-    --btp-ki-danger: #e14e5a;
-    --btp-ki-warning: #f9c123;
-    --btp-ki-info: #4196fa;
-    --btp-ki-light: #c8b9d2;
-    --btp-ki-dark: #28232d;
-    --btp-ki-link: #2167f3;
-}
 
 .btp-page {
     display: flex;
@@ -56,17 +46,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: .65rem .9rem;
+    padding: .75rem 1rem;
     border-bottom: 1px solid #e6e8eb;
-    background: #f8f9fa !important;
+    background: #fff !important;
     color: #333 !important;
 }
 
 .btp-group-title {
     margin: 0;
     font-size: 1.1rem;
-    font-weight: 700;
-    color: #3f4454 !important;
+    font-weight: 600;
+    color: #333 !important;
 }
 
 .btp-accordion-toggle {
@@ -109,7 +99,7 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    gap: .52rem;
+    gap: .5rem;
     padding: .78rem .9rem;
     overflow-x: auto;
     scrollbar-width: thin;
@@ -125,6 +115,8 @@
     flex: 0 0 auto;
 }
 
+.btp-demo-row i[class^="bi"],
+.btp-demo-row i[class*=" bi"],
 .btp-demo-row i[class^="ti"],
 .btp-demo-row i[class*=" ti"] {
     font-size: 1rem;
@@ -269,38 +261,92 @@
     font-size: .86rem;
 }
 
-/* Core Ki-Admin button variants */
+/* ============================================================
+    BASE BUTTON ENGINE (Bootstrap/Ki-Admin parity)
+    ============================================================ */
 
-.dsv2-btn--primary { background: #0f626a; color: #fff; border: 1px solid #0f626a; }
-.dsv2-btn--primary:hover { background: #135f68; border-color: #135f68; color: #fff; }
-.dsv2-btn--secondary { background: #626262; color: #fff; border: 1px solid #626262; }
-.dsv2-btn--secondary:hover { background: #595b5e; border-color: #595b5e; color: #fff; }
-.dsv2-btn--success { background: #0ab964; color: #fff; border: 1px solid #0ab964; }
-.dsv2-btn--success:hover { background: #19a766; border-color: #19a766; color: #fff; }
-.dsv2-btn--danger { background: #e14e5a; color: #fff; border: 1px solid #e14e5a; }
-.dsv2-btn--danger:hover { background: #d64554; border-color: #d64554; color: #fff; }
-.dsv2-btn--warning { background: #f9c123; color: #212529; border: 1px solid #f9c123; }
-.dsv2-btn--warning:hover { background: #e3af0d; border-color: #e3af0d; color: #212529; }
-.dsv2-btn--info { background: #4196fa; color: #fff; border: 1px solid #4196fa; }
-.dsv2-btn--info:hover { background: #3f97ea; border-color: #3f97ea; color: #fff; }
-.dsv2-btn--light { background: #c8b9d2; color: #212529; border: 1px solid #c8b9d2; }
-.dsv2-btn--light:hover { background: #a99cbb; border-color: #a99cbb; color: #212529; }
-.dsv2-btn--dark { background: #28232d; color: #fff; border: 1px solid #28232d; }
-.dsv2-btn--dark:hover { background: #1d1e28; border-color: #1d1e28; color: #fff; }
+.dsv2-btn {
+     --btp-focus-rgb: 33, 103, 243;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    box-shadow: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, opacity .15s ease-in-out;
+}
+
+.dsv2-btn:focus-visible,
+.btp-icon-btn:focus-visible,
+.btp-social-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);
+}
+
+.dsv2-btn:active:not(:disabled),
+.btp-icon-btn:active:not(:disabled),
+.btp-social-btn:active:not(:disabled) {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.dsv2-btn:disabled,
+.btp-icon-btn:disabled,
+.btp-social-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ============================================================
+   FILL BUTTONS
+   ============================================================ */
+
+.dsv2-btn--primary { --btp-focus-rgb: 15, 98, 106; background: #0f626a; color: #fff; border-color: #0f626a; }
+.dsv2-btn--primary:hover { background: #0f626a; border-color: #0f626a; color: #fff; opacity: 0.85; }
+.dsv2-btn--secondary { --btp-focus-rgb: 98, 98, 98; background: #626262; color: #fff; border-color: #626262; }
+.dsv2-btn--secondary:hover { background: #626262; border-color: #626262; color: #fff; opacity: 0.85; }
+.dsv2-btn--success { --btp-focus-rgb: 10, 185, 100; background: #0ab964; color: #fff; border-color: #0ab964; }
+.dsv2-btn--success:hover { background: #0ab964; border-color: #0ab964; color: #fff; opacity: 0.85; }
+.dsv2-btn--danger { --btp-focus-rgb: 225, 78, 90; background: #e14e5a; color: #fff; border-color: #e14e5a; }
+.dsv2-btn--danger:hover { background: #e14e5a; border-color: #e14e5a; color: #fff; opacity: 0.85; }
+.dsv2-btn--warning { --btp-focus-rgb: 249, 193, 35; background: #f9c123; color: #212529; border-color: #f9c123; }
+.dsv2-btn--warning:hover { background: #f9c123; border-color: #f9c123; color: #212529; opacity: 0.85; }
+.dsv2-btn--info { --btp-focus-rgb: 65, 150, 250; background: #4196fa; color: #fff; border-color: #4196fa; }
+.dsv2-btn--info:hover { background: #4196fa; border-color: #4196fa; color: #fff; opacity: 0.85; }
+.dsv2-btn--light { --btp-focus-rgb: 200, 185, 210; background: #c8b9d2; color: #212529; border-color: #c8b9d2; }
+.dsv2-btn--light:hover { background: #c8b9d2; border-color: #c8b9d2; color: #212529; opacity: 0.85; }
+.dsv2-btn--dark { --btp-focus-rgb: 40, 35, 45; background: #28232d; color: #fff; border-color: #28232d; }
+.dsv2-btn--dark:hover { background: #28232d; border-color: #28232d; color: #fff; opacity: 0.85; }
+
 .dsv2-btn--link,
 .dsv2-btn--outline-link,
 .dsv2-btn--soft-link {
+    --btp-focus-rgb: 33, 103, 243;
     background: transparent;
     color: #2167f3;
-    border: 1px solid transparent;
+    border-color: transparent;
     text-decoration: none;
 }
 .dsv2-btn--link:hover,
 .dsv2-btn--outline-link:hover,
 .dsv2-btn--soft-link:hover {
-    color: #1a54c4;
+    color: #2167f3;
     text-decoration: underline;
+    opacity: 0.85;
 }
+
+/* ============================================================
+   OUTLINE BUTTONS
+   ============================================================ */
 
 .dsv2-btn--outline-primary,
 .dsv2-btn--outline-secondary,
@@ -309,149 +355,235 @@
 .dsv2-btn--outline-warning,
 .dsv2-btn--outline-info,
 .dsv2-btn--outline-light,
-.dsv2-btn--outline-dark {
-    background: transparent;
-}
+.dsv2-btn--outline-dark { background: transparent; }
 
-.dsv2-btn--outline-primary { color: #0f626a; border: 1px solid #0f626a; }
-.dsv2-btn--outline-primary:hover { background: #0f626a; color: #fff; border-color: #0f626a; }
-.dsv2-btn--outline-secondary { color: #626262; border: 1px solid #626262; }
-.dsv2-btn--outline-secondary:hover { background: #626262; color: #fff; border-color: #626262; }
-.dsv2-btn--outline-success { color: #0ab964; border: 1px solid #0ab964; }
-.dsv2-btn--outline-success:hover { background: #0ab964; color: #fff; border-color: #0ab964; }
-.dsv2-btn--outline-danger { color: #e14e5a; border: 1px solid #e14e5a; }
-.dsv2-btn--outline-danger:hover { background: #e14e5a; color: #fff; border-color: #e14e5a; }
-.dsv2-btn--outline-warning { color: #f9c123; border: 1px solid #f9c123; }
-.dsv2-btn--outline-warning:hover { background: #f9c123; color: #212529; border-color: #f9c123; }
-.dsv2-btn--outline-info { color: #4196fa; border: 1px solid #4196fa; }
-.dsv2-btn--outline-info:hover { background: #4196fa; color: #fff; border-color: #4196fa; }
-.dsv2-btn--outline-light { color: #8e7fa5; border: 1px solid #b8abc8; }
-.dsv2-btn--outline-light:hover { background: #b8abc8; color: #212529; border-color: #b8abc8; }
-.dsv2-btn--outline-dark { color: #28232d; border: 1px solid #28232d; }
-.dsv2-btn--outline-dark:hover { background: #28232d; color: #fff; border-color: #28232d; }
+.dsv2-btn--outline-primary { --btp-focus-rgb: 15, 98, 106; color: #0f626a; border-color: #0f626a; }
+.dsv2-btn--outline-primary:hover { background: #0f626a; color: #fff; border-color: #0f626a; opacity: 0.85; }
+.dsv2-btn--outline-secondary { --btp-focus-rgb: 98, 98, 98; color: #626262; border-color: #626262; }
+.dsv2-btn--outline-secondary:hover { background: #626262; color: #fff; border-color: #626262; opacity: 0.85; }
+.dsv2-btn--outline-success { --btp-focus-rgb: 10, 185, 100; color: #0ab964; border-color: #0ab964; }
+.dsv2-btn--outline-success:hover { background: #0ab964; color: #fff; border-color: #0ab964; opacity: 0.85; }
+.dsv2-btn--outline-danger { --btp-focus-rgb: 225, 78, 90; color: #e14e5a; border-color: #e14e5a; }
+.dsv2-btn--outline-danger:hover { background: #e14e5a; color: #fff; border-color: #e14e5a; opacity: 0.85; }
+.dsv2-btn--outline-warning { --btp-focus-rgb: 249, 193, 35; color: #f9c123; border-color: #f9c123; }
+.dsv2-btn--outline-warning:hover { background: #f9c123; color: #212529; border-color: #f9c123; opacity: 0.85; }
+.dsv2-btn--outline-info { --btp-focus-rgb: 65, 150, 250; color: #4196fa; border-color: #4196fa; }
+.dsv2-btn--outline-info:hover { background: #4196fa; color: #fff; border-color: #4196fa; opacity: 0.85; }
+.dsv2-btn--outline-light { --btp-focus-rgb: 200, 185, 210; color: #c8b9d2; border-color: #c8b9d2; }
+.dsv2-btn--outline-light:hover { background: #c8b9d2; color: #212529; border-color: #c8b9d2; opacity: 0.85; }
+.dsv2-btn--outline-dark { --btp-focus-rgb: 40, 35, 45; color: #28232d; border-color: #28232d; }
+.dsv2-btn--outline-dark:hover { background: #28232d; color: #fff; border-color: #28232d; opacity: 0.85; }
 
-.dsv2-btn--soft-primary { background: #d4e6e8; color: #0f626a; border: 1px solid #d4e6e8; }
-.dsv2-btn--soft-primary:hover { background: #c4dbde; border-color: #c4dbde; color: #0f626a; }
-.dsv2-btn--soft-secondary { background: #e0e1e2; color: #626262; border: 1px solid #e0e1e2; }
-.dsv2-btn--soft-secondary:hover { background: #d6d7d8; border-color: #d6d7d8; color: #626262; }
-.dsv2-btn--soft-success { background: #d8efe3; color: #0ab964; border: 1px solid #d8efe3; }
-.dsv2-btn--soft-success:hover { background: #cde8d8; border-color: #cde8d8; color: #0ab964; }
-.dsv2-btn--soft-danger { background: #f6d9dc; color: #e14e5a; border: 1px solid #f6d9dc; }
-.dsv2-btn--soft-danger:hover { background: #f1ced2; border-color: #f1ced2; color: #e14e5a; }
-.dsv2-btn--soft-warning { background: #f9f1d7; color: #e1a900; border: 1px solid #f9f1d7; }
-.dsv2-btn--soft-warning:hover { background: #f4e9c7; border-color: #f4e9c7; color: #d69900; }
-.dsv2-btn--soft-info { background: #d8e8fa; color: #4196fa; border: 1px solid #d8e8fa; }
-.dsv2-btn--soft-info:hover { background: #c8ddf3; border-color: #c8ddf3; color: #4196fa; }
-.dsv2-btn--soft-light { background: #eceaf2; color: #6e647f; border: 1px solid #eceaf2; }
-.dsv2-btn--soft-light:hover { background: #e0dcea; border-color: #e0dcea; color: #6e647f; }
-.dsv2-btn--soft-dark { background: #d8d9df; color: #232430; border: 1px solid #d8d9df; }
-.dsv2-btn--soft-dark:hover { background: #ced0d8; border-color: #ced0d8; color: #232430; }
+/* ============================================================
+    SOFT / LIGHT BUTTONS (exact rgba tinting)
+   ============================================================ */
 
-/* Icon buttons */
+.dsv2-btn--soft-primary { --btp-focus-rgb: 15, 98, 106; background: rgba(15, 98, 106, .1); color: #0f626a; border-color: transparent; }
+.dsv2-btn--soft-primary:hover { background: rgba(15, 98, 106, .1); border-color: transparent; color: #0f626a; opacity: 0.85; }
+.dsv2-btn--soft-secondary { --btp-focus-rgb: 98, 98, 98; background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
+.dsv2-btn--soft-secondary:hover { background: rgba(98, 98, 98, .1); border-color: transparent; color: #626262; opacity: 0.85; }
+.dsv2-btn--soft-success { --btp-focus-rgb: 10, 185, 100; background: rgba(10, 185, 100, .1); color: #0ab964; border-color: transparent; }
+.dsv2-btn--soft-success:hover { background: rgba(10, 185, 100, .1); border-color: transparent; color: #0ab964; opacity: 0.85; }
+.dsv2-btn--soft-danger { --btp-focus-rgb: 225, 78, 90; background: rgba(225, 78, 90, .1); color: #e14e5a; border-color: transparent; }
+.dsv2-btn--soft-danger:hover { background: rgba(225, 78, 90, .1); border-color: transparent; color: #e14e5a; opacity: 0.85; }
+.dsv2-btn--soft-warning { --btp-focus-rgb: 249, 193, 35; background: rgba(249, 193, 35, .1); color: #e1a900; border-color: transparent; }
+.dsv2-btn--soft-warning:hover { background: rgba(249, 193, 35, .1); border-color: transparent; color: #e1a900; opacity: 0.85; }
+.dsv2-btn--soft-info { --btp-focus-rgb: 65, 150, 250; background: rgba(65, 150, 250, .1); color: #4196fa; border-color: transparent; }
+.dsv2-btn--soft-info:hover { background: rgba(65, 150, 250, .1); border-color: transparent; color: #4196fa; opacity: 0.85; }
+.dsv2-btn--soft-light { --btp-focus-rgb: 200, 185, 210; background: rgba(200, 185, 210, .1); color: #6e647f; border-color: transparent; }
+.dsv2-btn--soft-light:hover { background: rgba(200, 185, 210, .1); border-color: transparent; color: #6e647f; opacity: 0.85; }
+.dsv2-btn--soft-dark { --btp-focus-rgb: 40, 35, 45; background: rgba(40, 35, 45, .1); color: #28232d; border-color: transparent; }
+.dsv2-btn--soft-dark:hover { background: rgba(40, 35, 45, .1); border-color: transparent; color: #28232d; opacity: 0.85; }
+
+/* ============================================================
+    ICON BUTTONS
+   ============================================================ */
+
 .btp-icon-btn {
-    inline-size: 2rem;
-    block-size: 2rem;
+     --btp-focus-rgb: 33, 103, 243;
     display: inline-flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    justify-content: center;
+     gap: 0.25rem;
+     width: 2.25rem;
+     min-width: 2.25rem;
+     height: 2.25rem;
+     padding: 0.375rem;
+     font-size: 0.875rem;
+     line-height: 1.5;
+     font-weight: 500;
+    border-radius: 0.375rem;
     border: 1px solid transparent;
     cursor: pointer;
+     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, opacity .15s ease-in-out;
 }
 
-.btp-icon-fill-primary { background: #0f626a; color: #fff; border-color: #0f626a; }
-.btp-icon-fill-secondary { background: #626262; color: #fff; border-color: #626262; }
-.btp-icon-outline-primary { background: transparent; color: #0f626a; border-color: #0f626a; }
-.btp-icon-outline-secondary { background: transparent; color: #626262; border-color: #626262; }
-.btp-icon-soft-primary { background: #d4e6e8; color: #0f626a; border-color: #d4e6e8; }
-.btp-icon-soft-secondary { background: #e0e1e2; color: #626262; border-color: #e0e1e2; }
+.btp-icon-btn:hover { opacity: 0.85; }
+.btp-icon-btn i { font-size: 1rem; line-height: 1; }
 
-/* Social */
+.btp-icon-fill-primary { --btp-focus-rgb: 15, 98, 106; background: #0f626a; color: #fff; border-color: #0f626a; }
+.btp-icon-fill-secondary { --btp-focus-rgb: 98, 98, 98; background: #626262; color: #fff; border-color: #626262; }
+.btp-icon-outline-primary { --btp-focus-rgb: 15, 98, 106; background: transparent; color: #0f626a; border-color: #0f626a; }
+.btp-icon-outline-secondary { --btp-focus-rgb: 98, 98, 98; background: transparent; color: #626262; border-color: #626262; }
+.btp-icon-soft-primary { --btp-focus-rgb: 15, 98, 106; background: rgba(15, 98, 106, .1); color: #0f626a; border-color: transparent; }
+.btp-icon-soft-secondary { --btp-focus-rgb: 98, 98, 98; background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
+
+/* ============================================================
+    SOCIAL BUTTONS (exact 38px circular controls)
+   ============================================================ */
+
 .btp-social-btn {
+     --btp-focus-rgb: 33, 103, 243;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: 2rem;
-    block-size: 2rem;
+    width: 38px;
+     min-width: 38px;
+    height: 38px;
     padding: 0;
+     line-height: 1.5;
     border-radius: 50%;
     border: 1px solid transparent;
-    line-height: 1;
     cursor: pointer;
+     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, opacity .15s ease-in-out;
 }
 
-.btp-social-btn i {
-    font-size: 1.05rem;
-}
+.btp-social-btn i { font-size: 1rem; line-height: 1; }
+.btp-social-btn:hover { opacity: 0.85; }
 
-.btp-social-facebook { background: #3B5998; color: #fff; border-color: #3B5998; }
-.btp-social-twitter { background: #55ACEE; color: #fff; border-color: #55ACEE; }
-.btp-social-instagram { background: #E1306C; color: #fff; border-color: #E1306C; }
-.btp-social-reddit { background: #FF4500; color: #fff; border-color: #FF4500; }
-.btp-social-whatsapp { background: #43D854; color: #fff; border-color: #43D854; }
-.btp-social-linkedin { background: #0077B5; color: #fff; border-color: #0077B5; }
-.btp-social-telegram { background: #00405D; color: #fff; border-color: #00405D; }
-.btp-social-youtube { background: #CD201F; color: #fff; border-color: #CD201F; }
-.btp-social-behance { background: #1769FF; color: #fff; border-color: #1769FF; }
-.btp-social-dribbble { background: #EA4C89; color: #fff; border-color: #EA4C89; }
-.btp-social-snapchat { background: #FFFC00; color: #1f2328; border-color: #FFFC00; }
+.btp-social-facebook { --btp-focus-rgb: 59, 89, 152; background: #3B5998; color: #fff; border-color: #3B5998; }
+.btp-social-twitter { --btp-focus-rgb: 85, 172, 238; background: #55ACEE; color: #fff; border-color: #55ACEE; }
+.btp-social-instagram { --btp-focus-rgb: 225, 48, 108; background: #E1306C; color: #fff; border-color: #E1306C; }
+.btp-social-reddit { --btp-focus-rgb: 255, 69, 0; background: #FF4500; color: #fff; border-color: #FF4500; }
+.btp-social-whatsapp { --btp-focus-rgb: 67, 216, 84; background: #43D854; color: #fff; border-color: #43D854; }
+.btp-social-linkedin { --btp-focus-rgb: 0, 119, 181; background: #0077B5; color: #fff; border-color: #0077B5; }
+.btp-social-telegram { --btp-focus-rgb: 0, 64, 93; background: #00405D; color: #fff; border-color: #00405D; }
+.btp-social-youtube { --btp-focus-rgb: 205, 32, 31; background: #CD201F; color: #fff; border-color: #CD201F; }
+.btp-social-behance { --btp-focus-rgb: 23, 105, 255; background: #1769FF; color: #fff; border-color: #1769FF; }
+.btp-social-dribbble { --btp-focus-rgb: 234, 76, 137; background: #EA4C89; color: #fff; border-color: #EA4C89; }
+.btp-social-snapchat { --btp-focus-rgb: 255, 252, 0; background: #FFFC00; color: #212529; border-color: #FFFC00; }
 
-.btp-social-btn:hover {
-    filter: brightness(1.03);
-}
+/* ============================================================
+   RADIUS VARIANTS
+   ============================================================ */
 
-/* Radius */
 .btp-radius-primary,
 .btp-radius-secondary,
-.btp-radius-success {
-    border-radius: 6px;
-}
-.btp-radius-danger {
-    border-radius: 999px;
-}
-
-/* Active / Disabled / Loading / Block */
-.btp-active-primary,
-.btp-active-secondary,
-.btp-active-outline-primary,
-.btp-active-outline-secondary,
-.btp-active-soft-primary,
-.btp-active-soft-secondary {
-    transform: translateY(0);
-    box-shadow: inset 0 2px 0 rgba(0, 0, 0, .12);
+.btp-radius-success,
+.btp-radius-danger,
+.btp-radius-warning,
+.btp-radius-info,
+.btp-radius-light,
+.btp-radius-dark {
+    border-radius: 999px; /* pill shape for all 8 */
 }
 
-.btp-disabled-primary,
-.btp-disabled-secondary,
-.btp-disabled-outline-primary,
-.btp-disabled-outline-secondary,
-.btp-disabled-soft-primary,
-.btp-disabled-soft-secondary {
-    opacity: .78;
-    cursor: not-allowed;
+
+/* ============================================================
+   ACTIVE STATE — colour + inset shadow (pressed/active visual)
+   ============================================================ */
+
+.btp-active-primary   { --btp-focus-rgb: 15, 98, 106;   background: #0f626a; color: #fff;     border-color: #0f626a; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-secondary { --btp-focus-rgb: 98, 98, 98;   background: #626262; color: #fff;     border-color: #626262; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-success   { --btp-focus-rgb: 10, 185, 100;  background: #0ab964; color: #fff;     border-color: #0ab964; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-danger    { --btp-focus-rgb: 225, 78, 90;   background: #e14e5a; color: #fff;     border-color: #e14e5a; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-warning   { --btp-focus-rgb: 249, 193, 35;  background: #f9c123; color: #212529;  border-color: #f9c123; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-info      { --btp-focus-rgb: 65, 150, 250;  background: #4196fa; color: #fff;     border-color: #4196fa; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-light     { --btp-focus-rgb: 200, 185, 210; background: #c8b9d2; color: #212529;  border-color: #c8b9d2; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+.btp-active-dark      { --btp-focus-rgb: 40, 35, 45;    background: #28232d; color: #fff;     border-color: #28232d; box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125); }
+
+/* ============================================================
+   DISABLED BUTTONS — Ki-Admin opacity: 0.65, pointer-events: none
+   ============================================================ */
+
+.btp-disabled-primary   { --btp-focus-rgb: 15, 98, 106;   background: #0f626a; color: #fff;    border-color: #0f626a; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-primary:hover { background: #0f626a; color: #fff; border-color: #0f626a; opacity: 0.65; }
+.btp-disabled-secondary { --btp-focus-rgb: 98, 98, 98;   background: #626262; color: #fff;    border-color: #626262; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-secondary:hover { background: #626262; color: #fff; border-color: #626262; opacity: 0.65; }
+.btp-disabled-success   { --btp-focus-rgb: 10, 185, 100;  background: #0ab964; color: #fff;    border-color: #0ab964; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-success:hover { background: #0ab964; color: #fff; border-color: #0ab964; opacity: 0.65; }
+.btp-disabled-danger    { --btp-focus-rgb: 225, 78, 90;   background: #e14e5a; color: #fff;    border-color: #e14e5a; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-danger:hover { background: #e14e5a; color: #fff; border-color: #e14e5a; opacity: 0.65; }
+.btp-disabled-warning   { --btp-focus-rgb: 249, 193, 35;  background: #f9c123; color: #212529; border-color: #f9c123; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-warning:hover { background: #f9c123; color: #212529; border-color: #f9c123; opacity: 0.65; }
+.btp-disabled-info      { --btp-focus-rgb: 65, 150, 250;  background: #4196fa; color: #fff;    border-color: #4196fa; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-info:hover { background: #4196fa; color: #fff; border-color: #4196fa; opacity: 0.65; }
+.btp-disabled-light     { --btp-focus-rgb: 200, 185, 210; background: #c8b9d2; color: #212529; border-color: #c8b9d2; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-light:hover { background: #c8b9d2; color: #212529; border-color: #c8b9d2; opacity: 0.65; }
+.btp-disabled-dark      { --btp-focus-rgb: 40, 35, 45;    background: #28232d; color: #fff;    border-color: #28232d; opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+.btp-disabled-dark:hover { background: #28232d; color: #fff; border-color: #28232d; opacity: 0.65; }
+
+/* ============================================================
+   LOADING SPINNER
+   ============================================================ */
+
+@keyframes btp-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.35; transform: scale(0.75); }
 }
 
 .btp-dot-loader {
     display: inline-block;
-    width: .76rem;
-    height: .76rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     background: currentColor;
-    margin-right: .16rem;
-    opacity: .85;
+    opacity: 0.85;
 }
+
+.btp-pulse-loader {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+    animation: btp-pulse 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.btp-loading-primary { --btp-focus-rgb: 15, 98, 106; background: #0f626a; color: #fff; border-color: #0f626a; }
+.btp-loading-secondary { --btp-focus-rgb: 98, 98, 98; background: #626262; color: #fff; border-color: #626262; }
+.btp-loading-success { --btp-focus-rgb: 10, 185, 100; background: #0ab964; color: #fff; border-color: #0ab964; }
+.btp-loading-danger { --btp-focus-rgb: 225, 78, 90; background: #e14e5a; color: #fff; border-color: #e14e5a; }
+.btp-loading-outline-primary { --btp-focus-rgb: 15, 98, 106; background: transparent; color: #0f626a; border-color: #0f626a; }
+.btp-loading-outline-secondary { --btp-focus-rgb: 98, 98, 98; background: transparent; color: #626262; border-color: #626262; }
+.btp-loading-outline-success { --btp-focus-rgb: 10, 185, 100; background: transparent; color: #0ab964; border-color: #0ab964; }
+.btp-loading-outline-danger { --btp-focus-rgb: 225, 78, 90; background: transparent; color: #e14e5a; border-color: #e14e5a; }
+
+/* ============================================================
+   BLOCK BUTTONS
+   ============================================================ */
 
 .btp-block-btn {
     min-width: 220px;
     text-align: center;
 }
 
-/* Sizes */
-.btp-size-sm { padding: .22rem .64rem; font-size: .76rem; }
-.btp-size-md { padding: .36rem .85rem; font-size: .86rem; }
-.btp-size-lg { padding: .49rem 1.04rem; font-size: .98rem; }
+.btp-block-primary { --btp-focus-rgb: 15, 98, 106; background: #0f626a; color: #fff; border-color: #0f626a; }
+.btp-block-primary:hover { background: #0f626a; border-color: #0f626a; color: #fff; opacity: 0.85; }
+.btp-block-secondary { --btp-focus-rgb: 98, 98, 98; background: #626262; color: #fff; border-color: #626262; }
+.btp-block-secondary:hover { background: #626262; border-color: #626262; color: #fff; opacity: 0.85; }
+.btp-block-outline-primary { --btp-focus-rgb: 15, 98, 106; background: transparent; color: #0f626a; border-color: #0f626a; }
+.btp-block-outline-primary:hover { background: #0f626a; border-color: #0f626a; color: #fff; opacity: 0.85; }
+.btp-block-outline-secondary { --btp-focus-rgb: 98, 98, 98; background: transparent; color: #626262; border-color: #626262; }
+.btp-block-outline-secondary:hover { background: #626262; border-color: #626262; color: #fff; opacity: 0.85; }
+.btp-block-soft-primary { --btp-focus-rgb: 15, 98, 106; background: rgba(15, 98, 106, .1); color: #0f626a; border-color: transparent; }
+.btp-block-soft-primary:hover { background: rgba(15, 98, 106, .1); border-color: transparent; color: #0f626a; opacity: 0.85; }
+.btp-block-soft-secondary { --btp-focus-rgb: 98, 98, 98; background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
+.btp-block-soft-secondary:hover { background: rgba(98, 98, 98, .1); border-color: transparent; color: #626262; opacity: 0.85; }
 
-/* Group / Nested / CheckRadio / Vertical */
+/* ============================================================
+   SIZE VARIANTS — Ki-Admin sm / md / lg
+   ============================================================ */
+
+.btp-size-sm { padding: 0.25rem 0.5rem;   font-size: 0.875rem; border-radius: 0.25rem; }
+.btp-size-md { padding: 0.375rem 0.75rem; font-size: 0.875rem; border-radius: 0.375rem; line-height: 1.5; }
+.btp-size-lg { padding: 0.5rem 1rem;      font-size: 1.125rem; border-radius: 0.5rem; }
+
+/* ============================================================
+   BUTTON GROUPS / NESTED / CHECKBOX-RADIO
+   ============================================================ */
+
 .btp-group-demo,
 .btp-nested-demo,
 .btp-checkradio-demo {
@@ -461,33 +593,38 @@
 
 .btp-group-demo .dsv2-btn,
 .btp-nested-demo .dsv2-btn,
-.btp-checkradio-demo .dsv2-btn,
-.btp-vertical-demo .dsv2-btn {
+.btp-checkradio-demo .dsv2-btn {
     border-radius: 0;
     margin: 0;
+}
+
+.btp-group-demo .dsv2-btn + .dsv2-btn,
+.btp-nested-demo .dsv2-btn + .dsv2-btn,
+.btp-checkradio-demo .dsv2-btn + .dsv2-btn {
+    margin-left: -1px;
 }
 
 .btp-group-demo .dsv2-btn:first-child,
 .btp-nested-demo .dsv2-btn:first-child,
 .btp-checkradio-demo .dsv2-btn:first-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
 }
 
 .btp-group-demo .dsv2-btn:last-child,
 .btp-nested-demo .dsv2-btn:last-child,
 .btp-checkradio-demo .dsv2-btn:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
 }
 
-.btp-group-solid .dsv2-btn { background: #626262; color: #fff; border-color: #626262; }
-.btp-group-outline .dsv2-btn { background: #fff; color: #626262; border-color: #626262; }
-.btp-group-soft .dsv2-btn { background: #e4e5e6; color: #626262; border-color: #d8d9db; }
+.btp-group-solid .dsv2-btn   { background: #626262; color: #fff; border-color: #626262; }
+.btp-group-outline .dsv2-btn { background: transparent; color: #626262; border-color: #626262; }
+.btp-group-soft .dsv2-btn    { background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
 
-.btp-nested-solid .dsv2-btn { background: #626262; color: #fff; border-color: #626262; }
-.btp-nested-outline .dsv2-btn { background: #fff; color: #626262; border-color: #626262; }
-.btp-nested-soft .dsv2-btn { background: #e4e5e6; color: #626262; border-color: #d8d9db; }
+.btp-nested-solid .dsv2-btn   { background: #626262; color: #fff; border-color: #626262; }
+.btp-nested-outline .dsv2-btn { background: transparent; color: #626262; border-color: #626262; }
+.btp-nested-soft .dsv2-btn    { background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
 
 .btp-checkbox-line .dsv2-btn,
 .btp-radio-line .dsv2-btn,
@@ -502,11 +639,14 @@
 .btp-vertical-radio .dsv2-btn:first-child {
     background: #687689;
     color: #fff;
+    border-color: #687689;
 }
 
-.btp-pager-line .dsv2-btn {
-    min-width: 54px;
-}
+.btp-pager-line .dsv2-btn { min-width: 54px; }
+
+/* ============================================================
+   VERTICAL BUTTON STACKS
+   ============================================================ */
 
 .btp-vertical-demo {
     display: inline-flex;
@@ -514,34 +654,37 @@
     align-items: stretch;
 }
 
-.btp-vertical-demo .dsv2-btn {
-    border-radius: 0;
+.btp-vertical-demo .dsv2-btn { border-radius: 0; margin: 0; }
+
+.btp-vertical-demo .dsv2-btn + .dsv2-btn {
+    margin-top: -1px;
 }
 
 .btp-vertical-demo .dsv2-btn:first-child {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
 }
 
 .btp-vertical-demo .dsv2-btn:last-child {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
 }
 
-.btp-vertical-solid .dsv2-btn {
-    background: #626262;
-    color: #fff;
-    border-color: #626262;
+.btp-vertical-solid .dsv2-btn   { background: #626262; color: #fff; border-color: #626262; }
+.btp-vertical-outline .dsv2-btn { background: transparent; color: #626262; border-color: #626262; }
+.btp-vertical-soft .dsv2-btn    { background: rgba(98, 98, 98, .1); color: #626262; border-color: transparent; }
+
+/* ============================================================
+   ICON BUTTONS LAYOUT (single row of 6)
+   ============================================================ */
+
+.btp-icon-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    width: 100%;
 }
 
-.btp-vertical-outline .dsv2-btn {
-    background: #fff;
-    color: #626262;
-    border-color: #626262;
-}
-
-.btp-vertical-soft .dsv2-btn {
-    background: #e4e5e6;
-    color: #626262;
-    border-color: #d8d9db;
+.btp-icon-pair {
+    display: none;
 }

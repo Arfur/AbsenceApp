@@ -2530,6 +2530,146 @@ aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They
   **Scope:** `design-system:phase-a-artifacts`  
   **Summary:** Executed Phase A (A1–A7) end-to-end in EXECUTION MODE by creating the full approved governance artifact set, closing all Phase A gates, and producing a signed sign-off pack. No application/runtime code, CSS, schema runtime assets, or executable implementation content was changed.
 
+---
+
+## [2026-05-18] — Button Groups: Active/Disabled/Loading/Block Colour Fix + Block/Sizes/Groups Groups Added
+
+**Author:** Michael / GitHub Copilot  
+**Type:** Bug Fix | Feature Addition  
+**Scope:** `UIKits:Buttons — Index.razor.cs, Index.razor.css`  
+**Files Changed:**
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css` v6.1.0 → v6.2.0
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs` v6.1.0 → v6.2.0
+
+**Summary:**
+Root cause: All `btp-active-*`, `btp-disabled-*`, `btp-loading-*`, and `btp-block-*` modifier classes carried only
+behavioural CSS (box-shadow, opacity) with no colour tokens, causing affected buttons to render as unstyled
+browser-default grey. Six groups were also missing state plumbing (Block, Sizes, Groups never registered).
+
+**Phase 1 — Fix Active Buttons (Index.razor.css)**
+- Replaced grouped `.btp-active-*` selector (box-shadow only) with 6 individual rules, each carrying
+  full `background`, `color`, `border-color`, and `box-shadow: inset` matching Basic button design tokens.
+
+**Phase 2 — Fix Disabled Buttons (Index.razor.css)**
+- Replaced grouped `.btp-disabled-*` selector (opacity only) with 6 individual rules, each carrying
+  full colour values plus `opacity: 0.65`, `cursor: not-allowed`, `pointer-events: none`, and `:hover` suppression.
+
+**Phase 3 — Add Loading Button Colour Rules (Index.razor.css)**
+- Added 8 new `.btp-loading-*` CSS rules after `.btp-dot-loader` block (primary, secondary, success,
+  danger; outline variants for each), each carrying full `background`, `color`, `border-color`.
+
+**Phase 4 — Add Block Button Colour Rules (Index.razor.css + Index.razor.cs)**
+- CSS: Added 12 new `.btp-block-*` rules (6 colour + 6 `:hover`) after `.btp-block-btn` block.
+- CS: Fixed `BlockVariants` `PreviewCssClass` — added `dsv2-btn--*` colour class to each of the 6 entries
+  (e.g. `"dsv2-btn dsv2-btn--primary btp-block-btn btp-block-primary"`).
+- CS: Added `_blockState` field, registered in `GroupStates`, initialised in `OnInitialized`.
+
+---
+
+## [2026-05-18] — Buttons Page: 8-Colour Expansion, Pulse Animation, Link Button Removed
+
+**Author:** Michael / GitHub Copilot  
+**Type:** Bug Fix | Feature Addition | Cleanup  
+**Scope:** `UIKits:Buttons — Index.razor, Index.razor.cs, Index.razor.css`  
+**Files Changed:**
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor` v6.0.0 → v6.1.0
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs` v6.2.0 → v6.3.0
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.css` v6.2.0 → v6.3.0
+
+**Summary:**
+Expanded Active Buttons, Disabled Buttons, and Button Sizes groups from 2–6 variants to 8 full-colour
+variants matching the Basic Buttons palette. Implemented missing Pulse animation CSS. Removed the Link
+button variant from Basic, Outline, and Soft groups. Removed download icons from Active/Disabled/Sizes
+button previews.
+
+**1 — Disabled Buttons: 8-Colour Expansion**
+- `DisabledVariants` replaced (6 outline/soft entries) with 8 fill variants: Primary, Secondary, Success,
+  Danger, Warning, Info, Light, Dark.
+- `PreviewCssClass` uses `"dsv2-btn btp-disabled-{colour}"` pattern.
+- CSS: Replaced `btp-disabled-outline-*` and `btp-disabled-soft-*` rules with 8 new colour rules + `:hover`
+  suppression for success, danger, warning, info, light, dark.
+- `StaticVariantCss`: 6 old entries replaced with 8 `BuildCss(...)` entries using full colour tokens.
+
+**2 — Active Buttons: 8-Colour Expansion**
+- `ActiveVariants` replaced (6 outline/soft entries) with 8 fill variants: Primary, Secondary, Success,
+  Danger, Warning, Info, Light, Dark.
+- `PreviewCssClass` uses `"dsv2-btn btp-active-{colour}"` pattern.
+- CSS: Replaced `btp-active-outline-*` and `btp-active-soft-*` rules with 8 new colour rules each carrying
+  inset box-shadow for the active/pressed visual.
+- `StaticVariantCss`: 6 old entries replaced with 8 `BuildCss(...)` entries.
+
+**3 — Button Sizes: 8-Colour Expansion**
+- `SizeVariants` replaced (size-sm/md/lg + 3 colours) with 8 colour variants: Primary, Secondary, Success,
+  Danger, Warning, Info, Light, Dark — each using `dsv2-btn--*` as `PreviewCssClass`.
+- `StaticVariantCss`: Old `size-sm/md/lg/secondary/success/danger` entries replaced with 8 `BuildCss(...)`
+  entries mapping to the same `dsv2-btn--*` colour selectors as Basic Buttons.
+- No icons on any size button preview (icons removed from default Razor case).
+
+**4 — Pulse Loading Button: Animation Implemented**
+- CSS: Added `@keyframes btp-pulse` (scale + opacity, 1 s ease-in-out infinite).
+- CSS: Added `.btp-pulse-loader` class (same geometry as `.btp-dot-loader`, with `animation` applied).
+- Razor (`loading` case): Changed pulse/danger variant loader from `btp-dot-loader` → `btp-pulse-loader`.
+
+**5 — Link Button Removed**
+- `BasicVariants`: Removed `basic-link` entry (Label "Link", class `dsv2-btn--link`).
+- `OutlineVariants`: Removed `outline-link` entry.
+- `SoftVariants`: Removed `soft-link` entry.
+- `StaticVariantCss`: Removed `basic-link`, `outline-link`, `soft-link` entries.
+- No Link button appears anywhere in the Buttons page.
+
+**6 — Icons Removed from Active / Disabled / Sizes**
+- Razor `default` case: Removed the `@if (state.GroupKey is "active" or "disabled" or "sizes")` icon block.
+  All three groups now render plain text-only buttons matching Basic Buttons style.
+
+---
+
+## [2026-05-18] — Button Sizes Group: Corrected to 3 Size Variants (sm / md / lg)
+
+**Author:** Michael / GitHub Copilot  
+**Type:** Bug Fix  
+**Scope:** `UIKits:Buttons — Index.razor.cs`  
+**Files Changed:**
+- `AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs` v6.3.0 → v6.4.0
+
+**Summary:**
+Corrected the Button Sizes group which was incorrectly showing 8 colour variants (a copy of the
+Basic Buttons palette). Replaced with 3 proper size variants — Small, Medium, and Large — each
+using the Primary colour token plus the appropriate size modifier class.
+
+**Changes:**
+- `SizeVariants` replaced (8 colour entries: size-primary through size-dark) with 3 size entries:
+  - `size-sm` — Label "Small", PreviewCssClass `dsv2-btn--primary btp-size-sm`
+  - `size-md` — Label "Medium", PreviewCssClass `dsv2-btn--primary btp-size-md`
+  - `size-lg` — Label "Large", PreviewCssClass `dsv2-btn--primary btp-size-lg`
+- `StaticVariantCss` size entries replaced (8 `BuildCss(...)` entries) with 3 literal CSS entries:
+  - `size-sm` → `.btp-size-sm { padding, font-size, border-radius }`
+  - `size-md` → `.btp-size-md { padding, font-size, border-radius, line-height }`
+  - `size-lg` → `.btp-size-lg { padding, font-size, border-radius }`
+- CSS (`Index.razor.css`): No changes — `.btp-size-sm/md/lg` rules already existed.
+- Razor (`Index.razor`): No changes — `default` case already renders `dsv2-btn @variant.PreviewCssClass` correctly.
+- Result: Button Sizes group now displays 3 horizontally-arranged buttons (Small / Medium / Large)
+  in Primary colour, each demonstrating the correct size modifier.
+- `BasicVariants`: Removed `basic-link` entry (Label "Link", class `dsv2-btn--link`).
+- `OutlineVariants`: Removed `outline-link` entry.
+- `SoftVariants`: Removed `soft-link` entry.
+- `StaticVariantCss`: Removed `basic-link`, `outline-link`, `soft-link` entries.
+- No Link button appears anywhere in the Buttons page.
+
+**6 — Icons Removed from Active / Disabled / Sizes**
+- Razor `default` case: Removed the `@if (state.GroupKey is "active" or "disabled" or "sizes")` icon block.
+  All three groups now render plain text-only buttons matching Basic Buttons style.
+
+**Phase 5 — Add Button Sizes (Index.razor.cs)**
+- Fixed `SizeVariants` `PreviewCssClass` — replaced `btp-size-primary/secondary/etc.` (non-existent) with
+  existing `dsv2-btn--*` colour classes (size-sm/md/lg keep size modifier; colour-only entries drop it).
+- CS: Added `_sizeState` field, registered in `GroupStates`, initialised in `OnInitialized`.
+
+**Phase 6 — Add Button Groups (Index.razor.cs)**
+- Added `_groupState` field, registered in `GroupStates`, initialised in `OnInitialized` using existing `GroupVariants`.
+
+**Design Token Colours Used:**
+Primary #0f626a | Secondary #626262 | Success #0ab964 | Danger #e14e5a
+
   ### Details
 
   #### A1 — Scope and authority lock
