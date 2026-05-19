@@ -4,176 +4,84 @@
    Author      : Michael
    Version     : 1.0.0
    Created     : 2026-05-19
+   Updated     : 2026-05-19
    ---------------------------------------------------------------------------
-   Purpose     : Reusable dropdown component replacing the ad-hoc
-                 phv2-export-wrap pattern used on all list pages.
-
-                 Renders a trigger button + a floating menu panel.
+   Purpose     : Reusable dropdown component for the Phase 2 design system.
+                 Renders a trigger button and a positioned menu container.
                  Open/close state is managed internally; clicking the
-                 backdrop closes the menu (outside-click dismissal).
+                 backdrop (outside the menu) closes it without JS interop.
 
-                 Outputs wrapper class:
-                   dsv2-dd
-                   dsv2-dd--{Variant}   (e.g. dsv2-dd--secondary)
-                   dsv2-dd--{Size}      (e.g. dsv2-dd--sm)
-                   dsv2-dd--{Direction} (e.g. dsv2-dd--dropup)
-                   dsv2-dd--split       (when Split = true)
-                   dsv2-dd--outline     (when Outline = true)
-                   dsv2-dd--hover       (when Hover = true)
+                 Outputs wrapper classes:
+                   dsv2-dropdown
+                   dsv2-dropdown--{Variant}  (e.g. dsv2-dropdown--primary)
+                   dsv2-dropdown--{Size}     (e.g. dsv2-dropdown--sm)
 
                  Styles defined in wwwroot/css/components/dropdown.css and
-                 consume --ds-dd-* design tokens.
+                 consume --ds-dropdown-* design tokens.
    ---------------------------------------------------------------------------
    Parameters:
-     TriggerText   — label on the trigger button
-     Icon          — Bootstrap icon class (optional, leading icon)
-     Variant       — colour variant: primary/secondary/success/danger/warning/
-                     info/light/dark  (default: "secondary")
-     Size          — "sm" | "md" (default) | "lg"
-     Direction     — "down" (default) | "up" | "start" | "end"
-     MenuAlign     — "start" (default) | "end"
-     Split         — true = separate trigger + caret buttons
-     Outline       — true = outline style
-     Hover         — true = open on hover instead of click
-     Disabled      — disables the trigger
-     MenuContent   — RenderFragment slot for the menu item list
+     Label        — label shown on the trigger button (required)
+     Icon         — optional Bootstrap icon class (e.g. "bi bi-download")
+     ChildContent — RenderFragment slot for menu items
+     Variant      — "primary" (default) | "secondary"
+     Size         — "sm" | "md" (default) | "lg"
+     Disabled     — disables the trigger button
+     Title        — optional tooltip for the trigger button
    ---------------------------------------------------------------------------
    Notes       :
-     - No .razor.css companion — styles are in the global dropdown.css.
-     - ARIA: trigger has aria-expanded + aria-haspopup="menu";
-             menu container has role="menu".
+     - No .razor.css companion — styles live in the global dropdown.css.
+     - Outside-click dismissal uses a transparent backdrop div; no JS interop.
    ===========================================================================
 *@
 
 @namespace AbsenceApp.Client.Components.DesignSystem
 
-@if (_isOpen)
+@if (_open)
 {
-    <div class="dsv2-dd-backdrop" @onclick="Close" aria-hidden="true"></div>
+    <div class="dsv2-dropdown-backdrop" @onclick="Close" aria-hidden="true"></div>
 }
 
 <div class="@_wrapperClass">
 
-    @if (Split)
-    {
-        @* Split: main action button + separate caret toggle *@
-        <button type="button"
-                class="dsv2-dd__trigger @(_isOpen ? "is-open" : string.Empty)"
-                disabled="@Disabled"
-                aria-label="@TriggerText">
-            @if (!string.IsNullOrEmpty(Icon))
-            {
-                <i class="@Icon" aria-hidden="true"></i>
-            }
-            @TriggerText
-        </button>
-        <button type="button"
-                class="dsv2-dd__split-caret"
-                disabled="@Disabled"
-                aria-expanded="@_isOpen"
-                aria-haspopup="menu"
-                aria-label="Toggle @TriggerText menu"
-                @onclick="Toggle"
-                @onclick:stopPropagation="true">
-            <i class="bi bi-chevron-down dsv2-dd__caret" aria-hidden="true"></i>
-        </button>
-    }
-    else
-    {
-        @* Standard: single trigger button *@
-        <button type="button"
-                class="dsv2-dd__trigger @(_isOpen ? "is-open" : string.Empty)"
-                disabled="@Disabled"
-                aria-expanded="@_isOpen"
-                aria-haspopup="menu"
-                @onclick="Toggle"
-                @onclick:stopPropagation="true">
-            @if (!string.IsNullOrEmpty(Icon))
-            {
-                <i class="@Icon" aria-hidden="true"></i>
-            }
-            @TriggerText
-            <i class="bi bi-chevron-down dsv2-dd__caret" aria-hidden="true"></i>
-        </button>
-    }
+    <button type="button"
+            class="dsv2-dropdown__trigger"
+            title="@Title"
+            disabled="@Disabled"
+            aria-expanded="@_open"
+            aria-haspopup="menu"
+            @onclick="Toggle"
+            @onclick:stopPropagation="true">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <i class="@Icon" aria-hidden="true"></i>
+        }
+        <span>@Label</span>
+    </button>
 
-    <div class="dsv2-dd__menu @(_menuAlignClass) @(_isOpen ? "is-open" : string.Empty)"
-         role="menu">
-        @MenuContent
-    </div>
+    @if (_open)
+    {
+        <div class="dsv2-dropdown__menu" role="menu">
+            @ChildContent
+        </div>
+    }
 
 </div>
 
 @code {
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Parameters
-    // ─────────────────────────────────────────────────────────────────────────
+    [Parameter, EditorRequired] public string Label          { get; set; } = string.Empty;
+    [Parameter] public string           Icon         { get; set; } = string.Empty;
+    [Parameter] public RenderFragment?  ChildContent { get; set; }
+    [Parameter] public string           Variant      { get; set; } = "primary";
+    [Parameter] public string           Size         { get; set; } = "md";
+    [Parameter] public bool             Disabled     { get; set; } = false;
+    [Parameter] public string?          Title        { get; set; }
 
-    /// <summary>Label shown on the trigger button.</summary>
-    [Parameter, EditorRequired] public string TriggerText { get; set; } = string.Empty;
+    private bool _open;
 
-    /// <summary>Optional Bootstrap icon class for a leading icon, e.g. "bi bi-download".</summary>
-    [Parameter] public string? Icon { get; set; }
+    private void Toggle() => _open = !_open;
+    private void Close()  => _open = false;
 
-    /// <summary>Colour variant. One of: primary secondary success danger warning info light dark. Default: "secondary".</summary>
-    [Parameter] public string Variant { get; set; } = "secondary";
-
-    /// <summary>Size variant. One of: sm md lg. Default: "md".</summary>
-    [Parameter] public string Size { get; set; } = "md";
-
-    /// <summary>Opening direction. One of: down up start end. Default: "down".</summary>
-    [Parameter] public string Direction { get; set; } = "down";
-
-    /// <summary>Menu alignment. "start" = left-align (default), "end" = right-align.</summary>
-    [Parameter] public string MenuAlign { get; set; } = "start";
-
-    /// <summary>Renders a split dropdown (separate main button + caret button).</summary>
-    [Parameter] public bool Split { get; set; }
-
-    /// <summary>Renders an outline-style trigger.</summary>
-    [Parameter] public bool Outline { get; set; }
-
-    /// <summary>Opens menu on hover instead of click.</summary>
-    [Parameter] public bool Hover { get; set; }
-
-    /// <summary>Disables the trigger button.</summary>
-    [Parameter] public bool Disabled { get; set; }
-
-    /// <summary>Menu item content rendered inside the dropdown panel.</summary>
-    [Parameter] public RenderFragment? MenuContent { get; set; }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // State
-    // ─────────────────────────────────────────────────────────────────────────
-
-    private bool _isOpen;
-
-    private void Toggle() => _isOpen = !_isOpen;
-    private void Close()  => _isOpen = false;
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Computed classes
-    // ─────────────────────────────────────────────────────────────────────────
-
-    private string _directionClass => Direction switch
-    {
-        "up"    => "dsv2-dd--dropup",
-        "start" => "dsv2-dd--dropstart",
-        "end"   => "dsv2-dd--dropend",
-        _       => string.Empty
-    };
-
-    private string _menuAlignClass => MenuAlign == "end" ? "dsv2-dd__menu--end" : string.Empty;
-
-    private string _wrapperClass => string.Join(" ", new[]
-    {
-        "dsv2-dd",
-        $"dsv2-dd--{Variant}",
-        Size != "md" ? $"dsv2-dd--{Size}" : null,
-        _directionClass,
-        Split   ? "dsv2-dd--split"   : null,
-        Outline ? "dsv2-dd--outline" : null,
-        Hover   ? "dsv2-dd--hover"   : null
-    }.Where(c => !string.IsNullOrWhiteSpace(c)));
+    private string _wrapperClass =>
+        $"dsv2-dropdown dsv2-dropdown--{Variant} dsv2-dropdown--{Size}";
 }

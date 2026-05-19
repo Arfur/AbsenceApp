@@ -3,7 +3,7 @@
  File        : DesignTokenModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 2.1.0
+ Version     : 2.2.0
  Created     : 2026-05-12
  Updated     : 2026-05-19
 -------------------------------------------------------------------------------
@@ -20,6 +20,7 @@
                  - 10 semantic component families (nav-header, nav-sidebar,
                    form-field, form-shell, table, alert, icon, icon-btn,
                    badge-status, chart)
+               Phase 2 (v2.2.0): 16 dropdown tokens added (IDs 1200–1215).
                IDs follow the spacing convention 10–13, 20–23, … for btn;
                100–105 for card; 200+ for Phase D families.
 -------------------------------------------------------------------------------
@@ -32,6 +33,7 @@
      icon-btn, badge-status, chart. All DefaultValues set to "TBD" per
      audit requirements (no guessing). Family definitions and default
      values will be extracted and finalized in subsequent audit phase.
+   - 2.2.0  2026-05-19  Phase 2: added dropdown component tokens (IDs 1200–1215).
 -------------------------------------------------------------------------------
  Notes       :
    - DefaultValue strings for Phase A (btn/card) match global-config.css;
@@ -794,7 +796,25 @@ public static class DesignTokenModelBuilderExtensions
                 new DesignToken { Id = 1112, ComponentGroup = "action-btn", TokenKey = "font-size-sm",     CssVariable = "--ds-action-btn-font-size-sm",     DefaultValue = "TBD", Category = "typography", Description = "Action button small font size",           IsActive = true, SortOrder = 1112, CreatedAt = SeedDate, UpdatedAt = SeedDate },
                 new DesignToken { Id = 1113, ComponentGroup = "action-btn", TokenKey = "font-size-lg",     CssVariable = "--ds-action-btn-font-size-lg",     DefaultValue = "TBD", Category = "typography", Description = "Action button large font size",           IsActive = true, SortOrder = 1113, CreatedAt = SeedDate, UpdatedAt = SeedDate },
                 new DesignToken { Id = 1114, ComponentGroup = "action-btn", TokenKey = "icon-size",        CssVariable = "--ds-action-btn-icon-size",        DefaultValue = "TBD", Category = "typography", Description = "Action button icon size",                 IsActive = true, SortOrder = 1114, CreatedAt = SeedDate, UpdatedAt = SeedDate },
-                new DesignToken { Id = 1115, ComponentGroup = "action-btn", TokenKey = "icon-only-size",   CssVariable = "--ds-action-btn-icon-only-size",   DefaultValue = "TBD", Category = "structure",  Description = "Action button icon-only square size",     IsActive = true, SortOrder = 1115, CreatedAt = SeedDate, UpdatedAt = SeedDate }
+                new DesignToken { Id = 1115, ComponentGroup = "action-btn", TokenKey = "icon-only-size",   CssVariable = "--ds-action-btn-icon-only-size",   DefaultValue = "TBD", Category = "structure",  Description = "Action button icon-only square size",     IsActive = true, SortOrder = 1115, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+
+                // ── Dropdown (IDs 1200–1215) ──────────────────────────────────────────
+                new DesignToken { Id = 1200, ComponentGroup = "dropdown", TokenKey = "bg",              CssVariable = "--ds-dropdown-bg",              DefaultValue = "TBD", Category = "color",      Description = "Dropdown background colour",                IsActive = true, SortOrder = 1200, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1201, ComponentGroup = "dropdown", TokenKey = "hover-bg",        CssVariable = "--ds-dropdown-hover-bg",        DefaultValue = "TBD", Category = "color",      Description = "Dropdown trigger hover background",         IsActive = true, SortOrder = 1201, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1202, ComponentGroup = "dropdown", TokenKey = "text",            CssVariable = "--ds-dropdown-text",            DefaultValue = "TBD", Category = "color",      Description = "Dropdown trigger text colour",              IsActive = true, SortOrder = 1202, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1203, ComponentGroup = "dropdown", TokenKey = "icon",            CssVariable = "--ds-dropdown-icon",            DefaultValue = "TBD", Category = "color",      Description = "Dropdown trigger icon colour",              IsActive = true, SortOrder = 1203, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1204, ComponentGroup = "dropdown", TokenKey = "border",          CssVariable = "--ds-dropdown-border",          DefaultValue = "TBD", Category = "color",      Description = "Dropdown border colour",                    IsActive = true, SortOrder = 1204, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1205, ComponentGroup = "dropdown", TokenKey = "radius",          CssVariable = "--ds-dropdown-radius",          DefaultValue = "TBD", Category = "radius",     Description = "Dropdown border radius",                    IsActive = true, SortOrder = 1205, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1206, ComponentGroup = "dropdown", TokenKey = "shadow",          CssVariable = "--ds-dropdown-shadow",          DefaultValue = "TBD", Category = "shadow",     Description = "Dropdown menu box shadow",                  IsActive = true, SortOrder = 1206, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1207, ComponentGroup = "dropdown", TokenKey = "padding-x",       CssVariable = "--ds-dropdown-padding-x",       DefaultValue = "TBD", Category = "spacing",    Description = "Dropdown trigger horizontal padding",       IsActive = true, SortOrder = 1207, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1208, ComponentGroup = "dropdown", TokenKey = "padding-y",       CssVariable = "--ds-dropdown-padding-y",       DefaultValue = "TBD", Category = "spacing",    Description = "Dropdown trigger vertical padding",         IsActive = true, SortOrder = 1208, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1209, ComponentGroup = "dropdown", TokenKey = "font-size",       CssVariable = "--ds-dropdown-font-size",       DefaultValue = "TBD", Category = "typography", Description = "Dropdown default font size",                IsActive = true, SortOrder = 1209, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1210, ComponentGroup = "dropdown", TokenKey = "font-size-sm",    CssVariable = "--ds-dropdown-font-size-sm",    DefaultValue = "TBD", Category = "typography", Description = "Dropdown small font size",                  IsActive = true, SortOrder = 1210, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1211, ComponentGroup = "dropdown", TokenKey = "font-size-lg",    CssVariable = "--ds-dropdown-font-size-lg",    DefaultValue = "TBD", Category = "typography", Description = "Dropdown large font size",                  IsActive = true, SortOrder = 1211, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1212, ComponentGroup = "dropdown", TokenKey = "item-hover-bg",   CssVariable = "--ds-dropdown-item-hover-bg",   DefaultValue = "TBD", Category = "color",      Description = "Dropdown menu item hover background",       IsActive = true, SortOrder = 1212, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1213, ComponentGroup = "dropdown", TokenKey = "item-hover-text", CssVariable = "--ds-dropdown-item-hover-text", DefaultValue = "TBD", Category = "color",      Description = "Dropdown menu item hover text colour",      IsActive = true, SortOrder = 1213, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1214, ComponentGroup = "dropdown", TokenKey = "zindex",          CssVariable = "--ds-dropdown-zindex",          DefaultValue = "TBD", Category = "structure",  Description = "Dropdown menu z-index",                     IsActive = true, SortOrder = 1214, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1215, ComponentGroup = "dropdown", TokenKey = "width",           CssVariable = "--ds-dropdown-width",           DefaultValue = "TBD", Category = "structure",  Description = "Dropdown menu minimum width",               IsActive = true, SortOrder = 1215, CreatedAt = SeedDate, UpdatedAt = SeedDate }
             );
         });
 

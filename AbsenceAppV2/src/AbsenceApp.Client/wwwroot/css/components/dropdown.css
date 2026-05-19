@@ -1,489 +1,105 @@
 /* =============================================================================
    File    : dropdown.css
    Project : AbsenceApp.Client
-   Phase   : V2 Design System — Dropdown Component
+   Version : 1.0.0
    Created : 2026-05-19
-   Purpose : Global styles for the DropdownV2 component and the full dropdown
-             showcase page.  All visual properties consume --ds-dd-* design
-             tokens so values can be overridden at runtime via
-             DesignTokenApiServiceV2.  DO NOT add inline overrides.
+   Updated : 2026-05-19
+   Purpose : Global styles for the DropdownV2 design system component.
+             All visual properties consume --ds-dropdown-* design tokens.
+   Changes :
+     - 1.0.0  2026-05-19  Initial implementation (Phase 2 rebuild).
 ============================================================================= */
 
-/* ── Wrapper ──────────────────────────────────────────────────────────────── */
-
-.dsv2-dd {
-    position:    relative;
-    display:     inline-block;
+/* -- Wrapper --------------------------------------------------------------- */
+.dsv2-dropdown {
+    position: relative;
+    display:  inline-block;
 }
 
-/* ── Trigger button ───────────────────────────────────────────────────────── */
-
-.dsv2-dd__trigger {
-    display:         inline-flex;
-    align-items:     center;
-    gap:             6px;
-    padding:         var(--ds-dd-trigger-padding-y, 7px) var(--ds-dd-trigger-padding-x, 14px);
-    border-radius:   var(--ds-dd-trigger-radius, 6px);
-    font-size:       0.875rem;
-    font-weight:     600;
-    font-family:     var(--ds-font-sans, 'Inter', 'Segoe UI', Arial, sans-serif);
-    line-height:     1.25;
-    white-space:     nowrap;
-    cursor:          pointer;
-    border:          1px solid var(--ds-color-border, #dde1e7);
-    background:      var(--ds-dd-trigger-bg, transparent);
-    color:           var(--ds-dd-trigger-text, #2c3345);
-    transition:      background 0.12s ease, border-color 0.12s ease;
-    user-select:     none;
+/* -- Trigger button -------------------------------------------------------- */
+.dsv2-dropdown__trigger {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            6px;
+    padding:        var(--ds-dropdown-padding-y, 5px) var(--ds-dropdown-padding-x, 12px);
+    font-size:      var(--ds-dropdown-font-size, 0.8125rem);
+    font-weight:    500;
+    line-height:    1.25;
+    white-space:    nowrap;
+    cursor:         pointer;
+    border:         1px solid var(--ds-dropdown-border, #dee2e6);
+    border-radius:  var(--ds-dropdown-radius, 6px);
+    background:     var(--ds-dropdown-bg, transparent);
+    color:          var(--ds-dropdown-text, #212529);
+    transition:     background 0.12s ease, color 0.12s ease;
+    -webkit-user-select: none;
+    user-select:    none;
+    vertical-align: middle;
 }
 
-.dsv2-dd__trigger:hover:not(:disabled) {
-    background:   var(--ds-dd-trigger-hover-bg, #e8eaed);
-    border-color: var(--ds-dd-trigger-hover-bg, #e8eaed);
+.dsv2-dropdown__trigger:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #f8f9fa);
 }
 
-.dsv2-dd__trigger.is-open,
-.dsv2-dd__trigger:active:not(:disabled) {
-    background:   var(--ds-dd-trigger-active-bg, #dee2e6);
-    border-color: var(--ds-dd-trigger-active-bg, #dee2e6);
-}
-
-.dsv2-dd__trigger:disabled,
-.dsv2-dd__trigger[disabled] {
-    opacity:        0.55;
+.dsv2-dropdown__trigger:disabled,
+.dsv2-dropdown__trigger[disabled] {
+    opacity:        0.65;
     cursor:         not-allowed;
     pointer-events: none;
 }
 
-/* ── Caret ────────────────────────────────────────────────────────────────── */
-
-.dsv2-dd__caret {
-    font-size:  var(--ds-dd-caret-size, 0.75rem);
-    transition: transform 0.15s ease;
-    flex-shrink: 0;
+/* -- Menu ------------------------------------------------------------------ */
+.dsv2-dropdown__menu {
+    position:      absolute;
+    top:           calc(100% + 4px);
+    left:          0;
+    min-width:     var(--ds-dropdown-width, 10rem);
+    padding:       var(--ds-dropdown-padding-y, 5px) 0;
+    background:    var(--ds-dropdown-bg, #ffffff);
+    border:        1px solid var(--ds-dropdown-border, #dee2e6);
+    border-radius: var(--ds-dropdown-radius, 6px);
+    box-shadow:    var(--ds-dropdown-shadow, 0 4px 12px rgba(0, 0, 0, 0.10));
+    z-index:       var(--ds-dropdown-zindex, 1050);
+    overflow:      hidden;
 }
 
-.dsv2-dd__trigger.is-open .dsv2-dd__caret {
-    transform: rotate(180deg);
+/* -- Variants -------------------------------------------------------------- */
+.dsv2-dropdown--primary .dsv2-dropdown__trigger {
+    background:   var(--ds-dropdown-bg, #0d6efd);
+    color:        var(--ds-dropdown-text, #ffffff);
+    border-color: var(--ds-dropdown-border, #0d6efd);
 }
 
-/* ── Menu ─────────────────────────────────────────────────────────────────── */
-
-.dsv2-dd__menu {
-    display:        none;
-    position:       absolute;
-    top:            calc(100% + 4px);
-    left:           0;
-    min-width:      var(--ds-dd-menu-min-width, 168px);
-    background:     var(--ds-dd-menu-bg, #ffffff);
-    border:         var(--ds-dd-menu-border, 1px solid #dde1e7);
-    border-radius:  var(--ds-dd-menu-radius, 6px);
-    box-shadow:     var(--ds-dd-menu-shadow, 0 4px 12px rgba(0,0,0,0.10));
-    z-index:        var(--ds-dd-menu-z-index, 1050);
-    overflow:       hidden;
-    animation:      dsv2-dd-fadein 0.12s ease;
+.dsv2-dropdown--primary .dsv2-dropdown__trigger:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #0b5ed7);
 }
 
-.dsv2-dd__menu.is-open {
-    display: block;
+.dsv2-dropdown--secondary .dsv2-dropdown__trigger {
+    background:   var(--ds-dropdown-bg, transparent);
+    color:        var(--ds-dropdown-text, #212529);
+    border-color: var(--ds-dropdown-border, currentColor);
 }
 
-@keyframes dsv2-dd-fadein {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
+.dsv2-dropdown--secondary .dsv2-dropdown__trigger:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #f8f9fa);
 }
 
-/* ── Menu alignment ───────────────────────────────────────────────────────── */
-
-.dsv2-dd__menu--end {
-    left:  auto;
-    right: 0;
+/* -- Sizes ----------------------------------------------------------------- */
+.dsv2-dropdown--sm .dsv2-dropdown__trigger {
+    font-size: var(--ds-dropdown-font-size-sm, 0.75rem);
 }
 
-/* ── Menu items ───────────────────────────────────────────────────────────── */
-
-.dsv2-dd__item {
-    display:    flex;
-    align-items: center;
-    gap:        8px;
-    width:      100%;
-    padding:    9px 14px;
-    font-size:  0.85rem;
-    color:      var(--ds-dd-item-text, #2c3345);
-    background: none;
-    border:     none;
-    cursor:     pointer;
-    text-align: left;
-    white-space: nowrap;
-    transition: background 0.1s ease;
-    text-decoration: none;
+.dsv2-dropdown--md .dsv2-dropdown__trigger {
+    font-size: var(--ds-dropdown-font-size, 0.8125rem);
 }
 
-.dsv2-dd__item:hover {
-    background: var(--ds-dd-item-hover-bg, #f8f9fa);
-    color:      var(--ds-dd-item-text, #2c3345);
+.dsv2-dropdown--lg .dsv2-dropdown__trigger {
+    font-size: var(--ds-dropdown-font-size-lg, 0.9375rem);
 }
 
-.dsv2-dd__item.is-active,
-.dsv2-dd__item--active {
-    background: var(--ds-dd-item-active-bg, #eff6ff);
-    color:      var(--ds-dd-item-active-text, #2563eb);
-    font-weight: 600;
-}
-
-.dsv2-dd__item i,
-.dsv2-dd__item .dsv2-dd__item-icon {
-    color:     var(--ds-dd-item-icon-color, #6b7280);
-    font-size: 0.9rem;
-    flex-shrink: 0;
-}
-
-.dsv2-dd__item.is-active i,
-.dsv2-dd__item--active i {
-    color: var(--ds-dd-item-active-text, #2563eb);
-}
-
-/* ── Divider ──────────────────────────────────────────────────────────────── */
-
-.dsv2-dd__divider {
-    height:     1px;
-    background: var(--ds-dd-divider, #dee2e6);
-    margin:     4px 0;
-    border:     none;
-}
-
-/* ── Header / label in menu ───────────────────────────────────────────────── */
-
-.dsv2-dd__header {
-    padding:     8px 14px 4px;
-    font-size:   0.70rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color:       var(--ds-color-muted, #9ca3af);
-}
-
-/* ── Profile block in menu ────────────────────────────────────────────────── */
-
-.dsv2-dd__profile-block {
-    display:     flex;
-    align-items: center;
-    gap:         10px;
-    padding:     12px 14px;
-    border-bottom: 1px solid var(--ds-dd-divider, #dee2e6);
-}
-
-.dsv2-dd__profile-avatar {
-    width:         36px;
-    height:        36px;
-    border-radius: 50%;
-    background:    var(--ds-color-accent, #2563eb);
-    display:       flex;
-    align-items:   center;
-    justify-content: center;
-    color:         #fff;
-    font-size:     0.9rem;
-    font-weight:   700;
-    flex-shrink:   0;
-}
-
-.dsv2-dd__profile-name {
-    font-size:   0.875rem;
-    font-weight: 600;
-    color:       var(--ds-dd-item-text, #2c3345);
-}
-
-.dsv2-dd__profile-role {
-    font-size: 0.75rem;
-    color:     var(--ds-color-muted, #9ca3af);
-}
-
-/* ── Text block in menu ───────────────────────────────────────────────────── */
-
-.dsv2-dd__text-block {
-    padding:   10px 14px;
-    font-size: 0.8rem;
-    color:     var(--ds-color-muted, #9ca3af);
-    max-width: 220px;
-    white-space: normal;
-}
-
-/* ── Checkbox/radio items ─────────────────────────────────────────────────── */
-
-.dsv2-dd__check-item {
-    display:     flex;
-    align-items: center;
-    gap:         8px;
-    padding:     8px 14px;
-    font-size:   0.85rem;
-    color:       var(--ds-dd-item-text, #2c3345);
-    cursor:      pointer;
-}
-
-.dsv2-dd__check-item:hover {
-    background: var(--ds-dd-item-hover-bg, #f8f9fa);
-}
-
-.dsv2-dd__check-item input[type="checkbox"],
-.dsv2-dd__check-item input[type="radio"] {
-    accent-color: var(--ds-color-accent, #2563eb);
-    width:        15px;
-    height:       15px;
-    cursor:       pointer;
-}
-
-/* ── Message tag items ────────────────────────────────────────────────────── */
-
-.dsv2-dd__msg-item {
-    display:     flex;
-    align-items: flex-start;
-    gap:         10px;
-    padding:     10px 14px;
-    cursor:      pointer;
-}
-
-.dsv2-dd__msg-item:hover {
-    background: var(--ds-dd-item-hover-bg, #f8f9fa);
-}
-
-.dsv2-dd__msg-dot {
-    width:         8px;
-    height:        8px;
-    border-radius: 50%;
-    flex-shrink:   0;
-    margin-top:    5px;
-}
-
-.dsv2-dd__msg-body {
-    flex: 1;
-    min-width: 0;
-}
-
-.dsv2-dd__msg-title {
-    font-size:   0.85rem;
-    font-weight: 600;
-    color:       var(--ds-dd-item-text, #2c3345);
-    white-space: nowrap;
-    overflow:    hidden;
-    text-overflow: ellipsis;
-}
-
-.dsv2-dd__msg-preview {
-    font-size:   0.75rem;
-    color:       var(--ds-color-muted, #9ca3af);
-    white-space: nowrap;
-    overflow:    hidden;
-    text-overflow: ellipsis;
-}
-
-/* ── Direction modifiers ──────────────────────────────────────────────────── */
-
-/* Dropup — menu opens above trigger */
-.dsv2-dd--dropup .dsv2-dd__menu {
-    top:    auto;
-    bottom: calc(100% + 4px);
-}
-
-.dsv2-dd--dropup .dsv2-dd__trigger.is-open .dsv2-dd__caret {
-    transform: rotate(0deg);
-}
-
-.dsv2-dd--dropup .dsv2-dd__trigger .dsv2-dd__caret {
-    transform: rotate(180deg);
-}
-
-/* Dropend — menu opens to the right */
-.dsv2-dd--dropend .dsv2-dd__menu {
-    top:  0;
-    left: calc(100% + 4px);
-}
-
-/* Dropstart — menu opens to the left */
-.dsv2-dd--dropstart .dsv2-dd__menu {
-    top:   0;
-    left:  auto;
-    right: calc(100% + 4px);
-}
-
-/* ── Size variants ────────────────────────────────────────────────────────── */
-
-.dsv2-dd--sm .dsv2-dd__trigger {
-    padding:   4px 10px;
-    font-size: 0.75rem;
-}
-
-.dsv2-dd--lg .dsv2-dd__trigger {
-    padding:   10px 20px;
-    font-size: 1rem;
-}
-
-/* ── Outline variant ──────────────────────────────────────────────────────── */
-
-.dsv2-dd--outline .dsv2-dd__trigger {
-    background:   transparent;
-    border-color: currentColor;
-}
-
-.dsv2-dd--outline .dsv2-dd__trigger:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.06);
-}
-
-/* ── Soft / Light variant ─────────────────────────────────────────────────── */
-
-.dsv2-dd--soft .dsv2-dd__trigger {
-    border-color: transparent;
-    opacity:      0.9;
-}
-
-.dsv2-dd--soft .dsv2-dd__trigger:hover:not(:disabled) {
-    opacity: 1;
-}
-
-/* ── Colour variants (primary / secondary / success / etc.) ──────────────── */
-
-/* Primary */
-.dsv2-dd--primary .dsv2-dd__trigger {
-    background:   #0f626a;
-    color:        #ffffff;
-    border-color: #0f626a;
-}
-.dsv2-dd--primary .dsv2-dd__trigger:hover:not(:disabled) {
-    background:   #0b5560;
-    border-color: #0b5560;
-}
-.dsv2-dd--primary.dsv2-dd--outline .dsv2-dd__trigger {
-    background:   transparent;
-    color:        #0f626a;
-    border-color: #0f626a;
-}
-.dsv2-dd--primary.dsv2-dd--outline .dsv2-dd__trigger:hover:not(:disabled) {
-    background: rgba(15, 98, 106, 0.1);
-}
-.dsv2-dd--primary.dsv2-dd--soft .dsv2-dd__trigger {
-    background:   rgba(15, 98, 106, 0.1);
-    color:        #0f626a;
-    border-color: transparent;
-}
-
-/* Secondary */
-.dsv2-dd--secondary .dsv2-dd__trigger {
-    background:   #626262;
-    color:        #ffffff;
-    border-color: #626262;
-}
-.dsv2-dd--secondary .dsv2-dd__trigger:hover:not(:disabled) {
-    background:   #535353;
-    border-color: #535353;
-}
-.dsv2-dd--secondary.dsv2-dd--outline .dsv2-dd__trigger {
-    background:   transparent;
-    color:        #626262;
-    border-color: #626262;
-}
-.dsv2-dd--secondary.dsv2-dd--soft .dsv2-dd__trigger {
-    background:   rgba(98, 98, 98, 0.1);
-    color:        #626262;
-    border-color: transparent;
-}
-
-/* Success */
-.dsv2-dd--success .dsv2-dd__trigger { background: #0ab964; color: #fff; border-color: #0ab964; }
-.dsv2-dd--success .dsv2-dd__trigger:hover:not(:disabled) { background: #09a458; border-color: #09a458; }
-.dsv2-dd--success.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #0ab964; border-color: #0ab964; }
-.dsv2-dd--success.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(10,185,100,0.1); color: #0ab964; border-color: transparent; }
-
-/* Danger */
-.dsv2-dd--danger .dsv2-dd__trigger { background: #e14e5a; color: #fff; border-color: #e14e5a; }
-.dsv2-dd--danger .dsv2-dd__trigger:hover:not(:disabled) { background: #cf4451; border-color: #cf4451; }
-.dsv2-dd--danger.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #e14e5a; border-color: #e14e5a; }
-.dsv2-dd--danger.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(225,78,90,0.1); color: #e14e5a; border-color: transparent; }
-
-/* Warning */
-.dsv2-dd--warning .dsv2-dd__trigger { background: #f9c123; color: #212529; border-color: #f9c123; }
-.dsv2-dd--warning .dsv2-dd__trigger:hover:not(:disabled) { background: #e6ad12; border-color: #e6ad12; }
-.dsv2-dd--warning.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #e6ad12; border-color: #f9c123; }
-.dsv2-dd--warning.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(249,193,35,0.1); color: #e6ad12; border-color: transparent; }
-
-/* Info */
-.dsv2-dd--info .dsv2-dd__trigger { background: #4196fa; color: #fff; border-color: #4196fa; }
-.dsv2-dd--info .dsv2-dd__trigger:hover:not(:disabled) { background: #2e84f0; border-color: #2e84f0; }
-.dsv2-dd--info.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #4196fa; border-color: #4196fa; }
-.dsv2-dd--info.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(65,150,250,0.1); color: #4196fa; border-color: transparent; }
-
-/* Light */
-.dsv2-dd--light .dsv2-dd__trigger { background: #c8b9d2; color: #212529; border-color: #c8b9d2; }
-.dsv2-dd--light .dsv2-dd__trigger:hover:not(:disabled) { background: #b5a5c0; border-color: #b5a5c0; }
-.dsv2-dd--light.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #6e647f; border-color: #c8b9d2; }
-.dsv2-dd--light.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(200,185,210,0.1); color: #6e647f; border-color: transparent; }
-
-/* Dark */
-.dsv2-dd--dark .dsv2-dd__trigger { background: #28232d; color: #fff; border-color: #28232d; }
-.dsv2-dd--dark .dsv2-dd__trigger:hover:not(:disabled) { background: #1e1a22; border-color: #1e1a22; }
-.dsv2-dd--dark.dsv2-dd--outline .dsv2-dd__trigger { background: transparent; color: #28232d; border-color: #28232d; }
-.dsv2-dd--dark.dsv2-dd--soft   .dsv2-dd__trigger { background: rgba(40,35,45,0.1); color: #28232d; border-color: transparent; }
-
-/* ── Split dropdown ───────────────────────────────────────────────────────── */
-
-.dsv2-dd--split {
-    display:    inline-flex;
-    align-items: stretch;
-}
-
-.dsv2-dd--split .dsv2-dd__trigger {
-    border-radius: var(--ds-dd-trigger-radius, 6px) 0 0 var(--ds-dd-trigger-radius, 6px);
-    border-right:  none;
-}
-
-.dsv2-dd--split .dsv2-dd__split-caret {
-    display:       inline-flex;
-    align-items:   center;
-    justify-content: center;
-    padding:       0 10px;
-    cursor:        pointer;
-    border:        1px solid var(--ds-color-border, #dde1e7);
-    border-left:   1px solid var(--ds-dd-split-divider, rgba(255,255,255,0.25));
-    border-radius: 0 var(--ds-dd-trigger-radius, 6px) var(--ds-dd-trigger-radius, 6px) 0;
-    background:    inherit;
-    color:         inherit;
-    font-size:     var(--ds-dd-caret-size, 0.75rem);
-    transition:    background 0.12s ease;
-}
-
-.dsv2-dd--split .dsv2-dd__split-caret:hover:not(:disabled) {
-    background: var(--ds-dd-trigger-hover-bg, #e8eaed);
-}
-
-/* Colour-variant split border fix */
-.dsv2-dd--primary .dsv2-dd__split-caret,
-.dsv2-dd--secondary .dsv2-dd__split-caret,
-.dsv2-dd--success .dsv2-dd__split-caret,
-.dsv2-dd--danger .dsv2-dd__split-caret,
-.dsv2-dd--warning .dsv2-dd__split-caret,
-.dsv2-dd--info .dsv2-dd__split-caret,
-.dsv2-dd--dark .dsv2-dd__split-caret {
-    border-color: var(--ds-dd-split-divider, rgba(255,255,255,0.25));
-}
-
-/* ── Hover trigger ────────────────────────────────────────────────────────── */
-
-.dsv2-dd--hover:hover > .dsv2-dd__menu {
-    display: block;
-}
-
-/* ── Colored menu (bg-tinted items) ──────────────────────────────────────── */
-
-.dsv2-dd__menu--colored .dsv2-dd__item {
-    color: #fff;
-}
-
-.dsv2-dd__menu--colored .dsv2-dd__item:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* ── Backdrop (outside-click close) ──────────────────────────────────────── */
-
-.dsv2-dd-backdrop {
+/* -- Backdrop (outside-click dismissal � no JS interop) ------------------- */
+.dsv2-dropdown-backdrop {
     position: fixed;
     inset:    0;
-    z-index:  calc(var(--ds-dd-menu-z-index, 1050) - 1);
+    z-index:  calc(var(--ds-dropdown-zindex, 1050) - 1);
 }
