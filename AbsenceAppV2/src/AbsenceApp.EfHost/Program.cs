@@ -45,6 +45,6 @@ await using var scope = provider.CreateAsyncScope();
 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
 Console.WriteLine("[EfHost] Seeding database...");
-await DatabaseSeeder.SeedAsync(db, @"C:\DevAbsence1\Data CSV");
+await DatabaseSeeder.SeedAsync(db, @"C:\DevAbsence2\Data CSV");
 Console.WriteLine("[EfHost] Seed complete.");
 

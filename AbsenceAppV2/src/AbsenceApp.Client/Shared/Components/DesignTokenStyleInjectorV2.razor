@@ -2,9 +2,9 @@
    File        : DesignTokenStyleInjectorV2.razor
    Namespace   : AbsenceApp.Client.Shared.Components
    Author      : Michael
-   Version     : 1.0.0
+   Version     : 1.1.0
    Created     : 2026-05-12
-   Updated     : 2026-05-12
+   Updated     : 2026-05-19
    ---------------------------------------------------------------------------
    Purpose     : Injects a <style id="ds-token-overrides"> element into the
                  document containing the runtime CSS :root { } override block
@@ -20,18 +20,12 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-05-12  Initial creation (Phase A — Design Token System).
-   ---------------------------------------------------------------------------
-   Notes       :
-     - No .razor.css companion file — this component renders a single <style>
-       element and has no scoped CSS requirements.
-     - MarkupString is used intentionally: the CSS string is built from trusted
-       DB values under admin control and does not accept external user input.
-     - IAsyncDisposable: unsubscribes from OnTokensChanged on disposal to
-       prevent memory leaks when the layout is torn down.
+     - 1.1.0  2026-05-19  Added diagnostic logging + CSS dump in 500‑char chunks.
    ===========================================================================
 *@
 
 @namespace AbsenceApp.Client.Shared.Components
+@using AbsenceApp.Client.Services                  @* AppLog lives here *@
 @using AbsenceApp.Client.Services.ApiV2.Modules
 @inject DesignTokenApiServiceV2 TokenService
 @implements IAsyncDisposable
@@ -41,33 +35,81 @@
 @code {
     private string _css = string.Empty;
 
-    // -------------------------------------------------------------------------
-    // Lifecycle
-    // -------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // DumpCss — writes the full CSS string to AbsenceApp.log in safe chunks
+    // ----------------------------------------------------------------------
+    private void DumpCss(string? css)
+    {
+        if (string.IsNullOrEmpty(css))
+        {
+            AppLog.Write("DesignTokenStyleInjectorV2.razor", "DumpCss", "CSS is EMPTY");
+            return;
+        }
 
+        const int chunkSize = 500;
+        int total = css.Length;
+        int index = 0;
+        int chunk = 1;
+
+        AppLog.Write("DesignTokenStyleInjectorV2.razor", "DumpCss",
+            $"Dumping CSS ({total} chars)");
+
+        while (index < total)
+        {
+            int len = Math.Min(chunkSize, total - index);
+            string part = css.Substring(index, len);
+
+            // Replace newlines so log stays single-line per entry
+            string safe = part.Replace("\n", "\\n").Replace("\r", "");
+
+            AppLog.Write("DesignTokenStyleInjectorV2.razor", $"CSS-Chunk-{chunk}", safe);
+
+            index += len;
+            chunk++;
+        }
+
+        AppLog.Write("DesignTokenStyleInjectorV2.razor", "DumpCss", "CSS dump complete");
+    }
+
+    // ----------------------------------------------------------------------
+    // OnInitializedAsync — initial load
+    // ----------------------------------------------------------------------
     protected override async Task OnInitializedAsync()
     {
         TokenService.OnTokensChanged += HandleTokensChanged;
+
+        AppLog.Write("DesignTokenStyleInjectorV2.razor", "OnInitialized",
+            "Calling GetGeneratedCssAsync() for initial load");
+
         _css = await TokenService.GetGeneratedCssAsync();
+
+        AppLog.Write("DesignTokenStyleInjectorV2.razor", "OnInitialized",
+            $"Initial CSS length = {_css?.Length ?? 0}");
+
+        DumpCss(_css);
     }
 
-    // -------------------------------------------------------------------------
-    // Event handler — refreshes CSS when tokens are updated at runtime
-    // -------------------------------------------------------------------------
-
+    // ----------------------------------------------------------------------
+    // HandleTokensChanged — runtime updates
+    // ----------------------------------------------------------------------
     private void HandleTokensChanged()
     {
         _ = InvokeAsync(async () =>
         {
             _css = await TokenService.GetGeneratedCssAsync();
+
+            AppLog.Write("DesignTokenStyleInjectorV2.razor", "OnTokensChanged",
+                $"Refreshed CSS length = {_css?.Length ?? 0}");
+
+            DumpCss(_css);
+
             StateHasChanged();
         });
     }
 
-    // -------------------------------------------------------------------------
-    // IAsyncDisposable
-    // -------------------------------------------------------------------------
-
+    // ----------------------------------------------------------------------
+    // DisposeAsync — unsubscribe to avoid memory leaks
+    // ----------------------------------------------------------------------
     public ValueTask DisposeAsync()
     {
         TokenService.OnTokensChanged -= HandleTokensChanged;

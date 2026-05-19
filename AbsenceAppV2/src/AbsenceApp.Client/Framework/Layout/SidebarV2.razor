@@ -2,9 +2,9 @@
 ===============================================================================
    File        : SidebarV2.razor
    Author      : Michael
-   Version     : 7.1.0
+   Version     : 7.2.0
    Created     : 2026-03-21
-   Updated     : 2026-04-14
+   Updated     : 2026-05-18
    ---------------------------------------------------------------------------
    Purpose     : V2 collapsible sidebar. Loads navigation categories from
                  the API via NavigationServiceV2. Renders category section
@@ -64,8 +64,10 @@
                           hardcoding any route name.
                           (3) Removed literal 'ACTIVE' status badge: status
                           badges are now suppressed when item.Status=='ACTIVE'
-                          so only meaningful badges (e.g. BETA, NEW) appear.
-     - 7.1.0  2026-04-15  Issue 1: HandleGroupClick no longer collapses an
+                          so only meaningful badges (e.g. BETA, NEW) appear.      - 7.2.0  2026-05-18  Added null/empty icon fallback: when group.Icon or
+                           item.Icon is null or empty, substitutes "bi-circle"
+                           so a missing DB value never produces an invisible
+                           blank element.     - 7.1.0  2026-04-15  Issue 1: HandleGroupClick no longer collapses an
                           already-open group — clicking an active group is a
                           no-op (preferred no-collapse behaviour).
                           Issue 2: dual-highlight (open accordion + flat active
@@ -201,7 +203,7 @@
                     __builder.AddAttribute(3, "title",
                         AppState.SidebarCollapsed ? group.Group : null);
                     __builder.OpenElement(4, "i");
-                    __builder.AddAttribute(5, "class", "bi " + group.Icon + " dsv2-sidebar__item-icon");
+                    __builder.AddAttribute(5, "class", "bi " + (string.IsNullOrEmpty(group.Icon) ? "bi-circle" : group.Icon) + " dsv2-sidebar__item-icon");
                     __builder.CloseElement();
                     if (!AppState.SidebarCollapsed)
                     {
@@ -224,7 +226,7 @@
                     __builder.AddAttribute(3, "title",
                         AppState.SidebarCollapsed ? group.Group : null);
                     __builder.OpenElement(4, "i");
-                    __builder.AddAttribute(5, "class", "bi " + group.Icon + " dsv2-sidebar__item-icon");
+                    __builder.AddAttribute(5, "class", "bi " + (string.IsNullOrEmpty(group.Icon) ? "bi-circle" : group.Icon) + " dsv2-sidebar__item-icon");
                     __builder.CloseElement();
                     if (!AppState.SidebarCollapsed)
                     {
@@ -253,7 +255,7 @@
                             if (!string.IsNullOrEmpty(item.Description))
                                 __builder.AddAttribute(16, "title", item.Description);
                             __builder.OpenElement(17, "i");
-                            __builder.AddAttribute(18, "class", "bi " + item.Icon + " dsv2-sidebar__item-icon");
+                            __builder.AddAttribute(18, "class", "bi " + (string.IsNullOrEmpty(item.Icon) ? "bi-circle" : item.Icon) + " dsv2-sidebar__item-icon");
                             __builder.CloseElement();
                             __builder.OpenElement(19, "span");
                             __builder.AddAttribute(20, "class", "dsv2-sidebar__item-label");

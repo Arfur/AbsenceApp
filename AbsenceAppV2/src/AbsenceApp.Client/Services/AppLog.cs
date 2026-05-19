@@ -11,7 +11,7 @@
                AbsenceApp MAUI Blazor Hybrid application.
 
                Writes structured log entries to a single append-only file:
-                 C:\DevAbsence1\logs\AbsenceApp.log
+                 C:\DevAbsence2\logs\AbsenceApp.log
 
                The directory is created automatically if it does not exist.
 
@@ -32,13 +32,13 @@
  Changes     :
    - 1.0.0  2026-04-06  Initial implementation.
    - 2.0.0  2026-04-07  Changed log directory from %LocalApplicationData% to
-                         C:\DevAbsence1\logs (fixed, project-local path).
+                         C:\DevAbsence2\logs (fixed, project-local path).
                          Directory is now auto-created on first write.
 -------------------------------------------------------------------------------
  Notes       :
    - Registered as nothing — static class, no DI required.
    - Uses a single static lock(). Safe across Blazor re-renders.
-   - File path is fixed: C:\DevAbsence1\logs\AbsenceApp.log.
+   - File path is fixed: C:\DevAbsence2\logs\AbsenceApp.log.
 ===============================================================================
 */
 
@@ -58,7 +58,7 @@ public static class AppLog
 {
     // ── Log directory and file path ──────────────────────────────────────────
 
-    private static readonly string LogDirectory = @"C:\DevAbsence1\logs";
+    private static readonly string LogDirectory = @"C:\DevAbsence2\logs";
 
     private static readonly string LogPath = Path.Combine(LogDirectory, "AbsenceApp.log");
 

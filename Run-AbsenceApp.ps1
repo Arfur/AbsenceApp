@@ -37,7 +37,7 @@ param(
 # ============================================================================
 # Section: Root path and application folder mapping
 # ============================================================================
-$root = "C:\DevAbsence1"
+$root = "C:\DevAbsence2"
 
 $paths = @{
     "V1" = Join-Path $root "AbsenceAppV1"

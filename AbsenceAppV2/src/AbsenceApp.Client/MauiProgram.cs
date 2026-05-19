@@ -12,7 +12,7 @@
                the full EF data layer via AddDataLayer(), and registers all
                application services and scoped ViewModels into the DI container.
                Wraps the entire build in a try-catch that writes any startup
-               exception to C:\DevAbsence1\logs\AbsenceApp_crash.log before
+               exception to C:\DevAbsence2\logs\AbsenceApp_crash.log before
                re-throwing, ensuring DI failures are visible.
 -------------------------------------------------------------------------------
  Changes     :
@@ -32,7 +32,7 @@
    - 1.2.3  2026-04-05  Added EntitlementsService as Scoped.
    - 1.2.4  2026-04-06  Option A Phase 3: removed EntitlementsService.
    - 1.2.5  2026-04-07  Crash log path changed from Desktop to
-                         C:\DevAbsence1\logs (unified log directory).
+                         C:\DevAbsence2\logs (unified log directory).
    - 1.3.0  2026-05-12  Enabled full Blazor WebView logging (Debug + Console)
                          to surface hidden WebView2 render exceptions.
 -------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public static class MauiProgram
         catch (Exception ex)
         {
             // Write crash details to the unified logs directory.
-            var dir  = @"C:\DevAbsence1\logs";
+            var dir  = @"C:\DevAbsence2\logs";
             var path = Path.Combine(dir, "AbsenceApp_crash.log");
             try { Directory.CreateDirectory(dir); } catch { }
             File.WriteAllText(path, ex.ToString());
