@@ -1,0 +1,49 @@
+@* ===========================================================================
+   File        : ActionButtonV2.razor
+   Namespace   : AbsenceApp.Client.Components.DesignSystem
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-19
+   Updated     : 2026-05-19
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable action button for the Phase 2 design system.
+                 Supports primary/secondary variants, sm/md/lg sizes, optional
+                 icon-only mode, and native HTML disabled behaviour.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-19  Initial implementation (Phase 1 rebuild).
+   ---------------------------------------------------------------------------
+   Notes       :
+     - Disabled is handled via the native HTML disabled attribute only.
+       No custom CSS disabled class is applied.
+   ===========================================================================
+*@
+
+@namespace AbsenceApp.Client.Components.DesignSystem
+
+<button type="button"
+        class="@_cssClass"
+        title="@Title"
+        disabled="@Disabled"
+        @onclick="OnClick">
+    <i class="@Icon dsv2-action-btn__icon"></i>
+    @if (!IconOnly)
+    {
+        <span>@Label</span>
+    }
+</button>
+
+@code {
+    [Parameter, EditorRequired] public string Label    { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Icon     { get; set; } = string.Empty;
+    [Parameter] public string  Variant  { get; set; } = "primary";
+    [Parameter] public string  Size     { get; set; } = "md";
+    [Parameter] public bool    IconOnly { get; set; } = false;
+    [Parameter] public bool    Disabled { get; set; } = false;
+    [Parameter] public string? Title    { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    private string _cssClass =>
+        $"dsv2-action-btn dsv2-action-btn--{Variant} dsv2-action-btn--{Size}" +
+        (IconOnly ? " dsv2-action-btn--icon-only" : string.Empty);
+}

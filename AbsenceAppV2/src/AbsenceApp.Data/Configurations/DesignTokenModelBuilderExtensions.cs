@@ -3,9 +3,9 @@
  File        : DesignTokenModelBuilderExtensions.cs
  Namespace   : AbsenceApp.Data.Configurations
  Author      : Michael
- Version     : 2.0.0
+ Version     : 2.1.0
  Created     : 2026-05-12
- Updated     : 2026-05-15
+ Updated     : 2026-05-19
 -------------------------------------------------------------------------------
  Purpose     : ModelBuilder extension that configures the DesignToken entity
                and seeds the canonical set of design tokens.
@@ -14,6 +14,7 @@
 
                Phase A (v1.0.0): 28 button + 6 card tokens (IDs 10–105).
                Phase D (v2.0.0): 17 token families added (IDs 200–1010).
+               Phase 1 (v2.1.0): 16 action-btn tokens added (IDs 1100–1115).
                  - 7 foundation families (text, surface, border, radius, shadow,
                    spacing, layout)
                  - 10 semantic component families (nav-header, nav-sidebar,
@@ -25,6 +26,7 @@
  Changes     :
    - 1.0.0  2026-05-12  Initial creation (Phase A — Design Token System).
    - 2.0.0  2026-05-15  Phase D: added 17 token families (190 rows).
+   - 2.1.0  2026-05-19  Phase 1: added action-btn component tokens (IDs 1100–1115).
      Families: text, surface, border, radius, shadow, spacing, layout,
      nav-header, nav-sidebar, form-field, form-shell, table, alert, icon,
      icon-btn, badge-status, chart. All DefaultValues set to "TBD" per
@@ -775,7 +777,24 @@ public static class DesignTokenModelBuilderExtensions
                 new DesignToken { Id = 1007, ComponentGroup = "chart", TokenKey = "danger", CssVariable = "--ds-chart-danger", DefaultValue = "TBD", Category = "color", Description = "Chart danger value color", IsActive = true, SortOrder = 1007, CreatedAt = SeedDate, UpdatedAt = SeedDate },
                 new DesignToken { Id = 1008, ComponentGroup = "chart", TokenKey = "neutral", CssVariable = "--ds-chart-neutral", DefaultValue = "TBD", Category = "color", Description = "Chart neutral value color", IsActive = true, SortOrder = 1008, CreatedAt = SeedDate, UpdatedAt = SeedDate },
                 new DesignToken { Id = 1009, ComponentGroup = "chart", TokenKey = "tooltip-bg", CssVariable = "--ds-chart-tooltip-bg", DefaultValue = "TBD", Category = "color", Description = "Chart tooltip background", IsActive = true, SortOrder = 1009, CreatedAt = SeedDate, UpdatedAt = SeedDate },
-                new DesignToken { Id = 1010, ComponentGroup = "chart", TokenKey = "tooltip-text", CssVariable = "--ds-chart-tooltip-text", DefaultValue = "TBD", Category = "color", Description = "Chart tooltip text color", IsActive = true, SortOrder = 1010, CreatedAt = SeedDate, UpdatedAt = SeedDate }
+                new DesignToken { Id = 1010, ComponentGroup = "chart", TokenKey = "tooltip-text", CssVariable = "--ds-chart-tooltip-text", DefaultValue = "TBD", Category = "color", Description = "Chart tooltip text color", IsActive = true, SortOrder = 1010, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                // ── Phase 1: ActionButtonV2 tokens (IDs 1100–1115) ─────────────────────
+                new DesignToken { Id = 1100, ComponentGroup = "action-btn", TokenKey = "primary-bg",       CssVariable = "--ds-action-btn-primary-bg",       DefaultValue = "TBD", Category = "color",      Description = "Action button primary background",         IsActive = true, SortOrder = 1100, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1101, ComponentGroup = "action-btn", TokenKey = "primary-hover-bg", CssVariable = "--ds-action-btn-primary-hover-bg", DefaultValue = "TBD", Category = "color",      Description = "Action button primary hover background",   IsActive = true, SortOrder = 1101, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1102, ComponentGroup = "action-btn", TokenKey = "primary-text",     CssVariable = "--ds-action-btn-primary-text",     DefaultValue = "TBD", Category = "color",      Description = "Action button primary text",              IsActive = true, SortOrder = 1102, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1103, ComponentGroup = "action-btn", TokenKey = "primary-icon",     CssVariable = "--ds-action-btn-primary-icon",     DefaultValue = "TBD", Category = "color",      Description = "Action button primary icon colour",       IsActive = true, SortOrder = 1103, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1104, ComponentGroup = "action-btn", TokenKey = "secondary-bg",     CssVariable = "--ds-action-btn-secondary-bg",     DefaultValue = "TBD", Category = "color",      Description = "Action button secondary background",      IsActive = true, SortOrder = 1104, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1105, ComponentGroup = "action-btn", TokenKey = "secondary-hover-bg", CssVariable = "--ds-action-btn-secondary-hover-bg", DefaultValue = "TBD", Category = "color", Description = "Action button secondary hover background", IsActive = true, SortOrder = 1105, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1106, ComponentGroup = "action-btn", TokenKey = "secondary-text",   CssVariable = "--ds-action-btn-secondary-text",   DefaultValue = "TBD", Category = "color",      Description = "Action button secondary text",            IsActive = true, SortOrder = 1106, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1107, ComponentGroup = "action-btn", TokenKey = "secondary-icon",   CssVariable = "--ds-action-btn-secondary-icon",   DefaultValue = "TBD", Category = "color",      Description = "Action button secondary icon colour",     IsActive = true, SortOrder = 1107, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1108, ComponentGroup = "action-btn", TokenKey = "radius",           CssVariable = "--ds-action-btn-radius",           DefaultValue = "TBD", Category = "radius",     Description = "Action button border radius",             IsActive = true, SortOrder = 1108, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1109, ComponentGroup = "action-btn", TokenKey = "padding-x",        CssVariable = "--ds-action-btn-padding-x",        DefaultValue = "TBD", Category = "spacing",    Description = "Action button horizontal padding",        IsActive = true, SortOrder = 1109, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1110, ComponentGroup = "action-btn", TokenKey = "padding-y",        CssVariable = "--ds-action-btn-padding-y",        DefaultValue = "TBD", Category = "spacing",    Description = "Action button vertical padding",          IsActive = true, SortOrder = 1110, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1111, ComponentGroup = "action-btn", TokenKey = "font-size",        CssVariable = "--ds-action-btn-font-size",        DefaultValue = "TBD", Category = "typography", Description = "Action button default font size",         IsActive = true, SortOrder = 1111, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1112, ComponentGroup = "action-btn", TokenKey = "font-size-sm",     CssVariable = "--ds-action-btn-font-size-sm",     DefaultValue = "TBD", Category = "typography", Description = "Action button small font size",           IsActive = true, SortOrder = 1112, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1113, ComponentGroup = "action-btn", TokenKey = "font-size-lg",     CssVariable = "--ds-action-btn-font-size-lg",     DefaultValue = "TBD", Category = "typography", Description = "Action button large font size",           IsActive = true, SortOrder = 1113, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1114, ComponentGroup = "action-btn", TokenKey = "icon-size",        CssVariable = "--ds-action-btn-icon-size",        DefaultValue = "TBD", Category = "typography", Description = "Action button icon size",                 IsActive = true, SortOrder = 1114, CreatedAt = SeedDate, UpdatedAt = SeedDate },
+                new DesignToken { Id = 1115, ComponentGroup = "action-btn", TokenKey = "icon-only-size",   CssVariable = "--ds-action-btn-icon-only-size",   DefaultValue = "TBD", Category = "structure",  Description = "Action button icon-only square size",     IsActive = true, SortOrder = 1115, CreatedAt = SeedDate, UpdatedAt = SeedDate }
             );
         });
 

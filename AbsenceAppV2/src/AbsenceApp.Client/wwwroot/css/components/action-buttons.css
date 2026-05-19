@@ -1,0 +1,91 @@
+/* =============================================================================
+   File    : action-buttons.css
+   Project : AbsenceApp.Client
+   Version : 1.0.0
+   Created : 2026-05-19
+   Updated : 2026-05-19
+   Purpose : Global styles for the ActionButtonV2 design system component.
+   Changes :
+     - 1.0.0  2026-05-19  Initial implementation (Phase 1 rebuild).
+============================================================================= */
+
+/* ── Base button ─────────────────────────────────────────────────────────── */
+.dsv2-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--ds-action-btn-padding-y, 5px) var(--ds-action-btn-padding-x, 12px);
+    border-radius: var(--ds-action-btn-radius, 6px);
+    font-size: var(--ds-action-btn-font-size, 0.8125rem);
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    line-height: 1.25;
+    transition: background 0.12s ease, color 0.12s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.dsv2-action-btn:disabled,
+.dsv2-action-btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Icon ────────────────────────────────────────────────────────────────── */
+.dsv2-action-btn__icon {
+    font-size: var(--ds-action-btn-icon-size, 1rem);
+    line-height: 1;
+}
+
+/* ── Variants ────────────────────────────────────────────────────────────── */
+.dsv2-action-btn--primary {
+    background: var(--ds-action-btn-primary-bg, #0d6efd);
+    color: var(--ds-action-btn-primary-text, #ffffff);
+}
+
+.dsv2-action-btn--primary:hover:not(:disabled) {
+    background: var(--ds-action-btn-primary-hover-bg, #0b5ed7);
+}
+
+.dsv2-action-btn--primary .dsv2-action-btn__icon {
+    color: var(--ds-action-btn-primary-icon, #ffffff);
+}
+
+.dsv2-action-btn--secondary {
+    background: var(--ds-action-btn-secondary-bg, transparent);
+    color: var(--ds-action-btn-secondary-text, #212529);
+    border-color: currentColor;
+}
+
+.dsv2-action-btn--secondary:hover:not(:disabled) {
+    background: var(--ds-action-btn-secondary-hover-bg, #f8f9fa);
+}
+
+.dsv2-action-btn--secondary .dsv2-action-btn__icon {
+    color: var(--ds-action-btn-secondary-icon, #212529);
+}
+
+/* ── Sizes ───────────────────────────────────────────────────────────────── */
+.dsv2-action-btn--sm {
+    font-size: var(--ds-action-btn-font-size-sm, 0.75rem);
+}
+
+.dsv2-action-btn--md {
+    font-size: var(--ds-action-btn-font-size, 0.8125rem);
+}
+
+.dsv2-action-btn--lg {
+    font-size: var(--ds-action-btn-font-size-lg, 0.9375rem);
+}
+
+/* ── Icon-only ───────────────────────────────────────────────────────────── */
+.dsv2-action-btn--icon-only {
+    width: var(--ds-action-btn-icon-only-size, 2rem);
+    height: var(--ds-action-btn-icon-only-size, 2rem);
+    padding: 0;
+    justify-content: center;
+}

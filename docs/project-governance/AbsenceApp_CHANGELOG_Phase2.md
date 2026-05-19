@@ -2672,6 +2672,66 @@ Primary #0f626a | Secondary #626262 | Success #0ab964 | Danger #e14e5a
 
   ### Details
 
+---
+
+## Phase 1 — ActionButtonV2 Component + CSS + Tokens
+**Date:** 2026-05-19
+**Author:** Michael (AI-assisted)
+
+### Summary
+Initial controlled rebuild of the ActionButtonV2 design system component,
+its associated global CSS, and the 16 action-btn design tokens.
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `src/AbsenceApp.Client/Components/DesignSystem/ActionButtonV2.razor` | Reusable action button component (v1.0.0) |
+| `src/AbsenceApp.Client/wwwroot/css/components/action-buttons.css` | Global CSS for ActionButtonV2 (v1.0.0) |
+| `src/AbsenceApp.Data/Migrations/20260519000000_AddActionButtonTokens.cs` | EF migration — inserts 16 action-btn tokens |
+| `src/AbsenceApp.Data/Migrations/20260519000000_AddActionButtonTokens.Designer.cs` | EF migration designer snapshot |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `src/AbsenceApp.Data/Configurations/DesignTokenModelBuilderExtensions.cs` | v2.0.0 → v2.1.0: added 16 action-btn tokens (IDs 1100–1115) |
+| `src/AbsenceApp.Data/Migrations/AppDbContextModelSnapshot.cs` | Added 16 action-btn HasData entries (IDs 1100–1115) |
+
+### Design Tokens Added (IDs 1100–1115)
+| ID | TokenKey | CssVariable | Category |
+|----|----------|-------------|----------|
+| 1100 | primary-bg | --ds-action-btn-primary-bg | color |
+| 1101 | primary-hover-bg | --ds-action-btn-primary-hover-bg | color |
+| 1102 | primary-text | --ds-action-btn-primary-text | color |
+| 1103 | primary-icon | --ds-action-btn-primary-icon | color |
+| 1104 | secondary-bg | --ds-action-btn-secondary-bg | color |
+| 1105 | secondary-hover-bg | --ds-action-btn-secondary-hover-bg | color |
+| 1106 | secondary-text | --ds-action-btn-secondary-text | color |
+| 1107 | secondary-icon | --ds-action-btn-secondary-icon | color |
+| 1108 | radius | --ds-action-btn-radius | radius |
+| 1109 | padding-x | --ds-action-btn-padding-x | spacing |
+| 1110 | padding-y | --ds-action-btn-padding-y | spacing |
+| 1111 | font-size | --ds-action-btn-font-size | typography |
+| 1112 | font-size-sm | --ds-action-btn-font-size-sm | typography |
+| 1113 | font-size-lg | --ds-action-btn-font-size-lg | typography |
+| 1114 | icon-size | --ds-action-btn-icon-size | typography |
+| 1115 | icon-only-size | --ds-action-btn-icon-only-size | structure |
+
+All DefaultValues set to "TBD" per audit convention.
+
+### Implementation Notes
+- `Disabled` handled via native HTML `disabled` attribute only — no custom CSS class.
+- CSS classes exactly as spec: `.dsv2-action-btn`, `.dsv2-action-btn__icon`,
+  `.dsv2-action-btn--primary`, `.dsv2-action-btn--secondary`,
+  `.dsv2-action-btn--sm`, `.dsv2-action-btn--md`, `.dsv2-action-btn--lg`,
+  `.dsv2-action-btn--icon-only`.
+- Hover rules included only because they reference CSS variable tokens.
+- Migration `20260519000000_AddActionButtonTokens` created but NOT run.
+- `index.html` link tag for `action-buttons.css` deferred to a later phase.
+
+### Out-of-Scope (NOT modified in this phase)
+- `index.html`, `_Imports.razor`, `PageHeaderV2.razor`
+- Any module pages or UI Kit pages
+
   #### A1 � Scope and authority lock
   - Produced **Phase A Scope Record** and **Schema Authority Statement**.
   - Locked scope in: `btn`, `card`.
