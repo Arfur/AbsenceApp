@@ -1,7 +1,201 @@
+@* ===========================================================================
+   File        : Index.razor
+   Author      : GitHub Copilot (Refactored by Michael + Copilot)
+   Version     : 3.3.0
+   Created     : 2026-05-19
+   Updated     : 2026-05-19
+   Changes     : v3.2.0 — Added Directional Dropdown group (dropup, dropstart,
+                 dropend). Rendering now supports all three groups: single,
+                 split, directional. Fully aligned with Index.razor.cs.
+                 v3.3.0 — Removed duplicate header block (PageHeaderV2 already
+                 handles title/breadcrumb).
+   ---------------------------------------------------------------------------
+   Purpose     : Dropdown UI Kit page using the same architecture as the
+                 Buttons page: data‑driven groups, variant selection,
+                 accordion CSS editor, and live preview.
+   =========================================================================== *@
+
 @page "/globalsettings/ui-kits/dropdown"
 @layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
 @namespace AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Dropdown
 
-<div class="kbp-scaffold">
-    <p>Under construction</p>
+<div class="ddp-page">
+
+    @if (_isLoading)
+    {
+        <div class="ddp-loading">Loading dropdown sets…</div>
+    }
+    else if (!string.IsNullOrWhiteSpace(_initError))
+    {
+        <div class="ddp-init-error">@_initError</div>
+    }
+    else
+    {
+        @foreach (var group in GroupStates)
+        {
+            <section class="ddp-group-card">
+
+                <!-- Group Header / Accordion Toggle -->
+                <header class="ddp-group-header">
+                    <h2 class="ddp-group-title">@group.GroupTitle</h2>
+
+                    <button type="button"
+                            class="ddp-toggle @(group.AccordionOpen ? "ddp-toggle--open" : string.Empty)"
+                            title="Toggle CSS editor"
+                            aria-label="Toggle CSS editor"
+                            @onclick="() => OnToggleAccordion(group)">
+                        &lt;/&gt;
+                    </button>
+                </header>
+
+                <!-- Demo Area -->
+                <div id="dd-demo-@group.GroupKey" class="ddp-demo-area">
+
+                    @if (!string.IsNullOrWhiteSpace(group.PreviewCss))
+                    {
+                        <style>@group.PreviewCss</style>
+                    }
+
+                    @switch (group.GroupKey)
+                    {
+                        /* ────────────────────────────────────────────────
+                           GROUP 1 — SINGLE DROPDOWNS
+                           ──────────────────────────────────────────────── */
+                        case "single":
+                            @foreach (var variant in group.Variants)
+                            {
+                                var isSelected = IsSelected(group, variant);
+
+                                <div class="ddp-dropdown @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
+
+                                    <button type="button"
+                                            class="ddp-trigger"
+                                            @onclick="() => OnDropdownClicked(group, variant)">
+                                        @variant.Label
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+
+                                    @if (group.OpenMenuForVariant == variant.Key)
+                                    {
+                                        <ul class="ddp-menu ddp-menu--open">
+                                            <li class="ddp-item">Action</li>
+                                            <li class="ddp-item">Another action</li>
+                                            <li class="ddp-item">Something else</li>
+                                        </ul>
+                                    }
+                                </div>
+                            }
+                            break;
+
+                        /* ────────────────────────────────────────────────
+                           GROUP 2 — SPLIT BUTTON DROPDOWNS
+                           ──────────────────────────────────────────────── */
+                        case "split":
+                            @foreach (var variant in group.Variants)
+                            {
+                                var isSelected = IsSelected(group, variant);
+
+                                <div class="ddp-split @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
+
+                                    <button type="button"
+                                            class="ddp-split-btn"
+                                            @onclick="() => OnSelectedVariantChanged(group, variant.Key)">
+                                        @variant.Label
+                                    </button>
+
+                                    <button type="button"
+                                            class="ddp-split-toggle"
+                                            @onclick="() => OnSplitDropdownClicked(group, variant)">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+
+                                    @if (group.OpenMenuForVariant == variant.Key)
+                                    {
+                                        <ul class="ddp-menu ddp-menu--open">
+                                            <li class="ddp-item">Action</li>
+                                            <li class="ddp-item">Another Action</li>
+                                            <li class="ddp-item">Something Else</li>
+                                        </ul>
+                                    }
+                                </div>
+                            }
+                            break;
+
+                        /* ────────────────────────────────────────────────
+                           GROUP 3 — DIRECTIONAL DROPDOWNS
+                           ──────────────────────────────────────────────── */
+                        case "directional":
+                            @foreach (var variant in group.Variants)
+                            {
+                                var isSelected = IsSelected(group, variant);
+
+                                <div class="ddp-dropdown @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
+
+                                    <button type="button"
+                                            class="ddp-trigger"
+                                            @onclick="() => OnDropdownClicked(group, variant)">
+                                        @variant.Label
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+
+                                    @if (group.OpenMenuForVariant == variant.Key)
+                                    {
+                                        <ul class="ddp-menu ddp-menu--open">
+                                            <li class="ddp-item">Action</li>
+                                            <li class="ddp-item">Another action</li>
+                                            <li class="ddp-item">Something else</li>
+                                        </ul>
+                                    }
+                                </div>
+                            }
+                            break;
+                    }
+                </div>
+
+                <!-- Accordion Panel -->
+                @if (group.AccordionOpen)
+                {
+                    <div class="ddp-accordion-panel">
+
+                        <textarea class="ddp-editor @(group.IsEditing ? "ddp-editor--active" : string.Empty)"
+                                  readonly="@(!group.IsEditing)"
+                                  value="@group.EditorText"
+                                  @oninput="(e => OnEditorInput(group, e.Value?.ToString() ?? string.Empty))">
+                        </textarea>
+
+                        <div class="ddp-action-row">
+                            <button type="button"
+                                    class="ddp-btn-edit"
+                                    disabled="@group.IsSaving"
+                                    @onclick="() => OnEditSaveClickedAsync(group)">
+                                @(group.IsEditing ? (group.IsSaving ? "Saving..." : "Save") : "Edit")
+                            </button>
+
+                            @if (group.IsEditing)
+                            {
+                                <button type="button"
+                                        class="ddp-btn-cancel"
+                                        @onclick="() => OnCancelClicked(group)">
+                                    Cancel
+                                </button>
+
+                                <button type="button"
+                                        class="ddp-btn-preview"
+                                        @onclick="() => OnPreviewClicked(group)">
+                                    Preview
+                                </button>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(group.StatusMessage))
+                        {
+                            <div class="ddp-status @(group.StatusIsError ? "ddp-status--error" : "ddp-status--success")">
+                                @group.StatusMessage
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+        }
+    }
 </div>

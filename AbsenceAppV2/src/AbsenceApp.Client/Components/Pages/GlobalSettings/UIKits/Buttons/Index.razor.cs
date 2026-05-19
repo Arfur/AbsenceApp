@@ -327,6 +327,14 @@ public partial class Index : ComponentBase
         ["vertical-soft"] = ".btp-vertical-soft .dsv2-btn {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n}\n.btp-vertical-soft .dsv2-btn:hover {\n  background: rgba(98, 98, 98, .1);\n  color: #626262;\n  border-color: transparent;\n  opacity: 0.85;\n}"
     };
 
+    private static readonly List<ButtonVariantDef> ActionVariants =
+    [
+        new("action-save",     "Save",     "dsv2-btn--primary",   "dsv2-btn dsv2-btn--primary",   "custom", []),
+        new("action-cancel",   "Cancel",   "dsv2-btn--secondary", "dsv2-btn dsv2-btn--secondary", "custom", []),
+        new("action-settings", "Settings", "dsv2-btn--primary",   "dsv2-btn dsv2-btn--primary",   "custom", []),
+        new("action-more",     "More",     "dsv2-btn--secondary", "dsv2-btn dsv2-btn--secondary", "custom", [])
+    ];
+
     private static string BuildCss(string selector, string bg, string text, string border, string hover, string focusRgb) =>
         $"{selector} {{\n  --btp-focus-rgb: {focusRgb};\n  background: {bg};\n  color: {text};\n  border-color: {border};\n}}\n{selector}:hover {{\n  background: {hover};\n  border-color: {hover};\n  color: {text};\n  opacity: 0.85;\n}}\n{selector}:focus-visible {{\n  box-shadow: 0 0 0 .25rem rgba(var(--btp-focus-rgb), .25);\n}}\n{selector}:active {{\n  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);\n}}\n{selector}:disabled {{\n  opacity: 0.65;\n  cursor: not-allowed;\n  pointer-events: none;\n}}";
 
@@ -351,6 +359,7 @@ public partial class Index : ComponentBase
     private ButtonGroupState _blockState = default!;
     private ButtonGroupState _sizeState = default!;
     private ButtonGroupState _groupState = default!;
+    private ButtonGroupState _actionState = default!;
 
     private readonly Dictionary<string, string> _workingCopies = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _customSavedCss = new(StringComparer.OrdinalIgnoreCase);
@@ -372,6 +381,7 @@ public partial class Index : ComponentBase
         _blockState,
         _sizeState,
         _groupState,
+        _actionState,
     ];
 
     protected override void OnInitialized()
@@ -391,6 +401,7 @@ public partial class Index : ComponentBase
         _blockState = CreateState("block", "Block Buttons", BlockVariants);
         _sizeState = CreateState("sizes", "Button Sizes", SizeVariants);
         _groupState = CreateState("groups", "Button Groups", GroupVariants);
+        _actionState = CreateState("action", "Action Buttons", ActionVariants);
         foreach (var state in GroupStates)
         {
             state.EditorText = SynthesizeCss(state, state.SelectedVariantKey);

@@ -3511,3 +3511,33 @@ Bootstrap Icons CSS was referenced only via CDN (`cdn.jsdelivr.net`). In school 
 - Result: **Pending**
 
 ---
+
+## 2026-05-19 — Dropdown UI Kit Page — Fix Duplicate Header, Menu Clipping, Directional Positioning
+
+**Author:** Michael (AI-assisted)
+**Type:** Hotfix | UI
+**Scope:** `page:globalsettings/ui-kits/dropdown`
+**Summary:** Fixed three bugs on the Dropdown UI Kit showcase page: removed duplicate page header, fixed dropdown menus being clipped by the group card container, and added missing directional dropdown CSS positioning rules.
+
+### Details
+1. **Duplicate header removed** — The page rendered its own `<div class="ddp-header">` with hardcoded `<h1>Dropdowns</h1>` and `<p>UI Kits</p>`, duplicating the title/breadcrumb already rendered by `PageHeaderV2` (injected by `GlobalSettingsLayout` before `@Body`). The block was deleted and the associated dead CSS rules removed.
+
+2. **Menu clipping fixed** — `.ddp-group-card` had `overflow: hidden`, which clipped absolutely-positioned `.ddp-menu` elements that extended below the card boundary when open. Changed to `overflow: visible`. Added `border-radius: 8px 8px 0 0` to `.ddp-group-header` to preserve rounded top-corner appearance on hover (previously ensured by parent overflow clipping).
+
+3. **Directional dropdown positioning** — The directional group variants applied `ddp-dropup`, `ddp-dropstart`, and `ddp-dropend` classes to the `.ddp-dropdown` wrapper, but no corresponding CSS rules existed in `Index.razor.css`. The global `dropdown.css` rules use the `dsv2-` component prefix and do not apply here. Added `.ddp-dropup .ddp-menu`, `.ddp-dropstart .ddp-menu`, and `.ddp-dropend .ddp-menu` positioning rules after the `.ddp-menu--open` rule.
+
+### Modified Files and Components
+| File | Change | Version |
+|------|--------|---------|
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor` | Removed duplicate `<div class="ddp-header">` block | 3.2.0 to 3.3.0 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor.css` | Removed `.ddp-header` dead CSS; `overflow: visible` on `.ddp-group-card`; `border-radius` on `.ddp-group-header`; added directional positioning rules | 1.0.0 to 1.3.0 |
+
+### Files NOT Modified
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor.cs` — no changes required
+- `src/AbsenceApp.Client/wwwroot/css/components/dropdown.css` — not modified (global dsv2 component, unrelated)
+
+### Verification
+- Build: `dotnet build src/AbsenceApp.Client/AbsenceApp.Client.csproj` — 0 errors, 0 warnings expected
+- Manual: navigate to `/globalsettings/ui-kits/dropdown`; confirm single header row; confirm menus open fully; confirm dropup/dropstart/dropend menus appear in correct direction
+
+---

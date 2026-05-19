@@ -1,10 +1,17 @@
 /* =============================================================================
    File    : Index.razor.css
    Page    : Dropdown UI Kit
-   Version : 1.0.0
+   Version : 1.3.0
    Created : 2026-05-19
+   Updated : 2026-05-19
    Purpose : Scoped styles for the Dropdown UI Kit showcase page layout.
              Component-level styles are in wwwroot/css/components/dropdown.css
+   Changes :
+     - 1.0.0  2026-05-19  Initial implementation.
+     - 1.1.0  2026-05-19  Fixed clipping by removing overflow:hidden and
+                          adjusting header border-radius.
+     - 1.2.0  2026-05-19  Removed .ddp-header rules (dead code).
+     - 1.3.0  2026-05-19  Added directional dropdown positioning rules.
 ============================================================================= */
 
 /* ── Page scaffold ────────────────────────────────────────────────────────── */
@@ -14,25 +21,6 @@
     max-width:  100%;
 }
 
-.ddp-header {
-    margin-bottom: 24px;
-}
-
-.ddp-header h1 {
-    font-size:   1.5rem;
-    font-weight: 700;
-    color:       var(--ds-color-text, #2c3345);
-    margin:      0 0 4px;
-}
-
-.ddp-header p {
-    font-size: 0.8rem;
-    color:     var(--ds-color-muted, #9ca3af);
-    margin:    0;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
-
 /* ── Group card ───────────────────────────────────────────────────────────── */
 
 .ddp-group-card {
@@ -40,7 +28,7 @@
     border:        1px solid var(--ds-color-border, #dde1e7);
     border-radius: 8px;
     margin-bottom: 12px;
-    overflow:      hidden;
+    overflow:      visible;
 }
 
 /* ── Group header (accordion trigger) ────────────────────────────────────── */
@@ -53,6 +41,7 @@
     cursor:          pointer;
     user-select:     none;
     gap:             12px;
+    border-radius:   8px 8px 0 0;
 }
 
 .ddp-group-header:hover {
@@ -101,3 +90,304 @@
     min-height:  72px;
     position:    relative;
 }
+
+/* ── Toggle open state ────────────────────────────────────────────────────── */
+.ddp-toggle--open {
+    transform: rotate(90deg);
+}
+
+/* ── Selected variant indicator ───────────────────────────────────────────── */
+.ddp-btn--selected {
+    outline:        2px solid var(--ds-color-primary, #0f626a);
+    outline-offset: 2px;
+    border-radius:  6px;
+}
+
+/* ── Accordion panel ──────────────────────────────────────────────────────── */
+.ddp-accordion-panel {
+    border-top: 1px solid var(--ds-color-border, #dde1e7);
+    padding:    12px 18px 14px;
+    background: var(--ds-color-bg, #f4f6fa);
+}
+
+/* ── Editor textarea ──────────────────────────────────────────────────────── */
+.ddp-editor {
+    width:         100%;
+    min-height:    140px;
+    font-family:   'Courier New', Courier, monospace;
+    font-size:     0.8rem;
+    line-height:   1.55;
+    padding:       10px 12px;
+    border:        1px solid var(--ds-color-border, #dde1e7);
+    border-radius: 6px;
+    background:    #f8f9fa;
+    color:         var(--ds-color-text, #2c3345);
+    resize:        vertical;
+    box-sizing:    border-box;
+    display:       block;
+}
+
+.ddp-editor--active {
+    background:   #ffffff;
+    border-color: var(--ds-color-primary, #0f626a);
+    outline:      none;
+}
+
+/* ── Action row ───────────────────────────────────────────────────────────── */
+.ddp-action-row {
+    display:    flex;
+    gap:        8px;
+    margin-top: 8px;
+}
+
+.ddp-btn-edit, .ddp-btn-cancel, .ddp-btn-preview {
+    padding:       0.3rem 0.9rem;
+    font-size:     0.8rem;
+    font-weight:   600;
+    border-radius: 5px;
+    cursor:        pointer;
+    border:        1px solid transparent;
+    transition:    opacity 0.12s ease;
+}
+
+.ddp-btn-edit:hover, .ddp-btn-cancel:hover, .ddp-btn-preview:hover {
+    opacity: 0.85;
+}
+
+.ddp-btn-edit {
+    background:   #0f626a;
+    color:        #ffffff;
+    border-color: #0f626a;
+}
+
+.ddp-btn-cancel {
+    background:   #626262;
+    color:        #ffffff;
+    border-color: #626262;
+}
+
+.ddp-btn-preview {
+    background:   #4196fa;
+    color:        #ffffff;
+    border-color: #4196fa;
+}
+
+/* ── Status messages ──────────────────────────────────────────────────────── */
+.ddp-status {
+    margin-top:    8px;
+    padding:       6px 10px;
+    font-size:     0.8rem;
+    border-radius: 4px;
+}
+
+.ddp-status--success {
+    background: #d1fae5;
+    color:      #065f46;
+    border:     1px solid #a7f3d0;
+}
+
+.ddp-status--error {
+    background: #fee2e2;
+    color:      #991b1b;
+    border:     1px solid #fca5a5;
+}
+
+/* ── Loading / init-error ─────────────────────────────────────────────────── */
+.ddp-loading {
+    padding:   20px;
+    color:     var(--ds-color-muted, #9ca3af);
+    font-size: 0.85rem;
+}
+
+.ddp-init-error {
+    padding:       16px;
+    color:         #991b1b;
+    background:    #fee2e2;
+    border-radius: 6px;
+    font-size:     0.85rem;
+}
+
+/* ── Base dropdown structure ──────────────────────────────────────────────── */
+.ddp-dropdown {
+    position:      relative;
+    display:       inline-block;
+    margin-bottom: 4px;
+    cursor:        pointer;
+}
+
+.ddp-trigger {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            6px;
+    padding:        0.375rem 0.75rem;
+    font-size:      0.8125rem;
+    font-weight:    500;
+    line-height:    1.25;
+    white-space:    nowrap;
+    cursor:         pointer;
+    border:         1px solid transparent;
+    border-radius:  6px;
+    background:     #626262;
+    color:          #ffffff;
+    transition:     background 0.12s ease, opacity 0.12s ease;
+    user-select:    none;
+    vertical-align: middle;
+}
+
+.ddp-menu {
+    display:       none;
+    position:      absolute;
+    top:           calc(100% + 4px);
+    left:          0;
+    min-width:     10rem;
+    padding:       4px 0;
+    background:    #ffffff;
+    border:        1px solid #dee2e6;
+    border-radius: 6px;
+    box-shadow:    0 4px 12px rgba(0, 0, 0, 0.10);
+    z-index:       100;
+    overflow:      hidden;
+    list-style:    none;
+    margin:        0;
+}
+
+.ddp-menu--open {
+    display: block;
+}
+
+/* ── Directional dropdown variants ───────────────────────────────────────── */
+.ddp-dropup .ddp-menu {
+    top:    auto;
+    bottom: calc(100% + 4px);
+    left:   0;
+}
+
+.ddp-dropstart .ddp-menu {
+    top:   0;
+    left:  auto;
+    right: calc(100% + 4px);
+}
+
+.ddp-dropend .ddp-menu {
+    top:  0;
+    left: calc(100% + 4px);
+}
+
+.ddp-item {
+    display:     block;
+    padding:     6px 14px;
+    font-size:   0.8rem;
+    color:       #2c3345;
+    cursor:      pointer;
+    white-space: nowrap;
+    transition:  background 0.1s ease;
+}
+
+.ddp-item:hover {
+    background: rgba(0, 0, 0, .05);
+}
+
+/* ── Split button dropdown ────────────────────────────────────────────────── */
+.ddp-split {
+    position:      relative;
+    display:       inline-flex;
+    cursor:        pointer;
+    margin-bottom: 4px;
+}
+
+.ddp-split-btn {
+    display:       inline-flex;
+    align-items:   center;
+    padding:       0.375rem 0.75rem;
+    font-size:     0.8125rem;
+    font-weight:   500;
+    line-height:   1.25;
+    cursor:        pointer;
+    border:        1px solid transparent;
+    border-radius: 6px 0 0 6px;
+    background:    #626262;
+    color:         #ffffff;
+    transition:    opacity 0.12s ease;
+    white-space:   nowrap;
+}
+
+.ddp-split-toggle {
+    display:       inline-flex;
+    align-items:   center;
+    padding:       0.375rem 0.6rem;
+    font-size:     0.8125rem;
+    font-weight:   500;
+    line-height:   1.25;
+    cursor:        pointer;
+    border:        1px solid transparent;
+    border-left:   1px solid rgba(255,255,255,.25);
+    border-radius: 0 6px 6px 0;
+    background:    #626262;
+    color:         #ffffff;
+    transition:    opacity 0.12s ease;
+}
+
+.ddp-split-btn:hover, .ddp-split-toggle:hover {
+    opacity: 0.85;
+}
+
+/* ── Dropdown color variants (Basic) ──────────────────────────────────────── */
+.ddp-basic-primary .ddp-trigger   { background: #0f626a; color: #ffffff; border-color: #0f626a; }
+.ddp-basic-secondary .ddp-trigger { background: #626262; color: #ffffff; border-color: #626262; }
+.ddp-basic-success .ddp-trigger   { background: #0ab964; color: #ffffff; border-color: #0ab964; }
+.ddp-basic-danger .ddp-trigger    { background: #e14e5a; color: #ffffff; border-color: #e14e5a; }
+.ddp-basic-warning .ddp-trigger   { background: #f9c123; color: #212529; border-color: #f9c123; }
+.ddp-basic-info .ddp-trigger      { background: #4196fa; color: #ffffff; border-color: #4196fa; }
+.ddp-basic-light .ddp-trigger     { background: #c8b9d2; color: #212529; border-color: #c8b9d2; }
+.ddp-basic-dark .ddp-trigger      { background: #28232d; color: #ffffff; border-color: #28232d; }
+
+/* ── Dropdown color variants (Outline) ────────────────────────────────────── */
+.ddp-outline-primary .ddp-trigger   { background: transparent; color: #0f626a; border-color: #0f626a; }
+.ddp-outline-secondary .ddp-trigger { background: transparent; color: #626262; border-color: #626262; }
+.ddp-outline-success .ddp-trigger   { background: transparent; color: #0ab964; border-color: #0ab964; }
+.ddp-outline-danger .ddp-trigger    { background: transparent; color: #e14e5a; border-color: #e14e5a; }
+.ddp-outline-warning .ddp-trigger   { background: transparent; color: #f9c123; border-color: #f9c123; }
+.ddp-outline-info .ddp-trigger      { background: transparent; color: #4196fa; border-color: #4196fa; }
+.ddp-outline-light .ddp-trigger     { background: transparent; color: #c8b9d2; border-color: #c8b9d2; }
+.ddp-outline-dark .ddp-trigger      { background: transparent; color: #28232d; border-color: #28232d; }
+
+/* ── Dropdown color variants (Soft) ───────────────────────────────────────── */
+.ddp-soft-primary .ddp-trigger   { background: rgba(15, 98, 106, .1);   color: #0f626a; border-color: transparent; }
+.ddp-soft-secondary .ddp-trigger { background: rgba(98, 98, 98, .1);    color: #626262; border-color: transparent; }
+.ddp-soft-success .ddp-trigger   { background: rgba(10, 185, 100, .1);  color: #0ab964; border-color: transparent; }
+.ddp-soft-danger .ddp-trigger    { background: rgba(225, 78, 90, .1);   color: #e14e5a; border-color: transparent; }
+.ddp-soft-warning .ddp-trigger   { background: rgba(249, 193, 35, .1);  color: #e1a900; border-color: transparent; }
+.ddp-soft-info .ddp-trigger      { background: rgba(65, 150, 250, .1);  color: #4196fa; border-color: transparent; }
+.ddp-soft-light .ddp-trigger     { background: rgba(200, 185, 210, .1); color: #6e647f; border-color: transparent; }
+.ddp-soft-dark .ddp-trigger      { background: rgba(40, 35, 45, .1);    color: #28232d; border-color: transparent; }
+
+/* ── Shared menu for all color groups ─────────────────────────────────────── */
+.ddp-basic-primary .ddp-menu, .ddp-basic-secondary .ddp-menu, .ddp-basic-success .ddp-menu,
+.ddp-basic-danger .ddp-menu, .ddp-basic-warning .ddp-menu, .ddp-basic-info .ddp-menu,
+.ddp-basic-light .ddp-menu, .ddp-basic-dark .ddp-menu,
+.ddp-outline-primary .ddp-menu, .ddp-outline-secondary .ddp-menu, .ddp-outline-success .ddp-menu,
+.ddp-outline-danger .ddp-menu, .ddp-outline-warning .ddp-menu, .ddp-outline-info .ddp-menu,
+.ddp-outline-light .ddp-menu, .ddp-outline-dark .ddp-menu,
+.ddp-soft-primary .ddp-menu, .ddp-soft-secondary .ddp-menu, .ddp-soft-success .ddp-menu,
+.ddp-soft-danger .ddp-menu, .ddp-soft-warning .ddp-menu, .ddp-soft-info .ddp-menu,
+.ddp-soft-light .ddp-menu, .ddp-soft-dark .ddp-menu {
+    background:   #ffffff;
+    border-color: #dee2e6;
+}
+
+/* ── Split color variants ─────────────────────────────────────────────────── */
+.ddp-split-primary .ddp-split-btn, .ddp-split-primary .ddp-split-toggle     { background: #0f626a; color: #ffffff; border-color: #0f626a; }
+.ddp-split-secondary .ddp-split-btn, .ddp-split-secondary .ddp-split-toggle { background: #626262; color: #ffffff; border-color: #626262; }
+.ddp-split-success .ddp-split-btn, .ddp-split-success .ddp-split-toggle     { background: #0ab964; color: #ffffff; border-color: #0ab964; }
+.ddp-split-danger .ddp-split-btn, .ddp-split-danger .ddp-split-toggle       { background: #e14e5a; color: #ffffff; border-color: #e14e5a; }
+
+.ddp-split-primary .ddp-menu, .ddp-split-secondary .ddp-menu,
+.ddp-split-success .ddp-menu, .ddp-split-danger .ddp-menu {
+    background:   #ffffff;
+    border-color: #dee2e6;
+}
+
+/* ── Size modifiers ───────────────────────────────────────────────────────── */
+.ddp-size-sm .ddp-trigger { padding: 0.25rem 0.5rem;  font-size: 0.875rem;  border-radius: 0.25rem; }
+.ddp-size-md .ddp-trigger { padding: 0.375rem 0.75rem; font-size: 0.875rem; border-radius: 0.375rem; line-height: 1.5; }
+.ddp-size-lg .ddp-trigger { padding: 0.5rem 1rem;     font-size: 1.125rem;  border-radius: 0.5rem; }

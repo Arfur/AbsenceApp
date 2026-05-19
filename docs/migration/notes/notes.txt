@@ -30,6 +30,19 @@ dotnet run --project src\AbsenceApp.Client -c Debug -f net8.0-windows10.0.19041.
 
 The AI response, can you read all the lines and did it complete the tasks:
 
-The AI response is tool big to upload in 1 block, so I will upload in multiple block. Do not make any comments until I upload the final block. Just let me know if you can read all the lines in each block. 
+The AI response is too big to upload in 1 block, so I will upload in multiple block. Do not make any comments until I upload the final block. Just let me know if you can read all the lines in each block. 
+
+
+wwroot/css/tokens/spacing.css
+
+wwwroot/css/tokens/radius.css
+
+wwwroot/css/tokens/shadows.css
+
+wwwroot/css/tokens/layout.css
+
+wwwroot/css/tokens/typography.css
+
+wwwroot/css/tokens/surfaces.css
 
 
