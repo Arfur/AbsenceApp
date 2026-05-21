@@ -1,0 +1,201 @@
+/* ===========================================================================
+   File        : UiKitsGroup.razor.css
+   Namespace   : AbsenceApp.Client.Framework.PageTemplates
+   Author      : Michael
+   Version     : 1.0.0
+   Created     : 2026-05-20
+   Updated     : 2026-05-20
+   ---------------------------------------------------------------------------
+   Purpose     : Styles for UiKitsGroup component. Card layout, header, demo
+                 area, accordion animation, code preview, editor, actions,
+                 and status messages.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-20  Initial creation.
+   =========================================================================== */
+
+/* ───────────────────────────────────────────────────────────────
+   Card: base container for each group
+   ─────────────────────────────────────────────────────────────── */
+.uikits-group {
+    background: var(--page-card-bg, #ffffff);
+    border: 1px solid var(--page-card-border, #e6e6e6);
+    border-radius: 8px;
+    padding: 16px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.03);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Header: title and optional description
+   ─────────────────────────────────────────────────────────────── */
+.uikits-group__header {
+    margin-bottom: 12px;
+}
+
+.uikits-group__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary, #0f172a);
+}
+
+.uikits-group__desc {
+    font-size: 0.875rem;
+    color: var(--muted-text, #6c757d);
+    line-height: 1.3;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Body: demo area and controls stack
+   ─────────────────────────────────────────────────────────────── */
+.uikits-group__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Demo area: hosts live component examples */
+.uikits-group__demo {
+    display: block;
+    padding: 8px 0;
+}
+
+/* Controls: accordion toggle and accordion content */
+.uikits-group__controls {
+    display: block;
+}
+
+/* Accordion toggle: label + caret */
+.uikits-group__accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 8px 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-secondary, #0b1220);
+}
+
+/* Accordion container: collapsed by default, expands when .open */
+.uikits-group__accordion {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 220ms ease, padding 220ms ease;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.uikits-group__accordion.open {
+    max-height: 800px; /* large enough for code/editor */
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Code preview: monospace, scrollable */
+.uikits-group__code {
+    background: var(--code-bg, #f6f8fa);
+    border: 1px solid var(--code-border, #e1e4e8);
+    padding: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    white-space: pre;
+    overflow: auto;
+    border-radius: 6px;
+    color: var(--code-text, #111827);
+    line-height: 1.45;
+}
+
+/* Editor textarea */
+.uikits-group__editor {
+    width: 100%;
+    min-height: 160px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    padding: 8px;
+    border: 1px solid var(--code-border, #e1e4e8);
+    border-radius: 6px;
+    box-sizing: border-box;
+    resize: vertical;
+    background: var(--editor-bg, #ffffff);
+    color: var(--editor-text, #0b1220);
+}
+
+/* Action buttons row */
+.uikits-group__actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+/* Status messages */
+.uikits-group__status {
+    margin-top: 8px;
+    font-size: 0.875rem;
+}
+
+.uikits-group__status.success { color: #0f5132; }
+.uikits-group__status.error { color: #842029; }
+
+/* Button utility classes (lightweight, rely on design system where available) */
+.uikits-group .btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.uikits-group .btn-edit {
+    background: var(--btn-edit-bg, #eef2ff);
+    color: var(--btn-edit-text, #3730a3);
+    border-color: var(--btn-edit-border, #e0e7ff);
+}
+
+.uikits-group .btn-save {
+    background: var(--btn-save-bg, #e6ffed);
+    color: var(--btn-save-text, #0f5132);
+    border-color: var(--btn-save-border, #d1fae5);
+}
+
+.uikits-group .btn-cancel {
+    background: transparent;
+    color: var(--btn-cancel-text, #374151);
+    border: 1px solid var(--btn-cancel-border, #e6e6e6);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Accessibility & focus styles
+   ─────────────────────────────────────────────────────────────── */
+.uikits-group__accordion-toggle:focus,
+.uikits-group__accordion-toggle:hover {
+    outline: none;
+    text-decoration: underline;
+}
+
+.uikits-group__editor:focus,
+.uikits-group__accordion-toggle:focus {
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+    border-color: rgba(59,130,246,0.6);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Responsive adjustments
+   ─────────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+    .uikits-group {
+        padding: 12px;
+    }
+
+    .uikits-group__title {
+        font-size: 1rem;
+    }
+
+    .uikits-group__code,
+    .uikits-group__editor {
+        font-size: 0.8125rem;
+    }
+}

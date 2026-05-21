@@ -1,30 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <!--
-  ===========================================================================
+  ==========================================================================
   File        : AbsenceApp.Client.csproj
   Project     : AbsenceApp.Client
   Author      : Michael
-  Version     : 1.1.1
+  Version     : 1.2.2
   Created     : 2026-03-13
-  Updated     : 2026-05-13
-  ===========================================================================
+  Updated     : 2026-05-21
+  ==========================================================================
   Purpose     : .NET MAUI Blazor Hybrid client project definition.
                 Multi-platform client targeting Android, iOS, macOS Catalyst,
-                and Windows. Hosts a Blazor web view alongside native MAUI
+                and Windows. Hosts a Blazor WebView alongside native MAUI
                 shell pages. References Core and Data projects.
-  ===========================================================================
+  ==========================================================================
   Changes     :
     * 1.0.0  2026-03-13  Initial implementation.
     * 1.1.0  2026-05-13  Added documentation for Razor content behaviour.
-    * 1.1.1  2026-05-13  Removed explicit Razor Content includes to avoid
+    * 1.1.1  2026-05-13  Removed implicit Razor Content includes to avoid
                          NETSDK1022; rely on SDK implicit content items.
-  ===========================================================================
+    * 1.2.0  2026-05-21  Added Content includes for UI Kits CSS, but caused
+                         BLAZOR101 due to .razor.css naming.
+    * 1.2.1  2026-05-21  Renamed UI Kits CSS to .layout.css and added safe
+                         Content includes so MAUI Hybrid copies them without
+                         triggering scoped CSS conflicts.
+    * 1.2.2  2026-05-21  Removed obsolete UI Kits .layout.css Content includes
+                         after migrating UI Kits to Shared/Templates/UIKits.
+  ==========================================================================
   Notes       :
     * Tizen target is commented out by default.
-    * Update ApplicationId before submitting to any app store; the placeholder
-      value com.companyname.* will be rejected.
-  ===========================================================================
+    * Update ApplicationId before submitting to any app store.
+  ==========================================================================
   -->
 
   <PropertyGroup>

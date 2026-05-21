@@ -325,12 +325,48 @@ public partial class Index : ComponentBase
         var variant = state.Variants.First(v => v.Key == variantKey);
 
         var sb = new StringBuilder();
+
+        // Base block
         sb.AppendLine($".{variantKey} {{");
 
-        foreach (var token in variant.TokenKeys)
-            sb.AppendLine($"  /* uses: var(--{token}) */");
+        foreach (var token in variant.TokenKeys.Where(t => !t.Contains("hover")))
+        {
+            var cssProp = token switch
+            {
+                _ when token.EndsWith("-bg")     => "background",
+                _ when token.EndsWith("-color")  => "color",
+                _ when token.EndsWith("-border") => "border-color",
+                _                                => "/* unknown-token */"
+            };
+
+            sb.AppendLine($"  {cssProp}: var(--{token});");
+        }
 
         sb.AppendLine("}");
+
+        // Hover block
+        var hoverTokens = variant.TokenKeys.Where(t => t.Contains("hover")).ToList();
+        if (hoverTokens.Count > 0)
+        {
+            sb.AppendLine();
+            sb.AppendLine($".{variantKey}:hover {{");
+
+            foreach (var token in hoverTokens)
+            {
+                var cssProp = token switch
+                {
+                    _ when token.EndsWith("-hover-bg")     => "background",
+                    _ when token.EndsWith("-hover-color")  => "color",
+                    _ when token.EndsWith("-hover-border") => "border-color",
+                    _                                      => "/* unknown-token */"
+                };
+
+                sb.AppendLine($"  {cssProp}: var(--{token});");
+            }
+
+            sb.AppendLine("}");
+        }
+
         return sb.ToString();
     }
 

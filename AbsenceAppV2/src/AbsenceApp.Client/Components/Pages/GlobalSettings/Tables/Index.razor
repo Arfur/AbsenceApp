@@ -3,20 +3,23 @@
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.Tables
    Route       : /globalsettings/tables
    Author      : Michael
-   Version     : 1.1.0
+   Version     : 1.5.0
    Created     : 2026-03-26
-   Updated     : 2026-03-27
+   Updated     : 2026-05-21
    ---------------------------------------------------------------------------
    Purpose     : Global Settings — Tables configuration page.
                  Displays a hard-coded preview of the current table style
                  via IDesignSystemService. No editing. No JSON loading.
    ---------------------------------------------------------------------------
    Changes     :
-     - 1.0.0  2026-03-26  Initial implementation (Phase 1 placeholder).
-     - 1.1.0  2026-03-27  Fix: renamed PageTitle parameter to Title (correct
-                          TablePageTemplate parameter). PageTitle is not a
-                          recognised parameter on TablePageTemplate and caused
-                          a runtime crash when navigating to /globalsettings/tables.
+     - 1.5.0  2026-05-21  Updated to use TablePageTemplateV2 named sections
+                          (TableHeader, TableBody, Pagination) and removed
+                          legacy TableContent/TableContentV2 usage.
+     - 1.4.0  2026-05-21  Switched to TablePageTemplateV2/TableContentV2.
+     - 1.3.0  2026-05-21  Removed invalid namespace and cleaned up usings.
+     - 1.2.0  2026-05-21  Added @using AbsenceApp.Client.Framework.PageTemplates.
+     - 1.1.0  2026-03-27  Renamed PageTitle → Title to match template API.
+     - 1.0.0  2026-03-26  Initial implementation.
    ===========================================================================
 *@
 
@@ -24,12 +27,19 @@
 @layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
 @using AbsenceApp.Client.Services.DesignSystem
 @using AbsenceApp.Client.Components.Templates
+@using AbsenceApp.Client.Framework.PageTemplates
 @inject IDesignSystemService DesignSystem
 
-<TablePageTemplate Title="Tables — Global Settings"
-                   Subtitle="Current table style preview">
-    <TableContent>
-        <p class="gs-preview-value">@DesignSystem.GetTablePreview()</p>
+<TablePageTemplateV2 Title="Tables — Global Settings"
+                     Subtitle="Current table style preview">
+    <TableHeader>
         <UnderConstructionTemplate PageTitle="Editing coming in Phase 2" />
-    </TableContent>
-</TablePageTemplate>
+    </TableHeader>
+
+    <TableBody>
+        <p class="gs-preview-value">@DesignSystem.GetTablePreview()</p>
+    </TableBody>
+
+    <Pagination>
+    </Pagination>
+</TablePageTemplateV2>

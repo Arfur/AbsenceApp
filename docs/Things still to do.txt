@@ -1,0 +1,25 @@
+Things to do:
+1. When the login page appear to should move the focus to the 'username' input box so you can start to type immediately.
+2. In Global Settings when you click Templates > 'Pages' or 'Layouts' it takes you back to the login screen
+3. Clicke staff details login screen
+
+
+
+1. Dashboard > Attendance & Trends 'Page not found'
+2. PEOPLE > Students > Student Details 'Page not found'
+3. ACADEMICS > Classes > Class Details 'Page not found'
+4. SETTINGS > Diagnostics 'Page not found'
+5. SETTINGS > Site 'Page not found'
+
+Global Settings
+1. Icons
+2. Spacing
+3. Templates > Layouts
+4. Templates > Pages
+
+May need to do this at a later date:
+Move the Table template files to its own folder
+Shared/Templates/Tables/
+    TablePageTemplateV2.razor
+    TablePageTemplateV2.razor.css
+

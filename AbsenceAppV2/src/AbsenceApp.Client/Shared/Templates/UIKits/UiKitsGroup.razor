@@ -1,0 +1,205 @@
+﻿@* ===========================================================================
+   File        : UiKitsGroup.razor
+   Namespace   : AbsenceApp.Client.Shared.Templates.UIKits
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-05-20
+   Updated     : 2026-05-21
+   ---------------------------------------------------------------------------
+   Purpose     : Reusable UI Kits group component. Renders a titled card with a
+                 demo area and an accordion that reveals a CSS preview and an
+                 editor with Edit / Save / Cancel controls. State is owned by
+                 the page's code-behind and passed in via parameters.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-20  Initial creation.
+     - 1.1.0  2026-05-21  Moved to Shared/Templates/UIKits and namespace updated
+                          to enable proper Blazor component discovery and scoped
+                          CSS compilation.
+   =========================================================================== *@
+
+@* ===========================================================================
+   SECTION: Overview
+   Purpose: This component is intentionally layout-only. It exposes parameters
+            for all interactive state so the page's Index.razor.cs retains
+            ownership of business logic, persistence and token synthesis.
+   =========================================================================== *@
+
+@namespace AbsenceApp.Client.Shared.Templates.UIKits
+
+@* ---------------------------------------------------------------------------
+   Markup: Card wrapper and header
+   --------------------------------------------------------------------------- *@
+<div class="uikits-group" role="region" aria-labelledby="@($"{Id}-title")">
+    <div class="uikits-group__header">
+        <div id="@($"{Id}-title")" class="uikits-group__title">@Title</div>
+
+        @if (!string.IsNullOrWhiteSpace(Description))
+        {
+            <div class="uikits-group__desc">@Description</div>
+        }
+    </div>
+
+    @* ---------------------------------------------------------------------------
+       Body: demo area + controls
+       --------------------------------------------------------------------------- *@
+    <div class="uikits-group__body">
+        <div class="uikits-group__demo" aria-live="polite">
+            @DemoContent
+        </div>
+
+        <div class="uikits-group__controls">
+            @* Accordion toggle: shows current label and caret *@
+            <button class="uikits-group__accordion-toggle"
+                    @onclick="ToggleAccordion"
+                    aria-expanded="@AccordionOpen"
+                    aria-controls="@($"{Id}-accordion")">
+                <span class="uikits-group__accordion-label">@AccordionLabel</span>
+                <span class="uikits-group__accordion-caret">@((AccordionOpen) ? "v" : ">")</span>
+            </button>
+
+            @* Accordion container: collapsed/expanded states handled via CSS class *@
+            <div id="@($"{Id}-accordion")" class="uikits-group__accordion @(AccordionOpen ? "open" : "closed")">
+                @* ---------------------------------------------------------------------------
+                   Display mode: show synthesized CSS and Edit button
+                   --------------------------------------------------------------------------- *@
+                @if (!IsEditing)
+                {
+                    <pre class="uikits-group__code" role="textbox" aria-readonly="true">@((MarkupString)PreviewCss)</pre>
+
+                    <div class="uikits-group__actions">
+                        <button class="btn btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
+                    </div>
+                }
+                else
+                {
+                    @* ---------------------------------------------------------------------------
+                       Edit mode: textarea bound to EditorText via explicit oninput
+                       so parent EventCallback is invoked for each change.
+                       --------------------------------------------------------------------------- *@
+                    <textarea class="uikits-group__editor"
+                              value="@EditorText"
+                              @oninput="OnEditorInput"
+                              aria-label="CSS editor"></textarea>
+
+                    <div class="uikits-group__actions">
+                        <button class="btn btn-save" @onclick="OnSaveClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Save</button>
+                        <button class="btn btn-cancel" @onclick="OnCancelClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Cancel</button>
+                    </div>
+                }
+
+                @* Status message area *@
+                @if (!string.IsNullOrEmpty(StatusMessage))
+                {
+                    <div class="uikits-group__status @(StatusIsError ? "error" : "success")" role="status">@StatusMessage</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ===========================================================================
+   SECTION: Component parameters
+   Purpose: Parameters are intentionally explicit. The page must pass and bind
+            its own state objects into these parameters. This component does
+            not mutate state directly; it raises callbacks for the page to
+            handle.
+   =========================================================================== *@
+@code {
+    // ---------------------------------------------------------------------------
+    // Identity
+    // ---------------------------------------------------------------------------
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+    // ---------------------------------------------------------------------------
+    // Content
+    // ---------------------------------------------------------------------------
+    [Parameter, EditorRequired]
+    public required string Title { get; set; } = default!;
+
+    [Parameter]
+    public string? Description { get; set; } = null;
+
+    [Parameter] public string AccordionLabel { get; set; } = "CSS Preview";
+
+    [Parameter, EditorRequired]
+    public RenderFragment DemoContent { get; set; } = default!;
+
+    // ---------------------------------------------------------------------------
+    // Accordion state (controlled by page)
+    // Note: primary property is AccordionOpen; provide aliases for legacy bindings
+    // ---------------------------------------------------------------------------
+    [Parameter] public bool AccordionOpen { get; set; }
+    [Parameter] public EventCallback<bool> AccordionOpenChanged { get; set; }
+
+    // Backwards-compatibility aliases: some pages still bind to IsAccordionOpen / IsAccordionOpenChanged
+    [Parameter]
+    public bool IsAccordionOpen
+    {
+        get => AccordionOpen;
+        set => AccordionOpen = value;
+    }
+
+    [Parameter]
+    public EventCallback<bool> IsAccordionOpenChanged
+    {
+        get => AccordionOpenChanged;
+        set => AccordionOpenChanged = value;
+    }
+
+    // ---------------------------------------------------------------------------
+    // Edit state (controlled by page)
+    // ---------------------------------------------------------------------------
+    [Parameter] public bool IsEditing { get; set; }
+    [Parameter] public EventCallback OnEdit { get; set; }
+
+    // Editor text: initialize to empty string to avoid nullable warnings
+    [Parameter] public string EditorText { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> EditorTextChanged { get; set; }
+
+    [Parameter] public bool IsSaving { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    // ---------------------------------------------------------------------------
+    // Preview + status (read-only from the page)
+    // ---------------------------------------------------------------------------
+    [Parameter] public string PreviewCss { get; set; } = string.Empty;
+    [Parameter] public string StatusMessage { get; set; } = string.Empty;
+    [Parameter] public bool StatusIsError { get; set; }
+
+    // ---------------------------------------------------------------------------
+    // Local helpers: raise callbacks to the owning page
+    // ---------------------------------------------------------------------------
+    private async Task ToggleAccordion()
+    {
+        // Toggle accordion open state by invoking the bound EventCallback.
+        await AccordionOpenChanged.InvokeAsync(!AccordionOpen);
+    }
+
+    private async Task OnEditClicked()
+    {
+        // Notify page to enter edit mode. Page should populate EditorText.
+        await OnEdit.InvokeAsync();
+    }
+
+    private async Task OnSaveClicked()
+    {
+        // Notify page to save current EditorText. Page handles persistence.
+        await OnSave.InvokeAsync();
+    }
+
+    private async Task OnCancelClicked()
+    {
+        // Notify page to cancel edit. Page should restore EditorText/PreviewCss.
+        await OnCancel.InvokeAsync();
+    }
+
+    private Task OnEditorInput(ChangeEventArgs e)
+    {
+        // Propagate editor changes to parent via EventCallback<string>.
+        var newText = e?.Value?.ToString() ?? string.Empty;
+        return EditorTextChanged.InvokeAsync(newText);
+    }
+}

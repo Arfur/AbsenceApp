@@ -144,12 +144,12 @@
     <ActionsContent>
         @if (ViewModel.IsNew)
         {
-            <button class="phv2-btn phv2-btn--primary"
+            <button type="button" class="phv2-btn phv2-btn--primary"
                     disabled="@(ViewModel.IsSaving || ViewModel.LinkedStaff is null)"
                     @onclick="OnCreate">
                 @(ViewModel.IsSaving ? "Creating..." : "Create User")
             </button>
-            <button class="phv2-btn phv2-btn--secondary"
+            <button type="button" class="phv2-btn phv2-btn--secondary"
                     disabled="@ViewModel.IsSaving"
                     @onclick="@(() => Nav.NavigateTo("/v2/system/users"))">
                 Cancel
@@ -159,16 +159,16 @@
         {
             @if (ViewModel.Success is not null)
             {
-                <span class="upv2-save-success">
-                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i>@ViewModel.Success
+                <span class="upv2-save-success" role="status">
+                    <i class="bi bi-check-circle-fill" aria-hidden="true"></i> @ViewModel.Success
                 </span>
             }
-            <button class="phv2-btn phv2-btn--primary"
+            <button type="button" class="phv2-btn phv2-btn--primary"
                     disabled="@ViewModel.IsSaving"
                     @onclick="OnSaveProfile">
                 @(ViewModel.IsSaving ? "Saving..." : "Save Changes")
             </button>
-            <button class="phv2-btn phv2-btn--secondary"
+            <button type="button" class="phv2-btn phv2-btn--secondary"
                     @onclick="@(() => Nav.NavigateTo("/v2/system/users"))">
                 Back to Users
             </button>
@@ -974,6 +974,7 @@
     [Parameter] public long? Id      { get; set; }   // edit route
     [Parameter] public long? StaffId { get; set; }   // /v2/users/{StaffId:long}/new route
 
+    [Parameter]
     [SupplyParameterFromQuery(Name = "staffId")]
     public long? QueryStaffId { get; set; }          // /v2/users/new?staffId=� pre-selection
 
@@ -1022,12 +1023,6 @@
     {
         var id = long.TryParse(e.Value?.ToString(), out var parsed) ? parsed : 0L;
         await ViewModel.SelectLinkedStaffAsync((int)id);
-    }
-
-    private void OnUserSelectChanged(ChangeEventArgs e)
-    {
-        if (long.TryParse(e.Value?.ToString(), out var selectedId) && selectedId > 0)
-            Nav.NavigateTo($"/v2/system/users/{selectedId}");
     }
 
     private Task OnUserSelectorValueChanged(string value)

@@ -97,9 +97,94 @@
     font-size: var(--ds-dropdown-font-size-lg, 0.9375rem);
 }
 
-/* -- Backdrop (outside-click dismissal — no JS interop) ------------------- */
+/* -- Backdrop (outside-click dismissal ï¿½ no JS interop) ------------------- */
 .dsv2-dropdown-backdrop {
     position: fixed;
     inset:    0;
     z-index:  calc(var(--ds-dropdown-zindex, 1050) - 1);
+}
+
+/* ============================================================================
+   Additional Variants + Directional Dropdowns (Step 10 Completion)
+   ========================================================================== */
+
+/* -- Success Variant -------------------------------------------------------- */
+.dsv2-dropdown--success .dsv2-dropdown__trigger {
+    background:   var(--ds-dropdown-bg, #198754);
+    color:        var(--ds-dropdown-text, #ffffff);
+    border-color: var(--ds-dropdown-border, #157347);
+}
+
+.dsv2-dropdown--success .dsv2-dropdown__trigger:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #157347);
+}
+
+/* -- Danger Variant (optional, parity with Buttons) ------------------------ */
+.dsv2-dropdown--danger .dsv2-dropdown__trigger {
+    background:   var(--ds-dropdown-bg, #dc3545);
+    color:        var(--ds-dropdown-text, #ffffff);
+    border-color: var(--ds-dropdown-border, #bb2d3b);
+}
+
+.dsv2-dropdown--danger .dsv2-dropdown__trigger:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #b02a37);
+}
+
+/* ============================================================================
+   Directional Dropdowns
+   ========================================================================== */
+
+/* -- Dropup --------------------------------------------------------------- */
+.dsv2-dropdown--dropup .dsv2-dropdown__menu {
+    top: auto;
+    bottom: calc(100% + 4px);
+}
+
+/* -- Dropstart ------------------------------------------------------------ */
+.dsv2-dropdown--dropstart .dsv2-dropdown__menu {
+    top: 0;
+    left: auto;
+    right: calc(100% + 4px);
+}
+
+/* -- Dropend -------------------------------------------------------------- */
+.dsv2-dropdown--dropend .dsv2-dropdown__menu {
+    top: 0;
+    left: calc(100% + 4px);
+}
+
+/* ============================================================================
+   Split Dropdowns
+   ========================================================================== */
+
+.dsv2-dropdown--split {
+    display: inline-flex;
+    align-items: stretch;
+}
+
+.dsv2-dropdown--split .dsv2-dropdown__trigger {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.dsv2-dropdown--split .dsv2-dropdown__caret {
+    display:        inline-flex;
+    align-items:    center;
+    justify-content:center;
+    padding:        var(--ds-dropdown-padding-y, 5px) 10px;
+    border:         1px solid var(--ds-dropdown-border, #dee2e6);
+    border-left:    none;
+    border-radius:  0 var(--ds-dropdown-radius, 6px) var(--ds-dropdown-radius, 6px) 0;
+    background:     var(--ds-dropdown-bg, #f8f9fa);
+    cursor:         pointer;
+}
+
+.dsv2-dropdown--split .dsv2-dropdown__caret:hover:not(:disabled) {
+    background: var(--ds-dropdown-hover-bg, #e2e6ea);
+}
+
+/* Split menu aligns under the caret button */
+.dsv2-dropdown--split .dsv2-dropdown__menu {
+    left: auto;
+    right: 0;
 }

@@ -3541,3 +3541,86 @@ Bootstrap Icons CSS was referenced only via CDN (`cdn.jsdelivr.net`). In school 
 - Manual: navigate to `/globalsettings/ui-kits/dropdown`; confirm single header row; confirm menus open fully; confirm dropup/dropstart/dropend menus appear in correct direction
 
 ---
+
+## 2026-05-20 — UI Kits Template Components
+
+**Author:** Michael (AI-assisted)
+**Type:** Feature | Template
+**Scope:** `framework:page-templates`
+**Summary:** Added reusable UiKitsPage and UiKitsGroup template components under the PageTemplates framework namespace.
+
+### Details
+- **UiKitsPage.razor** — Generic UI Kits page shell: `<div class="uikit-page"><div class="uikit-page__container">@ChildContent</div></div>` with a single `[Parameter] RenderFragment ChildContent`.
+- **UiKitsPage.razor.css** — Page layout CSS: `.uikit-page` (padding: 24px), `.uikit-page__container` (max-width: 1100px, flex column).
+- **UiKitsGroup.razor** — Reusable accordion group component with parameters for title, accordion state, editor text, save/cancel/edit callbacks, preview CSS, and status message. Textarea binding uses `value` + `@oninput` pattern (not `@bind`) to ensure changes propagate to the parent correctly.
+- **UiKitsGroup.razor.css** — All accordion, card, editor, button, and status CSS for the group component.
+
+### Modified Files and Components
+| File | Change | Version |
+|------|--------|---------|
+| `src/AbsenceApp.Client/Framework/PageTemplates/UiKitsPage.razor` | New file | 1.0.0 |
+| `src/AbsenceApp.Client/Framework/PageTemplates/UiKitsPage.razor.css` | New file | 1.0.0 |
+| `src/AbsenceApp.Client/Framework/PageTemplates/UiKitsGroup.razor` | New file | 1.0.0 |
+| `src/AbsenceApp.Client/Framework/PageTemplates/UiKitsGroup.razor.css` | New file | 1.0.0 |
+
+### Verification
+- Build: `dotnet build src/AbsenceApp.Client/AbsenceApp.Client.csproj` — 0 errors, 0 warnings expected
+
+---
+
+## 2026-05-20 — Buttons Page Template Migration
+
+**Author:** Michael (AI-assisted)
+**Type:** Refactor | UI
+**Scope:** `page:globalsettings/ui-kits/buttons`
+**Summary:** Refactored the Buttons UI Kit showcase page to use the new UiKitsPage/UiKitsGroup template components. Preserved all existing code-behind logic, demo rendering, and CSS editor behaviour.
+
+### Details
+- Removed outer `<div class="btp-page">` wrapper (replaced by `<UiKitsPage>`).
+- Removed `<div class="btp-header">` block (header already rendered by `PageHeaderV2` via layout).
+- Replaced `@foreach (var state in GroupStates)` loop + switch statement with 13 explicit `<UiKitsGroup>` elements, one per button group (basic, outline, soft, icon, social, radius, active, disabled, loading, block, sizes, groups, action).
+- Each group wires `IsAccordionOpenChanged` → `OnToggleAccordion`, `OnEdit`/`OnSave` → `OnEditSaveClickedAsync`, `OnCancel` → `OnCancelClicked`, `EditorTextChanged` → `OnEditorInput` using `EventCallback.Factory.Create`.
+- Added `@using AbsenceApp.Client.Framework.PageTemplates` directive.
+
+### Modified Files and Components
+| File | Change | Version |
+|------|--------|---------|
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor` | Refactored to use UiKitsPage/UiKitsGroup | 6.1.0 to 7.0.0 |
+
+### Files NOT Modified
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs` — no changes required
+
+### Verification
+- Build: `dotnet build src/AbsenceApp.Client/AbsenceApp.Client.csproj` — 0 errors, 0 warnings expected
+- Manual: navigate to `/globalsettings/ui-kits/buttons`; confirm all 13 groups render; confirm accordion, edit/save/cancel, and live CSS preview work correctly
+
+---
+
+## 2026-05-20 — Dropdown Page Template Migration
+
+**Author:** Michael (AI-assisted)
+**Type:** Refactor | UI
+**Scope:** `page:globalsettings/ui-kits/dropdown`
+**Summary:** Migrated the Dropdown UI Kit showcase page to use the new UiKitsPage/UiKitsGroup template components. Preserved all existing code-behind logic and demo rendering.
+
+### Details
+- Removed outer `<div class="ddp-page">` wrapper (replaced by `<UiKitsPage>`).
+- Replaced `@foreach (var group in GroupStates)` loop + switch statement with 3 explicit `<UiKitsGroup>` elements, one per dropdown group (`_groups[0]` single, `_groups[1]` split, `_groups[2]` directional).
+- Each group uses `_groups[n]` index access to the `List<DropdownGroupState>` in the code-behind.
+- Preserved `@layout` and `@namespace` directives.
+- Added `@using AbsenceApp.Client.Framework.PageTemplates` directive.
+
+### Modified Files and Components
+| File | Change | Version |
+|------|--------|---------|
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor` | Migrated to use UiKitsPage/UiKitsGroup | 3.3.0 to 4.0.0 |
+
+### Files NOT Modified
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor.cs` — no changes required
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor.css` — no changes required
+
+### Verification
+- Build: `dotnet build src/AbsenceApp.Client/AbsenceApp.Client.csproj` — 0 errors, 0 warnings expected
+- Manual: navigate to `/globalsettings/ui-kits/dropdown`; confirm all 3 groups render; confirm accordion, edit/save/cancel, and live CSS preview work correctly
+
+---

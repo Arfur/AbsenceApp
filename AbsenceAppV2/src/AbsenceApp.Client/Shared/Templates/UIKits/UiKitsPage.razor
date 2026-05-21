@@ -1,0 +1,45 @@
+@* ===========================================================================
+   File        : UiKitsPage.razor
+   Namespace   : AbsenceApp.Client.Shared.Templates.UIKits
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-05-20
+   Updated     : 2026-05-21
+   ---------------------------------------------------------------------------
+   Purpose     : Generic UI Kits page shell. Provides consistent page padding,
+                 max-width container and a slot for repeated UiKitsGroup blocks.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-20  Initial creation.
+     - 1.1.0  2026-05-21  Moved to Shared/Templates/UIKits and namespace updated
+                          to enable proper Blazor component discovery and scoped
+                          CSS compilation.
+   =========================================================================== *@
+
+@namespace AbsenceApp.Client.Shared.Templates.UIKits
+
+@* ===========================================================================
+   SECTION: Overview
+   Purpose: Top-level wrapper for UI Kits pages. This component is intentionally
+            minimal: it provides layout, spacing and a single ChildContent slot.
+   Notes  : Do not include component-specific logic here. State and handlers
+            remain in the page's code-behind (Index.razor.cs).
+   =========================================================================== *@
+
+<div class="uikits-page">
+    @* ---------------------------------------------------------------------------
+       Inner container: constrains width and stacks groups vertically
+       --------------------------------------------------------------------------- *@
+    <div class="uikits-page__container">
+        @ChildContent
+    </div>
+</div>
+
+@* ===========================================================================
+   SECTION: Component parameters
+   Purpose: Expose a single ChildContent parameter for page composition.
+   =========================================================================== *@
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

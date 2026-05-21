@@ -867,3 +867,24 @@ input[type="password"]::-ms-clear { display: none; }
 .atcal-skeleton-mark { width: 22px; height: 22px; border-radius: 50%; display: inline-block; }
 .atcal-legend { padding: .75rem 1rem; font-size: .8125rem; color: #64748b; border-top: 1px solid var(--border, #e2e8f0); display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 .atcal-month-label { font-size: .9375rem; font-weight: 600; color: var(--text, #1e293b); padding: 0 .75rem; min-width: 140px; text-align: center; }
+
+.uikits-page {
+    outline: 4px solid red !important;
+}
+
+.uikits-group {
+    outline: 4px solid blue !important;
+}
+
+.dsv2-btn {
+    outline: 4px solid green !important;
+}
+
+.uikits-group__body {
+    outline: 4px solid orange !important;
+}
+
+/* Load UI Kits layout CSS (now copied to output by csproj) */
+@import url("UiKitsPage.layout.css");
+@import url("UiKitsGroup.layout.css");
+
