@@ -2,7 +2,7 @@
    File        : Index.razor
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Dropdown
    Author      : GitHub Copilot (Refactored by Michael + Copilot)
-   Version     : 4.1.0
+    Version     : 5.0.0
    Created     : 2026-05-19
    Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -11,6 +11,10 @@
                  accordion CSS editor, and live preview.
    ---------------------------------------------------------------------------
    Changes     :
+    - 5.0.0  2026-05-21  Rewired page to template-level UiKitsGroup item
+                     contract (Items + OnItemSelectedKeyChanged +
+                     ItemTemplate), removing page-owned selected-state
+                     rendering logic.
      - 4.1.0  2026-05-21  Added @using AbsenceApp.Client.Shared.Templates.UIKits
                           after migrating UiKitsPage/UiKitsGroup to new namespace.
      - 4.0.0  2026-05-20  Migrated page layout to use UiKitsPage/UiKitsGroup template.
@@ -21,6 +25,7 @@
 @layout AbsenceApp.Client.Framework.Layouts.GlobalSettingsLayout
 @namespace AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Dropdown
 @using AbsenceApp.Client.Framework.PageTemplates
+@using System.Linq
 
 @if (_isLoading)
 {
@@ -39,6 +44,8 @@ else
                      Title="@_groups[0].GroupTitle"
                      IsAccordionOpen="@_groups[0].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[0]))"
+                     Items="@(_groups[0].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[0], key))"
                      IsEditing="@_groups[0].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[0]))"
                      EditorText="@_groups[0].EditorText"
@@ -49,29 +56,24 @@ else
                      PreviewCss="@_groups[0].PreviewCss"
                      StatusMessage="@_groups[0].StatusMessage"
                      StatusIsError="@_groups[0].StatusIsError">
-            <DemoContent>
-                @if (!string.IsNullOrWhiteSpace(_groups[0].PreviewCss)) { <style>@_groups[0].PreviewCss</style> }
-                @foreach (var variant in _groups[0].Variants)
-                {
-                    var isSelected = IsSelected(_groups[0], variant);
-                    <div class="ddp-dropdown @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
-                        <button type="button"
-                                class="ddp-trigger"
-                                @onclick="() => OnDropdownClicked(_groups[0], variant)">
-                            @variant.Label
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        @if (_groups[0].OpenMenuForVariant == variant.Key)
-                        {
-                            <ul class="ddp-menu ddp-menu--open">
-                                <li class="ddp-item">Action</li>
-                                <li class="ddp-item">Another action</li>
-                                <li class="ddp-item">Something else</li>
-                            </ul>
-                        }
-                    </div>
-                }
-            </DemoContent>
+            <ItemTemplate Context="ctx">
+                <div class="ddp-dropdown @ctx.Item.CssClass">
+                    <button type="button"
+                            class="ddp-trigger"
+                            @onclick="() => OnDropdownClicked(_groups[0], _groups[0].Variants.First(v => v.Key == ctx.Item.Key))">
+                        @ctx.Item.Label
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    @if (_groups[0].OpenMenuForVariant == ctx.Item.Key)
+                    {
+                        <ul class="ddp-menu ddp-menu--open">
+                            <li class="ddp-item">Action</li>
+                            <li class="ddp-item">Another action</li>
+                            <li class="ddp-item">Something else</li>
+                        </ul>
+                    }
+                </div>
+            </ItemTemplate>
         </UiKitsGroup>
 
         @* ── Split Button Dropdowns ────────────────────────────────────── *@
@@ -79,6 +81,8 @@ else
                      Title="@_groups[1].GroupTitle"
                      IsAccordionOpen="@_groups[1].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[1]))"
+                     Items="@(_groups[1].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[1], key))"
                      IsEditing="@_groups[1].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[1]))"
                      EditorText="@_groups[1].EditorText"
@@ -89,33 +93,26 @@ else
                      PreviewCss="@_groups[1].PreviewCss"
                      StatusMessage="@_groups[1].StatusMessage"
                      StatusIsError="@_groups[1].StatusIsError">
-            <DemoContent>
-                @if (!string.IsNullOrWhiteSpace(_groups[1].PreviewCss)) { <style>@_groups[1].PreviewCss</style> }
-                @foreach (var variant in _groups[1].Variants)
-                {
-                    var isSelected = IsSelected(_groups[1], variant);
-                    <div class="ddp-split @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
-                        <button type="button"
-                                class="ddp-split-btn"
-                                @onclick="() => OnSelectedVariantChanged(_groups[1], variant.Key)">
-                            @variant.Label
-                        </button>
-                        <button type="button"
-                                class="ddp-split-toggle"
-                                @onclick="() => OnSplitDropdownClicked(_groups[1], variant)">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        @if (_groups[1].OpenMenuForVariant == variant.Key)
-                        {
-                            <ul class="ddp-menu ddp-menu--open">
-                                <li class="ddp-item">Action</li>
-                                <li class="ddp-item">Another Action</li>
-                                <li class="ddp-item">Something Else</li>
-                            </ul>
-                        }
-                    </div>
-                }
-            </DemoContent>
+            <ItemTemplate Context="ctx">
+                <div class="ddp-split @ctx.Item.CssClass">
+                    <button type="button" class="ddp-split-btn">
+                        @ctx.Item.Label
+                    </button>
+                    <button type="button"
+                            class="ddp-split-toggle"
+                            @onclick="() => OnSplitDropdownClicked(_groups[1], _groups[1].Variants.First(v => v.Key == ctx.Item.Key))">
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    @if (_groups[1].OpenMenuForVariant == ctx.Item.Key)
+                    {
+                        <ul class="ddp-menu ddp-menu--open">
+                            <li class="ddp-item">Action</li>
+                            <li class="ddp-item">Another Action</li>
+                            <li class="ddp-item">Something Else</li>
+                        </ul>
+                    }
+                </div>
+            </ItemTemplate>
         </UiKitsGroup>
 
         @* ── Directional Dropdowns ─────────────────────────────────────── *@
@@ -123,6 +120,8 @@ else
                      Title="@_groups[2].GroupTitle"
                      IsAccordionOpen="@_groups[2].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[2]))"
+                     Items="@(_groups[2].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[2], key))"
                      IsEditing="@_groups[2].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[2]))"
                      EditorText="@_groups[2].EditorText"
@@ -133,29 +132,24 @@ else
                      PreviewCss="@_groups[2].PreviewCss"
                      StatusMessage="@_groups[2].StatusMessage"
                      StatusIsError="@_groups[2].StatusIsError">
-            <DemoContent>
-                @if (!string.IsNullOrWhiteSpace(_groups[2].PreviewCss)) { <style>@_groups[2].PreviewCss</style> }
-                @foreach (var variant in _groups[2].Variants)
-                {
-                    var isSelected = IsSelected(_groups[2], variant);
-                    <div class="ddp-dropdown @variant.PreviewCssClass @(isSelected ? "ddp-btn--selected" : string.Empty)">
-                        <button type="button"
-                                class="ddp-trigger"
-                                @onclick="() => OnDropdownClicked(_groups[2], variant)">
-                            @variant.Label
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        @if (_groups[2].OpenMenuForVariant == variant.Key)
-                        {
-                            <ul class="ddp-menu ddp-menu--open">
-                                <li class="ddp-item">Action</li>
-                                <li class="ddp-item">Another action</li>
-                                <li class="ddp-item">Something else</li>
-                            </ul>
-                        }
-                    </div>
-                }
-            </DemoContent>
+            <ItemTemplate Context="ctx">
+                <div class="ddp-dropdown @ctx.Item.CssClass">
+                    <button type="button"
+                            class="ddp-trigger"
+                            @onclick="() => OnDropdownClicked(_groups[2], _groups[2].Variants.First(v => v.Key == ctx.Item.Key))">
+                        @ctx.Item.Label
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    @if (_groups[2].OpenMenuForVariant == ctx.Item.Key)
+                    {
+                        <ul class="ddp-menu ddp-menu--open">
+                            <li class="ddp-item">Action</li>
+                            <li class="ddp-item">Another action</li>
+                            <li class="ddp-item">Something else</li>
+                        </ul>
+                    }
+                </div>
+            </ItemTemplate>
         </UiKitsGroup>
 
     </UiKitsPage>

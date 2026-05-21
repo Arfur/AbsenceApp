@@ -70,6 +70,65 @@ A short, precise description of what changed and why. Include design rationale a
 
 ---
 
+## 2026-05-21 — UI Kits Template Demo Spacing Fix
+
+**Author:** Michael  
+**Type:** UI | Component | Hotfix  
+**Scope:** `ui:ui-kits-template`  
+**Summary:** Updated `UiKitsGroup.razor.css` to give the demo area a reusable flex-wrap layout so UI Kits demo items render with consistent spacing.
+
+### Details
+- File modified: `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css`
+- Version increment: `1.0.0` → `1.0.1`
+- Changes: updated the `.uikits-group__demo` selector to use `display: flex`, `flex-wrap: wrap`, `gap: 8px`, and `align-items: center` while preserving existing padding.
+- This update is part of the UI Kits template fix and does not change accordion markup or logic.
+
+### Affected Files and Components
+- Files: `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css`
+- Components: `UiKitsGroup`
+
+### Verification
+- Rebuild to regenerate scoped CSS bundle.
+- Confirm demo items on Buttons and Dropdown UI Kits pages render with spacing and wrap correctly.
+- Confirm accordion open/close selectors remain unchanged.
+
+---
+
+## 2026-05-21 — UI Kits Generic Functionality Refactor (Phase 2)
+
+**Author:** Michael  
+**Type:** UI | Component | Refactor  
+**Scope:** `ui:ui-kits-template`  
+**Summary:** Implemented the Phase 2 generic template contract in `UiKitsGroup` and rewired Buttons/Dropdown pages to use template-controlled selection and click-to-preview behavior.
+
+### Details
+- Files modified:
+  - `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor`
+- Version increments:
+  - `UiKitsGroup.razor`: `1.1.0` → `1.2.0`
+  - `UiKitsGroup.razor.css`: `1.0.1` → `1.1.0`
+  - `Buttons/Index.razor`: `7.1.0` → `8.0.0`
+  - `Dropdown/Index.razor`: `4.1.0` → `5.0.0`
+- Refactor highlights:
+  - Added reusable item contract in `UiKitsGroup` (`UiKitsDemoItem`, `UiKitsDemoItemContext`, `Items`, `OnItemSelectedKeyChanged`, `ItemTemplate`).
+  - Moved active-item tracking into template-level logic (single active item per group).
+  - Kept accordion open/close class flow and animation contract intact (`.uikits-group__accordion` + `.open`).
+  - Kept preview container/edit shell in template; pages now supply item lists and preview payload callbacks.
+  - Added template-level active state selectors in scoped CSS.
+- This update is part of the **Phase 2 generic functionality refactor** for shared UI Kits behavior.
+
+### Verification
+- Build with no incremental reuse.
+- Confirm scoped bundle includes updated UiKitsGroup selectors for demo area, active item, accordion, and preview container.
+- Manual verification targets:
+  - Buttons: one active item per group, click updates preview payload, edit/save/cancel shell still works.
+  - Dropdown: same shared template behavior with dropdown-specific markup.
+
+---
+
 ## 2026-04-21 — Staff‑Linked User Management Redesign
 
 **Author:** Michael  

@@ -2,7 +2,7 @@
    File        : UiKitsGroup.razor
    Namespace   : AbsenceApp.Client.Shared.Templates.UIKits
    Author      : Michael
-   Version     : 1.1.0
+    Version     : 1.2.0
    Created     : 2026-05-20
    Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -16,6 +16,9 @@
      - 1.1.0  2026-05-21  Moved to Shared/Templates/UIKits and namespace updated
                           to enable proper Blazor component discovery and scoped
                           CSS compilation.
+        - 1.2.0  2026-05-21  Added template-level item contract, active selection,
+                         and item-click callback to support generic click-to-
+                         preview behavior across UI Kits pages.
    =========================================================================== *@
 
 @* ===========================================================================
@@ -26,6 +29,7 @@
    =========================================================================== *@
 
 @namespace AbsenceApp.Client.Shared.Templates.UIKits
+@using Microsoft.AspNetCore.Components.Web
 
 @* ---------------------------------------------------------------------------
    Markup: Card wrapper and header
@@ -56,7 +60,42 @@
        --------------------------------------------------------------------------- *@
     <div class="uikits-group__body">
         <div class="uikits-group__demo" aria-live="polite">
-            @DemoContent
+            @if (!string.IsNullOrWhiteSpace(PreviewCss))
+            {
+                <style>@PreviewCss</style>
+            }
+
+            @if (Items is { Count: > 0 })
+            {
+                @foreach (var item in Items)
+                {
+                    var isActive = string.Equals(_activeItemKey, item.Key, StringComparison.Ordinal);
+
+                    <div class="uikits-group__item @(isActive ? "active" : string.Empty)"
+                         @onclick="() => SelectItemAsync(item.Key)"
+                         role="button"
+                         tabindex="0"
+                         aria-pressed="@isActive"
+                         @onkeydown="(e) => OnItemKeyDownAsync(e, item.Key)">
+
+                        @if (ItemTemplate is not null)
+                        {
+                            @ItemTemplate(new UiKitsDemoItemContext(item, isActive))
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="uikits-group__item-button @item.CssClass @(isActive ? "is-active" : string.Empty)">
+                                @item.Label
+                            </button>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                @DemoContent
+            }
         </div>
 
         @* Accordion container: collapsed/expanded states handled via CSS class *@
@@ -117,8 +156,20 @@
 
     [Parameter] public string AccordionLabel { get; set; } = "CSS Preview";
 
-    [Parameter, EditorRequired]
-    public RenderFragment DemoContent { get; set; } = default!;
+    [Parameter]
+    public RenderFragment? DemoContent { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<UiKitsDemoItem> Items { get; set; } = Array.Empty<UiKitsDemoItem>();
+
+    [Parameter]
+    public string? InitialActiveItemKey { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnItemSelectedKeyChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment<UiKitsDemoItemContext>? ItemTemplate { get; set; }
 
     // ---------------------------------------------------------------------------
     // Accordion state (controlled by page)
@@ -164,6 +215,61 @@
     [Parameter] public string StatusMessage { get; set; } = string.Empty;
     [Parameter] public bool StatusIsError { get; set; }
 
+    private string? _activeItemKey;
+    private bool _itemStateInitialised;
+
+    public sealed class UiKitsDemoItem
+    {
+        public UiKitsDemoItem()
+        {
+        }
+
+        public UiKitsDemoItem(string key, string label, string? cssClass = null)
+        {
+            Key = key;
+            Label = label;
+            CssClass = cssClass;
+        }
+
+        public string Key { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
+        public string? CssClass { get; set; }
+    }
+
+    public sealed class UiKitsDemoItemContext
+    {
+        public UiKitsDemoItemContext(UiKitsDemoItem item, bool isActive)
+        {
+            Item = item;
+            IsActive = isActive;
+        }
+
+        public UiKitsDemoItem Item { get; }
+        public bool IsActive { get; }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Items is null || Items.Count == 0)
+        {
+            _activeItemKey = null;
+            _itemStateInitialised = false;
+            return;
+        }
+
+        if (!_itemStateInitialised)
+        {
+            _activeItemKey = ResolveInitialActiveKey();
+            _itemStateInitialised = true;
+            return;
+        }
+
+        if (!_ContainsItemKey(_activeItemKey))
+        {
+            _activeItemKey = ResolveInitialActiveKey();
+        }
+    }
+
     // ---------------------------------------------------------------------------
     // Local helpers: raise callbacks to the owning page
     // ---------------------------------------------------------------------------
@@ -196,5 +302,50 @@
         // Propagate editor changes to parent via EventCallback<string>.
         var newText = e?.Value?.ToString() ?? string.Empty;
         return EditorTextChanged.InvokeAsync(newText);
+    }
+
+    private async Task SelectItemAsync(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return;
+        }
+
+        _activeItemKey = key;
+
+        if (OnItemSelectedKeyChanged.HasDelegate)
+        {
+            await OnItemSelectedKeyChanged.InvokeAsync(key);
+        }
+    }
+
+    private Task OnItemKeyDownAsync(KeyboardEventArgs e, string key)
+    {
+        if (e.Key is "Enter" or " ")
+        {
+            return SelectItemAsync(key);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private string ResolveInitialActiveKey()
+    {
+        if (!string.IsNullOrWhiteSpace(InitialActiveItemKey) && _ContainsItemKey(InitialActiveItemKey))
+        {
+            return InitialActiveItemKey;
+        }
+
+        return Items[0].Key;
+    }
+
+    private bool _ContainsItemKey(string? key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return false;
+        }
+
+        return Items.Any(i => string.Equals(i.Key, key, StringComparison.Ordinal));
     }
 }
