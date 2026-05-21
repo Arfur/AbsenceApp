@@ -32,68 +32,63 @@
    --------------------------------------------------------------------------- *@
 <div class="uikits-group" role="region" aria-labelledby="@($"{Id}-title")">
     <div class="uikits-group__header">
-        <div id="@($"{Id}-title")" class="uikits-group__title">@Title</div>
+        <div class="uikits-group__title-area">
+            <div id="@($"{Id}-title")" class="uikits-group__title">@Title</div>
 
-        @if (!string.IsNullOrWhiteSpace(Description))
-        {
-            <div class="uikits-group__desc">@Description</div>
-        }
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <div class="uikits-group__desc">@Description</div>
+            }
+        </div>
+
+        @* Accordion toggle: compact icon button positioned in header *@
+        <button class="uikits-group__accordion-toggle"
+                @onclick="ToggleAccordion"
+                aria-expanded="@AccordionOpen"
+                aria-controls="@($"{Id}-accordion")"
+                title="@(AccordionOpen ? "Hide CSS" : "Show CSS")">
+            <i class="bi bi-code-slash"></i>
+        </button>
     </div>
 
     @* ---------------------------------------------------------------------------
-       Body: demo area + controls
+       Body: demo area and accordion
        --------------------------------------------------------------------------- *@
     <div class="uikits-group__body">
         <div class="uikits-group__demo" aria-live="polite">
             @DemoContent
         </div>
 
-        <div class="uikits-group__controls">
-            @* Accordion toggle: shows current label and caret *@
-            <button class="uikits-group__accordion-toggle"
-                    @onclick="ToggleAccordion"
-                    aria-expanded="@AccordionOpen"
-                    aria-controls="@($"{Id}-accordion")">
-                <span class="uikits-group__accordion-label">@AccordionLabel</span>
-                <span class="uikits-group__accordion-caret">@((AccordionOpen) ? "v" : ">")</span>
-            </button>
+        @* Accordion container: collapsed/expanded states handled via CSS class *@
+        <div id="@($"{Id}-accordion")" class="uikits-group__accordion @(AccordionOpen ? "open" : "closed")">
+            @* Display mode: show synthesised CSS and Edit button *@
+            @if (!IsEditing)
+            {
+                <pre class="uikits-group__code" role="textbox" aria-readonly="true">@((MarkupString)PreviewCss)</pre>
 
-            @* Accordion container: collapsed/expanded states handled via CSS class *@
-            <div id="@($"{Id}-accordion")" class="uikits-group__accordion @(AccordionOpen ? "open" : "closed")">
-                @* ---------------------------------------------------------------------------
-                   Display mode: show synthesized CSS and Edit button
-                   --------------------------------------------------------------------------- *@
-                @if (!IsEditing)
-                {
-                    <pre class="uikits-group__code" role="textbox" aria-readonly="true">@((MarkupString)PreviewCss)</pre>
+                <div class="uikits-group__actions">
+                    <button class="btn btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
+                </div>
+            }
+            else
+            {
+                @* Edit mode: textarea bound to EditorText via explicit oninput *@
+                <textarea class="uikits-group__editor"
+                          value="@EditorText"
+                          @oninput="OnEditorInput"
+                          aria-label="CSS editor"></textarea>
 
-                    <div class="uikits-group__actions">
-                        <button class="btn btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
-                    </div>
-                }
-                else
-                {
-                    @* ---------------------------------------------------------------------------
-                       Edit mode: textarea bound to EditorText via explicit oninput
-                       so parent EventCallback is invoked for each change.
-                       --------------------------------------------------------------------------- *@
-                    <textarea class="uikits-group__editor"
-                              value="@EditorText"
-                              @oninput="OnEditorInput"
-                              aria-label="CSS editor"></textarea>
+                <div class="uikits-group__actions">
+                    <button class="btn btn-save" @onclick="OnSaveClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Save</button>
+                    <button class="btn btn-cancel" @onclick="OnCancelClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Cancel</button>
+                </div>
+            }
 
-                    <div class="uikits-group__actions">
-                        <button class="btn btn-save" @onclick="OnSaveClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Save</button>
-                        <button class="btn btn-cancel" @onclick="OnCancelClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Cancel</button>
-                    </div>
-                }
-
-                @* Status message area *@
-                @if (!string.IsNullOrEmpty(StatusMessage))
-                {
-                    <div class="uikits-group__status @(StatusIsError ? "error" : "success")" role="status">@StatusMessage</div>
-                }
-            </div>
+            @* Status message area *@
+            @if (!string.IsNullOrEmpty(StatusMessage))
+            {
+                <div class="uikits-group__status @(StatusIsError ? "error" : "success")" role="status">@StatusMessage</div>
+            }
         </div>
     </div>
 </div>

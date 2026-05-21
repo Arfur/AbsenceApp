@@ -27,10 +27,19 @@
 }
 
 /* ───────────────────────────────────────────────────────────────
-   Header: title and optional description
+   Header: title/description on left, toggle icon on right
    ─────────────────────────────────────────────────────────────── */
 .uikits-group__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     margin-bottom: 12px;
+    gap: 8px;
+}
+
+.uikits-group__title-area {
+    flex: 1;
+    min-width: 0;
 }
 
 .uikits-group__title {
@@ -61,23 +70,22 @@
     padding: 8px 0;
 }
 
-/* Controls: accordion toggle and accordion content */
-.uikits-group__controls {
-    display: block;
-}
-
-/* Accordion toggle: label + caret */
+/* Accordion toggle: compact circle icon button in the card header */
 .uikits-group__accordion-toggle {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     background: transparent;
-    border: none;
-    padding: 8px 0;
+    border: 1px solid var(--page-card-border, #e6e6e6);
     cursor: pointer;
-    font-weight: 500;
-    color: var(--text-secondary, #0b1220);
+    color: var(--text-secondary, #6c757d);
+    font-size: 1rem;
+    transition: background 150ms ease, border-color 150ms ease;
+    padding: 0;
 }
 
 /* Accordion container: collapsed by default, expands when .open */
@@ -170,14 +178,18 @@
 /* ───────────────────────────────────────────────────────────────
    Accessibility & focus styles
    ─────────────────────────────────────────────────────────────── */
-.uikits-group__accordion-toggle:focus,
 .uikits-group__accordion-toggle:hover {
-    outline: none;
-    text-decoration: underline;
+    background: var(--surface, #f0f2f5);
+    border-color: var(--text-secondary, #9ca3af);
 }
 
-.uikits-group__editor:focus,
 .uikits-group__accordion-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+    border-color: rgba(59,130,246,0.6);
+}
+
+.uikits-group__editor:focus {
     box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
     border-color: rgba(59,130,246,0.6);
 }
