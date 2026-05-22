@@ -232,6 +232,7 @@
 }
 .dsv2-btn--outline-dark:disabled,
 .dsv2-btn--outline-dark[disabled] {
+    background: var(--ds-btn-outline-dark-disabled-bg, transparent);
     color: var(--ds-btn-outline-dark-disabled-text, #212529);
     border-color: var(--ds-btn-outline-dark-disabled-border, #212529);
 }
