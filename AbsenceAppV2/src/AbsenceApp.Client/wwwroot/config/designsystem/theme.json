@@ -2,6 +2,8 @@
   "_comment": "AbsenceApp V2 Design System — theme.json — Phase 2",
   "_description": "Runtime theme configuration. Loaded by DesignSystemConfigService. DO NOT modify V1 app.css.",
   "version": "2.1.0",
+  "_created": "2026-05-22T00:00:00Z",
+  "_updated": "2026-05-22T15:00:00Z",
   "defaultTheme": "light",
   "themes": {
     "light": {

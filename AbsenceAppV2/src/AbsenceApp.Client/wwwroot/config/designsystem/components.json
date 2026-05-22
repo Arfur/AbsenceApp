@@ -2,22 +2,142 @@
   "_comment": "AbsenceApp V2 Design System — components.json — Phase 2",
   "_description": "Global default configuration for V2 design system components. Loaded by DesignSystemConfigService.",
   "version": "2.1.0",
+  "_created": "2026-05-22T00:00:00Z",
+  "_updated": "2026-05-22T15:00:00Z",
+
   "button": {
     "tokenFamily": "btn",
     "defaultVariant": "primary",
     "defaultSize": "md",
-    "variants": ["primary", "secondary", "ghost", "danger", "success", "warning", "light", "dark", "outline-dark"],
+    "variants": [
+      "primary",
+      "secondary",
+      "ghost",
+      "danger",
+      "success",
+      "warning",
+      "light",
+      "dark",
+      "outline-dark"
+    ],
     "sizes": {
-      "sm": { "padding": "4px 10px",  "fontSize": "0.75rem", "height": "28px" },
-      "md": { "padding": "6px 14px",  "fontSize": "0.875rem","height": "34px" },
-      "lg": { "padding": "8px 18px",  "fontSize": "1rem",    "height": "40px" }
+      "sm": { "padding": "4px 10px", "fontSize": "0.75rem", "height": "28px" },
+      "md": { "padding": "6px 14px", "fontSize": "0.875rem", "height": "34px" },
+      "lg": { "padding": "8px 18px", "fontSize": "1rem", "height": "40px" }
+    },
+    "tokenMappings": {
+      "btn.light.bg":             "--ds-btn-light-bg",
+      "btn.light.text":           "--ds-btn-light-text",
+      "btn.light.border":         "--ds-btn-light-border",
+      "btn.light.hoverBg":        "--ds-btn-light-hover-bg",
+      "btn.light.hoverText":      "--ds-btn-light-hover-text",
+      "btn.light.hoverBorder":    "--ds-btn-light-hover-border",
+      "btn.light.disabledBg":     "--ds-btn-light-disabled-bg",
+      "btn.light.disabledText":   "--ds-btn-light-disabled-text",
+      "btn.light.disabledBorder": "--ds-btn-light-disabled-border",
+
+      "btn.dark.bg":              "--ds-btn-dark-bg",
+      "btn.dark.text":            "--ds-btn-dark-text",
+      "btn.dark.border":          "--ds-btn-dark-border",
+      "btn.dark.hoverBg":         "--ds-btn-dark-hover-bg",
+      "btn.dark.hoverText":       "--ds-btn-dark-hover-text",
+      "btn.dark.hoverBorder":     "--ds-btn-dark-hover-border",
+      "btn.dark.disabledBg":      "--ds-btn-dark-disabled-bg",
+      "btn.dark.disabledText":    "--ds-btn-dark-disabled-text",
+      "btn.dark.disabledBorder":  "--ds-btn-dark-disabled-border",
+
+      "btn.outline-dark.text":           "--ds-btn-outline-dark-text",
+      "btn.outline-dark.border":         "--ds-btn-outline-dark-border",
+      "btn.outline-dark.hoverBg":        "--ds-btn-outline-dark-hover-bg",
+      "btn.outline-dark.hoverText":      "--ds-btn-outline-dark-hover-text",
+      "btn.outline-dark.hoverBorder":    "--ds-btn-outline-dark-hover-border",
+      "btn.outline-dark.disabledText":   "--ds-btn-outline-dark-disabled-text",
+      "btn.outline-dark.disabledBorder": "--ds-btn-outline-dark-disabled-border",
+      "btn.outline-dark.disabledBg":     "--ds-btn-outline-dark-disabled-bg"
+    },
+    "editor": {
+      "groups": {
+        "light": [
+          "btn.light.bg",
+          "btn.light.text",
+          "btn.light.border",
+          "btn.light.hoverBg",
+          "btn.light.hoverText",
+          "btn.light.hoverBorder",
+          "btn.light.disabledBg",
+          "btn.light.disabledText",
+          "btn.light.disabledBorder"
+        ],
+        "dark": [
+          "btn.dark.bg",
+          "btn.dark.text",
+          "btn.dark.border",
+          "btn.dark.hoverBg",
+          "btn.dark.hoverText",
+          "btn.dark.hoverBorder",
+          "btn.dark.disabledBg",
+          "btn.dark.disabledText",
+          "btn.dark.disabledBorder"
+        ],
+        "outline-dark": [
+          "btn.outline-dark.text",
+          "btn.outline-dark.border",
+          "btn.outline-dark.hoverBg",
+          "btn.outline-dark.hoverText",
+          "btn.outline-dark.hoverBorder",
+          "btn.outline-dark.disabledText",
+          "btn.outline-dark.disabledBorder",
+          "btn.outline-dark.disabledBg"
+        ]
+      }
+    },
+    "preview": {
+      "cssVariables": [
+        "--ds-btn-light-bg",
+        "--ds-btn-light-text",
+        "--ds-btn-light-border",
+        "--ds-btn-light-hover-bg",
+        "--ds-btn-light-hover-text",
+        "--ds-btn-light-hover-border",
+        "--ds-btn-light-disabled-bg",
+        "--ds-btn-light-disabled-text",
+        "--ds-btn-light-disabled-border",
+
+        "--ds-btn-dark-bg",
+        "--ds-btn-dark-text",
+        "--ds-btn-dark-border",
+        "--ds-btn-dark-hover-bg",
+        "--ds-btn-dark-hover-text",
+        "--ds-btn-dark-hover-border",
+        "--ds-btn-dark-disabled-bg",
+        "--ds-btn-dark-disabled-text",
+        "--ds-btn-dark-disabled-border",
+
+        "--ds-btn-outline-dark-text",
+        "--ds-btn-outline-dark-border",
+        "--ds-btn-outline-dark-hover-bg",
+        "--ds-btn-outline-dark-hover-text",
+        "--ds-btn-outline-dark-hover-border",
+        "--ds-btn-outline-dark-disabled-text",
+        "--ds-btn-outline-dark-disabled-border",
+        "--ds-btn-outline-dark-disabled-bg"
+      ]
     }
   },
+
   "badge": {
     "tokenFamily": "badge-status",
     "defaultVariant": "neutral",
-    "variants": ["neutral", "primary", "success", "warning", "danger", "info"]
+    "variants": [
+      "neutral",
+      "primary",
+      "success",
+      "warning",
+      "danger",
+      "info"
+    ]
   },
+
   "card": {
     "tokenFamily": "card",
     "defaultPadding": "16px",
@@ -25,11 +145,13 @@
     "defaultShadow": "xs",
     "showDivider": true
   },
+
   "sectionHeader": {
     "showDivider": true,
     "titleSize": "1rem",
     "subtitleSize": "0.875rem"
   },
+
   "icon": {
     "tokenFamily": "icon",
     "defaultLibrary": "bootstrap-icons",
@@ -43,26 +165,30 @@
       "2xl": "2rem"
     }
   },
+
   "iconButton": {
     "tokenFamily": "icon-btn",
     "defaultSize": "md",
     "defaultVariant": "ghost",
     "sizes": {
-      "sm": { "padding": "4px 6px",  "fontSize": "0.9rem",  "height": "28px" },
-      "md": { "padding": "6px 9px",  "fontSize": "1.1rem",  "height": "34px" },
-      "lg": { "padding": "8px 10px", "fontSize": "1.3rem",  "height": "40px" }
+      "sm": { "padding": "4px 6px", "fontSize": "0.9rem", "height": "28px" },
+      "md": { "padding": "6px 9px", "fontSize": "1.1rem", "height": "34px" },
+      "lg": { "padding": "8px 10px", "fontSize": "1.3rem", "height": "40px" }
     }
   },
+
   "input": {
     "tokenFamily": "form-field",
     "defaultSize": "md",
     "defaultRadius": "6px"
   },
+
   "formShell": {
     "tokenFamily": "form-shell",
     "defaultPadding": "16px",
     "showActions": true
   },
+
   "table": {
     "tokenFamily": "table",
     "defaultPageSize": 25,
@@ -70,18 +196,21 @@
     "showPageSizeSelector": true,
     "showPageInfo": true
   },
+
   "navHeader": {
     "tokenFamily": "nav-header",
     "showLogo": true,
     "showNotifications": true,
     "showUserMenu": true
   },
+
   "navSidebar": {
     "tokenFamily": "nav-sidebar",
     "defaultWidth": "230px",
     "collapsedWidth": "52px",
     "showScrollbar": true
   },
+
   "chart": {
     "tokenFamily": "chart",
     "defaultType": "line",
@@ -89,25 +218,34 @@
     "showLegend": true,
     "showGrid": true
   },
+
   "pagination": {
     "defaultPageSize": 25,
     "pageSizeOptions": [10, 25, 50, 100],
     "showPageSizeSelector": true,
     "showPageInfo": true
   },
+
   "skeleton": {
     "animationDuration": "1.5s",
     "baseColor": "#e5e7eb",
     "highlightColor": "#f3f4f6"
   },
+
   "emptyState": {
     "defaultIcon": "bi-inbox",
     "defaultMessage": "No records found."
   },
+
   "alert": {
     "tokenFamily": "alert",
     "defaultDuration": 4000,
-    "variants": ["success", "warning", "danger", "info"],
+    "variants": [
+      "success",
+      "warning",
+      "danger",
+      "info"
+    ],
     "position": "top-right"
   }
 }
