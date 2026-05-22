@@ -3239,3 +3239,597 @@
 [2026-05-22 12:15:28.513] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
 [2026-05-22 12:15:28.515] PageHeaderV2.razor::UpdateAsync — EXIT path='/login' — no route match found — labels remain empty
 [2026-05-22 12:15:28.525] Login.razor::OnAfterRender — firstRender=True IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.098] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-22 12:15:57.107] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.110] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.317] Login.razor::HandleKeyDown — Key='v' IsAuthenticated=False
+[2026-05-22 12:15:57.329] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.332] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.381] Login.razor::HandleKeyDown — Key='a' IsAuthenticated=False
+[2026-05-22 12:15:57.396] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.399] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.653] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:15:57.663] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.664] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.781] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:15:57.796] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:57.798] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.463] Login.razor::HandleKeyDown — Key='Backspace' IsAuthenticated=False
+[2026-05-22 12:15:58.479] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.480] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.629] Login.razor::HandleKeyDown — Key='Backspace' IsAuthenticated=False
+[2026-05-22 12:15:58.645] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.647] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.752] Login.razor::HandleKeyDown — Key='Backspace' IsAuthenticated=False
+[2026-05-22 12:15:58.762] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.764] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.925] Login.razor::HandleKeyDown — Key='Backspace' IsAuthenticated=False
+[2026-05-22 12:15:58.930] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:15:58.932] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.053] Login.razor::HandleKeyDown — Key='b' IsAuthenticated=False
+[2026-05-22 12:16:00.063] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.083] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.214] Login.razor::HandleKeyDown — Key='a' IsAuthenticated=False
+[2026-05-22 12:16:00.229] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.250] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.349] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:16:00.363] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.365] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.502] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:16:00.513] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:00.516] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:01.262] Login.razor::HandleKeyDown — Key='l' IsAuthenticated=False
+[2026-05-22 12:16:01.280] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:01.282] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:01.357] Login.razor::HandleKeyDown — Key='e' IsAuthenticated=False
+[2026-05-22 12:16:01.362] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:01.368] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:01.638] Login.razor::HandleKeyDown — Key='Tab' IsAuthenticated=False
+[2026-05-22 12:16:01.651] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.103] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:16:02.112] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.286] Login.razor::HandleKeyDown — Key='A' IsAuthenticated=False
+[2026-05-22 12:16:02.296] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.298] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.509] Login.razor::HandleKeyDown — Key='d' IsAuthenticated=False
+[2026-05-22 12:16:02.512] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.514] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.662] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-22 12:16:02.680] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.682] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.886] Login.razor::HandleKeyDown — Key='i' IsAuthenticated=False
+[2026-05-22 12:16:02.896] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:02.897] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.062] Login.razor::HandleKeyDown — Key='n' IsAuthenticated=False
+[2026-05-22 12:16:03.079] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.082] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.184] Login.razor::HandleKeyDown — Key='1' IsAuthenticated=False
+[2026-05-22 12:16:03.196] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.198] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.409] Login.razor::HandleKeyDown — Key='2' IsAuthenticated=False
+[2026-05-22 12:16:03.413] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.416] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.638] Login.razor::HandleKeyDown — Key='3' IsAuthenticated=False
+[2026-05-22 12:16:03.646] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.648] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.798] Login.razor::HandleKeyDown — Key='4' IsAuthenticated=False
+[2026-05-22 12:16:03.813] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:03.815] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:04.088] Login.razor::HandleKeyDown — Key='Enter' IsAuthenticated=False
+[2026-05-22 12:16:04.091] Login.razor::DoLogin — Attempting login. username='mbattle'
+[2026-05-22 12:16:04.120] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:16:04.677] Login.razor::DoLogin — LoginAsync succeeded. UserId=1 Role='Super Admin'
+[2026-05-22 12:16:04.678] Login.razor::DoLogin — Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()
+[2026-05-22 12:16:04.679] AppStateService.cs::SetUser — CurrentUserId=1 UserName='mbattle' Role='Super Admin' — calling Notify()
+[2026-05-22 12:16:04.679] Login.razor::DoLogin — AppState.SetUser done. IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' — loading messages and notifications
+[2026-05-22 12:16:04.699] Login.razor::DoLogin — Calling AppState.SetMessagingData — will fire Notify() again
+[2026-05-22 12:16:04.701] AppStateService.cs::SetMessagingData — UnreadMessages=5 UnreadNotifications=5 — calling Notify()
+[2026-05-22 12:16:04.701] Login.razor::DoLogin — Messaging data loaded. messages=5 notifications=5
+[2026-05-22 12:16:04.702] Login.razor::DoLogin — Calling PermSvc.ResetAsync() to clear previous user's permission cache
+[2026-05-22 12:16:04.703] PermissionServiceV2.cs::ResetAsync — Permission cache cleared; _loadFailed reset to false.
+[2026-05-22 12:16:04.704] Login.razor::DoLogin — Calling NavService.ResetAsync() — async reset to avoid UI thread blocking
+[2026-05-22 12:16:04.705] NavigationServiceV2.cs::ResetAsync — ENTER ResetAsync() — _cache is populated (0 categories) — acquiring async lock
+[2026-05-22 12:16:04.705] NavigationServiceV2.cs::ResetAsync — Lock acquired — clearing main menu cache
+[2026-05-22 12:16:04.706] NavigationServiceV2.cs::ResetAsync — Main menu cache cleared — lock released
+[2026-05-22 12:16:04.706] NavigationServiceV2.cs::ResetAsync — gsLock acquired — clearing global settings cache
+[2026-05-22 12:16:04.707] NavigationServiceV2.cs::ResetAsync — Global settings cache cleared — gsLock released
+[2026-05-22 12:16:04.708] Login.razor::DoLogin — NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.
+[2026-05-22 12:16:04.709] Login.razor::DoLogin — Nav.NavigateTo('/v2/dashboard/overview') called.
+[2026-05-22 12:16:04.710] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=True errorMessage=''
+[2026-05-22 12:16:04.712] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
+[2026-05-22 12:16:04.713] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
+[2026-05-22 12:16:04.713] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
+[2026-05-22 12:16:04.714] DesignTokenStyleInjectorV2.razor::OnInitialized — Calling GetGeneratedCssAsync() for initial load
+[2026-05-22 12:16:04.715] DesignTokenStyleInjectorV2.razor::OnInitialized — Initial CSS length = 10968
+[2026-05-22 12:16:04.716] DesignTokenStyleInjectorV2.razor::DumpCss — Dumping CSS (10968 chars)
+[2026-05-22 12:16:04.717] DesignTokenStyleInjectorV2.razor::CSS-Chunk-1 — :root {\n  --ds-action-btn-primary-bg: #0f626a;\n  --ds-action-btn-primary-text: #ffffff;\n  --ds-action-btn-primary-hover-bg: #0a4a50;\n  --ds-action-btn-secondary-text: #2c3345;\n  --ds-action-btn-secondary-border: #dde1e7;\n  --ds-action-btn-secondary-hover-bg: #e8eaed;\n  --ds-action-btn-add-bg: #f97316;\n  --ds-action-btn-add-text: #ffffff;\n  --ds-action-btn-add-hover-bg: #ea580c;\n  --ds-action-btn-border-radius: 6px;\n  --ds-action-btn-padding-y: 7px;\n  --ds-action-btn-padding-x: 14px;
+[2026-05-22 12:16:04.717] DesignTokenStyleInjectorV2.razor::CSS-Chunk-2 — \n  --ds-action-btn-font-size: 0.85rem;\n  --ds-action-btn-font-weight: 600;\n  --ds-action-btn-gap: 6px;\n  --ds-alert-info-bg: #e0f2fe;\n  --ds-alert-info-border: #0284c7;\n  --ds-alert-info-text: #0284c7;\n  --ds-alert-success-bg: #dcfce7;\n  --ds-alert-success-border: #16a34a;\n  --ds-alert-success-text: #16a34a;\n  --ds-alert-warning-bg: #fef3c7;\n  --ds-alert-warning-border: #d97706;\n  --ds-alert-warning-text: #d97706;\n  --ds-alert-danger-bg: #fee2e2;\n  --ds-alert-danger-border: #dc2626;
+[2026-05-22 12:16:04.718] DesignTokenStyleInjectorV2.razor::CSS-Chunk-3 — \n  --ds-alert-danger-text: #dc2626;\n  --ds-alert-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);\n  --ds-alert-radius: 8px;\n  --ds-badge-active-bg: #e0f2fe;\n  --ds-badge-active-text: #0284c7;\n  --ds-badge-inactive-bg: #f3f4f6;\n  --ds-badge-inactive-text: #6b7280;\n  --ds-badge-planned-bg: #fef3c7;\n  --ds-badge-planned-text: #d97706;\n  --ds-badge-radius: 9999px;\n  --ds-badge-font-size: 0.67rem;\n  --ds-border-default: var(--ds-color-border, #dde1e7);\n  --ds-border-muted: var(--ds-color-gray-200
+[2026-05-22 12:16:04.719] DesignTokenStyleInjectorV2.razor::CSS-Chunk-4 — , #e5e7eb);\n  --ds-border-strong: var(--ds-color-gray-400, #9ca3af);\n  --ds-border-focus: var(--ds-color-accent, #2563eb);\n  --ds-border-danger: var(--ds-color-danger, #dc2626);\n  --ds-border-warning: var(--ds-color-warning, #d97706);\n  --ds-border-success: var(--ds-color-success, #16a34a);\n  --ds-border-info: var(--ds-color-info, #0284c7);\n  --ds-btn-primary-bg: #0d6efd;\n  --ds-btn-primary-text: #ffffff;\n  --ds-btn-primary-border: #0d6efd;\n  --ds-btn-primary-hover-bg: #0b5ed7;\n  --ds
+[2026-05-22 12:16:04.720] DesignTokenStyleInjectorV2.razor::CSS-Chunk-5 — -btn-secondary-bg: transparent;\n  --ds-btn-secondary-text: #212529;\n  --ds-btn-secondary-border: #dee2e6;\n  --ds-btn-secondary-hover-bg: #f8f9fa;\n  --ds-btn-success-bg: #198754;\n  --ds-btn-success-text: #ffffff;\n  --ds-btn-success-border: #198754;\n  --ds-btn-success-hover-bg: #157347;\n  --ds-btn-danger-bg: #dc3545;\n  --ds-btn-danger-text: #ffffff;\n  --ds-btn-danger-border: #dc3545;\n  --ds-btn-danger-hover-bg: #bb2d3b;\n  --ds-btn-warning-bg: #ffc107;\n  --ds-btn-warning-text: #212529;
+[2026-05-22 12:16:04.721] DesignTokenStyleInjectorV2.razor::CSS-Chunk-6 — \n  --ds-btn-warning-border: #ffc107;\n  --ds-btn-warning-hover-bg: #ffca2c;\n  --ds-btn-info-bg: #0dcaf0;\n  --ds-btn-info-text: #212529;\n  --ds-btn-info-border: #0dcaf0;\n  --ds-btn-info-hover-bg: #31d2f2;\n  --ds-btn-border-radius: 6px;\n  --ds-btn-font-size: 0.875rem;\n  --ds-btn-padding-y: 7px;\n  --ds-btn-padding-x: 16px;\n  --ds-btn-light-bg: #f8f9fa;\n  --ds-btn-light-text: #212529;\n  --ds-btn-light-border: #f8f9fa;\n  --ds-btn-light-hover-bg: #e2e6ea;\n  --ds-btn-light-hover-text: #21
+[2026-05-22 12:16:04.721] DesignTokenStyleInjectorV2.razor::CSS-Chunk-7 — 2529;\n  --ds-btn-light-hover-border: #dae0e5;\n  --ds-btn-light-disabled-bg: #f8f9fa;\n  --ds-btn-light-disabled-text: #212529;\n  --ds-btn-light-disabled-border: #f8f9fa;\n  --ds-btn-dark-bg: #212529;\n  --ds-btn-dark-text: #ffffff;\n  --ds-btn-dark-border: #212529;\n  --ds-btn-dark-hover-bg: #1c1f23;\n  --ds-btn-dark-hover-text: #ffffff;\n  --ds-btn-dark-hover-border: #1a1e21;\n  --ds-btn-dark-disabled-bg: #212529;\n  --ds-btn-dark-disabled-text: #ffffff;\n  --ds-btn-dark-disabled-border: #21
+[2026-05-22 12:16:04.722] DesignTokenStyleInjectorV2.razor::CSS-Chunk-8 — 2529;\n  --ds-btn-outline-dark-text: #212529;\n  --ds-btn-outline-dark-border: #212529;\n  --ds-btn-outline-dark-hover-bg: #212529;\n  --ds-btn-outline-dark-hover-text: #ffffff;\n  --ds-btn-outline-dark-hover-border: #212529;\n  --ds-btn-outline-dark-disabled-text: #212529;\n  --ds-btn-outline-dark-disabled-border: #212529;\n  --ds-card-bg: #ffffff;\n  --ds-card-border-color: #dee2e6;\n  --ds-card-radius: 8px;\n  --ds-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);\n  --ds-card-header-bg: #f8f9fa;\n
+[2026-05-22 12:16:04.723] DesignTokenStyleInjectorV2.razor::CSS-Chunk-9 —   --ds-card-padding: 1.25rem;\n  --ds-chart-surface: #ffffff;\n  --ds-chart-grid-line: var(--ds-color-gray-200, #e5e7eb);\n  --ds-chart-axis-text: var(--ds-color-text-muted, #7b8494);\n  --ds-chart-series-1: var(--ds-color-accent, #2563eb);\n  --ds-chart-series-2: var(--ds-color-info, #0284c7);\n  --ds-chart-positive: var(--ds-color-success, #16a34a);\n  --ds-chart-warning: var(--ds-color-warning, #d97706);\n  --ds-chart-danger: var(--ds-color-danger, #dc2626);\n  --ds-chart-neutral: var(--ds-co
+[2026-05-22 12:16:04.723] DesignTokenStyleInjectorV2.razor::CSS-Chunk-10 — lor-gray-400, #9ca3af);\n  --ds-chart-tooltip-bg: #111827;\n  --ds-chart-tooltip-text: #ffffff;\n  --ds-dd-trigger-border-radius: 6px;\n  --ds-dd-trigger-padding-y: 7px;\n  --ds-dd-trigger-padding-x: 16px;\n  --ds-dd-trigger-font-size: 0.875rem;\n  --ds-dd-menu-bg: #ffffff;\n  --ds-dd-menu-border: #e0e4ea;\n  --ds-dd-menu-border-radius: 8px;\n  --ds-dd-menu-shadow: 0 4px 16px rgba(0,0,0,0.12);\n  --ds-dd-menu-item-text: #2c3345;\n  --ds-dd-menu-item-hover-bg: #f3f4f6;\n  --ds-dd-menu-item-active
+[2026-05-22 12:16:04.724] DesignTokenStyleInjectorV2.razor::CSS-Chunk-11 — -bg: #0f626a;\n  --ds-dd-menu-item-active-text: #ffffff;\n  --ds-dd-menu-item-disabled-text: #9ca3af;\n  --ds-dd-menu-padding-y: 4px;\n  --ds-dd-menu-header-text: #7b8494;\n  --ds-dd-menu-item-px: 16px;\n  --ds-form-field-bg: #ffffff;\n  --ds-form-field-text: var(--ds-color-text, #2c3345);\n  --ds-form-field-border: var(--ds-color-border, #dde1e7);\n  --ds-form-field-placeholder: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-focus-border: var(--ds-color-accent, #2563eb);\n  --ds-form-f
+[2026-05-22 12:16:04.725] DesignTokenStyleInjectorV2.razor::CSS-Chunk-12 — ield-focus-ring: 0 0 0 1px rgba(37, 99, 235, 0.35);\n  --ds-form-field-error-border: var(--ds-color-danger, #dc2626);\n  --ds-form-field-error-text: var(--ds-color-danger, #dc2626);\n  --ds-form-field-label: var(--ds-color-text, #2c3345);\n  --ds-form-field-hint: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-form-shell-bg: #ffffff;\n  --ds-form-shell-border: var(--ds-color-border, #dde1e7);\n  --ds-form-shell-shadow: 0 2px 8px rgba(0
+[2026-05-22 12:16:04.725] DesignTokenStyleInjectorV2.razor::CSS-Chunk-13 — , 0, 0, 0.10);\n  --ds-form-shell-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-form-shell-action-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-icon-size-xs: 0.75rem;\n  --ds-icon-size-sm: 0.875rem;\n  --ds-icon-size-md: 1rem;\n  --ds-icon-size-lg: 1.25rem;\n  --ds-icon-size-xl: 1.5rem;\n  --ds-icon-size-2xl: 1.75rem;\n  --ds-icon-color: var(--ds-color-text, #2c3345);\n  --ds-icon-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-icon-color-accent: var(--ds-color-accent, #2563eb);
+[2026-05-22 12:16:04.726] DesignTokenStyleInjectorV2.razor::CSS-Chunk-14 — \n  --ds-icon-btn-gap: 8px;\n  --ds-icon-btn-radius: 7px;\n  --ds-icon-btn-font-size-sm: 0.75rem;\n  --ds-icon-btn-font-size-md: 0.875rem;\n  --ds-icon-btn-font-size-lg: 1rem;\n  --ds-icon-btn-padding-sm: 4px 6px;\n  --ds-icon-btn-padding-md: 6px 9px;\n  --ds-icon-btn-padding-lg: 8px 12px;\n  --ds-icon-btn-ghost-bg: transparent;\n  --ds-icon-btn-ghost-hover-bg: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-icon-btn-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-icon-btn-primary-hover-bg: 
+[2026-05-22 12:16:04.727] DesignTokenStyleInjectorV2.razor::CSS-Chunk-15 — #1d4ed8;\n  --ds-icon-btn-danger-bg: var(--ds-color-danger, #dc2626);\n  --ds-icon-btn-danger-hover-bg: #b91c1c;\n  --ds-icon-btn-text: var(--ds-color-text-muted, #7b8494);\n  --ds-layout-header-h: var(--hdr-h, 52px);\n  --ds-layout-footer-h: var(--ftr-h, 36px);\n  --ds-layout-sidebar-w: var(--sb-w, 230px);\n  --ds-layout-sidebar-w-collapsed: var(--sb-w-col, 52px);\n  --ds-layout-shell-gap: var(--ds-space-4);\n  --ds-nav-header-bg: #f5f6f8;\n  --ds-nav-header-border: #dde1e7;\n  --ds-nav-header-
+[2026-05-22 12:16:04.727] DesignTokenStyleInjectorV2.razor::CSS-Chunk-16 — text: #2c3345;\n  --ds-nav-header-dropdown-bg: #ffffff;\n  --ds-nav-header-dropdown-border: #dde1e7;\n  --ds-nav-header-dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-nav-header-badge-notification-bg: #dc2626;\n  --ds-nav-header-badge-notification-text: #ffffff;\n  --ds-nav-sidebar-bg: #f5f6f8;\n  --ds-nav-sidebar-border: #dde1e7;\n  --ds-nav-sidebar-text: #2c3345;\n  --ds-nav-sidebar-text-muted: #7b8494;\n  --ds-nav-sidebar-hover-bg: #e8eaed;\n  --ds-nav-sidebar-active-bg: #2563eb;\n 
+[2026-05-22 12:16:04.728] DesignTokenStyleInjectorV2.razor::CSS-Chunk-17 —  --ds-nav-sidebar-active-text: #ffffff;\n  --ds-nav-sidebar-scrollbar-thumb: #d1d5db;\n  --ds-nav-sidebar-scrollbar-thumb-hover: #9ca3af;\n  --ds-nav-sidebar-category-text: #2563eb;\n  --ds-radius-xs: 0px;\n  --ds-radius-sm: 4px;\n  --ds-radius-md: 6px;\n  --ds-radius-lg: 8px;\n  --ds-radius-xl: 12px;\n  --ds-radius-full: 9999px;\n  --ds-radius-control: 6px;\n  --ds-radius-card: 8px;\n  --ds-shadow-none: none;\n  --ds-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);\n  --ds-shadow-sm: 0 1px 3px rgba(0,
+[2026-05-22 12:16:04.729] DesignTokenStyleInjectorV2.razor::CSS-Chunk-18 —  0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);\n  --ds-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);\n  --ds-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05);\n  --ds-shadow-dropdown: 0 20px 25px rgba(0, 0, 0, 0.10), 0 8px 10px rgba(0, 0, 0, 0.04);\n  --ds-shadow-alert: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-space-1: 4px;\n  --ds-space-2: 8px;\n  --ds-space-3: 12px;\n  --ds-space-4: 16px;\n  --ds-space-5: 20px;\n  --ds-space-6: 24px;\n  --ds-spa
+[2026-05-22 12:16:04.729] DesignTokenStyleInjectorV2.razor::CSS-Chunk-19 — ce-8: 32px;\n  --ds-space-10: 40px;\n  --ds-space-12: 48px;\n  --ds-gap-sm: var(--ds-space-2);\n  --ds-gap-md: var(--ds-space-4);\n  --ds-gap-lg: var(--ds-space-6);\n  --ds-input-px: var(--ds-space-2);\n  --ds-input-py: var(--ds-space-2);\n  --ds-table-cell-px: var(--ds-space-3);\n  --ds-table-cell-py: var(--ds-space-2);\n  --ds-form-label-mb: var(--ds-space-1);\n  --ds-form-hint-mt: var(--ds-space-1);\n  --ds-surface-base: var(--ds-color-bg, #eaecf0);\n  --ds-surface-raised: var(--ds-color-surf
+[2026-05-22 12:16:04.730] DesignTokenStyleInjectorV2.razor::CSS-Chunk-20 — ace, #f5f6f8);\n  --ds-surface-subtle: var(--ds-color-surface, #f5f6f8);\n  --ds-surface-overlay: var(--ds-color-surface-raised, #ffffff);\n  --ds-surface-hover: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-surface-active: var(--ds-color-sidebar-active, #2563eb);\n  --ds-surface-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-table-header-bg: #1e3a5f;\n  --ds-table-header-text: #ffffff;\n  --ds-table-row-even-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-table-row-hover-bg: var(--ds-colo
+[2026-05-22 12:16:04.731] DesignTokenStyleInjectorV2.razor::CSS-Chunk-21 — r-sidebar-hover, #e8eaed);\n  --ds-table-border: var(--ds-color-border, #dde1e7);\n  --ds-table-surface: var(--ds-color-surface, #f5f6f8);\n  --ds-table-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-table-action-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-text-size-xs: var(--ds-text-xs);\n  --ds-text-size-sm: var(--ds-text-sm);\n  --ds-text-size-md: var(--ds-text-base);\n  --ds-text-size-lg: var(--ds-text-lg);\n  --ds-text-size-xl: var(--ds-text-xl);\n  --ds-text-size-2xl: var(--d
+[2026-05-22 12:16:04.731] DesignTokenStyleInjectorV2.razor::CSS-Chunk-22 — s-text-2xl);\n  --ds-text-font-regular: var(--ds-font-normal);\n  --ds-text-font-medium: var(--ds-font-medium);\n  --ds-text-font-semibold: var(--ds-font-semibold);\n  --ds-text-font-bold: var(--ds-font-bold);\n  --ds-text-color-primary: var(--ds-color-text, #2c3345);\n  --ds-text-color-secondary: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-inverse: var(--ds-color-text-inverse, #ffffff);\n}
+[2026-05-22 12:16:04.732] DesignTokenStyleInjectorV2.razor::DumpCss — CSS dump complete
+[2026-05-22 12:16:04.733] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
+[2026-05-22 12:16:04.736] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-22 12:16:04.739] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard/overview' IsAuthenticated=True _loadPending=True
+[2026-05-22 12:16:04.740] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-22 12:16:04.753] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-22 12:16:04.754] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-22 12:16:04.755] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-22 12:16:04.756] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:16:04.757] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:16:04.757] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-22 12:16:04.758] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-22 12:16:04.759] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=1
+[2026-05-22 12:16:04.765] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 47
+[2026-05-22 12:16:04.768] PermissionServiceV2.cs::CanViewAsync — _cache is null → invoking LoadAsync for route='/v2/dashboard/overview'
+[2026-05-22 12:16:04.771] PermissionServiceV2.cs::LoadAsync — Loading permissions for userId=1
+[2026-05-22 12:16:04.775] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
+[2026-05-22 12:16:04.777] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-22 12:16:04.779] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-22 12:16:04.781] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:16:04.783] PermissionServiceV2.cs::LoadAsync — roleCode='SUPERADMIN'
+[2026-05-22 12:16:04.796] PermissionServiceV2.cs::LoadAsync — roleId=1
+[2026-05-22 12:16:04.835] PermissionServiceV2.cs::LoadAsync — Cache loaded — 27 page(s) resolved for userId=1
+[2026-05-22 12:16:04.837] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/overview' → CanRead=True
+[2026-05-22 12:16:04.838] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/trends' → CanRead=True
+[2026-05-22 12:16:04.839] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/safeguarding' → CanRead=True
+[2026-05-22 12:16:04.840] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students' → CanRead=True
+[2026-05-22 12:16:04.841] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students/new' → CanRead=True
+[2026-05-22 12:16:04.842] PermissionServiceV2.cs::CanViewAsync — Route '/v2/students/{id}' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-22 12:16:04.843] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff' → CanRead=True
+[2026-05-22 12:16:04.844] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff/new' → CanRead=True
+[2026-05-22 12:16:04.845] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes' → CanRead=True
+[2026-05-22 12:16:04.846] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/details' → CanRead=True
+[2026-05-22 12:16:04.847] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/new' → CanRead=True
+[2026-05-22 12:16:04.848] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance' → CanRead=True
+[2026-05-22 12:16:04.848] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance/student' → CanRead=True
+[2026-05-22 12:16:04.849] PermissionServiceV2.cs::CanViewAsync — Route '/v2/test/404' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-22 12:16:04.850] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/auditlog' → CanRead=True
+[2026-05-22 12:16:04.851] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/settings' → CanRead=True
+[2026-05-22 12:16:04.852] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/diagnostics' → CanRead=True
+[2026-05-22 12:16:04.854] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/site' → CanRead=True
+[2026-05-22 12:16:04.854] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/globalsettings/colours' → CanRead=True
+[2026-05-22 12:16:04.856] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/users' → CanRead=True
+[2026-05-22 12:16:04.857] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/roles' → CanRead=True
+[2026-05-22 12:16:04.858] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/permissions' → CanRead=True
+[2026-05-22 12:16:04.859] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/page-access' → CanRead=True
+[2026-05-22 12:16:04.860] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages' → CanRead=True
+[2026-05-22 12:16:04.860] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/layouts' → CanRead=True
+[2026-05-22 12:16:04.861] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/metadata' → CanRead=True
+[2026-05-22 12:16:04.863] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 8
+[2026-05-22 12:16:04.864] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 8 categories
+[2026-05-22 12:16:04.864] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:16:04.865] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
+[2026-05-22 12:16:04.867] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel='Operational Overview'
+[2026-05-22 12:16:04.868] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:16:04.868] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 8 cached categories
+[2026-05-22 12:16:04.869] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:16:04.870] SidebarV2.razor::LoadMenuAsync — Categories received = 8
+[2026-05-22 12:16:04.873] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
+[2026-05-22 12:16:04.878] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
+[2026-05-22 12:16:06.769] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/colours IsAuthenticated=True
+[2026-05-22 12:16:06.774] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-22 12:16:06.776] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
+[2026-05-22 12:16:06.778] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
+[2026-05-22 12:16:06.779] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-22 12:16:06.781] SidebarV2.razor::OnInitialized — Setup complete. path='/globalsettings/colours' IsAuthenticated=True _loadPending=True
+[2026-05-22 12:16:06.782] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-22 12:16:06.783] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/globalsettings/colours'
+[2026-05-22 12:16:06.784] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-22 12:16:06.784] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:16:06.786] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:16:06.787] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:16:06.788] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:16:06.788] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync
+[2026-05-22 12:16:06.790] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — ENTER GetGlobalSettingsCategoriesAsync
+[2026-05-22 12:16:06.797] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/globalsettings/colours'
+[2026-05-22 12:16:06.798] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
+[2026-05-22 12:16:06.799] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:16:06.800] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/colours' — dispatching UpdateAsync
+[2026-05-22 12:16:06.801] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/colours' IsAuthenticated=True — no redirect
+[2026-05-22 12:16:06.803] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:16:06.806] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:16:06.808] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-22 12:16:06.809] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:16:06.809] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:16:06.810] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:16:06.811] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Rows returned = 60
+[2026-05-22 12:16:06.812] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Categories built = 9
+[2026-05-22 12:16:06.813] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — NavigationApiServiceV2 returned — caching 9 categories
+[2026-05-22 12:16:06.814] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:16:06.815] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:16:06.816] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Global Settings' _itemLabel=''
+[2026-05-22 12:16:06.817] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:16:06.818] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-22 12:16:06.819] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:16:06.820] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:16:06.823] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:16:06.824] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-22 12:16:06.825] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:16:06.826] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:16:06.828] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:16:06.828] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:16:06.829] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:16:06.830] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:16:06.832] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
+[2026-05-22 12:16:06.836] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-22 12:16:08.971] SidebarV2.razor::HandleGroupClick — group='UI Kits' opened
+[2026-05-22 12:16:08.980] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-22 12:16:10.374] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/buttons IsAuthenticated=True
+[2026-05-22 12:16:10.421] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:16:10.422] SidebarV2.razor::OnLocationChanged — path changed '' → '/globalsettings/ui-kits/buttons'
+[2026-05-22 12:16:10.423] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:16:10.424] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/buttons' — dispatching UpdateAsync
+[2026-05-22 12:16:10.425] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/buttons' IsAuthenticated=True — no redirect
+[2026-05-22 12:16:10.428] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/buttons' _isSuperAdminMenu=True
+[2026-05-22 12:16:10.428] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:16:10.429] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:16:10.430] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/buttons'
+[2026-05-22 12:16:10.431] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:16:10.431] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:16:10.432] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:16:10.433] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:16:10.473] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-22 12:26:52.730] AppLog.cs::TestWrite — Log file initialised. Path=C:\DevAbsence2\logs\AbsenceApp.log
+[2026-05-22 12:26:52.732] AppLog.cs::TestWrite — FILE EXISTS — write verified OK
+[2026-05-22 12:26:52.734] Routes.razor::OnInitialized — Router started. IsAuthenticated=False URI=https://0.0.0.0/
+[2026-05-22 12:26:52.810] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-22 12:26:52.813] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-22 12:26:52.818] DesignTokenStyleInjectorV2.razor::OnInitialized — Calling GetGeneratedCssAsync() for initial load
+[2026-05-22 12:26:55.385] Routes.razor::CheckAuthRedirect — [from=OnInitialized] Unauthenticated access to '/' — redirecting to /login
+[2026-05-22 12:26:55.425] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-22 12:26:55.427] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-22 12:26:55.480] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-22 12:26:55.492] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-22 12:26:55.510] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-22 12:26:55.523] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-22 12:26:55.540] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-22 12:26:55.547] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=False
+[2026-05-22 12:26:55.550] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=False
+[2026-05-22 12:26:55.555] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=False _isInitializing=True
+[2026-05-22 12:26:55.559] DesignTokenStyleInjectorV2.razor::OnInitialized — Calling GetGeneratedCssAsync() for initial load
+[2026-05-22 12:26:55.610] Routes.razor::CheckAuthRedirect — [from=LocationChanged] Ignoring stale MAUI WebView navigation to '/v2/dashboard/overview' while unauthenticated.
+[2026-05-22 12:26:55.645] DesignTokenStyleInjectorV2.razor::OnInitialized — Initial CSS length = 10968
+[2026-05-22 12:26:55.651] DesignTokenStyleInjectorV2.razor::DumpCss — Dumping CSS (10968 chars)
+[2026-05-22 12:26:55.657] DesignTokenStyleInjectorV2.razor::CSS-Chunk-1 — :root {\n  --ds-action-btn-primary-bg: #0f626a;\n  --ds-action-btn-primary-text: #ffffff;\n  --ds-action-btn-primary-hover-bg: #0a4a50;\n  --ds-action-btn-secondary-text: #2c3345;\n  --ds-action-btn-secondary-border: #dde1e7;\n  --ds-action-btn-secondary-hover-bg: #e8eaed;\n  --ds-action-btn-add-bg: #f97316;\n  --ds-action-btn-add-text: #ffffff;\n  --ds-action-btn-add-hover-bg: #ea580c;\n  --ds-action-btn-border-radius: 6px;\n  --ds-action-btn-padding-y: 7px;\n  --ds-action-btn-padding-x: 14px;
+[2026-05-22 12:26:55.658] DesignTokenStyleInjectorV2.razor::CSS-Chunk-2 — \n  --ds-action-btn-font-size: 0.85rem;\n  --ds-action-btn-font-weight: 600;\n  --ds-action-btn-gap: 6px;\n  --ds-alert-info-bg: #e0f2fe;\n  --ds-alert-info-border: #0284c7;\n  --ds-alert-info-text: #0284c7;\n  --ds-alert-success-bg: #dcfce7;\n  --ds-alert-success-border: #16a34a;\n  --ds-alert-success-text: #16a34a;\n  --ds-alert-warning-bg: #fef3c7;\n  --ds-alert-warning-border: #d97706;\n  --ds-alert-warning-text: #d97706;\n  --ds-alert-danger-bg: #fee2e2;\n  --ds-alert-danger-border: #dc2626;
+[2026-05-22 12:26:55.661] DesignTokenStyleInjectorV2.razor::CSS-Chunk-3 — \n  --ds-alert-danger-text: #dc2626;\n  --ds-alert-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);\n  --ds-alert-radius: 8px;\n  --ds-badge-active-bg: #e0f2fe;\n  --ds-badge-active-text: #0284c7;\n  --ds-badge-inactive-bg: #f3f4f6;\n  --ds-badge-inactive-text: #6b7280;\n  --ds-badge-planned-bg: #fef3c7;\n  --ds-badge-planned-text: #d97706;\n  --ds-badge-radius: 9999px;\n  --ds-badge-font-size: 0.67rem;\n  --ds-border-default: var(--ds-color-border, #dde1e7);\n  --ds-border-muted: var(--ds-color-gray-200
+[2026-05-22 12:26:55.667] DesignTokenStyleInjectorV2.razor::CSS-Chunk-4 — , #e5e7eb);\n  --ds-border-strong: var(--ds-color-gray-400, #9ca3af);\n  --ds-border-focus: var(--ds-color-accent, #2563eb);\n  --ds-border-danger: var(--ds-color-danger, #dc2626);\n  --ds-border-warning: var(--ds-color-warning, #d97706);\n  --ds-border-success: var(--ds-color-success, #16a34a);\n  --ds-border-info: var(--ds-color-info, #0284c7);\n  --ds-btn-primary-bg: #0d6efd;\n  --ds-btn-primary-text: #ffffff;\n  --ds-btn-primary-border: #0d6efd;\n  --ds-btn-primary-hover-bg: #0b5ed7;\n  --ds
+[2026-05-22 12:26:55.668] DesignTokenStyleInjectorV2.razor::CSS-Chunk-5 — -btn-secondary-bg: transparent;\n  --ds-btn-secondary-text: #212529;\n  --ds-btn-secondary-border: #dee2e6;\n  --ds-btn-secondary-hover-bg: #f8f9fa;\n  --ds-btn-success-bg: #198754;\n  --ds-btn-success-text: #ffffff;\n  --ds-btn-success-border: #198754;\n  --ds-btn-success-hover-bg: #157347;\n  --ds-btn-danger-bg: #dc3545;\n  --ds-btn-danger-text: #ffffff;\n  --ds-btn-danger-border: #dc3545;\n  --ds-btn-danger-hover-bg: #bb2d3b;\n  --ds-btn-warning-bg: #ffc107;\n  --ds-btn-warning-text: #212529;
+[2026-05-22 12:26:55.670] DesignTokenStyleInjectorV2.razor::CSS-Chunk-6 — \n  --ds-btn-warning-border: #ffc107;\n  --ds-btn-warning-hover-bg: #ffca2c;\n  --ds-btn-info-bg: #0dcaf0;\n  --ds-btn-info-text: #212529;\n  --ds-btn-info-border: #0dcaf0;\n  --ds-btn-info-hover-bg: #31d2f2;\n  --ds-btn-border-radius: 6px;\n  --ds-btn-font-size: 0.875rem;\n  --ds-btn-padding-y: 7px;\n  --ds-btn-padding-x: 16px;\n  --ds-btn-light-bg: #f8f9fa;\n  --ds-btn-light-text: #212529;\n  --ds-btn-light-border: #f8f9fa;\n  --ds-btn-light-hover-bg: #e2e6ea;\n  --ds-btn-light-hover-text: #21
+[2026-05-22 12:26:55.671] DesignTokenStyleInjectorV2.razor::CSS-Chunk-7 — 2529;\n  --ds-btn-light-hover-border: #dae0e5;\n  --ds-btn-light-disabled-bg: #f8f9fa;\n  --ds-btn-light-disabled-text: #212529;\n  --ds-btn-light-disabled-border: #f8f9fa;\n  --ds-btn-dark-bg: #212529;\n  --ds-btn-dark-text: #ffffff;\n  --ds-btn-dark-border: #212529;\n  --ds-btn-dark-hover-bg: #1c1f23;\n  --ds-btn-dark-hover-text: #ffffff;\n  --ds-btn-dark-hover-border: #1a1e21;\n  --ds-btn-dark-disabled-bg: #212529;\n  --ds-btn-dark-disabled-text: #ffffff;\n  --ds-btn-dark-disabled-border: #21
+[2026-05-22 12:26:55.673] DesignTokenStyleInjectorV2.razor::CSS-Chunk-8 — 2529;\n  --ds-btn-outline-dark-text: #212529;\n  --ds-btn-outline-dark-border: #212529;\n  --ds-btn-outline-dark-hover-bg: #212529;\n  --ds-btn-outline-dark-hover-text: #ffffff;\n  --ds-btn-outline-dark-hover-border: #212529;\n  --ds-btn-outline-dark-disabled-text: #212529;\n  --ds-btn-outline-dark-disabled-border: #212529;\n  --ds-card-bg: #ffffff;\n  --ds-card-border-color: #dee2e6;\n  --ds-card-radius: 8px;\n  --ds-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);\n  --ds-card-header-bg: #f8f9fa;\n
+[2026-05-22 12:26:55.675] DesignTokenStyleInjectorV2.razor::CSS-Chunk-9 —   --ds-card-padding: 1.25rem;\n  --ds-chart-surface: #ffffff;\n  --ds-chart-grid-line: var(--ds-color-gray-200, #e5e7eb);\n  --ds-chart-axis-text: var(--ds-color-text-muted, #7b8494);\n  --ds-chart-series-1: var(--ds-color-accent, #2563eb);\n  --ds-chart-series-2: var(--ds-color-info, #0284c7);\n  --ds-chart-positive: var(--ds-color-success, #16a34a);\n  --ds-chart-warning: var(--ds-color-warning, #d97706);\n  --ds-chart-danger: var(--ds-color-danger, #dc2626);\n  --ds-chart-neutral: var(--ds-co
+[2026-05-22 12:26:55.677] DesignTokenStyleInjectorV2.razor::CSS-Chunk-10 — lor-gray-400, #9ca3af);\n  --ds-chart-tooltip-bg: #111827;\n  --ds-chart-tooltip-text: #ffffff;\n  --ds-dd-trigger-border-radius: 6px;\n  --ds-dd-trigger-padding-y: 7px;\n  --ds-dd-trigger-padding-x: 16px;\n  --ds-dd-trigger-font-size: 0.875rem;\n  --ds-dd-menu-bg: #ffffff;\n  --ds-dd-menu-border: #e0e4ea;\n  --ds-dd-menu-border-radius: 8px;\n  --ds-dd-menu-shadow: 0 4px 16px rgba(0,0,0,0.12);\n  --ds-dd-menu-item-text: #2c3345;\n  --ds-dd-menu-item-hover-bg: #f3f4f6;\n  --ds-dd-menu-item-active
+[2026-05-22 12:26:55.679] DesignTokenStyleInjectorV2.razor::CSS-Chunk-11 — -bg: #0f626a;\n  --ds-dd-menu-item-active-text: #ffffff;\n  --ds-dd-menu-item-disabled-text: #9ca3af;\n  --ds-dd-menu-padding-y: 4px;\n  --ds-dd-menu-header-text: #7b8494;\n  --ds-dd-menu-item-px: 16px;\n  --ds-form-field-bg: #ffffff;\n  --ds-form-field-text: var(--ds-color-text, #2c3345);\n  --ds-form-field-border: var(--ds-color-border, #dde1e7);\n  --ds-form-field-placeholder: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-focus-border: var(--ds-color-accent, #2563eb);\n  --ds-form-f
+[2026-05-22 12:26:55.681] DesignTokenStyleInjectorV2.razor::CSS-Chunk-12 — ield-focus-ring: 0 0 0 1px rgba(37, 99, 235, 0.35);\n  --ds-form-field-error-border: var(--ds-color-danger, #dc2626);\n  --ds-form-field-error-text: var(--ds-color-danger, #dc2626);\n  --ds-form-field-label: var(--ds-color-text, #2c3345);\n  --ds-form-field-hint: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-form-shell-bg: #ffffff;\n  --ds-form-shell-border: var(--ds-color-border, #dde1e7);\n  --ds-form-shell-shadow: 0 2px 8px rgba(0
+[2026-05-22 12:26:55.684] DesignTokenStyleInjectorV2.razor::CSS-Chunk-13 — , 0, 0, 0.10);\n  --ds-form-shell-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-form-shell-action-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-icon-size-xs: 0.75rem;\n  --ds-icon-size-sm: 0.875rem;\n  --ds-icon-size-md: 1rem;\n  --ds-icon-size-lg: 1.25rem;\n  --ds-icon-size-xl: 1.5rem;\n  --ds-icon-size-2xl: 1.75rem;\n  --ds-icon-color: var(--ds-color-text, #2c3345);\n  --ds-icon-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-icon-color-accent: var(--ds-color-accent, #2563eb);
+[2026-05-22 12:26:55.685] DesignTokenStyleInjectorV2.razor::CSS-Chunk-14 — \n  --ds-icon-btn-gap: 8px;\n  --ds-icon-btn-radius: 7px;\n  --ds-icon-btn-font-size-sm: 0.75rem;\n  --ds-icon-btn-font-size-md: 0.875rem;\n  --ds-icon-btn-font-size-lg: 1rem;\n  --ds-icon-btn-padding-sm: 4px 6px;\n  --ds-icon-btn-padding-md: 6px 9px;\n  --ds-icon-btn-padding-lg: 8px 12px;\n  --ds-icon-btn-ghost-bg: transparent;\n  --ds-icon-btn-ghost-hover-bg: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-icon-btn-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-icon-btn-primary-hover-bg: 
+[2026-05-22 12:26:55.687] DesignTokenStyleInjectorV2.razor::CSS-Chunk-15 — #1d4ed8;\n  --ds-icon-btn-danger-bg: var(--ds-color-danger, #dc2626);\n  --ds-icon-btn-danger-hover-bg: #b91c1c;\n  --ds-icon-btn-text: var(--ds-color-text-muted, #7b8494);\n  --ds-layout-header-h: var(--hdr-h, 52px);\n  --ds-layout-footer-h: var(--ftr-h, 36px);\n  --ds-layout-sidebar-w: var(--sb-w, 230px);\n  --ds-layout-sidebar-w-collapsed: var(--sb-w-col, 52px);\n  --ds-layout-shell-gap: var(--ds-space-4);\n  --ds-nav-header-bg: #f5f6f8;\n  --ds-nav-header-border: #dde1e7;\n  --ds-nav-header-
+[2026-05-22 12:26:55.689] DesignTokenStyleInjectorV2.razor::CSS-Chunk-16 — text: #2c3345;\n  --ds-nav-header-dropdown-bg: #ffffff;\n  --ds-nav-header-dropdown-border: #dde1e7;\n  --ds-nav-header-dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-nav-header-badge-notification-bg: #dc2626;\n  --ds-nav-header-badge-notification-text: #ffffff;\n  --ds-nav-sidebar-bg: #f5f6f8;\n  --ds-nav-sidebar-border: #dde1e7;\n  --ds-nav-sidebar-text: #2c3345;\n  --ds-nav-sidebar-text-muted: #7b8494;\n  --ds-nav-sidebar-hover-bg: #e8eaed;\n  --ds-nav-sidebar-active-bg: #2563eb;\n 
+[2026-05-22 12:26:55.690] DesignTokenStyleInjectorV2.razor::CSS-Chunk-17 —  --ds-nav-sidebar-active-text: #ffffff;\n  --ds-nav-sidebar-scrollbar-thumb: #d1d5db;\n  --ds-nav-sidebar-scrollbar-thumb-hover: #9ca3af;\n  --ds-nav-sidebar-category-text: #2563eb;\n  --ds-radius-xs: 0px;\n  --ds-radius-sm: 4px;\n  --ds-radius-md: 6px;\n  --ds-radius-lg: 8px;\n  --ds-radius-xl: 12px;\n  --ds-radius-full: 9999px;\n  --ds-radius-control: 6px;\n  --ds-radius-card: 8px;\n  --ds-shadow-none: none;\n  --ds-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);\n  --ds-shadow-sm: 0 1px 3px rgba(0,
+[2026-05-22 12:26:55.693] DesignTokenStyleInjectorV2.razor::CSS-Chunk-18 —  0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);\n  --ds-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);\n  --ds-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05);\n  --ds-shadow-dropdown: 0 20px 25px rgba(0, 0, 0, 0.10), 0 8px 10px rgba(0, 0, 0, 0.04);\n  --ds-shadow-alert: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-space-1: 4px;\n  --ds-space-2: 8px;\n  --ds-space-3: 12px;\n  --ds-space-4: 16px;\n  --ds-space-5: 20px;\n  --ds-space-6: 24px;\n  --ds-spa
+[2026-05-22 12:26:55.695] DesignTokenStyleInjectorV2.razor::CSS-Chunk-19 — ce-8: 32px;\n  --ds-space-10: 40px;\n  --ds-space-12: 48px;\n  --ds-gap-sm: var(--ds-space-2);\n  --ds-gap-md: var(--ds-space-4);\n  --ds-gap-lg: var(--ds-space-6);\n  --ds-input-px: var(--ds-space-2);\n  --ds-input-py: var(--ds-space-2);\n  --ds-table-cell-px: var(--ds-space-3);\n  --ds-table-cell-py: var(--ds-space-2);\n  --ds-form-label-mb: var(--ds-space-1);\n  --ds-form-hint-mt: var(--ds-space-1);\n  --ds-surface-base: var(--ds-color-bg, #eaecf0);\n  --ds-surface-raised: var(--ds-color-surf
+[2026-05-22 12:26:55.697] DesignTokenStyleInjectorV2.razor::CSS-Chunk-20 — ace, #f5f6f8);\n  --ds-surface-subtle: var(--ds-color-surface, #f5f6f8);\n  --ds-surface-overlay: var(--ds-color-surface-raised, #ffffff);\n  --ds-surface-hover: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-surface-active: var(--ds-color-sidebar-active, #2563eb);\n  --ds-surface-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-table-header-bg: #1e3a5f;\n  --ds-table-header-text: #ffffff;\n  --ds-table-row-even-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-table-row-hover-bg: var(--ds-colo
+[2026-05-22 12:26:55.699] DesignTokenStyleInjectorV2.razor::CSS-Chunk-21 — r-sidebar-hover, #e8eaed);\n  --ds-table-border: var(--ds-color-border, #dde1e7);\n  --ds-table-surface: var(--ds-color-surface, #f5f6f8);\n  --ds-table-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-table-action-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-text-size-xs: var(--ds-text-xs);\n  --ds-text-size-sm: var(--ds-text-sm);\n  --ds-text-size-md: var(--ds-text-base);\n  --ds-text-size-lg: var(--ds-text-lg);\n  --ds-text-size-xl: var(--ds-text-xl);\n  --ds-text-size-2xl: var(--d
+[2026-05-22 12:26:55.702] DesignTokenStyleInjectorV2.razor::CSS-Chunk-22 — s-text-2xl);\n  --ds-text-font-regular: var(--ds-font-normal);\n  --ds-text-font-medium: var(--ds-font-medium);\n  --ds-text-font-semibold: var(--ds-font-semibold);\n  --ds-text-font-bold: var(--ds-font-bold);\n  --ds-text-color-primary: var(--ds-color-text, #2c3345);\n  --ds-text-color-secondary: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-inverse: var(--ds-color-text-inverse, #ffffff);\n}
+[2026-05-22 12:26:55.706] DesignTokenStyleInjectorV2.razor::DumpCss — CSS dump complete
+[2026-05-22 12:26:55.713] DesignTokenStyleInjectorV2.razor::OnInitialized — Initial CSS length = 10968
+[2026-05-22 12:26:55.718] DesignTokenStyleInjectorV2.razor::DumpCss — Dumping CSS (10968 chars)
+[2026-05-22 12:26:55.721] DesignTokenStyleInjectorV2.razor::CSS-Chunk-1 — :root {\n  --ds-action-btn-primary-bg: #0f626a;\n  --ds-action-btn-primary-text: #ffffff;\n  --ds-action-btn-primary-hover-bg: #0a4a50;\n  --ds-action-btn-secondary-text: #2c3345;\n  --ds-action-btn-secondary-border: #dde1e7;\n  --ds-action-btn-secondary-hover-bg: #e8eaed;\n  --ds-action-btn-add-bg: #f97316;\n  --ds-action-btn-add-text: #ffffff;\n  --ds-action-btn-add-hover-bg: #ea580c;\n  --ds-action-btn-border-radius: 6px;\n  --ds-action-btn-padding-y: 7px;\n  --ds-action-btn-padding-x: 14px;
+[2026-05-22 12:26:55.724] DesignTokenStyleInjectorV2.razor::CSS-Chunk-2 — \n  --ds-action-btn-font-size: 0.85rem;\n  --ds-action-btn-font-weight: 600;\n  --ds-action-btn-gap: 6px;\n  --ds-alert-info-bg: #e0f2fe;\n  --ds-alert-info-border: #0284c7;\n  --ds-alert-info-text: #0284c7;\n  --ds-alert-success-bg: #dcfce7;\n  --ds-alert-success-border: #16a34a;\n  --ds-alert-success-text: #16a34a;\n  --ds-alert-warning-bg: #fef3c7;\n  --ds-alert-warning-border: #d97706;\n  --ds-alert-warning-text: #d97706;\n  --ds-alert-danger-bg: #fee2e2;\n  --ds-alert-danger-border: #dc2626;
+[2026-05-22 12:26:55.727] DesignTokenStyleInjectorV2.razor::CSS-Chunk-3 — \n  --ds-alert-danger-text: #dc2626;\n  --ds-alert-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);\n  --ds-alert-radius: 8px;\n  --ds-badge-active-bg: #e0f2fe;\n  --ds-badge-active-text: #0284c7;\n  --ds-badge-inactive-bg: #f3f4f6;\n  --ds-badge-inactive-text: #6b7280;\n  --ds-badge-planned-bg: #fef3c7;\n  --ds-badge-planned-text: #d97706;\n  --ds-badge-radius: 9999px;\n  --ds-badge-font-size: 0.67rem;\n  --ds-border-default: var(--ds-color-border, #dde1e7);\n  --ds-border-muted: var(--ds-color-gray-200
+[2026-05-22 12:26:55.729] DesignTokenStyleInjectorV2.razor::CSS-Chunk-4 — , #e5e7eb);\n  --ds-border-strong: var(--ds-color-gray-400, #9ca3af);\n  --ds-border-focus: var(--ds-color-accent, #2563eb);\n  --ds-border-danger: var(--ds-color-danger, #dc2626);\n  --ds-border-warning: var(--ds-color-warning, #d97706);\n  --ds-border-success: var(--ds-color-success, #16a34a);\n  --ds-border-info: var(--ds-color-info, #0284c7);\n  --ds-btn-primary-bg: #0d6efd;\n  --ds-btn-primary-text: #ffffff;\n  --ds-btn-primary-border: #0d6efd;\n  --ds-btn-primary-hover-bg: #0b5ed7;\n  --ds
+[2026-05-22 12:26:55.730] DesignTokenStyleInjectorV2.razor::CSS-Chunk-5 — -btn-secondary-bg: transparent;\n  --ds-btn-secondary-text: #212529;\n  --ds-btn-secondary-border: #dee2e6;\n  --ds-btn-secondary-hover-bg: #f8f9fa;\n  --ds-btn-success-bg: #198754;\n  --ds-btn-success-text: #ffffff;\n  --ds-btn-success-border: #198754;\n  --ds-btn-success-hover-bg: #157347;\n  --ds-btn-danger-bg: #dc3545;\n  --ds-btn-danger-text: #ffffff;\n  --ds-btn-danger-border: #dc3545;\n  --ds-btn-danger-hover-bg: #bb2d3b;\n  --ds-btn-warning-bg: #ffc107;\n  --ds-btn-warning-text: #212529;
+[2026-05-22 12:26:55.733] DesignTokenStyleInjectorV2.razor::CSS-Chunk-6 — \n  --ds-btn-warning-border: #ffc107;\n  --ds-btn-warning-hover-bg: #ffca2c;\n  --ds-btn-info-bg: #0dcaf0;\n  --ds-btn-info-text: #212529;\n  --ds-btn-info-border: #0dcaf0;\n  --ds-btn-info-hover-bg: #31d2f2;\n  --ds-btn-border-radius: 6px;\n  --ds-btn-font-size: 0.875rem;\n  --ds-btn-padding-y: 7px;\n  --ds-btn-padding-x: 16px;\n  --ds-btn-light-bg: #f8f9fa;\n  --ds-btn-light-text: #212529;\n  --ds-btn-light-border: #f8f9fa;\n  --ds-btn-light-hover-bg: #e2e6ea;\n  --ds-btn-light-hover-text: #21
+[2026-05-22 12:26:55.736] DesignTokenStyleInjectorV2.razor::CSS-Chunk-7 — 2529;\n  --ds-btn-light-hover-border: #dae0e5;\n  --ds-btn-light-disabled-bg: #f8f9fa;\n  --ds-btn-light-disabled-text: #212529;\n  --ds-btn-light-disabled-border: #f8f9fa;\n  --ds-btn-dark-bg: #212529;\n  --ds-btn-dark-text: #ffffff;\n  --ds-btn-dark-border: #212529;\n  --ds-btn-dark-hover-bg: #1c1f23;\n  --ds-btn-dark-hover-text: #ffffff;\n  --ds-btn-dark-hover-border: #1a1e21;\n  --ds-btn-dark-disabled-bg: #212529;\n  --ds-btn-dark-disabled-text: #ffffff;\n  --ds-btn-dark-disabled-border: #21
+[2026-05-22 12:26:55.738] DesignTokenStyleInjectorV2.razor::CSS-Chunk-8 — 2529;\n  --ds-btn-outline-dark-text: #212529;\n  --ds-btn-outline-dark-border: #212529;\n  --ds-btn-outline-dark-hover-bg: #212529;\n  --ds-btn-outline-dark-hover-text: #ffffff;\n  --ds-btn-outline-dark-hover-border: #212529;\n  --ds-btn-outline-dark-disabled-text: #212529;\n  --ds-btn-outline-dark-disabled-border: #212529;\n  --ds-card-bg: #ffffff;\n  --ds-card-border-color: #dee2e6;\n  --ds-card-radius: 8px;\n  --ds-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);\n  --ds-card-header-bg: #f8f9fa;\n
+[2026-05-22 12:26:55.740] DesignTokenStyleInjectorV2.razor::CSS-Chunk-9 —   --ds-card-padding: 1.25rem;\n  --ds-chart-surface: #ffffff;\n  --ds-chart-grid-line: var(--ds-color-gray-200, #e5e7eb);\n  --ds-chart-axis-text: var(--ds-color-text-muted, #7b8494);\n  --ds-chart-series-1: var(--ds-color-accent, #2563eb);\n  --ds-chart-series-2: var(--ds-color-info, #0284c7);\n  --ds-chart-positive: var(--ds-color-success, #16a34a);\n  --ds-chart-warning: var(--ds-color-warning, #d97706);\n  --ds-chart-danger: var(--ds-color-danger, #dc2626);\n  --ds-chart-neutral: var(--ds-co
+[2026-05-22 12:26:55.742] DesignTokenStyleInjectorV2.razor::CSS-Chunk-10 — lor-gray-400, #9ca3af);\n  --ds-chart-tooltip-bg: #111827;\n  --ds-chart-tooltip-text: #ffffff;\n  --ds-dd-trigger-border-radius: 6px;\n  --ds-dd-trigger-padding-y: 7px;\n  --ds-dd-trigger-padding-x: 16px;\n  --ds-dd-trigger-font-size: 0.875rem;\n  --ds-dd-menu-bg: #ffffff;\n  --ds-dd-menu-border: #e0e4ea;\n  --ds-dd-menu-border-radius: 8px;\n  --ds-dd-menu-shadow: 0 4px 16px rgba(0,0,0,0.12);\n  --ds-dd-menu-item-text: #2c3345;\n  --ds-dd-menu-item-hover-bg: #f3f4f6;\n  --ds-dd-menu-item-active
+[2026-05-22 12:26:55.744] DesignTokenStyleInjectorV2.razor::CSS-Chunk-11 — -bg: #0f626a;\n  --ds-dd-menu-item-active-text: #ffffff;\n  --ds-dd-menu-item-disabled-text: #9ca3af;\n  --ds-dd-menu-padding-y: 4px;\n  --ds-dd-menu-header-text: #7b8494;\n  --ds-dd-menu-item-px: 16px;\n  --ds-form-field-bg: #ffffff;\n  --ds-form-field-text: var(--ds-color-text, #2c3345);\n  --ds-form-field-border: var(--ds-color-border, #dde1e7);\n  --ds-form-field-placeholder: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-focus-border: var(--ds-color-accent, #2563eb);\n  --ds-form-f
+[2026-05-22 12:26:55.745] DesignTokenStyleInjectorV2.razor::CSS-Chunk-12 — ield-focus-ring: 0 0 0 1px rgba(37, 99, 235, 0.35);\n  --ds-form-field-error-border: var(--ds-color-danger, #dc2626);\n  --ds-form-field-error-text: var(--ds-color-danger, #dc2626);\n  --ds-form-field-label: var(--ds-color-text, #2c3345);\n  --ds-form-field-hint: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-form-shell-bg: #ffffff;\n  --ds-form-shell-border: var(--ds-color-border, #dde1e7);\n  --ds-form-shell-shadow: 0 2px 8px rgba(0
+[2026-05-22 12:26:55.749] DesignTokenStyleInjectorV2.razor::CSS-Chunk-13 — , 0, 0, 0.10);\n  --ds-form-shell-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-form-shell-action-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-icon-size-xs: 0.75rem;\n  --ds-icon-size-sm: 0.875rem;\n  --ds-icon-size-md: 1rem;\n  --ds-icon-size-lg: 1.25rem;\n  --ds-icon-size-xl: 1.5rem;\n  --ds-icon-size-2xl: 1.75rem;\n  --ds-icon-color: var(--ds-color-text, #2c3345);\n  --ds-icon-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-icon-color-accent: var(--ds-color-accent, #2563eb);
+[2026-05-22 12:26:55.752] DesignTokenStyleInjectorV2.razor::CSS-Chunk-14 — \n  --ds-icon-btn-gap: 8px;\n  --ds-icon-btn-radius: 7px;\n  --ds-icon-btn-font-size-sm: 0.75rem;\n  --ds-icon-btn-font-size-md: 0.875rem;\n  --ds-icon-btn-font-size-lg: 1rem;\n  --ds-icon-btn-padding-sm: 4px 6px;\n  --ds-icon-btn-padding-md: 6px 9px;\n  --ds-icon-btn-padding-lg: 8px 12px;\n  --ds-icon-btn-ghost-bg: transparent;\n  --ds-icon-btn-ghost-hover-bg: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-icon-btn-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-icon-btn-primary-hover-bg: 
+[2026-05-22 12:26:55.754] DesignTokenStyleInjectorV2.razor::CSS-Chunk-15 — #1d4ed8;\n  --ds-icon-btn-danger-bg: var(--ds-color-danger, #dc2626);\n  --ds-icon-btn-danger-hover-bg: #b91c1c;\n  --ds-icon-btn-text: var(--ds-color-text-muted, #7b8494);\n  --ds-layout-header-h: var(--hdr-h, 52px);\n  --ds-layout-footer-h: var(--ftr-h, 36px);\n  --ds-layout-sidebar-w: var(--sb-w, 230px);\n  --ds-layout-sidebar-w-collapsed: var(--sb-w-col, 52px);\n  --ds-layout-shell-gap: var(--ds-space-4);\n  --ds-nav-header-bg: #f5f6f8;\n  --ds-nav-header-border: #dde1e7;\n  --ds-nav-header-
+[2026-05-22 12:26:55.756] DesignTokenStyleInjectorV2.razor::CSS-Chunk-16 — text: #2c3345;\n  --ds-nav-header-dropdown-bg: #ffffff;\n  --ds-nav-header-dropdown-border: #dde1e7;\n  --ds-nav-header-dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-nav-header-badge-notification-bg: #dc2626;\n  --ds-nav-header-badge-notification-text: #ffffff;\n  --ds-nav-sidebar-bg: #f5f6f8;\n  --ds-nav-sidebar-border: #dde1e7;\n  --ds-nav-sidebar-text: #2c3345;\n  --ds-nav-sidebar-text-muted: #7b8494;\n  --ds-nav-sidebar-hover-bg: #e8eaed;\n  --ds-nav-sidebar-active-bg: #2563eb;\n 
+[2026-05-22 12:26:55.758] DesignTokenStyleInjectorV2.razor::CSS-Chunk-17 —  --ds-nav-sidebar-active-text: #ffffff;\n  --ds-nav-sidebar-scrollbar-thumb: #d1d5db;\n  --ds-nav-sidebar-scrollbar-thumb-hover: #9ca3af;\n  --ds-nav-sidebar-category-text: #2563eb;\n  --ds-radius-xs: 0px;\n  --ds-radius-sm: 4px;\n  --ds-radius-md: 6px;\n  --ds-radius-lg: 8px;\n  --ds-radius-xl: 12px;\n  --ds-radius-full: 9999px;\n  --ds-radius-control: 6px;\n  --ds-radius-card: 8px;\n  --ds-shadow-none: none;\n  --ds-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);\n  --ds-shadow-sm: 0 1px 3px rgba(0,
+[2026-05-22 12:26:55.761] DesignTokenStyleInjectorV2.razor::CSS-Chunk-18 —  0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);\n  --ds-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);\n  --ds-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05);\n  --ds-shadow-dropdown: 0 20px 25px rgba(0, 0, 0, 0.10), 0 8px 10px rgba(0, 0, 0, 0.04);\n  --ds-shadow-alert: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-space-1: 4px;\n  --ds-space-2: 8px;\n  --ds-space-3: 12px;\n  --ds-space-4: 16px;\n  --ds-space-5: 20px;\n  --ds-space-6: 24px;\n  --ds-spa
+[2026-05-22 12:26:55.763] DesignTokenStyleInjectorV2.razor::CSS-Chunk-19 — ce-8: 32px;\n  --ds-space-10: 40px;\n  --ds-space-12: 48px;\n  --ds-gap-sm: var(--ds-space-2);\n  --ds-gap-md: var(--ds-space-4);\n  --ds-gap-lg: var(--ds-space-6);\n  --ds-input-px: var(--ds-space-2);\n  --ds-input-py: var(--ds-space-2);\n  --ds-table-cell-px: var(--ds-space-3);\n  --ds-table-cell-py: var(--ds-space-2);\n  --ds-form-label-mb: var(--ds-space-1);\n  --ds-form-hint-mt: var(--ds-space-1);\n  --ds-surface-base: var(--ds-color-bg, #eaecf0);\n  --ds-surface-raised: var(--ds-color-surf
+[2026-05-22 12:26:55.766] DesignTokenStyleInjectorV2.razor::CSS-Chunk-20 — ace, #f5f6f8);\n  --ds-surface-subtle: var(--ds-color-surface, #f5f6f8);\n  --ds-surface-overlay: var(--ds-color-surface-raised, #ffffff);\n  --ds-surface-hover: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-surface-active: var(--ds-color-sidebar-active, #2563eb);\n  --ds-surface-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-table-header-bg: #1e3a5f;\n  --ds-table-header-text: #ffffff;\n  --ds-table-row-even-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-table-row-hover-bg: var(--ds-colo
+[2026-05-22 12:26:55.767] DesignTokenStyleInjectorV2.razor::CSS-Chunk-21 — r-sidebar-hover, #e8eaed);\n  --ds-table-border: var(--ds-color-border, #dde1e7);\n  --ds-table-surface: var(--ds-color-surface, #f5f6f8);\n  --ds-table-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-table-action-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-text-size-xs: var(--ds-text-xs);\n  --ds-text-size-sm: var(--ds-text-sm);\n  --ds-text-size-md: var(--ds-text-base);\n  --ds-text-size-lg: var(--ds-text-lg);\n  --ds-text-size-xl: var(--ds-text-xl);\n  --ds-text-size-2xl: var(--d
+[2026-05-22 12:26:55.768] DesignTokenStyleInjectorV2.razor::CSS-Chunk-22 — s-text-2xl);\n  --ds-text-font-regular: var(--ds-font-normal);\n  --ds-text-font-medium: var(--ds-font-medium);\n  --ds-text-font-semibold: var(--ds-font-semibold);\n  --ds-text-font-bold: var(--ds-font-bold);\n  --ds-text-color-primary: var(--ds-color-text, #2c3345);\n  --ds-text-color-secondary: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-inverse: var(--ds-color-text-inverse, #ffffff);\n}
+[2026-05-22 12:26:55.771] DesignTokenStyleInjectorV2.razor::DumpCss — CSS dump complete
+[2026-05-22 12:26:55.779] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=False. Clearing _isInitializing. sidebarWillRender=False (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-22 12:26:55.781] MainLayoutV2.razor::OnAfterRenderAsync — Not authenticated. Waiting for Routes.razor guard to redirect.
+[2026-05-22 12:26:55.788] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-22 12:26:55.795] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-22 12:26:55.799] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-22 12:26:55.803] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:26:55.805] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:26:55.806] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-22 12:26:55.810] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-22 12:26:55.815] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=0
+[2026-05-22 12:26:56.041] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/login IsAuthenticated=False
+[2026-05-22 12:26:56.043] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-22 12:26:56.045] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-22 12:26:56.047] Login.razor::OnInitialized — IsAuthenticated=False
+[2026-05-22 12:26:56.052] Login.razor::OnInitialized — Not authenticated — showing login form. username='' password='' errorMessage=''
+[2026-05-22 12:26:56.055] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/login' — dispatching UpdateAsync
+[2026-05-22 12:26:56.058] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/login' IsAuthenticated=False — no redirect
+[2026-05-22 12:26:56.062] PageHeaderV2.razor::UpdateAsync — ENTER path='/login'
+[2026-05-22 12:26:56.065] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/login'
+[2026-05-22 12:26:56.067] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:26:56.080] Login.razor::OnAfterRender — firstRender=True IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:56.099] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 0
+[2026-05-22 12:26:56.106] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 0
+[2026-05-22 12:26:56.114] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 0 categories
+[2026-05-22 12:26:56.118] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:26:56.121] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-22 12:26:56.123] PageHeaderV2.razor::UpdateAsync — EXIT path='/v2/dashboard/overview' — no route match found — labels remain empty
+[2026-05-22 12:26:56.125] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='' _itemLabel=''
+[2026-05-22 12:26:56.126] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:26:56.127] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 0 cached categories
+[2026-05-22 12:26:56.129] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:26:56.134] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 0 categories
+[2026-05-22 12:26:56.137] PageHeaderV2.razor::UpdateAsync — EXIT path='/login' — no route match found — labels remain empty
+[2026-05-22 12:26:59.636] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-22 12:26:59.644] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:59.645] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:59.831] Login.razor::HandleKeyDown — Key='b' IsAuthenticated=False
+[2026-05-22 12:26:59.847] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:59.848] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:59.943] Login.razor::HandleKeyDown — Key='a' IsAuthenticated=False
+[2026-05-22 12:26:59.948] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:26:59.951] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.192] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:27:00.202] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.211] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.303] Login.razor::HandleKeyDown — Key='t' IsAuthenticated=False
+[2026-05-22 12:27:00.314] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.316] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.903] Login.razor::HandleKeyDown — Key='l' IsAuthenticated=False
+[2026-05-22 12:27:00.913] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:00.915] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:01.015] Login.razor::HandleKeyDown — Key='e' IsAuthenticated=False
+[2026-05-22 12:27:01.031] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:01.033] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:01.303] Login.razor::HandleKeyDown — Key='Tab' IsAuthenticated=False
+[2026-05-22 12:27:01.313] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:01.865] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:01.880] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.377] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.380] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.408] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.413] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.440] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.446] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.470] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.480] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.501] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.513] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.533] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.547] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.565] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.579] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.595] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.597] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.642] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.646] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.674] Login.razor::HandleKeyDown — Key='Shift' IsAuthenticated=False
+[2026-05-22 12:27:02.679] Login.razor::HandleKeyDown — Key='A' IsAuthenticated=False
+[2026-05-22 12:27:02.681] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.683] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.685] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.903] Login.razor::HandleKeyDown — Key='d' IsAuthenticated=False
+[2026-05-22 12:27:02.913] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:02.915] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.079] Login.razor::HandleKeyDown — Key='m' IsAuthenticated=False
+[2026-05-22 12:27:03.082] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.083] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.303] Login.razor::HandleKeyDown — Key='i' IsAuthenticated=False
+[2026-05-22 12:27:03.313] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.315] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.471] Login.razor::HandleKeyDown — Key='n' IsAuthenticated=False
+[2026-05-22 12:27:03.480] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.482] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.647] Login.razor::HandleKeyDown — Key='1' IsAuthenticated=False
+[2026-05-22 12:27:03.664] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.665] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.863] Login.razor::HandleKeyDown — Key='2' IsAuthenticated=False
+[2026-05-22 12:27:03.880] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:03.882] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:04.039] Login.razor::HandleKeyDown — Key='3' IsAuthenticated=False
+[2026-05-22 12:27:04.046] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:04.048] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:04.199] Login.razor::HandleKeyDown — Key='4' IsAuthenticated=False
+[2026-05-22 12:27:04.214] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:04.215] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:04.487] Login.razor::HandleKeyDown — Key='Enter' IsAuthenticated=False
+[2026-05-22 12:27:04.489] Login.razor::DoLogin — Attempting login. username='mbattle'
+[2026-05-22 12:27:04.514] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=False errorMessage=''
+[2026-05-22 12:27:05.191] Login.razor::DoLogin — LoginAsync succeeded. UserId=1 Role='Super Admin'
+[2026-05-22 12:27:05.193] Login.razor::DoLogin — Calling AppState.SetUser — will fire Notify() — BaseLayoutV2 will remount HeaderV2+BreadcrumbV2 — BreadcrumbV2.OnInitializedAsync will call NavService.GetMenuCategoriesAsync()
+[2026-05-22 12:27:05.195] AppStateService.cs::SetUser — CurrentUserId=1 UserName='mbattle' Role='Super Admin' — calling Notify()
+[2026-05-22 12:27:05.197] Login.razor::DoLogin — AppState.SetUser done. IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' — loading messages and notifications
+[2026-05-22 12:27:05.223] Login.razor::DoLogin — Calling AppState.SetMessagingData — will fire Notify() again
+[2026-05-22 12:27:05.224] AppStateService.cs::SetMessagingData — UnreadMessages=5 UnreadNotifications=5 — calling Notify()
+[2026-05-22 12:27:05.224] Login.razor::DoLogin — Messaging data loaded. messages=5 notifications=5
+[2026-05-22 12:27:05.225] Login.razor::DoLogin — Calling PermSvc.ResetAsync() to clear previous user's permission cache
+[2026-05-22 12:27:05.226] PermissionServiceV2.cs::ResetAsync — Permission cache cleared; _loadFailed reset to false.
+[2026-05-22 12:27:05.227] Login.razor::DoLogin — Calling NavService.ResetAsync() — async reset to avoid UI thread blocking
+[2026-05-22 12:27:05.229] NavigationServiceV2.cs::ResetAsync — ENTER ResetAsync() — _cache is populated (0 categories) — acquiring async lock
+[2026-05-22 12:27:05.229] NavigationServiceV2.cs::ResetAsync — Lock acquired — clearing main menu cache
+[2026-05-22 12:27:05.230] NavigationServiceV2.cs::ResetAsync — Main menu cache cleared — lock released
+[2026-05-22 12:27:05.231] NavigationServiceV2.cs::ResetAsync — gsLock acquired — clearing global settings cache
+[2026-05-22 12:27:05.231] NavigationServiceV2.cs::ResetAsync — Global settings cache cleared — gsLock released
+[2026-05-22 12:27:05.232] Login.razor::DoLogin — NavService.ResetAsync() completed. Invoking StateHasChanged then yielding UI thread.
+[2026-05-22 12:27:05.234] Login.razor::DoLogin — Nav.NavigateTo('/v2/dashboard/overview') called.
+[2026-05-22 12:27:05.235] Login.razor::OnAfterRender — firstRender=False IsAuthenticated=True errorMessage=''
+[2026-05-22 12:27:05.237] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/v2/dashboard/overview IsAuthenticated=True
+[2026-05-22 12:27:05.239] MainLayoutV2.razor::OnInitialized — Subscribing to AppState.OnChange. IsAuthenticated=True
+[2026-05-22 12:27:05.240] MainLayoutV2.razor::OnParametersSet — Parameters set. IsAuthenticated=True _isInitializing=True
+[2026-05-22 12:27:05.241] DesignTokenStyleInjectorV2.razor::OnInitialized — Calling GetGeneratedCssAsync() for initial load
+[2026-05-22 12:27:05.242] DesignTokenStyleInjectorV2.razor::OnInitialized — Initial CSS length = 10968
+[2026-05-22 12:27:05.243] DesignTokenStyleInjectorV2.razor::DumpCss — Dumping CSS (10968 chars)
+[2026-05-22 12:27:05.244] DesignTokenStyleInjectorV2.razor::CSS-Chunk-1 — :root {\n  --ds-action-btn-primary-bg: #0f626a;\n  --ds-action-btn-primary-text: #ffffff;\n  --ds-action-btn-primary-hover-bg: #0a4a50;\n  --ds-action-btn-secondary-text: #2c3345;\n  --ds-action-btn-secondary-border: #dde1e7;\n  --ds-action-btn-secondary-hover-bg: #e8eaed;\n  --ds-action-btn-add-bg: #f97316;\n  --ds-action-btn-add-text: #ffffff;\n  --ds-action-btn-add-hover-bg: #ea580c;\n  --ds-action-btn-border-radius: 6px;\n  --ds-action-btn-padding-y: 7px;\n  --ds-action-btn-padding-x: 14px;
+[2026-05-22 12:27:05.245] DesignTokenStyleInjectorV2.razor::CSS-Chunk-2 — \n  --ds-action-btn-font-size: 0.85rem;\n  --ds-action-btn-font-weight: 600;\n  --ds-action-btn-gap: 6px;\n  --ds-alert-info-bg: #e0f2fe;\n  --ds-alert-info-border: #0284c7;\n  --ds-alert-info-text: #0284c7;\n  --ds-alert-success-bg: #dcfce7;\n  --ds-alert-success-border: #16a34a;\n  --ds-alert-success-text: #16a34a;\n  --ds-alert-warning-bg: #fef3c7;\n  --ds-alert-warning-border: #d97706;\n  --ds-alert-warning-text: #d97706;\n  --ds-alert-danger-bg: #fee2e2;\n  --ds-alert-danger-border: #dc2626;
+[2026-05-22 12:27:05.247] DesignTokenStyleInjectorV2.razor::CSS-Chunk-3 — \n  --ds-alert-danger-text: #dc2626;\n  --ds-alert-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);\n  --ds-alert-radius: 8px;\n  --ds-badge-active-bg: #e0f2fe;\n  --ds-badge-active-text: #0284c7;\n  --ds-badge-inactive-bg: #f3f4f6;\n  --ds-badge-inactive-text: #6b7280;\n  --ds-badge-planned-bg: #fef3c7;\n  --ds-badge-planned-text: #d97706;\n  --ds-badge-radius: 9999px;\n  --ds-badge-font-size: 0.67rem;\n  --ds-border-default: var(--ds-color-border, #dde1e7);\n  --ds-border-muted: var(--ds-color-gray-200
+[2026-05-22 12:27:05.248] DesignTokenStyleInjectorV2.razor::CSS-Chunk-4 — , #e5e7eb);\n  --ds-border-strong: var(--ds-color-gray-400, #9ca3af);\n  --ds-border-focus: var(--ds-color-accent, #2563eb);\n  --ds-border-danger: var(--ds-color-danger, #dc2626);\n  --ds-border-warning: var(--ds-color-warning, #d97706);\n  --ds-border-success: var(--ds-color-success, #16a34a);\n  --ds-border-info: var(--ds-color-info, #0284c7);\n  --ds-btn-primary-bg: #0d6efd;\n  --ds-btn-primary-text: #ffffff;\n  --ds-btn-primary-border: #0d6efd;\n  --ds-btn-primary-hover-bg: #0b5ed7;\n  --ds
+[2026-05-22 12:27:05.249] DesignTokenStyleInjectorV2.razor::CSS-Chunk-5 — -btn-secondary-bg: transparent;\n  --ds-btn-secondary-text: #212529;\n  --ds-btn-secondary-border: #dee2e6;\n  --ds-btn-secondary-hover-bg: #f8f9fa;\n  --ds-btn-success-bg: #198754;\n  --ds-btn-success-text: #ffffff;\n  --ds-btn-success-border: #198754;\n  --ds-btn-success-hover-bg: #157347;\n  --ds-btn-danger-bg: #dc3545;\n  --ds-btn-danger-text: #ffffff;\n  --ds-btn-danger-border: #dc3545;\n  --ds-btn-danger-hover-bg: #bb2d3b;\n  --ds-btn-warning-bg: #ffc107;\n  --ds-btn-warning-text: #212529;
+[2026-05-22 12:27:05.250] DesignTokenStyleInjectorV2.razor::CSS-Chunk-6 — \n  --ds-btn-warning-border: #ffc107;\n  --ds-btn-warning-hover-bg: #ffca2c;\n  --ds-btn-info-bg: #0dcaf0;\n  --ds-btn-info-text: #212529;\n  --ds-btn-info-border: #0dcaf0;\n  --ds-btn-info-hover-bg: #31d2f2;\n  --ds-btn-border-radius: 6px;\n  --ds-btn-font-size: 0.875rem;\n  --ds-btn-padding-y: 7px;\n  --ds-btn-padding-x: 16px;\n  --ds-btn-light-bg: #f8f9fa;\n  --ds-btn-light-text: #212529;\n  --ds-btn-light-border: #f8f9fa;\n  --ds-btn-light-hover-bg: #e2e6ea;\n  --ds-btn-light-hover-text: #21
+[2026-05-22 12:27:05.252] DesignTokenStyleInjectorV2.razor::CSS-Chunk-7 — 2529;\n  --ds-btn-light-hover-border: #dae0e5;\n  --ds-btn-light-disabled-bg: #f8f9fa;\n  --ds-btn-light-disabled-text: #212529;\n  --ds-btn-light-disabled-border: #f8f9fa;\n  --ds-btn-dark-bg: #212529;\n  --ds-btn-dark-text: #ffffff;\n  --ds-btn-dark-border: #212529;\n  --ds-btn-dark-hover-bg: #1c1f23;\n  --ds-btn-dark-hover-text: #ffffff;\n  --ds-btn-dark-hover-border: #1a1e21;\n  --ds-btn-dark-disabled-bg: #212529;\n  --ds-btn-dark-disabled-text: #ffffff;\n  --ds-btn-dark-disabled-border: #21
+[2026-05-22 12:27:05.253] DesignTokenStyleInjectorV2.razor::CSS-Chunk-8 — 2529;\n  --ds-btn-outline-dark-text: #212529;\n  --ds-btn-outline-dark-border: #212529;\n  --ds-btn-outline-dark-hover-bg: #212529;\n  --ds-btn-outline-dark-hover-text: #ffffff;\n  --ds-btn-outline-dark-hover-border: #212529;\n  --ds-btn-outline-dark-disabled-text: #212529;\n  --ds-btn-outline-dark-disabled-border: #212529;\n  --ds-card-bg: #ffffff;\n  --ds-card-border-color: #dee2e6;\n  --ds-card-radius: 8px;\n  --ds-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);\n  --ds-card-header-bg: #f8f9fa;\n
+[2026-05-22 12:27:05.253] DesignTokenStyleInjectorV2.razor::CSS-Chunk-9 —   --ds-card-padding: 1.25rem;\n  --ds-chart-surface: #ffffff;\n  --ds-chart-grid-line: var(--ds-color-gray-200, #e5e7eb);\n  --ds-chart-axis-text: var(--ds-color-text-muted, #7b8494);\n  --ds-chart-series-1: var(--ds-color-accent, #2563eb);\n  --ds-chart-series-2: var(--ds-color-info, #0284c7);\n  --ds-chart-positive: var(--ds-color-success, #16a34a);\n  --ds-chart-warning: var(--ds-color-warning, #d97706);\n  --ds-chart-danger: var(--ds-color-danger, #dc2626);\n  --ds-chart-neutral: var(--ds-co
+[2026-05-22 12:27:05.254] DesignTokenStyleInjectorV2.razor::CSS-Chunk-10 — lor-gray-400, #9ca3af);\n  --ds-chart-tooltip-bg: #111827;\n  --ds-chart-tooltip-text: #ffffff;\n  --ds-dd-trigger-border-radius: 6px;\n  --ds-dd-trigger-padding-y: 7px;\n  --ds-dd-trigger-padding-x: 16px;\n  --ds-dd-trigger-font-size: 0.875rem;\n  --ds-dd-menu-bg: #ffffff;\n  --ds-dd-menu-border: #e0e4ea;\n  --ds-dd-menu-border-radius: 8px;\n  --ds-dd-menu-shadow: 0 4px 16px rgba(0,0,0,0.12);\n  --ds-dd-menu-item-text: #2c3345;\n  --ds-dd-menu-item-hover-bg: #f3f4f6;\n  --ds-dd-menu-item-active
+[2026-05-22 12:27:05.255] DesignTokenStyleInjectorV2.razor::CSS-Chunk-11 — -bg: #0f626a;\n  --ds-dd-menu-item-active-text: #ffffff;\n  --ds-dd-menu-item-disabled-text: #9ca3af;\n  --ds-dd-menu-padding-y: 4px;\n  --ds-dd-menu-header-text: #7b8494;\n  --ds-dd-menu-item-px: 16px;\n  --ds-form-field-bg: #ffffff;\n  --ds-form-field-text: var(--ds-color-text, #2c3345);\n  --ds-form-field-border: var(--ds-color-border, #dde1e7);\n  --ds-form-field-placeholder: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-focus-border: var(--ds-color-accent, #2563eb);\n  --ds-form-f
+[2026-05-22 12:27:05.256] DesignTokenStyleInjectorV2.razor::CSS-Chunk-12 — ield-focus-ring: 0 0 0 1px rgba(37, 99, 235, 0.35);\n  --ds-form-field-error-border: var(--ds-color-danger, #dc2626);\n  --ds-form-field-error-text: var(--ds-color-danger, #dc2626);\n  --ds-form-field-label: var(--ds-color-text, #2c3345);\n  --ds-form-field-hint: var(--ds-color-text-muted, #7b8494);\n  --ds-form-field-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-form-shell-bg: #ffffff;\n  --ds-form-shell-border: var(--ds-color-border, #dde1e7);\n  --ds-form-shell-shadow: 0 2px 8px rgba(0
+[2026-05-22 12:27:05.257] DesignTokenStyleInjectorV2.razor::CSS-Chunk-13 — , 0, 0, 0.10);\n  --ds-form-shell-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-form-shell-action-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-icon-size-xs: 0.75rem;\n  --ds-icon-size-sm: 0.875rem;\n  --ds-icon-size-md: 1rem;\n  --ds-icon-size-lg: 1.25rem;\n  --ds-icon-size-xl: 1.5rem;\n  --ds-icon-size-2xl: 1.75rem;\n  --ds-icon-color: var(--ds-color-text, #2c3345);\n  --ds-icon-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-icon-color-accent: var(--ds-color-accent, #2563eb);
+[2026-05-22 12:27:05.258] DesignTokenStyleInjectorV2.razor::CSS-Chunk-14 — \n  --ds-icon-btn-gap: 8px;\n  --ds-icon-btn-radius: 7px;\n  --ds-icon-btn-font-size-sm: 0.75rem;\n  --ds-icon-btn-font-size-md: 0.875rem;\n  --ds-icon-btn-font-size-lg: 1rem;\n  --ds-icon-btn-padding-sm: 4px 6px;\n  --ds-icon-btn-padding-md: 6px 9px;\n  --ds-icon-btn-padding-lg: 8px 12px;\n  --ds-icon-btn-ghost-bg: transparent;\n  --ds-icon-btn-ghost-hover-bg: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-icon-btn-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-icon-btn-primary-hover-bg: 
+[2026-05-22 12:27:05.259] DesignTokenStyleInjectorV2.razor::CSS-Chunk-15 — #1d4ed8;\n  --ds-icon-btn-danger-bg: var(--ds-color-danger, #dc2626);\n  --ds-icon-btn-danger-hover-bg: #b91c1c;\n  --ds-icon-btn-text: var(--ds-color-text-muted, #7b8494);\n  --ds-layout-header-h: var(--hdr-h, 52px);\n  --ds-layout-footer-h: var(--ftr-h, 36px);\n  --ds-layout-sidebar-w: var(--sb-w, 230px);\n  --ds-layout-sidebar-w-collapsed: var(--sb-w-col, 52px);\n  --ds-layout-shell-gap: var(--ds-space-4);\n  --ds-nav-header-bg: #f5f6f8;\n  --ds-nav-header-border: #dde1e7;\n  --ds-nav-header-
+[2026-05-22 12:27:05.261] DesignTokenStyleInjectorV2.razor::CSS-Chunk-16 — text: #2c3345;\n  --ds-nav-header-dropdown-bg: #ffffff;\n  --ds-nav-header-dropdown-border: #dde1e7;\n  --ds-nav-header-dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-nav-header-badge-notification-bg: #dc2626;\n  --ds-nav-header-badge-notification-text: #ffffff;\n  --ds-nav-sidebar-bg: #f5f6f8;\n  --ds-nav-sidebar-border: #dde1e7;\n  --ds-nav-sidebar-text: #2c3345;\n  --ds-nav-sidebar-text-muted: #7b8494;\n  --ds-nav-sidebar-hover-bg: #e8eaed;\n  --ds-nav-sidebar-active-bg: #2563eb;\n 
+[2026-05-22 12:27:05.262] DesignTokenStyleInjectorV2.razor::CSS-Chunk-17 —  --ds-nav-sidebar-active-text: #ffffff;\n  --ds-nav-sidebar-scrollbar-thumb: #d1d5db;\n  --ds-nav-sidebar-scrollbar-thumb-hover: #9ca3af;\n  --ds-nav-sidebar-category-text: #2563eb;\n  --ds-radius-xs: 0px;\n  --ds-radius-sm: 4px;\n  --ds-radius-md: 6px;\n  --ds-radius-lg: 8px;\n  --ds-radius-xl: 12px;\n  --ds-radius-full: 9999px;\n  --ds-radius-control: 6px;\n  --ds-radius-card: 8px;\n  --ds-shadow-none: none;\n  --ds-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);\n  --ds-shadow-sm: 0 1px 3px rgba(0,
+[2026-05-22 12:27:05.263] DesignTokenStyleInjectorV2.razor::CSS-Chunk-18 —  0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);\n  --ds-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);\n  --ds-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05);\n  --ds-shadow-dropdown: 0 20px 25px rgba(0, 0, 0, 0.10), 0 8px 10px rgba(0, 0, 0, 0.04);\n  --ds-shadow-alert: 0 8px 24px rgba(0, 0, 0, 0.12);\n  --ds-space-1: 4px;\n  --ds-space-2: 8px;\n  --ds-space-3: 12px;\n  --ds-space-4: 16px;\n  --ds-space-5: 20px;\n  --ds-space-6: 24px;\n  --ds-spa
+[2026-05-22 12:27:05.264] DesignTokenStyleInjectorV2.razor::CSS-Chunk-19 — ce-8: 32px;\n  --ds-space-10: 40px;\n  --ds-space-12: 48px;\n  --ds-gap-sm: var(--ds-space-2);\n  --ds-gap-md: var(--ds-space-4);\n  --ds-gap-lg: var(--ds-space-6);\n  --ds-input-px: var(--ds-space-2);\n  --ds-input-py: var(--ds-space-2);\n  --ds-table-cell-px: var(--ds-space-3);\n  --ds-table-cell-py: var(--ds-space-2);\n  --ds-form-label-mb: var(--ds-space-1);\n  --ds-form-hint-mt: var(--ds-space-1);\n  --ds-surface-base: var(--ds-color-bg, #eaecf0);\n  --ds-surface-raised: var(--ds-color-surf
+[2026-05-22 12:27:05.265] DesignTokenStyleInjectorV2.razor::CSS-Chunk-20 — ace, #f5f6f8);\n  --ds-surface-subtle: var(--ds-color-surface, #f5f6f8);\n  --ds-surface-overlay: var(--ds-color-surface-raised, #ffffff);\n  --ds-surface-hover: var(--ds-color-sidebar-hover, #e8eaed);\n  --ds-surface-active: var(--ds-color-sidebar-active, #2563eb);\n  --ds-surface-disabled: var(--ds-color-gray-200, #e5e7eb);\n  --ds-table-header-bg: #1e3a5f;\n  --ds-table-header-text: #ffffff;\n  --ds-table-row-even-bg: var(--ds-color-surface, #f5f6f8);\n  --ds-table-row-hover-bg: var(--ds-colo
+[2026-05-22 12:27:05.266] DesignTokenStyleInjectorV2.razor::CSS-Chunk-21 — r-sidebar-hover, #e8eaed);\n  --ds-table-border: var(--ds-color-border, #dde1e7);\n  --ds-table-surface: var(--ds-color-surface, #f5f6f8);\n  --ds-table-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-table-action-primary-bg: var(--ds-color-accent, #2563eb);\n  --ds-text-size-xs: var(--ds-text-xs);\n  --ds-text-size-sm: var(--ds-text-sm);\n  --ds-text-size-md: var(--ds-text-base);\n  --ds-text-size-lg: var(--ds-text-lg);\n  --ds-text-size-xl: var(--ds-text-xl);\n  --ds-text-size-2xl: var(--d
+[2026-05-22 12:27:05.267] DesignTokenStyleInjectorV2.razor::CSS-Chunk-22 — s-text-2xl);\n  --ds-text-font-regular: var(--ds-font-normal);\n  --ds-text-font-medium: var(--ds-font-medium);\n  --ds-text-font-semibold: var(--ds-font-semibold);\n  --ds-text-font-bold: var(--ds-font-bold);\n  --ds-text-color-primary: var(--ds-color-text, #2c3345);\n  --ds-text-color-secondary: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-muted: var(--ds-color-text-muted, #7b8494);\n  --ds-text-color-inverse: var(--ds-color-text-inverse, #ffffff);\n}
+[2026-05-22 12:27:05.268] DesignTokenStyleInjectorV2.razor::DumpCss — CSS dump complete
+[2026-05-22 12:27:05.270] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/v2/dashboard/overview' IsAuthenticated=True — no redirect
+[2026-05-22 12:27:05.275] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=true. IsAuthenticated=True. Clearing _isInitializing. sidebarWillRender=True (SidebarV2 is mounted when IsAuthenticated=true)
+[2026-05-22 12:27:05.279] SidebarV2.razor::OnInitialized — Setup complete. path='/v2/dashboard/overview' IsAuthenticated=True _loadPending=True
+[2026-05-22 12:27:05.283] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-22 12:27:05.309] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/v2/dashboard/overview'
+[2026-05-22 12:27:05.311] PageHeaderV2.razor::UpdateAsync — ENTER path='/v2/dashboard/overview'
+[2026-05-22 12:27:05.312] PageHeaderV2.razor::UpdateAsync — Path is normal menu — calling GetMenuCategoriesAsync() path='/v2/dashboard/overview'
+[2026-05-22 12:27:05.313] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:27:05.314] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:27:05.315] NavigationServiceV2.cs::GetMenuCategoriesAsync — Requesting from NavigationApiServiceV2
+[2026-05-22 12:27:05.316] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — ENTER GetMenuCategoriesAsync
+[2026-05-22 12:27:05.318] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — CurrentUserId=1
+[2026-05-22 12:27:05.326] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Rows returned = 47
+[2026-05-22 12:27:05.331] PermissionServiceV2.cs::CanViewAsync — _cache is null → invoking LoadAsync for route='/v2/dashboard/overview'
+[2026-05-22 12:27:05.336] PermissionServiceV2.cs::LoadAsync — Loading permissions for userId=1
+[2026-05-22 12:27:05.356] MainLayoutV2.razor::OnAfterRenderAsync — firstRender=false (non-first render). IsAuthenticated=True _isInitializing=False
+[2026-05-22 12:27:05.359] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-22 12:27:05.362] SidebarV2.razor::LoadMenuAsync — ENTER path='/v2/dashboard/overview' _isSuperAdminMenu=False
+[2026-05-22 12:27:05.363] NavigationServiceV2.cs::GetMenuCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:27:05.366] PermissionServiceV2.cs::LoadAsync — roleCode='SUPERADMIN'
+[2026-05-22 12:27:05.381] PermissionServiceV2.cs::LoadAsync — roleId=1
+[2026-05-22 12:27:05.420] PermissionServiceV2.cs::LoadAsync — Cache loaded — 27 page(s) resolved for userId=1
+[2026-05-22 12:27:05.423] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/overview' → CanRead=True
+[2026-05-22 12:27:05.424] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/trends' → CanRead=True
+[2026-05-22 12:27:05.425] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/dashboard/safeguarding' → CanRead=True
+[2026-05-22 12:27:05.426] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students' → CanRead=True
+[2026-05-22 12:27:05.427] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/students/new' → CanRead=True
+[2026-05-22 12:27:05.428] PermissionServiceV2.cs::CanViewAsync — Route '/v2/students/{id}' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-22 12:27:05.430] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff' → CanRead=True
+[2026-05-22 12:27:05.431] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/staff/new' → CanRead=True
+[2026-05-22 12:27:05.432] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes' → CanRead=True
+[2026-05-22 12:27:05.433] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/details' → CanRead=True
+[2026-05-22 12:27:05.434] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/classes/new' → CanRead=True
+[2026-05-22 12:27:05.435] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance' → CanRead=True
+[2026-05-22 12:27:05.436] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/attendance/student' → CanRead=True
+[2026-05-22 12:27:05.437] PermissionServiceV2.cs::CanViewAsync — Route '/v2/test/404' not in AppPage registry → returning true (unregistered routes are always visible)
+[2026-05-22 12:27:05.438] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/auditlog' → CanRead=True
+[2026-05-22 12:27:05.439] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/settings' → CanRead=True
+[2026-05-22 12:27:05.440] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/diagnostics' → CanRead=True
+[2026-05-22 12:27:05.440] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/site' → CanRead=True
+[2026-05-22 12:27:05.441] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/globalsettings/colours' → CanRead=True
+[2026-05-22 12:27:05.442] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/users' → CanRead=True
+[2026-05-22 12:27:05.443] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/roles' → CanRead=True
+[2026-05-22 12:27:05.444] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/permissions' → CanRead=True
+[2026-05-22 12:27:05.446] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/page-access' → CanRead=True
+[2026-05-22 12:27:05.447] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages' → CanRead=True
+[2026-05-22 12:27:05.449] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/layouts' → CanRead=True
+[2026-05-22 12:27:05.449] PermissionServiceV2.cs::CanViewAsync — Cache HIT for route='/v2/system/pages/metadata' → CanRead=True
+[2026-05-22 12:27:05.451] NavigationApiServiceV2.cs::GetMenuCategoriesAsync — Categories built = 8
+[2026-05-22 12:27:05.452] NavigationServiceV2.cs::GetMenuCategoriesAsync — NavigationApiServiceV2 returned — caching 8 categories
+[2026-05-22 12:27:05.453] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:27:05.453] PageHeaderV2.razor::UpdateAsync — GetMenuCategoriesAsync returned 8 categories
+[2026-05-22 12:27:05.454] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Dashboard' _itemLabel='Operational Overview'
+[2026-05-22 12:27:05.456] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock acquired
+[2026-05-22 12:27:05.457] NavigationServiceV2.cs::GetMenuCategoriesAsync — Double-check: cache was populated while we waited — returning 8 cached categories
+[2026-05-22 12:27:05.458] NavigationServiceV2.cs::GetMenuCategoriesAsync — Lock released
+[2026-05-22 12:27:05.458] SidebarV2.razor::LoadMenuAsync — Categories received = 8
+[2026-05-22 12:27:05.462] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=8 superAdminCategories=0
+[2026-05-22 12:27:05.469] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=False
+[2026-05-22 12:27:08.777] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/colours IsAuthenticated=True
+[2026-05-22 12:27:08.783] MainLayoutV2.razor::Dispose — Unsubscribing from AppState.OnChange
+[2026-05-22 12:27:08.784] SidebarV2.razor::Dispose — Unsubscribing from AppState.OnChange and Nav.LocationChanged
+[2026-05-22 12:27:08.785] HeaderV2.razor::Dispose — Unsubscribing from AppState.OnChange. IsAuthenticated=True
+[2026-05-22 12:27:08.786] PageHeaderV2.razor::Dispose — Unsubscribing from Nav.LocationChanged
+[2026-05-22 12:27:08.787] SidebarV2.razor::OnInitialized — Setup complete. path='/globalsettings/colours' IsAuthenticated=True _loadPending=True
+[2026-05-22 12:27:08.788] HeaderV2.razor::OnInitialized — IsAuthenticated=True UserName='mbattle' UserRole='Super Admin' UnreadMessages=5 UnreadNotifications=5
+[2026-05-22 12:27:08.788] PageHeaderV2.razor::OnInitializedAsync — ENTER — URI='https://0.0.0.0/globalsettings/colours'
+[2026-05-22 12:27:08.789] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-22 12:27:08.789] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:27:08.791] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:27:08.792] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:27:08.793] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:27:08.793] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Requesting from NavigationApiServiceV2.GetGlobalSettingsCategoriesAsync
+[2026-05-22 12:27:08.795] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — ENTER GetGlobalSettingsCategoriesAsync
+[2026-05-22 12:27:08.803] SidebarV2.razor::OnLocationChanged — path changed '/v2/dashboard/overview' → '/globalsettings/colours'
+[2026-05-22 12:27:08.804] AppStateService.cs::SetLastMainMenuState — route='/v2/dashboard/overview' openGroup='Dashboard'
+[2026-05-22 12:27:08.805] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:27:08.806] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/colours' — dispatching UpdateAsync
+[2026-05-22 12:27:08.806] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/colours' IsAuthenticated=True — no redirect
+[2026-05-22 12:27:08.808] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:27:08.809] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:27:08.810] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/colours'
+[2026-05-22 12:27:08.810] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:27:08.811] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:27:08.812] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE MISS — acquiring async lock
+[2026-05-22 12:27:08.813] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Rows returned = 60
+[2026-05-22 12:27:08.814] NavigationApiServiceV2.cs::GetGlobalSettingsCategoriesAsync — Categories built = 9
+[2026-05-22 12:27:08.814] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — NavigationApiServiceV2 returned — caching 9 categories
+[2026-05-22 12:27:08.815] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:27:08.816] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:27:08.817] PageHeaderV2.razor::OnInitializedAsync — EXIT — _groupLabel='Global Settings' _itemLabel=''
+[2026-05-22 12:27:08.818] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:27:08.818] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-22 12:27:08.819] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:27:08.820] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:27:08.822] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock acquired
+[2026-05-22 12:27:08.822] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Double-check: cache was populated while we waited — returning 9 cached categories
+[2026-05-22 12:27:08.823] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — Lock released
+[2026-05-22 12:27:08.824] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:27:08.825] SidebarV2.razor::OnAfterRenderAsync — Starting menu load for path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:27:08.826] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/colours' _isSuperAdminMenu=True
+[2026-05-22 12:27:08.827] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:27:08.828] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:27:08.829] SidebarV2.razor::OnAfterRenderAsync — Menu load done. categories=0 superAdminCategories=9
+[2026-05-22 12:27:08.834] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-22 12:27:09.818] SidebarV2.razor::HandleGroupClick — group='UI Kits' opened
+[2026-05-22 12:27:09.830] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True
+[2026-05-22 12:27:10.889] Routes.razor::OnLocationChanged — URI=https://0.0.0.0/globalsettings/ui-kits/buttons IsAuthenticated=True
+[2026-05-22 12:27:10.932] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:27:10.934] SidebarV2.razor::OnLocationChanged — path changed '' → '/globalsettings/ui-kits/buttons'
+[2026-05-22 12:27:10.934] HeaderV2.razor::CloseAll — Closing all dropdowns. _userOpen=False _msgOpen=False _notifOpen=False
+[2026-05-22 12:27:10.935] PageHeaderV2.razor::OnLocationChanged — Location changed to 'https://0.0.0.0/globalsettings/ui-kits/buttons' — dispatching UpdateAsync
+[2026-05-22 12:27:10.937] Routes.razor::CheckAuthRedirect — [from=LocationChanged] path='/globalsettings/ui-kits/buttons' IsAuthenticated=True — no redirect
+[2026-05-22 12:27:10.939] SidebarV2.razor::LoadMenuAsync — ENTER path='/globalsettings/ui-kits/buttons' _isSuperAdminMenu=True
+[2026-05-22 12:27:10.940] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:27:10.941] SidebarV2.razor::LoadMenuAsync — SuperAdmin categories loaded = 9
+[2026-05-22 12:27:10.942] PageHeaderV2.razor::UpdateAsync — ENTER path='/globalsettings/ui-kits/buttons'
+[2026-05-22 12:27:10.942] PageHeaderV2.razor::UpdateAsync — Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()
+[2026-05-22 12:27:10.943] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — ENTER
+[2026-05-22 12:27:10.944] NavigationServiceV2.cs::GetGlobalSettingsCategoriesAsync — CACHE HIT — returning 9 cached categories
+[2026-05-22 12:27:10.945] NavigationServiceV2.cs::GetGlobalSettingsMenuGroupsAsync — Returning 9 globalsettings groups
+[2026-05-22 12:27:10.973] SidebarV2.razor::OnAfterRenderAsync — _loadPending=false — skipping. _isSuperAdminMenu=True

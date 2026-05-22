@@ -154,19 +154,6 @@
 /* ==========================================================================
    BUTTONS — OUTLINE VARIANTS
    ========================================================================== */
-.dsv2-btn--link {
-    background: transparent;
-    color: var(--ds-btn-primary-bg, #0d6efd);
-    border-color: transparent;
-    text-decoration: none;
-}
-.dsv2-btn--link:hover {
-    background: transparent;
-    color: var(--ds-btn-primary-hover-bg, #0b5ed7);
-    border-color: transparent;
-    text-decoration: underline;
-}
-
 .dsv2-btn--outline-primary {
     background: transparent;
     color: var(--ds-btn-primary-bg, #0d6efd);
@@ -251,6 +238,22 @@
 
 
 /* ==========================================================================
+   BUTTONS — LINK VARIANTS
+   ========================================================================== */
+.dsv2-btn--link {
+    background: transparent;
+    color: var(--ds-btn-primary-bg, #0d6efd);
+    border-color: transparent;
+    text-decoration: none;
+}
+.dsv2-btn--link:hover {
+    background: transparent;
+    color: var(--ds-btn-primary-hover-bg, #0b5ed7);
+    border-color: transparent;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
    BUTTONS — SIZE VARIANTS
    ========================================================================== */
 .dsv2-btn--lg {
@@ -263,6 +266,15 @@
     font-size: 0.78rem;
 }
 
+
+/* ==========================================================================
+    BUTTONS — ICON BUTTONS
+    ========================================================================== */
+
+
+/* ==========================================================================
+    BUTTONS — LAYOUT VARIANTS
+    ========================================================================== */
 
 /* ==========================================================================
    BUTTONS — DARK MODE OVERRIDES
@@ -282,38 +294,4 @@
 }
 .dark .dsv2-btn--light:hover {
     background: var(--ds-btn-light-hover-bg, #252840);
-}
-
-/* ==========================================================================
-   BUTTONS — FILLED VARIANTS
-   ========================================================================== */
-/* SOURCE COPY: c:\DevAbsence2\AbsenceAppV2\src\AbsenceApp.Client\wwwroot\css\components\buttons.css (lines 23, 53, 58) */
-.dsv2-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: var(--ds-btn-padding-y, 7px) var(--ds-btn-padding-x, 16px);
-    border-radius: var(--ds-btn-border-radius, 6px);
-    font-size: var(--ds-btn-font-size, 0.875rem);
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid transparent;
-    text-decoration: none;
-    white-space: nowrap;
-    line-height: 1.25;
-    transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-    -webkit-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-}
-
-.dsv2-btn--primary {
-    background: var(--ds-btn-primary-bg, #0d6efd);
-    color: var(--ds-btn-primary-text, #ffffff);
-    border-color: var(--ds-btn-primary-border, #0d6efd);
-}
-.dsv2-btn--primary:hover {
-    background: var(--ds-btn-primary-hover-bg, #0b5ed7);
-    border-color: var(--ds-btn-primary-hover-bg, #0b5ed7);
-    color: var(--ds-btn-primary-text, #ffffff);
 }
