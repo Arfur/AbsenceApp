@@ -18,8 +18,10 @@ Global Settings
 4. Templates > Pages
 
 May need to do this at a later date:
-Move the Table template files to its own folder
+Move the Table template files to its own folder under:
+C:\DevAbsence2\AbsenceAppV2\src\AbsenceApp.Client\Shared\Templates\Tables
 Shared/Templates/Tables/
     TablePageTemplateV2.razor
     TablePageTemplateV2.razor.css
 
+The CSS for buttons is in app.css and really should be in buttons.css

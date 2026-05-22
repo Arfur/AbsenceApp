@@ -1,8 +1,8 @@
 @* ===========================================================================
    File        : Index.razor
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Dropdown
-   Author      : GitHub Copilot (Refactored by Michael + Copilot)
-    Version     : 5.0.0
+    Author      : GitHub Copilot (Refactored by Michael + Copilot)
+    Version     : 5.4.0
    Created     : 2026-05-19
    Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -11,6 +11,18 @@
                  accordion CSS editor, and live preview.
    ---------------------------------------------------------------------------
    Changes     :
+    - 5.4.0  2026-05-21  Phase 2.2 strict corrective cycle: revalidated and
+                     retained preview payload hydration before interactive
+                     trigger/toggle execution paths.
+    - 5.3.0  2026-05-21  Phase 2.2 corrective cycle: preserved preview-first
+                     selection flow across single, split primary, and split
+                     toggle interactions for deterministic payload updates.
+    - 5.2.0  2026-05-21  Phase 2.1 visual regression recovery: ensured split
+                     primary action clicks also hydrate selected preview payload
+                     before interaction, preserving callback consistency.
+    - 5.1.0  2026-05-21  Ensured trigger/toggle clicks explicitly refresh
+                     selected variant preview CSS while preserving
+                     template-level selection callbacks.
     - 5.0.0  2026-05-21  Rewired page to template-level UiKitsGroup item
                      contract (Items + OnItemSelectedKeyChanged +
                      ItemTemplate), removing page-owned selected-state
@@ -44,7 +56,7 @@ else
                      Title="@_groups[0].GroupTitle"
                      IsAccordionOpen="@_groups[0].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[0]))"
-                     Items="@(_groups[0].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_groups[0].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass, null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[0], key))"
                      IsEditing="@_groups[0].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[0]))"
@@ -60,7 +72,7 @@ else
                 <div class="ddp-dropdown @ctx.Item.CssClass">
                     <button type="button"
                             class="ddp-trigger"
-                            @onclick="() => OnDropdownClicked(_groups[0], _groups[0].Variants.First(v => v.Key == ctx.Item.Key))">
+                            @onclick="() => { var selected = _groups[0].Variants.First(v => v.Key == ctx.Item.Key); OnSelectedVariantChanged(_groups[0], selected.Key); OnDropdownClicked(_groups[0], selected); }">
                         @ctx.Item.Label
                         <i class="bi bi-chevron-down"></i>
                     </button>
@@ -81,7 +93,7 @@ else
                      Title="@_groups[1].GroupTitle"
                      IsAccordionOpen="@_groups[1].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[1]))"
-                     Items="@(_groups[1].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_groups[1].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass, null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[1], key))"
                      IsEditing="@_groups[1].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[1]))"
@@ -95,12 +107,14 @@ else
                      StatusIsError="@_groups[1].StatusIsError">
             <ItemTemplate Context="ctx">
                 <div class="ddp-split @ctx.Item.CssClass">
-                    <button type="button" class="ddp-split-btn">
+                    <button type="button"
+                            class="ddp-split-btn"
+                            @onclick="() => { var selected = _groups[1].Variants.First(v => v.Key == ctx.Item.Key); OnSelectedVariantChanged(_groups[1], selected.Key); }">
                         @ctx.Item.Label
                     </button>
                     <button type="button"
                             class="ddp-split-toggle"
-                            @onclick="() => OnSplitDropdownClicked(_groups[1], _groups[1].Variants.First(v => v.Key == ctx.Item.Key))">
+                            @onclick="() => { var selected = _groups[1].Variants.First(v => v.Key == ctx.Item.Key); OnSelectedVariantChanged(_groups[1], selected.Key); OnSplitDropdownClicked(_groups[1], selected); }">
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     @if (_groups[1].OpenMenuForVariant == ctx.Item.Key)
@@ -120,7 +134,7 @@ else
                      Title="@_groups[2].GroupTitle"
                      IsAccordionOpen="@_groups[2].AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groups[2]))"
-                     Items="@(_groups[2].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_groups[2].Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass, null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groups[2], key))"
                      IsEditing="@_groups[2].IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groups[2]))"
@@ -136,7 +150,7 @@ else
                 <div class="ddp-dropdown @ctx.Item.CssClass">
                     <button type="button"
                             class="ddp-trigger"
-                            @onclick="() => OnDropdownClicked(_groups[2], _groups[2].Variants.First(v => v.Key == ctx.Item.Key))">
+                            @onclick="() => { var selected = _groups[2].Variants.First(v => v.Key == ctx.Item.Key); OnSelectedVariantChanged(_groups[2], selected.Key); OnDropdownClicked(_groups[2], selected); }">
                         @ctx.Item.Label
                         <i class="bi bi-chevron-down"></i>
                     </button>

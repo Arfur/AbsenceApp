@@ -1,8 +1,8 @@
 ﻿@* ===========================================================================
    File        : Index.razor
    Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
-   Author      : GitHub Copilot
-    Version     : 8.0.0
+    Author      : GitHub Copilot
+    Version     : 8.4.0
    Created     : 2026-03-30
    Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -13,6 +13,22 @@
                  - All sections collapsed by default
    ---------------------------------------------------------------------------
    Changes     :
+    - 8.4.0  2026-05-21  Phase 2.2 strict corrective cycle: enforced
+                     deterministic per-group render classes (no heuristic
+                     tone/class inference), corrected icon/social/size
+                     mappings, and kept all required groups on explicit
+                     page-owned ItemTemplate markup.
+    - 8.3.0  2026-05-21  Phase 2.2 corrective cycle: moved visual button groups
+                     to page-owned ItemTemplate markup, removed tone-heuristic
+                     class synthesis, and applied explicit per-group render
+                     class payloads to prevent template fallback interference.
+    - 8.2.0  2026-05-21  Phase 2.1 visual regression recovery: explicit
+                     render-ready button class mapping for affected groups,
+                     data-driven icon class payloads, and initial preview
+                     hydration compatibility with template selection flow.
+    - 8.1.0  2026-05-21  Restored full variant class lists, restored icon item
+                     classes in ItemTemplate, and wired explicit preview
+                     payload updates through OnItemSelectedKeyChanged.
     - 8.0.0  2026-05-21  Rewired page to template-level UiKitsGroup item
                      contract (Items + OnItemSelectedKeyChanged +
                      ItemTemplate), removing page-owned selected-state
@@ -51,7 +67,7 @@ else
                      Title="@_basicState.GroupTitle"
                      AccordionOpen="@_basicState.AccordionOpen"
                      AccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_basicState))"
-                     Items="@(_basicState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_basicState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveBasicRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_basicState, key))"
                      IsEditing="@_basicState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_basicState))"
@@ -62,7 +78,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_basicState))"
                      PreviewCss="@_basicState.PreviewCss"
                      StatusMessage="@_basicState.StatusMessage"
-                     StatusIsError="@_basicState.StatusIsError" />
+                     StatusIsError="@_basicState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
             Header: SECTION
@@ -71,7 +91,7 @@ else
                      Title="@_outlineState.GroupTitle"
                      IsAccordionOpen="@_outlineState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_outlineState))"
-                     Items="@(_outlineState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_outlineState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveOutlineRenderClass(v.Key), null)).ToList())"   
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_outlineState, key))"
                      IsEditing="@_outlineState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_outlineState))"
@@ -82,7 +102,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_outlineState))"
                      PreviewCss="@_outlineState.PreviewCss"
                      StatusMessage="@_outlineState.StatusMessage"
-                     StatusIsError="@_outlineState.StatusIsError" />
+                     StatusIsError="@_outlineState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
             Header: SECTION
@@ -91,7 +115,7 @@ else
                      Title="@_softState.GroupTitle"
                      IsAccordionOpen="@_softState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_softState))"
-                     Items="@(_softState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_softState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveSoftRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_softState, key))"
                      IsEditing="@_softState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_softState))"
@@ -102,7 +126,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_softState))"
                      PreviewCss="@_softState.PreviewCss"
                      StatusMessage="@_softState.StatusMessage"
-                     StatusIsError="@_softState.StatusIsError" />
+                     StatusIsError="@_softState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
             Header: SECTION
@@ -111,7 +139,7 @@ else
                      Title="@_iconState.GroupTitle"
                      IsAccordionOpen="@_iconState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_iconState))"
-                     Items="@(_iconState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_iconState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, _iconRenderClassByKey[v.Key], _iconClassByKey[v.Key])).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_iconState, key))"
                      IsEditing="@_iconState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_iconState))"
@@ -124,13 +152,8 @@ else
                      StatusMessage="@_iconState.StatusMessage"
                      StatusIsError="@_iconState.StatusIsError">
             <ItemTemplate Context="ctx">
-                <button type="button" class="dsv2-btn @ctx.Item.CssClass">
-                    @if (ctx.Item.Key == "icon-1") { <i class="bi bi-download"></i> }
-                    else if (ctx.Item.Key == "icon-2") { <i class="bi bi-bell"></i> }
-                    else if (ctx.Item.Key == "icon-3") { <i class="bi bi-gear"></i> }
-                    else if (ctx.Item.Key == "icon-4") { <i class="bi bi-alarm"></i> }
-                    else if (ctx.Item.Key == "icon-5") { <i class="bi bi-camera"></i> }
-                    else { <i class="bi bi-image"></i> }
+                <button type="button" class="@ctx.Item.CssClass" aria-label="@ctx.Item.Label">
+                    <i class="@ctx.Item.IconClass"></i>
                 </button>
             </ItemTemplate>
         </UiKitsGroup>
@@ -142,7 +165,7 @@ else
                      Title="@_socialState.GroupTitle"
                      IsAccordionOpen="@_socialState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_socialState))"
-                     Items="@(_socialState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_socialState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveSocialButtonClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_socialState, key))"
                      IsEditing="@_socialState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_socialState))"
@@ -156,17 +179,7 @@ else
                      StatusIsError="@_socialState.StatusIsError">
             <ItemTemplate Context="ctx">
                 <button type="button" class="@ctx.Item.CssClass" aria-label="@ctx.Item.Label">
-                    @if (ctx.Item.Key == "social-facebook") { <i class="bi bi-facebook" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-twitter") { <i class="bi bi-twitter" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-instagram") { <i class="bi bi-instagram" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-reddit") { <i class="bi bi-reddit" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-whatsapp") { <i class="bi bi-whatsapp" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-linkedin") { <i class="bi bi-linkedin" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-telegram") { <i class="bi bi-telegram" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-youtube") { <i class="bi bi-youtube" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-behance") { <i class="bi bi-behance" aria-hidden="true"></i> }
-                    else if (ctx.Item.Key == "social-dribbble") { <i class="bi bi-dribbble" aria-hidden="true"></i> }
-                    else { <i class="bi bi-snapchat" aria-hidden="true"></i> }
+                    <i class="@ResolveSocialIconClass(ctx.Item.Key)" aria-hidden="true"></i>
                 </button>
             </ItemTemplate>
         </UiKitsGroup>
@@ -178,7 +191,7 @@ else
                      Title="@_radiusState.GroupTitle"
                      IsAccordionOpen="@_radiusState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_radiusState))"
-                     Items="@(_radiusState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_radiusState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveRadiusRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_radiusState, key))"
                      IsEditing="@_radiusState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_radiusState))"
@@ -189,7 +202,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_radiusState))"
                      PreviewCss="@_radiusState.PreviewCss"
                      StatusMessage="@_radiusState.StatusMessage"
-                     StatusIsError="@_radiusState.StatusIsError" />
+                     StatusIsError="@_radiusState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
         Header: SECTION
@@ -198,7 +215,7 @@ else
                      Title="@_activeState.GroupTitle"
                      IsAccordionOpen="@_activeState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_activeState))"
-                     Items="@(_activeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_activeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveActiveRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_activeState, key))"
                      IsEditing="@_activeState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_activeState))"
@@ -209,7 +226,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_activeState))"
                      PreviewCss="@_activeState.PreviewCss"
                      StatusMessage="@_activeState.StatusMessage"
-                     StatusIsError="@_activeState.StatusIsError" />
+                     StatusIsError="@_activeState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
         Header: SECTION
@@ -218,7 +239,7 @@ else
                      Title="@_disabledState.GroupTitle"
                      IsAccordionOpen="@_disabledState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_disabledState))"
-                     Items="@(_disabledState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_disabledState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveDisabledRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_disabledState, key))"
                      IsEditing="@_disabledState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_disabledState))"
@@ -229,7 +250,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_disabledState))"
                      PreviewCss="@_disabledState.PreviewCss"
                      StatusMessage="@_disabledState.StatusMessage"
-                     StatusIsError="@_disabledState.StatusIsError" />
+                     StatusIsError="@_disabledState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
         Header: SECTION
@@ -238,7 +263,7 @@ else
                      Title="@_loadingState.GroupTitle"
                      IsAccordionOpen="@_loadingState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_loadingState))"
-                     Items="@(_loadingState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_loadingState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveLoadingRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_loadingState, key))"
                      IsEditing="@_loadingState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_loadingState))"
@@ -272,7 +297,7 @@ else
                      Title="@_blockState.GroupTitle"
                      IsAccordionOpen="@_blockState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_blockState))"
-                     Items="@(_blockState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_blockState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveBlockRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_blockState, key))"
                      IsEditing="@_blockState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_blockState))"
@@ -283,7 +308,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_blockState))"
                      PreviewCss="@_blockState.PreviewCss"
                      StatusMessage="@_blockState.StatusMessage"
-                     StatusIsError="@_blockState.StatusIsError" />
+                     StatusIsError="@_blockState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
             Header: SECTION
@@ -292,7 +321,7 @@ else
                      Title="@_sizeState.GroupTitle"
                      IsAccordionOpen="@_sizeState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_sizeState))"
-                     Items="@(_sizeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_sizeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveSizeRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_sizeState, key))"
                      IsEditing="@_sizeState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_sizeState))"
@@ -303,7 +332,11 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_sizeState))"
                      PreviewCss="@_sizeState.PreviewCss"
                      StatusMessage="@_sizeState.StatusMessage"
-                     StatusIsError="@_sizeState.StatusIsError" />
+                     StatusIsError="@_sizeState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
 
         @* ───────────────────────────────────────────────────────────────
             Header: SECTION
@@ -312,7 +345,7 @@ else
                      Title="@_groupState.GroupTitle"
                      IsAccordionOpen="@_groupState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_groupState))"
-                     Items="@(_groupState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, v.PreviewCssClass)).ToList())"
+                     Items="@(_groupState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveGroupContainerClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_groupState, key))"
                      IsEditing="@_groupState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_groupState))"
@@ -325,10 +358,10 @@ else
                      StatusMessage="@_groupState.StatusMessage"
                      StatusIsError="@_groupState.StatusIsError">
             <ItemTemplate Context="ctx">
-                <div class="@ctx.Item.CssClass">
-                    <button type="button" class="dsv2-btn">Active link</button>
-                    <button type="button" class="dsv2-btn">Link</button>
-                    <button type="button" class="dsv2-btn">Link</button>
+                <div class="btp-group-demo @ctx.Item.CssClass">
+                    <button type="button" class="dsv2-btn @ctx.Item.CssClass">Active link</button>
+                    <button type="button" class="dsv2-btn @ctx.Item.CssClass">Link</button>
+                    <button type="button" class="dsv2-btn @ctx.Item.CssClass">Link</button>
                 </div>
             </ItemTemplate>
         </UiKitsGroup>
@@ -340,7 +373,7 @@ else
                      Title="@_actionState.GroupTitle"
                      IsAccordionOpen="@_actionState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_actionState))"
-                     Items="@(_actionState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, string.Concat("dsv2-btn ", v.PreviewCssClass).Trim())).ToList())"
+                     Items="@(_actionState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveActionRenderClass(v.Key), null)).ToList())"
                      OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_actionState, key))"
                      IsEditing="@_actionState.IsEditing"
                      OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_actionState))"
@@ -351,9 +384,228 @@ else
                      OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_actionState))"
                      PreviewCss="@_actionState.PreviewCss"
                      StatusMessage="@_actionState.StatusMessage"
-                     StatusIsError="@_actionState.StatusIsError" />
+                     StatusIsError="@_actionState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass">@ctx.Item.Label</button>
+            </ItemTemplate>
+        </UiKitsGroup>
         </ChildContent>
     </UiKitsPage>
+}
+
+@code {
+    private static readonly Dictionary<string, string> _basicRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["basic-primary"] = "dsv2-btn dsv2-btn--primary",
+        ["basic-secondary"] = "dsv2-btn dsv2-btn--secondary",
+        ["basic-success"] = "dsv2-btn dsv2-btn--success",
+        ["basic-danger"] = "dsv2-btn dsv2-btn--danger",
+        ["basic-warning"] = "dsv2-btn dsv2-btn--warning",
+        ["basic-info"] = "dsv2-btn dsv2-btn--info",
+        ["basic-light"] = "dsv2-btn dsv2-btn--light",
+        ["basic-dark"] = "dsv2-btn dsv2-btn--dark"
+    };
+
+    private static readonly Dictionary<string, string> _outlineRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["outline-primary"] = "dsv2-btn dsv2-btn--outline-primary",
+        ["outline-secondary"] = "dsv2-btn dsv2-btn--outline-secondary",
+        ["outline-success"] = "dsv2-btn dsv2-btn--outline-success",
+        ["outline-danger"] = "dsv2-btn dsv2-btn--outline-danger",
+        ["outline-warning"] = "dsv2-btn dsv2-btn--outline-warning",
+        ["outline-info"] = "dsv2-btn dsv2-btn--outline-info",
+        ["outline-light"] = "dsv2-btn dsv2-btn--outline-light",
+        ["outline-dark"] = "dsv2-btn dsv2-btn--outline-dark"
+    };
+
+    private static readonly Dictionary<string, string> _softRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["soft-primary"] = "dsv2-btn dsv2-btn--soft-primary",
+        ["soft-secondary"] = "dsv2-btn dsv2-btn--soft-secondary",
+        ["soft-success"] = "dsv2-btn dsv2-btn--soft-success",
+        ["soft-danger"] = "dsv2-btn dsv2-btn--soft-danger",
+        ["soft-warning"] = "dsv2-btn dsv2-btn--soft-warning",
+        ["soft-info"] = "dsv2-btn dsv2-btn--soft-info",
+        ["soft-light"] = "dsv2-btn dsv2-btn--soft-light",
+        ["soft-dark"] = "dsv2-btn dsv2-btn--soft-dark"
+    };
+
+    private static readonly Dictionary<string, string> _iconClassByKey = new(StringComparer.Ordinal)
+    {
+        ["icon-fill-primary"] = "bi bi-download",
+        ["icon-fill-secondary"] = "bi bi-bell",
+        ["icon-outline-primary"] = "bi bi-gear",
+        ["icon-outline-secondary"] = "bi bi-alarm",
+        ["icon-soft-primary"] = "bi bi-camera",
+        ["icon-soft-secondary"] = "bi bi-image"
+    };
+
+    private static readonly Dictionary<string, string> _iconRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["icon-fill-primary"] = "btp-icon-btn btp-icon-fill-primary",
+        ["icon-fill-secondary"] = "btp-icon-btn btp-icon-fill-secondary",
+
+        ["icon-outline-primary"] = "btp-icon-btn btp-icon-outline-primary",
+        ["icon-outline-secondary"] = "btp-icon-btn btp-icon-outline-secondary",
+
+        ["icon-soft-primary"] = "btp-icon-btn btp-icon-soft-primary",
+        ["icon-soft-secondary"] = "btp-icon-btn btp-icon-soft-secondary"
+    };
+
+    private static readonly Dictionary<string, string> _socialButtonClassByKey = new(StringComparer.Ordinal)
+    {
+        ["social-facebook"] = "dsv2-btn-social dsv2-btn-facebook",
+        ["social-twitter"] = "dsv2-btn-social dsv2-btn-twitter",
+        ["social-instagram"] = "dsv2-btn-social dsv2-btn-instagram",
+        ["social-reddit"] = "dsv2-btn-social dsv2-btn-reddit",
+        ["social-whatsapp"] = "dsv2-btn-social dsv2-btn-whatsapp",
+        ["social-linkedin"] = "dsv2-btn-social dsv2-btn-linkedin",
+        ["social-telegram"] = "dsv2-btn-social dsv2-btn-telegram",
+        ["social-youtube"] = "dsv2-btn-social dsv2-btn-youtube",
+        ["social-behance"] = "dsv2-btn-social dsv2-btn-behance",
+        ["social-dribbble"] = "dsv2-btn-social dsv2-btn-dribbble",
+        ["social-snapchat"] = "dsv2-btn-social dsv2-btn-snapchat"
+    };
+
+    private static readonly Dictionary<string, string> _socialIconClassByKey = new(StringComparer.Ordinal)
+    {
+        ["social-facebook"] = "bi bi-facebook",
+        ["social-twitter"] = "bi bi-twitter",
+        ["social-instagram"] = "bi bi-instagram",
+        ["social-reddit"] = "bi bi-reddit",
+        ["social-whatsapp"] = "bi bi-whatsapp",
+        ["social-linkedin"] = "bi bi-linkedin",
+        ["social-telegram"] = "bi bi-telegram",
+        ["social-youtube"] = "bi bi-youtube",
+        ["social-behance"] = "bi bi-behance",
+        ["social-dribbble"] = "bi bi-dribbble",
+        ["social-snapchat"] = "bi bi-snapchat"
+    };
+
+    private static readonly Dictionary<string, string> _radiusRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["radius-primary"] = "dsv2-btn dsv2-btn--primary btp-radius-primary",
+        ["radius-secondary"] = "dsv2-btn dsv2-btn--secondary btp-radius-secondary",
+        ["radius-success"] = "dsv2-btn dsv2-btn--success btp-radius-success",
+        ["radius-danger"] = "dsv2-btn dsv2-btn--danger btp-radius-danger",
+        ["radius-warning"] = "dsv2-btn dsv2-btn--warning btp-radius-warning",
+        ["radius-info"] = "dsv2-btn dsv2-btn--info btp-radius-info",
+        ["radius-light"] = "dsv2-btn dsv2-btn--light btp-radius-light",
+        ["radius-dark"] = "dsv2-btn dsv2-btn--dark btp-radius-dark"
+    };
+
+    private static readonly Dictionary<string, string> _activeRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["active-primary"] = "dsv2-btn btp-active-primary",
+        ["active-secondary"] = "dsv2-btn btp-active-secondary",
+        ["active-success"] = "dsv2-btn btp-active-success",
+        ["active-danger"] = "dsv2-btn btp-active-danger",
+        ["active-warning"] = "dsv2-btn btp-active-warning",
+        ["active-info"] = "dsv2-btn btp-active-info",
+        ["active-light"] = "dsv2-btn btp-active-light",
+        ["active-dark"] = "dsv2-btn btp-active-dark"
+    };
+
+    private static readonly Dictionary<string, string> _disabledRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["disabled-primary"] = "dsv2-btn btp-disabled-primary",
+        ["disabled-secondary"] = "dsv2-btn btp-disabled-secondary",
+        ["disabled-success"] = "dsv2-btn btp-disabled-success",
+        ["disabled-danger"] = "dsv2-btn btp-disabled-danger",
+        ["disabled-warning"] = "dsv2-btn btp-disabled-warning",
+        ["disabled-info"] = "dsv2-btn btp-disabled-info",
+        ["disabled-light"] = "dsv2-btn btp-disabled-light",
+        ["disabled-dark"] = "dsv2-btn btp-disabled-dark"
+    };
+
+    private static readonly Dictionary<string, string> _loadingRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["loading-primary"] = "dsv2-btn btp-loading-primary",
+        ["loading-secondary"] = "dsv2-btn btp-loading-secondary",
+        ["loading-success"] = "dsv2-btn btp-loading-success",
+        ["loading-danger"] = "dsv2-btn btp-loading-danger",
+        ["loading-outline-primary"] = "dsv2-btn btp-loading-outline-primary",
+        ["loading-outline-secondary"] = "dsv2-btn btp-loading-outline-secondary",
+        ["loading-outline-success"] = "dsv2-btn btp-loading-outline-success",
+        ["loading-outline-danger"] = "dsv2-btn btp-loading-outline-danger"
+    };
+
+    private static readonly Dictionary<string, string> _blockRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["block-primary"] = "dsv2-btn dsv2-btn--primary btp-block-btn btp-block-primary",
+        ["block-secondary"] = "dsv2-btn dsv2-btn--secondary btp-block-btn btp-block-secondary",
+        ["block-outline-primary"] = "dsv2-btn dsv2-btn--outline-primary btp-block-btn btp-block-outline-primary",
+        ["block-outline-secondary"] = "dsv2-btn dsv2-btn--outline-secondary btp-block-btn btp-block-outline-secondary",
+        ["block-soft-primary"] = "dsv2-btn dsv2-btn--soft-primary btp-block-btn btp-block-soft-primary",
+        ["block-soft-secondary"] = "dsv2-btn dsv2-btn--soft-secondary btp-block-btn btp-block-soft-secondary"
+    };
+
+    private static readonly Dictionary<string, string> _sizeRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["size-sm"] = "dsv2-btn dsv2-btn-primary btp-size-sm",
+        ["size-md"] = "dsv2-btn dsv2-btn-primary btp-size-md",
+        ["size-lg"] = "dsv2-btn dsv2-btn-primary btp-size-lg"
+    };
+
+    private static readonly Dictionary<string, string> _groupContainerClassByKey = new(StringComparer.Ordinal)
+    {
+        ["group-solid"] = "btp-group-solid",
+        ["group-outline"] = "btp-group-outline",
+        ["group-soft"] = "btp-group-soft"
+    };
+
+    private static readonly Dictionary<string, string> _actionRenderClassByKey = new(StringComparer.Ordinal)
+    {
+        ["action-save"] = "dsv2-btn dsv2-btn--primary",
+        ["action-cancel"] = "dsv2-btn dsv2-btn--secondary",
+        ["action-settings"] = "dsv2-btn dsv2-btn--primary",
+        ["action-more"] = "dsv2-btn dsv2-btn--secondary"
+    };
+
+    private static string ResolveBasicRenderClass(string key)
+        => _basicRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--secondary";
+
+    private static string ResolveOutlineRenderClass(string key)
+        => _outlineRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--outline-secondary";
+
+    private static string ResolveSoftRenderClass(string key)
+        => _softRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--soft-secondary";
+
+    private static string ResolveIconClass(string key)
+        => _iconClassByKey.TryGetValue(key, out var iconClass) ? iconClass : "ti ti-circle";
+
+    private static string ResolveSocialButtonClass(string key)
+        => _socialButtonClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn-social dsv2-btn-secondary";
+
+    private static string ResolveRadiusRenderClass(string key)
+        => _radiusRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--secondary btp-radius-secondary";
+
+    private static string ResolveActiveRenderClass(string key)
+        => _activeRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn btp-active-secondary";
+
+    private static string ResolveDisabledRenderClass(string key)
+        => _disabledRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn btp-disabled-secondary";
+
+    private static string ResolveLoadingRenderClass(string key)
+        => _loadingRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn btp-loading-secondary";
+
+    private static string ResolveBlockRenderClass(string key)
+        => _blockRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--secondary btp-block-btn btp-block-secondary";
+
+    private static string ResolveSizeRenderClass(string key)
+        => _sizeRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn-primary btp-size-md";
+
+    private static string ResolveGroupContainerClass(string key)
+        => _groupContainerClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "btp-group-demo btp-group-solid";
+
+    private static string ResolveActionRenderClass(string key)
+        => _actionRenderClassByKey.TryGetValue(key, out var cssClass) ? cssClass : "dsv2-btn dsv2-btn--secondary";
+
+    private static string ResolveSocialIconClass(string key)
+        => _socialIconClassByKey.TryGetValue(key, out var iconClass)
+            ? iconClass
+            : "ti ti-circle";
+
 }
 
 

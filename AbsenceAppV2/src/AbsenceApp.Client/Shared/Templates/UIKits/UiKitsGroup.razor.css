@@ -1,8 +1,8 @@
 /* ===========================================================================
    File        : UiKitsGroup.razor.css
    Namespace   : AbsenceApp.Client.Framework.PageTemplates
-   Author      : Michael
-     Version     : 1.1.0
+     Author      : Michael
+    Version     : 1.2.1
    Created     : 2026-05-20
      Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -12,10 +12,20 @@
    ---------------------------------------------------------------------------
    Changes     :
      - 1.0.0  2026-05-20  Initial creation.
-        - 1.0.1  2026-05-21  Added flex-wrap demo layout and spacing to ensure
-                         UI Kits demo items render with consistent gaps.
-        - 1.1.0  2026-05-21  Added template-level active item styling and shared
-                         item wrapper/button selectors for generic selection.
+         - 1.0.1  2026-05-21  Added flex-wrap demo layout and spacing to ensure
+                                                    UI Kits demo items render with consistent gaps.
+         - 1.1.0  2026-05-21  Added template-level active item styling and shared
+                                                    item wrapper/button selectors for generic selection.
+        - 1.1.1  2026-05-21  Updated action button styling hooks to use UI Kit
+                         class combinations instead of legacy .btn utilities.
+        - 1.1.2  2026-05-21  Retained UI Kit action button-only selectors and
+                 preserved Phase 2.1 no-bootstrap class policy.
+        - 1.2.1  2026-05-21  Phase 2.2 strict corrective update: removed
+             fallback item-button visual styling and retained only
+             minimal non-visual fallback label layout rules.
+        - 1.2.0  2026-05-21  Phase 2.2 corrective update: neutralized fallback
+                 item-button visual rules to prevent template-level
+                 overrides of page-owned UI Kit button classes.
    =========================================================================== */
 
 /* ───────────────────────────────────────────────────────────────
@@ -92,19 +102,10 @@
     box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
 }
 
-.uikits-group__item-button {
-    border: 1px solid var(--page-card-border, #d1d5db);
-    background: var(--surface, #ffffff);
-    color: var(--text-primary, #0f172a);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-
-.uikits-group__item-button.is-active {
-    border-color: var(--text-secondary, #2563eb);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+.uikits-group__item-fallback {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
 }
 
 /* Accordion toggle: compact circle icon button in the card header */
@@ -185,31 +186,24 @@
 .uikits-group__status.success { color: #0f5132; }
 .uikits-group__status.error { color: #842029; }
 
-/* Button utility classes (lightweight, rely on design system where available) */
-.uikits-group .btn {
+/* UI Kit action button alignment */
+.uikits-group .dsv2-btn {
     padding: 6px 10px;
     border-radius: 6px;
-    border: 1px solid transparent;
     font-size: 0.875rem;
     cursor: pointer;
 }
 
-.uikits-group .btn-edit {
-    background: var(--btn-edit-bg, #eef2ff);
-    color: var(--btn-edit-text, #3730a3);
-    border-color: var(--btn-edit-border, #e0e7ff);
+.uikits-group__btn-edit {
+    min-width: 84px;
 }
 
-.uikits-group .btn-save {
-    background: var(--btn-save-bg, #e6ffed);
-    color: var(--btn-save-text, #0f5132);
-    border-color: var(--btn-save-border, #d1fae5);
+.uikits-group__btn-save {
+    min-width: 84px;
 }
 
-.uikits-group .btn-cancel {
-    background: transparent;
-    color: var(--btn-cancel-text, #374151);
-    border: 1px solid var(--btn-cancel-border, #e6e6e6);
+.uikits-group__btn-cancel {
+    min-width: 84px;
 }
 
 /* ───────────────────────────────────────────────────────────────

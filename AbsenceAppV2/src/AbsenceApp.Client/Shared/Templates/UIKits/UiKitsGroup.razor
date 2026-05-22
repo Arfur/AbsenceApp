@@ -1,8 +1,8 @@
 ﻿@* ===========================================================================
    File        : UiKitsGroup.razor
    Namespace   : AbsenceApp.Client.Shared.Templates.UIKits
-   Author      : Michael
-    Version     : 1.2.0
+    Author      : Michael
+    Version     : 1.3.1
    Created     : 2026-05-20
    Updated     : 2026-05-21
    ---------------------------------------------------------------------------
@@ -16,9 +16,22 @@
      - 1.1.0  2026-05-21  Moved to Shared/Templates/UIKits and namespace updated
                           to enable proper Blazor component discovery and scoped
                           CSS compilation.
-        - 1.2.0  2026-05-21  Added template-level item contract, active selection,
-                         and item-click callback to support generic click-to-
-                         preview behavior across UI Kits pages.
+         - 1.2.0  2026-05-21  Added template-level item contract, active selection,
+                                                    and item-click callback to support generic click-to-
+                                                    preview behavior across UI Kits pages.
+        - 1.2.1  2026-05-21  Updated action controls to UI Kit button classes for
+                         Edit, Save, Cancel, and Preview toggle styling.
+        - 1.2.2  2026-05-21  Added initial active-item callback hydration for
+                 preview payload population and normalized all action
+                 controls to dsv2 secondary button styling.
+        - 1.3.1  2026-05-21  Phase 2.2 strict corrective update: minimized
+             fallback rendering to non-visual label output while
+             retaining selection + callback flow and ensuring page
+             ItemTemplate markup/classes remain authoritative.
+        - 1.3.0  2026-05-21  Phase 2.2 corrective update: reduced template
+                 fallback rendering control to keep page-owned
+                 ItemTemplate markup/classes authoritative while
+                 preserving selection + callback flow.
    =========================================================================== *@
 
 @* ===========================================================================
@@ -46,7 +59,7 @@
         </div>
 
         @* Accordion toggle: compact icon button positioned in header *@
-        <button class="uikits-group__accordion-toggle"
+        <button class="uikits-group__accordion-toggle dsv2-btn dsv2-btn-secondary"
                 @onclick="ToggleAccordion"
                 aria-expanded="@AccordionOpen"
                 aria-controls="@($"{Id}-accordion")"
@@ -71,25 +84,24 @@
                 {
                     var isActive = string.Equals(_activeItemKey, item.Key, StringComparison.Ordinal);
 
-                    <div class="uikits-group__item @(isActive ? "active" : string.Empty)"
-                         @onclick="() => SelectItemAsync(item.Key)"
-                         role="button"
-                         tabindex="0"
-                         aria-pressed="@isActive"
-                         @onkeydown="(e) => OnItemKeyDownAsync(e, item.Key)">
-
-                        @if (ItemTemplate is not null)
-                        {
+                    @if (ItemTemplate is not null)
+                    {
+                        <div class="uikits-group__item @(isActive ? "active" : string.Empty)"
+                             @onclick="() => SelectItemAsync(item.Key)">
                             @ItemTemplate(new UiKitsDemoItemContext(item, isActive))
-                        }
-                        else
-                        {
-                            <button type="button"
-                                    class="uikits-group__item-button @item.CssClass @(isActive ? "is-active" : string.Empty)">
-                                @item.Label
-                            </button>
-                        }
-                    </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="uikits-group__item @(isActive ? "active" : string.Empty)"
+                             @onclick="() => SelectItemAsync(item.Key)"
+                             role="button"
+                             tabindex="0"
+                             aria-pressed="@isActive"
+                             @onkeydown="(e) => OnItemKeyDownAsync(e, item.Key)">
+                            <span class="uikits-group__item-fallback" aria-label="@item.Label">@item.Label</span>
+                        </div>
+                    }
                 }
             }
             else
@@ -106,7 +118,7 @@
                 <pre class="uikits-group__code" role="textbox" aria-readonly="true">@((MarkupString)PreviewCss)</pre>
 
                 <div class="uikits-group__actions">
-                    <button class="btn btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
+                    <button class="dsv2-btn dsv2-btn-secondary uikits-group__btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
                 </div>
             }
             else
@@ -118,8 +130,8 @@
                           aria-label="CSS editor"></textarea>
 
                 <div class="uikits-group__actions">
-                    <button class="btn btn-save" @onclick="OnSaveClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Save</button>
-                    <button class="btn btn-cancel" @onclick="OnCancelClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Cancel</button>
+                    <button class="dsv2-btn dsv2-btn-secondary uikits-group__btn-save" @onclick="OnSaveClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Save</button>
+                    <button class="dsv2-btn dsv2-btn-secondary uikits-group__btn-cancel" @onclick="OnCancelClicked" disabled="@IsSaving" aria-disabled="@IsSaving">Cancel</button>
                 </div>
             }
 
@@ -217,6 +229,7 @@
 
     private string? _activeItemKey;
     private bool _itemStateInitialised;
+    private string? _lastNotifiedItemKey;
 
     public sealed class UiKitsDemoItem
     {
@@ -224,18 +237,20 @@
         {
         }
 
-        public UiKitsDemoItem(string key, string label, string? cssClass = null)
+        public UiKitsDemoItem(string key, string label, string? cssClass, string? iconClass)
         {
             Key = key;
             Label = label;
             CssClass = cssClass;
+            IconClass = iconClass;
         }
 
         public string Key { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
         public string? CssClass { get; set; }
+        public string? IconClass { get; set; }
     }
-
+    
     public sealed class UiKitsDemoItemContext
     {
         public UiKitsDemoItemContext(UiKitsDemoItem item, bool isActive)
@@ -248,25 +263,36 @@
         public bool IsActive { get; }
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (Items is null || Items.Count == 0)
         {
             _activeItemKey = null;
             _itemStateInitialised = false;
+            _lastNotifiedItemKey = null;
             return;
         }
+
+        var activeItemChanged = false;
 
         if (!_itemStateInitialised)
         {
             _activeItemKey = ResolveInitialActiveKey();
             _itemStateInitialised = true;
-            return;
+            activeItemChanged = true;
         }
-
-        if (!_ContainsItemKey(_activeItemKey))
+        else if (!_ContainsItemKey(_activeItemKey))
         {
             _activeItemKey = ResolveInitialActiveKey();
+            activeItemChanged = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(_activeItemKey)
+            && OnItemSelectedKeyChanged.HasDelegate
+            && (activeItemChanged || !string.Equals(_lastNotifiedItemKey, _activeItemKey, StringComparison.Ordinal)))
+        {
+            await OnItemSelectedKeyChanged.InvokeAsync(_activeItemKey);
+            _lastNotifiedItemKey = _activeItemKey;
         }
     }
 
@@ -316,6 +342,7 @@
         if (OnItemSelectedKeyChanged.HasDelegate)
         {
             await OnItemSelectedKeyChanged.InvokeAsync(key);
+            _lastNotifiedItemKey = key;
         }
     }
 

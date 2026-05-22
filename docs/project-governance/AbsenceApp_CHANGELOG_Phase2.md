@@ -1285,6 +1285,37 @@ StaffProfileApiServiceV2 is already registered as Scoped in DI
   - `/v2/students/details`
   - `/v2/staff/details`
 - Kept:
+
+---
+
+## 2026-05-21 — UI Kits Phase 2.1 Visual Restoration
+
+**Author:** Michael  
+**Type:** UI | Component | Hotfix  
+**Scope:** `ui:ui-kits-template`  
+**Summary:** Applied the scoped Phase 2.1 restore set for Buttons/Dropdown preview behavior and UiKitsGroup action-button styling to recover expected visual parity.
+
+### Details
+- Files modified (strict Phase 2.1 scope):
+  - `AbsenceAppV2/src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor`
+  - `AbsenceAppV2/src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css`
+- Version increments:
+  - `Buttons/Index.razor`: `8.0.0` → `8.1.0`
+  - `Dropdown/Index.razor`: `5.0.0` → `5.1.0`
+  - `UiKitsGroup.razor`: `1.2.0` → `1.2.1`
+  - `UiKitsGroup.razor.css`: `1.1.0` → `1.1.1`
+- Applied restore items:
+  - Buttons now passes full class lists per `UiKitsDemoItem` for rendered variants (base + variant composition).
+  - Icon button group restored to dedicated icon-button rendering contract (`dsv2-btn-icon`) with explicit icon class values provided by item CSS class.
+  - Dropdown trigger/toggle clicks now explicitly refresh selected variant preview payload before opening menus.
+  - `UiKitsGroup` Edit/Save/Cancel/Preview controls now use UI Kit button class combinations instead of legacy bootstrap-like class hooks.
+
+### Verification
+- Build and scoped CSS verification executed after edit pass (see session validation logs).
+- Regression targets: Buttons variant selection, icon buttons, Dropdown preview payload updates, and UiKitsGroup action controls.
+
   - `/v2/students/new`
   - `/v2/staff/new`
   as intentional create shortcuts.
@@ -3681,5 +3712,128 @@ Bootstrap Icons CSS was referenced only via CDN (`cdn.jsdelivr.net`). In school 
 ### Verification
 - Build: `dotnet build src/AbsenceApp.Client/AbsenceApp.Client.csproj` — 0 errors, 0 warnings expected
 - Manual: navigate to `/globalsettings/ui-kits/dropdown`; confirm all 3 groups render; confirm accordion, edit/save/cancel, and live CSS preview work correctly
+
+---
+
+## 2026-05-21 — UI Kits Phase 2.1 Visual Regression Recovery (Execution)
+
+**Author:** Michael (AI-assisted)
+**Type:** UI | Component | Hotfix
+**Scope:** `ui:globalsettings/ui-kits`
+**Summary:** Executed Phase 2.1 recovery for UI Kits regressions by restoring explicit render classes for affected button groups, data-driven icon payloads, initial preview hydration, and template action-button styling consistency.
+
+### Details
+- Restored explicit render-ready class supply in Buttons page for affected groups (Basic, Outline, Light/Soft, Radius, Active, Disabled, Loading) without template inference.
+- Removed switch-based icon class mapping and shifted icon class payload assignment to data-driven item mapping for icon ItemTemplate rendering.
+- Added deterministic initial active-item callback hydration in `UiKitsGroup` so page-level preview payload is populated on first render.
+- Normalized template action controls (Preview/Edit/Save/Cancel) to UI Kit secondary button classes and kept scoped CSS free of legacy `.btn`/`.btn-*` selectors.
+- Preserved `UiKitsPage` shell files without behavioral drift.
+
+### Modified Files and Version Increments
+| File | Version |
+|------|---------|
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor` | 1.2.1 → 1.2.2 |
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css` | 1.1.1 → 1.1.2 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor` | 8.1.0 → 8.2.0 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor` | 5.1.0 → 5.2.0 |
+
+### Verification
+- Non-incremental build completed successfully (`0 Error(s)`, `0 Warning(s)`) after releasing app file locks.
+- Scoped CSS bundle verification confirmed required selectors are present:
+  - `.uikits-group__demo[...]`
+  - `.uikits-group__item[...]`
+  - `.uikits-group__item.active[...]`
+  - `.uikits-group__item-button[...]`
+  - `.uikits-group__item-button.is-active[...]`
+  - `.uikits-group__accordion[...]`
+  - `.uikits-group__accordion.open[...]`
+  - `.uikits-group__code[...]`
+- Phase 2.1 regression check targets completed for Buttons and Dropdown preview/update flow.
+
+### Phase Marker
+This entry is part of the **Phase 2.1 visual regression recovery** execution cycle.
+
+---
+
+## 2026-05-21 — UI Kits Phase 2.2 Template De-Interference (Execution)
+
+**Author:** Michael (AI-assisted)  
+**Type:** UI | Component | Hotfix  
+**Scope:** `ui:globalsettings/ui-kits`  
+**Summary:** Executed Phase 2.2 corrective implementation to make page-owned ItemTemplate rendering authoritative, remove template fallback visual overrides, and keep preview payload updates deterministic for button/dropdown interactions.
+
+### Details
+- Reworked `UiKitsGroup` fallback item rendering so page-supplied `ItemTemplate` remains the visual source of truth; retained selection/callback behavior without forcing template button semantics over page markup.
+- Neutralized template fallback button visuals in `UiKitsGroup.razor.css` (`.uikits-group__item-button`) so background/border/padding/color are no longer imposed on page-owned UI Kit classes.
+- Completed Buttons page Phase 2.2 refactor by rendering visual groups with explicit page-owned ItemTemplate blocks and deterministic class/icon helpers:
+  - removed tone-heuristic class synthesis helpers,
+  - added explicit class resolvers for standard/radius/size/social/icon render paths,
+  - preserved preview update callbacks through `OnItemSelectedKeyChanged`.
+- Confirmed Dropdown click paths preserve preview-first ordering for single/split/directional actions and updated file metadata for Phase 2.2 tracking.
+
+### Modified Files and Version Increments
+| File | Version |
+|------|---------|
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor` | 1.2.2 → 1.3.0 |
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css` | 1.1.2 → 1.2.0 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor` | 8.2.0 → 8.3.0 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor` | 5.2.0 → 5.3.0 |
+
+### Verification
+- Diagnostics: no file-level errors in all four modified Phase 2.2 files.
+- Build:
+  - initial non-incremental build failed due to locked `AbsenceApp.Client` process (`MSB3021/MSB3027`).
+  - after terminating process id `22604`, non-incremental build succeeded with `0 Warning(s)` and `0 Error(s)`.
+- Scoped CSS bundle check confirmed Phase 2.2 template neutralization selectors are emitted:
+  - `.uikits-group__item-button[...]`
+  - `.uikits-group__item-button.is-active[...]`
+  and generated rules contain reset/neutral values (`background: transparent; border: 0; padding: 0; color: inherit`).
+
+### Phase Marker
+This entry is part of the **Phase 2.2 template de-interference** execution cycle.
+
+---
+
+## 2026-05-21 — UI Kits Phase 2.2 Strict Corrective Execution
+
+**Author:** Michael (AI-assisted)  
+**Type:** UI | Component | Hotfix  
+**Scope:** `ui:globalsettings/ui-kits`  
+**Summary:** Executed strict Phase 2.2 corrections to fully de-power template fallback rendering, enforce deterministic page-owned ItemTemplate class payloads across required button groups, and preserve preview-first variant hydration behavior.
+
+### Details
+- `UiKitsGroup.razor` strict fallback minimization:
+  - kept accordion, active-item tracking, initial/click selection callbacks, and edit/save/cancel behavior.
+  - replaced fallback visual button rendering with non-visual fallback label output so template markup cannot impose button visuals.
+- `UiKitsGroup.razor.css` strict fallback neutralization:
+  - removed `.uikits-group__item-button` fallback visual rules.
+  - retained only minimal fallback layout rule on `.uikits-group__item-fallback`.
+- `Buttons/Index.razor` strict deterministic mapping:
+  - kept all required button groups on explicit page-owned `ItemTemplate` markup.
+  - removed heuristic/fallback class derivation and applied explicit per-group key→class maps.
+  - corrected icon key mapping so icon item payload is icon-only class (`ti ...`) and social classes/icons are explicit.
+  - enforced required size render classes (`dsv2-btn-sm`, `dsv2-btn-md`, `dsv2-btn-lg`).
+- `Dropdown/Index.razor` strict preview-first contract retained:
+  - verified click paths invoke variant selection hydration before menu interaction handlers.
+
+### Modified Files and Version Increments
+| File | Version |
+|------|---------|
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor` | 1.3.0 → 1.3.1 |
+| `src/AbsenceApp.Client/Shared/Templates/UIKits/UiKitsGroup.razor.css` | 1.2.0 → 1.2.1 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor` | 8.3.0 → 8.4.0 |
+| `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Dropdown/Index.razor` | 5.3.0 → 5.4.0 |
+
+### Verification
+- Diagnostics: no file-level errors in all four strict Phase 2.2 files.
+- Build:
+  - initial non-incremental build failed due to locked `AbsenceApp.Client` process (`MSB3021/MSB3027`, pid `22480`).
+  - after terminating the lock-holder process, non-incremental build succeeded with `0 Warning(s)` and `0 Error(s)`.
+- Scoped CSS bundle check confirmed strict fallback output:
+  - `.uikits-group__item-fallback[...]` present.
+  - `.uikits-group__item-button[...]` selectors no longer emitted.
+
+### Phase Marker
+This entry is part of the **Phase 2.2 strict corrective cycle**.
 
 ---
