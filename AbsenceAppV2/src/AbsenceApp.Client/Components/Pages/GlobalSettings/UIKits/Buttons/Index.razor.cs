@@ -408,8 +408,9 @@ public partial class Index : ComponentBase
         }
     }
 
-    private static ButtonGroupState CreateState(string key, string title, List<ButtonVariantDef> variants)
-        => new()
+    private ButtonGroupState CreateState(string key, string title, List<ButtonVariantDef> variants)
+    {
+        var state = new ButtonGroupState
         {
             GroupKey = key,
             GroupTitle = title,
@@ -417,6 +418,13 @@ public partial class Index : ComponentBase
             SelectedVariantKey = variants[0].Key,
             AccordionOpen = false
         };
+
+        // 🔥 THIS is what was missing after the template migration
+        state.PreviewCss = SynthesizeCss(state, state.SelectedVariantKey);
+        state.EditorText = state.PreviewCss;
+
+        return state;
+    }
 
     private void OnToggleAccordion(ButtonGroupState state)
     {
