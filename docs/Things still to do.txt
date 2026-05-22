@@ -25,3 +25,34 @@ Shared/Templates/Tables/
     TablePageTemplateV2.razor.css
 
 The CSS for buttons is in app.css and really should be in buttons.css
+
+
+Need to look at the Index.razor for Buttons because it has repeated code for every button group:
+        @* ───────────────────────────────────────────────────────────────
+            Header: SECTION
+        ─────────────────────────────────────────────────────────────── *@
+        <UiKitsGroup Id="btn-group-icon"
+                     Title="@_iconState.GroupTitle"
+                     IsAccordionOpen="@_iconState.AccordionOpen"
+                     IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_iconState))"
+                     Items="@(_iconState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, _iconRenderClassByKey[v.Key], _iconClassByKey[v.Key])).ToList())"
+                     OnItemSelectedKeyChanged="EventCallback.Factory.Create<string>(this, key => OnSelectedVariantChanged(_iconState, key))"
+                     IsEditing="@_iconState.IsEditing"
+                     OnEdit="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_iconState))"
+                     EditorText="@_iconState.EditorText"
+                     EditorTextChanged="EventCallback.Factory.Create<string>(this, v => OnEditorInput(_iconState, v))"
+                     IsSaving="@_iconState.IsSaving"
+                     OnSave="EventCallback.Factory.Create(this, () => OnEditSaveClickedAsync(_iconState))"
+                     OnCancel="EventCallback.Factory.Create(this, () => OnCancelClicked(_iconState))"
+                     PreviewCss="@_iconState.PreviewCss"
+                     StatusMessage="@_iconState.StatusMessage"
+                     StatusIsError="@_iconState.StatusIsError">
+            <ItemTemplate Context="ctx">
+                <button type="button" class="@ctx.Item.CssClass" aria-label="@ctx.Item.Label">
+                    <i class="@ctx.Item.IconClass"></i>
+                </button>
+            </ItemTemplate>
+        </UiKitsGroup>
+		
+		
+Need to sort the LIGHT and DARK theme in 'Theme.json' at the moment they are the same.
