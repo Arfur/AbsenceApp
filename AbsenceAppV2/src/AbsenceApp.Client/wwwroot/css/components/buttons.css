@@ -1,3 +1,25 @@
+/* ===========================================================================
+   File        : buttons.css
+   Namespace   : AbsenceApp.Client.wwwroot.css.components
+   Author      : Michael
+   Version     : 1.1.0
+   Created     : 2026-05-15
+   Updated     : 2026-05-22
+   ---------------------------------------------------------------------------
+   Purpose     : Centralised styling for all UI Kit button components including
+                 base button, filled variants, outline variants, link variant,
+                 size variants, and dark mode overrides.
+   ---------------------------------------------------------------------------
+   Changes     :
+     - 1.0.0  2026-05-15  Initial creation.
+     - 1.1.0  2026-05-22  Structural update: added full section headers and
+                          reorganised existing rules for clarity and future
+                          expansion (no functional CSS changes).
+   =========================================================================== */
+
+/* ==========================================================================
+   BUTTONS — BASE STYLES
+   ========================================================================== */
 .dsv2-btn {
     display: inline-flex;
     align-items: center;
@@ -24,7 +46,10 @@
     pointer-events: none;
 }
 
-/* ── Colour fills ────────────────────────────────────────────────────────── */
+
+/* ==========================================================================
+   BUTTONS — FILLED VARIANTS
+   ========================================================================== */
 .dsv2-btn--primary {
     background: var(--ds-btn-primary-bg, #0d6efd);
     color: var(--ds-btn-primary-text, #ffffff);
@@ -125,6 +150,10 @@
     border-color: var(--ds-btn-dark-disabled-border, #212529);
 }
 
+
+/* ==========================================================================
+   BUTTONS — OUTLINE VARIANTS
+   ========================================================================== */
 .dsv2-btn--outline-dark {
     background: transparent;
     color: var(--ds-btn-outline-dark-text, #212529);
@@ -154,8 +183,6 @@
     text-decoration: underline;
 }
 
-/* ── Outline variants (use shared --ds-btn-* tokens; editing outline colours
-   also updates the corresponding filled button variant) ─────────────────── */
 .dsv2-btn--outline-primary {
     background: transparent;
     color: var(--ds-btn-primary-bg, #0d6efd);
@@ -222,7 +249,10 @@
     color: var(--ds-btn-info-text, #212529);
 }
 
-/* ── Size variants ───────────────────────────────────────────────────────── */
+
+/* ==========================================================================
+   BUTTONS — SIZE VARIANTS
+   ========================================================================== */
 .dsv2-btn--lg {
     padding: 10px 20px;
     font-size: 0.95rem;
@@ -233,6 +263,10 @@
     font-size: 0.78rem;
 }
 
+
+/* ==========================================================================
+   BUTTONS — DARK MODE OVERRIDES
+   ========================================================================== */
 .dark .dsv2-btn--secondary {
     color: var(--ds-btn-secondary-text, #e9ecef);
     border-color: var(--ds-btn-secondary-border, #2d3348);

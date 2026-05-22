@@ -1,0 +1,126 @@
+Here’s a **phased, step‑by‑step plan** you can hand to VS Code AI in small, safe chunks.
+
+---
+
+### Phase 1 – Centralise all button CSS into `buttons.css`
+
+**Goal:** All button styles live in  
+`src/AbsenceApp.Client/wwwroot/css/components/buttons.css`
+
+1. **Inventory existing button CSS**
+   - **Instruction to VS Code AI:**  
+     “Search the solution for button CSS selectors: `dsv2-btn`, `btp-*-btn`, `.btn-`, `.button-`, and any `*-btn-*` used by Buttons UI Kits. List all files and selectors found, do not modify anything yet.”
+
+2. **Plan the consolidation**
+   - **You:** Decide which selectors are truly button‑related and which belong to other components (e.g., cards, dropdowns).
+
+3. **Move CSS into `buttons.css` (non‑destructive)**
+   - **Instruction to VS Code AI (per file):**  
+     “For file `<path>`, copy all button‑related CSS rules into `wwwroot/css/components/buttons.css` (append at the end). Do **not** delete from the original file yet. Keep selectors identical.”
+
+4. **Wire global import (if needed)**
+   - **Instruction:**  
+     “Ensure `buttons.css` is included in the global CSS pipeline (e.g., `_Host.cshtml`, `index.html`, or main bundle). If already included, do nothing.”
+
+5. **Remove duplicates after verification**
+   - **After you confirm UI still looks correct:**  
+     “For file `<path>`, remove button CSS rules that now exist in `buttons.css`. Do not touch non‑button rules.”
+
+---
+
+### Phase 2 – Replace 13 repeated `UiKitsGroup` blocks with a single loop
+
+**Goal:** One reusable Razor pattern, all groups driven by data.
+
+1. **Introduce a unified descriptor model**
+   - **Instruction:**  
+     “In `Index.razor.cs` (or code‑behind), create a new class `ButtonGroupDescriptor` with:  
+     `string Id`, `ButtonGroupState State`, `Func<ButtonVariantDef, UiKitsGroup.UiKitsDemoItem> ItemFactory`, `RenderFragment<UiKitsGroup.ItemTemplateContext> ItemTemplate`.”
+
+2. **Build a `List<ButtonGroupDescriptor>`**
+   - **Instruction:**  
+     “Create a `List<ButtonGroupDescriptor> ButtonGroups` that contains one entry per group (basic, outline, soft, icon, social, radius, disabled, active, loading, block, size, group, action). For each, map:
+     - `Id` (e.g., `btn-group-basic`)
+     - `State` (e.g., `_basicState`)
+     - `ItemFactory` (wrap existing `Resolve*Class` logic)
+     - `ItemTemplate` (copy existing inner markup for that group).”
+
+3. **Refactor `Index.razor` to a single loop**
+   - **Instruction:**  
+     “Replace the 13 explicit `<UiKitsGroup ...>` blocks with a single `@foreach (var g in ButtonGroups)` that:
+     - Binds `Id`, `Title`, `IsAccordionOpen`, `EditorText`, `PreviewCss`, etc. from `g.State`
+     - Uses `Items="@(g.State.Variants.Select(v => g.ItemFactory(v)).ToList())"`
+     - Uses `ItemTemplate="g.ItemTemplate"`.”
+
+4. **Preserve per‑group behaviour**
+   - **Instruction:**  
+     “Ensure each group’s specific `Resolve*Class` and inner markup (e.g., social icon `<i>`, group container `<div>`, action button text) is preserved inside its `ItemTemplate` or `ItemFactory`.”
+
+5. **Clean up old code**
+   - **After verification:**  
+     “Remove the now‑unused 13 individual `UiKitsGroup` blocks and any dead helper methods that are no longer referenced.”
+
+---
+
+### Phase 3 – Define a global naming convention
+
+**Goal:** One standard naming scheme for all UI Kit labels and keys.
+
+1. **Draft the convention (you)**
+   - Decide for **all components** (buttons, cards, dropdowns, etc.):
+     - **Key format:** `component-group-variant` (e.g., `btn-basic-primary`, `btn-social-facebook`, `card-stat-primary`, `dd-basic-default`).
+     - **Label format:** Title case, human‑readable (e.g., `Primary`, `Facebook`, `Stat Card`).
+     - **Prefix rules:** `btn-`, `card-`, `dd-` etc.
+
+2. **Create a mapping table**
+   - **Instruction:**  
+     “Scan UI Kits code for all variant keys and labels used in Buttons, Cards, Dropdowns. Produce a CSV‑style list: `Component, OldKey, OldLabel, File, Line` without changing anything.”
+
+3. **You:** Fill in the **NewKey** and **NewLabel** columns according to your convention.
+
+---
+
+### Phase 4 – Apply the new naming convention safely
+
+**Goal:** Rename keys/labels across code and templates without breaking behaviour.
+
+1. **Rename keys in small batches**
+   - **Instruction (per component type, e.g., Buttons only):**  
+     “For the following mappings, rename all occurrences of `OldKey` to `NewKey` in C#, Razor, and JSON config, but **do not** touch CSS selectors yet. Provide a diff summary only.”
+
+2. **Update CSS selectors to match**
+   - **Instruction:**  
+     “For `buttons.css`, rename selectors from old keys to new keys according to the mapping. Ensure no unrelated selectors are changed.”
+
+3. **Update labels**
+   - **Instruction:**  
+     “Update display labels in UI Kits (e.g., `Label` properties, headings) from `OldLabel` to `NewLabel` per mapping.”
+
+4. **Regression check after each batch**
+   - You run the app, check:
+     - UI Kit pages load
+     - Buttons render correctly
+     - CSS previews still show correct code
+
+---
+
+### Phase 5 – Final cleanup and verification
+
+1. **Remove dead CSS and helpers**
+   - **Instruction:**  
+     “Find unused button CSS selectors and unused helper methods related to old naming or old groups. Propose a list; do not delete yet.”
+
+2. **Approve and delete**
+   - After you confirm they’re truly unused:  
+     “Delete the listed unused selectors and helpers.”
+
+3. **Snapshot and document**
+   - Tag a commit: `feat/ui-kit-buttons-consolidation`.
+   - Add a short `README` section describing:
+     - `buttons.css` as the single source of truth
+     - The naming convention
+     - The `ButtonGroupDescriptor` pattern
+
+---
+
+If you want, next step I can write the **exact VS Code AI “PLAN MODE” prompt** for **Phase 1 only**, tuned to your repo and constraints.
