@@ -2599,6 +2599,34 @@ aaa_menuitems.csv and aaa_rolemenuitem.csv were intentionally not modified. They
   ### Affected Files and Components
   - `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md` (append-only update)
 
+---
+
+## 2026-05-22 — Hybrid Merge applied to UI Kit Buttons logic
+
+**Author:** Michael  
+**Type:** UI | Code | Integration  
+**Scope:** `design-system:uikits-buttons`  
+**Summary:** Hybrid Merge applied to Buttons page — UI layout preserved, logic upgraded to token‑backed architecture.
+
+### Details
+- Preserved existing UI Kit Buttons page layout (accordions, galleries, section structure, Buttons3 UX, CSS preview panel, Save/Cancel flow).
+- Replaced legacy manual CSS synthesis/parsing backend in `UIKits/Buttons/Index.razor.cs` with token-backed orchestration.
+- Integrated `ButtonsEditorViewModelV2` + `DesignSystemConfigService` + `components.json` contract for:
+  - variant resolution
+  - editor groups/token mappings
+  - preview cssVariables-driven output
+- Added scoped ViewModel integration helpers for css-variable reads/saves to support deterministic token-mapped saves from the existing UI Kit page without replacing the page layout.
+
+### Affected Files and Components
+- `src/AbsenceApp.Client/Components/Pages/GlobalSettings/UIKits/Buttons/Index.razor.cs`
+- `src/AbsenceApp.Client/ViewModels/V2/ButtonsEditorViewModelV2.cs`
+- `docs/project-governance/AbsenceApp_CHANGELOG_Phase2.md`
+
+### Verification
+- Editor diagnostics: no errors in modified files.
+- Layout contract: preserved existing `Index.razor` page structure and group rendering contract.
+
+
   ### Rollout Notes
   - This entry records planning/governance outcomes only; no implementation changes are included in this phase entry.
   - Phase F is closed in plan mode; all plan phases A�F are now complete and execution-ready for implementation mode when explicitly authorized.

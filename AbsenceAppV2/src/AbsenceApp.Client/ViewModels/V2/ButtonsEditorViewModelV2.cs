@@ -3,9 +3,9 @@
  File        : ButtonsEditorViewModelV2.cs
  Namespace   : AbsenceApp.Client.ViewModels.V2
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.0
  Created     : 2026-05-12
- Updated     : 2026-05-12
+ Updated     : 2026-05-22 16:15
 -------------------------------------------------------------------------------
  Purpose     : ViewModel for the Buttons Editor page (/globalsettings/buttons).
                Provides token loading, edit buffering, live validation, save,
@@ -20,6 +20,10 @@
                coupling.
 -------------------------------------------------------------------------------
  Changes     :
+     - 1.1.0  2026-05-22  Added integration helpers for UI Kit hybrid merge:
+                                                 GetCurrentValue(cssVariable) and
+                                                 SaveCssVariableValuesAsync(updates) to support
+                                                 token-mapped variant saves from components.json.
    - 1.0.0  2026-05-12  Initial creation (Phase B — Buttons Editor).
 -------------------------------------------------------------------------------
  Validation rules :
@@ -130,6 +134,71 @@ public sealed class ButtonsEditorViewModelV2
         ValidateSingle(cssVar, value);
         SaveMessage = string.Empty;
         StateChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// Gets the current display value for a CSS variable from the local token
+    /// cache. Returns CurrentValue when present, otherwise DefaultValue.
+    /// Returns null when the CSS variable is not known in the loaded token set.
+    /// </summary>
+    public string? GetCurrentValue(string cssVar)
+    {
+        var token = AllTokens.FirstOrDefault(t => t.CssVariable == cssVar);
+        if (token is null)
+            return null;
+
+        if (EditBuffer.TryGetValue(cssVar, out var cached) && !string.IsNullOrWhiteSpace(cached))
+            return cached;
+
+        return token.CurrentValue ?? token.DefaultValue;
+    }
+
+    /// <summary>
+    /// Saves a scoped set of CSS-variable updates. Validation/security rules are
+    /// identical to the normal editor flow but targeted only at provided vars.
+    /// </summary>
+    public async Task<(bool Success, string? Error)> SaveCssVariableValuesAsync(
+        Dictionary<string, string> updates)
+    {
+        if (updates is null || updates.Count == 0)
+            return (false, "No token values were provided.");
+
+        Errors.Clear();
+        SaveMessage = string.Empty;
+
+        foreach (var kv in updates)
+        {
+            ValidateSingle(kv.Key, kv.Value);
+        }
+
+        if (Errors.Count > 0)
+        {
+            var first = Errors.First();
+            return (false, $"{first.Key}: {first.Value}");
+        }
+
+        IsSaving = true;
+        StateChanged?.Invoke();
+
+        try
+        {
+            var payload = updates.ToDictionary(kv => kv.Key, kv => (string?)kv.Value);
+            await _tokenService.UpdateTokensAsync(payload);
+
+            AllTokens = await _tokenService.GetGroupAsync("btn");
+            RebuildBuffer();
+            SaveMessage = "Changes saved successfully.";
+            return (true, null);
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
+        }
+        finally
+        {
+            IsSaving = false;
+            StateChanged?.Invoke();
+        }
     }
 
     // =========================================================================
