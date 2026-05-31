@@ -2,14 +2,17 @@
    File        : UiKitsPage.razor.css
    Namespace   : AbsenceApp.Client.Framework.PageTemplates
    Author      : Michael
-   Version     : 1.0.0
+    Version     : 1.1.0
    Created     : 2026-05-20
-   Updated     : 2026-05-20
+    Updated     : 2026-05-31
    ---------------------------------------------------------------------------
    Purpose     : Styles for UiKitsPage shell. Provides page padding, centered
                  container, and spacing for stacked UiKitsGroup blocks.
    ---------------------------------------------------------------------------
    Changes     :
+         - 1.1.0  2026-05-31  Increased the top gap between the page header and
+                                                    the first UI Kits block by adding a small margin to
+                                                    the page wrapper.
      - 1.0.0  2026-05-20  Initial creation.
    =========================================================================== */
 
@@ -18,7 +21,8 @@
    Provides outer padding and ensures full-width behavior.
    ─────────────────────────────────────────────────────────────── */
 .uikits-page {
-    padding: 24px;
+    padding: 0;
+    margin-top: 8px;
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -30,7 +34,7 @@
    ─────────────────────────────────────────────────────────────── */
 .uikits-page__container {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -42,7 +46,7 @@
    ─────────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
     .uikits-page {
-        padding: 16px;
+        padding: 0;
     }
 
     .uikits-page__container {

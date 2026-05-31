@@ -2,9 +2,9 @@
    File        : PageHeaderV2.razor
    Namespace   : AbsenceApp.Client.Framework.Layout
    Author      : Michael
-   Version     : 1.1.0
+    Version     : 1.2.0
    Created     : 2026-04-13
-   Updated     : 2026-04-13
+    Updated     : 2026-05-31
    ---------------------------------------------------------------------------
    Purpose     : Route-aware two-row page header. Replaces the combination of
                  BreadcrumbV2 (thin layout bar) and PageTemplateV2's title row.
@@ -22,6 +22,9 @@
                  Clicking the home icon navigates to /v2/dashboard.
    ---------------------------------------------------------------------------
    Changes     :
+         - 1.2.0  2026-05-31  Buttons UI Kit breadcrumb fix: changed the
+                                                    Row 2 category label for /globalsettings/ui-kits/buttons
+                                                    from Configuration to Component.
      - 1.1.0  2026-04-15  Issue 5: Row 2 breadcrumb redesign. Home icon link
                           removed. Shows [CATEGORY in accent] > [GroupName in
                           muted]. _itemLabel excluded from path (page title in
@@ -162,6 +165,10 @@
                 "Path is globalsettings — calling GetGlobalSettingsMenuGroupsAsync()");
             var groups = await NavService.GetGlobalSettingsMenuGroupsAsync();
 
+            var globalSettingsCategory = path.Equals("/globalsettings/ui-kits/buttons", StringComparison.OrdinalIgnoreCase)
+                ? "Component"
+                : "Configuration";
+
             // Pass 1: exact
             foreach (var group in groups)
             {
@@ -169,7 +176,7 @@
                 {
                     if (path.Equals(item.Route, StringComparison.OrdinalIgnoreCase))
                     {
-                        _categoryLabel = "Configuration";
+                        _categoryLabel = globalSettingsCategory;
                         _groupLabel    = group.Group;
                         _itemLabel     = item.Title;
                         return;
@@ -185,7 +192,7 @@
                     if (item.Route.Length > 1 &&
                         path.StartsWith(item.Route + "/", StringComparison.OrdinalIgnoreCase))
                     {
-                        _categoryLabel = "Configuration";
+                        _categoryLabel = globalSettingsCategory;
                         _groupLabel    = group.Group;
                         _itemLabel     = item.Title;
                         return;
@@ -194,7 +201,7 @@
             }
 
             // Fallback: at /globalsettings/ root or unknown sub-path
-            _categoryLabel = "Configuration";
+            _categoryLabel = globalSettingsCategory;
             _groupLabel    = "Global Settings";
             return;
         }
