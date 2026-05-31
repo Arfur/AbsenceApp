@@ -65,6 +65,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-basic"
                      Title="@_basicState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_basicState)"
                      AccordionOpen="@_basicState.AccordionOpen"
                      AccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_basicState))"
                      Items="@(_basicState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveBasicRenderClass(v.Key), null)).ToList())"
@@ -89,6 +90,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-outline"
                      Title="@_outlineState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_outlineState)"
                      IsAccordionOpen="@_outlineState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_outlineState))"
                      Items="@(_outlineState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveOutlineRenderClass(v.Key), null)).ToList())"   
@@ -113,6 +115,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-soft"
                      Title="@_softState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_softState)"
                      IsAccordionOpen="@_softState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_softState))"
                      Items="@(_softState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveSoftRenderClass(v.Key), null)).ToList())"
@@ -137,6 +140,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-icon"
                      Title="@_iconState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_iconState)"
                      IsAccordionOpen="@_iconState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_iconState))"
                      Items="@(_iconState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, _iconRenderClassByKey[v.Key], _iconClassByKey[v.Key])).ToList())"
@@ -189,6 +193,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-radius"
                      Title="@_radiusState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_radiusState)"
                      IsAccordionOpen="@_radiusState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_radiusState))"
                      Items="@(_radiusState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveRadiusRenderClass(v.Key), null)).ToList())"
@@ -213,6 +218,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-active"
                      Title="@_activeState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_activeState)"
                      IsAccordionOpen="@_activeState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_activeState))"
                      Items="@(_activeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveActiveRenderClass(v.Key), null)).ToList())"
@@ -237,6 +243,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-disabled"
                      Title="@_disabledState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_disabledState)"
                      IsAccordionOpen="@_disabledState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_disabledState))"
                      Items="@(_disabledState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveDisabledRenderClass(v.Key), null)).ToList())"
@@ -261,6 +268,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-loading"
                      Title="@_loadingState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_loadingState)"
                      IsAccordionOpen="@_loadingState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_loadingState))"
                      Items="@(_loadingState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveLoadingRenderClass(v.Key), null)).ToList())"
@@ -295,6 +303,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-block"
                      Title="@_blockState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_blockState)"
                      IsAccordionOpen="@_blockState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_blockState))"
                      Items="@(_blockState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveBlockRenderClass(v.Key), null)).ToList())"
@@ -319,6 +328,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-sizes"
                      Title="@_sizeState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_sizeState)"
                      IsAccordionOpen="@_sizeState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_sizeState))"
                      Items="@(_sizeState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveSizeRenderClass(v.Key), null)).ToList())"
@@ -371,6 +381,7 @@ else
         ─────────────────────────────────────────────────────────────── *@
         <UiKitsGroup Id="btn-group-action"
                      Title="@_actionState.GroupTitle"
+                     TokenGroupId="@ResolveTokenGroupId(_actionState)"
                      IsAccordionOpen="@_actionState.AccordionOpen"
                      IsAccordionOpenChanged="EventCallback.Factory.Create<bool>(this, _ => OnToggleAccordion(_actionState))"
                      Items="@(_actionState.Variants.Select(v => new UiKitsGroup.UiKitsDemoItem(v.Key, v.Label, ResolveActionRenderClass(v.Key), null)).ToList())"

@@ -410,6 +410,14 @@ public partial class Index : ComponentBase
             uiVariantKey.EndsWith(v, StringComparison.OrdinalIgnoreCase));
     }
 
+    private string? ResolveTokenGroupId(ButtonGroupUiState state)
+    {
+        if (state.GroupKey is "radius" or "sizes")
+            return "structure";
+
+        return ResolveConfigVariant(state.SelectedVariantKey);
+    }
+
     private List<string> GetCssVariablesForUiVariant(string uiVariantKey)
     {
         if (!_variantToConfigVariant.TryGetValue(uiVariantKey, out var configVariant) ||

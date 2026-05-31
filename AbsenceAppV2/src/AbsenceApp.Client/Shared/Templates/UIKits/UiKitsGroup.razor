@@ -58,14 +58,17 @@
             }
         </div>
 
-        @* Accordion toggle: compact icon button positioned in header *@
-        <button class="uikits-group__accordion-toggle dsv2-btn dsv2-btn-secondary"
-                @onclick="ToggleAccordion"
-                aria-expanded="@AccordionOpen"
-                aria-controls="@($"{Id}-accordion")"
-                title="@(AccordionOpen ? "Hide CSS" : "Show CSS")">
-            <i class="bi bi-code-slash"></i>
-        </button>
+        @* Accordion toggle: only shown when a token group is mapped *@
+        @if (TokenGroupId is not null)
+        {
+            <button class="uikits-group__accordion-toggle dsv2-btn dsv2-btn-secondary"
+                    @onclick="ToggleAccordion"
+                    aria-expanded="@AccordionOpen"
+                    aria-controls="@($"{Id}-accordion")"
+                    title="@(AccordionOpen ? "Hide CSS" : "Show CSS")">
+                <i class="bi bi-code-slash"></i>
+            </button>
+        }
     </div>
 
     @* ---------------------------------------------------------------------------
@@ -110,7 +113,9 @@
             }
         </div>
 
-        @* Accordion container: collapsed/expanded states handled via CSS class *@
+        @* Accordion container: only rendered when a token group is mapped *@
+        @if (TokenGroupId is not null)
+        {
         <div id="@($"{Id}-accordion")" class="uikits-group__accordion @(AccordionOpen ? "open" : "closed")">
             @* Display mode: show synthesised CSS and Edit button *@
             @if (!IsEditing)
@@ -142,6 +147,7 @@
                 <div class="uikits-group__status @(StatusIsError ? "error" : "success")" role="status">@StatusMessage</div>
             }
         </div>
+        }
     </div>
 </div>
 
@@ -177,6 +183,9 @@
 
     [Parameter]
     public string? InitialActiveItemKey { get; set; }
+
+    [Parameter]
+    public string? TokenGroupId { get; set; }
 
     [Parameter]
     public EventCallback<string> OnItemSelectedKeyChanged { get; set; }
