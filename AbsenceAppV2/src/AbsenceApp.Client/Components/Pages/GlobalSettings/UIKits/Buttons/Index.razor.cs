@@ -465,16 +465,15 @@ public partial class Index : ComponentBase
         return values;
     }
 
-    private string BuildPreviewCss(Dictionary<string, string> draftValues)
+    private string BuildPreviewCss(Dictionary<string, string> draftValues, List<string> scopedVars)
     {
-        var previewVars = _buttonConfig.PreviewCssVariables;
-        if (previewVars.Count == 0)
+        if (scopedVars.Count == 0)
             return string.Empty;
 
         var sb = new StringBuilder();
         sb.AppendLine(":root {");
 
-        foreach (var cssVar in previewVars.OrderBy(v => v, StringComparer.OrdinalIgnoreCase))
+        foreach (var cssVar in scopedVars)
         {
             var value = draftValues.TryGetValue(cssVar, out var edited)
                 ? edited
@@ -514,7 +513,7 @@ public partial class Index : ComponentBase
         }
 
         var parsed = ParseEditorAssignments(state.EditorText);
-        state.PreviewCss = BuildPreviewCss(parsed);
+        state.PreviewCss = BuildPreviewCss(parsed, cssVars);
         state.StatusMessage = null;
         state.StatusIsError = false;
     }
@@ -626,7 +625,7 @@ public partial class Index : ComponentBase
     {
         state.EditorText = text;
         _draftEditorCache[$"{state.GroupKey}:{state.SelectedVariantKey}"] = text;
-        state.PreviewCss = BuildPreviewCss(ParseEditorAssignments(text));
+        state.PreviewCss = BuildPreviewCss(ParseEditorAssignments(text), GetCssVariablesForUiVariant(state.SelectedVariantKey));
     }
 
     private void OnCancelClicked(ButtonGroupUiState state)

@@ -217,7 +217,42 @@
         "--ds-btn-outline-dark-hover-border": "#212529",
         "--ds-btn-outline-dark-disabled-text": "#212529",
         "--ds-btn-outline-dark-disabled-border": "#212529",
-        "--ds-btn-outline-dark-disabled-bg": "transparent"
+        "--ds-btn-outline-dark-disabled-bg": "transparent",
+
+        "--ds-btn-primary-bg":       "#0d6efd",
+        "--ds-btn-primary-text":     "#ffffff",
+        "--ds-btn-primary-border":   "#0d6efd",
+        "--ds-btn-primary-hover-bg": "#0b5ed7",
+
+        "--ds-btn-secondary-bg":       "transparent",
+        "--ds-btn-secondary-text":     "#212529",
+        "--ds-btn-secondary-border":   "#dee2e6",
+        "--ds-btn-secondary-hover-bg": "#f8f9fa",
+
+        "--ds-btn-success-bg":       "#198754",
+        "--ds-btn-success-text":     "#ffffff",
+        "--ds-btn-success-border":   "#198754",
+        "--ds-btn-success-hover-bg": "#157347",
+
+        "--ds-btn-danger-bg":       "#dc3545",
+        "--ds-btn-danger-text":     "#ffffff",
+        "--ds-btn-danger-border":   "#dc3545",
+        "--ds-btn-danger-hover-bg": "#bb2d3b",
+
+        "--ds-btn-warning-bg":       "#ffc107",
+        "--ds-btn-warning-text":     "#212529",
+        "--ds-btn-warning-border":   "#ffc107",
+        "--ds-btn-warning-hover-bg": "#ffca2c",
+
+        "--ds-btn-info-bg":       "#0dcaf0",
+        "--ds-btn-info-text":     "#212529",
+        "--ds-btn-info-border":   "#0dcaf0",
+        "--ds-btn-info-hover-bg": "#31d2f2",
+
+        "--ds-btn-border-radius": "6px",
+        "--ds-btn-font-size":     "0.875rem",
+        "--ds-btn-padding-y":     "7px",
+        "--ds-btn-padding-x":     "16px"
       }
     },
     "dark": {
@@ -427,7 +462,42 @@
         "--ds-btn-outline-dark-hover-border": "#2e3248",
         "--ds-btn-outline-dark-disabled-text": "#8891a8",
         "--ds-btn-outline-dark-disabled-border": "#2d3348",
-        "--ds-btn-outline-dark-disabled-bg": "#1e2130"
+        "--ds-btn-outline-dark-disabled-bg": "#1e2130",
+
+        "--ds-btn-primary-bg":       "#0d6efd",
+        "--ds-btn-primary-text":     "#ffffff",
+        "--ds-btn-primary-border":   "#0d6efd",
+        "--ds-btn-primary-hover-bg": "#0b5ed7",
+
+        "--ds-btn-secondary-bg":       "transparent",
+        "--ds-btn-secondary-text":     "#212529",
+        "--ds-btn-secondary-border":   "#dee2e6",
+        "--ds-btn-secondary-hover-bg": "#f8f9fa",
+
+        "--ds-btn-success-bg":       "#198754",
+        "--ds-btn-success-text":     "#ffffff",
+        "--ds-btn-success-border":   "#198754",
+        "--ds-btn-success-hover-bg": "#157347",
+
+        "--ds-btn-danger-bg":       "#dc3545",
+        "--ds-btn-danger-text":     "#ffffff",
+        "--ds-btn-danger-border":   "#dc3545",
+        "--ds-btn-danger-hover-bg": "#bb2d3b",
+
+        "--ds-btn-warning-bg":       "#ffc107",
+        "--ds-btn-warning-text":     "#212529",
+        "--ds-btn-warning-border":   "#ffc107",
+        "--ds-btn-warning-hover-bg": "#ffca2c",
+
+        "--ds-btn-info-bg":       "#0dcaf0",
+        "--ds-btn-info-text":     "#212529",
+        "--ds-btn-info-border":   "#0dcaf0",
+        "--ds-btn-info-hover-bg": "#31d2f2",
+
+        "--ds-btn-border-radius": "6px",
+        "--ds-btn-font-size":     "0.875rem",
+        "--ds-btn-padding-y":     "7px",
+        "--ds-btn-padding-x":     "16px"
       }
     }
   },

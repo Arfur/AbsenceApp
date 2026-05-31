@@ -115,7 +115,8 @@
             @* Display mode: show synthesised CSS and Edit button *@
             @if (!IsEditing)
             {
-                <pre class="uikits-group__code" role="textbox" aria-readonly="true">@((MarkupString)PreviewCss)</pre>
+                <pre class="uikits-group__code" role="textbox" aria-readonly="true"
+                     style="height: 120px; max-height: 60vh; overflow-y: auto; resize: vertical; border: 1px solid var(--ds-border-color, #ccc); padding: 12px; box-sizing: border-box;">@DisplayText</pre>
 
                 <div class="uikits-group__actions">
                     <button class="dsv2-btn dsv2-btn-secondary uikits-group__btn-edit" @onclick="OnEditClicked" aria-label="Edit CSS">Edit</button>
@@ -374,5 +375,24 @@
         }
 
         return Items.Any(i => string.Equals(i.Key, key, StringComparison.Ordinal));
+    }
+
+    private string DisplayText => FormatForDisplay(PreviewCss);
+
+    private static string FormatForDisplay(string previewCss)
+    {
+        if (string.IsNullOrWhiteSpace(previewCss))
+            return string.Empty;
+
+        return string.Join("\n", previewCss
+            .Split('\n')
+            .Select(l => l.Trim())
+            .Where(l => l.StartsWith("--", StringComparison.Ordinal))
+            .Select(l =>
+            {
+                var colonIdx = l.IndexOf(':', StringComparison.Ordinal);
+                var varName = colonIdx >= 0 ? l[..colonIdx].Trim() : l.TrimEnd(';');
+                return l.TrimEnd(';') + ";";
+            }));
     }
 }

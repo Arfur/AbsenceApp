@@ -12,13 +12,14 @@
     "variants": [
       "primary",
       "secondary",
-      "ghost",
-      "danger",
       "success",
+      "danger",
       "warning",
+      "info",
       "light",
       "dark",
-      "outline-dark"
+      "outline-dark",
+      "structure"
     ],
     "sizes": {
       "sm": { "padding": "4px 10px", "fontSize": "0.75rem", "height": "28px" },
@@ -53,7 +54,42 @@
       "btn.outline-dark.hoverBorder":    "--ds-btn-outline-dark-hover-border",
       "btn.outline-dark.disabledText":   "--ds-btn-outline-dark-disabled-text",
       "btn.outline-dark.disabledBorder": "--ds-btn-outline-dark-disabled-border",
-      "btn.outline-dark.disabledBg":     "--ds-btn-outline-dark-disabled-bg"
+      "btn.outline-dark.disabledBg":     "--ds-btn-outline-dark-disabled-bg",
+
+      "btn.primary.bg":          "--ds-btn-primary-bg",
+      "btn.primary.text":        "--ds-btn-primary-text",
+      "btn.primary.border":      "--ds-btn-primary-border",
+      "btn.primary.hoverBg":     "--ds-btn-primary-hover-bg",
+
+      "btn.secondary.bg":        "--ds-btn-secondary-bg",
+      "btn.secondary.text":      "--ds-btn-secondary-text",
+      "btn.secondary.border":    "--ds-btn-secondary-border",
+      "btn.secondary.hoverBg":   "--ds-btn-secondary-hover-bg",
+
+      "btn.success.bg":          "--ds-btn-success-bg",
+      "btn.success.text":        "--ds-btn-success-text",
+      "btn.success.border":      "--ds-btn-success-border",
+      "btn.success.hoverBg":     "--ds-btn-success-hover-bg",
+
+      "btn.danger.bg":           "--ds-btn-danger-bg",
+      "btn.danger.text":         "--ds-btn-danger-text",
+      "btn.danger.border":       "--ds-btn-danger-border",
+      "btn.danger.hoverBg":      "--ds-btn-danger-hover-bg",
+
+      "btn.warning.bg":          "--ds-btn-warning-bg",
+      "btn.warning.text":        "--ds-btn-warning-text",
+      "btn.warning.border":      "--ds-btn-warning-border",
+      "btn.warning.hoverBg":     "--ds-btn-warning-hover-bg",
+
+      "btn.info.bg":             "--ds-btn-info-bg",
+      "btn.info.text":           "--ds-btn-info-text",
+      "btn.info.border":         "--ds-btn-info-border",
+      "btn.info.hoverBg":        "--ds-btn-info-hover-bg",
+
+      "btn.structure.borderRadius": "--ds-btn-border-radius",
+      "btn.structure.fontSize":     "--ds-btn-font-size",
+      "btn.structure.paddingY":     "--ds-btn-padding-y",
+      "btn.structure.paddingX":     "--ds-btn-padding-x"
     },
     "editor": {
       "groups": {
@@ -88,6 +124,48 @@
           "btn.outline-dark.disabledText",
           "btn.outline-dark.disabledBorder",
           "btn.outline-dark.disabledBg"
+        ],
+        "primary": [
+          "btn.primary.bg",
+          "btn.primary.text",
+          "btn.primary.border",
+          "btn.primary.hoverBg"
+        ],
+        "secondary": [
+          "btn.secondary.bg",
+          "btn.secondary.text",
+          "btn.secondary.border",
+          "btn.secondary.hoverBg"
+        ],
+        "success": [
+          "btn.success.bg",
+          "btn.success.text",
+          "btn.success.border",
+          "btn.success.hoverBg"
+        ],
+        "danger": [
+          "btn.danger.bg",
+          "btn.danger.text",
+          "btn.danger.border",
+          "btn.danger.hoverBg"
+        ],
+        "warning": [
+          "btn.warning.bg",
+          "btn.warning.text",
+          "btn.warning.border",
+          "btn.warning.hoverBg"
+        ],
+        "info": [
+          "btn.info.bg",
+          "btn.info.text",
+          "btn.info.border",
+          "btn.info.hoverBg"
+        ],
+        "structure": [
+          "btn.structure.borderRadius",
+          "btn.structure.fontSize",
+          "btn.structure.paddingY",
+          "btn.structure.paddingX"
         ]
       }
     },
@@ -120,7 +198,42 @@
         "--ds-btn-outline-dark-hover-border",
         "--ds-btn-outline-dark-disabled-text",
         "--ds-btn-outline-dark-disabled-border",
-        "--ds-btn-outline-dark-disabled-bg"
+        "--ds-btn-outline-dark-disabled-bg",
+
+        "--ds-btn-primary-bg",
+        "--ds-btn-primary-text",
+        "--ds-btn-primary-border",
+        "--ds-btn-primary-hover-bg",
+
+        "--ds-btn-secondary-bg",
+        "--ds-btn-secondary-text",
+        "--ds-btn-secondary-border",
+        "--ds-btn-secondary-hover-bg",
+
+        "--ds-btn-success-bg",
+        "--ds-btn-success-text",
+        "--ds-btn-success-border",
+        "--ds-btn-success-hover-bg",
+
+        "--ds-btn-danger-bg",
+        "--ds-btn-danger-text",
+        "--ds-btn-danger-border",
+        "--ds-btn-danger-hover-bg",
+
+        "--ds-btn-warning-bg",
+        "--ds-btn-warning-text",
+        "--ds-btn-warning-border",
+        "--ds-btn-warning-hover-bg",
+
+        "--ds-btn-info-bg",
+        "--ds-btn-info-text",
+        "--ds-btn-info-border",
+        "--ds-btn-info-hover-bg",
+
+        "--ds-btn-border-radius",
+        "--ds-btn-font-size",
+        "--ds-btn-padding-y",
+        "--ds-btn-padding-x"
       ]
     }
   },
