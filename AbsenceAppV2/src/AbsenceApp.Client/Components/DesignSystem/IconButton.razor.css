@@ -15,9 +15,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--ds-icon-btn-gap, 8px);
+    gap: var(--ds-icon-btn-structure-gap, 8px);
     border: none;
-    border-radius: var(--ds-icon-btn-radius, 6px);
+    border-radius: var(--ds-icon-btn-structure-radius, 6px);
     cursor: pointer;
     font-family: var(--ds-font-sans, inherit);
     font-weight: var(--ds-font-medium, 500);
@@ -30,18 +30,18 @@
 }
 
 /* ── Sizes ──────────────────────────────────────────────────────────── */
-.ds-icon-btn--sm { padding: var(--ds-icon-btn-padding-sm, 4px 6px);  height: 28px; font-size: var(--ds-icon-btn-font-size-sm, 0.9rem); }
-.ds-icon-btn--md { padding: var(--ds-icon-btn-padding-md, 6px 9px);  height: 34px; font-size: var(--ds-icon-btn-font-size-md, 1.1rem); }
-.ds-icon-btn--lg { padding: var(--ds-icon-btn-padding-lg, 8px 10px); height: 40px; font-size: var(--ds-icon-btn-font-size-lg, 1.3rem); }
+.ds-icon-btn--sm { padding: var(--ds-icon-btn-structure-padding-sm, 4px 6px);  height: 28px; font-size: var(--ds-icon-btn-structure-font-size-sm, 0.9rem); }
+.ds-icon-btn--md { padding: var(--ds-icon-btn-structure-padding-md, 6px 9px);  height: 34px; font-size: var(--ds-icon-btn-structure-font-size-md, 1.1rem); }
+.ds-icon-btn--lg { padding: var(--ds-icon-btn-structure-padding-lg, 8px 10px); height: 40px; font-size: var(--ds-icon-btn-structure-font-size-lg, 1.3rem); }
 
 /* ── Variants ───────────────────────────────────────────────────────── */
 .ds-icon-btn--ghost {
     background: none;
-    color: var(--ds-icon-btn-text, var(--ds-text-color-muted, #7b8494));
+    color: var(--ds-icon-btn-base-text, var(--ds-text-color-muted, #7b8494));
 }
 .ds-icon-btn--ghost:hover {
-    background: var(--ds-icon-btn-ghost-hover-bg, #e8eaed);
-    color: var(--ds-icon-btn-text, var(--ds-text-color-primary, #2c3345));
+    background: var(--ds-icon-btn-ghost-bg-hover, #e8eaed);
+    color: var(--ds-icon-btn-base-text, var(--ds-text-color-primary, #2c3345));
 }
 
 .ds-icon-btn--primary {
@@ -49,7 +49,7 @@
     color: var(--ds-text-color-inverse, #ffffff);
 }
 .ds-icon-btn--primary:hover {
-    background: var(--ds-icon-btn-primary-hover-bg, #1d4ed8);
+    background: var(--ds-icon-btn-primary-bg-hover, #1d4ed8);
 }
 
 .ds-icon-btn--danger {
@@ -57,7 +57,7 @@
     color: var(--ds-alert-danger-text, #dc2626);
 }
 .ds-icon-btn--danger:hover {
-    background: var(--ds-icon-btn-danger-hover-bg, #fee2e2);
+    background: var(--ds-icon-btn-danger-bg-hover, #fee2e2);
 }
 
 .ds-icon-btn--success {

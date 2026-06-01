@@ -3,7 +3,7 @@
   "_description": "Global default configuration for V2 design system components. Loaded by DesignSystemConfigService.",
   "version": "2.1.0",
   "_created": "2026-05-22T00:00:00Z",
-  "_updated": "2026-05-22T15:00:00Z",
+  "_updated": "2026-06-01T15:00:00Z",
 
   "button": {
     "tokenFamily": "btn",
@@ -21,6 +21,89 @@
       "outline-dark",
       "structure"
     ],
+    "variantAliases": {
+      "basic-primary": "primary",
+      "basic-secondary": "secondary",
+      "basic-success": "success",
+      "basic-danger": "danger",
+      "basic-warning": "warning",
+      "basic-info": "info",
+      "basic-light": "light",
+      "basic-dark": "dark",
+
+      "outline-primary": "primary",
+      "outline-secondary": "secondary",
+      "outline-success": "success",
+      "outline-danger": "danger",
+      "outline-warning": "warning",
+      "outline-info": "info",
+      "outline-light": "light",
+      "outline-dark": "outline-dark",
+
+      "soft-primary": "primary",
+      "soft-secondary": "secondary",
+      "soft-success": "success",
+      "soft-danger": "danger",
+      "soft-warning": "warning",
+      "soft-info": "info",
+      "soft-light": "light",
+      "soft-dark": "dark",
+
+      "icon-fill-primary": "primary",
+      "icon-fill-secondary": "secondary",
+      "icon-outline-primary": "primary",
+      "icon-outline-secondary": "secondary",
+      "icon-soft-primary": "primary",
+      "icon-soft-secondary": "secondary",
+
+      "radius-primary": "primary",
+      "radius-secondary": "secondary",
+      "radius-success": "success",
+      "radius-danger": "danger",
+      "radius-warning": "warning",
+      "radius-info": "info",
+      "radius-light": "light",
+      "radius-dark": "dark",
+
+      "active-primary": "primary",
+      "active-secondary": "secondary",
+      "active-success": "success",
+      "active-danger": "danger",
+      "active-warning": "warning",
+      "active-info": "info",
+      "active-light": "light",
+      "active-dark": "dark",
+
+      "disabled-primary": "primary",
+      "disabled-secondary": "secondary",
+      "disabled-success": "success",
+      "disabled-danger": "danger",
+      "disabled-warning": "warning",
+      "disabled-info": "info",
+      "disabled-light": "light",
+      "disabled-dark": "dark",
+
+      "loading-primary": "primary",
+      "loading-secondary": "secondary",
+      "loading-success": "success",
+      "loading-danger": "danger",
+      "loading-outline-primary": "primary",
+      "loading-outline-secondary": "secondary",
+      "loading-outline-success": "success",
+      "loading-outline-danger": "danger",
+
+      "block-primary": "primary",
+      "block-secondary": "secondary",
+      "block-outline-primary": "primary",
+      "block-outline-secondary": "secondary",
+      "block-soft-primary": "primary",
+      "block-soft-secondary": "secondary",
+
+      "action-save": "primary",
+      "action-cancel": "secondary",
+      "action-settings": "primary",
+      "action-more": "secondary"
+    },
     "sizes": {
       "sm": { "padding": "4px 10px", "fontSize": "0.75rem", "height": "28px" },
       "md": { "padding": "6px 14px", "fontSize": "0.875rem", "height": "34px" },
@@ -59,37 +142,37 @@
       "btn.primary.bg":          "--ds-btn-primary-bg",
       "btn.primary.text":        "--ds-btn-primary-text",
       "btn.primary.border":      "--ds-btn-primary-border",
-      "btn.primary.hoverBg":     "--ds-btn-primary-hover-bg",
+      "btn.primary.hoverBg":     "--ds-btn-primary-bg-hover",
 
       "btn.secondary.bg":        "--ds-btn-secondary-bg",
       "btn.secondary.text":      "--ds-btn-secondary-text",
       "btn.secondary.border":    "--ds-btn-secondary-border",
-      "btn.secondary.hoverBg":   "--ds-btn-secondary-hover-bg",
+      "btn.secondary.hoverBg":   "--ds-btn-secondary-bg-hover",
 
       "btn.success.bg":          "--ds-btn-success-bg",
       "btn.success.text":        "--ds-btn-success-text",
       "btn.success.border":      "--ds-btn-success-border",
-      "btn.success.hoverBg":     "--ds-btn-success-hover-bg",
+      "btn.success.hoverBg":     "--ds-btn-success-bg-hover",
 
       "btn.danger.bg":           "--ds-btn-danger-bg",
       "btn.danger.text":         "--ds-btn-danger-text",
       "btn.danger.border":       "--ds-btn-danger-border",
-      "btn.danger.hoverBg":      "--ds-btn-danger-hover-bg",
+      "btn.danger.hoverBg":      "--ds-btn-danger-bg-hover",
 
       "btn.warning.bg":          "--ds-btn-warning-bg",
       "btn.warning.text":        "--ds-btn-warning-text",
       "btn.warning.border":      "--ds-btn-warning-border",
-      "btn.warning.hoverBg":     "--ds-btn-warning-hover-bg",
+      "btn.warning.hoverBg":     "--ds-btn-warning-bg-hover",
 
       "btn.info.bg":             "--ds-btn-info-bg",
       "btn.info.text":           "--ds-btn-info-text",
       "btn.info.border":         "--ds-btn-info-border",
-      "btn.info.hoverBg":        "--ds-btn-info-hover-bg",
+      "btn.info.hoverBg":        "--ds-btn-info-bg-hover",
 
-      "btn.structure.borderRadius": "--ds-btn-border-radius",
-      "btn.structure.fontSize":     "--ds-btn-font-size",
-      "btn.structure.paddingY":     "--ds-btn-padding-y",
-      "btn.structure.paddingX":     "--ds-btn-padding-x"
+      "btn.structure.borderRadius": "--ds-btn-structure-radius",
+      "btn.structure.fontSize":     "--ds-btn-structure-font-size",
+      "btn.structure.paddingY":     "--ds-btn-structure-padding-y",
+      "btn.structure.paddingX":     "--ds-btn-structure-padding-x"
     },
     "editor": {
       "groups": {
@@ -203,37 +286,37 @@
         "--ds-btn-primary-bg",
         "--ds-btn-primary-text",
         "--ds-btn-primary-border",
-        "--ds-btn-primary-hover-bg",
+        "--ds-btn-primary-bg-hover",
 
         "--ds-btn-secondary-bg",
         "--ds-btn-secondary-text",
         "--ds-btn-secondary-border",
-        "--ds-btn-secondary-hover-bg",
+        "--ds-btn-secondary-bg-hover",
 
         "--ds-btn-success-bg",
         "--ds-btn-success-text",
         "--ds-btn-success-border",
-        "--ds-btn-success-hover-bg",
+        "--ds-btn-success-bg-hover",
 
         "--ds-btn-danger-bg",
         "--ds-btn-danger-text",
         "--ds-btn-danger-border",
-        "--ds-btn-danger-hover-bg",
+        "--ds-btn-danger-bg-hover",
 
         "--ds-btn-warning-bg",
         "--ds-btn-warning-text",
         "--ds-btn-warning-border",
-        "--ds-btn-warning-hover-bg",
+        "--ds-btn-warning-bg-hover",
 
         "--ds-btn-info-bg",
         "--ds-btn-info-text",
         "--ds-btn-info-border",
-        "--ds-btn-info-hover-bg",
+        "--ds-btn-info-bg-hover",
 
-        "--ds-btn-border-radius",
-        "--ds-btn-font-size",
-        "--ds-btn-padding-y",
-        "--ds-btn-padding-x"
+        "--ds-btn-structure-radius",
+        "--ds-btn-structure-font-size",
+        "--ds-btn-structure-padding-y",
+        "--ds-btn-structure-padding-x"
       ]
     }
   },

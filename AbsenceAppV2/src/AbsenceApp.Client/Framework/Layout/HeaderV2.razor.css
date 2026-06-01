@@ -129,8 +129,8 @@
     color: var(--ds-text-color-muted, #7b8494);
     font-size: var(--ds-icon-size-lg, 1.2rem);
     cursor: pointer;
-    padding: var(--ds-icon-btn-padding-md, 6px 9px);
-    border-radius: var(--ds-icon-btn-radius, 7px);
+    padding: var(--ds-icon-btn-structure-padding-md, 6px 9px);
+    border-radius: var(--ds-icon-btn-structure-radius, 7px);
     line-height: 1;
     display: flex;
     align-items: center;
@@ -416,7 +416,7 @@
     gap: var(--ds-space-2, 0.5rem);
     background: none;
     border: none;
-    border-radius: var(--ds-icon-btn-radius, 7px);
+    border-radius: var(--ds-icon-btn-structure-radius, 7px);
     padding: var(--ds-space-1, 4px) var(--ds-space-2, 8px);
     cursor: pointer;
     transition: background var(--ds-transition-fast, 0.12s ease);

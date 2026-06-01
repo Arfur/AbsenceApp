@@ -18,7 +18,7 @@
 .dsv2-label {
     font-size: var(--ds-text-size-xs, 0.8rem);
     font-weight: var(--ds-text-font-semibold, 600);
-    color: var(--ds-form-field-label, #212529);
+    color: var(--ds-input-base-label, #212529);
 }
 
 .dsv2-input,
@@ -26,11 +26,11 @@
 .dsv2-textarea {
     height: 36px;
     padding: var(--ds-input-py, 0) var(--ds-input-px, 0.625rem);
-    border: 1px solid var(--ds-form-field-border, #dee2e6);
+    border: 1px solid var(--ds-input-base-border, #dee2e6);
     border-radius: var(--ds-radius-sm, 6px);
     font-size: var(--ds-text-size-sm, 14px);
-    color: var(--ds-form-field-text, #212529);
-    background: var(--ds-form-field-bg, #ffffff);
+    color: var(--ds-input-base-text, #212529);
+    background: var(--ds-input-base-bg, #ffffff);
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     width: 100%;
@@ -46,22 +46,22 @@
 .dsv2-input:focus,
 .dsv2-select:focus,
 .dsv2-textarea:focus {
-    border-color: var(--ds-form-field-focus-border, #0d6efd);
-    box-shadow: var(--ds-form-field-focus-ring, 0 0 0 3px rgba(13, 110, 253, 0.15));
+    border-color: var(--ds-input-base-focus-border, #0d6efd);
+    box-shadow: var(--ds-input-base-focus-ring, 0 0 0 3px rgba(13, 110, 253, 0.15));
 }
 
 .dsv2-input--error {
-    border-color: var(--ds-form-field-error-border, #dc3545);
+    border-color: var(--ds-input-base-error-border, #dc3545);
 }
 
 .dsv2-form-hint {
     font-size: var(--ds-text-size-xs, 0.75rem);
-    color: var(--ds-form-field-hint, #adb5bd);
+    color: var(--ds-input-base-hint, #adb5bd);
 }
 
 .dsv2-form-error {
     font-size: var(--ds-text-size-xs, 0.75rem);
-    color: var(--ds-form-field-error-text, #dc3545);
+    color: var(--ds-input-base-error-text, #dc3545);
 }
 
 .dsv2-check {
@@ -69,7 +69,7 @@
     align-items: center;
     gap: var(--ds-space-2, 0.4rem);
     font-size: var(--ds-text-size-sm, 0.875rem);
-    color: var(--ds-form-field-text, #212529);
+    color: var(--ds-input-base-text, #212529);
     cursor: pointer;
     padding: 0.2rem 0;
 }
@@ -81,7 +81,7 @@
 .dark .dsv2-input,
 .dark .dsv2-select,
 .dark .dsv2-textarea {
-    background: var(--ds-form-field-bg, #1e2130);
-    border-color: var(--ds-form-field-border, #2d3348);
-    color: var(--ds-form-field-text, #e9ecef);
+    background: var(--ds-input-base-bg, #1e2130);
+    border-color: var(--ds-input-base-border, #2d3348);
+    color: var(--ds-input-base-text, #e9ecef);
 }

@@ -14,9 +14,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: var(--ds-action-btn-padding-y, 5px) var(--ds-action-btn-padding-x, 12px);
+    padding: var(--ds-action-btn-structure-padding-y, 5px) var(--ds-action-btn-structure-padding-x, 12px);
     border-radius: var(--ds-action-btn-radius, 6px);
-    font-size: var(--ds-action-btn-font-size, 0.8125rem);
+    font-size: var(--ds-action-btn-structure-font-size, 0.8125rem);
     font-weight: 500;
     cursor: pointer;
     border: 1px solid transparent;
@@ -48,7 +48,7 @@
 }
 
 .dsv2-action-btn--primary:hover:not(:disabled) {
-    background: var(--ds-action-btn-primary-hover-bg, #0b5ed7);
+    background: var(--ds-action-btn-primary-bg-hover, #0b5ed7);
 }
 
 .dsv2-action-btn--primary .dsv2-action-btn__icon {
@@ -62,7 +62,7 @@
 }
 
 .dsv2-action-btn--secondary:hover:not(:disabled) {
-    background: var(--ds-action-btn-secondary-hover-bg, #f8f9fa);
+    background: var(--ds-action-btn-secondary-bg-hover, #f8f9fa);
 }
 
 .dsv2-action-btn--secondary .dsv2-action-btn__icon {
@@ -75,7 +75,7 @@
 }
 
 .dsv2-action-btn--md {
-    font-size: var(--ds-action-btn-font-size, 0.8125rem);
+    font-size: var(--ds-action-btn-structure-font-size, 0.8125rem);
 }
 
 .dsv2-action-btn--lg {

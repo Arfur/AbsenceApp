@@ -38,7 +38,7 @@
 
 /* ── Header ─────────────────────────────────────────────────────────── */
 .ds-card__header {
-    padding: var(--ds-space-3, 12px) var(--ds-card-padding, 16px);
+    padding: var(--ds-space-3, 12px) var(--ds-card-structure-padding, 16px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -61,14 +61,14 @@
 
 /* ── Body ───────────────────────────────────────────────────────────── */
 .ds-card__body {
-    padding: var(--ds-card-padding, 16px);
+    padding: var(--ds-card-structure-padding, 16px);
     flex: 1;
     min-height: 0;
 }
 
 /* ── Footer ─────────────────────────────────────────────────────────── */
 .ds-card__footer {
-    padding: var(--ds-space-3, 12px) var(--ds-card-padding, 16px);
+    padding: var(--ds-space-3, 12px) var(--ds-card-structure-padding, 16px);
     border-top: 1px solid var(--ds-color-border, #dde1e7);
     display: flex;
     align-items: center;

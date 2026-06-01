@@ -2,14 +2,10 @@
 ===============================================================================
  File        : Index.razor.cs
  Namespace   : AbsenceApp.Client.Components.Pages.GlobalSettings.UIKits.Buttons
- Author      : GitHub Copilot
- Version     : 7.0.0
+ Author      : Michael / AI Governance Rule AA0001
+ Version     : 7.2.0
  Created     : 2026-05-14
- Updated     : 2026-05-22 16:10
- Changes     : v7.0.0 — Hybrid Merge: preserved Buttons3 UI Kit layout and
-               galleries while replacing legacy CSS synthesis logic with
-               token-backed editor flow (ButtonsEditorViewModelV2 +
-               DesignSystemConfigService + components.json mappings).
+ Updated     : 2026-06-01
 -------------------------------------------------------------------------------
  Purpose     : Buttons3 UX model with full Ki-Admin button sets (one set per row).
                - Accordion sections
@@ -17,6 +13,19 @@
                - Token-backed Edit / Save, Cancel workflow
                - Token-driven preview CSS variable overlay
                - All accordions collapsed by default
+-------------------------------------------------------------------------------
+ Changes     :
+- 7.2.0  2026-06-01  V2 Architecture Alignment: Completely stripped all 
+                         heuristic suffix fallback-guessing code from the page. 
+                         Implemented runtime variant mapping driven fully by 
+                         the JSON configuration asset via DesignSystemConfigService.
+    - 7.1.0  2026-06-01  Phase 2.3 Corrective Alignment: Refactored variant 
+                         resolution to prevent cross-contamination across button 
+                         families (Basic, Outline, Soft).
+    - 7.0.0  2026-05-22  Hybrid Merge: preserved Buttons3 UI Kit layout and 
+                         galleries while replacing legacy CSS synthesis logic with 
+                         token-backed editor flow (ButtonsEditorViewModelV2 + 
+                         DesignSystemConfigService + components.json mappings).
 ===============================================================================
 */
 
@@ -69,6 +78,9 @@ public partial class Index : ComponentBase
         public Dictionary<string, string> TokenMappings { get; } = new(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, List<string>> GroupCssVariables { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> PreviewCssVariables { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+        // NEW: JSON-driven alias map (required for ResolveConfigVariant)
+        public Dictionary<string, string> VariantAliases { get; } = new(StringComparer.OrdinalIgnoreCase);
     }
 
     private static readonly List<ButtonVariantDef> BasicVariants =
@@ -351,6 +363,20 @@ public partial class Index : ComponentBase
             }
         }
 
+        // NEW: Hydrate variantAliases from components.json
+        if (buttonNode["variantAliases"] is JsonObject aliasesNode)
+        {
+            foreach (var kv in aliasesNode)
+            {
+                var targetVariant = kv.Value?.GetValue<string>();
+                if (!string.IsNullOrWhiteSpace(kv.Key) &&
+                    !string.IsNullOrWhiteSpace(targetVariant))
+                {
+                    result.VariantAliases[kv.Key.Trim()] = targetVariant.Trim();
+                }
+            }
+        }
+
         if (buttonNode["preview"] is JsonObject previewNode &&
             previewNode["cssVariables"] is JsonArray previewVars)
         {
@@ -395,19 +421,19 @@ public partial class Index : ComponentBase
         if (_buttonConfig.Variants.Count == 0)
             return null;
 
+        // 1. Exact match only (safe)
         if (_buttonConfig.Variants.Contains(uiVariantKey))
             return uiVariantKey;
 
-        var firstDash = uiVariantKey.IndexOf('-', StringComparison.Ordinal);
-        if (firstDash >= 0 && firstDash < uiVariantKey.Length - 1)
+        // 2. JSON-driven alias map (no heuristics)
+        if (_buttonConfig.VariantAliases.TryGetValue(uiVariantKey, out var mappedVariant)
+            && _buttonConfig.Variants.Contains(mappedVariant))
         {
-            var suffix = uiVariantKey[(firstDash + 1)..];
-            if (_buttonConfig.Variants.Contains(suffix))
-                return suffix;
+            return mappedVariant;
         }
 
-        return _buttonConfig.Variants.FirstOrDefault(v =>
-            uiVariantKey.EndsWith(v, StringComparison.OrdinalIgnoreCase));
+        // 3. Absolute safety: no suffix guessing, no EndsWith, no tone inference
+        return null;
     }
 
     private string? ResolveTokenGroupId(ButtonGroupUiState state)
@@ -505,7 +531,7 @@ public partial class Index : ComponentBase
         {
             state.EditorText = string.Empty;
             state.PreviewCss = string.Empty;
-            state.StatusMessage = "No token mapping exists in components.json for this variant.";
+            state.StatusMessage = $"No token mapping or group configuration found for variant key '{variantKey}'.";
             state.StatusIsError = true;
             return;
         }

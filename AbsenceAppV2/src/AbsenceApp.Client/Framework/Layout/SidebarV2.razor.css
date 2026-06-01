@@ -160,18 +160,18 @@
 }
 
 ::deep .dsv2-sidebar__group-btn:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    background: var(--ds-nav-sidebar-bg-hover, #e8eaed);
 }
 
 ::deep .dsv2-sidebar__group-btn--active {
-    background: var(--ds-nav-sidebar-active-bg, #2563eb);
-    color: var(--ds-nav-sidebar-active-text, #ffffff);
+    background: var(--ds-nav-sidebar-bg-active, #2563eb);
+    color: var(--ds-nav-sidebar-text-active, #ffffff);
     font-weight: var(--ds-text-font-semibold, 600);
 }
 
 ::deep .dsv2-sidebar__group-btn--active:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #1d4ed8);
-    color: var(--ds-nav-sidebar-active-text, #ffffff);
+    background: var(--ds-nav-sidebar-bg-hover, #1d4ed8);
+    color: var(--ds-nav-sidebar-text-active, #ffffff);
 }
 
 /* Flat group button: rendered as <a>, same shape as group-btn */
@@ -193,13 +193,13 @@
 }
 
 ::deep .dsv2-sidebar__group-btn--flat:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    background: var(--ds-nav-sidebar-bg-hover, #e8eaed);
     text-decoration: none;
 }
 
 ::deep .dsv2-sidebar__group-btn--flat.dsv2-sidebar__group-btn--active {
-    background: var(--ds-nav-sidebar-active-bg, #2563eb);
-    color: var(--ds-nav-sidebar-active-text, #ffffff);
+    background: var(--ds-nav-sidebar-bg-active, #2563eb);
+    color: var(--ds-nav-sidebar-text-active, #ffffff);
 }
 
 /* ── Chevron ────────────────────────────────────────────────────────── */
@@ -239,7 +239,7 @@
 }
 
 ::deep .dsv2-sidebar__sublink:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    background: var(--ds-nav-sidebar-bg-hover, #e8eaed);
     color: var(--ds-nav-sidebar-text, #2c3345);
     text-decoration: none;
 }
@@ -248,7 +248,7 @@
    border-left. Height 16px, width 3px, rounded, centered vertically at 8px
    from the left edge (indented away from the sidebar edge). */
 ::deep .dsv2-sidebar__sublink--active {
-    color: var(--ds-nav-sidebar-active-text, #2563eb);
+    color: var(--ds-nav-sidebar-text-active, #2563eb);
     font-weight: var(--ds-text-font-semibold, 600);
     background: transparent;
 }
@@ -262,12 +262,12 @@
     height: var(--ds-space-4, 16px);
     width: 3px;
     border-radius: var(--ds-radius-xs, 2px);
-    background: var(--ds-nav-sidebar-active-text, #2563eb);
+    background: var(--ds-nav-sidebar-text-active, #2563eb);
 }
 
 ::deep .dsv2-sidebar__sublink--active:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
-    color: var(--ds-nav-sidebar-active-text, #2563eb);
+    background: var(--ds-nav-sidebar-bg-hover, #e8eaed);
+    color: var(--ds-nav-sidebar-text-active, #2563eb);
 }
 
 /* ── Item icon & label ──────────────────────────────────────────────── */
@@ -293,8 +293,8 @@
     letter-spacing: 0.5px;
 }
 
-::deep .dsv2-sidebar__status-badge--beta    { background: var(--ds-badge-active-bg, #e0f2fe);    color: var(--ds-badge-active-text, #0284c7); }
-::deep .dsv2-sidebar__status-badge--planned { background: var(--ds-badge-planned-bg, #fef3c7); color: var(--ds-badge-planned-text, #d97706); }
+::deep .dsv2-sidebar__status-badge--beta    { background: var(--ds-badge-status-active-bg, #e0f2fe);    color: var(--ds-badge-status-active-text, #0284c7); }
+::deep .dsv2-sidebar__status-badge--planned { background: var(--ds-badge-status-planned-bg, #fef3c7); color: var(--ds-badge-status-planned-text, #d97706); }
 
 /* ── Loading placeholder ────────────────────────────────────────────── */
 ::deep .dsv2-sidebar__loading {
@@ -325,7 +325,7 @@
 }
 
 ::deep .dsv2-sidebar__back-link:hover {
-    background: var(--ds-nav-sidebar-hover-bg, #e8eaed);
+    background: var(--ds-nav-sidebar-bg-hover, #e8eaed);
     color: var(--ds-nav-sidebar-text, #2c3345);
     text-decoration: none;
 }

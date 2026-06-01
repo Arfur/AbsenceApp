@@ -19,12 +19,12 @@
 ============================================================================= */
 
 :root {    /* ── Card component tokens ──────────────────────────────────────────── */
-    --ds-card-bg:           #ffffff;
-    --ds-card-border-color: #dee2e6;
-    --ds-card-radius:       8px;
-    --ds-card-shadow:       0 1px 4px rgba(0, 0, 0, 0.06);
+  --ds-card-base-bg:      #ffffff;
+  --ds-card-base-border:  #dee2e6;
+  --ds-card-structure-radius: 8px;
+  --ds-card-structure-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     --ds-card-header-bg:    #f8f9fa;
-    --ds-card-padding:      1.25rem;
+  --ds-card-structure-padding: 1.25rem;
     /* ── Tab strip — shared background ─────────────────────────────── */
     --ds-tab-bg:                     var(--ds-color-surface-raised);    /* #ffffff — white background */
 

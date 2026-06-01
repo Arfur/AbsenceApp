@@ -51,7 +51,7 @@
     --ds-table-header-h:   36px;
 
     /* ── Card spacing ──────────────────────────────────────────────── */
-    --ds-card-padding:     var(--ds-space-4);  /* 16px */
+    --ds-card-structure-padding: var(--ds-space-4);  /* 16px */
     --ds-card-gap:         var(--ds-space-4);  /* 16px */
 
     /* ── --v2-* spacing aliases (Phase 4) ──────────────────────────── */
