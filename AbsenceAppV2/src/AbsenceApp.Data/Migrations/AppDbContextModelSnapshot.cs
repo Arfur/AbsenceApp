@@ -955,7 +955,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("AttendanceId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendance", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.AuditLog", b =>
@@ -4668,7 +4668,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.RoleChangeAudit", b =>
@@ -5419,7 +5419,7 @@ namespace AbsenceApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaffExternalAccounts");
+                    b.ToTable("StaffExternalAccounts", (string)null);
                 });
 
             modelBuilder.Entity("AbsenceApp.Data.Models.StaffExternalAccountAudit", b =>

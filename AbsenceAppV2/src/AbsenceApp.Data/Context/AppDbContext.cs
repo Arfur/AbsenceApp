@@ -207,11 +207,6 @@ public class AppDbContext : DbContext
         modelBuilder.ConfigureEntitlements();
 
         // ---------------------------------------------------------------------
-        // Design System — token configuration and seed data
-        // ---------------------------------------------------------------------
-        modelBuilder.ConfigureDesignTokens();
-
-        // ---------------------------------------------------------------------
         // E15 — User management + page-level permission configuration
         // ---------------------------------------------------------------------
         modelBuilder.ConfigureUserManagement();

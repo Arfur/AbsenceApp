@@ -1,0 +1,32 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.block.json — Phase 3",
+  "_description": "Block-level button variants (full-width layout).",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.block",
+  "variants": [
+    {
+      "key": "full-width",
+      "label": "Full Width",
+      "css": "dsv2-btn dsv2-btn--block",
+      "previewCss": "dsv2-btn dsv2-btn--primary dsv2-btn--block",
+      "fallbackCss": "dsv2-btn dsv2-btn--primary",
+      "icon": null,
+      "tokenPath": "buttons.block.full-width",
+      "description": "Block-level button spanning full width.",
+      "tokens": [
+        "--ds-space-2"
+      ],
+      "editorDefaults": {
+        "width": "100%"
+      },
+      "editorSections": [
+        {
+          "title": "Layout",
+          "fields": [ "width" ]
+        }
+      ]
+    }
+  ]
+}

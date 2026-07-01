@@ -1,0 +1,54 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.group.json — Phase 3",
+  "_description": "Button group layout variants (horizontal, vertical) using gap tokens.",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.group",
+  "variants": [
+    {
+      "key": "horizontal",
+      "label": "Horizontal Group",
+      "css": "dsv2-btn-group dsv2-btn-group--horizontal",
+      "previewCss": "dsv2-btn-group dsv2-btn-group--horizontal",
+      "fallbackCss": "dsv2-btn-group",
+      "icon": null,
+      "tokenPath": "buttons.group.horizontal",
+      "description": "Horizontal button group using gap tokens.",
+      "tokens": [
+        "--ds-gap-sm"
+      ],
+      "editorDefaults": {
+        "gap": "var(--ds-gap-sm)"
+      },
+      "editorSections": [
+        {
+          "title": "Layout",
+          "fields": [ "gap" ]
+        }
+      ]
+    },
+    {
+      "key": "vertical",
+      "label": "Vertical Group",
+      "css": "dsv2-btn-group dsv2-btn-group--vertical",
+      "previewCss": "dsv2-btn-group dsv2-btn-group--vertical",
+      "fallbackCss": "dsv2-btn-group",
+      "icon": null,
+      "tokenPath": "buttons.group.vertical",
+      "description": "Vertical button group using gap tokens.",
+      "tokens": [
+        "--ds-gap-sm"
+      ],
+      "editorDefaults": {
+        "gap": "var(--ds-gap-sm)"
+      },
+      "editorSections": [
+        {
+          "title": "Layout",
+          "fields": [ "gap" ]
+        }
+      ]
+    }
+  ]
+}

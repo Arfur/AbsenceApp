@@ -1,0 +1,14 @@
+{
+  "_comment": "AbsenceApp V2 Design System — static-components.json — Phase 2",
+  "_description": "Static, non-token metadata for V2 design system components. Dynamic token-driven fields are generated at runtime by DesignSystemConfigService.",
+  "version": "2.1.0",
+  "_created": "2026-05-22T00:00:00Z",
+  "_updated": "2026-06-02T12:00:00Z",
+
+  "button": {
+    "displayName": "Buttons",
+    "category": "Components",
+    "icon": "fa-solid fa-square",
+    "description": "Base metadata for all button families."
+  }
+}

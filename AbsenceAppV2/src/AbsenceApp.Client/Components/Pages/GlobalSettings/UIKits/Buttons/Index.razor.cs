@@ -224,6 +224,31 @@ public partial class Index : ComponentBase
         new("action-more",     "More",     "dsv2-btn--secondary", "dsv2-btn dsv2-btn--secondary", "custom", [])
     ];
 
+    private static readonly Dictionary<string, string> IconGlyphByVariantKey = new(StringComparer.Ordinal)
+    {
+        ["icon-fill-primary"] = "bi bi-download",
+        ["icon-fill-secondary"] = "bi bi-bell",
+        ["icon-outline-primary"] = "bi bi-gear",
+        ["icon-outline-secondary"] = "bi bi-alarm",
+        ["icon-soft-primary"] = "bi bi-camera",
+        ["icon-soft-secondary"] = "bi bi-image"
+    };
+
+    private static readonly Dictionary<string, string> SocialGlyphByVariantKey = new(StringComparer.Ordinal)
+    {
+        ["social-facebook"] = "bi bi-facebook",
+        ["social-twitter"] = "bi bi-twitter",
+        ["social-instagram"] = "bi bi-instagram",
+        ["social-reddit"] = "bi bi-reddit",
+        ["social-whatsapp"] = "bi bi-whatsapp",
+        ["social-linkedin"] = "bi bi-linkedin",
+        ["social-telegram"] = "bi bi-telegram",
+        ["social-youtube"] = "bi bi-youtube",
+        ["social-behance"] = "bi bi-behance",
+        ["social-dribbble"] = "bi bi-dribbble",
+        ["social-snapchat"] = "bi bi-snapchat"
+    };
+
     private static readonly Regex CssVariableLineRegex =
         new(@"^(--[a-zA-Z0-9\-_]+)\s*:\s*(.+?)\s*;?$", RegexOptions.Compiled);
 
@@ -255,10 +280,10 @@ public partial class Index : ComponentBase
         _outlineState,
         _softState,
         _iconState,
-        _radiusState,
         _socialState,
-        _disabledState,
+        _radiusState,
         _activeState,
+        _disabledState,
         _loadingState,
         _blockState,
         _sizeState,
@@ -309,11 +334,45 @@ public partial class Index : ComponentBase
 
     private static ButtonConfigMetadata ParseButtonConfig(JsonObject components)
     {
-        if (components["button"] is not JsonObject buttonNode)
-            throw new InvalidOperationException("components.json is missing the 'button' section.");
+        JsonObject? buttonNode = null;
+
+        // Prefer a 'button' node that actually contains token payload
+        if (components["button"] is JsonObject bNode &&
+            bNode.ContainsKey("tokenMappings") &&
+            bNode.ContainsKey("editor"))
+        {
+            buttonNode = bNode;
+        }
+        // Fallback to dynamic 'btn' node
+        else if (components["btn"] is JsonObject btnNode)
+        {
+            buttonNode = btnNode;
+        }
+        else
+        {
+            // Final fallback: search for any component with tokenFamily == "btn"
+            foreach (var kv in components)
+            {
+                if (kv.Value is JsonObject obj &&
+                    obj["tokenFamily"]?.GetValue<string>() == "btn" &&
+                    obj.ContainsKey("tokenMappings"))
+                {
+                    buttonNode = obj;
+                    break;
+                }
+            }
+        }
+
+        // Last‑resort fallback to 'button' if present at all
+        if (buttonNode is null)
+            buttonNode = components["button"] as JsonObject;
+
+        if (buttonNode is null)
+            throw new InvalidOperationException("components.json is missing a valid 'button' or 'btn' section.");
 
         var result = new ButtonConfigMetadata();
 
+        // Variants
         if (buttonNode["variants"] is JsonArray variantsArray)
         {
             foreach (var item in variantsArray.OfType<JsonValue>())
@@ -324,18 +383,21 @@ public partial class Index : ComponentBase
             }
         }
 
+        // Token mappings
         if (buttonNode["tokenMappings"] is JsonObject tokenMappings)
         {
             foreach (var kv in tokenMappings)
             {
                 var cssVar = kv.Value?.GetValue<string>();
-                if (!string.IsNullOrWhiteSpace(kv.Key) && !string.IsNullOrWhiteSpace(cssVar))
+                if (!string.IsNullOrWhiteSpace(kv.Key) &&
+                    !string.IsNullOrWhiteSpace(cssVar))
                 {
                     result.TokenMappings[kv.Key] = cssVar.Trim();
                 }
             }
         }
 
+        // Editor groups
         if (buttonNode["editor"] is JsonObject editorNode &&
             editorNode["groups"] is JsonObject groupsNode)
         {
@@ -345,6 +407,7 @@ public partial class Index : ComponentBase
                     continue;
 
                 var mappedCssVars = new List<string>();
+
                 foreach (var tokenValue in tokenKeyArray.OfType<JsonValue>())
                 {
                     var tokenKey = tokenValue.GetValue<string>();
@@ -359,11 +422,31 @@ public partial class Index : ComponentBase
                 }
 
                 if (!string.IsNullOrWhiteSpace(kv.Key))
-                    result.GroupCssVariables[kv.Key] = mappedCssVars;
+                {
+                    var key = kv.Key.Trim();
+
+                    // Store raw key
+                    result.GroupCssVariables[key] = mappedCssVars;
+
+                    // Normalised aliases
+                    if (key.StartsWith("basic-", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var suffix = key.Substring(6);
+
+                        // basic-primary → primary
+                        result.GroupCssVariables[suffix] = mappedCssVars;
+
+                        // basic-default → structure
+                        if (string.Equals(suffix, "default", StringComparison.OrdinalIgnoreCase))
+                        {
+                            result.GroupCssVariables["structure"] = mappedCssVars;
+                        }
+                    }
+                }
             }
         }
 
-        // NEW: Hydrate variantAliases from components.json
+        // Variant aliases
         if (buttonNode["variantAliases"] is JsonObject aliasesNode)
         {
             foreach (var kv in aliasesNode)
@@ -377,6 +460,7 @@ public partial class Index : ComponentBase
             }
         }
 
+        // Preview CSS variables
         if (buttonNode["preview"] is JsonObject previewNode &&
             previewNode["cssVariables"] is JsonArray previewVars)
         {
@@ -390,7 +474,6 @@ public partial class Index : ComponentBase
 
         return result;
     }
-
     private ButtonGroupUiState CreateState(string key, string title, List<ButtonVariantDef> variants)
     {
         return new ButtonGroupUiState
@@ -412,36 +495,44 @@ public partial class Index : ComponentBase
             if (_variantToConfigVariant.ContainsKey(variant.Key))
                 continue;
 
-            _variantToConfigVariant[variant.Key] = ResolveConfigVariant(variant.Key);
+            _variantToConfigVariant[variant.Key] = ResolveEffectiveGroupKey(variant.Key, state);
         }
     }
 
-    private string? ResolveConfigVariant(string uiVariantKey)
+    private string? ResolveEffectiveGroupKey(string uiVariantKey, ButtonGroupUiState state)
     {
+        // Radius and sizes always map to structure
+        if (state.GroupKey is "radius" or "sizes")
+            return "structure";
+
         if (_buttonConfig.Variants.Count == 0)
             return null;
 
-        // 1. Exact match only (safe)
+        // 1. Exact match
         if (_buttonConfig.Variants.Contains(uiVariantKey))
             return uiVariantKey;
 
-        // 2. JSON-driven alias map (no heuristics)
-        if (_buttonConfig.VariantAliases.TryGetValue(uiVariantKey, out var mappedVariant)
-            && _buttonConfig.Variants.Contains(mappedVariant))
-        {
+        // 2. JSON-driven alias map
+        if (_buttonConfig.VariantAliases.TryGetValue(uiVariantKey, out var mappedVariant))
             return mappedVariant;
+
+        // 3. Deterministic fallback: map UI variant keys by suffix
+        var dashIndex = uiVariantKey.LastIndexOf('-');
+        if (dashIndex >= 0 && dashIndex < uiVariantKey.Length - 1)
+        {
+            var suffix = uiVariantKey.Substring(dashIndex + 1);
+            if (_buttonConfig.Variants.Contains(suffix))
+                return suffix;
         }
 
-        // 3. Absolute safety: no suffix guessing, no EndsWith, no tone inference
         return null;
     }
 
     private string? ResolveTokenGroupId(ButtonGroupUiState state)
     {
-        if (state.GroupKey is "radius" or "sizes")
-            return "structure";
-
-        return ResolveConfigVariant(state.SelectedVariantKey);
+        return _variantToConfigVariant.TryGetValue(state.SelectedVariantKey, out var configVariant)
+            ? configVariant
+            : null;
     }
 
     private List<string> GetCssVariablesForUiVariant(string uiVariantKey)
@@ -456,7 +547,6 @@ public partial class Index : ComponentBase
             ? vars
             : [];
     }
-
     private string BuildEditorTextFromVariables(List<string> cssVariables)
     {
         if (cssVariables.Count == 0)
@@ -554,6 +644,16 @@ public partial class Index : ComponentBase
 
     private static ButtonVariantDef? GetSelectedVariant(ButtonGroupUiState state)
         => state.Variants.FirstOrDefault(v => string.Equals(v.Key, state.SelectedVariantKey, StringComparison.OrdinalIgnoreCase));
+
+    private static string ResolveIconGlyphClass(string key)
+        => IconGlyphByVariantKey.TryGetValue(key, out var iconClass)
+            ? iconClass
+            : string.Empty;
+
+    private static string ResolveSocialGlyphClass(string key)
+        => SocialGlyphByVariantKey.TryGetValue(key, out var iconClass)
+            ? iconClass
+            : string.Empty;
 
     private void OnToggleAccordion(ButtonGroupUiState state)
     {

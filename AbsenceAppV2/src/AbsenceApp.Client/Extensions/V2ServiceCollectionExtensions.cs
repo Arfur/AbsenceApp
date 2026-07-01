@@ -3,9 +3,9 @@
  File        : V2ServiceCollectionExtensions.cs
  Namespace   : AbsenceApp.Client.Extensions
  Author      : Michael
- Version     : 1.9.0
+ Version     : 2.0.0
  Created     : 2026-03-22
- Updated     : 2026-05-12
+ Updated     : 2026-06-02
 -------------------------------------------------------------------------------
  Purpose     : IServiceCollection extension that registers every V2 framework
                service, API client, and ViewModel in a single call.
@@ -30,11 +30,17 @@
    - 1.4.0  2026-04-11  E15 additions: UserManagementApiServiceV2, ViewModels.
    - 1.5.0  2026-04-11  E16 Pages Registry: PagesApiServiceV2, ViewModels.
    - 1.6.0  2026-04-21  Added UserProfileViewModelV2 registration.
-   - 1.8.0  2026-05-12  Phase A Design Token System: added
-                         DesignTokenApiServiceV2 as Singleton.
    - 1.7.0  2026-05-05  Student Absence Management: added StudentProfileApiServiceV2,
                          StudentProfileViewModelV2, StudentAbsenceFormViewModelV2,
                          StudentCalendarViewModelV2. Removed StudentDetailViewModelV2.
+   - 1.8.0  2026-05-12  Phase A Design Token System: added
+                         DesignTokenApiServiceV2 as Singleton.
+   - 2.0.0  2026-06-02  Phase 2 Dynamic Token System Integration:
+                         - Added MySQL IDbConnection registration (Scoped)
+                         - Updated DesignSystemConfigService registration to use
+                           factory injection for IDbConnection
+                         - Fixed silent MAUI startup exit caused by missing DI
+                           dependency resolution
 -------------------------------------------------------------------------------
  Notes       :
    - HttpClient is registered as a singleton for BrandingServiceV2 and
@@ -47,6 +53,8 @@
 ===============================================================================
 */
 
+using System.Data;
+using MySqlConnector;
 using AbsenceApp.Client.Services;
 using AbsenceApp.Client.Services.ApiV2;
 using AbsenceApp.Client.Services.ApiV2.Modules;
@@ -65,18 +73,13 @@ namespace AbsenceApp.Client.Extensions;
 /// </summary>
 public static class V2ServiceCollectionExtensions
 {
-    // =========================================================================
-    // Extension method
-    // =========================================================================
-
     public static IServiceCollection AddAbsenceAppV2Framework(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         // -----------------------------------------------------------------
         // HttpClient — used by BrandingServiceV2 and ApiClientV2 to load
-        // local wwwroot JSON config files. A singleton is sufficient because
-        // BaseAddress never changes in a MAUI Hybrid (no real HTTP server).
+        // local wwwroot JSON config files.
         // -----------------------------------------------------------------
         services.AddSingleton(_ => new HttpClient
         {
@@ -84,9 +87,23 @@ public static class V2ServiceCollectionExtensions
         });
 
         // -----------------------------------------------------------------
+        // Database connection for DesignSystemConfigService (Scoped)
+        // -----------------------------------------------------------------
+        services.AddScoped<IDbConnection>(sp =>
+        {
+            var connString = configuration["ConnectionStrings:AbsenceAppDatabase"];
+            return new MySqlConnection(connString);
+        });
+
+        // -----------------------------------------------------------------
         // V2 Core services — Singleton: hold cross-page UI state
         // -----------------------------------------------------------------
-        services.AddSingleton<DesignSystemConfigService>();
+        services.AddSingleton<DesignSystemConfigService>(sp =>
+        {
+            var db = sp.GetRequiredService<IDbConnection>();
+            return new DesignSystemConfigService(db);
+        });
+
         services.AddSingleton<AlertServiceV2>();
         services.AddSingleton<NavigationApiServiceV2>();
         services.AddSingleton<FeaturePermissionApiServiceV2>();
@@ -95,7 +112,6 @@ public static class V2ServiceCollectionExtensions
         services.AddSingleton<ThemeServiceV2>();
         services.AddSingleton<BrandingServiceV2>();
         services.AddSingleton<IDesignSystemService, DesignSystemService>();
-        // Design Token System — Phase A (runtime CSS token override injection)
         services.AddSingleton<DesignTokenApiServiceV2>();
 
         // -----------------------------------------------------------------
@@ -105,7 +121,7 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<TableConfigService>();
 
         // -----------------------------------------------------------------
-        // V2 API services — Scoped: one per Blazor scope (page lifetime)
+        // V2 API services — Scoped
         // -----------------------------------------------------------------
         services.AddScoped<ApiClientV2>();
         services.AddScoped<StudentsApiServiceV2>();
@@ -115,22 +131,18 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<AuditLogApiServiceV2>();
         services.AddScoped<SettingsApiServiceV2>();
         services.AddScoped<ParentsApiServiceV2>();
-        // E15 — User Management API service (direct DB via IServiceScopeFactory)
         services.AddScoped<UserManagementApiServiceV2>();
-        // E16 — Pages Registry API service (direct DB via IServiceScopeFactory)
         services.AddScoped<PagesApiServiceV2>();
-        // Student Absence Management API service (direct DB via IServiceScopeFactory)
         services.AddScoped<StudentProfileApiServiceV2>();
-        // Staff Profile API service (direct DB via IServiceScopeFactory)
         services.AddScoped<StaffProfileApiServiceV2>();
 
         // -----------------------------------------------------------------
-        // V2 Table settings — Singleton: shared local-file store
+        // V2 Table settings — Singleton
         // -----------------------------------------------------------------
         services.AddSingleton<TableSettingsFileService>();
 
         // -----------------------------------------------------------------
-        // V2 ViewModels — Scoped to align with Scoped EF Core services
+        // V2 ViewModels — Scoped
         // -----------------------------------------------------------------
         services.AddScoped<StudentsListViewModelV2>();
         services.AddScoped<StudentFormViewModelV2>();
@@ -150,16 +162,12 @@ public static class V2ServiceCollectionExtensions
         services.AddScoped<AuditLogDetailViewModelV2>();
         services.AddScoped<SettingsModuleViewModelV2>();
         services.AddScoped<TableSettingsViewModelV2>();
-        // E15 — User Management ViewModels
         services.AddScoped<UserListViewModelV2>();
         services.AddScoped<UserFormViewModelV2>();
         services.AddScoped<UserProfileViewModelV2>();
-        // E16 — Pages Registry ViewModels
         services.AddScoped<PagesListViewModelV2>();
         services.AddScoped<PageFormViewModelV2>();
-        // Staff Profile ViewModel (direct DB via IServiceScopeFactory)
         services.AddScoped<StaffProfileViewModelV2>();
-        // Phase B — Buttons Design Token Editor
         services.AddScoped<ButtonsEditorViewModelV2>();
 
         return services;

@@ -5,9 +5,9 @@
   File        : AbsenceApp.Client.csproj
   Project     : AbsenceApp.Client
   Author      : Michael
-  Version     : 1.2.2
+  Version     : 1.2.3
   Created     : 2026-03-13
-  Updated     : 2026-05-21
+  Updated     : 2026-06-02
   ==========================================================================
   Purpose     : .NET MAUI Blazor Hybrid client project definition.
                 Multi-platform client targeting Android, iOS, macOS Catalyst,
@@ -26,6 +26,8 @@
                          triggering scoped CSS conflicts.
     * 1.2.2  2026-05-21  Removed obsolete UI Kits .layout.css Content includes
                          after migrating UI Kits to Shared/Templates/UIKits.
+    * 1.2.3  2026-06-02  Fixed Windows deployment by removing
+                         WindowsPackageType=None and enabling MSIX packaging.
   ==========================================================================
   Notes       :
     * Tizen target is commented out by default.
@@ -55,7 +57,10 @@
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-    <WindowsPackageType Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">None</WindowsPackageType>
+
+    <!-- FIX: Enable Windows packaging so Visual Studio can deploy/debug -->
+    <WindowsPackageType>MSIX</WindowsPackageType>
+
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
   </PropertyGroup>
 
@@ -70,6 +75,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+    <PackageReference Include="Dapper" Version="2.1.79" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />

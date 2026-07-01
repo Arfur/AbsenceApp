@@ -1,0 +1,82 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.outline.json — Phase 3",
+  "_description": "Outline button variants mapped to V2 outline button tokens and classes.",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.outline",
+  "variants": [
+    {
+      "key": "outline-primary",
+      "label": "Outline Primary",
+      "css": "dsv2-btn dsv2-btn--outline-primary",
+      "previewCss": "dsv2-btn dsv2-btn--outline-primary",
+      "fallbackCss": "dsv2-btn dsv2-btn--primary",
+      "icon": null,
+      "tokenPath": "buttons.outline.primary",
+      "description": "Outline primary button using outline tokens.",
+      "tokens": [
+        "--ds-btn-primary-text",
+        "--ds-btn-primary-border",
+        "--ds-btn-primary-bg-hover"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-btn-structure-radius)",
+        "fontSize": "var(--ds-btn-structure-font-size)",
+        "paddingX": "var(--ds-btn-structure-padding-x)",
+        "paddingY": "var(--ds-btn-structure-padding-y)"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "fontSize", "paddingX", "paddingY" ]
+        },
+        {
+          "title": "Colors",
+          "fields": [ "text", "border", "bgHover" ]
+        }
+      ]
+    },
+    {
+      "key": "outline-dark",
+      "label": "Outline Dark",
+      "css": "dsv2-btn dsv2-btn--outline-dark",
+      "previewCss": "dsv2-btn dsv2-btn--outline-dark",
+      "fallbackCss": "dsv2-btn dsv2-btn--dark",
+      "icon": null,
+      "tokenPath": "buttons.outline.dark",
+      "description": "Outline dark button using --ds-btn-outline-dark-* tokens.",
+      "tokens": [
+        "--ds-btn-outline-dark-text",
+        "--ds-btn-outline-dark-border",
+        "--ds-btn-outline-dark-hover-bg",
+        "--ds-btn-outline-dark-hover-text",
+        "--ds-btn-outline-dark-hover-border",
+        "--ds-btn-outline-dark-disabled-text",
+        "--ds-btn-outline-dark-disabled-border"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-btn-structure-radius)",
+        "fontSize": "var(--ds-btn-structure-font-size)",
+        "paddingX": "var(--ds-btn-structure-padding-x)",
+        "paddingY": "var(--ds-btn-structure-padding-y)"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "fontSize", "paddingX", "paddingY" ]
+        },
+        {
+          "title": "Colors",
+          "fields": [
+            "text",
+            "border",
+            "bgHover",
+            "disabledText",
+            "disabledBorder"
+          ]
+        }
+      ]
+    }
+  ]
+}

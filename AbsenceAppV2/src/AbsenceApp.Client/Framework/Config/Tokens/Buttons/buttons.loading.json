@@ -1,0 +1,32 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.loading.json — Phase 3",
+  "_description": "Loading state variants for buttons (spinner placement, spacing).",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.loading",
+  "variants": [
+    {
+      "key": "spinner-left",
+      "label": "Spinner Left",
+      "css": "dsv2-btn dsv2-btn--loading-left",
+      "previewCss": "dsv2-btn dsv2-btn--primary dsv2-btn--loading-left",
+      "fallbackCss": "dsv2-btn dsv2-btn--primary",
+      "icon": "ds-icon-spinner",
+      "tokenPath": "buttons.loading.spinner-left",
+      "description": "Loading state with spinner on the left.",
+      "tokens": [
+        "--ds-space-2"
+      ],
+      "editorDefaults": {
+        "spinnerSize": "16px"
+      },
+      "editorSections": [
+        {
+          "title": "Loading",
+          "fields": [ "spinnerSize" ]
+        }
+      ]
+    }
+  ]
+}

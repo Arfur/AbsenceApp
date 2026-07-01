@@ -3,9 +3,9 @@
  File        : AuthService.cs
  Namespace   : AbsenceApp.Data.Services
  Author      : Michael
- Version     : 1.2.0
+ Version     : 1.3.1
  Created     : 2026-03-22
- Updated     : 2026-04-19
+ Updated     : 2026-07-01
 -------------------------------------------------------------------------------
  Purpose     : Provides authentication services for the AbsenceApp platform,
                including user login, registration, and logout operations.
@@ -29,6 +29,10 @@
                          hashes ($2a$/$2b$) from seeded accounts and verifies
                          them via BCrypt.Net-Next. PBKDF2 and plain-text
                          fallback paths retained for forward compatibility.
+   - 1.3.1  2026-07-01  FIX: Replaced injected AppDbContext with
+                         IDbContextFactory<AppDbContext> and updated all
+                         methods to use short-lived DbContext instances to
+                         prevent EF Core concurrency exceptions in Blazor/Maui.
 -------------------------------------------------------------------------------
  Notes       :
    - Seeded accounts have BCrypt ($2a$12$) hashed passwords.
@@ -53,9 +57,12 @@ namespace AbsenceApp.Data.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly AppDbContext _db;
+    private readonly IDbContextFactory<AppDbContext> _factory;
 
-    public AuthService(AppDbContext db) => _db = db;
+    public AuthService(IDbContextFactory<AppDbContext> factory)
+    {
+        _factory = factory;
+    }
 
     /// <summary>
     /// Validates username and password against the Users table.
@@ -64,17 +71,18 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task<AuthResultDto> LoginAsync(string username, string password)
     {
+        using var db = _factory.CreateDbContext();
+
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             return new AuthResultDto { Success = false, ErrorMessage = "Username and password are required." };
 
-        var user = await _db.Users
+        var user = await db.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Username == username);
 
         if (user is null)
         {
-            // Record failed audit (unknown user)
-            _db.LoginAudit.Add(new LoginAudit
+            db.LoginAudit.Add(new LoginAudit
             {
                 UserId        = null,
                 LoginTime     = DateTime.UtcNow,
@@ -83,16 +91,13 @@ public class AuthService : IAuthService
                 Success       = false,
                 FailureReason = "Unknown username",
             });
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
         }
 
-        // Verify using PBKDF2-aware comparison (falls back to plain-text for
-        // dev accounts whose passwords have not yet been re-hashed).
         if (!UserManagementService.VerifyPassword(password, user.Password))
         {
-            // Record failed audit (bad password)
-            _db.LoginAudit.Add(new LoginAudit
+            db.LoginAudit.Add(new LoginAudit
             {
                 UserId        = user.Id,
                 LoginTime     = DateTime.UtcNow,
@@ -101,12 +106,11 @@ public class AuthService : IAuthService
                 Success       = false,
                 FailureReason = "Invalid password",
             });
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
             return new AuthResultDto { Success = false, ErrorMessage = "Invalid username or password." };
         }
 
-        // Resolve role display name via userrole → roles (roletypes merged into roles)
-        var roleDisplayNames = await _db.Database
+        var roleDisplayNames = await db.Database
             .SqlQueryRaw<string>(
                 "SELECT r.Name " +
                 "FROM userrole ur " +
@@ -114,11 +118,11 @@ public class AuthService : IAuthService
                 "WHERE ur.UserId = @UserId LIMIT 1",
                 new MySqlParameter("@UserId", user.Id))
             .ToListAsync();
+
         var roleDisplayName = roleDisplayNames.FirstOrDefault()
                               ?? (user.IsAdmin ? "Admin" : "Staff");
 
-        // Record successful audit before navigating.
-        _db.LoginAudit.Add(new LoginAudit
+        db.LoginAudit.Add(new LoginAudit
         {
             UserId    = user.Id,
             LoginTime = DateTime.UtcNow,
@@ -126,7 +130,7 @@ public class AuthService : IAuthService
             UserAgent = null,
             Success   = true,
         });
-        await _db.SaveChangesAsync();
+        await db.SaveChangesAsync();
 
         return new AuthResultDto
         {
@@ -143,13 +147,15 @@ public class AuthService : IAuthService
     /// </summary>
     public async Task<AuthResultDto> RegisterAsync(string email, string password)
     {
+        using var db = _factory.CreateDbContext();
+
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             return new AuthResultDto { Success = false, ErrorMessage = "Email and password are required." };
 
         var atIndex = email.IndexOf('@');
         var username = atIndex > 0 ? email[..atIndex] : email;
 
-        var existing = await _db.Users
+        var existing = await db.Users
             .AsNoTracking()
             .AnyAsync(u => u.Username == username || u.Email == email);
 
@@ -161,7 +167,6 @@ public class AuthService : IAuthService
         {
             Username  = username,
             Email     = email,
-            // TODO: replace plain-text with hashed password before production deployment
             Password  = password,
             Status    = "Active",
             IsAdmin   = false,
@@ -169,8 +174,8 @@ public class AuthService : IAuthService
             UpdatedAt = now
         };
 
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
 
         return new AuthResultDto
         {

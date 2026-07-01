@@ -1,0 +1,36 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.icon.json — Phase 3",
+  "_description": "Icon-only button variants using control radius and spacing tokens.",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.icon",
+  "variants": [
+    {
+      "key": "icon-default",
+      "label": "Icon Button",
+      "css": "dsv2-btn dsv2-btn--icon",
+      "previewCss": "dsv2-btn dsv2-btn--icon",
+      "fallbackCss": "dsv2-btn dsv2-btn--secondary",
+      "icon": "ds-icon-more-horizontal",
+      "tokenPath": "buttons.icon.default",
+      "description": "Icon-only button using control radius + spacing tokens.",
+      "tokens": [
+        "--ds-radius-control",
+        "--ds-space-2",
+        "--ds-space-2"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-radius-control)",
+        "size": "32px",
+        "iconSize": "16px"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "size", "iconSize" ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,20 +3,23 @@
  File        : DesignTokenApiServiceV2.cs
  Namespace   : AbsenceApp.Client.Services.ApiV2.Modules
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.1
  Created     : 2026-05-12
- Updated     : 2026-05-12
+ Updated     : 2026-06-03
 -------------------------------------------------------------------------------
  Purpose     : Singleton service that manages runtime design token state and
                generates a CSS :root { } override block from the DesignTokens
                table.
 
-               Registered as a Singleton; uses IServiceScopeFactory to resolve
-               the Scoped AppDbContext for all DB operations.
+               Phase 4.1 update:
+                 - ComponentGroup removed from the domain model.
+                 - Component (domain) now maps to ComponentGroup (DB).
+                 - All queries updated to use Component.
+                 - Ordering updated to Component ASC, SortOrder ASC.
 
                CSS generation contract:
                  - Only active tokens (IsActive = true) are emitted.
-                 - Rows are ordered by ComponentGroup ASC, SortOrder ASC.
+                 - Rows are ordered by Component ASC, SortOrder ASC.
                  - Each row emits one CSS declaration using CurrentValue when
                    non-null, otherwise DefaultValue.
                  - Output is wrapped in a single :root { } block.
@@ -27,6 +30,11 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-05-12  Initial creation (Phase A — Design Token System).
+   - 1.1.0  2026-06-03  Phase 4.1 — Replaced ComponentGroup with Component,
+                        updated ordering, updated group/reset queries, and
+                        aligned with new EF configuration.
+   - 1.1.1  2026-06-24  Added Enabled flag to active-token filter in
+                        LoadActiveTokensAsync (IsActive && Enabled).
 -------------------------------------------------------------------------------
  Notes       :
    - IDesignTokenApiServiceV2 interface is intentionally omitted in Phase A;
@@ -49,16 +57,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AbsenceApp.Client.Services.ApiV2.Modules;
 
-/// <summary>
-/// Singleton service that loads design tokens from the database, generates a
-/// CSS :root override block, and notifies subscribers when tokens change.
-/// </summary>
 public sealed class DesignTokenApiServiceV2
 {
-    // =========================================================================
-    // Dependencies
-    // =========================================================================
-
     private readonly IServiceScopeFactory _scopeFactory;
 
     public DesignTokenApiServiceV2(IServiceScopeFactory scopeFactory)
@@ -66,31 +66,13 @@ public sealed class DesignTokenApiServiceV2
         _scopeFactory = scopeFactory;
     }
 
-    // =========================================================================
-    // State
-    // =========================================================================
-
-    /// <summary>Cached CSS string. Null means the cache is dirty.</summary>
     private string? _cssCache;
-
-    /// <summary>Lock object for thread-safe cache access.</summary>
     private readonly object _cacheLock = new();
 
-    // =========================================================================
-    // Events
-    // =========================================================================
-
-    /// <summary>
-    /// Raised after any token update or reset that invalidates the CSS cache.
-    /// Subscribers should re-fetch the CSS and call StateHasChanged.
-    /// </summary>
     public event Action? OnTokensChanged;
 
     // =========================================================================
     // GetGeneratedCssAsync
-    // Returns the :root { } CSS block for all active tokens.
-    // Uses the in-memory cache; queries the DB on first call or after
-    // InvalidateCache().
     // =========================================================================
 
     public async Task<string> GetGeneratedCssAsync()
@@ -117,25 +99,21 @@ public sealed class DesignTokenApiServiceV2
 
     // =========================================================================
     // GetGroupAsync
-    // Returns all tokens for a specific component group (active and inactive).
     // =========================================================================
 
-    public async Task<List<DesignToken>> GetGroupAsync(string componentGroup)
+    public async Task<List<DesignToken>> GetGroupAsync(string component)
     {
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         return await db.DesignTokens
-            .Where(t => t.ComponentGroup == componentGroup)
+            .Where(t => t.Component == component)
             .OrderBy(t => t.SortOrder)
             .ToListAsync();
     }
 
     // =========================================================================
     // UpdateTokensAsync
-    // Accepts a dictionary of { CssVariable → newValue } pairs and persists
-    // CurrentValue for each matched token.  Pass null as the value to clear
-    // the override and revert to DefaultValue.
     // =========================================================================
 
     public async Task UpdateTokensAsync(Dictionary<string, string?> updates)
@@ -168,17 +146,15 @@ public sealed class DesignTokenApiServiceV2
 
     // =========================================================================
     // ResetGroupAsync
-    // Clears all CurrentValue overrides for the specified component group,
-    // reverting every token to its DefaultValue.
     // =========================================================================
 
-    public async Task ResetGroupAsync(string componentGroup)
+    public async Task ResetGroupAsync(string component)
     {
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         var tokens = await db.DesignTokens
-            .Where(t => t.ComponentGroup == componentGroup && t.CurrentValue != null)
+            .Where(t => t.Component == component && t.CurrentValue != null)
             .ToListAsync();
 
         foreach (var token in tokens)
@@ -195,8 +171,6 @@ public sealed class DesignTokenApiServiceV2
 
     // =========================================================================
     // InvalidateCache
-    // Marks the CSS cache as dirty so the next GetGeneratedCssAsync() call
-    // re-queries the database.
     // =========================================================================
 
     public void InvalidateCache()
@@ -211,26 +185,18 @@ public sealed class DesignTokenApiServiceV2
     // Private helpers
     // =========================================================================
 
-    /// <summary>
-    /// Queries the DB for all active tokens ordered by ComponentGroup ASC,
-    /// SortOrder ASC.
-    /// </summary>
     private async Task<List<DesignToken>> LoadActiveTokensAsync()
     {
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         return await db.DesignTokens
-            .Where(t => t.IsActive)
-            .OrderBy(t => t.ComponentGroup)
+            .Where(t => t.IsActive && t.Enabled)
+            .OrderBy(t => t.Component)
             .ThenBy(t => t.SortOrder)
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Builds the CSS :root { } block from a list of token rows.
-    /// Uses CurrentValue when non-null, otherwise DefaultValue.
-    /// </summary>
     private static string BuildCss(List<DesignToken> tokens)
     {
         if (tokens.Count == 0)

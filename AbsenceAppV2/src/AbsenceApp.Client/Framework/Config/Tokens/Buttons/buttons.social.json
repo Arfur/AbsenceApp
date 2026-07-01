@@ -1,0 +1,67 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.social.json — Phase 3",
+  "_description": "Social sign-in button variants (Facebook, Google, etc.) using brand + surface tokens.",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.social",
+  "variants": [
+    {
+      "key": "facebook",
+      "label": "Facebook",
+      "css": "dsv2-btn dsv2-btn--social-facebook",
+      "previewCss": "dsv2-btn dsv2-btn--social-facebook",
+      "fallbackCss": "dsv2-btn dsv2-btn--primary",
+      "icon": "ds-icon-facebook",
+      "tokenPath": "buttons.social.facebook",
+      "description": "Facebook social button using brand color tokens.",
+      "tokens": [
+        "--ds-btn-primary-bg",
+        "--ds-btn-primary-text"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-radius-full)",
+        "fontSize": "var(--ds-btn-structure-font-size)"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "fontSize" ]
+        },
+        {
+          "title": "Brand",
+          "fields": [ "bg", "text" ]
+        }
+      ]
+    },
+    {
+      "key": "google",
+      "label": "Google",
+      "css": "dsv2-btn dsv2-btn--social-google",
+      "previewCss": "dsv2-btn dsv2-btn--social-google",
+      "fallbackCss": "dsv2-btn dsv2-btn--light",
+      "icon": "ds-icon-google",
+      "tokenPath": "buttons.social.google",
+      "description": "Google social button using neutral surface + brand icon.",
+      "tokens": [
+        "--ds-surface-overlay",
+        "--ds-text-color-primary",
+        "--ds-border-muted"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-radius-full)",
+        "fontSize": "var(--ds-btn-structure-font-size)"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "fontSize" ]
+        },
+        {
+          "title": "Brand",
+          "fields": [ "bg", "text", "border" ]
+        }
+      ]
+    }
+  ]
+}

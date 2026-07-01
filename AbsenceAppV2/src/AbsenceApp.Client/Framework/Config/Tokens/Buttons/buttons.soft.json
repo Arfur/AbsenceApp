@@ -1,0 +1,41 @@
+﻿{
+  "_comment": "AbsenceApp V2 Design System — buttons.soft.json — Phase 3",
+  "_description": "Soft button variants using surface + semantic tokens for low-emphasis actions.",
+  "version": "1.0.0",
+  "_created": "2026-06-03T00:17:00Z",
+  "_updated": "2026-06-03T00:17:00Z",
+  "id": "buttons.soft",
+  "variants": [
+    {
+      "key": "soft-primary",
+      "label": "Soft Primary",
+      "css": "dsv2-btn dsv2-btn--soft-primary",
+      "previewCss": "dsv2-btn dsv2-btn--soft-primary",
+      "fallbackCss": "dsv2-btn dsv2-btn--primary",
+      "icon": null,
+      "tokenPath": "buttons.soft.primary",
+      "description": "Soft primary button using surface + primary tokens.",
+      "tokens": [
+        "--ds-surface-subtle",
+        "--ds-text-color-primary",
+        "--ds-border-default"
+      ],
+      "editorDefaults": {
+        "radius": "var(--ds-radius-md)",
+        "fontSize": "var(--ds-btn-structure-font-size)",
+        "paddingX": "var(--ds-btn-structure-padding-x)",
+        "paddingY": "var(--ds-btn-structure-padding-y)"
+      },
+      "editorSections": [
+        {
+          "title": "Structure",
+          "fields": [ "radius", "fontSize", "paddingX", "paddingY" ]
+        },
+        {
+          "title": "Colors",
+          "fields": [ "bg", "text", "border" ]
+        }
+      ]
+    }
+  ]
+}

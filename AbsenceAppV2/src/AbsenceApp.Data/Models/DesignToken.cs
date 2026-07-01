@@ -3,9 +3,9 @@
  File        : DesignToken.cs
  Namespace   : AbsenceApp.Data.Models
  Author      : Michael
- Version     : 1.0.0
+ Version     : 1.1.1
  Created     : 2026-05-12
- Updated     : 2026-05-12
+ Updated     : 2026-06-03
 -------------------------------------------------------------------------------
  Purpose     : EF Core entity representing a single design token stored in the
                DesignTokens table. Each row maps a logical token key
@@ -20,11 +20,16 @@
 -------------------------------------------------------------------------------
  Changes     :
    - 1.0.0  2026-05-12  Initial creation (Phase A — Design Token System).
+   - 1.1.0  2026-06-03  Phase 4.1 — Added Family, Variant, GroupName fields.
+                        Promoted ComponentGroup → Component (domain-level),
+                        retained DB column name via [Column("ComponentGroup")].
+   - 1.1.1  2026-06-24  Added Enabled property to support token visibility
+                        filtering in V2 (IsActive && Enabled).
 -------------------------------------------------------------------------------
  Notes       :
    - Table name "DesignTokens" is PascalCase to distinguish it from the
      lowercase snake-case legacy tables.
-   - Unique index: (ComponentGroup, TokenKey) — enforced at DB and EF level.
+   - Unique index: (Component, TokenKey) — enforced at DB and EF level.
    - SortOrder governs the order of CSS variable emission within a group.
 ===============================================================================
 */
@@ -56,10 +61,13 @@ public class DesignToken
     /// <summary>
     /// Logical grouping key, e.g. "btn", "card", "badge".
     /// Combined with TokenKey forms a unique token address.
+    /// Domain name: Component
+    /// DB column: ComponentGroup
     /// </summary>
     [Required]
     [MaxLength(100)]
-    public string ComponentGroup { get; set; } = string.Empty;
+    [Column("ComponentGroup")] // keep DB compatibility
+    public string Component { get; set; } = string.Empty;
 
     /// <summary>
     /// Unique key within the component group, e.g. "primary-bg".
@@ -115,9 +123,39 @@ public class DesignToken
     public bool IsActive { get; set; } = true;
 
     /// <summary>
-    /// Emission order within ComponentGroup (ascending).
+    /// When false the token is hidden from CSS generation and the editor.
+    /// </summary>
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>
+    /// Emission order within Component (ascending).
     /// </summary>
     public int SortOrder { get; set; }
+
+    // -------------------------------------------------------------------------
+    // Phase 4 — Family / Variant / GroupName
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// High-level family grouping, e.g. "basic", "outline", "soft".
+    /// </summary>
+    [Required]
+    [MaxLength(100)]
+    public string Family { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Variant within the family, e.g. "primary", "secondary", "danger".
+    /// </summary>
+    [Required]
+    [MaxLength(100)]
+    public string Variant { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Deterministic combined key, e.g. "basic-primary".
+    /// </summary>
+    [Required]
+    [MaxLength(100)]
+    public string GroupName { get; set; } = string.Empty;
 
     // -------------------------------------------------------------------------
     // Audit

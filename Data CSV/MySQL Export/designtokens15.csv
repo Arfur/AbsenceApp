@@ -1,0 +1,316 @@
+Id,Id2,Scope,TokenKey,Description,CssVariable,DefaultValue,CurrentValue,ComponentGroup,Category,Family,Variant,Property,GroupName,IsActive,Enabled,SortOrder,CreatedAt,UpdatedAt
+100000,1000000000,global,color-primary,Primary brand colour,#NAME?,#0d6efd,#0d6efd,global,color,color,primary,bg,colors,1,1,1,04/06/2026 17:40,04/06/2026 20:12
+200000,2010101000,component,btn-basic-primary-bg,Background colour for Basic Primary button,#NAME?,#0d6efd,#0d6efd,btn,color,basic,primary,bg,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200001,2010101001,component,btn-basic-primary-text,Text colour for Basic Primary button,#NAME?,#ffffff,#ffffff,btn,color,basic,primary,text,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200002,2010101002,component,btn-basic-primary-border,Border colour for Basic Primary button,#NAME?,#0a58ca,#0a58ca,btn,color,basic,primary,border,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200003,2010101003,component,btn-basic-primary-hover-bg,Hover background colour for Basic Primary button,#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,primary,hover-bg,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200004,2010101004,component,btn-basic-primary-hover-text,Hover text colour for Basic Primary button,#NAME?,#ffffff,#ffffff,btn,color,basic,primary,hover-text,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200005,2010101005,component,btn-basic-primary-hover-border,Hover border colour for Basic Primary button,#NAME?,#0a53be,#0a53be,btn,color,basic,primary,hover-border,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200006,2010101006,component,btn-basic-primary-disabled-bg,Disabled background colour for Basic Primary button,#NAME?,#cfe2ff,#cfe2ff,btn,color,basic,primary,disabled-bg,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200007,2010101007,component,btn-basic-primary-disabled-text,Disabled text colour for Basic Primary button,#NAME?,#6c757d,#6c757d,btn,color,basic,primary,disabled-text,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200008,2010101008,component,btn-basic-primary-disabled-border,Disabled border colour for Basic Primary button,#NAME?,#b6c5d6,#b6c5d6,btn,color,basic,primary,disabled-border,Basic Primary,1,1,0,04/06/2026 16:34,04/06/2026 20:12
+200009,2010101009,component,btn-basic-primary-shadow,Shadow style for Basic Primary button,#NAME?,"0px 1px 2px rgba(0,0,0,0.15)","0px 1px 2px rgba(0,0,0,0.15)",btn,style,basic,primary,shadow,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200010,2010101010,component,btn-basic-primary-radius,Border radius for Basic Primary button,#NAME?,4px,4px,btn,style,basic,primary,radius,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200011,2010101011,component,btn-basic-primary-padding-x,Horizontal padding for Basic Primary button,#NAME?,12px,12px,btn,layout,basic,primary,padding-x,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200012,2010101012,component,btn-basic-primary-padding-y,Vertical padding for Basic Primary button,#NAME?,8px,8px,btn,layout,basic,primary,padding-y,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200013,2010101013,component,btn-basic-primary-gap,Gap between icon and text for Basic Primary button,#NAME?,6px,6px,btn,layout,basic,primary,gap,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200014,2010101014,component,btn-basic-primary-focus-ring,Focus ring style for Basic Primary button,#NAME?,"0 0 0 3px rgba(13,110,253,0.25)","0 0 0 3px rgba(13,110,253,0.25)",btn,style,basic,primary,focus-ring,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200015,2010101015,component,btn-basic-primary-outline,Outline style for Basic Primary button,#NAME?,none,none,btn,style,basic,primary,outline,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200016,2010101016,component,btn-basic-primary-transition,Transition style for Basic Primary button,#NAME?,all 0.2s ease-in-out,all 0.2s ease-in-out,btn,style,basic,primary,transition,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200017,2010101017,component,btn-basic-primary-icon-color,Icon colour for Basic Primary button,#NAME?,#ffffff,#ffffff,btn,color,basic,primary,icon-color,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200018,2010101018,component,btn-basic-primary-icon-size,Icon size for Basic Primary button,#NAME?,16px,16px,btn,layout,basic,primary,icon-size,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200019,2010101019,component,btn-basic-primary-line-height,Line height for Basic Primary button text,#NAME?,1.2,1.2,btn,layout,basic,primary,line-height,Basic Primary,1,0,0,04/06/2026 16:34,04/06/2026 20:12
+200100,2010101100,component,secondary-bg,Secondary button background,#NAME?,transparent,transparent,btn,color,basic,secondary,bg,basic-secondary,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200101,2010101101,component,secondary-text,Secondary button text,#NAME?,#212529,#212529,btn,color,basic,secondary,text,basic-secondary,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200102,2010101102,component,secondary-border,Secondary button border,#NAME?,#dee2e6,#dee2e6,btn,color,basic,secondary,border,basic-secondary,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200103,2010101103,component,secondary-bg-hover,Secondary button hover background,#NAME?,#f8f9fa,#f8f9fa,btn,color,basic,secondary,hover,basic-secondary,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200104,2010101104,component,secondary-text-hover,Secondary button hover text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,secondary,hover,basic-secondary,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200105,2010101105,component,secondary-border-hover,Secondary button hover border (fallback),#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,secondary,hover,basic-secondary,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200106,2010101106,component,secondary-bg-disabled,Secondary button disabled background (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,secondary,disabled,basic-secondary,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200107,2010101107,component,secondary-text-disabled,Secondary button disabled text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,secondary,disabled,basic-secondary,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200108,2010101108,component,secondary-border-disabled,Secondary button disabled border (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,secondary,disabled,basic-secondary,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200200,2010101200,component,success-bg,Success button background,#NAME?,#198754,#198754,btn,color,basic,success,bg,basic-success,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200201,2010101201,component,success-text,Success button text,#NAME?,#ffffff,#ffffff,btn,color,basic,success,text,basic-success,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200202,2010101202,component,success-border,Success button border,#NAME?,#198754,#198754,btn,color,basic,success,border,basic-success,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200203,2010101203,component,success-bg-hover,Success button hover background,#NAME?,#157347,#157347,btn,color,basic,success,hover,basic-success,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200204,2010101204,component,success-text-hover,Success button hover text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,success,hover,basic-success,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200205,2010101205,component,success-border-hover,Success button hover border (fallback),#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,success,hover,basic-success,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200206,2010101206,component,success-bg-disabled,Success button disabled background (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,success,disabled,basic-success,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200207,2010101207,component,success-text-disabled,Success button disabled text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,success,disabled,basic-success,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200208,2010101208,component,success-border-disabled,Success button disabled border (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,success,disabled,basic-success,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200300,2010101300,component,danger-bg,Danger button background,#NAME?,#dc3545,#dc3545,btn,color,basic,danger,bg,basic-danger,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200301,2010101301,component,danger-text,Danger button text,#NAME?,#ffffff,#ffffff,btn,color,basic,danger,text,basic-danger,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200302,2010101302,component,danger-border,Danger button border,#NAME?,#dc3545,#dc3545,btn,color,basic,danger,border,basic-danger,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200303,2010101303,component,danger-bg-hover,Danger button hover background,#NAME?,#bb2d3b,#bb2d3b,btn,color,basic,danger,hover,basic-danger,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200304,2010101304,component,danger-text-hover,Danger button hover text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,danger,hover,basic-danger,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200305,2010101305,component,danger-border-hover,Danger button hover border (fallback),#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,danger,hover,basic-danger,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200306,2010101306,component,danger-bg-disabled,Danger button disabled background (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,danger,disabled,basic-danger,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200307,2010101307,component,danger-text-disabled,Danger button disabled text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,danger,disabled,basic-danger,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200308,2010101308,component,danger-border-disabled,Danger button disabled border (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,danger,disabled,basic-danger,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200400,2010101400,component,warning-bg,Warning button background,#NAME?,#ffc107,#ffc107,btn,color,basic,warning,bg,basic-warning,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200401,2010101401,component,warning-text,Warning button text,#NAME?,#212529,#212529,btn,color,basic,warning,text,basic-warning,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200402,2010101402,component,warning-border,Warning button border,#NAME?,#ffc107,#ffc107,btn,color,basic,warning,border,basic-warning,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200403,2010101403,component,warning-bg-hover,Warning button hover background,#NAME?,#ffca2c,#ffca2c,btn,color,basic,warning,hover,basic-warning,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200404,2010101404,component,warning-text-hover,Warning button hover text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,warning,hover,basic-warning,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200405,2010101405,component,warning-border-hover,Warning button hover border (fallback),#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,warning,hover,basic-warning,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200406,2010101406,component,warning-bg-disabled,Warning button disabled background (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,warning,disabled,basic-warning,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200407,2010101407,component,warning-text-disabled,Warning button disabled text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,warning,disabled,basic-warning,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200408,2010101408,component,warning-border-disabled,Warning button disabled border (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,warning,disabled,basic-warning,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200500,2010101500,component,info-bg,Info button background,#NAME?,#0dcaf0,#0dcaf0,btn,color,basic,info,bg,basic-info,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200501,2010101501,component,info-text,Info button text,#NAME?,#212529,#212529,btn,color,basic,info,text,basic-info,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200502,2010101502,component,info-border,Info button border,#NAME?,#0dcaf0,#0dcaf0,btn,color,basic,info,border,basic-info,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200503,2010101503,component,info-bg-hover,Info button hover background,#NAME?,#31d2f2,#31d2f2,btn,color,basic,info,hover,basic-info,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200504,2010101504,component,info-text-hover,Info button hover text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,info,hover,basic-info,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200505,2010101505,component,info-border-hover,Info button hover border (fallback),#NAME?,#0b5ed7,#0b5ed7,btn,color,basic,info,hover,basic-info,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200506,2010101506,component,info-bg-disabled,Info button disabled background (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,info,disabled,basic-info,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200507,2010101507,component,info-text-disabled,Info button disabled text (fallback),#NAME?,#ffffff,#ffffff,btn,color,basic,info,disabled,basic-info,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200508,2010101508,component,info-border-disabled,Info button disabled border (fallback),#NAME?,#0d6efd,#0d6efd,btn,color,basic,info,disabled,basic-info,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200600,2010101600,component,light-bg,Light button background,#NAME?,#f8f9fa,#f8f9fa,btn,color,basic,light,bg,basic-light,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200601,2010101601,component,light-text,Light button text,#NAME?,#212529,#212529,btn,color,basic,light,text,basic-light,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200602,2010101602,component,light-border,Light button border,#NAME?,#f8f9fa,#f8f9fa,btn,color,basic,light,border,basic-light,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200603,2010101603,component,light-bg-hover,Light button hover background,#NAME?,#e2e6ea,#e2e6ea,btn,color,basic,light,hover,basic-light,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200604,2010101604,component,light-text-hover,Light button hover text,#NAME?,#212529,#212529,btn,color,basic,light,hover,basic-light,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200605,2010101605,component,light-border-hover,Light button hover border,#NAME?,#dae0e5,#dae0e5,btn,color,basic,light,hover,basic-light,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200606,2010101606,component,light-bg-disabled,Light button disabled background,#NAME?,#f8f9fa,#f8f9fa,btn,color,basic,light,disabled,basic-light,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200607,2010101607,component,light-text-disabled,Light button disabled text,#NAME?,#212529,#212529,btn,color,basic,light,disabled,basic-light,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200608,2010101608,component,light-border-disabled,Light button disabled border,#NAME?,#f8f9fa,#f8f9fa,btn,color,basic,light,disabled,basic-light,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200700,2010101700,component,dark-bg,Dark button background,#NAME?,#212529,#212529,btn,color,basic,dark,bg,basic-dark,1,1,1,04/06/2026 20:03,04/06/2026 20:12
+200701,2010101701,component,dark-text,Dark button text,#NAME?,#ffffff,#ffffff,btn,color,basic,dark,text,basic-dark,1,1,2,04/06/2026 20:03,04/06/2026 20:12
+200702,2010101702,component,dark-border,Dark button border,#NAME?,#212529,#212529,btn,color,basic,dark,border,basic-dark,1,1,3,04/06/2026 20:03,04/06/2026 20:12
+200703,2010101703,component,dark-bg-hover,Dark button hover background,#NAME?,#1c1f23,#1c1f23,btn,color,basic,dark,hover,basic-dark,1,1,4,04/06/2026 20:03,04/06/2026 20:12
+200704,2010101704,component,dark-text-hover,Dark button hover text,#NAME?,#ffffff,#ffffff,btn,color,basic,dark,hover,basic-dark,1,1,5,04/06/2026 20:03,04/06/2026 20:12
+200705,2010101705,component,dark-border-hover,Dark button hover border,#NAME?,#1a1e21,#1a1e21,btn,color,basic,dark,hover,basic-dark,1,1,6,04/06/2026 20:03,04/06/2026 20:12
+200706,2010101706,component,dark-bg-disabled,Dark button disabled background,#NAME?,#212529,#212529,btn,color,basic,dark,disabled,basic-dark,1,1,7,04/06/2026 20:03,04/06/2026 20:12
+200707,2010101707,component,dark-text-disabled,Dark button disabled text,#NAME?,#ffffff,#ffffff,btn,color,basic,dark,disabled,basic-dark,1,1,8,04/06/2026 20:03,04/06/2026 20:12
+200708,2010101708,component,dark-border-disabled,Dark button disabled border,#NAME?,#212529,#212529,btn,color,basic,dark,disabled,basic-dark,1,1,9,04/06/2026 20:03,04/06/2026 20:12
+200709,2010101709,component,outline-dark-text,Outline dark text,#NAME?,#212529,#212529,btn,color,basic,dark,text,basic-dark,1,1,10,04/06/2026 20:03,04/06/2026 20:12
+200710,2010101710,component,outline-dark-border,Outline dark border,#NAME?,#212529,#212529,btn,color,basic,dark,border,basic-dark,1,1,11,04/06/2026 20:03,04/06/2026 20:12
+200711,2010101711,component,outline-dark-bg-hover,Outline dark hover background,#NAME?,#212529,#212529,btn,color,basic,dark,hover,basic-dark,1,1,12,04/06/2026 20:03,04/06/2026 20:12
+200712,2010101712,component,outline-dark-text-hover,Outline dark hover text,#NAME?,#ffffff,#ffffff,btn,color,basic,dark,hover,basic-dark,1,1,13,04/06/2026 20:03,04/06/2026 20:12
+200713,2010101713,component,outline-dark-border-hover,Outline dark hover border,#NAME?,#212529,#212529,btn,color,basic,dark,hover,basic-dark,1,1,14,04/06/2026 20:03,04/06/2026 20:12
+200714,2010101714,component,outline-dark-text-disabled,Outline dark disabled text,#NAME?,#212529,#212529,btn,color,basic,dark,disabled,basic-dark,1,1,15,04/06/2026 20:03,04/06/2026 20:12
+200800,2010102000,component,outline-primary-bg,Outline Primary button background,#NAME?,transparent,transparent,btn,color,outline,primary,bg,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200801,2010102001,component,outline-primary-text,Outline Primary button text,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,text,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200802,2010102002,component,outline-primary-border,Outline Primary button border,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,border,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200803,2010102003,component,outline-primary-hover-bg,Outline Primary button hover background,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,hover-bg,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200804,2010102004,component,outline-primary-hover-text,Outline Primary button hover text,#NAME?,#ffffff,#ffffff,btn,color,outline,primary,hover-text,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200805,2010102005,component,outline-primary-hover-border,Outline Primary button hover border,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,hover-border,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200806,2010102006,component,outline-primary-disabled-bg,Outline Primary button disabled background,#NAME?,transparent,transparent,btn,color,outline,primary,disabled-bg,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200807,2010102007,component,outline-primary-disabled-text,Outline Primary button disabled text,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,disabled-text,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200808,2010102008,component,outline-primary-disabled-border,Outline Primary button disabled border,#NAME?,#0d6efd,#0d6efd,btn,color,outline,primary,disabled-border,outline-primary,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+600800,2010102100,component,outline-secondary-bg,Outline Secondary button background,#NAME?,transparent,transparent,btn,color,outline,secondary,bg,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600801,2010102101,component,outline-secondary-text,Outline Secondary button text,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,text,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600802,2010102102,component,outline-secondary-border,Outline Secondary button border,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,border,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600803,2010102103,component,outline-secondary-hover-bg,Outline Secondary button hover background,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,hover-bg,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600804,2010102104,component,outline-secondary-hover-text,Outline Secondary button hover text,#NAME?,#ffffff,#ffffff,btn,color,outline,secondary,hover-text,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600805,2010102105,component,outline-secondary-hover-border,Outline Secondary button hover border,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,hover-border,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600806,2010102106,component,outline-secondary-disabled-bg,Outline Secondary button disabled background,#NAME?,transparent,transparent,btn,color,outline,secondary,disabled-bg,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600807,2010102107,component,outline-secondary-disabled-text,Outline Secondary button disabled text,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,disabled-text,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+600808,2010102108,component,outline-secondary-disabled-border,Outline Secondary button disabled border,#NAME?,#6c757d,#6c757d,btn,color,outline,secondary,disabled-border,outline-secondary,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601000,2010102200,component,outline-success-bg,Outline Success button background,#NAME?,transparent,transparent,btn,color,outline,success,bg,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601001,2010102201,component,outline-success-text,Outline Success button text,#NAME?,#198754,#198754,btn,color,outline,success,text,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601002,2010102202,component,outline-success-border,Outline Success button border,#NAME?,#198754,#198754,btn,color,outline,success,border,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601003,2010102203,component,outline-success-hover-bg,Outline Success button hover background,#NAME?,#198754,#198754,btn,color,outline,success,hover-bg,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601004,2010102204,component,outline-success-hover-text,Outline Success button hover text,#NAME?,#ffffff,#ffffff,btn,color,outline,success,hover-text,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601005,2010102205,component,outline-success-hover-border,Outline Success button hover border,#NAME?,#198754,#198754,btn,color,outline,success,hover-border,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601006,2010102206,component,outline-success-disabled-bg,Outline Success button disabled background,#NAME?,transparent,transparent,btn,color,outline,success,disabled-bg,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601007,2010102207,component,outline-success-disabled-text,Outline Success button disabled text,#NAME?,#198754,#198754,btn,color,outline,success,disabled-text,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601008,2010102208,component,outline-success-disabled-border,Outline Success button disabled border,#NAME?,#198754,#198754,btn,color,outline,success,disabled-border,outline-success,1,1,0,04/06/2026 20:36,08/06/2026 10:40
+601100,2010102300,component,outline-danger-bg,Outline Danger button background,#NAME?,transparent,transparent,btn,color,outline,danger,bg,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 10:41
+601101,2010102301,component,outline-danger-text,Outline Danger button text,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,text,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 10:41
+601102,2010102302,component,outline-danger-border,Outline Danger button border,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,border,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 10:41
+601103,2010102303,component,outline-danger-hover-bg,Outline Danger button hover background,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,hover-bg,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 10:41
+601104,2010102304,component,outline-danger-hover-text,Outline Danger button hover text,#NAME?,#ffffff,#ffffff,btn,color,outline,danger,hover-text,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 12:45
+601105,2010102305,component,outline-danger-hover-border,Outline Danger button hover border,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,hover-border,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 12:45
+601106,2010102306,component,outline-danger-disabled-bg,Outline Danger button disabled background,#NAME?,transparent,transparent,btn,color,outline,danger,disabled-bg,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 12:45
+601107,2010102307,component,outline-danger-disabled-text,Outline Danger button disabled text,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,disabled-text,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 12:45
+601108,2010102308,component,outline-danger-disabled-border,Outline Danger button disabled border,#NAME?,#dc3545,#dc3545,btn,color,outline,danger,disabled-border,outline-danger,1,1,0,04/06/2026 20:36,08/06/2026 12:45
+200840,2010102400,component,outline-warning-bg,Outline Warning button background,#NAME?,transparent,transparent,btn,color,outline,warning,bg,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200841,2010102401,component,outline-warning-text,Outline Warning button text,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,text,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200842,2010102402,component,outline-warning-border,Outline Warning button border,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,border,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200843,2010102403,component,outline-warning-hover-bg,Outline Warning button hover background,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,hover-bg,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200844,2010102404,component,outline-warning-hover-text,Outline Warning button hover text,#NAME?,#212529,#212529,btn,color,outline,warning,hover-text,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200845,2010102405,component,outline-warning-hover-border,Outline Warning button hover border,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,hover-border,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200846,2010102406,component,outline-warning-disabled-bg,Outline Warning button disabled background,#NAME?,transparent,transparent,btn,color,outline,warning,disabled-bg,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200847,2010102407,component,outline-warning-disabled-text,Outline Warning button disabled text,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,disabled-text,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200848,2010102408,component,outline-warning-disabled-border,Outline Warning button disabled border,#NAME?,#ffc107,#ffc107,btn,color,outline,warning,disabled-border,outline-warning,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200850,2010102500,component,outline-info-bg,Outline Info button background,#NAME?,transparent,transparent,btn,color,outline,info,bg,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200851,2010102501,component,outline-info-text,Outline Info button text,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,text,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200852,2010102502,component,outline-info-border,Outline Info button border,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,border,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200853,2010102503,component,outline-info-hover-bg,Outline Info button hover background,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,hover-bg,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200854,2010102504,component,outline-info-hover-text,Outline Info button hover text,#NAME?,#212529,#212529,btn,color,outline,info,hover-text,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200855,2010102505,component,outline-info-hover-border,Outline Info button hover border,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,hover-border,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200856,2010102506,component,outline-info-disabled-bg,Outline Info button disabled background,#NAME?,transparent,transparent,btn,color,outline,info,disabled-bg,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200857,2010102507,component,outline-info-disabled-text,Outline Info button disabled text,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,disabled-text,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200858,2010102508,component,outline-info-disabled-border,Outline Info button disabled border,#NAME?,#0dcaf0,#0dcaf0,btn,color,outline,info,disabled-border,outline-info,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200860,2010102600,component,outline-light-bg,Outline Light button background,#NAME?,transparent,transparent,btn,color,outline,light,bg,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200861,2010102601,component,outline-light-text,Outline Light button text,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,text,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200862,2010102602,component,outline-light-border,Outline Light button border,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,border,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200863,2010102603,component,outline-light-hover-bg,Outline Light button hover background,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,hover-bg,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200864,2010102604,component,outline-light-hover-text,Outline Light button hover text,#NAME?,#212529,#212529,btn,color,outline,light,hover-text,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200865,2010102605,component,outline-light-hover-border,Outline Light button hover border,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,hover-border,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200866,2010102606,component,outline-light-disabled-bg,Outline Light button disabled background,#NAME?,transparent,transparent,btn,color,outline,light,disabled-bg,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200867,2010102607,component,outline-light-disabled-text,Outline Light button disabled text,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,disabled-text,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200868,2010102608,component,outline-light-disabled-border,Outline Light button disabled border,#NAME?,#f8f9fa,#f8f9fa,btn,color,outline,light,disabled-border,outline-light,1,1,0,04/06/2026 20:36,04/06/2026 20:36
+200900,2010103000,component,soft-primary-bg,Soft Primary button background,#NAME?,#cfe2ff,#cfe2ff,btn,color,soft,primary,bg,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200901,2010103001,component,soft-primary-text,Soft Primary button text,#NAME?,#084298,#084298,btn,color,soft,primary,text,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200902,2010103002,component,soft-primary-border,Soft Primary button border,#NAME?,#cfe2ff,#cfe2ff,btn,color,soft,primary,border,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200903,2010103003,component,soft-primary-hover-bg,Soft Primary button hover background,#NAME?,#b6d4fe,#b6d4fe,btn,color,soft,primary,hover-bg,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200904,2010103004,component,soft-primary-hover-text,Soft Primary button hover text,#NAME?,#052c65,#052c65,btn,color,soft,primary,hover-text,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200905,2010103005,component,soft-primary-hover-border,Soft Primary button hover border,#NAME?,#b6d4fe,#b6d4fe,btn,color,soft,primary,hover-border,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200906,2010103006,component,soft-primary-disabled-bg,Soft Primary button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,primary,disabled-bg,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200907,2010103007,component,soft-primary-disabled-text,Soft Primary button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,primary,disabled-text,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200908,2010103008,component,soft-primary-disabled-border,Soft Primary button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,primary,disabled-border,soft-primary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200910,2010103100,component,soft-secondary-bg,Soft Secondary button background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,secondary,bg,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200911,2010103101,component,soft-secondary-text,Soft Secondary button text,#NAME?,#41464b,#41464b,btn,color,soft,secondary,text,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200912,2010103102,component,soft-secondary-border,Soft Secondary button border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,secondary,border,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200913,2010103103,component,soft-secondary-hover-bg,Soft Secondary button hover background,#NAME?,#d3d4d5,#d3d4d5,btn,color,soft,secondary,hover-bg,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200914,2010103104,component,soft-secondary-hover-text,Soft Secondary button hover text,#NAME?,#2b3035,#2b3035,btn,color,soft,secondary,hover-text,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200915,2010103105,component,soft-secondary-hover-border,Soft Secondary button hover border,#NAME?,#d3d4d5,#d3d4d5,btn,color,soft,secondary,hover-border,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200916,2010103106,component,soft-secondary-disabled-bg,Soft Secondary button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,secondary,disabled-bg,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200917,2010103107,component,soft-secondary-disabled-text,Soft Secondary button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,secondary,disabled-text,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200918,2010103108,component,soft-secondary-disabled-border,Soft Secondary button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,secondary,disabled-border,soft-secondary,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200920,2010103200,component,soft-success-bg,Soft Success button background,#NAME?,#d1e7dd,#d1e7dd,btn,color,soft,success,bg,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200921,2010103201,component,soft-success-text,Soft Success button text,#NAME?,#0f5132,#0f5132,btn,color,soft,success,text,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200922,2010103202,component,soft-success-border,Soft Success button border,#NAME?,#d1e7dd,#d1e7dd,btn,color,soft,success,border,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200923,2010103203,component,soft-success-hover-bg,Soft Success button hover background,#NAME?,#badbcc,#badbcc,btn,color,soft,success,hover-bg,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200924,2010103204,component,soft-success-hover-text,Soft Success button hover text,#NAME?,#0a3622,#0a3622,btn,color,soft,success,hover-text,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200925,2010103205,component,soft-success-hover-border,Soft Success button hover border,#NAME?,#badbcc,#badbcc,btn,color,soft,success,hover-border,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200926,2010103206,component,soft-success-disabled-bg,Soft Success button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,success,disabled-bg,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200927,2010103207,component,soft-success-disabled-text,Soft Success button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,success,disabled-text,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200928,2010103208,component,soft-success-disabled-border,Soft Success button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,success,disabled-border,soft-success,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200930,2010103300,component,soft-danger-bg,Soft Danger button background,#NAME?,#f8d7da,#f8d7da,btn,color,soft,danger,bg,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200931,2010103301,component,soft-danger-text,Soft Danger button text,#NAME?,#842029,#842029,btn,color,soft,danger,text,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200932,2010103302,component,soft-danger-border,Soft Danger button border,#NAME?,#f8d7da,#f8d7da,btn,color,soft,danger,border,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200933,2010103303,component,soft-danger-hover-bg,Soft Danger button hover background,#NAME?,#f1b0b7,#f1b0b7,btn,color,soft,danger,hover-bg,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200934,2010103304,component,soft-danger-hover-text,Soft Danger button hover text,#NAME?,#58151c,#58151c,btn,color,soft,danger,hover-text,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200935,2010103305,component,soft-danger-hover-border,Soft Danger button hover border,#NAME?,#f1b0b7,#f1b0b7,btn,color,soft,danger,hover-border,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200936,2010103306,component,soft-danger-disabled-bg,Soft Danger button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,danger,disabled-bg,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200937,2010103307,component,soft-danger-disabled-text,Soft Danger button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,danger,disabled-text,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200938,2010103308,component,soft-danger-disabled-border,Soft Danger button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,danger,disabled-border,soft-danger,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200940,2010103400,component,soft-warning-bg,Soft Warning button background,#NAME?,#fff3cd,#fff3cd,btn,color,soft,warning,bg,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200941,2010103401,component,soft-warning-text,Soft Warning button text,#NAME?,#664d03,#664d03,btn,color,soft,warning,text,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200942,2010103402,component,soft-warning-border,Soft Warning button border,#NAME?,#fff3cd,#fff3cd,btn,color,soft,warning,border,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200943,2010103403,component,soft-warning-hover-bg,Soft Warning button hover background,#NAME?,#ffecb5,#ffecb5,btn,color,soft,warning,hover-bg,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200944,2010103404,component,soft-warning-hover-text,Soft Warning button hover text,#NAME?,#4d3d00,#4d3d00,btn,color,soft,warning,hover-text,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200945,2010103405,component,soft-warning-hover-border,Soft Warning button hover border,#NAME?,#ffecb5,#ffecb5,btn,color,soft,warning,hover-border,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200946,2010103406,component,soft-warning-disabled-bg,Soft Warning button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,warning,disabled-bg,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200947,2010103407,component,soft-warning-disabled-text,Soft Warning button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,warning,disabled-text,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200948,2010103408,component,soft-warning-disabled-border,Soft Warning button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,warning,disabled-border,soft-warning,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200950,2010103500,component,soft-info-bg,Soft Info button background,#NAME?,#cff4fc,#cff4fc,btn,color,soft,info,bg,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200951,2010103501,component,soft-info-text,Soft Info button text,#NAME?,#055160,#055160,btn,color,soft,info,text,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200952,2010103502,component,soft-info-border,Soft Info button border,#NAME?,#cff4fc,#cff4fc,btn,color,soft,info,border,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200953,2010103503,component,soft-info-hover-bg,Soft Info button hover background,#NAME?,#b6effb,#b6effb,btn,color,soft,info,hover-bg,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200954,2010103504,component,soft-info-hover-text,Soft Info button hover text,#NAME?,#033f4c,#033f4c,btn,color,soft,info,hover-text,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200955,2010103505,component,soft-info-hover-border,Soft Info button hover border,#NAME?,#b6effb,#b6effb,btn,color,soft,info,hover-border,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200956,2010103506,component,soft-info-disabled-bg,Soft Info button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,info,disabled-bg,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200957,2010103507,component,soft-info-disabled-text,Soft Info button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,info,disabled-text,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200958,2010103508,component,soft-info-disabled-border,Soft Info button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,info,disabled-border,soft-info,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200960,2010103600,component,soft-light-bg,Soft Light button background,#NAME?,#f8f9fa,#f8f9fa,btn,color,soft,light,bg,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200961,2010103601,component,soft-light-text,Soft Light button text,#NAME?,#212529,#212529,btn,color,soft,light,text,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200962,2010103602,component,soft-light-border,Soft Light button border,#NAME?,#f8f9fa,#f8f9fa,btn,color,soft,light,border,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200963,2010103603,component,soft-light-hover-bg,Soft Light button hover background,#NAME?,#e2e6ea,#e2e6ea,btn,color,soft,light,hover-bg,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200964,2010103604,component,soft-light-hover-text,Soft Light button hover text,#NAME?,#212529,#212529,btn,color,soft,light,hover-text,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200965,2010103605,component,soft-light-hover-border,Soft Light button hover border,#NAME?,#e2e6ea,#e2e6ea,btn,color,soft,light,hover-border,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200966,2010103606,component,soft-light-disabled-bg,Soft Light button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,light,disabled-bg,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200967,2010103607,component,soft-light-disabled-text,Soft Light button disabled text,#NAME?,#6c757d,#6c757d,btn,color,soft,light,disabled-text,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+200968,2010103608,component,soft-light-disabled-border,Soft Light button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,soft,light,disabled-border,soft-light,1,1,0,04/06/2026 20:41,04/06/2026 20:41
+201000,2010104000,component,icon-primary-bg,Icon Primary button background,#NAME?,#0d6efd,#0d6efd,btn,color,icon,primary,bg,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201001,2010104001,component,icon-primary-text,Icon Primary button text,#NAME?,#ffffff,#ffffff,btn,color,icon,primary,text,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201002,2010104002,component,icon-primary-border,Icon Primary button border,#NAME?,#0a58ca,#0a58ca,btn,color,icon,primary,border,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201003,2010104003,component,icon-primary-hover-bg,Icon Primary button hover background,#NAME?,#0b5ed7,#0b5ed7,btn,color,icon,primary,hover-bg,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201004,2010104004,component,icon-primary-hover-text,Icon Primary button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,primary,hover-text,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201005,2010104005,component,icon-primary-hover-border,Icon Primary button hover border,#NAME?,#0a53be,#0a53be,btn,color,icon,primary,hover-border,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201006,2010104006,component,icon-primary-disabled-bg,Icon Primary button disabled background,#NAME?,#cfe2ff,#cfe2ff,btn,color,icon,primary,disabled-bg,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201007,2010104007,component,icon-primary-disabled-text,Icon Primary button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,primary,disabled-text,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201008,2010104008,component,icon-primary-disabled-border,Icon Primary button disabled border,#NAME?,#b6c5d6,#b6c5d6,btn,color,icon,primary,disabled-border,icon-primary,1,1,0,04/06/2026 20:52,04/06/2026 20:52
+201010,2010104100,component,icon-secondary-bg,Icon Secondary button background,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,secondary,bg,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201011,2010104101,component,icon-secondary-text,Icon Secondary button text,#NAME?,#212529,#212529,btn,color,icon,secondary,text,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201012,2010104102,component,icon-secondary-border,Icon Secondary button border,#NAME?,#dee2e6,#dee2e6,btn,color,icon,secondary,border,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201013,2010104103,component,icon-secondary-hover-bg,Icon Secondary button hover background,#NAME?,#f8f9fa,#f8f9fa,btn,color,icon,secondary,hover-bg,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201014,2010104104,component,icon-secondary-hover-text,Icon Secondary button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,secondary,hover-text,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201015,2010104105,component,icon-secondary-hover-border,Icon Secondary button hover border,#NAME?,#0b5ed7,#0b5ed7,btn,color,icon,secondary,hover-border,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201016,2010104106,component,icon-secondary-disabled-bg,Icon Secondary button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,secondary,disabled-bg,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201017,2010104107,component,icon-secondary-disabled-text,Icon Secondary button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,secondary,disabled-text,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201018,2010104108,component,icon-secondary-disabled-border,Icon Secondary button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,secondary,disabled-border,icon-secondary,1,1,0,04/06/2026 20:55,04/06/2026 20:55
+201020,2010104200,component,icon-success-bg,Icon Success button background,#NAME?,#198754,#198754,btn,color,icon,success,bg,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201021,2010104201,component,icon-success-text,Icon Success button text,#NAME?,#ffffff,#ffffff,btn,color,icon,success,text,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201022,2010104202,component,icon-success-border,Icon Success button border,#NAME?,#198754,#198754,btn,color,icon,success,border,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201023,2010104203,component,icon-success-hover-bg,Icon Success button hover background,#NAME?,#157347,#157347,btn,color,icon,success,hover-bg,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201024,2010104204,component,icon-success-hover-text,Icon Success button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,success,hover-text,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201025,2010104205,component,icon-success-hover-border,Icon Success button hover border,#NAME?,#146c43,#146c43,btn,color,icon,success,hover-border,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201026,2010104206,component,icon-success-disabled-bg,Icon Success button disabled background,#NAME?,#d1e7dd,#d1e7dd,btn,color,icon,success,disabled-bg,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201027,2010104207,component,icon-success-disabled-text,Icon Success button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,success,disabled-text,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201028,2010104208,component,icon-success-disabled-border,Icon Success button disabled border,#NAME?,#badbcc,#badbcc,btn,color,icon,success,disabled-border,icon-success,1,1,0,05/06/2026 08:12,05/06/2026 08:12
+201030,2010104300,component,icon-danger-bg,Icon Danger button background,#NAME?,#dc3545,#dc3545,btn,color,icon,danger,bg,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201031,2010104301,component,icon-danger-text,Icon Danger button text,#NAME?,#ffffff,#ffffff,btn,color,icon,danger,text,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201032,2010104302,component,icon-danger-border,Icon Danger button border,#NAME?,#dc3545,#dc3545,btn,color,icon,danger,border,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201033,2010104303,component,icon-danger-hover-bg,Icon Danger button hover background,#NAME?,#bb2d3b,#bb2d3b,btn,color,icon,danger,hover-bg,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201034,2010104304,component,icon-danger-hover-text,Icon Danger button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,danger,hover-text,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201035,2010104305,component,icon-danger-hover-border,Icon Danger button hover border,#NAME?,#a52834,#a52834,btn,color,icon,danger,hover-border,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201036,2010104306,component,icon-danger-disabled-bg,Icon Danger button disabled background,#NAME?,#f8d7da,#f8d7da,btn,color,icon,danger,disabled-bg,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201037,2010104307,component,icon-danger-disabled-text,Icon Danger button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,danger,disabled-text,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201038,2010104308,component,icon-danger-disabled-border,Icon Danger button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,danger,disabled-border,icon-danger,1,1,0,05/06/2026 08:16,05/06/2026 08:16
+201040,2010104400,component,icon-warning-bg,Icon Warning button background,#NAME?,#ffc107,#ffc107,btn,color,icon,warning,bg,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201041,2010104401,component,icon-warning-text,Icon Warning button text,#NAME?,#212529,#212529,btn,color,icon,warning,text,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201042,2010104402,component,icon-warning-border,Icon Warning button border,#NAME?,#ffc107,#ffc107,btn,color,icon,warning,border,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201043,2010104403,component,icon-warning-hover-bg,Icon Warning button hover background,#NAME?,#ffca2c,#ffca2c,btn,color,icon,warning,hover-bg,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201044,2010104404,component,icon-warning-hover-text,Icon Warning button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,warning,hover-text,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201045,2010104405,component,icon-warning-hover-border,Icon Warning button hover border,#NAME?,#e0a800,#e0a800,btn,color,icon,warning,hover-border,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201046,2010104406,component,icon-warning-disabled-bg,Icon Warning button disabled background,#NAME?,#fff3cd,#fff3cd,btn,color,icon,warning,disabled-bg,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201047,2010104407,component,icon-warning-disabled-text,Icon Warning button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,warning,disabled-text,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201048,2010104408,component,icon-warning-disabled-border,Icon Warning button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,warning,disabled-border,icon-warning,1,1,0,05/06/2026 08:57,05/06/2026 08:57
+201050,2010104500,component,icon-info-bg,Icon Info button background,#NAME?,#0dcaf0,#0dcaf0,btn,color,icon,info,bg,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201051,2010104501,component,icon-info-text,Icon Info button text,#NAME?,#212529,#212529,btn,color,icon,info,text,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201052,2010104502,component,icon-info-border,Icon Info button border,#NAME?,#0dcaf0,#0dcaf0,btn,color,icon,info,border,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201053,2010104503,component,icon-info-hover-bg,Icon Info button hover background,#NAME?,#31d2f2,#31d2f2,btn,color,icon,info,hover-bg,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201054,2010104504,component,icon-info-hover-text,Icon Info button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,info,hover-text,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201055,2010104505,component,icon-info-hover-border,Icon Info button hover border,#NAME?,#25c3e8,#25c3e8,btn,color,icon,info,hover-border,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201056,2010104506,component,icon-info-disabled-bg,Icon Info button disabled background,#NAME?,#cff4fc,#cff4fc,btn,color,icon,info,disabled-bg,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201057,2010104507,component,icon-info-disabled-text,Icon Info button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,info,disabled-text,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201058,2010104508,component,icon-info-disabled-border,Icon Info button disabled border,#NAME?,#b6effb,#b6effb,btn,color,icon,info,disabled-border,icon-info,1,1,0,05/06/2026 10:23,05/06/2026 10:23
+201060,2010104600,component,icon-light-bg,Icon Light button background,#NAME?,#f8f9fa,#f8f9fa,btn,color,icon,light,bg,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201061,2010104601,component,icon-light-text,Icon Light button text,#NAME?,#212529,#212529,btn,color,icon,light,text,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201062,2010104602,component,icon-light-border,Icon Light button border,#NAME?,#f8f9fa,#f8f9fa,btn,color,icon,light,border,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201063,2010104603,component,icon-light-hover-bg,Icon Light button hover background,#NAME?,#e2e6ea,#e2e6ea,btn,color,icon,light,hover-bg,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201064,2010104604,component,icon-light-hover-text,Icon Light button hover text,#NAME?,#212529,#212529,btn,color,icon,light,hover-text,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201065,2010104605,component,icon-light-hover-border,Icon Light button hover border,#NAME?,#e2e6ea,#e2e6ea,btn,color,icon,light,hover-border,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201066,2010104606,component,icon-light-disabled-bg,Icon Light button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,light,disabled-bg,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201067,2010104607,component,icon-light-disabled-text,Icon Light button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,light,disabled-text,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201068,2010104608,component,icon-light-disabled-border,Icon Light button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,light,disabled-border,icon-light,1,1,0,05/06/2026 10:38,05/06/2026 10:38
+201070,2010104700,component,icon-dark-bg,Icon Dark button background,#NAME?,#212529,#212529,btn,color,icon,dark,bg,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201071,2010104701,component,icon-dark-text,Icon Dark button text,#NAME?,#ffffff,#ffffff,btn,color,icon,dark,text,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201072,2010104702,component,icon-dark-border,Icon Dark button border,#NAME?,#212529,#212529,btn,color,icon,dark,border,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201073,2010104703,component,icon-dark-hover-bg,Icon Dark button hover background,#NAME?,#1c1f23,#1c1f23,btn,color,icon,dark,hover-bg,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201074,2010104704,component,icon-dark-hover-text,Icon Dark button hover text,#NAME?,#ffffff,#ffffff,btn,color,icon,dark,hover-text,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201075,2010104705,component,icon-dark-hover-border,Icon Dark button hover border,#NAME?,#181a1d,#181a1d,btn,color,icon,dark,hover-border,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201076,2010104706,component,icon-dark-disabled-bg,Icon Dark button disabled background,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,dark,disabled-bg,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201077,2010104707,component,icon-dark-disabled-text,Icon Dark button disabled text,#NAME?,#6c757d,#6c757d,btn,color,icon,dark,disabled-text,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201078,2010104708,component,icon-dark-disabled-border,Icon Dark button disabled border,#NAME?,#e2e3e5,#e2e3e5,btn,color,icon,dark,disabled-border,icon-dark,1,1,0,07/06/2026 13:14,07/06/2026 13:14
+201100,2010105000,component,btn-social-facebook-bg,Social Facebook background,#NAME?,#1877f2,#1877f2,btn,color,social,facebook,bg,social-facebook,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201101,2010105001,component,btn-social-facebook-icon-color,Social Facebook icon color,#NAME?,#ffffff,#ffffff,btn,color,social,facebook,icon-color,social-facebook,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201102,2010105002,component,btn-social-facebook-hover-bg,Social Facebook hover background,#NAME?,#166fe5,#166fe5,btn,color,social,facebook,hover-bg,social-facebook,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201110,2010105010,component,btn-social-twitter-bg,Social Twitter background,#NAME?,#1da1f2,#1da1f2,btn,color,social,twitter,bg,social-twitter,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201111,2010105011,component,btn-social-twitter-icon-color,Social Twitter icon color,#NAME?,#ffffff,#ffffff,btn,color,social,twitter,icon-color,social-twitter,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201112,2010105012,component,btn-social-twitter-hover-bg,Social Twitter hover background,#NAME?,#0d95e8,#0d95e8,btn,color,social,twitter,hover-bg,social-twitter,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201120,2010105100,component,btn-social-instagram-bg,Social Instagram background,#NAME?,#e1306c,#e1306c,btn,color,social,instagram,bg,social-instagram,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201121,2010105101,component,btn-social-instagram-icon-color,Social Instagram icon color,#NAME?,#ffffff,#ffffff,btn,color,social,instagram,icon-color,social-instagram,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201122,2010105102,component,btn-social-instagram-hover-bg,Social Instagram hover background,#NAME?,#d1225c,#d1225c,btn,color,social,instagram,hover-bg,social-instagram,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201130,2010105110,component,btn-social-linkedin-bg,Social LinkedIn background,#NAME?,#0077b5,#0077b5,btn,color,social,linkedin,bg,social-linkedin,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201131,2010105111,component,btn-social-linkedin-icon-color,Social LinkedIn icon color,#NAME?,#ffffff,#ffffff,btn,color,social,linkedin,icon-color,social-linkedin,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201132,2010105112,component,btn-social-linkedin-hover-bg,Social LinkedIn hover background,#NAME?,#006699,#006699,btn,color,social,linkedin,hover-bg,social-linkedin,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201140,2010105200,component,btn-social-whatsapp-bg,Social WhatsApp background,#NAME?,#25d366,#25d366,btn,color,social,whatsapp,bg,social-whatsapp,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201141,2010105201,component,btn-social-whatsapp-icon-color,Social WhatsApp icon color,#NAME?,#ffffff,#ffffff,btn,color,social,whatsapp,icon-color,social-whatsapp,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201142,2010105202,component,btn-social-whatsapp-hover-bg,Social WhatsApp hover background,#NAME?,#20ba5a,#20ba5a,btn,color,social,whatsapp,hover-bg,social-whatsapp,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201150,2010105210,component,btn-social-reddit-bg,Social Reddit background,#NAME?,#ff4500,#ff4500,btn,color,social,reddit,bg,social-reddit,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201151,2010105211,component,btn-social-reddit-icon-color,Social Reddit icon color,#NAME?,#ffffff,#ffffff,btn,color,social,reddit,icon-color,social-reddit,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201152,2010105212,component,btn-social-reddit-hover-bg,Social Reddit hover background,#NAME?,#e03d00,#e03d00,btn,color,social,reddit,hover-bg,social-reddit,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201160,2010105300,component,btn-social-youtube-bg,Social YouTube background,#NAME?,#ff0000,#ff0000,btn,color,social,youtube,bg,social-youtube,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201161,2010105301,component,btn-social-youtube-icon-color,Social YouTube icon color,#NAME?,#ffffff,#ffffff,btn,color,social,youtube,icon-color,social-youtube,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201162,2010105302,component,btn-social-youtube-hover-bg,Social YouTube hover background,#NAME?,#e60000,#e60000,btn,color,social,youtube,hover-bg,social-youtube,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201170,2010105310,component,btn-social-dribbble-bg,Social Dribbble background,#NAME?,#ea4c89,#ea4c89,btn,color,social,dribbble,bg,social-dribbble,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201171,2010105311,component,btn-social-dribbble-icon-color,Social Dribbble icon color,#NAME?,#ffffff,#ffffff,btn,color,social,dribbble,icon-color,social-dribbble,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201172,2010105312,component,btn-social-dribbble-hover-bg,Social Dribbble hover background,#NAME?,#d53b74,#d53b74,btn,color,social,dribbble,hover-bg,social-dribbble,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201180,2010105400,component,btn-social-snapchat-bg,Social Snapchat background,#NAME?,#fffc00,#fffc00,btn,color,social,snapchat,bg,social-snapchat,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201181,2010105401,component,btn-social-snapchat-icon-color,Social Snapchat icon color,#NAME?,#000000,#000000,btn,color,social,snapchat,icon-color,social-snapchat,1,1,0,08/06/2026 08:45,08/06/2026 08:45
+201182,2010105402,component,btn-social-snapchat-hover-bg,Social Snapchat hover background,#NAME?,#e6e200,#e6e200,btn,color,social,snapchat,hover-bg,social-snapchat,1,1,0,08/06/2026 08:45,08/06/2026 08:45
