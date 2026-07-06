@@ -52,7 +52,7 @@ public class DesignToken
 
     /// <summary>Auto-increment primary key.</summary>
     [Key]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     // -------------------------------------------------------------------------
     // Token addressing
