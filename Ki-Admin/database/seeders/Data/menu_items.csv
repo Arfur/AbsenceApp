@@ -1,16 +1,16 @@
 id,title,slug,is_visible,url,route_name,icon,icon_color,tooltip,badge_count,is_collapsible,permission_key,component,order,is_external,parent_id,display_order,menu_group,is_favorite,created_at,updated_at
-1,Dashboard,dashboard,1,,dashboard.index,fas fa-tachometer-alt,#333,Main dashboard,0,1,view_dashboard,,1,0,,1,main,0,20/08/2025 00:00,20/08/2025 00:00
-2,System Overview,system-overview,1,,dashboard.overview,fas fa-info-circle,#333,System status overview,0,0,view_system_overview,,2,0,1,1,main,0,20/08/2025 00:00,20/08/2025 00:00
-3,My Activity,my-activity,1,,dashboard.activity,fas fa-user-clock,#333,Your recent activity,0,0,view_activity,,3,0,1,2,main,0,20/08/2025 00:00,20/08/2025 00:00
-4,Quick Actions,quick-actions,1,,dashboard.quick,fas fa-bolt,#333,Shortcuts for common actions,0,0,view_quick_actions,,4,0,1,3,main,0,20/08/2025 00:00,20/08/2025 00:00
-5,Agent Dashboard,agent-dashboard,1,,dashboard.agent,fas fa-user-tie,#333,Agent-specific dashboard,0,0,view_agent_dashboard,,5,0,1,4,main,0,20/08/2025 00:00,20/08/2025 00:00
-6,Manager Dashboard,manager-dashboard,1,,dashboard.manager,fas fa-user-cog,#333,Manager dashboard,0,0,view_manager_dashboard,,6,0,1,5,main,0,20/08/2025 00:00,20/08/2025 00:00
-7,Admin Dashboard,admin-dashboard,1,,dashboard.admin,fas fa-crown,#333,Admin dashboard,0,0,view_admin_dashboard,,7,0,1,6,main,0,20/08/2025 00:00,20/08/2025 00:00
-8,Custom Dashboard,custom-dashboard,1,,dashboard.custom,fas fa-th-large,#333,Custom dashboard,0,1,view_custom_dashboard,,8,0,1,7,main,0,20/08/2025 00:00,20/08/2025 00:00
-9,Add Card,add-card,1,,dashboard.custom.add,fas fa-plus,#333,Add dashboard card,0,0,add_dashboard_card,,9,0,8,1,main,0,20/08/2025 00:00,20/08/2025 00:00
-10,Reorder Cards,reorder-cards,1,,dashboard.custom.reorder,fas fa-sort,#333,Reorder dashboard cards,0,0,reorder_dashboard_cards,,10,0,8,2,main,0,20/08/2025 00:00,20/08/2025 00:00
-11,Save Layout,save-layout,1,,dashboard.custom.save,fas fa-save,#333,Save dashboard layout,0,0,save_dashboard_layout,,11,0,8,3,main,0,20/08/2025 00:00,20/08/2025 00:00
-12,Set Default,set-default,1,,dashboard.custom.default,fas fa-star,#333,Set default dashboard layout,0,0,set_default_dashboard,,12,0,8,4,main,0,20/08/2025 00:00,20/08/2025 00:00
+1,Dashboard,dashboard,1,,dashboard.dashboard-index,fas fa-tachometer-alt,#333,Main dashboard,0,1,view_dashboard,,1,0,,1,main,0,20/08/2025 00:00,20/08/2025 00:00
+2,System Overview,system-overview,1,,dashboard.dashboard-overview,fas fa-info-circle,#333,System status overview,0,0,view_system_overview,,2,0,1,1,main,0,20/08/2025 00:00,20/08/2025 00:00
+3,My Activity,my-activity,1,,dashboard.dashboard-activity,fas fa-user-clock,#333,Your recent activity,0,0,view_activity,,3,0,1,2,main,0,20/08/2025 00:00,20/08/2025 00:00
+4,Quick Actions,quick-actions,1,,dashboard.dashboard-quick,fas fa-bolt,#333,Shortcuts for common actions,0,0,view_quick_actions,,4,0,1,3,main,0,20/08/2025 00:00,20/08/2025 00:00
+5,Agent Dashboard,agent-dashboard,1,,dashboard.dashboard-agent,fas fa-user-tie,#333,Agent-specific dashboard,0,0,view_agent_dashboard,,5,0,1,4,main,0,20/08/2025 00:00,20/08/2025 00:00
+6,Manager Dashboard,manager-dashboard,1,,dashboard.dashboard-manager,fas fa-user-cog,#333,Manager dashboard,0,0,view_manager_dashboard,,6,0,1,5,main,0,20/08/2025 00:00,20/08/2025 00:00
+7,Admin Dashboard,admin-dashboard,1,,dashboard.dashboard-admin,fas fa-crown,#333,Admin dashboard,0,0,view_admin_dashboard,,7,0,1,6,main,0,20/08/2025 00:00,20/08/2025 00:00
+8,Custom Dashboard,custom-dashboard,1,,dashboard.dashboard-custom,fas fa-th-large,#333,Custom dashboard,0,1,view_custom_dashboard,,8,0,1,7,main,0,20/08/2025 00:00,20/08/2025 00:00
+9,Add Card,add-card,1,,dashboard.dashboard-custom.add,fas fa-plus,#333,Add dashboard card,0,0,add_dashboard_card,,9,0,8,1,main,0,20/08/2025 00:00,20/08/2025 00:00
+10,Reorder Cards,reorder-cards,1,,dashboard.dashboard-custom.reorder,fas fa-sort,#333,Reorder dashboard cards,0,0,reorder_dashboard_cards,,10,0,8,2,main,0,20/08/2025 00:00,20/08/2025 00:00
+11,Save Layout,save-layout,1,,dashboard.dashboard-custom.save,fas fa-save,#333,Save dashboard layout,0,0,save_dashboard_layout,,11,0,8,3,main,0,20/08/2025 00:00,20/08/2025 00:00
+12,Set Default,set-default,1,,dashboard.dashboard-custom.default,fas fa-star,#333,Set default dashboard layout,0,0,set_default_dashboard,,12,0,8,4,main,0,20/08/2025 00:00,20/08/2025 00:00
 13,Tickets,tickets,1,,tickets.index,fas fa-ticket-alt,#333,Ticket management,0,1,view_tickets,,13,0,,1,tickets,0,20/08/2025 00:00,20/08/2025 00:00
 14,Create Ticket,create-ticket,1,,tickets.create,fas fa-plus,#333,Create a new ticket,0,0,create_ticket,,14,0,13,1,tickets,0,20/08/2025 00:00,20/08/2025 00:00
 15,My Tickets,my-tickets,1,,tickets.my,fas fa-list,#333,Your assigned tickets,0,0,view_my_tickets,,15,0,13,2,tickets,0,20/08/2025 00:00,20/08/2025 00:00

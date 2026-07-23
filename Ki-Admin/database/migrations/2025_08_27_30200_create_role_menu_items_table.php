@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('role_type')->index();
             $table->unsignedBigInteger('menu_item_id');
             $table->boolean('is_granted')->default(true);
+            // Per-role default menu marker; application logic should ensure only one default per role_type
+            $table->boolean('is_default')->default(false);
             $table->timestamp('assigned_at')->nullable();
             $table->string('status')->default('active');
             $table->text('notes')->nullable();
@@ -37,6 +39,7 @@ return new class extends Migration
             
             $table->unique(['role_type', 'menu_item_id']);
             $table->index(['role_type', 'is_granted']);
+            $table->index(['role_type', 'is_default']);
         });
     }
 

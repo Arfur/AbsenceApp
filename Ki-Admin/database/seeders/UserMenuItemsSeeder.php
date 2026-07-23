@@ -50,6 +50,7 @@ class UserMenuItemsSeeder extends Seeder
                 $user_id = $assoc['user_id'] ?? null;
                 $menu_item_id = $assoc['menu_item_id'] ?? null;
                 $is_granted = ($assoc['is_granted'] ?? '0') == '1' ? 1 : 0;
+                    $is_default = ($assoc['is_default'] ?? '0') == '1' ? 1 : 0;
                 $custom_order = $assoc['custom_order'] ?? null;
                 $is_custom = ($assoc['is_custom'] ?? '0') == '1' ? 1 : 0;
                 $created_at = $this->parseDateTime($assoc['created_at'] ?? null) ?? now();
@@ -70,6 +71,7 @@ class UserMenuItemsSeeder extends Seeder
                 'user_id' => is_numeric($user_id) ? (int)$user_id : $user_id,
                 'menu_item_id' => is_numeric($menu_item_id) ? (int)$menu_item_id : $menu_item_id,
                 'is_granted' => $is_granted,
+                    'is_default' => $is_default ?? 0,
                 'custom_order' => $custom_order,
                 'is_custom' => $is_custom,
                 'created_at' => $created_at,

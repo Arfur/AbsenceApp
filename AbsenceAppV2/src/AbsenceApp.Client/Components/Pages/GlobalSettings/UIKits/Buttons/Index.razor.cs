@@ -487,44 +487,71 @@ public partial class Index : ComponentBase
             IsSaving = false
         };
     }
-
     private void HydrateVariantMapping(ButtonGroupUiState state)
     {
         foreach (var variant in state.Variants)
         {
+            // Diagnostic: show the raw UI variant key
+            Console.WriteLine($"[HYDRATE] UI Variant Key: {variant.Key}");
+
             if (_variantToConfigVariant.ContainsKey(variant.Key))
                 continue;
 
-            _variantToConfigVariant[variant.Key] = ResolveEffectiveGroupKey(variant.Key, state);
+            var resolved = ResolveEffectiveGroupKey(variant.Key, state);
+
+            // Diagnostic: show the resolved group key (or null)
+            Console.WriteLine($"[HYDRATE] Resolved Group Key for '{variant.Key}': {resolved}");
+
+            _variantToConfigVariant[variant.Key] = resolved;
         }
     }
-
     private string? ResolveEffectiveGroupKey(string uiVariantKey, ButtonGroupUiState state)
     {
+        // Diagnostic: entry point
+        Console.WriteLine($"[RESOLVE] Requested Variant: {uiVariantKey}, GroupKey: {state.GroupKey}");
+
         // Radius and sizes always map to structure
         if (state.GroupKey is "radius" or "sizes")
+        {
+            Console.WriteLine("[RESOLVE] Radius/Sizes override → structure");
             return "structure";
+        }
 
         if (_buttonConfig.Variants.Count == 0)
+        {
+            Console.WriteLine("[RESOLVE] No variants in config");
             return null;
+        }
 
         // 1. Exact match
         if (_buttonConfig.Variants.Contains(uiVariantKey))
+        {
+            Console.WriteLine($"[RESOLVE] Exact match → {uiVariantKey}");
             return uiVariantKey;
+        }
 
         // 2. JSON-driven alias map
         if (_buttonConfig.VariantAliases.TryGetValue(uiVariantKey, out var mappedVariant))
+        {
+            Console.WriteLine($"[RESOLVE] Alias match → {mappedVariant}");
             return mappedVariant;
+        }
 
         // 3. Deterministic fallback: map UI variant keys by suffix
         var dashIndex = uiVariantKey.LastIndexOf('-');
         if (dashIndex >= 0 && dashIndex < uiVariantKey.Length - 1)
         {
             var suffix = uiVariantKey.Substring(dashIndex + 1);
+            Console.WriteLine($"[RESOLVE] Suffix extracted → {suffix}");
+
             if (_buttonConfig.Variants.Contains(suffix))
+            {
+                Console.WriteLine($"[RESOLVE] Suffix match → {suffix}");
                 return suffix;
+            }
         }
 
+        Console.WriteLine("[RESOLVE] No match found → null");
         return null;
     }
 
@@ -615,13 +642,23 @@ public partial class Index : ComponentBase
 
     private void RefreshStateFromTokens(ButtonGroupUiState state, string variantKey)
     {
+        var hasMappedGroup = _variantToConfigVariant.TryGetValue(variantKey, out var mappedGroupKey)
+                             && !string.IsNullOrWhiteSpace(mappedGroupKey);
+
+        var hasEditorGroup = hasMappedGroup
+                             && _buttonConfig.GroupCssVariables.ContainsKey(mappedGroupKey!);
+
         var cssVars = GetCssVariablesForUiVariant(variantKey);
 
         if (cssVars.Count == 0)
         {
             state.EditorText = string.Empty;
             state.PreviewCss = string.Empty;
-            state.StatusMessage = $"No token mapping or group configuration found for variant key '{variantKey}'.";
+            state.StatusMessage = !hasMappedGroup
+                ? $"No variant alias or resolved group key found for '{variantKey}'."
+                : !hasEditorGroup
+                    ? $"Resolved group '{mappedGroupKey}' has no editor group definition in components.json."
+                    : $"Resolved group '{mappedGroupKey}' has no token mappings after key-to-variable resolution.";
             state.StatusIsError = true;
             return;
         }

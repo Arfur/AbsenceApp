@@ -1,9 +1,9 @@
 Sidebar Expansion Debug
-Current Route: dashboard
-Active Menu ID: 
+Current Route: dashboard.dashboard-activity
+Active Menu ID: 1010200
 Menu: [1010000] Dashboard | Expanded: NO
   Submenu: [1010100] System Overview | Expanded: NO
-  Submenu: [1010200] My Activity | Expanded: NO
+  Submenu: [1010200] My Activity | Expanded: YES
   Submenu: [1010300] Quick Actions | Expanded: NO
   Submenu: [1010400] Agent Dashboard | Expanded: NO
   Submenu: [1010500] Manager Dashboard | Expanded: NO

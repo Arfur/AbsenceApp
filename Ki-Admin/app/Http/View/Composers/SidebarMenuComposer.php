@@ -64,6 +64,56 @@ class SidebarMenuComposer
                 
                 // Get menu statistics for debugging
                 $menuStats = $this->getMenuStats($user);
+
+                // Determine active menu from is_default flags (user -> role -> global)
+                $activeMenuId = null;
+                try {
+                    // user-level default
+                    $userDefault = \App\Models\UserMenuItem::where('user_id', $user->user_id)
+                        ->where('is_default', true)
+                        ->where('is_granted', true)
+                        ->first();
+
+                    if ($userDefault) {
+                        $activeMenuId = $userDefault->menu_item_id;
+                    } else {
+                        // role-level default
+                        $roleDefault = \App\Models\RoleMenuItem::where('role_type_id', $user->role_type_id)
+                            ->where('is_default', true)
+                            ->where('is_granted', true)
+                            ->first();
+
+                        if ($roleDefault) {
+                            $activeMenuId = $roleDefault->menu_item_id;
+                        } else {
+                            // global default
+                            $globalDefault = \App\Models\MenuItem::where('is_default', true)->first();
+                            if ($globalDefault) {
+                                $activeMenuId = $globalDefault->id;
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::warning('SidebarMenuComposer default lookup failed: ' . $e->getMessage());
+                    $activeMenuId = null;
+                }
+
+                // Compute ancestor id chain for the active menu so the Blade can expand parent groups
+                $activeMenuAncestors = [];
+                if ($activeMenuId) {
+                    try {
+                        $menuModel = \App\Models\MenuItem::find($activeMenuId);
+                        while ($menuModel && $menuModel->parent_id) {
+                            $activeMenuAncestors[] = $menuModel->parent_id;
+                            $menuModel = \App\Models\MenuItem::find($menuModel->parent_id);
+                        }
+                        // ensure top-level ancestor order is from root -> immediate parent
+                        $activeMenuAncestors = array_reverse($activeMenuAncestors);
+                    } catch (\Exception $e) {
+                        Log::warning('SidebarMenuComposer ancestor lookup failed: ' . $e->getMessage());
+                        $activeMenuAncestors = [];
+                    }
+                }
                 
                 // DEBUG STEP 1: Output granted menu IDs for user (for dashboard view)
                 $debugStep1 = '';
@@ -86,7 +136,10 @@ class SidebarMenuComposer
                 'sidebarMenu' => $sidebarMenu,
                 'menuStats' => $menuStats,
                 'currentUser' => $user,
-                'debugStep1' => $debugStep1
+                'debugStep1' => $debugStep1,
+                // server-calculated active menu id and its ancestor chain
+                'activeMenuId' => $activeMenuId,
+                'activeMenuAncestors' => $activeMenuAncestors
             ]);
             
         } catch (\Exception $e) {

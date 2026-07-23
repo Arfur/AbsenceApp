@@ -44,13 +44,10 @@
 }
 
 /* =====================================================
- * Section: Sidebar Submenu Icon Removal (Aggressive Override)
- * Description: Remove vertical bar icon from all sidebar submenu items, targeting .another-level > a::after and .main-nav li.another-level > a::after.
- * Change Ref: chg0201
- * PT File: PT_2025-08-18.md Session 0201
+ * Section: Theme Chevron Override - Clean Solution
+ * Description: Remove theme's ::after chevron content only where needed
  * ===================================================== */
-.main-nav li.another-level > a::after,
-.another-level > a::after {
+nav .app-nav .main-nav > li:not(.menu-title) ul li.another-level > a::after {
     content: none !important;
     display: none !important;
 }

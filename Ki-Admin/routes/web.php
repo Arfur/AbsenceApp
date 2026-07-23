@@ -55,17 +55,17 @@ use App\Models\User;
  * - Corrected route names to match menu_items.csv
  * =========================================================
  */
-Route::view('dashboard/overview', 'dashboard.overview')->name('dashboard.overview');
-Route::view('dashboard/activity', 'dashboard.activity')->name('dashboard.activity');
-Route::view('dashboard/quick', 'dashboard.quick')->name('dashboard.quick');
-Route::view('dashboard/agent', 'dashboard.agent')->name('dashboard.agent');
-Route::view('dashboard/manager', 'dashboard.manager')->name('dashboard.manager');
-Route::view('dashboard/admin', 'dashboard.admin')->name('dashboard.admin');
-Route::view('dashboard/custom', 'dashboard.custom')->name('dashboard.custom');
-Route::view('dashboard/custom/add-card', 'dashboard.custom.add-card')->name('dashboard.custom.add-card');
-Route::view('dashboard/custom/reorder', 'dashboard.custom.reorder')->name('dashboard.custom.reorder');
-Route::view('dashboard/custom/save', 'dashboard.custom.save')->name('dashboard.custom.save');
-Route::view('dashboard/custom/default', 'dashboard.custom.default')->name('dashboard.custom.default');
+Route::view('dashboard/overview', 'dashboard.dashboard-overview')->name('dashboard.dashboard-overview');
+Route::view('dashboard/activity', 'dashboard.dashboard-activity')->name('dashboard.dashboard-activity');
+Route::view('dashboard/quick', 'dashboard.dashboard-quick')->name('dashboard.dashboard-quick');
+Route::view('dashboard/agent', 'dashboard.dashboard-agent')->name('dashboard.dashboard-agent');
+Route::view('dashboard/manager', 'dashboard.dashboard-manager')->name('dashboard.dashboard-manager');
+Route::view('dashboard/admin', 'dashboard.dashboard-admin')->name('dashboard.dashboard-admin');
+Route::view('dashboard/custom', 'dashboard.dashboard-custom')->name('dashboard.dashboard-custom');
+Route::view('dashboard/custom/add-card', 'dashboard.dashboard-custom-add-card')->name('dashboard.dashboard-custom-add-card');
+Route::view('dashboard/custom/reorder', 'dashboard.dashboard-custom-reorder')->name('dashboard.dashboard-custom-reorder');
+Route::view('dashboard/custom/save', 'dashboard.dashboard-custom-save')->name('dashboard.dashboard-custom-save');
+Route::view('dashboard/custom/default', 'dashboard.dashboard-custom-default')->name('dashboard.dashboard-custom-default');
 Route::view('tickets/my', 'tickets.my')->name('tickets.my');
 Route::view('tickets/all', 'tickets.all')->name('tickets.all');
 Route::view('tickets/unassigned', 'tickets.unassigned')->name('tickets.unassigned');
@@ -313,10 +313,10 @@ Route::middleware(['auth', 'otp.verified'])->group(function () {
      * ===================================================== */
 
     // Dashboard Routes
-    // Refactored: dashboard view now in dashboard/dashboard.blade.php
+    // Refactored: default dashboard now points to the activity dashboard view
     Route::get('/dashboard', function () {
         $sidebarMenu = session('sidebarMenu') ?? [];
-        return view('dashboard.dashboard', compact('sidebarMenu'));
+        return view('dashboard.dashboard-activity', compact('sidebarMenu'));
     })->name('dashboard');
     Route::view('admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Route::view('support/dashboard', 'support.dashboard')->name('support.dashboard');

@@ -1,16 +1,16 @@
 menu_item_id,title,slug,is_visible,url,route_name,icon,icon_color,tooltip,badge_count,is_collapsible,permission_key,component,order,is_external,parent_id,display_order,menu_group,is_favorite
-1010000,Dashboard,dashboard,1,NULL,dashboard.index,fas fa-tachometer-alt,#333,Main dashboard,NULL,1,view_dashboard,NULL,1010000,0,NULL,1,main,0
-1010100,System Overview,system-overview,1,NULL,dashboard.overview,fas fa-info-circle,#333,System status overview,NULL,0,view_system_overview,NULL,1010100,0,1010000,1,main,0
-1010200,My Activity,my-activity,1,NULL,dashboard.activity,fas fa-user-clock,#333,Your recent activity,NULL,0,view_activity,NULL,1010200,0,1010000,2,main,0
-1010300,Quick Actions,quick-actions,1,NULL,dashboard.quick,fas fa-bolt,#333,Shortcuts for common actions,NULL,0,view_quick_actions,NULL,1010300,0,1010000,3,main,0
-1010400,Agent Dashboard,agent-dashboard,1,NULL,dashboard.agent,fas fa-user-tie,#333,Agent-specific dashboard,NULL,0,view_agent_dashboard,NULL,1010400,0,1010000,4,main,0
-1010500,Manager Dashboard,manager-dashboard,1,NULL,dashboard.manager,fas fa-user-cog,#333,Manager dashboard,NULL,0,view_manager_dashboard,NULL,1010500,0,1010000,5,main,0
-1010600,Admin Dashboard,admin-dashboard,1,NULL,dashboard.admin,fas fa-crown,#333,Admin dashboard,NULL,0,view_admin_dashboard,NULL,1010600,0,1010000,6,main,0
-1010700,Custom Dashboard,custom-dashboard,1,NULL,dashboard.custom,fas fa-th-large,#333,Custom dashboard,NULL,1,view_custom_dashboard,NULL,1010700,0,1010000,7,main,0
-1010710,Add Card,add-card,1,NULL,dashboard.custom.add,fas fa-plus,#333,Add dashboard card,NULL,0,add_dashboard_card,NULL,1010710,0,1010700,1,main,0
-1010720,Reorder Cards,reorder-cards,1,NULL,dashboard.custom.reorder,fas fa-sort,#333,Reorder dashboard cards,NULL,0,reorder_dashboard_cards,NULL,1010720,0,1010700,2,main,0
-1010730,Save Layout,save-layout,1,NULL,dashboard.custom.save,fas fa-save,#333,Save dashboard layout,NULL,0,save_dashboard_layout,NULL,1010730,0,1010700,3,main,0
-1010740,Set Default,set-default,1,NULL,dashboard.custom.default,fas fa-star,#333,Set default dashboard layout,NULL,0,set_default_dashboard,NULL,1010740,0,1010700,4,main,0
+1010000,Dashboard,dashboard,1,NULL,dashboard.dashboard-index,fas fa-tachometer-alt,#333,Main dashboard,NULL,1,view_dashboard,NULL,1010000,0,NULL,1,main,0
+1010100,System Overview,system-overview,1,NULL,dashboard.dashboard-overview,fas fa-info-circle,#333,System status overview,NULL,0,view_system_overview,NULL,1010100,0,1010000,1,main,0
+1010200,My Activity,my-activity,1,NULL,dashboard.dashboard-activity,fas fa-user-clock,#333,Your recent activity,NULL,0,view_activity,NULL,1010200,0,1010000,2,main,0
+1010300,Quick Actions,quick-actions,1,NULL,dashboard.dashboard-quick,fas fa-bolt,#333,Shortcuts for common actions,NULL,0,view_quick_actions,NULL,1010300,0,1010000,3,main,0
+1010400,Agent Dashboard,agent-dashboard,1,NULL,dashboard.dashboard-agent,fas fa-user-tie,#333,Agent-specific dashboard,NULL,0,view_agent_dashboard,NULL,1010400,0,1010000,4,main,0
+1010500,Manager Dashboard,manager-dashboard,1,NULL,dashboard.dashboard-manager,fas fa-user-cog,#333,Manager dashboard,NULL,0,view_manager_dashboard,NULL,1010500,0,1010000,5,main,0
+1010600,Admin Dashboard,admin-dashboard,1,NULL,dashboard.dashboard-admin,fas fa-crown,#333,Admin dashboard,NULL,0,view_admin_dashboard,NULL,1010600,0,1010000,6,main,0
+1010700,Custom Dashboard,custom-dashboard,1,NULL,dashboard.dashboard-custom,fas fa-th-large,#333,Custom dashboard,NULL,1,view_custom_dashboard,NULL,1010700,0,1010000,7,main,0
+1010710,Add Card,add-card,1,NULL,dashboard.dashboard-custom.add,fas fa-plus,#333,Add dashboard card,NULL,0,add_dashboard_card,NULL,1010710,0,1010700,1,main,0
+1010720,Reorder Cards,reorder-cards,1,NULL,dashboard.dashboard-custom.reorder,fas fa-sort,#333,Reorder dashboard cards,NULL,0,reorder_dashboard_cards,NULL,1010720,0,1010700,2,main,0
+1010730,Save Layout,save-layout,1,NULL,dashboard.dashboard-custom.save,fas fa-save,#333,Save dashboard layout,NULL,0,save_dashboard_layout,NULL,1010730,0,1010700,3,main,0
+1010740,Set Default,set-default,1,NULL,dashboard.dashboard-custom.default,fas fa-star,#333,Set default dashboard layout,NULL,0,set_default_dashboard,NULL,1010740,0,1010700,4,main,0
 1020000,Tickets,tickets,1,NULL,tickets.index,fas fa-ticket-alt,#333,Ticket management,NULL,1,view_tickets,NULL,1020000,0,NULL,1,tickets,0
 1020100,Create Ticket,create-ticket,1,NULL,tickets.create,fas fa-plus,#333,Create a new ticket,NULL,0,create_ticket,NULL,1020100,0,1020000,1,tickets,0
 1020200,My Tickets,my-tickets,1,NULL,tickets.my,fas fa-list,#333,Your assigned tickets,NULL,0,view_my_tickets,NULL,1020200,0,1020000,2,tickets,0

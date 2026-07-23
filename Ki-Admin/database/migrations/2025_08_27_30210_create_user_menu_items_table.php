@@ -22,6 +22,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('menu_item_id');
             $table->boolean('is_granted')->default(true);
+            // Per-user default marker; ensure only one default per user via application logic
+            $table->boolean('is_default')->default(false);
             $table->integer('custom_order')->nullable();
             $table->boolean('is_custom')->default(false);
             $table->timestamps();
@@ -32,6 +34,7 @@ return new class extends Migration {
             // Prevent duplicate grants for same user-menu combination
             $table->unique(['user_id', 'menu_item_id']);
             $table->index(['user_id', 'is_granted']);
+            $table->index(['user_id', 'is_default']);
             $table->index(['custom_order']);
         });
     }

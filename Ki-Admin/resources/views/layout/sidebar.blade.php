@@ -128,23 +128,9 @@
        ========================================================= --}}
     <div class="app-nav" id="app-simple-bar">
         @php
-            $activeMenuId = null;
-            $findActiveMenuId = function($items) use (&$findActiveMenuId) {
-                foreach ($items as $item) {
-                    if (!empty($item['route_name']) && Route::currentRouteName() === $item['route_name']) {
-                        return $item['id'];
-                    }
-                    if (!empty($item['url']) && Request::is(ltrim($item['url'], '/'))) {
-                        return $item['id'];
-                    }
-                    if (!empty($item['children'])) {
-                        $childActive = $findActiveMenuId($item['children']);
-                        if ($childActive) return $childActive;
-                    }
-                }
-                return null;
-            };
-            $activeMenuId = $findActiveMenuId($sidebarMenu);
+            // Prefer activeMenuId injected by SidebarMenuComposer; fall back to client-discovery
+            $activeMenuId = $activeMenuId ?? null;
+            $activeMenuAncestors = $activeMenuAncestors ?? [];
             // Enhanced sidebar debug output
             $expansionDebugFile = storage_path('sidebar_debug.txt');
             $routeName = Route::currentRouteName();
@@ -188,7 +174,7 @@
                 @endphp
                 <ul id="sidebarAccordion" class="main-nav p-0 mt-2" data-active-menu-id="{{ $activeMenuId }}">
                 @foreach($sidebarMenu as $menuItem)
-                    @include('layout.sidebar-menu-item', ['item' => $menuItem, 'activeMenuId' => $activeMenuId])
+                    @include('layout.sidebar-menu-item', ['item' => $menuItem, 'activeMenuId' => $activeMenuId, 'activeMenuAncestors' => $activeMenuAncestors])
                 @endforeach
                 </ul>
     </div>

@@ -56,14 +56,30 @@
       "icon-soft-primary": "primary",
       "icon-soft-secondary": "secondary",
 
-      "radius-primary": "primary",
-      "radius-secondary": "secondary",
-      "radius-success": "success",
-      "radius-danger": "danger",
-      "radius-warning": "warning",
-      "radius-info": "info",
-      "radius-light": "light",
-      "radius-dark": "dark",
+      "radius-primary": "radius-primary",
+      "radius-secondary": "radius-secondary",
+      "radius-success": "radius-success",
+      "radius-danger": "radius-danger",
+      "radius-warning": "radius-warning",
+      "radius-info": "radius-info",
+      "radius-light": "radius-light",
+      "radius-dark": "radius-dark",
+
+      "social-facebook": "social-facebook",
+      "social-twitter": "social-twitter",
+      "social-instagram": "social-instagram",
+      "social-reddit": "social-reddit",
+      "social-whatsapp": "social-whatsapp",
+      "social-linkedin": "social-linkedin",
+      "social-telegram": "social-twitter",
+      "social-youtube": "social-youtube",
+      "social-behance": "social-dribbble",
+      "social-dribbble": "social-dribbble",
+      "social-snapchat": "social-snapchat",
+
+      "size-sm": "size-sm",
+      "size-md": "size-md",
+      "size-lg": "size-lg",
 
       "active-primary": "primary",
       "active-secondary": "secondary",
@@ -104,14 +120,17 @@
       "block-warning": "warning",
       "block-info": "info",
 
-      "group-primary": "primary",
-      "group-secondary": "secondary",
-      "group-info": "info",
+      "group-primary": "group-primary",
+      "group-secondary": "group-secondary",
+      "group-info": "group-info",
+      "group-solid": "group-solid",
+      "group-outline": "group-outline",
+      "group-soft": "group-soft",
 
-      "action-save": "primary",
-      "action-cancel": "secondary",
-      "action-settings": "primary",
-      "action-more": "secondary"
+      "action-save": "action-save",
+      "action-cancel": "action-cancel",
+      "action-settings": "action-settings",
+      "action-more": "action-more"
     },
     "sizes": {
       "sm": { "padding": "4px 10px", "fontSize": "0.75rem", "height": "28px" },
@@ -376,7 +395,97 @@
       "btn.group-info.linkText": "--ds-btn-group-info-link-text",
       "btn.group-info.linkHoverText": "--ds-btn-group-info-link-hover-text",
       "btn.group-info.linkBorder": "--ds-btn-group-info-link-border",
-      "btn.group-info.linkHoverBorder": "--ds-btn-group-info-link-hover-border"
+      "btn.group-info.linkHoverBorder": "--ds-btn-group-info-link-hover-border",
+
+      "btn.social.facebook.bg": "--ds-btn-social-facebook-bg",
+      "btn.social.facebook.iconColor": "--ds-btn-social-facebook-icon-color",
+      "btn.social.facebook.hoverBg": "--ds-btn-social-facebook-hover-bg",
+      "btn.social.twitter.bg": "--ds-btn-social-twitter-bg",
+      "btn.social.twitter.iconColor": "--ds-btn-social-twitter-icon-color",
+      "btn.social.twitter.hoverBg": "--ds-btn-social-twitter-hover-bg",
+      "btn.social.instagram.bg": "--ds-btn-social-instagram-bg",
+      "btn.social.instagram.iconColor": "--ds-btn-social-instagram-icon-color",
+      "btn.social.instagram.hoverBg": "--ds-btn-social-instagram-hover-bg",
+      "btn.social.reddit.bg": "--ds-btn-social-reddit-bg",
+      "btn.social.reddit.iconColor": "--ds-btn-social-reddit-icon-color",
+      "btn.social.reddit.hoverBg": "--ds-btn-social-reddit-hover-bg",
+      "btn.social.whatsapp.bg": "--ds-btn-social-whatsapp-bg",
+      "btn.social.whatsapp.iconColor": "--ds-btn-social-whatsapp-icon-color",
+      "btn.social.whatsapp.hoverBg": "--ds-btn-social-whatsapp-hover-bg",
+      "btn.social.linkedin.bg": "--ds-btn-social-linkedin-bg",
+      "btn.social.linkedin.iconColor": "--ds-btn-social-linkedin-icon-color",
+      "btn.social.linkedin.hoverBg": "--ds-btn-social-linkedin-hover-bg",
+      "btn.social.youtube.bg": "--ds-btn-social-youtube-bg",
+      "btn.social.youtube.iconColor": "--ds-btn-social-youtube-icon-color",
+      "btn.social.youtube.hoverBg": "--ds-btn-social-youtube-hover-bg",
+      "btn.social.dribbble.bg": "--ds-btn-social-dribbble-bg",
+      "btn.social.dribbble.iconColor": "--ds-btn-social-dribbble-icon-color",
+      "btn.social.dribbble.hoverBg": "--ds-btn-social-dribbble-hover-bg",
+      "btn.social.snapchat.bg": "--ds-btn-social-snapchat-bg",
+      "btn.social.snapchat.iconColor": "--ds-btn-social-snapchat-icon-color",
+      "btn.social.snapchat.hoverBg": "--ds-btn-social-snapchat-hover-bg",
+
+      "btn.size.small.fontSize": "--ds-btn-size-small-font-size",
+      "btn.size.small.lineHeight": "--ds-btn-size-small-line-height",
+      "btn.size.small.paddingX": "--ds-btn-size-small-padding-x",
+      "btn.size.small.paddingY": "--ds-btn-size-small-padding-y",
+      "btn.size.small.borderRadius": "--ds-btn-size-small-border-radius",
+      "btn.size.small.gap": "--ds-btn-size-small-gap",
+      "btn.size.medium.fontSize": "--ds-btn-size-medium-font-size",
+      "btn.size.medium.lineHeight": "--ds-btn-size-medium-line-height",
+      "btn.size.medium.paddingX": "--ds-btn-size-medium-padding-x",
+      "btn.size.medium.paddingY": "--ds-btn-size-medium-padding-y",
+      "btn.size.medium.borderRadius": "--ds-btn-size-medium-border-radius",
+      "btn.size.medium.gap": "--ds-btn-size-medium-gap",
+      "btn.size.large.fontSize": "--ds-btn-size-large-font-size",
+      "btn.size.large.lineHeight": "--ds-btn-size-large-line-height",
+      "btn.size.large.paddingX": "--ds-btn-size-large-padding-x",
+      "btn.size.large.paddingY": "--ds-btn-size-large-padding-y",
+      "btn.size.large.borderRadius": "--ds-btn-size-large-border-radius",
+      "btn.size.large.gap": "--ds-btn-size-large-gap",
+
+      "btn.action.bg": "--ds-btn-action-bg",
+      "btn.action.text": "--ds-btn-action-color",
+      "btn.action.border": "--ds-btn-action-border",
+      "btn.action.hoverBg": "--ds-btn-action-bg-hover",
+      "btn.action.hoverText": "--ds-btn-action-color-hover",
+      "btn.action.hoverBorder": "--ds-btn-action-border-hover",
+      "btn.action.radius": "--ds-btn-action-radius",
+      "btn.action.paddingX": "--ds-btn-action-padding-x",
+      "btn.action.paddingY": "--ds-btn-action-padding-y",
+
+      "btn.radius.primary.bg": "--ds-btn-radius-primary-bg",
+      "btn.radius.primary.text": "--ds-btn-radius-primary-text",
+      "btn.radius.primary.border": "--ds-btn-radius-primary-border",
+      "btn.radius.primary.hoverBg": "--ds-btn-radius-primary-hover-bg",
+      "btn.radius.secondary.bg": "--ds-btn-radius-secondary-bg",
+      "btn.radius.secondary.text": "--ds-btn-radius-secondary-text",
+      "btn.radius.secondary.border": "--ds-btn-radius-secondary-border",
+      "btn.radius.secondary.hoverBg": "--ds-btn-radius-secondary-hover-bg",
+      "btn.radius.success.bg": "--ds-btn-radius-success-bg",
+      "btn.radius.success.text": "--ds-btn-radius-success-text",
+      "btn.radius.success.border": "--ds-btn-radius-success-border",
+      "btn.radius.success.hoverBg": "--ds-btn-radius-success-hover-bg",
+      "btn.radius.danger.bg": "--ds-btn-radius-danger-bg",
+      "btn.radius.danger.text": "--ds-btn-radius-danger-text",
+      "btn.radius.danger.border": "--ds-btn-radius-danger-border",
+      "btn.radius.danger.hoverBg": "--ds-btn-radius-danger-hover-bg",
+      "btn.radius.warning.bg": "--ds-btn-radius-warning-bg",
+      "btn.radius.warning.text": "--ds-btn-radius-warning-text",
+      "btn.radius.warning.border": "--ds-btn-radius-warning-border",
+      "btn.radius.warning.hoverBg": "--ds-btn-radius-warning-hover-bg",
+      "btn.radius.info.bg": "--ds-btn-radius-info-bg",
+      "btn.radius.info.text": "--ds-btn-radius-info-text",
+      "btn.radius.info.border": "--ds-btn-radius-info-border",
+      "btn.radius.info.hoverBg": "--ds-btn-radius-info-hover-bg",
+      "btn.radius.light.bg": "--ds-btn-radius-light-bg",
+      "btn.radius.light.text": "--ds-btn-radius-light-text",
+      "btn.radius.light.border": "--ds-btn-radius-light-border",
+      "btn.radius.light.hoverBg": "--ds-btn-radius-light-hover-bg",
+      "btn.radius.dark.bg": "--ds-btn-radius-dark-bg",
+      "btn.radius.dark.text": "--ds-btn-radius-dark-text",
+      "btn.radius.dark.border": "--ds-btn-radius-dark-border",
+      "btn.radius.dark.hoverBg": "--ds-btn-radius-dark-hover-bg"
     },
     "editor": {
       "groups": {
@@ -447,6 +556,197 @@
           "btn.info.text",
           "btn.info.border",
           "btn.info.hoverBg"
+        ],
+        "social-facebook": [
+          "btn.social.facebook.bg",
+          "btn.social.facebook.iconColor",
+          "btn.social.facebook.hoverBg"
+        ],
+        "social-twitter": [
+          "btn.social.twitter.bg",
+          "btn.social.twitter.iconColor",
+          "btn.social.twitter.hoverBg"
+        ],
+        "social-instagram": [
+          "btn.social.instagram.bg",
+          "btn.social.instagram.iconColor",
+          "btn.social.instagram.hoverBg"
+        ],
+        "social-reddit": [
+          "btn.social.reddit.bg",
+          "btn.social.reddit.iconColor",
+          "btn.social.reddit.hoverBg"
+        ],
+        "social-whatsapp": [
+          "btn.social.whatsapp.bg",
+          "btn.social.whatsapp.iconColor",
+          "btn.social.whatsapp.hoverBg"
+        ],
+        "social-linkedin": [
+          "btn.social.linkedin.bg",
+          "btn.social.linkedin.iconColor",
+          "btn.social.linkedin.hoverBg"
+        ],
+        "social-youtube": [
+          "btn.social.youtube.bg",
+          "btn.social.youtube.iconColor",
+          "btn.social.youtube.hoverBg"
+        ],
+        "social-dribbble": [
+          "btn.social.dribbble.bg",
+          "btn.social.dribbble.iconColor",
+          "btn.social.dribbble.hoverBg"
+        ],
+        "social-snapchat": [
+          "btn.social.snapchat.bg",
+          "btn.social.snapchat.iconColor",
+          "btn.social.snapchat.hoverBg"
+        ],
+        "action-save": [
+          "btn.action.bg",
+          "btn.action.text",
+          "btn.action.border",
+          "btn.action.hoverBg",
+          "btn.action.hoverText",
+          "btn.action.hoverBorder"
+        ],
+        "action-cancel": [
+          "btn.action.bg",
+          "btn.action.text",
+          "btn.action.border",
+          "btn.action.hoverBg",
+          "btn.action.hoverText",
+          "btn.action.hoverBorder"
+        ],
+        "action-settings": [
+          "btn.action.bg",
+          "btn.action.text",
+          "btn.action.border",
+          "btn.action.hoverBg",
+          "btn.action.hoverText",
+          "btn.action.hoverBorder"
+        ],
+        "action-more": [
+          "btn.action.bg",
+          "btn.action.text",
+          "btn.action.border",
+          "btn.action.hoverBg",
+          "btn.action.hoverText",
+          "btn.action.hoverBorder"
+        ],
+        "size-sm": [
+          "btn.size.small.fontSize",
+          "btn.size.small.lineHeight",
+          "btn.size.small.paddingX",
+          "btn.size.small.paddingY",
+          "btn.size.small.borderRadius",
+          "btn.size.small.gap"
+        ],
+        "size-md": [
+          "btn.size.medium.fontSize",
+          "btn.size.medium.lineHeight",
+          "btn.size.medium.paddingX",
+          "btn.size.medium.paddingY",
+          "btn.size.medium.borderRadius",
+          "btn.size.medium.gap"
+        ],
+        "size-lg": [
+          "btn.size.large.fontSize",
+          "btn.size.large.lineHeight",
+          "btn.size.large.paddingX",
+          "btn.size.large.paddingY",
+          "btn.size.large.borderRadius",
+          "btn.size.large.gap"
+        ],
+        "group-primary": [
+          "btn.group-primary.groupBg",
+          "btn.group-primary.groupBorder",
+          "btn.group-primary.activeBg",
+          "btn.group-primary.activeText",
+          "btn.group-primary.linkText"
+        ],
+        "group-secondary": [
+          "btn.group-secondary.groupBg",
+          "btn.group-secondary.groupBorder",
+          "btn.group-secondary.activeBg",
+          "btn.group-secondary.activeText",
+          "btn.group-secondary.linkText"
+        ],
+        "group-info": [
+          "btn.group-info.groupBg",
+          "btn.group-info.groupBorder",
+          "btn.group-info.activeBg",
+          "btn.group-info.activeText",
+          "btn.group-info.linkText"
+        ],
+        "group-solid": [
+          "btn.group-primary.groupBg",
+          "btn.group-primary.groupBorder",
+          "btn.group-primary.activeBg",
+          "btn.group-primary.activeText",
+          "btn.group-primary.linkText"
+        ],
+        "group-outline": [
+          "btn.group-secondary.groupBg",
+          "btn.group-secondary.groupBorder",
+          "btn.group-secondary.activeBg",
+          "btn.group-secondary.activeText",
+          "btn.group-secondary.linkText"
+        ],
+        "group-soft": [
+          "btn.group-info.groupBg",
+          "btn.group-info.groupBorder",
+          "btn.group-info.activeBg",
+          "btn.group-info.activeText",
+          "btn.group-info.linkText"
+        ],
+        "radius-primary": [
+          "btn.radius.primary.bg",
+          "btn.radius.primary.text",
+          "btn.radius.primary.border",
+          "btn.radius.primary.hoverBg"
+        ],
+        "radius-secondary": [
+          "btn.radius.secondary.bg",
+          "btn.radius.secondary.text",
+          "btn.radius.secondary.border",
+          "btn.radius.secondary.hoverBg"
+        ],
+        "radius-success": [
+          "btn.radius.success.bg",
+          "btn.radius.success.text",
+          "btn.radius.success.border",
+          "btn.radius.success.hoverBg"
+        ],
+        "radius-danger": [
+          "btn.radius.danger.bg",
+          "btn.radius.danger.text",
+          "btn.radius.danger.border",
+          "btn.radius.danger.hoverBg"
+        ],
+        "radius-warning": [
+          "btn.radius.warning.bg",
+          "btn.radius.warning.text",
+          "btn.radius.warning.border",
+          "btn.radius.warning.hoverBg"
+        ],
+        "radius-info": [
+          "btn.radius.info.bg",
+          "btn.radius.info.text",
+          "btn.radius.info.border",
+          "btn.radius.info.hoverBg"
+        ],
+        "radius-light": [
+          "btn.radius.light.bg",
+          "btn.radius.light.text",
+          "btn.radius.light.border",
+          "btn.radius.light.hoverBg"
+        ],
+        "radius-dark": [
+          "btn.radius.dark.bg",
+          "btn.radius.dark.text",
+          "btn.radius.dark.border",
+          "btn.radius.dark.hoverBg"
         ],
         "structure": [
           "btn.structure.borderRadius",

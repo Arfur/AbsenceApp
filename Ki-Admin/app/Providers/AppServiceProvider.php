@@ -27,7 +27,6 @@ class AppServiceProvider extends ServiceProvider
             'layout.sidebar',          // Sidebar component
             'partial.sidebar',         // Partial sidebar views
             'components.sidebar',      // Sidebar components
-            'dashboard.dashboard',     // Main dashboard view
             'test.*'                   // Test views for development
         ], SidebarMenuComposer::class);
     }

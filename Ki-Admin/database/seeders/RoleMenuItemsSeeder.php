@@ -45,6 +45,7 @@ class RoleMenuItemsSeeder extends Seeder
                 'role_type' => $data['role_type'] ?? null,
                 'menu_item_id' => (int)($data['menu_item_id'] ?? 0),
                 'is_granted' => ($data['is_granted'] ?? '0') == '1' ? 1 : 0,
+                'is_default' => ($data['is_default'] ?? '0') == '1' ? 1 : 0,
                 'assigned_at' => $assignedAt,
                 'status' => $data['status'] ?? null,
                 'notes' => $data['notes'] ?? null,

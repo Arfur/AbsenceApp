@@ -1,254 +1,254 @@
-role_type_id,role_type,menu_item_id,is_granted,assigned_at,status,notes
-1,user,1010000,1,26/08/2025 00:00,active,Main dashboard
-1,user,1010100,1,26/08/2025 00:00,active,System status overview
-1,user,1010200,1,26/08/2025 00:00,active,Your recent activity
-1,user,1010300,1,26/08/2025 00:00,active,Shortcuts for common actions
-1,user,1010400,1,26/08/2025 00:00,active,Agent-specific dashboard
-1,user,1020100,1,26/08/2025 00:00,active,Create a new ticket
-1,user,1020200,1,26/08/2025 00:00,active,Your assigned tickets
-1,user,1020500,1,26/08/2025 00:00,active,Closed tickets
-1,user,1030300,1,26/08/2025 00:00,active,Project overview
-1,user,1030500,1,26/08/2025 00:00,active,Tasks linked to project
-1,user,1030600,1,26/08/2025 00:00,active,Tickets linked to project
-1,user,1030800,1,26/08/2025 00:00,active,Project files
-1,user,1040100,1,26/08/2025 00:00,active,Your assigned tasks
-1,user,1040300,1,26/08/2025 00:00,active,Task templates
-1,user,1040400,1,26/08/2025 00:00,active,Task statuses
-1,user,1050100,1,26/08/2025 00:00,active,Browse articles
-1,user,1050400,1,26/08/2025 00:00,active,Article feedback
-1,user,1060100,1,26/08/2025 00:00,active,My calendar
-1,user,1060300,1,26/08/2025 00:00,active,Ticket due dates
-1,user,1060400,1,26/08/2025 00:00,active,Task due dates
-1,user,1070100,1,26/08/2025 00:00,active,Inbox
-1,user,1070200,1,26/08/2025 00:00,active,Sent emails
-1,user,1070300,1,26/08/2025 00:00,active,Draft emails
-1,user,1070400,1,26/08/2025 00:00,active,Ticket emails
-1,user,1070500,1,26/08/2025 00:00,active,Task emails
-1,user,1080100,1,26/08/2025 00:00,active,Upload file
-1,user,1080200,1,26/08/2025 00:00,active,My files
-1,user,1080400,1,26/08/2025 00:00,active,Ticket files
-1,user,1080500,1,26/08/2025 00:00,active,Task documents
-1,user,1090100,1,26/08/2025 00:00,active,Ticket statistics
-1,user,1090200,1,26/08/2025 00:00,active,Task completion rates
-1,user,1160100,1,26/08/2025 00:00,active,Getting started
-1,user,1160300,1,26/08/2025 00:00,active,Frequently asked questions
-1,user,1160500,1,26/08/2025 00:00,active,Submit feedback
-2,admin,1010000,1,26/08/2025 00:00,active,Main dashboard
-2,admin,1010100,1,26/08/2025 00:00,active,System status overview
-2,admin,1010500,1,26/08/2025 00:00,active,Manager dashboard
-2,admin,1010600,1,26/08/2025 00:00,active,Admin dashboard
-2,admin,1020300,1,26/08/2025 00:00,active,List all tickets
-2,admin,1020400,1,26/08/2025 00:00,active,Unassigned tickets
-2,admin,1020500,1,26/08/2025 00:00,active,Closed tickets
-2,admin,1020600,1,26/08/2025 00:00,active,Ticket templates
-2,admin,1020700,1,26/08/2025 00:00,active,Ticket tags
-2,admin,1030100,1,26/08/2025 00:00,active,List all projects
-2,admin,1030300,1,26/08/2025 00:00,active,Project overview
-2,admin,1030400,1,26/08/2025 00:00,active,Project milestones
-2,admin,1030500,1,26/08/2025 00:00,active,Tasks linked to project
-2,admin,1030600,1,26/08/2025 00:00,active,Tickets linked to project
-2,admin,1030700,1,26/08/2025 00:00,active,Setup project team
-2,admin,1030800,1,26/08/2025 00:00,active,Project files
-2,admin,1031000,1,26/08/2025 00:00,active,Project reports
-2,admin,1040200,1,26/08/2025 00:00,active,Team tasks
-2,admin,1040300,1,26/08/2025 00:00,active,Task templates
-2,admin,1040400,1,26/08/2025 00:00,active,Task statuses
-2,admin,1050200,1,26/08/2025 00:00,active,Manage articles
-2,admin,1050300,1,26/08/2025 00:00,active,Article categories
-2,admin,1050400,1,26/08/2025 00:00,active,Article feedback
-2,admin,1050500,1,26/08/2025 00:00,active,Drafts review queue
-2,admin,1060200,1,26/08/2025 00:00,active,Team calendar
-2,admin,1060300,1,26/08/2025 00:00,active,Ticket due dates
-2,admin,1060400,1,26/08/2025 00:00,active,Task due dates
-2,admin,1070100,1,26/08/2025 00:00,active,Inbox
-2,admin,1070200,1,26/08/2025 00:00,active,Sent emails
-2,admin,1070400,1,26/08/2025 00:00,active,Ticket emails
-2,admin,1070600,1,26/08/2025 00:00,active,Email templates
-2,admin,1070700,1,26/08/2025 00:00,active,Email settings
-2,admin,1080300,1,26/08/2025 00:00,active,Shared files
-2,admin,1080400,1,26/08/2025 00:00,active,Ticket files
-2,admin,1080500,1,26/08/2025 00:00,active,Task documents
-2,admin,1080600,1,26/08/2025 00:00,active,Knowledge base assets
-2,admin,1080800,1,26/08/2025 00:00,active,File metadata
-2,admin,1080900,1,26/08/2025 00:00,active,Retention rules
-2,admin,1081000,1,26/08/2025 00:00,active,Access logs
-2,admin,1090100,1,26/08/2025 00:00,active,Ticket statistics
-2,admin,1090200,1,26/08/2025 00:00,active,Task completion rates
-2,admin,1090300,1,26/08/2025 00:00,active,Agent performance score
-2,admin,1090400,1,26/08/2025 00:00,active,Customer satisfaction
-2,admin,1090500,1,26/08/2025 00:00,active,System logs
-2,admin,1090600,1,26/08/2025 00:00,active,Export data and reports
-2,admin,1100100,1,26/08/2025 00:00,active,All users
-2,admin,1100200,1,26/08/2025 00:00,active,Add user
-2,admin,1100300,1,26/08/2025 00:00,active,User activity
-2,admin,1100500,1,26/08/2025 00:00,active,Roles and access
-2,admin,1100600,1,26/08/2025 00:00,active,Role menus
-2,admin,1100700,1,26/08/2025 00:00,active,User menus
-2,admin,1110000,1,26/08/2025 00:00,active,Settings
-2,admin,1110100,1,26/08/2025 00:00,active,System settings
-2,admin,1110200,1,26/08/2025 00:00,active,Ticket settings
-2,admin,1110300,1,26/08/2025 00:00,active,Task settings
-2,admin,1110400,1,26/08/2025 00:00,active,Notification settings
-2,admin,1110500,1,26/08/2025 00:00,active,Security settings
-2,admin,1110600,1,26/08/2025 00:00,active,API links
-2,admin,1110700,1,26/08/2025 00:00,active,Audit trail
-2,admin,1120000,1,26/08/2025 00:00,active,Admin tools
-2,admin,1120100,1,26/08/2025 00:00,active,Import/export data
-2,admin,1120200,1,26/08/2025 00:00,active,Migration viewer
-2,admin,1120300,1,26/08/2025 00:00,active,Seeder manager
-2,admin,1120400,1,26/08/2025 00:00,active,Cache monitor
-2,admin,1120500,1,26/08/2025 00:00,active,Health check
-2,admin,1130100,1,26/08/2025 00:00,active,Test scenarios
-2,admin,1130200,1,26/08/2025 00:00,active,Mock tickets
-2,admin,1130300,1,26/08/2025 00:00,active,UI preview
-2,admin,1130400,1,26/08/2025 00:00,active,Regression checklist
-2,admin,1140100,1,26/08/2025 00:00,active,Webhooks
-2,admin,1140200,1,26/08/2025 00:00,active,Third-party apps
-2,admin,1140300,1,26/08/2025 00:00,active,Slack/Teams alerts
-2,admin,1140400,1,26/08/2025 00:00,active,CRM sync
-2,admin,1140500,1,26/08/2025 00:00,active,API endpoints
-2,admin,1150100,1,26/08/2025 00:00,active,Audit logs
-2,admin,1150200,1,26/08/2025 00:00,active,Retention policy
-2,admin,1150300,1,26/08/2025 00:00,active,GDPR tools
-2,admin,1150400,1,26/08/2025 00:00,active,Access reviews
-2,admin,1160000,1,26/08/2025 00:00,active,Help and onboarding
-2,admin,1160100,1,26/08/2025 00:00,active,Getting started
-2,admin,1160200,1,26/08/2025 00:00,active,Feature walkthroughs
-2,admin,1160300,1,26/08/2025 00:00,active,Frequently asked questions
-2,admin,1160400,1,26/08/2025 00:00,active,Contact support
-2,admin,1160500,1,26/08/2025 00:00,active,Submit feedback
-2,admin,1170000,1,26/08/2025 00:00,active,Manage all sidebar menus
-2,admin,1170400,1,26/08/2025 00:00,active,Drag-and-drop reorder menus
-2,admin,1170500,1,26/08/2025 00:00,active,Show/hide menu items
-2,admin,1170600,1,26/08/2025 00:00,active,Set parent/child relationships
-2,admin,1170700,1,26/08/2025 00:00,active,View menu change log
-3,super_admin,1010000,1,26/08/2025 00:00,active,Main dashboard
-3,super_admin,1010100,1,26/08/2025 00:00,active,System status overview
-3,super_admin,1010200,1,26/08/2025 00:00,active,Your recent activity
-3,super_admin,1010300,1,26/08/2025 00:00,active,Shortcuts for common actions
-3,super_admin,1010400,1,26/08/2025 00:00,active,Agent-specific dashboard
-3,super_admin,1010500,1,26/08/2025 00:00,active,Manager dashboard
-3,super_admin,1010600,1,26/08/2025 00:00,active,Admin dashboard
-3,super_admin,1010700,1,26/08/2025 00:00,active,Custom dashboard
-3,super_admin,1010710,1,26/08/2025 00:00,active,Add dashboard card
-3,super_admin,1010720,1,26/08/2025 00:00,active,Reorder dashboard cards
-3,super_admin,1010730,1,26/08/2025 00:00,active,Save dashboard layout
-3,super_admin,1010740,1,26/08/2025 00:00,active,Set default dashboard layout
-3,super_admin,1020000,1,26/08/2025 00:00,active,Ticket management
-3,super_admin,1020100,1,26/08/2025 00:00,active,Create a new ticket
-3,super_admin,1020200,1,26/08/2025 00:00,active,Your assigned tickets
-3,super_admin,1020300,1,26/08/2025 00:00,active,List all tickets
-3,super_admin,1020400,1,26/08/2025 00:00,active,Unassigned tickets
-3,super_admin,1020500,1,26/08/2025 00:00,active,Closed tickets
-3,super_admin,1020600,1,26/08/2025 00:00,active,Ticket templates
-3,super_admin,1020700,1,26/08/2025 00:00,active,Ticket tags
-3,super_admin,1030000,1,26/08/2025 00:00,active,Project management
-3,super_admin,1030100,1,26/08/2025 00:00,active,List all projects
-3,super_admin,1030200,1,26/08/2025 00:00,active,Start a new project
-3,super_admin,1030300,1,26/08/2025 00:00,active,Project overview
-3,super_admin,1030400,1,26/08/2025 00:00,active,Project milestones
-3,super_admin,1030500,1,26/08/2025 00:00,active,Tasks linked to project
-3,super_admin,1030600,1,26/08/2025 00:00,active,Tickets linked to project
-3,super_admin,1030700,1,26/08/2025 00:00,active,Setup project team
-3,super_admin,1030800,1,26/08/2025 00:00,active,Project files
-3,super_admin,1030900,1,26/08/2025 00:00,active,Project timeline
-3,super_admin,1031000,1,26/08/2025 00:00,active,Project reports
-3,super_admin,1040000,1,26/08/2025 00:00,active,Task management
-3,super_admin,1040100,1,26/08/2025 00:00,active,Your assigned tasks
-3,super_admin,1040200,1,26/08/2025 00:00,active,Team tasks
-3,super_admin,1040300,1,26/08/2025 00:00,active,Task templates
-3,super_admin,1040400,1,26/08/2025 00:00,active,Task statuses
-3,super_admin,1040500,1,26/08/2025 00:00,active,Projects linked to task
-3,super_admin,1040600,1,26/08/2025 00:00,active,Tickets linked to task
-3,super_admin,1040700,1,26/08/2025 00:00,active,Sync tasks with calendar
-3,super_admin,1050000,1,26/08/2025 00:00,active,Knowledge base
-3,super_admin,1050100,1,26/08/2025 00:00,active,Browse articles
-3,super_admin,1050200,1,26/08/2025 00:00,active,Manage articles
-3,super_admin,1050300,1,26/08/2025 00:00,active,Article categories
-3,super_admin,1050400,1,26/08/2025 00:00,active,Article feedback
-3,super_admin,1050500,1,26/08/2025 00:00,active,Drafts review queue
-3,super_admin,1060000,1,26/08/2025 00:00,active,Calendar
-3,super_admin,1060100,1,26/08/2025 00:00,active,My calendar
-3,super_admin,1060200,1,26/08/2025 00:00,active,Team calendar
-3,super_admin,1060300,1,26/08/2025 00:00,active,Ticket due dates
-3,super_admin,1060400,1,26/08/2025 00:00,active,Task due dates
-3,super_admin,1060500,1,26/08/2025 00:00,active,Event types
-3,super_admin,1060600,1,26/08/2025 00:00,active,Calendar sync settings
-3,super_admin,1070000,1,26/08/2025 00:00,active,Email
-3,super_admin,1070100,1,26/08/2025 00:00,active,Inbox
-3,super_admin,1070200,1,26/08/2025 00:00,active,Sent emails
-3,super_admin,1070300,1,26/08/2025 00:00,active,Draft emails
-3,super_admin,1070400,1,26/08/2025 00:00,active,Ticket emails
-3,super_admin,1070500,1,26/08/2025 00:00,active,Task emails
-3,super_admin,1070600,1,26/08/2025 00:00,active,Email templates
-3,super_admin,1070700,1,26/08/2025 00:00,active,Email settings
-3,super_admin,1080000,1,26/08/2025 00:00,active,Assets and files
-3,super_admin,1080100,1,26/08/2025 00:00,active,Upload file
-3,super_admin,1080200,1,26/08/2025 00:00,active,My files
-3,super_admin,1080300,1,26/08/2025 00:00,active,Shared files
-3,super_admin,1080400,1,26/08/2025 00:00,active,Ticket files
-3,super_admin,1080500,1,26/08/2025 00:00,active,Task documents
-3,super_admin,1080600,1,26/08/2025 00:00,active,Knowledge base assets
-3,super_admin,1080700,1,26/08/2025 00:00,active,Image library
-3,super_admin,1080800,1,26/08/2025 00:00,active,File metadata
-3,super_admin,1080900,1,26/08/2025 00:00,active,Retention rules
-3,super_admin,1081000,1,26/08/2025 00:00,active,Access logs
-3,super_admin,1090000,1,26/08/2025 00:00,active,Reports
-3,super_admin,1090100,1,26/08/2025 00:00,active,Ticket statistics
-3,super_admin,1090200,1,26/08/2025 00:00,active,Task completion rates
-3,super_admin,1090300,1,26/08/2025 00:00,active,Agent performance score
-3,super_admin,1090400,1,26/08/2025 00:00,active,Customer satisfaction
-3,super_admin,1090500,1,26/08/2025 00:00,active,System logs
-3,super_admin,1090600,1,26/08/2025 00:00,active,Export data and reports
-3,super_admin,1100000,1,26/08/2025 00:00,active,Users and roles
-3,super_admin,1100100,1,26/08/2025 00:00,active,All users
-3,super_admin,1100200,1,26/08/2025 00:00,active,Add user
-3,super_admin,1100300,1,26/08/2025 00:00,active,User activity
-3,super_admin,1100400,1,26/08/2025 00:00,active,Modern user view
-3,super_admin,1100500,1,26/08/2025 00:00,active,Roles and access
-3,super_admin,1100600,1,26/08/2025 00:00,active,Role menus
-3,super_admin,1100700,1,26/08/2025 00:00,active,User menus
-3,super_admin,1110000,1,26/08/2025 00:00,active,Settings
-3,super_admin,1110100,1,26/08/2025 00:00,active,System settings
-3,super_admin,1110200,1,26/08/2025 00:00,active,Ticket settings
-3,super_admin,1110300,1,26/08/2025 00:00,active,Task settings
-3,super_admin,1110400,1,26/08/2025 00:00,active,Notification settings
-3,super_admin,1110500,1,26/08/2025 00:00,active,Security settings
-3,super_admin,1110600,1,26/08/2025 00:00,active,API links
-3,super_admin,1110700,1,26/08/2025 00:00,active,Audit trail
-3,super_admin,1120000,1,26/08/2025 00:00,active,Admin tools
-3,super_admin,1120100,1,26/08/2025 00:00,active,Import/export data
-3,super_admin,1120200,1,26/08/2025 00:00,active,Migration viewer
-3,super_admin,1120300,1,26/08/2025 00:00,active,Seeder manager
-3,super_admin,1120400,1,26/08/2025 00:00,active,Cache monitor
-3,super_admin,1120500,1,26/08/2025 00:00,active,Health check
-3,super_admin,1130000,1,26/08/2025 00:00,active,QA and testing
-3,super_admin,1130100,1,26/08/2025 00:00,active,Test scenarios
-3,super_admin,1130200,1,26/08/2025 00:00,active,Mock tickets
-3,super_admin,1130300,1,26/08/2025 00:00,active,UI preview
-3,super_admin,1130400,1,26/08/2025 00:00,active,Regression checklist
-3,super_admin,1140000,1,26/08/2025 00:00,active,Integrations
-3,super_admin,1140100,1,26/08/2025 00:00,active,Webhooks
-3,super_admin,1140200,1,26/08/2025 00:00,active,Third-party apps
-3,super_admin,1140300,1,26/08/2025 00:00,active,Slack/Teams alerts
-3,super_admin,1140400,1,26/08/2025 00:00,active,CRM sync
-3,super_admin,1140500,1,26/08/2025 00:00,active,API endpoints
-3,super_admin,1150000,1,26/08/2025 00:00,active,Compliance
-3,super_admin,1150100,1,26/08/2025 00:00,active,Audit logs
-3,super_admin,1150200,1,26/08/2025 00:00,active,Retention policy
-3,super_admin,1150300,1,26/08/2025 00:00,active,GDPR tools
-3,super_admin,1150400,1,26/08/2025 00:00,active,Access reviews
-3,super_admin,1160000,1,26/08/2025 00:00,active,Help and onboarding
-3,super_admin,1160100,1,26/08/2025 00:00,active,Getting started
-3,super_admin,1160200,1,26/08/2025 00:00,active,Feature walkthroughs
-3,super_admin,1160300,1,26/08/2025 00:00,active,Frequently asked questions
-3,super_admin,1160400,1,26/08/2025 00:00,active,Contact support
-3,super_admin,1160500,1,26/08/2025 00:00,active,Submit feedback
-3,super_admin,1170000,1,26/08/2025 00:00,active,Manage all sidebar menus
-3,super_admin,1170100,1,26/08/2025 00:00,active,List all menu and submenu items
-3,super_admin,1170200,1,26/08/2025 00:00,active,Create a new menu item
-3,super_admin,1170300,1,26/08/2025 00:00,active,Edit existing menu item
-3,super_admin,1170400,1,26/08/2025 00:00,active,Drag-and-drop reorder menus
-3,super_admin,1170500,1,26/08/2025 00:00,active,Show/hide menu items
-3,super_admin,1170600,1,26/08/2025 00:00,active,Set parent/child relationships
-3,super_admin,1170700,1,26/08/2025 00:00,active,View menu change log
+role_type_id,role_type,menu_item_id,is_granted,is_default,assigned_at,status,notes
+1,user,1010000,1,0,26/08/2025 00:00,active,Main dashboard
+1,user,1010100,1,0,26/08/2025 00:00,active,System status overview
+1,user,1010200,1,1,26/08/2025 00:00,active,Your recent activity
+1,user,1010300,1,0,26/08/2025 00:00,active,Shortcuts for common actions
+1,user,1010400,1,0,26/08/2025 00:00,active,Agent-specific dashboard
+1,user,1020100,1,0,26/08/2025 00:00,active,Create a new ticket
+1,user,1020200,1,0,26/08/2025 00:00,active,Your assigned tickets
+1,user,1020500,1,0,26/08/2025 00:00,active,Closed tickets
+1,user,1030300,1,0,26/08/2025 00:00,active,Project overview
+1,user,1030500,1,0,26/08/2025 00:00,active,Tasks linked to project
+1,user,1030600,1,0,26/08/2025 00:00,active,Tickets linked to project
+1,user,1030800,1,0,26/08/2025 00:00,active,Project files
+1,user,1040100,1,0,26/08/2025 00:00,active,Your assigned tasks
+1,user,1040300,1,0,26/08/2025 00:00,active,Task templates
+1,user,1040400,1,0,26/08/2025 00:00,active,Task statuses
+1,user,1050100,1,0,26/08/2025 00:00,active,Browse articles
+1,user,1050400,1,0,26/08/2025 00:00,active,Article feedback
+1,user,1060100,1,0,26/08/2025 00:00,active,My calendar
+1,user,1060300,1,0,26/08/2025 00:00,active,Ticket due dates
+1,user,1060400,1,0,26/08/2025 00:00,active,Task due dates
+1,user,1070100,1,0,26/08/2025 00:00,active,Inbox
+1,user,1070200,1,0,26/08/2025 00:00,active,Sent emails
+1,user,1070300,1,0,26/08/2025 00:00,active,Draft emails
+1,user,1070400,1,0,26/08/2025 00:00,active,Ticket emails
+1,user,1070500,1,0,26/08/2025 00:00,active,Task emails
+1,user,1080100,1,0,26/08/2025 00:00,active,Upload file
+1,user,1080200,1,0,26/08/2025 00:00,active,My files
+1,user,1080400,1,0,26/08/2025 00:00,active,Ticket files
+1,user,1080500,1,0,26/08/2025 00:00,active,Task documents
+1,user,1090100,1,0,26/08/2025 00:00,active,Ticket statistics
+1,user,1090200,1,0,26/08/2025 00:00,active,Task completion rates
+1,user,1160100,1,0,26/08/2025 00:00,active,Getting started
+1,user,1160300,1,0,26/08/2025 00:00,active,Frequently asked questions
+1,user,1160500,1,0,26/08/2025 00:00,active,Submit feedback
+2,admin,1010000,1,0,26/08/2025 00:00,active,Main dashboard
+2,admin,1010100,1,1,26/08/2025 00:00,active,System status overview
+2,admin,1010500,1,0,26/08/2025 00:00,active,Manager dashboard
+2,admin,1010600,1,0,26/08/2025 00:00,active,Admin dashboard
+2,admin,1020300,1,0,26/08/2025 00:00,active,List all tickets
+2,admin,1020400,1,0,26/08/2025 00:00,active,Unassigned tickets
+2,admin,1020500,1,0,26/08/2025 00:00,active,Closed tickets
+2,admin,1020600,1,0,26/08/2025 00:00,active,Ticket templates
+2,admin,1020700,1,0,26/08/2025 00:00,active,Ticket tags
+2,admin,1030100,1,0,26/08/2025 00:00,active,List all projects
+2,admin,1030300,1,0,26/08/2025 00:00,active,Project overview
+2,admin,1030400,1,0,26/08/2025 00:00,active,Project milestones
+2,admin,1030500,1,0,26/08/2025 00:00,active,Tasks linked to project
+2,admin,1030600,1,0,26/08/2025 00:00,active,Tickets linked to project
+2,admin,1030700,1,0,26/08/2025 00:00,active,Setup project team
+2,admin,1030800,1,0,26/08/2025 00:00,active,Project files
+2,admin,1031000,1,0,26/08/2025 00:00,active,Project reports
+2,admin,1040200,1,0,26/08/2025 00:00,active,Team tasks
+2,admin,1040300,1,0,26/08/2025 00:00,active,Task templates
+2,admin,1040400,1,0,26/08/2025 00:00,active,Task statuses
+2,admin,1050200,1,0,26/08/2025 00:00,active,Manage articles
+2,admin,1050300,1,0,26/08/2025 00:00,active,Article categories
+2,admin,1050400,1,0,26/08/2025 00:00,active,Article feedback
+2,admin,1050500,1,0,26/08/2025 00:00,active,Drafts review queue
+2,admin,1060200,1,0,26/08/2025 00:00,active,Team calendar
+2,admin,1060300,1,0,26/08/2025 00:00,active,Ticket due dates
+2,admin,1060400,1,0,26/08/2025 00:00,active,Task due dates
+2,admin,1070100,1,0,26/08/2025 00:00,active,Inbox
+2,admin,1070200,1,0,26/08/2025 00:00,active,Sent emails
+2,admin,1070400,1,0,26/08/2025 00:00,active,Ticket emails
+2,admin,1070600,1,0,26/08/2025 00:00,active,Email templates
+2,admin,1070700,1,0,26/08/2025 00:00,active,Email settings
+2,admin,1080300,1,0,26/08/2025 00:00,active,Shared files
+2,admin,1080400,1,0,26/08/2025 00:00,active,Ticket files
+2,admin,1080500,1,0,26/08/2025 00:00,active,Task documents
+2,admin,1080600,1,0,26/08/2025 00:00,active,Knowledge base assets
+2,admin,1080800,1,0,26/08/2025 00:00,active,File metadata
+2,admin,1080900,1,0,26/08/2025 00:00,active,Retention rules
+2,admin,1081000,1,0,26/08/2025 00:00,active,Access logs
+2,admin,1090100,1,0,26/08/2025 00:00,active,Ticket statistics
+2,admin,1090200,1,0,26/08/2025 00:00,active,Task completion rates
+2,admin,1090300,1,0,26/08/2025 00:00,active,Agent performance score
+2,admin,1090400,1,0,26/08/2025 00:00,active,Customer satisfaction
+2,admin,1090500,1,0,26/08/2025 00:00,active,System logs
+2,admin,1090600,1,0,26/08/2025 00:00,active,Export data and reports
+2,admin,1100100,1,0,26/08/2025 00:00,active,All users
+2,admin,1100200,1,0,26/08/2025 00:00,active,Add user
+2,admin,1100300,1,0,26/08/2025 00:00,active,User activity
+2,admin,1100500,1,0,26/08/2025 00:00,active,Roles and access
+2,admin,1100600,1,0,26/08/2025 00:00,active,Role menus
+2,admin,1100700,1,0,26/08/2025 00:00,active,User menus
+2,admin,1110000,1,0,26/08/2025 00:00,active,Settings
+2,admin,1110100,1,0,26/08/2025 00:00,active,System settings
+2,admin,1110200,1,0,26/08/2025 00:00,active,Ticket settings
+2,admin,1110300,1,0,26/08/2025 00:00,active,Task settings
+2,admin,1110400,1,0,26/08/2025 00:00,active,Notification settings
+2,admin,1110500,1,0,26/08/2025 00:00,active,Security settings
+2,admin,1110600,1,0,26/08/2025 00:00,active,API links
+2,admin,1110700,1,0,26/08/2025 00:00,active,Audit trail
+2,admin,1120000,1,0,26/08/2025 00:00,active,Admin tools
+2,admin,1120100,1,0,26/08/2025 00:00,active,Import/export data
+2,admin,1120200,1,0,26/08/2025 00:00,active,Migration viewer
+2,admin,1120300,1,0,26/08/2025 00:00,active,Seeder manager
+2,admin,1120400,1,0,26/08/2025 00:00,active,Cache monitor
+2,admin,1120500,1,0,26/08/2025 00:00,active,Health check
+2,admin,1130100,1,0,26/08/2025 00:00,active,Test scenarios
+2,admin,1130200,1,0,26/08/2025 00:00,active,Mock tickets
+2,admin,1130300,1,0,26/08/2025 00:00,active,UI preview
+2,admin,1130400,1,0,26/08/2025 00:00,active,Regression checklist
+2,admin,1140100,1,0,26/08/2025 00:00,active,Webhooks
+2,admin,1140200,1,0,26/08/2025 00:00,active,Third-party apps
+2,admin,1140300,1,0,26/08/2025 00:00,active,Slack/Teams alerts
+2,admin,1140400,1,0,26/08/2025 00:00,active,CRM sync
+2,admin,1140500,1,0,26/08/2025 00:00,active,API endpoints
+2,admin,1150100,1,0,26/08/2025 00:00,active,Audit logs
+2,admin,1150200,1,0,26/08/2025 00:00,active,Retention policy
+2,admin,1150300,1,0,26/08/2025 00:00,active,GDPR tools
+2,admin,1150400,1,0,26/08/2025 00:00,active,Access reviews
+2,admin,1160000,1,0,26/08/2025 00:00,active,Help and onboarding
+2,admin,1160100,1,0,26/08/2025 00:00,active,Getting started
+2,admin,1160200,1,0,26/08/2025 00:00,active,Feature walkthroughs
+2,admin,1160300,1,0,26/08/2025 00:00,active,Frequently asked questions
+2,admin,1160400,1,0,26/08/2025 00:00,active,Contact support
+2,admin,1160500,1,0,26/08/2025 00:00,active,Submit feedback
+2,admin,1170000,1,0,26/08/2025 00:00,active,Manage all sidebar menus
+2,admin,1170400,1,0,26/08/2025 00:00,active,Drag-and-drop reorder menus
+2,admin,1170500,1,0,26/08/2025 00:00,active,Show/hide menu items
+2,admin,1170600,1,0,26/08/2025 00:00,active,Set parent/child relationships
+2,admin,1170700,1,0,26/08/2025 00:00,active,View menu change log
+3,super_admin,1010000,1,0,26/08/2025 00:00,active,Main dashboard
+3,super_admin,1010100,1,0,26/08/2025 00:00,active,System status overview
+3,super_admin,1010200,1,1,26/08/2025 00:00,active,Your recent activity
+3,super_admin,1010300,1,0,26/08/2025 00:00,active,Shortcuts for common actions
+3,super_admin,1010400,1,0,26/08/2025 00:00,active,Agent-specific dashboard
+3,super_admin,1010500,1,0,26/08/2025 00:00,active,Manager dashboard
+3,super_admin,1010600,1,0,26/08/2025 00:00,active,Admin dashboard
+3,super_admin,1010700,1,0,26/08/2025 00:00,active,Custom dashboard
+3,super_admin,1010710,1,0,26/08/2025 00:00,active,Add dashboard card
+3,super_admin,1010720,1,0,26/08/2025 00:00,active,Reorder dashboard cards
+3,super_admin,1010730,1,0,26/08/2025 00:00,active,Save dashboard layout
+3,super_admin,1010740,1,0,26/08/2025 00:00,active,Set default dashboard layout
+3,super_admin,1020000,1,0,26/08/2025 00:00,active,Ticket management
+3,super_admin,1020100,1,0,26/08/2025 00:00,active,Create a new ticket
+3,super_admin,1020200,1,0,26/08/2025 00:00,active,Your assigned tickets
+3,super_admin,1020300,1,0,26/08/2025 00:00,active,List all tickets
+3,super_admin,1020400,1,0,26/08/2025 00:00,active,Unassigned tickets
+3,super_admin,1020500,1,0,26/08/2025 00:00,active,Closed tickets
+3,super_admin,1020600,1,0,26/08/2025 00:00,active,Ticket templates
+3,super_admin,1020700,1,0,26/08/2025 00:00,active,Ticket tags
+3,super_admin,1030000,1,0,26/08/2025 00:00,active,Project management
+3,super_admin,1030100,1,0,26/08/2025 00:00,active,List all projects
+3,super_admin,1030200,1,0,26/08/2025 00:00,active,Start a new project
+3,super_admin,1030300,1,0,26/08/2025 00:00,active,Project overview
+3,super_admin,1030400,1,0,26/08/2025 00:00,active,Project milestones
+3,super_admin,1030500,1,0,26/08/2025 00:00,active,Tasks linked to project
+3,super_admin,1030600,1,0,26/08/2025 00:00,active,Tickets linked to project
+3,super_admin,1030700,1,0,26/08/2025 00:00,active,Setup project team
+3,super_admin,1030800,1,0,26/08/2025 00:00,active,Project files
+3,super_admin,1030900,1,0,26/08/2025 00:00,active,Project timeline
+3,super_admin,1031000,1,0,26/08/2025 00:00,active,Project reports
+3,super_admin,1040000,1,0,26/08/2025 00:00,active,Task management
+3,super_admin,1040100,1,0,26/08/2025 00:00,active,Your assigned tasks
+3,super_admin,1040200,1,0,26/08/2025 00:00,active,Team tasks
+3,super_admin,1040300,1,0,26/08/2025 00:00,active,Task templates
+3,super_admin,1040400,1,0,26/08/2025 00:00,active,Task statuses
+3,super_admin,1040500,1,0,26/08/2025 00:00,active,Projects linked to task
+3,super_admin,1040600,1,0,26/08/2025 00:00,active,Tickets linked to task
+3,super_admin,1040700,1,0,26/08/2025 00:00,active,Sync tasks with calendar
+3,super_admin,1050000,1,0,26/08/2025 00:00,active,Knowledge base
+3,super_admin,1050100,1,0,26/08/2025 00:00,active,Browse articles
+3,super_admin,1050200,1,0,26/08/2025 00:00,active,Manage articles
+3,super_admin,1050300,1,0,26/08/2025 00:00,active,Article categories
+3,super_admin,1050400,1,0,26/08/2025 00:00,active,Article feedback
+3,super_admin,1050500,1,0,26/08/2025 00:00,active,Drafts review queue
+3,super_admin,1060000,1,0,26/08/2025 00:00,active,Calendar
+3,super_admin,1060100,1,0,26/08/2025 00:00,active,My calendar
+3,super_admin,1060200,1,0,26/08/2025 00:00,active,Team calendar
+3,super_admin,1060300,1,0,26/08/2025 00:00,active,Ticket due dates
+3,super_admin,1060400,1,0,26/08/2025 00:00,active,Task due dates
+3,super_admin,1060500,1,0,26/08/2025 00:00,active,Event types
+3,super_admin,1060600,1,0,26/08/2025 00:00,active,Calendar sync settings
+3,super_admin,1070000,1,0,26/08/2025 00:00,active,Email
+3,super_admin,1070100,1,0,26/08/2025 00:00,active,Inbox
+3,super_admin,1070200,1,0,26/08/2025 00:00,active,Sent emails
+3,super_admin,1070300,1,0,26/08/2025 00:00,active,Draft emails
+3,super_admin,1070400,1,0,26/08/2025 00:00,active,Ticket emails
+3,super_admin,1070500,1,0,26/08/2025 00:00,active,Task emails
+3,super_admin,1070600,1,0,26/08/2025 00:00,active,Email templates
+3,super_admin,1070700,1,0,26/08/2025 00:00,active,Email settings
+3,super_admin,1080000,1,0,26/08/2025 00:00,active,Assets and files
+3,super_admin,1080100,1,0,26/08/2025 00:00,active,Upload file
+3,super_admin,1080200,1,0,26/08/2025 00:00,active,My files
+3,super_admin,1080300,1,0,26/08/2025 00:00,active,Shared files
+3,super_admin,1080400,1,0,26/08/2025 00:00,active,Ticket files
+3,super_admin,1080500,1,0,26/08/2025 00:00,active,Task documents
+3,super_admin,1080600,1,0,26/08/2025 00:00,active,Knowledge base assets
+3,super_admin,1080700,1,0,26/08/2025 00:00,active,Image library
+3,super_admin,1080800,1,0,26/08/2025 00:00,active,File metadata
+3,super_admin,1080900,1,0,26/08/2025 00:00,active,Retention rules
+3,super_admin,1081000,1,0,26/08/2025 00:00,active,Access logs
+3,super_admin,1090000,1,0,26/08/2025 00:00,active,Reports
+3,super_admin,1090100,1,0,26/08/2025 00:00,active,Ticket statistics
+3,super_admin,1090200,1,0,26/08/2025 00:00,active,Task completion rates
+3,super_admin,1090300,1,0,26/08/2025 00:00,active,Agent performance score
+3,super_admin,1090400,1,0,26/08/2025 00:00,active,Customer satisfaction
+3,super_admin,1090500,1,0,26/08/2025 00:00,active,System logs
+3,super_admin,1090600,1,0,26/08/2025 00:00,active,Export data and reports
+3,super_admin,1100000,1,0,26/08/2025 00:00,active,Users and roles
+3,super_admin,1100100,1,0,26/08/2025 00:00,active,All users
+3,super_admin,1100200,1,0,26/08/2025 00:00,active,Add user
+3,super_admin,1100300,1,0,26/08/2025 00:00,active,User activity
+3,super_admin,1100400,1,0,26/08/2025 00:00,active,Modern user view
+3,super_admin,1100500,1,0,26/08/2025 00:00,active,Roles and access
+3,super_admin,1100600,1,0,26/08/2025 00:00,active,Role menus
+3,super_admin,1100700,1,0,26/08/2025 00:00,active,User menus
+3,super_admin,1110000,1,0,26/08/2025 00:00,active,Settings
+3,super_admin,1110100,1,0,26/08/2025 00:00,active,System settings
+3,super_admin,1110200,1,0,26/08/2025 00:00,active,Ticket settings
+3,super_admin,1110300,1,0,26/08/2025 00:00,active,Task settings
+3,super_admin,1110400,1,0,26/08/2025 00:00,active,Notification settings
+3,super_admin,1110500,1,0,26/08/2025 00:00,active,Security settings
+3,super_admin,1110600,1,0,26/08/2025 00:00,active,API links
+3,super_admin,1110700,1,0,26/08/2025 00:00,active,Audit trail
+3,super_admin,1120000,1,0,26/08/2025 00:00,active,Admin tools
+3,super_admin,1120100,1,0,26/08/2025 00:00,active,Import/export data
+3,super_admin,1120200,1,0,26/08/2025 00:00,active,Migration viewer
+3,super_admin,1120300,1,0,26/08/2025 00:00,active,Seeder manager
+3,super_admin,1120400,1,0,26/08/2025 00:00,active,Cache monitor
+3,super_admin,1120500,1,0,26/08/2025 00:00,active,Health check
+3,super_admin,1130000,1,0,26/08/2025 00:00,active,QA and testing
+3,super_admin,1130100,1,0,26/08/2025 00:00,active,Test scenarios
+3,super_admin,1130200,1,0,26/08/2025 00:00,active,Mock tickets
+3,super_admin,1130300,1,0,26/08/2025 00:00,active,UI preview
+3,super_admin,1130400,1,0,26/08/2025 00:00,active,Regression checklist
+3,super_admin,1140000,1,0,26/08/2025 00:00,active,Integrations
+3,super_admin,1140100,1,0,26/08/2025 00:00,active,Webhooks
+3,super_admin,1140200,1,0,26/08/2025 00:00,active,Third-party apps
+3,super_admin,1140300,1,0,26/08/2025 00:00,active,Slack/Teams alerts
+3,super_admin,1140400,1,0,26/08/2025 00:00,active,CRM sync
+3,super_admin,1140500,1,0,26/08/2025 00:00,active,API endpoints
+3,super_admin,1150000,1,0,26/08/2025 00:00,active,Compliance
+3,super_admin,1150100,1,0,26/08/2025 00:00,active,Audit logs
+3,super_admin,1150200,1,0,26/08/2025 00:00,active,Retention policy
+3,super_admin,1150300,1,0,26/08/2025 00:00,active,GDPR tools
+3,super_admin,1150400,1,0,26/08/2025 00:00,active,Access reviews
+3,super_admin,1160000,1,0,26/08/2025 00:00,active,Help and onboarding
+3,super_admin,1160100,1,0,26/08/2025 00:00,active,Getting started
+3,super_admin,1160200,1,0,26/08/2025 00:00,active,Feature walkthroughs
+3,super_admin,1160300,1,0,26/08/2025 00:00,active,Frequently asked questions
+3,super_admin,1160400,1,0,26/08/2025 00:00,active,Contact support
+3,super_admin,1160500,1,0,26/08/2025 00:00,active,Submit feedback
+3,super_admin,1170000,1,0,26/08/2025 00:00,active,Manage all sidebar menus
+3,super_admin,1170100,1,0,26/08/2025 00:00,active,List all menu and submenu items
+3,super_admin,1170200,1,0,26/08/2025 00:00,active,Create a new menu item
+3,super_admin,1170300,1,0,26/08/2025 00:00,active,Edit existing menu item
+3,super_admin,1170400,1,0,26/08/2025 00:00,active,Drag-and-drop reorder menus
+3,super_admin,1170500,1,0,26/08/2025 00:00,active,Show/hide menu items
+3,super_admin,1170600,1,0,26/08/2025 00:00,active,Set parent/child relationships
+3,super_admin,1170700,1,0,26/08/2025 00:00,active,View menu change log

@@ -30,6 +30,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Route;
+use App\Models\UserMenuItem;
+use App\Models\MenuItem;
 
 class LoginController extends Controller
 {
@@ -97,7 +100,33 @@ class LoginController extends Controller
         if (!$user->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
-        // Always redirect to main dashboard
+        // Prefer user default submenu if configured and granted
+        try {
+            $default = UserMenuItem::where('user_id', $user->user_id)
+                ->where('is_default', true)
+                ->where('is_granted', true)
+                ->orderBy('custom_order')
+                ->orderBy('id')
+                ->first();
+
+            if ($default) {
+                $menu = MenuItem::find($default->menu_item_id);
+                if ($menu) {
+                    // Prefer named route if present and available
+                    if (!empty($menu->route_name) && Route::has($menu->route_name)) {
+                        return redirect()->route($menu->route_name);
+                    }
+                    // Fallback to stored URL if present
+                    if (!empty($menu->menu_url)) {
+                        return redirect($menu->menu_url);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // ignore and fall back to dashboard
+        }
+
+        // Fallback: always redirect to main dashboard
         return redirect()->route('dashboard');
     }
 }
